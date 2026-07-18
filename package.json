@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "@crestron/ch5-crcomlib": "^2.18.0",
+    "@crestron/ch5-theme": "^2.18.0",
+    "@crestron/ch5-webxpanel": "^2.8.0"
+  }
+}
