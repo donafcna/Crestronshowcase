@@ -1,0 +1,32 @@
+import { ICh5PropertySettings } from "../ch5-core/ch5-property";
+import { Ch5BaseClass } from "../ch5-base/ch5-base-class";
+import { ICh5QrCodeAttributes } from "./interfaces/i-ch5-qrcode-attributes";
+export declare class Ch5QrCode extends Ch5BaseClass implements ICh5QrCodeAttributes {
+    protected COMPONENT_NAME: string;
+    static COMPONENT_PROPERTIES: ICh5PropertySettings[];
+    static readonly ELEMENT_NAME = "ch5-qrcode";
+    primaryCssClass: string;
+    private _elContainer;
+    private _canvasContainer;
+    private calcuatedSizeFromCSS;
+    set color(value: string);
+    get color(): string;
+    set backgroundColor(value: string);
+    get backgroundColor(): string;
+    set size(value: number);
+    get size(): number;
+    set qrCode(value: string);
+    get qrCode(): string;
+    set receiveStateQrCode(value: string);
+    get receiveStateQrCode(): string;
+    constructor();
+    connectedCallback(): void;
+    private initializeCssClasses;
+    private onWindowResizeHandler;
+    disconnectedCallback(): void;
+    protected createInternalHtml(): void;
+    debounceBuildQrCode: (...args: any[]) => void;
+    private clearComponentContent;
+    private handleQrCode;
+    protected getTargetElementForCssClassesAndStyle(): HTMLElement;
+}

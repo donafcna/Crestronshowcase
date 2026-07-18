@@ -13,4 +13,4 @@
   1. Delete everything in `C:\Users\donat\Desktop\FutureAV\src\` and `C:\Users\donat\Desktop\FutureAV\dist\`.
   2. Copy the contents of `C:\Users\donat\Desktop\FutureAV\__Archives\milestone_v1.0.58\src\` to `src/`.
   3. Copy the contents of `C:\Users\donat\Desktop\FutureAV\__Archives\milestone_v1.0.58\dist\` to `dist/`.
-  4. Run compilation: `npx ch5-cli archive -p villa-frequencetv -d src -o dist`.
+  4. Run compilation: `npx ch5-cli archive -p villaftv -d src -o dist`.

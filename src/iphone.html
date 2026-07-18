@@ -22,9 +22,9 @@
             }
             
             var urlParams = new URLSearchParams(window.location.search);
-            var ipId = '0x03';
+            var ipId = '0x06';
             try {
-                ipId = urlParams.get('ipid') || localStorage.getItem('crestron_ipid_iphone') || '0x03'; // 0x03 par défaut pour l'iPhone
+                ipId = urlParams.get('ipid') || localStorage.getItem('crestron_ipid_iphone') || '0x06'; // 0x06 par défaut pour l'iPhone
                 if (urlParams.has('ipid')) {
                     localStorage.setItem('crestron_ipid_iphone', urlParams.get('ipid'));
                 }
@@ -34,6 +34,134 @@
             
             console.log("CH5: IP-ID configuré pour WebXPanel iPhone : " + ipId);
             
+            window.crestronIpId = ipId;
+            window.isCp4Connected = false;
+
+            window.updateConnectionStatusUI = function(connected) {
+                window.isCp4Connected = connected;
+                const statusEl = document.getElementById('connection-status');
+                if (statusEl) {
+                    const dot = statusEl.querySelector('.status-dot');
+                    const text = statusEl.querySelector('.status-text');
+                    
+                    let cleanId = '??';
+                    if (window.crestronIpId) {
+                        let idNum = parseInt(window.crestronIpId, 16);
+                        if (!isNaN(idNum)) {
+                            cleanId = idNum.toString().padStart(2, '0');
+                        }
+                    }
+                    
+                    if (connected) {
+                        dot.style.backgroundColor = '#10b981'; // Vert
+                        statusEl.style.color = '#10b981';
+                        text.textContent = '(' + cleanId + ')';
+                    } else {
+                        dot.style.backgroundColor = '#ef4444'; // Rouge
+                        statusEl.style.color = '#ef4444';
+                        text.textContent = '(' + cleanId + ')';
+                    }
+                }
+            };
+
+
+
+            window.openAdminModal = function() {
+                const backdrop = document.getElementById('modal-backdrop');
+                const adminOverlay = document.getElementById('admin-overlay');
+                if (backdrop && adminOverlay) {
+                    backdrop.style.display = 'block';
+                    adminOverlay.style.display = 'block';
+                    window.refreshIptable();
+                }
+            };
+
+            window.closeAdminModal = function() {
+                const backdrop = document.getElementById('modal-backdrop');
+                const adminOverlay = document.getElementById('admin-overlay');
+                if (backdrop && adminOverlay) {
+                    backdrop.style.display = 'none';
+                    adminOverlay.style.display = 'none';
+                }
+            };
+
+            window.sendConsoleCommand = function() {
+                if (typeof CrComLib !== 'undefined') {
+                    const inputEl = document.getElementById('console-cmd-input');
+                    const cmd = inputEl ? inputEl.value.trim() : '';
+                    if (cmd) {
+                        console.log("CH5: Envoi de la commande console : " + cmd);
+                        const el = document.getElementById('processor-iptable');
+                        if (el) el.textContent = "> " + cmd + "\nExécution en cours...";
+                        CrComLib.publishEvent('s', '103', cmd);
+                        if (inputEl) inputEl.value = '';
+                    }
+                } else {
+                    console.warn("CH5: CrComLib non défini.");
+                }
+            };
+            
+            window.quickConsoleCommand = function(cmd) {
+                const inputEl = document.getElementById('console-cmd-input');
+                if (inputEl) {
+                    inputEl.value = cmd;
+                    window.sendConsoleCommand();
+                }
+            };
+
+            window.refreshIptable = function() {
+                console.log("CH5: Rafraîchissement initial de la console (ipt)");
+                window.quickConsoleCommand('ipt');
+            };
+
+            // Listen for WebXPanel connection events
+            window.addEventListener('CONNECT_WS', function() {
+                console.log('WebXPanel WebSocket Connected');
+                window.updateConnectionStatusUI(true);
+            });
+            window.addEventListener('DISCONNECT_WS', function() {
+                console.log('WebXPanel WebSocket Disconnected');
+                window.updateConnectionStatusUI(false);
+            });
+            window.addEventListener('CONNECT_CIP', function() {
+                console.log('WebXPanel CIP Connected');
+                window.updateConnectionStatusUI(true);
+            });
+
+            window.addEventListener('DOMContentLoaded', function() {
+                if (typeof WebXPanel === 'undefined' || !WebXPanel.isActive) {
+                    window.updateConnectionStatusUI(true); // Default native connection assumes active
+                } else {
+                    window.updateConnectionStatusUI(false); // Wait for WebXPanel connection events
+                }
+
+                // G. Trigger console admin secrète par appui long de 3 secondes sur le titre "Pièce Active" (après chargement du DOM)
+                const connStatusEl = document.getElementById('admin-trigger-label');
+                if (connStatusEl) {
+                    let longPressTimeout;
+                    const startPress = (e) => {
+                        if (e && e.cancelable) {
+                            e.preventDefault();
+                        }
+                        clearTimeout(longPressTimeout);
+                        longPressTimeout = setTimeout(() => {
+                            window.openAdminModal();
+                        }, 3000); // 3 secondes d'appui
+                    };
+                    const endPress = () => {
+                        clearTimeout(longPressTimeout);
+                    };
+                    
+                    connStatusEl.addEventListener('mousedown', startPress);
+                    connStatusEl.addEventListener('mouseup', endPress);
+                    connStatusEl.addEventListener('mouseleave', endPress);
+                    
+                    connStatusEl.addEventListener('touchstart', startPress);
+                    connStatusEl.addEventListener('touchend', endPress);
+                    connStatusEl.addEventListener('touchcancel', endPress);
+                }
+            });
+
             var webxpanelConfig = {
                 ipId: ipId
             };
@@ -589,7 +717,15 @@
     <!-- ENTÊTE (PIECE & ALARME DYNAMIQUES) -->
     <div class="header-section">
         <div class="room-row">
-            <label for="room-select" style="white-space: nowrap;"><span data-i18n="active_piece">Pièce Active</span> <span style="font-size: 0.75rem; color: rgba(255,255,255,0.3); font-weight: normal; margin-left: 5px;">v1.0.60</span> :</label>
+            <div style="white-space: nowrap; display: flex; align-items: center; gap: 5px;">
+                <span id="admin-trigger-label" style="font-weight: bold; font-size: 0.95rem; color: var(--text-secondary); cursor: pointer; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none;"><span data-i18n="active_piece">Pièce Active</span></span>
+                <span id="version-label" style="font-size: 0.75rem; color: rgba(255,255,255,0.3); font-weight: normal;">v1.0.12</span>
+                <span id="connection-status" style="font-size: 0.7rem; font-weight: normal; transition: color 0.3s; display: inline-flex; align-items: center; gap: 3px; color: #ef4444; cursor: pointer; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none;">
+                    <span class="status-dot" style="display: inline-block; width: 6px; height: 6px; border-radius: 50%; background-color: #ef4444; transition: background-color 0.3s;"></span>
+                    <span class="status-text" style="color: inherit;">Déconnecté</span>
+                </span>
+                <span style="color: var(--text-secondary); font-weight: bold; font-size: 0.95rem;">:</span>
+            </div>
             <select id="room-select" class="room-dropdown" onchange="changeRoomIphone(this.value)">
                 <!-- Rempli dynamiquement -->
             </select>
@@ -803,6 +939,60 @@
                     <option value="glass" data-i18n="theme_glass">Verre Dépoli ❄️</option>
                     <option value="cyber" data-i18n="theme_cyber">Bleu Cyberpunk 🌌</option>
                 </select>
+            </div>
+        </div>
+    </div>
+
+    <!-- POPUP ADMIN SIMPLIFIE (iPhone) -->
+    <div id="admin-overlay" class="custom-overlay-panel" style="width: 90% !important; max-width: 380px !important; height: auto !important; max-height: 80% !important;">
+        <div class="overlay-header">
+            <h3 style="display: flex; align-items: center; gap: 8px; color: #f43f5e; margin: 0; font-size: 1.1rem; text-transform: uppercase;">
+                🔒 Admin Simplifié
+            </h3>
+            <button onclick="closeAdminModal()" style="height: 32px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 6px; cursor: pointer; font-weight: bold; padding: 0 10px; font-size: 0.8rem;">FERMER</button>
+        </div>
+        <div class="overlay-content" style="gap: 15px; overflow-y: auto;">
+            <!-- Infos CPZ & CH5Z -->
+            <div style="background: rgba(255,255,255,0.02); padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.06); font-size: 0.85rem; line-height: 1.4; display: flex; flex-direction: column; gap: 8px;">
+                <div>
+                    <div style="font-weight: bold; color: rgba(255,255,255,0.5); margin-bottom: 2px; font-size: 0.75rem; text-transform: uppercase;">Fichier Processeur (CPZ)</div>
+                    <div style="font-family: monospace; color: var(--text-primary); word-break: break-all;" id="cpz-filename">--</div>
+                    <div style="font-family: monospace; color: rgba(255,255,255,0.6); font-size: 0.75rem;" id="cpz-compiledate">--</div>
+                </div>
+                <div style="border-top: 1px solid rgba(255,255,255,0.06); padding-top: 6px;">
+                    <div style="font-weight: bold; color: rgba(255,255,255,0.5); margin-bottom: 2px; font-size: 0.75rem; text-transform: uppercase;">Fichier Interface (CH5Z)</div>
+                    <div style="font-family: monospace; color: var(--text-primary);" id="ch5z-filename">villaftv.ch5z</div>
+                    <div style="font-family: monospace; color: rgba(255,255,255,0.6); font-size: 0.75rem;" id="ch5z-compiledate">--</div>
+                </div>
+            </div>
+
+            <!-- Date validation -->
+            <div>
+                <label style="display: block; font-weight: bold; margin-bottom: 6px; font-size: 0.9rem;">Date de dernière validation :</label>
+                <input type="date" id="validation-date-picker" style="width: 100%; background: var(--bg-color); color: var(--text-primary); border: 1px solid var(--border-color); padding: 8px 12px; border-radius: 8px; font-size: 0.95rem; box-sizing: border-box; outline: none;">
+            </div>
+
+            <!-- Section Console Terminal du Processeur CP4 -->
+            <div>
+                <label style="display: block; font-weight: bold; margin-bottom: 6px; font-size: 0.9rem;">Terminal Console CP4 :</label>
+                <div style="display: flex; flex-direction: column; gap: 8px; width: 100%; box-sizing: border-box;">
+                    <!-- Zone d'affichage de la console (largeur 50% sous iphone.html) -->
+                    <pre id="processor-iptable" style="background: #000000; border: 1px solid rgba(56, 189, 248, 0.3); padding: 10px; border-radius: 8px; font-family: 'Courier New', Courier, monospace; font-size: 0.75rem; overflow-x: auto; white-space: pre; height: 180px; overflow-y: auto; color: #38bdf8; margin: 0; box-shadow: inset 0 0 10px rgba(0,0,0,0.8); box-sizing: border-box; width: 100%;">Console prête...</pre>
+                    
+                    <!-- Zone de saisie -->
+                    <div style="display: flex; gap: 6px; width: 100%;">
+                        <input type="text" id="console-cmd-input" placeholder="Commande (ex: ver, ipt)..." style="flex: 1; background: rgba(0,0,0,0.6); border: 1px solid var(--border-color); border-radius: 6px; padding: 6px 10px; color: #ffffff; font-family: monospace; font-size: 0.8rem; outline: none; min-width: 0;" onkeydown="if(event.key==='Enter') window.sendConsoleCommand()">
+                        <button onclick="window.sendConsoleCommand()" style="background: #38bdf8; border: none; color: #000000; border-radius: 6px; padding: 6px 12px; font-size: 0.8rem; font-weight: bold; cursor: pointer; white-space: nowrap;">Envoyer</button>
+                    </div>
+                    
+                    <!-- Commandes rapides -->
+                    <div style="display: flex; gap: 4px; flex-wrap: wrap; width: 100%;">
+                        <button onclick="window.quickConsoleCommand('ver')" style="background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: #ffffff; border-radius: 4px; padding: 2px 6px; cursor: pointer; font-size: 0.7rem;">ver</button>
+                        <button onclick="window.quickConsoleCommand('ipt')" style="background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border-color); color: #ffffff; border-radius: 4px; padding: 2px 6px; cursor: pointer; font-size: 0.7rem;">ipt</button>
+                        <button onclick="window.quickConsoleCommand('err')" style="background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border-color); color: #ffffff; border-radius: 4px; padding: 2px 6px; cursor: pointer; font-size: 0.7rem;">err</button>
+                        <button onclick="window.quickConsoleCommand('uptime')" style="background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border-color); color: #ffffff; border-radius: 4px; padding: 2px 6px; cursor: pointer; font-size: 0.7rem;">uptime</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -1129,6 +1319,7 @@
                 window.closeCircuitsModal();
                 window.closeMotorsModal();
                 window.closeSettingsModal();
+                window.closeAdminModal();
             };
 
             // --- NAVIGATION TABS ---
@@ -1263,6 +1454,46 @@
                 } catch (e) {}
                 if (roomSelect) roomSelect.value = curRoom.toString();
                 updateActiveRoomUI(curRoom);
+
+                // Initialisation du date picker de validation pour l'iPhone
+                const datePicker = document.getElementById('validation-date-picker');
+                if (datePicker) {
+                    const savedDate = localStorage.getItem('last_validation_date');
+                    if (savedDate) {
+                        datePicker.value = savedDate;
+                    }
+                    datePicker.addEventListener('change', function(e) {
+                        localStorage.setItem('last_validation_date', e.target.value);
+                        if (typeof CrComLib !== 'undefined') {
+                            console.log("CH5 iPhone: Envoi de la date de validation au CP4 : " + e.target.value);
+                            CrComLib.publishEvent('s', '104', e.target.value);
+                        }
+                    });
+                }
+
+                // Détermination dynamique de la compilation CH5Z
+                const ch5zEl = document.getElementById('ch5z-compiledate');
+                if (ch5zEl) {
+                    // Fetch de la date locale de compilation générée au build
+                    fetch('build_date.json')
+                        .then(res => res.json())
+                        .then(data => {
+                            ch5zEl.textContent = data.compileDate;
+                        })
+                        .catch(() => {
+                            let ch5zDate = "Inconnue";
+                            try {
+                                if (document.lastModified) {
+                                    const d = new Date(document.lastModified);
+                                    if (!isNaN(d.getTime())) {
+                                        const pad = (num) => String(num).padStart(2, '0');
+                                        ch5zDate = `${pad(d.getDate())}/${pad(d.getMonth() + 1)}/${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+                                    }
+                                }
+                            } catch (e) {}
+                            ch5zEl.textContent = ch5zDate;
+                        });
+                }
             }
 
             // --- CHARGEMENT CONFIG.JSON / CONFIG.JS ---
@@ -1286,6 +1517,56 @@
             // --- ABONNEMENTS CRESTRON ---
             if (typeof CrComLib !== 'undefined') {
                 
+                // ID du périphérique (String Join 99)
+                CrComLib.subscribeState('s', '99', (value) => {
+                    if (value) {
+                        console.log("CH5 iPhone: ID du périphérique reçu (Join 99) : " + value);
+                        let idNum = parseInt(value, 10);
+                        if (!isNaN(idNum)) {
+                            window.crestronIpId = '0x' + idNum.toString(16).padStart(2, '0');
+                            window.updateConnectionStatusUI(true);
+                        }
+                    }
+                });
+
+                // Nom du fichier CPZ (String Join 101)
+                CrComLib.subscribeState('s', '101', (value) => {
+                    if (value) {
+                        const el = document.getElementById('cpz-filename');
+                        if (el) el.textContent = value;
+                    }
+                });
+
+                // Date de compilation du CPZ (String Join 102)
+                CrComLib.subscribeState('s', '102', (value) => {
+                    if (value) {
+                        const el = document.getElementById('cpz-compiledate');
+                        if (el) el.textContent = value;
+                    }
+                });
+
+                // IP Table (String Join 103)
+                CrComLib.subscribeState('s', '103', (value) => {
+                    console.log("CH5 iphone.html: Réception IP Table (Join 103):", value);
+                    if (value) {
+                        const el = document.getElementById('processor-iptable');
+                        if (el) {
+                            // Remplacer les retours à la ligne par <br> pour un affichage HTML multi-ligne garanti
+                            el.innerHTML = value.replace(/\r\n/g, '<br>').replace(/\n/g, '<br>').replace(/\r/g, '<br>');
+                        }
+                    }
+                });
+
+                // Date de dernière validation (String Join 104)
+                CrComLib.subscribeState('s', '104', (value) => {
+                    if (value) {
+                        console.log("CH5 iPhone: Date de validation reçue du CP4 (Join 104) : " + value);
+                        localStorage.setItem('last_validation_date', value);
+                        const el = document.getElementById('validation-date-picker');
+                        if (el) el.value = value;
+                    }
+                });
+
                 // Pièce active - DÉSOLIDARISATION
                 // CrComLib.subscribeState('n', '10', ... ) est retiré.
                 

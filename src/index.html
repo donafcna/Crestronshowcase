@@ -42,19 +42,169 @@
             
             console.log("CH5: IP-ID configuré pour WebXPanel : " + ipId);
             
+            window.crestronIpId = ipId;
+            window.isCp4Connected = false;
+
+            window.updateConnectionStatusUI = function(connected) {
+                window.isCp4Connected = connected;
+                const statusEl = document.getElementById('connection-status');
+                if (statusEl) {
+                    const dot = statusEl.querySelector('.status-dot');
+                    const text = statusEl.querySelector('.status-text');
+                    
+                    let cleanId = '??';
+                    if (window.crestronIpId) {
+                        let idNum = parseInt(window.crestronIpId, 16);
+                        if (!isNaN(idNum)) {
+                            cleanId = idNum.toString().padStart(2, '0');
+                        }
+                    }
+                    
+                    if (connected) {
+                        dot.style.backgroundColor = '#10b981'; // Vert
+                        dot.style.boxShadow = '0 0 8px rgba(16, 185, 129, 0.6)';
+                        statusEl.style.color = '#10b981';
+                        text.textContent = 'Online (' + cleanId + ')';
+                    } else {
+                        dot.style.backgroundColor = '#ef4444'; // Rouge
+                        dot.style.boxShadow = '0 0 8px rgba(239, 68, 68, 0.6)';
+                        statusEl.style.color = '#ef4444';
+                        text.textContent = 'Offline (' + cleanId + ')';
+                    }
+                }
+            };
+
+            // Listen for WebXPanel connection events
+            window.addEventListener('CONNECT_WS', function() {
+                console.log('WebXPanel WebSocket Connected');
+                window.updateConnectionStatusUI(true);
+            });
+            window.addEventListener('DISCONNECT_WS', function() {
+                console.log('WebXPanel WebSocket Disconnected');
+                window.updateConnectionStatusUI(false);
+            });
+            window.addEventListener('CONNECT_CIP', function() {
+                console.log('WebXPanel CIP Connected');
+                window.updateConnectionStatusUI(true);
+                if (typeof window.refreshIptable === 'function') {
+                    window.refreshIptable();
+                }
+            });
+
+            window.addEventListener('DOMContentLoaded', function() {
+                if (typeof WebXPanel === 'undefined' || !WebXPanel.isActive) {
+                    window.updateConnectionStatusUI(true); // Default native connection assumes active
+                    if (typeof window.refreshIptable === 'function') {
+                        window.refreshIptable();
+                    }
+                } else {
+                    window.updateConnectionStatusUI(false); // Wait for WebXPanel connection events
+                }
+
+                // Initialisation du date picker de validation hybride (Calendrier TSW / Dropdowns XPanel)
+                const datePicker = document.getElementById('validation-date-picker');
+                const selectsContainer = document.getElementById('validation-date-selects-container');
+                const daySelect = document.getElementById('valid-day');
+                const monthSelect = document.getElementById('valid-month');
+                const yearSelect = document.getElementById('valid-year');
+                
+                // Détecter si on utilise WebXPanel (XPanel) ou natif (TSW)
+                const isXpanel = (typeof WebXPanel !== 'undefined' && WebXPanel.isActive);
+                if (isXpanel) {
+                    if (selectsContainer) selectsContainer.style.display = 'flex';
+                    if (datePicker) datePicker.style.display = 'none';
+                } else {
+                    if (selectsContainer) selectsContainer.style.display = 'none';
+                    if (datePicker) datePicker.style.display = 'block';
+                }
+                
+                // Remplir les dropdowns (XPanel)
+                if (daySelect && monthSelect && yearSelect) {
+                    for (let i = 1; i <= 31; i++) {
+                        let valStr = i.toString().padStart(2, '0');
+                        daySelect.add(new Option(valStr, valStr));
+                    }
+                    for (let i = 1; i <= 12; i++) {
+                        let valStr = i.toString().padStart(2, '0');
+                        monthSelect.add(new Option(valStr, valStr));
+                    }
+                    for (let i = 2020; i <= 2035; i++) {
+                        let valStr = i.toString();
+                        yearSelect.add(new Option(valStr, valStr));
+                    }
+                }
+                
+                const sendDateToCrestron = (dateStr) => {
+                    localStorage.setItem('last_validation_date', dateStr);
+                    if (typeof CrComLib !== 'undefined') {
+                        console.log("CH5: Envoi de la date de validation au CP4 : " + dateStr);
+                        CrComLib.publishEvent('s', '104', dateStr);
+                    }
+                };
+                
+                // Event Listener pour le calendrier natif (TSW)
+                if (datePicker) {
+                    datePicker.addEventListener('change', function(e) {
+                        const rawVal = e.target.value; // format YYYY-MM-DD
+                        if (rawVal) {
+                            const parts = rawVal.split('-');
+                            if (parts.length === 3) {
+                                const formatted = `${parts[2]}/${parts[1]}/${parts[0]}`; // DD/MM/YYYY
+                                sendDateToCrestron(formatted);
+                            }
+                        }
+                    });
+                }
+                
+                // Event Listeners pour les selects (XPanel)
+                const onSelectChange = () => {
+                    if (daySelect && monthSelect && yearSelect) {
+                        const dateStr = `${daySelect.value}/${monthSelect.value}/${yearSelect.value}`;
+                        sendDateToCrestron(dateStr);
+                    }
+                };
+                if (daySelect) daySelect.addEventListener('change', onSelectChange);
+                if (monthSelect) monthSelect.addEventListener('change', onSelectChange);
+                if (yearSelect) yearSelect.addEventListener('change', onSelectChange);
+                
+                // Fonction globale pour configurer visuellement la date reçue ou locale (format DD/MM/YYYY)
+                window.setDateFields = function(dateString) {
+                    if (!dateString) return;
+                    localStorage.setItem('last_validation_date', dateString);
+                    
+                    const parts = dateString.split('/');
+                    if (parts.length === 3) {
+                        // 1. Mise à jour des selects (XPanel)
+                        if (daySelect) daySelect.value = parts[0];
+                        if (monthSelect) monthSelect.value = parts[1];
+                        if (yearSelect) yearSelect.value = parts[2];
+                        
+                        // 2. Mise à jour du calendrier natif (TSW) au format YYYY-MM-DD
+                        if (datePicker) {
+                            datePicker.value = `${parts[2]}-${parts[1]}-${parts[0]}`;
+                        }
+                    }
+                };
+                
+                const savedDate = localStorage.getItem('last_validation_date');
+                if (savedDate) {
+                    window.setDateFields(savedDate);
+                }
+            });
+            
             var webxpanelConfig = {
                 ipId: ipId
             };
 
             if (panelInstance) {
                 if (panelInstance.WebXPanel && typeof panelInstance.WebXPanel.initialize === 'function') {
-                    console.log("CH5: Initialisation de WebXPanel sur IPID 0x04...");
+                    console.log("CH5: Initialisation de WebXPanel sur IPID " + ipId + "...");
                     panelInstance.WebXPanel.initialize(webxpanelConfig);
                 } else if (typeof panelInstance.initialize === 'function') {
-                    console.log("CH5: Initialisation de WebXPanel (direct) sur IPID 0x04...");
+                    console.log("CH5: Initialisation de WebXPanel (direct) sur IPID " + ipId + "...");
                     panelInstance.initialize(webxpanelConfig);
                 } else if (panelInstance.default && typeof panelInstance.default.initialize === 'function') {
-                    console.log("CH5: Initialisation de WebXPanel (default) sur IPID 0x04...");
+                    console.log("CH5: Initialisation de WebXPanel (default) sur IPID " + ipId + "...");
                     panelInstance.default.initialize(webxpanelConfig);
                 } else {
                     console.error("CH5: Impossible de trouver la méthode initialize sur l'instance WebXPanel.");
@@ -292,32 +442,52 @@
             50% { transform: scale(1.08); opacity: 0.85; }
         }
 
-        /* 1. Boutons Sélecteurs de Pièces (Emerald Green) - HAUTEUR AJUSTÉE POUR TS1070 (68px) */
+        /* 1. Boutons Sélecteurs de Pièces - Style épuré inspiré de l'exemple (Pas de cadre par défaut, cadre et fond subtil pour sélection) */
         ch5-button[customClass~="room-selector-btn"] {
             width: 100% !important;
-            height: 68px !important;
+            height: 48px !important;
             display: inline-block !important;
+            margin: 4px 0 !important;
         }
+        ch5-button[customClass~="room-selector-btn"] button,
+        ch5-button[customClass~="room-selector-btn"] .cb-btn,
+        ch5-button[customClass~="room-selector-btn"] .ch5-button,
         .room-selector-btn {
-            height: 68px !important;
-            background-color: rgba(16, 36, 26, 0.9) !important;
-            border: 1px solid rgba(255, 255, 255, 0.08) !important;
-            color: #a7f3d0 !important;
-            border-radius: 10px !important;
-            font-size: 1.25rem !important;
-            font-weight: 600 !important;
+            background-color: transparent !important;
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+            color: #ffffff !important;
+            border-radius: 8px !important;
+            font-size: 1.15rem !important;
+            font-weight: 500 !important;
             box-sizing: border-box !important;
             transition: all 0.2s ease !important;
+            justify-content: flex-start !important;
+            padding-left: 15px !important;
+            height: 48px !important;
         }
-        ch5-button[selected="true"] .room-selector-btn,
-        ch5-button.ch5-button--selected .room-selector-btn,
+        ch5-button[customClass~="room-selector-btn"]:hover button,
+        ch5-button[customClass~="room-selector-btn"]:hover .cb-btn,
+        .room-selector-btn:hover {
+            color: #a7f3d0 !important;
+        }
+        ch5-button[selected="true"] button,
+        ch5-button[selected="true"] .cb-btn,
+        ch5-button[selected="true"] .ch5-button,
+        ch5-button.ch5-button--selected button,
+        ch5-button.ch5-button--selected .cb-btn,
+        ch5-button.ch5-button--selected .ch5-button,
         .room-selector-btn.ch5-button--selected,
-        .room-selector-btn[selected="true"] {
-            background-color: #10b981 !important; /* Vert Émeraude actif */
-            border: 2px solid #ffffff !important;
+        .room-selector-btn[selected="true"],
+        ch5-button[selected="true"] .room-selector-btn,
+        ch5-button.ch5-button--selected .room-selector-btn {
+            background-color: rgba(255, 255, 255, 0.08) !important;
+            background: rgba(255, 255, 255, 0.08) !important;
+            border: none !important;
             color: #ffffff !important;
-            font-weight: 700 !important;
-            box-shadow: 0 0 20px rgba(16, 185, 129, 0.7) !important;
+            font-weight: bold !important;
+            box-shadow: none !important;
         }
 
         /* 2. Boutons Éclairage / Scènes (Warm Bronze / Gold) - HAUTEUR (54px) */
@@ -628,13 +798,19 @@
 
     <!-- SECTION DE GAUCHE : SÉLECTION DES PIÈCES -->
     <div class="sidebar">
-        <h2 style="color: var(--text-primary); display: flex; align-items: center; gap: 8px; margin-bottom: 10px;">
-            <button onclick="openSettingsModal()" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: var(--text-primary); border-radius: 6px; cursor: pointer; font-size: 0.95rem; display: flex; align-items: center; justify-content: center; width: 28px; height: 28px; padding: 0; outline: none; transition: all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'">
-                ⚙️
-            </button>
-            <span data-i18n="rooms">Pièces Villa</span> 
-            <span id="version-label" style="font-size: 0.8rem; color: rgba(255,255,255,0.3); font-weight: normal;">v1.0.60</span>
-        </h2>
+        <div style="margin-bottom: 12px;">
+            <h2 style="color: var(--text-primary); display: flex; align-items: center; gap: 8px; margin-bottom: 2px;">
+                <button onclick="openSettingsModal()" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: var(--text-primary); border-radius: 6px; cursor: pointer; font-size: 0.95rem; display: flex; align-items: center; justify-content: center; width: 28px; height: 28px; padding: 0; outline: none; transition: all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'">
+                    ⚙️
+                </button>
+                <span data-i18n="rooms">Pièces Villa</span> 
+                <span id="version-label" style="font-size: 0.8rem; color: rgba(255,255,255,0.3); font-weight: normal; margin-left: auto;">v1.0.12</span>
+            </h2>
+            <div id="connection-status" style="font-size: 0.75rem; margin-top: 4px; font-weight: 500; transition: color 0.3s; display: flex; align-items: center; gap: 5px; color: #ef4444; padding-left: 0; cursor: pointer; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none;">
+                <span class="status-dot" style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background-color: #ef4444; transition: background-color 0.3s; box-shadow: 0 0 8px rgba(239, 68, 68, 0.4);"></span>
+                <span class="status-text" style="color: inherit;">Offline</span>
+            </div>
+        </div>
         
         <!-- Conteneur flex pour la liste des pièces avec boutons de défilement intégrés -->
         <div style="flex: 1; min-height: 0; display: flex; flex-direction: column; margin-bottom: 15px;">
@@ -722,7 +898,7 @@
         <div class="header-bar">
             <h1 style="margin: 0; font-size: 1.8rem; display: flex; align-items: center; gap: 10px;">
                 <svg id="admin-trigger-logo" viewBox="0 0 576 512" style="width: 28px; height: 28px; fill: #10b981; cursor: pointer;"><path d="M575.8 255.5c0 18-15 32.1-32 32.1h-32l.7 160.2c0 2.7-.2 5.4-.5 8.1V472c0 22.1-17.9 40-40 40H400c-22.1 0-40-17.9-40-40V376c0-13.3-10.7-24-24-24H240c-13.3 0-24 10.7-24 24v96c0 22.1-17.9 40-40 40H40c-22.1 0-40-17.9-40-40V255.6C0 237.6 15 223.5 32 223.5h32V64C64 28.7 92.7 0 128 0H448c35.3 0 64 28.7 64 64v159.5h32c17 0 32 14.1 32 32z"/></svg>
-                <span data-i18n="active_piece">PIÈCE ACTIVE :</span> <span id="active-room-title" style="color: #10b981;" data-ch5-textcontent="10">Salon</span>
+                <span id="admin-trigger-label" style="cursor: pointer; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none;"><span data-i18n="active_piece">PIÈCE ACTIVE :</span></span> <span id="active-room-title" style="color: #10b981;" data-ch5-textcontent="10">Salon</span>
             </h1>
             <div style="display: flex; align-items: center; gap: 12px;">
                 <span data-i18n="alarm_title" style="font-weight: bold;">Alarme Globale :</span>
@@ -980,6 +1156,25 @@
                         SON IMAGE & DOMOTIQUE
                     </div>
                 </div>
+                <!-- Infos CPZ & CH5Z -->
+                <div style="margin-left: 25px; padding-left: 15px; border-left: 1px solid rgba(255,255,255,0.15); font-family: 'Montserrat', sans-serif; font-size: 0.8rem; color: rgba(255,255,255,0.7); display: flex; flex-direction: column; gap: 3px;">
+                    <div>Fichier CPZ : <span id="cpz-filename" style="color: #38bdf8; font-weight: bold;">--</span></div>
+                    <div>Compilation CPZ : <span id="cpz-compiledate" style="color: #38bdf8; font-weight: bold;">--</span></div>
+                    <div>Fichier CH5Z : <span id="ch5z-filename" style="color: #38bdf8; font-weight: bold;">villaftv.ch5z</span></div>
+                    <div>Compilation CH5Z : <span id="ch5z-compiledate" style="color: #38bdf8; font-weight: bold;">--</span></div>
+                </div>
+                <!-- Date de dernière validation -->
+                <div style="margin-left: 25px; padding-left: 15px; border-left: 1px solid rgba(255,255,255,0.15); font-family: 'Montserrat', sans-serif; font-size: 0.8rem; color: rgba(255,255,255,0.7); display: flex; flex-direction: column; gap: 3px;">
+                    <label style="font-weight: bold; color: rgba(255,255,255,0.9); margin-bottom: 2px;">Date de dernière validation :</label>
+                    <!-- Calendrier natif pour TSW (visible par défaut, masqué si XPanel) -->
+                    <input type="date" id="validation-date-picker" style="background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(255, 255, 255, 0.2); color: white; border-radius: 4px; padding: 2px 6px; outline: none; font-size: 0.8rem; height: 25px; box-sizing: border-box;">
+                    <!-- Sélecteurs Jour/Mois/Année pour XPanel (masqués par défaut, affichés si XPanel) -->
+                    <div id="validation-date-selects-container" style="display: none; gap: 5px; align-items: center;">
+                        <select id="valid-day" style="background: rgba(0, 0, 0, 0.6); border: 1px solid rgba(255, 255, 255, 0.2); color: white; border-radius: 4px; padding: 2px; font-size: 0.8rem; outline: none; height: 25px; box-sizing: border-box;"></select>
+                        <select id="valid-month" style="background: rgba(0, 0, 0, 0.6); border: 1px solid rgba(255, 255, 255, 0.2); color: white; border-radius: 4px; padding: 2px; font-size: 0.8rem; outline: none; height: 25px; box-sizing: border-box;"></select>
+                        <select id="valid-year" style="background: rgba(0, 0, 0, 0.6); border: 1px solid rgba(255, 255, 255, 0.2); color: white; border-radius: 4px; padding: 2px; font-size: 0.8rem; outline: none; height: 25px; box-sizing: border-box;"></select>
+                    </div>
+                </div>
             </div>
             <button onclick="closeAdminModal()" style="height: 35px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 6px; cursor: pointer; font-weight: bold; padding: 0 15px; font-size: 0.85rem;" data-i18n="close">FERMER</button>
         </div>
@@ -1034,6 +1229,33 @@
                         <!-- Généré dynamiquement -->
                     </tbody>
                 </table>
+            </div>
+
+            <!-- Section Console Terminal du Processeur CP4 -->
+            <h3 style="color: #38bdf8; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 8px; margin-top: 30px; text-transform: uppercase; font-size: 1.1rem; display: flex; justify-content: space-between; align-items: center;">
+                <span>💻 Terminal Console du Processeur CP4</span>
+            </h3>
+            <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 15px; width: 100%; box-sizing: border-box;">
+                <!-- Zone d'affichage de la console (largeur 50% sous index.html) -->
+                <pre id="processor-iptable" style="background: #000000; border: 1px solid rgba(56, 189, 248, 0.3); padding: 15px; border-radius: 8px; font-family: 'Courier New', Courier, monospace; font-size: 0.85rem; overflow-x: auto; white-space: pre; height: 300px; overflow-y: auto; color: #38bdf8; margin: 0; box-shadow: inset 0 0 10px rgba(0,0,0,0.8); box-sizing: border-box; width: 100%;">Console prête. Entrez une commande...
+Exemples: ver, ipt, err, uptime, reboot</pre>
+                
+                <!-- Zone de saisie -->
+                <div style="display: flex; gap: 8px; width: 100%;">
+                    <input type="text" id="console-cmd-input" placeholder="Entrez une commande console (ex: ver, ipt)..." style="flex: 1; background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.15); border-radius: 6px; padding: 10px 15px; color: #ffffff; font-family: monospace; font-size: 0.9rem; outline: none; transition: border-color 0.2s; min-width: 0;" onfocus="this.style.borderColor='#38bdf8'" onblur="this.style.borderColor='rgba(255,255,255,0.15)'" onkeydown="if(event.key==='Enter') window.sendConsoleCommand()">
+                    <button onclick="window.sendConsoleCommand()" style="background: #38bdf8; border: none; color: #000000; border-radius: 6px; padding: 10px 20px; font-size: 0.9rem; font-weight: bold; cursor: pointer; transition: all 0.2s; white-space: nowrap;" onmouseover="this.style.background='#56cbfd'" onmouseout="this.style.background='#38bdf8'">
+                        Envoyer
+                    </button>
+                </div>
+                
+                <!-- Commandes rapides -->
+                <div style="display: flex; gap: 6px; flex-wrap: wrap; width: 100%;">
+                    <span style="color: rgba(255,255,255,0.4); font-size: 0.8rem; align-self: center; margin-right: 5px;">Raccourcis:</span>
+                    <button onclick="window.quickConsoleCommand('ver')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #ffffff; border-radius: 4px; padding: 4px 10px; cursor: pointer; font-size: 0.75rem; transition: all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'">ver</button>
+                    <button onclick="window.quickConsoleCommand('ipt')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #ffffff; border-radius: 4px; padding: 4px 10px; cursor: pointer; font-size: 0.75rem; transition: all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'">ipt</button>
+                    <button onclick="window.quickConsoleCommand('err')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #ffffff; border-radius: 4px; padding: 4px 10px; cursor: pointer; font-size: 0.75rem; transition: all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'">err</button>
+                    <button onclick="window.quickConsoleCommand('uptime')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #ffffff; border-radius: 4px; padding: 4px 10px; cursor: pointer; font-size: 0.75rem; transition: all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'">uptime</button>
+                </div>
             </div>
         </div>
     </div>
@@ -1432,6 +1654,15 @@
         window.openAdminModal = function() {
             document.getElementById('admin-overlay').style.display = 'block';
             document.getElementById('modal-backdrop').style.display = 'block';
+            if (typeof window.refreshIptable === 'function') {
+                window.refreshIptable();
+            }
+        };
+
+        window.refreshIptable = function() {
+            if (typeof window.quickConsoleCommand === 'function') {
+                window.quickConsoleCommand('ipt');
+            }
         };
         window.closeAdminModal = function() {
             document.getElementById('admin-overlay').style.display = 'none';
@@ -1780,23 +2011,30 @@
             // F. Initialisation de la grille de monitoring pièce par pièce
             initAdminRoomsGrid();
 
-            // G. Trigger console admin secrète par triple clic/tap
-            let logoClicks = 0;
-            const logo = document.getElementById('admin-trigger-logo');
-            if (logo) {
-                const handleLogo = (e) => {
-                    if (e.type === 'touchstart') {
+            // G. Trigger console admin secrète par appui long de 3 secondes sur le titre "Pièce Active"
+            const connStatusEl = document.getElementById('admin-trigger-label');
+            if (connStatusEl) {
+                let longPressTimeout;
+                const startPress = (e) => {
+                    if (e && e.cancelable) {
                         e.preventDefault();
                     }
-                    logoClicks++;
-                    if (logoClicks >= 3) {
-                        logoClicks = 0;
+                    clearTimeout(longPressTimeout);
+                    longPressTimeout = setTimeout(() => {
                         window.openAdminModal();
-                    }
-                    setTimeout(() => { logoClicks = 0; }, 1500);
+                    }, 3000); // 3 secondes d'appui
                 };
-                logo.addEventListener('click', handleLogo);
-                logo.addEventListener('touchstart', handleLogo);
+                const endPress = () => {
+                    clearTimeout(longPressTimeout);
+                };
+                
+                connStatusEl.addEventListener('mousedown', startPress);
+                connStatusEl.addEventListener('mouseup', endPress);
+                connStatusEl.addEventListener('mouseleave', endPress);
+                
+                connStatusEl.addEventListener('touchstart', startPress);
+                connStatusEl.addEventListener('touchend', endPress);
+                connStatusEl.addEventListener('touchcancel', endPress);
             }
 
             // Forcer le rafraîchissement
@@ -1805,6 +2043,30 @@
                 curRoom = parseInt(localStorage.getItem('active_room_id') || '1', 10);
             } catch (e) {}
             updateActiveRoomUI(curRoom);
+
+            // Détermination dynamique de la compilation CH5Z
+            const ch5zEl = document.getElementById('ch5z-compiledate');
+            if (ch5zEl) {
+                // Fetch de la date locale de compilation générée au build
+                fetch('build_date.json')
+                    .then(res => res.json())
+                    .then(data => {
+                        ch5zEl.textContent = data.compileDate;
+                    })
+                    .catch(() => {
+                        let ch5zDate = "Inconnue";
+                        try {
+                            if (document.lastModified) {
+                                const d = new Date(document.lastModified);
+                                if (!isNaN(d.getTime())) {
+                                    const pad = (num) => String(num).padStart(2, '0');
+                                    ch5zDate = `${pad(d.getDate())}/${pad(d.getMonth() + 1)}/${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+                                }
+                            }
+                        } catch (e) {}
+                        ch5zEl.textContent = ch5zDate;
+                    });
+            }
         }
 
         // 8. Chargement de la configuration unifiée (bypasse CORS local via config.js)
@@ -1816,6 +2078,70 @@
             fetch('config.json')
                 .then(res => res.json())
                 .then(data => {
+                    // Suivi de l'ID de la pièce active (Analog Join 10)
+                    CrComLib.subscribeState('n', '10', (value) => {
+                        if (value >= 1 && value <= 8) {
+                            activeRoomId = value;
+                        }
+                    });
+
+                    // ID du périphérique (String Join 99)
+                    CrComLib.subscribeState('s', '99', (value) => {
+                        if (value) {
+                            console.log("CH5: ID du périphérique reçu (Join 99) : " + value);
+                            let idNum = parseInt(value, 10);
+                            if (!isNaN(idNum)) {
+                                window.crestronIpId = '0x' + idNum.toString(16).padStart(2, '0');
+                                window.updateConnectionStatusUI(true);
+                            }
+                        }
+                    });
+
+                    // Nom du fichier CPZ (String Join 101)
+                    CrComLib.subscribeState('s', '101', (value) => {
+                        if (value) {
+                            const el = document.getElementById('cpz-filename');
+                            if (el) el.textContent = value;
+                        }
+                    });
+
+                    // Date de compilation du CPZ (String Join 102)
+                    CrComLib.subscribeState('s', '102', (value) => {
+                        if (value) {
+                            const el = document.getElementById('cpz-compiledate');
+                            if (el) el.textContent = value;
+                        }
+                    });
+
+                    // IP Table (String Join 103)
+                    CrComLib.subscribeState('s', '103', (value) => {
+                        console.log("CH5 config index.html: Réception IP Table (Join 103):", value);
+                        if (value) {
+                            const el = document.getElementById('processor-iptable');
+                            if (el) {
+                                // Remplacer les retours à la ligne par <br> pour un affichage HTML multi-ligne garanti
+                                el.innerHTML = value.replace(/\r\n/g, '<br>').replace(/\n/g, '<br>').replace(/\r/g, '<br>');
+                            }
+                        }
+                    });
+
+                    // Date de dernière validation (String Join 104)
+                    CrComLib.subscribeState('s', '104', (value) => {
+                        if (value) {
+                            console.log("CH5: Date de validation reçue du CP4 (Join 104) : " + value);
+                            localStorage.setItem('last_validation_date', value);
+                            if (typeof window.setDateFields === 'function') {
+                                window.setDateFields(value);
+                            }
+                        }
+                    });
+                    
+                    // Suivi de l'ID de la pièce active (Analog Join 10)
+                    CrComLib.subscribeState('n', '10', (value) => {
+                        if (value >= 1 && value <= 8) {
+                            activeRoomId = value;
+                        }
+                    });
                     console.log("CH5: Fichier config.json chargé avec succès.");
                     generateDynamicUI(data);
                 })
@@ -1836,6 +2162,57 @@
                 CrComLib.subscribeState('n', '10', (value) => {
                     if (value >= 1 && value <= 8) {
                         activeRoomId = value;
+                    }
+                });
+
+                // ID du périphérique (String Join 99)
+                CrComLib.subscribeState('s', '99', (value) => {
+                    if (value) {
+                        console.log("CH5: ID du périphérique reçu (Join 99) : " + value);
+                        let idNum = parseInt(value, 10);
+                        if (!isNaN(idNum)) {
+                            window.crestronIpId = '0x' + idNum.toString(16).padStart(2, '0');
+                            window.updateConnectionStatusUI(true);
+                        }
+                    }
+                });
+
+                // Nom du fichier CPZ (String Join 101)
+                CrComLib.subscribeState('s', '101', (value) => {
+                    if (value) {
+                        const el = document.getElementById('cpz-filename');
+                        if (el) el.textContent = value;
+                    }
+                });
+
+                // Date de compilation du CPZ (String Join 102)
+                CrComLib.subscribeState('s', '102', (value) => {
+                    if (value) {
+                        const el = document.getElementById('cpz-compiledate');
+                        if (el) el.textContent = value;
+                    }
+                });
+
+                // IP Table (String Join 103)
+                CrComLib.subscribeState('s', '103', (value) => {
+                    console.log("CH5 index.html: Réception IP Table (Join 103):", value);
+                    if (value) {
+                        const el = document.getElementById('processor-iptable');
+                        if (el) {
+                            // Remplacer les retours à la ligne par <br> pour un affichage HTML multi-ligne garanti
+                            el.innerHTML = value.replace(/\r\n/g, '<br>').replace(/\n/g, '<br>').replace(/\r/g, '<br>');
+                        }
+                    }
+                });
+
+                // Date de dernière validation (String Join 104)
+                CrComLib.subscribeState('s', '104', (value) => {
+                    if (value) {
+                        console.log("CH5: Date de validation reçue du CP4 (Join 104) : " + value);
+                        localStorage.setItem('last_validation_date', value);
+                        if (typeof window.setDateFields === 'function') {
+                            window.setDateFields(value);
+                        }
                     }
                 });
 
@@ -2307,6 +2684,35 @@
             console.log("Audio play failed, falling back to synth.", e);
             playSynthSound();
         }
+    };
+
+    window.sendConsoleCommand = function() {
+        if (typeof CrComLib !== 'undefined') {
+            const inputEl = document.getElementById('console-cmd-input');
+            const cmd = inputEl ? inputEl.value.trim() : '';
+            if (cmd) {
+                console.log("CH5: Envoi de la commande console : " + cmd);
+                const el = document.getElementById('processor-iptable');
+                if (el) el.textContent = "> " + cmd + "\nExécution en cours...";
+                CrComLib.publishEvent('s', '103', cmd);
+                if (inputEl) inputEl.value = '';
+            }
+        } else {
+            console.warn("CH5: CrComLib non défini.");
+        }
+    };
+    
+    window.quickConsoleCommand = function(cmd) {
+        const inputEl = document.getElementById('console-cmd-input');
+        if (inputEl) {
+            inputEl.value = cmd;
+            window.sendConsoleCommand();
+        }
+    };
+
+    window.refreshIptable = function() {
+        console.log("CH5: Rafraîchissement initial de la console (ipt)");
+        window.quickConsoleCommand('ipt');
     };
 
     function playSynthSound() {

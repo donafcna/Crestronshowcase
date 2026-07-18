@@ -1,0 +1,16 @@
+export declare const noop: () => undefined;
+export declare const isNil: (value: any, validateWithTrim?: boolean) => boolean;
+export declare const isNotNil: (value: any, validateWithTrim?: boolean) => boolean;
+export declare const getMeasurementUnitFromSizeValue: (sizeValue: string) => string;
+export declare const getMeasurementPxNumber: (sizeValue: string) => number;
+export declare const convertAltUnitsToPx: (sizeValue: string) => number;
+export declare const convertPxUnitToAlt: (px: number, measurementUnit: string) => number;
+export declare const convertVhUnitsToPx: (vh: number) => number;
+export declare const convertVwUnitsToPx: (vw: number) => number;
+export declare const convertPxUnitToVh: (px: number) => number;
+export declare const convertPxUnitToVw: (px: number) => number;
+export declare const extractMeasurementNumber: (sizeValue: string) => number;
+export declare const handlingTextTransformValue: (value: string, textTransform: string) => string;
+export declare const debounce: (func: any, wait: number) => (...args: any[]) => void;
+export declare const toBoolean: (val: any, isEmptyValueEqualToTrue?: boolean) => boolean;
+export declare const checkIfValueIsTruey: (str?: string) => boolean;

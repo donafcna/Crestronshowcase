@@ -41,6 +41,9 @@ namespace VillaFrequenceTvAutomation
         private Dictionary<int, RoomState> _roomsRegistry;
         private Dictionary<uint, int> _activeRoomPerDevice = new Dictionary<uint, int>();
         private bool _globalAlarmArmedState = false;
+        private string _cpzFileName = "villaftv.cpz";
+        private string _cpzCompileDate = "Inconnue";
+        private Dictionary<uint, string> _validationDates = new Dictionary<uint, string>();
 
         public ControlSystem() : base()
         {
@@ -51,6 +54,43 @@ namespace VillaFrequenceTvAutomation
         {
             try
             {
+                // Récupération des informations sur le fichier CPZ compilé
+                try
+                {
+                    var assembly = System.Reflection.Assembly.GetExecutingAssembly();
+                    _cpzFileName = System.IO.Path.GetFileName(assembly.Location);
+                    if (System.IO.File.Exists(assembly.Location))
+                    {
+                        _cpzCompileDate = System.IO.File.GetLastWriteTime(assembly.Location).ToString("dd/MM/yyyy HH:mm:ss");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ErrorLog.Notice("Notice: Échec de lecture des métadonnées de l'assembly CPZ: {0}", ex.Message);
+                }
+
+                // Lecture de la date de dernière validation de manière indépendante par périphérique
+                try
+                {
+                    foreach (uint ipId in new uint[] { 3, 4, 5, 6 })
+                    {
+                        string path = string.Format("/user/last_validation_date_{0:D2}.txt", ipId);
+                        if (System.IO.File.Exists(path))
+                        {
+                            _validationDates[ipId] = System.IO.File.ReadAllText(path).Trim();
+                            CrestronConsole.PrintLine("Validation date for IP-ID {0:X2} loaded from persistent file: {1}", ipId, _validationDates[ipId]);
+                        }
+                        else
+                        {
+                            _validationDates[ipId] = "";
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ErrorLog.Notice("Notice: Échec de lecture des fichiers de validation: {0}", ex.Message);
+                }
+
                 // 1. Initialisation de la base de données des pièces de la Villa
                 BuildVillaRoomsDatabase();
 
@@ -64,12 +104,12 @@ namespace VillaFrequenceTvAutomation
 
                 // 4. Déclaration et instanciation de l'iPad sur l'IP ID 0x05 (Crestron Go / Crestron App)
                 var ipad = new CrestronApp(0x05, this);
-                ipad.ParameterProjectName.Value = "villa-frequencetv";
+                ipad.ParameterProjectName.Value = "villaftv";
                 RegisterUserInterface(ipad);
 
                 // 5. Déclaration et instanciation de l'iPhone 17 sur l'IP ID 0x06 (Crestron Go mobile)
                 var iphone = new CrestronApp(0x06, this);
-                iphone.ParameterProjectName.Value = "villa-frequencetv";
+                iphone.ParameterProjectName.Value = "villaftv";
                 RegisterUserInterface(iphone);
 
                 // Force un premier rafraîchissement des textes de l'écran à l'allumage pour toutes les dalles
@@ -86,11 +126,12 @@ namespace VillaFrequenceTvAutomation
         }
 
         /// <summary>
-        /// Enregistre un écran tactile et l'abonne aux événements d'entrée utilisateur.
+        /// Enregistre un écran tactile et l'abonne aux événements d'entrée utilisateur et de statut de connexion.
         /// </summary>
         private void RegisterUserInterface(BasicTriListWithSmartObject device)
         {
             device.SigChange += new SigEventHandler(OnTouchPanelSignalReceived);
+            device.OnlineStatusChange += new OnlineStatusChangeEventHandler(OnTouchPanelOnlineStatusChange);
             var result = device.Register();
             if (result.ToString() == "Success")
             {
@@ -100,6 +141,20 @@ namespace VillaFrequenceTvAutomation
             else
             {
                 ErrorLog.Error("ERREUR: Impossible d'enregistrer {0} sur l'IP ID {1:X2}. Statut : {2}", device.GetType().Name, device.ID, result.ToString());
+            }
+        }
+
+        private void OnTouchPanelOnlineStatusChange(GenericBase currentDevice, OnlineOfflineEventArgs args)
+        {
+            if (args.DeviceOnLine)
+            {
+                BasicTriList panel = currentDevice as BasicTriList;
+                if (panel != null)
+                {
+                    CrestronConsole.PrintLine("DEVICE ONLINE: Périphérique tactile IP-ID {0:X2} est en ligne.", panel.ID);
+                    int roomId = _activeRoomPerDevice.ContainsKey(panel.ID) ? _activeRoomPerDevice[panel.ID] : 1;
+                    UpdateScreenStateForPanel(panel, roomId);
+                }
             }
         }
 
@@ -186,6 +241,52 @@ namespace VillaFrequenceTvAutomation
 
                 case eSigType.String:
                     CrestronConsole.PrintLine("[JS CONSOLE] IP-ID {0:X2} (Join {1}): {2}", currentDevice.ID, joinNumber, args.Sig.StringValue);
+                    if (joinNumber == 103)
+                    {
+                        string command = args.Sig.StringValue;
+                        if (!string.IsNullOrEmpty(command))
+                        {
+                            string consoleResult = "";
+                            if (CrestronConsole.SendControlSystemCommand(command, ref consoleResult))
+                            {
+                                string formattedResult = FormatConsoleResponse(consoleResult);
+                                CrestronConsole.PrintLine("CONSOLE-CMD: Commande '{0}' exécutée. Réponse envoyée de {1} caractères.", command, formattedResult.Length);
+                                foreach (var panel in _touchPanels)
+                                {
+                                    panel.StringInput[103].StringValue = formattedResult;
+                                }
+                            }
+                            else
+                            {
+                                foreach (var panel in _touchPanels)
+                                {
+                                    panel.StringInput[103].StringValue = "Erreur: Impossible d'exécuter la commande.";
+                                }
+                            }
+                        }
+                    }
+                    else if (joinNumber == 104)
+                    {
+                        string newDate = args.Sig.StringValue;
+                        uint panelId = currentDevice.ID;
+                        bool hasChanged = !_validationDates.ContainsKey(panelId) || _validationDates[panelId] != newDate;
+                        if (hasChanged)
+                        {
+                            _validationDates[panelId] = newDate;
+                            try
+                            {
+                                string path = string.Format("/user/last_validation_date_{0:D2}.txt", panelId);
+                                System.IO.File.WriteAllText(path, newDate);
+                                CrestronConsole.PrintLine("Validation date for IP-ID {0:X2} saved to persistent file: {1}", panelId, newDate);
+                            }
+                            catch (Exception ex)
+                            {
+                                ErrorLog.Notice("Notice: Échec de sauvegarde de la date de validation pour IP-ID {0:X2}: {1}", panelId, ex.Message);
+                            }
+                            // Feedback only to the current device
+                            currentDevice.StringInput[104].StringValue = newDate;
+                        }
+                    }
                     break;
             }
         }
@@ -291,6 +392,27 @@ namespace VillaFrequenceTvAutomation
                 case 69:
                     CrestronConsole.PrintLine("STORE CONTROL - Event on digital join {0} received.", joinNumber);
                     break;
+
+                case 103:
+                    string iptResult = "";
+                    if (CrestronConsole.SendControlSystemCommand("ipt", ref iptResult))
+                    {
+                        string formattedIpt = FormatIpTable(iptResult);
+                        CrestronConsole.PrintLine("IP-TABLE-CMD: Commande 'ipt' exécutée. Envoi de {0} caractères aux {1} panels.", 
+                            formattedIpt.Length, _touchPanels.Count);
+                        foreach (var panel in _touchPanels)
+                        {
+                            panel.StringInput[103].StringValue = formattedIpt;
+                        }
+                    }
+                    else
+                    {
+                        foreach (var panel in _touchPanels)
+                        {
+                            panel.StringInput[103].StringValue = "Erreur: Impossible d'exécuter la commande 'ipt' sur le CP4.";
+                        }
+                    }
+                    break;
             }
         }
 
@@ -356,6 +478,14 @@ namespace VillaFrequenceTvAutomation
             // Envoi des informations textuelles et numériques à la dalle spécifique
             panel.UShortInput[10].UShortValue = (ushort)roomId;
             panel.StringInput[10].StringValue = room.RoomName.ToUpper();
+            
+            // Envoi de l'IP ID sur le String Join 99
+            panel.StringInput[99].StringValue = panel.ID.ToString("D2");
+
+            // Envoi des informations sur le fichier CPZ (Joins 101 et 102)
+            panel.StringInput[101].StringValue = _cpzFileName;
+            panel.StringInput[102].StringValue = _cpzCompileDate;
+            panel.StringInput[104].StringValue = _validationDates.ContainsKey(panel.ID) ? _validationDates[panel.ID] : "";
 
             // Native Room Selection Feedback (Digital 11-18)
             for (uint i = 11; i <= 18; i++)
@@ -402,6 +532,96 @@ namespace VillaFrequenceTvAutomation
 
             CrestronConsole.PrintLine("SONY-IP-DRIVER: [Zone: {0}] -> Commutation IP vers [{1}].",
                 _roomsRegistry[roomId].RoomName, labelSource);
+        }
+
+        private string FormatIpTable(string rawIpt)
+        {
+            try
+            {
+                var lines = rawIpt.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+                var formattedLines = new List<string>();
+                
+                // Add header lines
+                formattedLines.Add("IP Table for program 1");
+                formattedLines.Add("CIP_ID  Type      Status      DevID  Port   IP Address/SiteName");
+                
+                foreach (var line in lines)
+                {
+                    string trimmed = line.Trim();
+                    if (string.IsNullOrEmpty(trimmed)) continue;
+                    if (trimmed.StartsWith("IP Table") || trimmed.StartsWith("CIP_ID") || trimmed.StartsWith("Total CIP")) continue;
+                    
+                    var parts = trimmed.Split(new char[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
+                    if (parts.Length >= 5)
+                    {
+                        string id = parts[0];
+                        string type = parts[1];
+                        string status = parts[2];
+                        string port = "";
+                        string ip = "";
+                        string devId = "";
+                        
+                        // Check if parts[3] is port or DevID
+                        if (parts[3].StartsWith("4179") || parts[3].Length > 2)
+                        {
+                            port = parts[3];
+                            ip = parts[4];
+                        }
+                        else
+                        {
+                            devId = parts[3];
+                            port = parts[4];
+                            ip = parts[5];
+                        }
+                        
+                        // Format clean IP (e.g. 127.000.000.001 => 127.0.0.1 to save space)
+                        if (ip.Contains("000") || ip.Contains(".00"))
+                        {
+                            var octets = ip.Split('.');
+                            if (octets.Length == 4)
+                            {
+                                ip = string.Format("{0}.{1}.{2}.{3}", 
+                                    int.Parse(octets[0]), 
+                                    int.Parse(octets[1]), 
+                                    int.Parse(octets[2]), 
+                                    int.Parse(octets[3]));
+                            }
+                        }
+                        
+                        // Format the line with fixed widths matching the image
+                        string formattedLine = string.Format("{0,6}  {1,-10}{2,-12}{3,-7}{4,-7}{5}", 
+                            id, type, status, devId, port, ip);
+                        formattedLines.Add(formattedLine);
+                    }
+                }
+                
+                string result = string.Join("\n", formattedLines.ToArray());
+                if (result.Length > 254)
+                {
+                    result = result.Substring(0, 254);
+                }
+                return result;
+            }
+            catch (Exception ex)
+            {
+                return "Erreur formatage table IP: " + ex.Message;
+            }
+        }
+
+        private string FormatConsoleResponse(string rawResponse)
+        {
+            if (string.IsNullOrEmpty(rawResponse))
+                return "Aucune réponse du processeur.";
+
+            // Normalisation des fins de ligne pour forcer des sauts de ligne lisibles (\r -> \r\n)
+            string normalized = rawResponse.Replace("\r\n", "\n").Replace("\r", "\n").Replace("\n", "\r\n");
+
+            // Limite à 8000 caractères pour CH5 String Join
+            if (normalized.Length > 8000)
+            {
+                return normalized.Substring(0, 8000) + "\r\n[AFFICHAGE TRONQUÉ À 8000 CARACTÈRES]";
+            }
+            return normalized;
         }
     }
 }
