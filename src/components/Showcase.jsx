@@ -10,6 +10,12 @@ import { VillaGemini } from "./simulators/VillaGemini";
 import { HotelGeneva } from "./simulators/HotelGeneva";
 import { CrestronHome } from "./simulators/CrestronHome";
 import { YachtMonaco } from "./simulators/YachtMonaco";
+import { ChaletZermatt } from "./simulators/ChaletZermatt";
+import { BoardroomFutureAV } from "./simulators/BoardroomFutureAV";
+import { ClubEtoile } from "./simulators/ClubEtoile";
+import { BoutiqueHermes } from "./simulators/BoutiqueHermes";
+import { SushiBarKyoto } from "./simulators/SushiBarKyoto";
+import { AuditoriumRichmond } from "./simulators/AuditoriumRichmond";
 
 export const Showcase = ({ initialSectorId, initialProjectId }) => {
   const { t } = useTranslation();
@@ -240,13 +246,13 @@ export const Showcase = ({ initialSectorId, initialProjectId }) => {
           </section>
         )}
 
-        {/* Fullscreen Overlay Header Row (only Frequence TV logo and Exit button in top right) */}
+        {/* Fullscreen Overlay Header Row (only Frequence TV logo in top right) */}
         {isFullscreen && (
           <div className="fullscreen-overlay-header">
             {/* Top Left is now empty */}
             <div className="fullscreen-overlay-header-left" />
 
-            {/* Top Right contains Frequence TV logo pill + Close button */}
+            {/* Top Right contains Frequence TV logo pill */}
             <div className="fullscreen-overlay-header-right">
               <div className="fullscreen-frequencetv-logo-card">
                 <img
@@ -255,13 +261,6 @@ export const Showcase = ({ initialSectorId, initialProjectId }) => {
                   className="frequencetv-logo-img-fs"
                 />
               </div>
-              <button
-                onClick={() => setIsFullscreen(false)}
-                className="btn-workspace-maximize-fs"
-                title="Exit Fullscreen"
-              >
-                {renderIcon("Minimize2", 18)}
-              </button>
             </div>
           </div>
         )}
@@ -270,21 +269,14 @@ export const Showcase = ({ initialSectorId, initialProjectId }) => {
         <div className="workspace-main-content-row">
           {/* Device Viewport Frame */}
           <main className="project-workspace">
-            <div className="device-display-workspace">
-              {!isFullscreen && (
-                <button
-                  onClick={() => setIsFullscreen(true)}
-                  className="btn-workspace-maximize"
-                  title="Fullscreen Preview"
-                >
-                  {renderIcon("Maximize2", 16)}
-                </button>
-              )}
-
+            <div className={`device-display-workspace ${isFullscreen ? "fullscreen-mode" : ""}`}>
               <DeviceViewport
                 deviceType={viewportDevice}
                 ledStatus={ledStatus}
                 title={activeProject.name}
+                isFullscreen={isFullscreen}
+                onExitFullscreen={() => setIsFullscreen(false)}
+                onEnterFullscreen={() => setIsFullscreen(true)}
               >
                 {activeProject.isInteractive ? (
                   activeProject.id === "hotel-geneva" ? (
@@ -293,6 +285,18 @@ export const Showcase = ({ initialSectorId, initialProjectId }) => {
                     <CrestronHome deviceType={viewportDevice} />
                   ) : activeProject.id === "yacht-monaco" ? (
                     <YachtMonaco deviceType={viewportDevice} />
+                  ) : activeProject.id === "chalet-zermatt" ? (
+                    <ChaletZermatt deviceType={viewportDevice} />
+                  ) : activeProject.id === "boardroom-futureav" ? (
+                    <BoardroomFutureAV deviceType={viewportDevice} />
+                  ) : activeProject.id === "club-etoile" ? (
+                    <ClubEtoile deviceType={viewportDevice} />
+                  ) : activeProject.id === "boutique-hermes" ? (
+                    <BoutiqueHermes deviceType={viewportDevice} />
+                  ) : activeProject.id === "sushi-bar-kyoto" ? (
+                    <SushiBarKyoto deviceType={viewportDevice} />
+                  ) : activeProject.id === "auditorium-richmond" ? (
+                    <AuditoriumRichmond deviceType={viewportDevice} />
                   ) : (
                     <VillaGemini deviceType={viewportDevice} />
                   )
