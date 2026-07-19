@@ -1,13 +1,11 @@
 # Premier commit
 
-Perte de toutes les données la veille et première reconstitution des fichiers. Premiers tests sur Ecrans 21.5'' pouce: dimensionnement des périphériques OK pour tous les projets et secteurs d'activités. Refaire les mêmes tests sur écran 14.5''
+Perte de toutes les données la veille et première reconstitution des fichiers. 
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Premiers tests sur Ecrans 21.5': dimensionnement des périphériques OK pour tous les projets et secteurs d'activités. 
 
-## React Compiler
+Refaire les mêmes tests en mode plein écran
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Refaire les mêmes tests sur écran 14.5'
 
-## Expanding the Oxlint configuration
 
