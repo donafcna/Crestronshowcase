@@ -64,4 +64,6 @@ C:\Users\donat\Desktop\Villaftv\Backend\Backend\bin\Debug\SimplSharpSQLHelperInt
 C:\Users\donat\Desktop\Villaftv\Backend\Backend\bin\Debug\SimplSharpTimerEventInterface.xml
 C:\Users\donat\Desktop\Villaftv\Backend\Backend\obj\Debug\Villaftv.dll
 C:\Users\donat\Desktop\Villaftv\Backend\Backend\obj\Debug\Villaftv.pdb
-C:\Users\donat\Desktop\Villaftv\Backend\Backend\obj\Debug\Villaftv.csprojResolveAssemblyReference.cache
+C:\Users\donat\Desktop\Villaftv\Backend\Backend\obj\Debug\Villaftv.csproj.AssemblyReference.cache
+C:\Users\donat\Desktop\Villaftv\Backend\Backend\obj\Debug\Villaftv.csproj.CoreCompileInputs.cache
+C:\Users\donat\Desktop\Villaftv\Backend\Backend\obj\Debug\Villaftv.csproj.Up2Date

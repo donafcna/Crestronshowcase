@@ -19,6 +19,9 @@ namespace VillaFrequenceTvAutomation
         public ushort ActiveVideoSource { get; set; }
         public ushort AudioVolume { get; set; }
         public bool IsAudioMuted { get; set; }
+        public ushort[] CircuitLevels { get; set; }
+        public ushort ActiveStoreScene { get; set; }
+        public ushort[] PartitionStates { get; set; }
 
         public RoomState(int id, string name)
         {
@@ -31,6 +34,9 @@ namespace VillaFrequenceTvAutomation
             ActiveVideoSource = 0;
             AudioVolume = 25000;
             IsAudioMuted = false;
+            CircuitLevels = new ushort[10] { 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768 };
+            ActiveStoreScene = 204;
+            PartitionStates = new ushort[4] { 0, 0, 0, 0 };
         }
     }
 
@@ -41,6 +47,7 @@ namespace VillaFrequenceTvAutomation
         private Dictionary<int, RoomState> _roomsRegistry;
         private Dictionary<uint, int> _activeRoomPerDevice = new Dictionary<uint, int>();
         private bool _globalAlarmArmedState = false;
+        private bool _vacationModeActive = false;
         private string _cpzFileName = "villaftv.cpz";
         private string _cpzCompileDate = "Inconnue";
         private Dictionary<uint, string> _validationDates = new Dictionary<uint, string>();
@@ -287,6 +294,10 @@ namespace VillaFrequenceTvAutomation
                             currentDevice.StringInput[104].StringValue = newDate;
                         }
                     }
+                    else if (joinNumber == 420)
+                    {
+                        SavePresetConfig(args.Sig.StringValue);
+                    }
                     break;
             }
         }
@@ -308,8 +319,8 @@ namespace VillaFrequenceTvAutomation
                 return;
             }
 
-            // Sources Selection (Digital 150 to 154)
-            if (joinNumber >= 150 && joinNumber <= 154)
+            // Sources Selection (Digital 150 to 155)
+            if (joinNumber >= 150 && joinNumber <= 155)
             {
                 ushort sourceId = (ushort)(joinNumber - 150);
                 selectedRoom.ActiveVideoSource = sourceId;
@@ -320,7 +331,7 @@ namespace VillaFrequenceTvAutomation
                 {
                     if (_activeRoomPerDevice.ContainsKey(panel.ID) && _activeRoomPerDevice[panel.ID] == activeRoomId)
                     {
-                        for (uint i = 150; i <= 154; i++)
+                        for (uint i = 150; i <= 155; i++)
                         {
                             panel.BooleanInput[i].BoolValue = (joinNumber == i);
                         }
@@ -391,6 +402,155 @@ namespace VillaFrequenceTvAutomation
                 case 68:
                 case 69:
                     CrestronConsole.PrintLine("STORE CONTROL - Event on digital join {0} received.", joinNumber);
+                    break;
+
+                // Scénarios de Stores (joins 201 à 204)
+                case 201:
+                case 202:
+                case 203:
+                case 204:
+                    selectedRoom.ActiveStoreScene = joinNumber;
+                    CrestronConsole.PrintLine("STORES: Scénario {0} activé dans la pièce {1}", joinNumber, activeRoomId);
+                    BroadcastFeedbackToRoom(activeRoomId);
+                    break;
+
+                // Partitions d'alarme (joins 301 à 312)
+                case 301: case 302: case 303:
+                case 304: case 305: case 306:
+                case 307: case 308: case 309:
+                case 310: case 311: case 312:
+                    uint partIdx = (uint)((joinNumber - 301) / 3);
+                    uint actionType = (uint)((joinNumber - 301) % 3);
+                    selectedRoom.PartitionStates[partIdx] = (ushort)(actionType == 0 ? 1 : (actionType == 1 ? 2 : 0));
+                    CrestronConsole.PrintLine("SÉCURITÉ: Partition {0} de la pièce {1} passée à l'état {2}", partIdx + 1, activeRoomId, selectedRoom.PartitionStates[partIdx]);
+                    BroadcastFeedbackToRoom(activeRoomId);
+                    break;
+
+                // Commandes globales de la maison (joins 401 à 411)
+                case 401:
+                    CrestronConsole.PrintLine("GLOBAL: Éclairage Global - Tout Allumer demandé.");
+                    if (!ApplyPreset("light_all"))
+                    {
+                        foreach (var rm in _roomsRegistry.Values)
+                        {
+                            rm.LightLevel1 = 65535;
+                            for (int i = 0; i < 6; i++) rm.CircuitLevels[i] = 65535;
+                        }
+                        BroadcastFeedbackToAll();
+                    }
+                    break;
+
+                case 402:
+                    CrestronConsole.PrintLine("GLOBAL: Éclairage Global - Tout Éteindre demandé.");
+                    if (!ApplyPreset("light_off"))
+                    {
+                        foreach (var rm in _roomsRegistry.Values)
+                        {
+                            rm.LightLevel1 = 0;
+                            for (int i = 0; i < 6; i++) rm.CircuitLevels[i] = 0;
+                        }
+                        BroadcastFeedbackToAll();
+                    }
+                    break;
+
+                case 403:
+                    CrestronConsole.PrintLine("GLOBAL: Éclairage Global - Mode Éco demandé.");
+                    if (!ApplyPreset("light_eco"))
+                    {
+                        foreach (var rm in _roomsRegistry.Values)
+                        {
+                            rm.LightLevel1 = 32768;
+                            for (int i = 0; i < 10; i++) rm.CircuitLevels[i] = 32768;
+                        }
+                        BroadcastFeedbackToAll();
+                    }
+                    break;
+
+                case 404:
+                    CrestronConsole.PrintLine("GLOBAL: Stores Globaux - Tout Ouvrir demandé.");
+                    if (!ApplyPreset("shade_open"))
+                    {
+                        foreach (var rm in _touchPanels)
+                        {
+                            for (uint i = 1; i <= 6; i++)
+                            {
+                                rm.BooleanInput[80 + i * 3 - 2].BoolValue = true;
+                            }
+                        }
+                    }
+                    break;
+
+                case 405:
+                    CrestronConsole.PrintLine("GLOBAL: Stores Globaux - Tout Fermer demandé.");
+                    if (!ApplyPreset("shade_close"))
+                    {
+                        foreach (var rm in _touchPanels)
+                        {
+                            for (uint i = 1; i <= 6; i++)
+                            {
+                                rm.BooleanInput[80 + i * 3].BoolValue = true;
+                            }
+                        }
+                    }
+                    break;
+
+                case 406:
+                    CrestronConsole.PrintLine("GLOBAL: Stores Globaux - Position Intermédiaire demandé.");
+                    break;
+
+                case 407:
+                    CrestronConsole.PrintLine("GLOBAL: Climatisation - Mode Confort demandé.");
+                    if (!ApplyPreset("hvac_confort"))
+                    {
+                        foreach (var rm in _roomsRegistry.Values) rm.TargetTemperature = 210;
+                        BroadcastFeedbackToAll();
+                    }
+                    break;
+
+                case 408:
+                    CrestronConsole.PrintLine("GLOBAL: Climatisation - Mode Nuit demandé.");
+                    if (!ApplyPreset("hvac_nuit"))
+                    {
+                        foreach (var rm in _roomsRegistry.Values) rm.TargetTemperature = 180;
+                        BroadcastFeedbackToAll();
+                    }
+                    break;
+
+                case 409:
+                    CrestronConsole.PrintLine("GLOBAL: Climatisation - Mode Hors Gel demandé.");
+                    if (!ApplyPreset("hvac_horsgel"))
+                    {
+                        foreach (var rm in _roomsRegistry.Values) rm.TargetTemperature = 120;
+                        BroadcastFeedbackToAll();
+                    }
+                    break;
+
+                case 410:
+                    CrestronConsole.PrintLine("GLOBAL: Mode Vacances Activé.");
+                    _vacationModeActive = true;
+                    if (!ApplyPreset("vacation"))
+                    {
+                        foreach (var rm in _roomsRegistry.Values) rm.TargetTemperature = 120;
+                        foreach (var rm in _roomsRegistry.Values)
+                        {
+                            rm.LightLevel1 = 0;
+                            for (int i = 0; i < 6; i++) rm.CircuitLevels[i] = 0;
+                        }
+                        foreach (var rm in _touchPanels)
+                        {
+                            for (uint i = 1; i <= 6; i++)
+                            {
+                                rm.BooleanInput[80 + i * 3].BoolValue = true;
+                            }
+                        }
+                    }
+                    BroadcastFeedbackToAll();
+                    break;
+
+                case 411:
+                    CrestronConsole.PrintLine("GLOBAL: Mode Vacances Désactivé.");
+                    _vacationModeActive = false;
+                    BroadcastFeedbackToAll();
                     break;
 
                 case 103:
@@ -466,6 +626,11 @@ namespace VillaFrequenceTvAutomation
                 case 74:
                 case 75:
                 case 76:
+                case 77:
+                case 78:
+                case 79:
+                case 80:
+                    _roomsRegistry[activeRoomId].CircuitLevels[joinNumber - 71] = rawValue;
                     SendFeedbackUShortToRoom(activeRoomId, joinNumber, rawValue);
                     break;
             }
@@ -493,8 +658,8 @@ namespace VillaFrequenceTvAutomation
                 panel.BooleanInput[i].BoolValue = (roomId == (i - 10));
             }
 
-            // Native Source Selection Feedback (Digital 150-154)
-            for (uint i = 150; i <= 154; i++)
+            // Native Source Selection Feedback (Digital 150-155)
+            for (uint i = 150; i <= 155; i++)
             {
                 panel.BooleanInput[i].BoolValue = (room.ActiveVideoSource == (i - 150));
             }
@@ -506,6 +671,32 @@ namespace VillaFrequenceTvAutomation
 
             panel.UShortInput[21].UShortValue = room.LightLevel1;
             panel.UShortInput[31].UShortValue = room.TargetTemperature;
+
+            // Envoyer le niveau des 10 circuits d'éclairage
+            for (uint i = 0; i < 10; i++)
+            {
+                panel.UShortInput[71 + i].UShortValue = room.CircuitLevels[i];
+            }
+
+            // Envoyer le feedback des scénarios de stores (201 à 204)
+            for (uint i = 201; i <= 204; i++)
+            {
+                panel.BooleanInput[i].BoolValue = (room.ActiveStoreScene == i);
+            }
+
+            // Envoyer le feedback des partitions d'alarme (301 à 312)
+            for (uint partIdx = 0; partIdx < 4; partIdx++)
+            {
+                ushort state = room.PartitionStates[partIdx];
+                uint baseJoin = 301 + partIdx * 3;
+                panel.BooleanInput[baseJoin].BoolValue = (state == 1);
+                panel.BooleanInput[baseJoin + 1].BoolValue = (state == 2);
+                panel.BooleanInput[baseJoin + 2].BoolValue = (state == 0);
+            }
+
+            // Envoyer le feedback du mode vacances global (410 / 411)
+            panel.BooleanInput[410].BoolValue = _vacationModeActive;
+            panel.BooleanInput[411].BoolValue = !_vacationModeActive;
 
             double convertedTemp = (double)room.CurrentTemperature / 10.0;
             panel.StringInput[32].StringValue = convertedTemp.ToString("F1");
@@ -622,6 +813,190 @@ namespace VillaFrequenceTvAutomation
                 return normalized.Substring(0, 8000) + "\r\n[AFFICHAGE TRONQUÉ À 8000 CARACTÈRES]";
             }
             return normalized;
+        }
+
+        private void SavePresetConfig(string jsonPayload)
+        {
+            try
+            {
+                CrestronConsole.PrintLine("PRESETS: Received configuration payload on Join 420: {0}", jsonPayload);
+                
+                // Parse the JSON payload to get the preset name
+                var payload = Newtonsoft.Json.Linq.JObject.Parse(jsonPayload);
+                string presetName = (string)payload["preset"];
+                
+                if (string.IsNullOrEmpty(presetName))
+                {
+                    CrestronConsole.PrintLine("PRESETS ERROR: Preset name is empty in payload.");
+                    return;
+                }
+                
+                // Save JSON payload to persistent file in /user/ directory
+                string path = string.Format("/user/preset_cfg_{0}.json", presetName);
+                System.IO.File.WriteAllText(path, jsonPayload);
+                CrestronConsole.PrintLine("PRESETS: Saved preset configuration to persistent file: {0}", path);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Error("PRESETS ERROR: Fail to save preset configuration: {0}", ex.Message);
+            }
+        }
+
+        private bool ApplyPreset(string presetName)
+        {
+            try
+            {
+                string path = string.Format("/user/preset_cfg_{0}.json", presetName);
+                if (!System.IO.File.Exists(path))
+                {
+                    CrestronConsole.PrintLine("PRESETS: Configuration file '{0}' not found. Falling back to default preset logic.", path);
+                    return false;
+                }
+                
+                string jsonContent = System.IO.File.ReadAllText(path);
+                var payload = Newtonsoft.Json.Linq.JObject.Parse(jsonContent);
+                var data = payload["data"] as Newtonsoft.Json.Linq.JObject;
+                if (data == null)
+                {
+                    CrestronConsole.PrintLine("PRESETS: Configuration data is null in '{0}'. Falling back to default preset logic.", path);
+                    return false;
+                }
+                
+                CrestronConsole.PrintLine("PRESETS: Applying customized preset configuration from '{0}'.", path);
+                
+                if (presetName.StartsWith("light_"))
+                {
+                    // Format: "data": { "1": { "71": 65535, "72": 32768 }, ... }
+                    foreach (var roomProp in data.Properties())
+                    {
+                        int roomId;
+                        if (int.TryParse(roomProp.Name, out roomId) && _roomsRegistry.ContainsKey(roomId))
+                        {
+                            var roomState = _roomsRegistry[roomId];
+                            var circuitsObj = roomProp.Value as Newtonsoft.Json.Linq.JObject;
+                            if (circuitsObj != null)
+                            {
+                                foreach (var circuitProp in circuitsObj.Properties())
+                                {
+                                    int circuitId;
+                                    if (int.TryParse(circuitProp.Name, out circuitId) && circuitId >= 71 && circuitId <= 80)
+                                    {
+                                        ushort val = (ushort)circuitProp.Value;
+                                        roomState.CircuitLevels[circuitId - 71] = val;
+                                        
+                                        // Update master LightLevel1 if it's the main circuit (Join 71)
+                                        if (circuitId == 71)
+                                            roomState.LightLevel1 = val;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    BroadcastFeedbackToAll();
+                    return true;
+                }
+                else if (presetName.StartsWith("shade_"))
+                {
+                    // Format: "data": { "1": [1, 2, 3], ... }
+                    bool isOpening = presetName == "shade_open";
+                    foreach (var roomProp in data.Properties())
+                    {
+                        int roomId;
+                        if (int.TryParse(roomProp.Name, out roomId) && _roomsRegistry.ContainsKey(roomId))
+                        {
+                            var motorsArr = roomProp.Value as Newtonsoft.Json.Linq.JArray;
+                            if (motorsArr != null)
+                            {
+                                foreach (var item in motorsArr)
+                                {
+                                    int motorId = (int)item;
+                                    if (motorId >= 1 && motorId <= 6)
+                                    {
+                                        uint actionJoin = (uint)(80 + motorId * 3 - (isOpening ? 2 : 0));
+                                        foreach (var panel in _touchPanels)
+                                        {
+                                            panel.BooleanInput[actionJoin].BoolValue = true;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    return true;
+                }
+                else if (presetName.StartsWith("hvac_"))
+                {
+                    // Format: "data": { "1": { "temp": 210 }, ... }
+                    foreach (var roomProp in data.Properties())
+                    {
+                        int roomId;
+                        if (int.TryParse(roomProp.Name, out roomId) && _roomsRegistry.ContainsKey(roomId))
+                        {
+                            var roomState = _roomsRegistry[roomId];
+                            var tempObj = roomProp.Value as Newtonsoft.Json.Linq.JObject;
+                            if (tempObj != null && tempObj["temp"] != null)
+                            {
+                                ushort targetTemp = (ushort)tempObj["temp"];
+                                roomState.TargetTemperature = targetTemp;
+                            }
+                        }
+                    }
+                    BroadcastFeedbackToAll();
+                    return true;
+                }
+                else if (presetName == "vacation")
+                {
+                    // Format: "data": { "light": true, "shade": false, "hvac": true }
+                    bool lightOpt = data["light"] != null ? (bool)data["light"] : true;
+                    bool shadeOpt = data["shade"] != null ? (bool)data["shade"] : true;
+                    bool hvacOpt = data["hvac"] != null ? (bool)data["hvac"] : true;
+                    
+                    if (lightOpt)
+                    {
+                        if (!ApplyPreset("light_off"))
+                        {
+                            // Fallback to default
+                            foreach (var rm in _roomsRegistry.Values)
+                            {
+                                rm.LightLevel1 = 0;
+                                for (int i = 0; i < 6; i++) rm.CircuitLevels[i] = 0;
+                            }
+                        }
+                    }
+                    
+                    if (shadeOpt)
+                    {
+                        if (!ApplyPreset("shade_close"))
+                        {
+                            // Fallback to default
+                            foreach (var rm in _touchPanels)
+                            {
+                                for (uint i = 1; i <= 6; i++)
+                                {
+                                    rm.BooleanInput[80 + i * 3].BoolValue = true;
+                                }
+                            }
+                        }
+                    }
+                    
+                    if (hvacOpt)
+                    {
+                        if (!ApplyPreset("hvac_horsgel"))
+                        {
+                            // Fallback to default
+                            foreach (var rm in _roomsRegistry.Values) rm.TargetTemperature = 120;
+                        }
+                    }
+                    
+                    BroadcastFeedbackToAll();
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Error("PRESETS ERROR: Fail to apply customized preset '{0}': {1}", presetName, ex.Message);
+            }
+            return false;
         }
     }
 }
