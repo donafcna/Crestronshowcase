@@ -12,7 +12,7 @@ Container horizontal haut de la page
 - [x] Popup Alarme, Caméras et Controle Global: feedback ,selection des différentes Presets
 - [x] Popup Admin
 - [x] Tailles et positions de tous les textes
--
+
 
 Container éclairages
 - [x] Affichage de la dernière Scène activée
@@ -41,10 +41,14 @@ Tests sur les différents périphériques
 - [ ] iPhone
 
 **Liste beug:** 
-Bouton Musique: enlever le cadre blanc, feedback non synchronisé entre les périphériques.
+Bouton Musique: enlever le cadre blanc, feedback non synchronisé entre les périphériques
+
 Bouton Musique: Animation son activé pas présent 
 Slider volume Son se reset. N'enlevè pas l'affichage de l'animation son "activé" sur le bouton source sélectionné
+
 Widget meteo / rss n'enclenche pas l'affichage de la page web
+
 Amilorer popup pilotage des sources
+
 Quand on sélectionne une permiere piece et que l'on change les sources audio/Video, et que l'on va sur un autre périphérique, selectionne cette meme piece, il affichera le feedback source sélectioné de cette piece + celui de l'autre pièce qu'affichait l'autre interface avant de sélectionner ladite piece.
 
