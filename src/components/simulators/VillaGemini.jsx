@@ -131,7 +131,7 @@ export const VillaGemini = ({ deviceType }) => {
   const roomNames = {
     salon: "Salon Lounge",
     chambre: "Suite Parentale",
-    cuisine: "Cuisine Américaine",
+    cuisine: "Cuisine",
     spa: "Spa & Wellness",
   };
 
@@ -154,7 +154,7 @@ export const VillaGemini = ({ deviceType }) => {
       <header className="gemini-ui-header">
         <div className="header-brand">
           {renderIcon("Zap", 22, "brand-symbol")}
-          <span className="brand-txt">VILLA GEMINI</span>
+          <span className="brand-txt">VILLA NYON</span>
         </div>
         <div className="header-status">
           <span className="room-label">{roomNames[activeRoom]}</span>

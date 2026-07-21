@@ -1,687 +1,798 @@
 import React, { useState, useEffect } from "react";
-import * as Icons from "lucide-react";
 
 export const ChaletZermatt = ({ deviceType }) => {
-  const [activeTab, setActiveTab] = useState("lights"); // lights, climate, audio_video, cctv
-  const [lightsColor, setLightsColor] = useState("#ff9f1c"); // Current RGB theme color
-  const [ambientScene, setAmbientScene] = useState("cozy"); // cozy, fireplace, dining, off
-  const [dimmers, setDimmers] = useState({
-    lustre: 75,
-    poutres: 40,
-    cheminee: 50,
+  // Device render mode (xpanel, ts1070, mobile) synced with deviceType prop
+  const [deviceMode, setDeviceMode] = useState(() => {
+    if (deviceType === "phone") return "mobile";
+    if (deviceType === "tablet") return "ts1070";
+    return "xpanel";
   });
 
-  const [setpointTemp, setSetpointTemp] = useState(22.5);
-  const [currentTemp, setCurrentTemp] = useState(22.1);
-  const [floorHeatingActive, setFloorHeatingActive] = useState(true);
-  const [fireplaceFanSpeed, setFireplaceFanSpeed] = useState(60); // 0 to 100
+  // Keep deviceMode updated if parent deviceType prop changes
+  useEffect(() => {
+    if (deviceType === "phone") setDeviceMode("mobile");
+    else if (deviceType === "tablet") setDeviceMode("ts1070");
+    else setDeviceMode("xpanel");
+  }, [deviceType]);
 
-  const [tvPower, setTvPower] = useState(false);
-  const [avSource, setAvSource] = useState("appletv"); // appletv, sat, bluray, audio_only
-  const [audioVolume, setAudioVolume] = useState(45);
-  const [isAudioPlaying, setIsAudioPlaying] = useState(false);
-  const [trackProgress, setTrackProgress] = useState(28);
+  // View Navigation
+  const [activeView, setActiveView] = useState("dashboard");
 
-  const [selectedCamera, setSelectedCamera] = useState("pistes"); // pistes, entrance, jacuzzi
-  const [cameraZoom, setCameraZoom] = useState(1); // 1x, 2x, 4x
-  const [isRecording, setIsRecording] = useState(true);
-
-  const [timeString, setTimeString] = useState("");
-
+  // Clock
+  const [clockTime, setClockTime] = useState("");
   useEffect(() => {
     const updateTime = () => {
-      const date = new Date();
-      setTimeString(
-        date.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" })
-      );
+      const now = new Date();
+      setClockTime(now.toLocaleTimeString("fr-FR"));
     };
     updateTime();
     const interval = setInterval(updateTime, 1000);
     return () => clearInterval(interval);
   }, []);
 
-  // Track progress bar animation simulation
-  useEffect(() => {
-    if (!isAudioPlaying) return;
-    const interval = setInterval(() => {
-      setTrackProgress((p) => (p >= 100 ? 0 : p + 1));
-    }, 1500);
-    return () => clearInterval(interval);
-  }, [isAudioPlaying]);
+  // Crestron Joins State
+  const [activeScene, setActiveScene] = useState("welcome");
+  const [activeLightsCount, setActiveLightsCount] = useState(8);
+  const [alarmArmed, setAlarmArmed] = useState(false);
+  const [gateMessage, setGateMessage] = useState(null);
 
-  const renderIcon = (iconName, size = 16, className = "") => {
-    const IconComp = Icons[iconName] || Icons.HelpCircle;
-    return <IconComp size={size} className={className} />;
+  // Lighting
+  const [lightSalon, setLightSalon] = useState(true);
+  const [dimSalon, setDimSalon] = useState(75);
+  const [lightSuite, setLightSuite] = useState(true);
+  const [dimSuite, setDimSuite] = useState(50);
+  const [lightTerrasse, setLightTerrasse] = useState(true);
+  const [dimTerrasse, setDimTerrasse] = useState(40);
+  const [rgbColor, setRgbColor] = useState("#00e5ff");
+
+  // HVAC
+  const [tempMaster, setTempMaster] = useState(22);
+  const [tempSpa, setTempSpa] = useState(24);
+
+  // Audio / Video
+  const [avSource, setAvSource] = useState("Apple TV 4K");
+  const [avVolume, setAvVolume] = useState(65);
+  const [isMuted, setIsMuted] = useState(false);
+
+  // Spa
+  const [spaJets, setSpaJets] = useState(true);
+  const [saunaActive, setSaunaActive] = useState(false);
+
+  // Crestron Join Monitor Logs
+  const [joinLogs, setJoinLogs] = useState([
+    { time: new Date().toLocaleTimeString("fr-FR"), type: "system", join: 0, val: "Initialisation du Moteur Crestron Join - IP: 192.168.1.50 (CP4)" },
+    { time: new Date().toLocaleTimeString("fr-FR"), type: "digital", join: 1, val: "HIGH (1) - System Power" },
+    { time: new Date().toLocaleTimeString("fr-FR"), type: "digital", join: 10, val: "HIGH (1) - Scene: Welcome Active" },
+    { time: new Date().toLocaleTimeString("fr-FR"), type: "analog", join: 1, val: "75 - Salon Lighting Dimmer (%)" },
+    { time: new Date().toLocaleTimeString("fr-FR"), type: "analog", join: 10, val: "22°C - Master HVAC Setpoint" },
+    { time: new Date().toLocaleTimeString("fr-FR"), type: "serial", join: 2, val: `"Source: Hans Zimmer - Interstellar OST"` },
+  ]);
+
+  const addLog = (type, join, val) => {
+    const timeStr = new Date().toLocaleTimeString("fr-FR");
+    setJoinLogs((prev) => [{ time: timeStr, type, join, val }, ...prev.slice(0, 49)]);
   };
 
-  const handleSceneSelect = (scene) => {
-    setAmbientScene(scene);
-    if (scene === "cozy") {
-      setDimmers({ lustre: 50, poutres: 60, cheminee: 30 });
-      setLightsColor("#ff9f1c"); // Warm Amber
-    } else if (scene === "fireplace") {
-      setDimmers({ lustre: 20, poutres: 30, cheminee: 80 });
-      setLightsColor("#e73c7e"); // Deep Fire Sunset
-    } else if (scene === "dining") {
-      setDimmers({ lustre: 80, poutres: 40, cheminee: 40 });
-      setLightsColor("#4f46e5"); // Elegant Royal Blue
-    } else if (scene === "off") {
-      setDimmers({ lustre: 0, poutres: 0, cheminee: 0 });
-      setLightsColor("#1e293b"); // Sleep Dark
+  // Trigger Scene
+  const handleTriggerScene = (sceneKey, joinNum) => {
+    setActiveScene(sceneKey);
+    addLog("digital", joinNum, `HIGH (1) - Scene ${sceneKey.toUpperCase()} Triggered`);
+
+    if (sceneKey === "welcome") {
+      setDimSalon(70);
+      setTempMaster(22);
+      setAvSource("Apple TV 4K");
+      addLog("analog", 1, "70 (%)");
+      addLog("analog", 10, "22 (°C)");
+    } else if (sceneKey === "cinema") {
+      setDimSalon(15);
+      setAvSource("Apple TV 4K (Dolby Atmos)");
+      addLog("analog", 1, "15 (%)");
+      addLog("digital", 303, "HIGH (1) - Closing Blinds");
+    } else if (sceneKey === "party") {
+      setRgbColor("#a855f7");
+      setAvVolume(80);
+      setTempSpa(38);
+      addLog("serial", 15, `Couleur DMX RGB = #a855f7`);
+      addLog("analog", 30, "80 (%)");
+    } else if (sceneKey === "night") {
+      setDimSalon(0);
+      setDimSuite(0);
+      setAlarmArmed(true);
+      addLog("analog", 1, "0 (%)");
+      addLog("analog", 2, "0 (%)");
+      addLog("digital", 20, "HIGH (1) - Alarm Armed");
     }
   };
 
-  const isPhone = deviceType === "phone";
+  // Lighting handlers
+  const handleDimmerChange = (joinNum, value, setDimmerFn, label) => {
+    const val = parseInt(value, 10);
+    setDimmerFn(val);
+    addLog("analog", joinNum, `${val}% - ${label}`);
+  };
 
-  const cameraFeeds = {
-    pistes: "https://images.unsplash.com/photo-1482862549707-f63cb32c5fd9?auto=format&fit=crop&w=400&q=80", // snowy mountains Zermatt
-    entrance: "https://images.unsplash.com/photo-1548690312-e3b507d8c110?auto=format&fit=crop&w=400&q=80", // chalet snowy door
-    jacuzzi: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=400&q=80", // jacuzzi with outdoor winter steam
+  const handleToggleLight = (joinNum, currentState, setToggleFn, label) => {
+    const next = !currentState;
+    setToggleFn(next);
+    addLog("digital", joinNum, `${next ? "HIGH (1)" : "LOW (0)"} - ${label}`);
+    setActiveLightsCount((prev) => (next ? prev + 1 : Math.max(0, prev - 1)));
+  };
+
+  // HVAC handlers
+  const handleChangeTemp = (joinNum, currentVal, setTempFn, delta, label) => {
+    const nextVal = Math.max(16, Math.min(30, currentVal + delta));
+    setTempFn(nextVal);
+    addLog("analog", joinNum, `${nextVal}°C - ${label}`);
+  };
+
+  // AV Source
+  const handleSelectAVSource = (sourceName, joinNum) => {
+    setAvSource(sourceName);
+    addLog("digital", joinNum, `HIGH (1) - Selected ${sourceName}`);
+    addLog("serial", 2, `"Source: ${sourceName}"`);
+  };
+
+  // Gate Unlock
+  const handleTriggerGate = () => {
+    addLog("digital", 40, "HIGH (1) - Pulse 3s Gate Unlock");
+    setGateMessage("🔑 Signal Crestron Join #40 envoyé: Ouverture du Portail Principal (Pulse 3s)");
+    setTimeout(() => {
+      setGateMessage(null);
+      addLog("digital", 40, "LOW (0) - Gate Pulse Completed");
+    }, 3500);
+  };
+
+  // Alarm Toggle
+  const handleToggleAlarm = () => {
+    const next = !alarmArmed;
+    setAlarmArmed(next);
+    addLog("digital", 20, `${next ? "HIGH (1) - ARMÉE" : "LOW (0) - DÉSARMÉE"}`);
   };
 
   return (
-    <div className={`gemini-ui-root chalet-zermatt-ui ${deviceType}`}>
-      {/* Background Chalet Photo */}
-      <div 
-        className="chalet-bg-image" 
-        style={{
-          position: "absolute",
-          inset: 0,
-          backgroundImage: 'url("https://images.unsplash.com/photo-1549488344-1f9b8d2bd1f3?auto=format&fit=crop&w=1200&q=80")',
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          opacity: 0.35,
-          pointerEvents: "none",
-          zIndex: 1
-        }}
-      />
-      {/* Alpine Chalet Background Glow mapping active colors */}
-      <div 
-        className="ambient-bg-glow" 
-        style={{ 
-          background: `radial-gradient(circle at 80% 20%, ${lightsColor}33 0%, transparent 50%)`
-        }} 
-      />
+    <div className={`gemini-ui-root chalet-zermatt-ui mode-${deviceMode}`}>
+      {/* Top Floating Device Preview Switcher (Pill Dropdown Overlay) */}
+      <div className="device-controls-bar">
+        <i className="fa-solid fa-globe" style={{ fontSize: "0.95rem", color: "#1e293b" }}></i>
+        <select
+          value={deviceMode}
+          onChange={(e) => setDeviceMode(e.target.value)}
+          className="device-mode-select"
+        >
+          <option value="xpanel">XPanel (Desktop)</option>
+          <option value="ipad">iPad (Tablette)</option>
+          <option value="ts1070">Crestron TS-1070</option>
+          <option value="mobile">Smartphone</option>
+        </select>
+        <i className="fa-solid fa-chevron-down" style={{ fontSize: "0.75rem", color: "#475569", pointerEvents: "none" }}></i>
+      </div>
 
-      {/* Header */}
-      <header className="zermatt-header">
-        <div className="header-left">
-          {renderIcon("Mountain", 20, "brand-icon-zermatt")}
-          <div className="brand-text-block">
-            <span className="brand-title">CHALET ZERMATT</span>
-            <span className="brand-subtitle-room">Salon Lounge</span>
+      {/* Application Top Bar */}
+      <header className="top-header">
+        <div className="brand-section">
+          <div className="crestron-logo">
+            <span className="logo-badge">CRESTRON</span>
+          </div>
+          <div>
+            <h1 className="project-title">CHALET ZERMATT</h1>
+            <p className="project-subtitle">Zermatt Alpine Luxury Suite • Touch Panel & XPanel</p>
           </div>
         </div>
-        
-        <div className="header-right">
+
+        <div className="header-status-group">
+          <div className="status-indicator">
+            <span className="dot" id="conn-dot"></span>
+            <span id="conn-text" style={{ fontWeight: 600 }}>CP4-ONLINE (192.168.1.50)</span>
+          </div>
           <div className="weather-widget">
-            {renderIcon("CloudSnow", 16, "icon-snow")}
-            <span>Zermatt -4°C</span>
+            <i className="fa-solid fa-snowflake" style={{ color: "#00e5ff" }}></i>
+            <span>Zermatt: -2°C Neige</span>
           </div>
-          <div className="time-widget">
-            <span>{timeString || "19:30"}</span>
-          </div>
+          <div className="time-display">{clockTime || "08:30:00"}</div>
         </div>
       </header>
 
-      {/* Body Area */}
-      <div className="zermatt-body">
-        {/* Navigation Sidebar (Desktop/Tablet) */}
-        {!isPhone && (
-          <aside className="zermatt-sidebar">
-            <div className="sidebar-nav-title">Contrôles</div>
-            <button
-              onClick={() => setActiveTab("lights")}
-              className={`sidebar-nav-btn ${activeTab === "lights" ? "active" : ""}`}
-            >
-              {renderIcon("Lightbulb", 16)}
-              <span>Éclairage</span>
-            </button>
-            <button
-              onClick={() => setActiveTab("climate")}
-              className={`sidebar-nav-btn ${activeTab === "climate" ? "active" : ""}`}
-            >
-              {renderIcon("Thermometer", 16)}
-              <span>Chauffage & CVC</span>
-            </button>
-            <button
-              onClick={() => setActiveTab("audio_video")}
-              className={`sidebar-nav-btn ${activeTab === "audio_video" ? "active" : ""}`}
-            >
-              {renderIcon("Tv", 16)}
-              <span>Audio & Vidéo</span>
-            </button>
-            <button
-              onClick={() => setActiveTab("cctv")}
-              className={`sidebar-nav-btn ${activeTab === "cctv" ? "active" : ""}`}
-            >
-              {renderIcon("Camera", 16)}
-              <span>Caméras CCTV</span>
-            </button>
+      {/* Gate Signal Alert Banner */}
+      {gateMessage && (
+        <div
+          style={{
+            position: "absolute",
+            top: "74px",
+            left: "50%",
+            transform: "translateX(-50%)",
+            background: "rgba(0, 229, 255, 0.95)",
+            color: "#000",
+            padding: "8px 20px",
+            borderRadius: "20px",
+            fontSize: "0.85rem",
+            fontWeight: 700,
+            zIndex: 1000,
+            boxShadow: "0 4px 20px rgba(0,229,255,0.5)",
+            display: "flex",
+            alignItems: "center",
+            gap: "8px",
+          }}
+        >
+          <i className="fa-solid fa-key"></i>
+          {gateMessage}
+        </div>
+      )}
 
-            {/* Quick Presets Section */}
-            <div className="sidebar-divider" />
-            <div className="sidebar-nav-title">Raccourcis Salon</div>
-            <div className="quick-action-column">
-              <button 
-                onClick={() => {
-                  setTvPower(true);
-                  setAvSource("appletv");
-                  handleSceneSelect("cozy");
-                }} 
-                className="quick-preset-btn"
-              >
-                {renderIcon("Film", 12)}
-                <span>Soirée Cinéma</span>
-              </button>
-              <button 
-                onClick={() => {
-                  setTvPower(false);
-                  setIsAudioPlaying(true);
-                  handleSceneSelect("fireplace");
-                }} 
-                className="quick-preset-btn"
-              >
-                {renderIcon("Flame", 12)}
-                <span>Coin du Feu</span>
-              </button>
-              <button 
-                onClick={() => {
-                  handleSceneSelect("off");
-                  setIsAudioPlaying(false);
-                  setTvPower(false);
-                }} 
-                className="quick-preset-btn-off"
-              >
-                {renderIcon("Power", 12)}
-                <span>Éteindre Tout</span>
-              </button>
-            </div>
-          </aside>
-        )}
-
-        {/* Mobile Header Tabs */}
-        {isPhone && (
-          <div className="zermatt-mobile-tabs">
-            <button
-              onClick={() => setActiveTab("lights")}
-              className={`mobile-tab-btn ${activeTab === "lights" ? "active" : ""}`}
-            >
-              {renderIcon("Lightbulb", 14)}
-              <span>Lumières</span>
-            </button>
-            <button
-              onClick={() => setActiveTab("climate")}
-              className={`mobile-tab-btn ${activeTab === "climate" ? "active" : ""}`}
-            >
-              {renderIcon("Thermometer", 14)}
-              <span>Climat</span>
-            </button>
-            <button
-              onClick={() => setActiveTab("audio_video")}
-              className={`mobile-tab-btn ${activeTab === "audio_video" ? "active" : ""}`}
-            >
-              {renderIcon("Tv", 14)}
-              <span>Multimédia</span>
-            </button>
-            <button
-              onClick={() => setActiveTab("cctv")}
-              className={`mobile-tab-btn ${activeTab === "cctv" ? "active" : ""}`}
-            >
-              {renderIcon("Camera", 14)}
-              <span>Caméras</span>
-            </button>
+      {/* Main Container */}
+      <div className="app-container">
+        {/* Navigation Sidebar */}
+        <nav className="sidebar">
+          <div
+            className={`nav-item ${activeView === "dashboard" ? "active" : ""}`}
+            onClick={() => setActiveView("dashboard")}
+          >
+            <i className="fa-solid fa-house"></i>
+            <span>Tableau de Bord</span>
           </div>
-        )}
+          <div
+            className={`nav-item ${activeView === "lighting" ? "active" : ""}`}
+            onClick={() => setActiveView("lighting")}
+          >
+            <i className="fa-solid fa-lightbulb"></i>
+            <span>Éclairages & DMX</span>
+          </div>
+          <div
+            className={`nav-item ${activeView === "hvac" ? "active" : ""}`}
+            onClick={() => setActiveView("hvac")}
+          >
+            <i className="fa-solid fa-temperature-half"></i>
+            <span>Climatisation</span>
+          </div>
+          <div
+            className={`nav-item ${activeView === "avmatrix" ? "active" : ""}`}
+            onClick={() => setActiveView("avmatrix")}
+          >
+            <i className="fa-solid fa-tv"></i>
+            <span>Audio / Vidéo</span>
+          </div>
+          <div
+            className={`nav-item ${activeView === "shades" ? "active" : ""}`}
+            onClick={() => setActiveView("shades")}
+          >
+            <i className="fa-solid fa-blinds"></i>
+            <span>Volets & Ombrage</span>
+          </div>
+          <div
+            className={`nav-item ${activeView === "security" ? "active" : ""}`}
+            onClick={() => setActiveView("security")}
+          >
+            <i className="fa-solid fa-shield-halved"></i>
+            <span>Sécurité & Caméras</span>
+          </div>
+          <div
+            className={`nav-item ${activeView === "spa" ? "active" : ""}`}
+            onClick={() => setActiveView("spa")}
+          >
+            <i className="fa-solid fa-hot-tub-person"></i>
+            <span>Spa & Wellness</span>
+          </div>
+        </nav>
 
-        {/* Main Panel Content Area */}
-        <main className="zermatt-content">
-          
-          {/* TAB 1: LIGHTS */}
-          {activeTab === "lights" && (
-            <div className="zermatt-panel-card fade-in">
-              <h2 className="panel-title-text">
-                {renderIcon("Lightbulb", 18, "title-icon icon-yellow")}
-                <span>Gestion de l'Éclairage</span>
-              </h2>
+        {/* Main Interactive Content Views */}
+        <main className="main-content">
+          {/* VIEW 1: DASHBOARD */}
+          <section className={`view-section ${activeView === "dashboard" ? "active" : ""}`}>
+            <div className="hero-banner">
+              <img src="/assets/villa_hero.jpg" alt="Chalet Zermatt" />
+              <div className="hero-overlay-text">
+                <h1>Bienvenue au Chalet Zermatt</h1>
+                <p><i className="fa-solid fa-location-dot"></i> Zermatt, Suisse • Domotique Crestron Active</p>
+              </div>
+            </div>
 
-              <div className="zermatt-grid-layout">
-                {/* Ambient Scene Presets */}
-                <div className="control-section-card glass-card">
-                  <span className="section-subtitle">Scènes d'Ambiance</span>
-                  <div className="scene-buttons-flex">
-                    <button
-                      onClick={() => handleSceneSelect("cozy")}
-                      className={`zermatt-scene-btn cozy ${ambientScene === "cozy" ? "active" : ""}`}
-                    >
-                      {renderIcon("Home", 14)}
-                      <span>Ambiance Cozy</span>
-                    </button>
-                    <button
-                      onClick={() => handleSceneSelect("fireplace")}
-                      className={`zermatt-scene-btn fireplace ${ambientScene === "fireplace" ? "active" : ""}`}
-                    >
-                      {renderIcon("Flame", 14)}
-                      <span>Feu de Bois</span>
-                    </button>
-                    <button
-                      onClick={() => handleSceneSelect("dining")}
-                      className={`zermatt-scene-btn dining ${ambientScene === "dining" ? "active" : ""}`}
-                    >
-                      {renderIcon("Utensils", 14)}
-                      <span>Dîner Tamisé</span>
-                    </button>
-                    <button
-                      onClick={() => handleSceneSelect("off")}
-                      className={`zermatt-scene-btn off ${ambientScene === "off" ? "active" : ""}`}
-                    >
-                      {renderIcon("Power", 14)}
-                      <span>Extinction</span>
-                    </button>
-                  </div>
+            <div className="section-title-bar">
+              <h2>Scènes Rapides</h2>
+              <span className="section-subtitle">Activation 1-Touch Crestron Digital Joins</span>
+            </div>
+
+            <div className="grid-4" style={{ marginBottom: "20px" }}>
+              <div
+                className={`scene-card ${activeScene === "welcome" ? "active" : ""}`}
+                onClick={() => handleTriggerScene("welcome", 10)}
+              >
+                <div className="scene-icon"><i className="fa-solid fa-key"></i></div>
+                <div className="scene-name">Accueil</div>
+                <div className="scene-desc">Lumières 70%, HVAC 22°C, Musique Douce</div>
+              </div>
+
+              <div
+                className={`scene-card ${activeScene === "cinema" ? "active" : ""}`}
+                onClick={() => handleTriggerScene("cinema", 11)}
+              >
+                <div className="scene-icon"><i className="fa-solid fa-film"></i></div>
+                <div className="scene-name">Cinéma</div>
+                <div className="scene-desc">Volets fermés, Éclairage tamisé, Apple TV</div>
+              </div>
+
+              <div
+                className={`scene-card ${activeScene === "party" ? "active" : ""}`}
+                onClick={() => handleTriggerScene("party", 12)}
+              >
+                <div className="scene-icon"><i className="fa-solid fa-champagne-glasses"></i></div>
+                <div className="scene-name">Soirée</div>
+                <div className="scene-desc">Ambiance RGB, Multi-room 80%, Jacuzzi 38°C</div>
+              </div>
+
+              <div
+                className={`scene-card ${activeScene === "night" ? "active" : ""}`}
+                onClick={() => handleTriggerScene("night", 13)}
+              >
+                <div className="scene-icon"><i className="fa-solid fa-moon"></i></div>
+                <div className="scene-name">Nuit & Départ</div>
+                <div className="scene-desc">Extinction générale, Alarme armée</div>
+              </div>
+            </div>
+
+            <div className="grid-3">
+              <div className="card">
+                <div className="card-header">
+                  <span className="card-title"><i className="fa-solid fa-bolt"></i> Statut Résidence</span>
                 </div>
+                <p style={{ fontSize: "0.88rem", color: "var(--text-muted)", marginBottom: "10px" }}>
+                  Éclairages actifs: <b style={{ color: "var(--text-main)" }}>{activeLightsCount}/14 Zones</b>
+                </p>
+                <p style={{ fontSize: "0.88rem", color: "var(--text-muted)", marginBottom: "10px" }}>
+                  Thermostat moyen: <b style={{ color: "var(--crestron-blue)" }}>{tempMaster}.0 °C</b>
+                </p>
+                <p style={{ fontSize: "0.88rem", color: "var(--text-muted)" }}>
+                  Alarme:{" "}
+                  <b style={{ color: alarmArmed ? "var(--accent-rose)" : "var(--accent-emerald)" }}>
+                    {alarmArmed ? "ARMÉE (TOTAL)" : "Désarmée (Normal)"}
+                  </b>
+                </p>
+              </div>
 
-                {/* Color presets */}
-                <div className="control-section-card glass-card">
-                  <span className="section-subtitle">Scènes de Couleur LED</span>
-                  <div className="color-presets-row">
-                    <button 
-                      onClick={() => setLightsColor("#ff9f1c")} 
-                      className={`color-pill ${lightsColor === "#ff9f1c" ? "selected" : ""}`}
-                      style={{ background: "#ff9f1c" }}
-                      title="Warm Amber"
-                    />
-                    <button 
-                      onClick={() => setLightsColor("#ef4444")} 
-                      className={`color-pill ${lightsColor === "#ef4444" ? "selected" : ""}`}
-                      style={{ background: "#ef4444" }}
-                      title="Alpine Sunset Red"
-                    />
-                    <button 
-                      onClick={() => setLightsColor("#e73c7e")} 
-                      className={`color-pill ${lightsColor === "#e73c7e" ? "selected" : ""}`}
-                      style={{ background: "#e73c7e" }}
-                      title="Magenta Fire"
-                    />
-                    <button 
-                      onClick={() => setLightsColor("#06b6d4")} 
-                      className={`color-pill ${lightsColor === "#06b6d4" ? "selected" : ""}`}
-                      style={{ background: "#06b6d4" }}
-                      title="Glacier Ice Cyan"
-                    />
-                    <button 
-                      onClick={() => setLightsColor("#10b981")} 
-                      className={`color-pill ${lightsColor === "#10b981" ? "selected" : ""}`}
-                      style={{ background: "#10b981" }}
-                      title="Forest Pine Green"
-                    />
-                    <button 
-                      onClick={() => setLightsColor("#4f46e5")} 
-                      className={`color-pill ${lightsColor === "#4f46e5" ? "selected" : ""}`}
-                      style={{ background: "#4f46e5" }}
-                      title="Midnight Royal Blue"
-                    />
-                  </div>
-                  <div className="color-status-text">
-                    Teinte active : <span style={{ color: lightsColor, fontWeight: "bold" }}>{lightsColor}</span>
-                  </div>
+              <div className="card">
+                <div className="card-header">
+                  <span className="card-title"><i className="fa-solid fa-music"></i> Audio Multi-room</span>
                 </div>
+                <p style={{ fontSize: "0.82rem", color: "var(--text-muted)", marginBottom: "4px" }}>
+                  Zone: <b>Salon Panoramique</b>
+                </p>
+                <p style={{ fontSize: "0.92rem", fontWeight: 700, color: "var(--crestron-blue)", marginBottom: "10px" }}>
+                  {avSource === "Apple TV 4K" ? "Hans Zimmer - Interstellar OST" : avSource}
+                </p>
+                <div className="slider-group">
+                  <div className="slider-label-row">
+                    <span>Volume Zone</span>
+                    <span className="slider-value">{avVolume}%</span>
+                  </div>
+                  <input
+                    type="range"
+                    min="0"
+                    max="100"
+                    value={avVolume}
+                    onChange={(e) => handleDimmerChange(30, e.target.value, setAvVolume, "Volume Multi-room")}
+                  />
+                </div>
+              </div>
 
-                {/* Dimmers list */}
-                <div className="control-section-card glass-card full-width-span">
-                  <span className="section-subtitle">Gradateurs Fins (KNX)</span>
-                  <div className="sliders-list-block">
-                    <div className="dimmer-control-row">
-                      <div className="dimmer-label-block">
-                        {renderIcon("Sparkles", 14)}
-                        <span>Lustre en Corne</span>
-                      </div>
-                      <input
-                        type="range"
-                        min="0"
-                        max="100"
-                        value={dimmers.lustre}
-                        onChange={(e) => setDimmers({ ...dimmers, lustre: parseInt(e.target.value) })}
-                        className="zermatt-slider"
-                      />
-                      <span className="dimmer-percentage">{dimmers.lustre}%</span>
-                    </div>
-
-                    <div className="dimmer-control-row">
-                      <div className="dimmer-label-block">
-                        {renderIcon("Menu", 14)}
-                        <span>LED Poutres Bois</span>
-                      </div>
-                      <input
-                        type="range"
-                        min="0"
-                        max="100"
-                        value={dimmers.poutres}
-                        onChange={(e) => setDimmers({ ...dimmers, poutres: parseInt(e.target.value) })}
-                        className="zermatt-slider"
-                      />
-                      <span className="dimmer-percentage">{dimmers.poutres}%</span>
-                    </div>
-
-                    <div className="dimmer-control-row">
-                      <div className="dimmer-label-block">
-                        {renderIcon("Flame", 14)}
-                        <span>Appliques Cheminée</span>
-                      </div>
-                      <input
-                        type="range"
-                        min="0"
-                        max="100"
-                        value={dimmers.cheminee}
-                        onChange={(e) => setDimmers({ ...dimmers, cheminee: parseInt(e.target.value) })}
-                        className="zermatt-slider"
-                      />
-                      <span className="dimmer-percentage">{dimmers.cheminee}%</span>
-                    </div>
+              <div className="card">
+                <div className="card-header">
+                  <span className="card-title"><i className="fa-solid fa-video"></i> Surveillance Portail</span>
+                </div>
+                <div className="cctv-container">
+                  <img src="/assets/cctv_entrance.jpg" alt="Entrée Chalet" />
+                  <div className="cctv-overlay">
+                    <span className="rec-dot"></span> EN DIRECT • CAM-01
                   </div>
                 </div>
               </div>
             </div>
-          )}
+          </section>
 
-          {/* TAB 2: CLIMATE */}
-          {activeTab === "climate" && (
-            <div className="zermatt-panel-card fade-in">
-              <h2 className="panel-title-text">
-                {renderIcon("Thermometer", 18, "title-icon icon-cyan")}
-                <span>Gestion HVAC & Chauffage</span>
-              </h2>
+          {/* VIEW 2: LIGHTING */}
+          <section className={`view-section ${activeView === "lighting" ? "active" : ""}`}>
+            <div className="section-title-bar">
+              <h2>Gestion des Éclairages</h2>
+              <span className="section-subtitle">Variateurs Analogiques & Presets DMX</span>
+            </div>
 
-              <div className="zermatt-grid-layout">
-                {/* Thermostat Display */}
-                <div className="control-section-card glass-card">
-                  <span className="section-subtitle">Consigne Thermostat</span>
-                  <div className="zermatt-thermostat-widget">
-                    <div className="thermostat-temp-bubble">
-                      <span className="target-temp-val">{setpointTemp}°C</span>
-                      <span className="measured-temp-val">Mesuré : {currentTemp}°C</span>
-                    </div>
-                    <div className="thermostat-controls">
-                      <button 
-                        onClick={() => setSetpointTemp((t) => parseFloat((t - 0.5).toFixed(1)))} 
-                        className="temp-adjust-btn"
-                      >
-                        {renderIcon("Minus", 16)}
-                      </button>
-                      <button 
-                        onClick={() => setSetpointTemp((t) => parseFloat((t + 0.5).toFixed(1)))} 
-                        className="temp-adjust-btn"
-                      >
-                        {renderIcon("Plus", 16)}
-                      </button>
-                    </div>
-                  </div>
+            <div className="grid-2">
+              <div className="card">
+                <div className="card-header">
+                  <span className="card-title"><i className="fa-solid fa-lightbulb"></i> Salon & Séjour</span>
+                  <button
+                    className={`btn-control ${lightSalon ? "active" : ""}`}
+                    onClick={() => handleToggleLight(101, lightSalon, setLightSalon, "Salon Light Toggle")}
+                  >
+                    ON / OFF
+                  </button>
                 </div>
-
-                {/* Geothermal Floor Heating Status */}
-                <div className="control-section-card glass-card">
-                  <span className="section-subtitle">Chauffage Géothermique</span>
-                  <div className="geothermal-status-card">
-                    <div className="status-toggle-row">
-                      <span className="status-label">Dalles Chauffantes</span>
-                      <button 
-                        onClick={() => setFloorHeatingActive(!floorHeatingActive)} 
-                        className={`zermatt-toggle-switch ${floorHeatingActive ? "on" : "off"}`}
-                      >
-                        <span className="slider-knob" />
-                      </button>
-                    </div>
-                    <div className="heating-indicators">
-                      <div className="indicator-pill">
-                        <span className="indicator-dot red-glow" style={{ opacity: floorHeatingActive ? 1 : 0.2 }} />
-                        <span>{floorHeatingActive ? "Actif (Circulation)" : "Inactif"}</span>
-                      </div>
-                      <div className="indicator-pill text-grey">
-                        {renderIcon("Activity", 12)}
-                        <span>Flux: 3.2 L/min</span>
-                      </div>
-                    </div>
+                <div className="slider-group">
+                  <div className="slider-label-row">
+                    <span>Intensité Lumineuse (Join #1)</span>
+                    <span className="slider-value">{dimSalon}%</span>
                   </div>
+                  <input
+                    type="range"
+                    min="0"
+                    max="100"
+                    value={dimSalon}
+                    onChange={(e) => handleDimmerChange(1, e.target.value, setDimSalon, "Salon Dimmer")}
+                  />
                 </div>
+              </div>
 
-                {/* Cheminée Heat fan Speed */}
-                <div className="control-section-card glass-card full-width-span">
-                  <span className="section-subtitle">Ventilation Récupérateur Cheminée</span>
-                  <p className="section-explanation-text">
-                    Régule la vitesse des ventilateurs de conduits d'air chaud pour diffuser la chaleur du poêle de masse dans le salon.
-                  </p>
-                  <div className="dimmer-control-row">
-                    <div className="dimmer-label-block">
-                      {renderIcon("Wind", 14)}
-                      <span>Vitesse Soufflerie</span>
-                    </div>
-                    <input
-                      type="range"
-                      min="0"
-                      max="100"
-                      value={fireplaceFanSpeed}
-                      onChange={(e) => setFireplaceFanSpeed(parseInt(e.target.value))}
-                      className="zermatt-slider"
+              <div className="card">
+                <div className="card-header">
+                  <span className="card-title"><i className="fa-solid fa-bed"></i> Suite Royale</span>
+                  <button
+                    className={`btn-control ${lightSuite ? "active" : ""}`}
+                    onClick={() => handleToggleLight(102, lightSuite, setLightSuite, "Suite Light Toggle")}
+                  >
+                    ON / OFF
+                  </button>
+                </div>
+                <div className="slider-group">
+                  <div className="slider-label-row">
+                    <span>Intensité Lumineuse (Join #2)</span>
+                    <span className="slider-value">{dimSuite}%</span>
+                  </div>
+                  <input
+                    type="range"
+                    min="0"
+                    max="100"
+                    value={dimSuite}
+                    onChange={(e) => handleDimmerChange(2, e.target.value, setDimSuite, "Suite Dimmer")}
+                  />
+                </div>
+              </div>
+
+              <div className="card">
+                <div className="card-header">
+                  <span className="card-title"><i className="fa-solid fa-umbrella-beach"></i> Terrasse Alpine</span>
+                  <button
+                    className={`btn-control ${lightTerrasse ? "active" : ""}`}
+                    onClick={() => handleToggleLight(103, lightTerrasse, setLightTerrasse, "Terrasse Light Toggle")}
+                  >
+                    ON / OFF
+                  </button>
+                </div>
+                <div className="slider-group">
+                  <div className="slider-label-row">
+                    <span>Intensité Lumineuse (Join #3)</span>
+                    <span className="slider-value">{dimTerrasse}%</span>
+                  </div>
+                  <input
+                    type="range"
+                    min="0"
+                    max="100"
+                    value={dimTerrasse}
+                    onChange={(e) => handleDimmerChange(3, e.target.value, setDimTerrasse, "Terrasse Dimmer")}
+                  />
+                </div>
+              </div>
+
+              <div className="card">
+                <div className="card-header">
+                  <span className="card-title"><i className="fa-solid fa-palette"></i> Éclairage Ambiance RGBW</span>
+                </div>
+                <p style={{ fontSize: "0.82rem", color: "var(--text-muted)", marginBottom: "10px" }}>
+                  Sélecteur de Couleur Architecturale DMX (Couleur active: <b style={{ color: rgbColor }}>{rgbColor}</b>)
+                </p>
+                <div style={{ display: "flex", gap: "10px" }}>
+                  {["#00e5ff", "#a855f7", "#f5b041", "#10b981", "#f43f5e"].map((c) => (
+                    <button
+                      key={c}
+                      className="btn-circle"
+                      style={{ background: c, border: rgbColor === c ? "2px solid #fff" : "1px solid var(--border-card)" }}
+                      onClick={() => {
+                        setRgbColor(c);
+                        addLog("serial", 15, `Couleur DMX RGB = ${c}`);
+                      }}
                     />
-                    <span className="dimmer-percentage">{fireplaceFanSpeed}%</span>
-                  </div>
+                  ))}
                 </div>
               </div>
             </div>
-          )}
+          </section>
 
-          {/* TAB 3: AUDIO / VIDEO */}
-          {activeTab === "audio_video" && (
-            <div className="zermatt-panel-card fade-in">
-              <h2 className="panel-title-text">
-                {renderIcon("Tv", 18, "title-icon icon-purple")}
-                <span>Multimédia & Sources A/V</span>
-              </h2>
+          {/* VIEW 3: HVAC */}
+          <section className={`view-section ${activeView === "hvac" ? "active" : ""}`}>
+            <div className="section-title-bar">
+              <h2>Climatisation & Thermostats</h2>
+              <span className="section-subtitle">Régulation Multi-zone Crestron HVAC</span>
+            </div>
 
-              <div className="zermatt-grid-layout">
-                {/* TV power and sources */}
-                <div className="control-section-card glass-card">
-                  <span className="section-subtitle">Téléviseur Principal</span>
-                  <div className="tv-power-row">
-                    <span className="tv-status-txt">Statut : {tvPower ? "Allumé" : "Éteint"}</span>
-                    <button 
-                      onClick={() => setTvPower(!tvPower)} 
-                      className={`tv-power-btn ${tvPower ? "on" : "off"}`}
-                    >
-                      {renderIcon("Power", 16)}
-                      <span>{tvPower ? "OFF" : "ON"}</span>
-                    </button>
+            <div className="grid-2">
+              <div className="card thermostat-widget">
+                <span className="card-title" style={{ marginBottom: "12px" }}>
+                  <i className="fa-solid fa-temperature-arrow-up"></i> Suite Royale
+                </span>
+                <div className="temp-dial">
+                  <div className="temp-display">
+                    {tempMaster}<span className="temp-unit">°C</span>
                   </div>
-
-                  <span className="section-subtitle" style={{ marginTop: "15px", display: "block" }}>Source active</span>
-                  <div className="av-source-grid">
-                    <button 
-                      onClick={() => setAvSource("appletv")} 
-                      className={`av-source-btn ${avSource === "appletv" ? "active" : ""}`}
-                      disabled={!tvPower}
-                    >
-                      <span>Apple TV 4K</span>
-                    </button>
-                    <button 
-                      onClick={() => setAvSource("sat")} 
-                      className={`av-source-btn ${avSource === "sat" ? "active" : ""}`}
-                      disabled={!tvPower}
-                    >
-                      <span>Décodeur Sat</span>
-                    </button>
-                    <button 
-                      onClick={() => setAvSource("bluray")} 
-                      className={`av-source-btn ${avSource === "bluray" ? "active" : ""}`}
-                      disabled={!tvPower}
-                    >
-                      <span>Lecteur Blu-ray</span>
-                    </button>
-                    <button 
-                      onClick={() => setAvSource("audio_only")} 
-                      className={`av-source-btn ${avSource === "audio_only" ? "active" : ""}`}
-                    >
-                      <span>Audio Seul</span>
-                    </button>
-                  </div>
+                  <div className="temp-target">Consigne Active</div>
                 </div>
-
-                {/* Spotify Audio Control */}
-                <div className="control-section-card glass-card">
-                  <span className="section-subtitle">Lecteur Spotify (Sonos Zone)</span>
-                  <div className="spotify-player-widget">
-                    <div className="spotify-track-info">
-                      <div className="album-art-square">
-                        {renderIcon("Music", 28, "album-fallback-ic")}
-                      </div>
-                      <div className="track-details">
-                        <span className="track-title-txt">Alpine Chill Lounge</span>
-                        <span className="track-artist-txt">Zermatt Lounge Session</span>
-                      </div>
-                    </div>
-
-                    <div className="spotify-progress-bar">
-                      <span className="progress-time">0:45</span>
-                      <div className="progress-track">
-                        <div className="progress-fill" style={{ width: `${trackProgress}%` }} />
-                      </div>
-                      <span className="progress-time">3:40</span>
-                    </div>
-
-                    <div className="spotify-controls">
-                      <button className="sp-btn">{renderIcon("SkipBack", 14)}</button>
-                      <button 
-                        onClick={() => setIsAudioPlaying(!isAudioPlaying)} 
-                        className={`sp-btn play-pause ${isAudioPlaying ? "playing" : ""}`}
-                      >
-                        {isAudioPlaying ? renderIcon("Pause", 16) : renderIcon("Play", 16)}
-                      </button>
-                      <button className="sp-btn">{renderIcon("SkipForward", 14)}</button>
-                    </div>
-                  </div>
+                <div className="temp-btn-row">
+                  <button
+                    className="btn-circle"
+                    onClick={() => handleChangeTemp(10, tempMaster, setTempMaster, -1, "Suite Temp Decreased")}
+                  >
+                    <i className="fa-solid fa-minus"></i>
+                  </button>
+                  <button
+                    className="btn-circle"
+                    onClick={() => handleChangeTemp(10, tempMaster, setTempMaster, 1, "Suite Temp Increased")}
+                  >
+                    <i className="fa-solid fa-plus"></i>
+                  </button>
                 </div>
+              </div>
 
-                {/* Audio volume slider */}
-                <div className="control-section-card glass-card full-width-span">
-                  <span className="section-subtitle">Volume Sonos Amplificateurs Salon</span>
-                  <div className="dimmer-control-row">
-                    <div className="dimmer-label-block">
-                      {renderIcon("Volume2", 14)}
-                      <span>Puissance Sonore</span>
-                    </div>
-                    <input
-                      type="range"
-                      min="0"
-                      max="100"
-                      value={audioVolume}
-                      onChange={(e) => setAudioVolume(parseInt(e.target.value))}
-                      className="zermatt-slider"
-                    />
-                    <span className="dimmer-percentage">{audioVolume}%</span>
+              <div className="card thermostat-widget">
+                <span className="card-title" style={{ marginBottom: "12px" }}>
+                  <i className="fa-solid fa-hot-tub-person"></i> Espace Spa & Wellness
+                </span>
+                <div className="temp-dial" style={{ borderColor: "rgba(245, 176, 65, 0.5)" }}>
+                  <div className="temp-display">
+                    {tempSpa}<span className="temp-unit">°C</span>
                   </div>
+                  <div className="temp-target">Consigne Chauffée</div>
+                </div>
+                <div className="temp-btn-row">
+                  <button
+                    className="btn-circle"
+                    onClick={() => handleChangeTemp(11, tempSpa, setTempSpa, -1, "Spa Temp Decreased")}
+                  >
+                    <i className="fa-solid fa-minus"></i>
+                  </button>
+                  <button
+                    className="btn-circle"
+                    onClick={() => handleChangeTemp(11, tempSpa, setTempSpa, 1, "Spa Temp Increased")}
+                  >
+                    <i className="fa-solid fa-plus"></i>
+                  </button>
                 </div>
               </div>
             </div>
-          )}
+          </section>
 
-          {/* TAB 4: CCTV SECURITY CAMERAS */}
-          {activeTab === "cctv" && (
-            <div className="zermatt-panel-card fade-in">
-              <h2 className="panel-title-text">
-                {renderIcon("Camera", 18, "title-icon icon-green")}
-                <span>Système de Caméras de Surveillance</span>
-              </h2>
+          {/* VIEW 4: AUDIO / VIDEO */}
+          <section className={`view-section ${activeView === "avmatrix" ? "active" : ""}`}>
+            <div className="section-title-bar">
+              <h2>Matrice Audio & Vidéo Multi-Room</h2>
+              <span className="section-subtitle">Routage Crestron NVX & Sources Streamers</span>
+            </div>
 
-              <div className="zermatt-grid-layout">
-                {/* CCTV Selector and Live Feed View */}
-                <div className="control-section-card glass-card full-width-span">
-                  <span className="section-subtitle">Caméras en Direct (H.264 HD)</span>
-                  
-                  <div className="cctv-main-flex-block">
-                    <div className="cctv-selector-column">
-                      <button
-                        onClick={() => setSelectedCamera("pistes")}
-                        className={`cctv-tab-btn ${selectedCamera === "pistes" ? "active" : ""}`}
-                      >
-                        {renderIcon("Mountain", 14)}
-                        <span>Vue Pistes Ski</span>
-                      </button>
-                      <button
-                        onClick={() => setSelectedCamera("entrance")}
-                        className={`cctv-tab-btn ${selectedCamera === "entrance" ? "active" : ""}`}
-                      >
-                        {renderIcon("Home", 14)}
-                        <span>Porte d'Entrée</span>
-                      </button>
-                      <button
-                        onClick={() => setSelectedCamera("jacuzzi")}
-                        className={`cctv-tab-btn ${selectedCamera === "jacuzzi" ? "active" : ""}`}
-                      >
-                        {renderIcon("Droplet", 14)}
-                        <span>Terrasse Jacuzzi</span>
-                      </button>
+            <div className="grid-2">
+              <div className="card">
+                <div className="card-header">
+                  <span className="card-title"><i className="fa-solid fa-sliders"></i> Sélection de la Source</span>
+                </div>
+                <div className="grid-2">
+                  <button
+                    className={`btn-control ${avSource === "Apple TV 4K" ? "active" : ""}`}
+                    onClick={() => handleSelectAVSource("Apple TV 4K", 201)}
+                  >
+                    <i className="fa-brands fa-apple"></i> Apple TV
+                  </button>
+                  <button
+                    className={`btn-control ${avSource === "Spotify Connect" ? "active" : ""}`}
+                    onClick={() => handleSelectAVSource("Spotify Connect", 202)}
+                  >
+                    <i className="fa-brands fa-spotify"></i> Spotify
+                  </button>
+                  <button
+                    className={`btn-control ${avSource === "Kaleidescape Movie Server" ? "active" : ""}`}
+                    onClick={() => handleSelectAVSource("Kaleidescape Movie Server", 203)}
+                  >
+                    <i className="fa-solid fa-clapperboard"></i> Kaleidescape
+                  </button>
+                  <button
+                    className={`btn-control ${avSource === "Décodeur Satellite HD" ? "active" : ""}`}
+                    onClick={() => handleSelectAVSource("Décodeur Satellite HD", 204)}
+                  >
+                    <i className="fa-solid fa-satellite-dish"></i> TV Satellite
+                  </button>
+                </div>
+              </div>
 
-                      <div className="cctv-actions-card">
-                        <span className="cctv-action-lbl">Contrôle Zoom</span>
-                        <div className="zoom-buttons">
-                          <button 
-                            onClick={() => setCameraZoom(1)} 
-                            className={`zoom-btn ${cameraZoom === 1 ? "active" : ""}`}
-                          >
-                            1x
-                          </button>
-                          <button 
-                            onClick={() => setCameraZoom(2)} 
-                            className={`zoom-btn ${cameraZoom === 2 ? "active" : ""}`}
-                          >
-                            2x
-                          </button>
-                          <button 
-                            onClick={() => setCameraZoom(4)} 
-                            className={`zoom-btn ${cameraZoom === 4 ? "active" : ""}`}
-                          >
-                            4x
-                          </button>
-                        </div>
-
-                        <div className="recording-toggle-block" style={{ marginTop: "15px" }}>
-                          <span className="cctv-action-lbl">Enregistreur NVR</span>
-                          <button 
-                            onClick={() => setIsRecording(!isRecording)} 
-                            className={`rec-toggle-btn ${isRecording ? "on" : "off"}`}
-                          >
-                            <span className="rec-dot" style={{ opacity: isRecording ? 1 : 0.2 }} />
-                            <span>{isRecording ? "ENR. ACTIF" : "PAUSE"}</span>
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Camera Feed Viewer Screen */}
-                    <div className="cctv-viewer-container">
-                      {isRecording && <span className="live-pill">REC LIVE</span>}
-                      
-                      <div className="feed-image-wrapper">
-                        <img 
-                          src={cameraFeeds[selectedCamera]} 
-                          alt="Camera Live Feed" 
-                          className="cctv-feed-img"
-                          style={{
-                            transform: `scale(${cameraZoom})`,
-                            transition: "transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)"
-                          }}
-                        />
-                      </div>
-
-                      <div className="cctv-info-footer">
-                        <span>CAM_{selectedCamera.toUpperCase()}</span>
-                        <span>1080p // {isRecording ? "30 FPS" : "Flux Suspendu"}</span>
-                      </div>
-                    </div>
+              <div className="card">
+                <div className="card-header">
+                  <span className="card-title"><i className="fa-solid fa-volume-high"></i> Volume Home Cinéma</span>
+                </div>
+                <div className="slider-group">
+                  <div className="slider-label-row">
+                    <span>Volume Amplificateur DM NVX</span>
+                    <span className="slider-value">{isMuted ? "MUTE" : `${avVolume}%`}</span>
                   </div>
+                  <input
+                    type="range"
+                    min="0"
+                    max="100"
+                    value={isMuted ? 0 : avVolume}
+                    disabled={isMuted}
+                    onChange={(e) => handleDimmerChange(30, e.target.value, setAvVolume, "Volume Ampli NVX")}
+                  />
+                </div>
+                <div style={{ display: "flex", gap: "10px", marginTop: "14px" }}>
+                  <button
+                    className="btn-control"
+                    onClick={() => addLog("digital", 210, "HIGH (1) - Play Transport Signal")}
+                  >
+                    <i className="fa-solid fa-play"></i> Play
+                  </button>
+                  <button
+                    className="btn-control"
+                    onClick={() => addLog("digital", 211, "HIGH (1) - Pause Transport Signal")}
+                  >
+                    <i className="fa-solid fa-pause"></i> Pause
+                  </button>
+                  <button
+                    className={`btn-control ${isMuted ? "btn-danger active" : "btn-danger"}`}
+                    onClick={() => {
+                      const next = !isMuted;
+                      setIsMuted(next);
+                      addLog("digital", 215, `${next ? "HIGH (1) - MUTE ON" : "LOW (0) - MUTE OFF"}`);
+                    }}
+                  >
+                    <i className="fa-solid fa-volume-xmark"></i> {isMuted ? "Muted" : "Mute"}
+                  </button>
                 </div>
               </div>
             </div>
-          )}
+          </section>
+
+          {/* VIEW 5: SHADES */}
+          <section className={`view-section ${activeView === "shades" ? "active" : ""}`}>
+            <div className="section-title-bar">
+              <h2>Volets & Stores Motorisés</h2>
+              <span className="section-subtitle">Moteurs Crestron Somfy RTS / Shade Bus</span>
+            </div>
+
+            <div className="grid-2">
+              <div className="card">
+                <div className="card-header">
+                  <span className="card-title"><i className="fa-solid fa-sun"></i> Salon Panoramique</span>
+                </div>
+                <div style={{ display: "flex", gap: "10px", marginBottom: "14px" }}>
+                  <button
+                    className="btn-control"
+                    onClick={() => addLog("digital", 301, "HIGH (1) - Ouvrir Volets Salon")}
+                  >
+                    <i className="fa-solid fa-arrow-up"></i> Ouvrir
+                  </button>
+                  <button
+                    className="btn-control"
+                    onClick={() => addLog("digital", 302, "HIGH (1) - Stop Volets Salon")}
+                  >
+                    <i className="fa-solid fa-hand"></i> Stop
+                  </button>
+                  <button
+                    className="btn-control"
+                    onClick={() => addLog("digital", 303, "HIGH (1) - Fermer Volets Salon")}
+                  >
+                    <i className="fa-solid fa-arrow-down"></i> Fermer
+                  </button>
+                </div>
+              </div>
+
+              <div className="card">
+                <div className="card-header">
+                  <span className="card-title"><i className="fa-solid fa-moon"></i> Suite Royale</span>
+                </div>
+                <div style={{ display: "flex", gap: "10px", marginBottom: "14px" }}>
+                  <button
+                    className="btn-control"
+                    onClick={() => addLog("digital", 304, "HIGH (1) - Ouvrir Volets Suite")}
+                  >
+                    <i className="fa-solid fa-arrow-up"></i> Ouvrir
+                  </button>
+                  <button
+                    className="btn-control"
+                    onClick={() => addLog("digital", 305, "HIGH (1) - Stop Volets Suite")}
+                  >
+                    <i className="fa-solid fa-hand"></i> Stop
+                  </button>
+                  <button
+                    className="btn-control"
+                    onClick={() => addLog("digital", 306, "HIGH (1) - Fermer Volets Suite")}
+                  >
+                    <i className="fa-solid fa-arrow-down"></i> Fermer
+                  </button>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* VIEW 6: SECURITY */}
+          <section className={`view-section ${activeView === "security" ? "active" : ""}`}>
+            <div className="section-title-bar">
+              <h2>Sécurité & Contrôle d'Accès</h2>
+              <span className="section-subtitle">Alarme & Caméras de Surveillance</span>
+            </div>
+
+            <div className="grid-2">
+              <div className="card">
+                <div className="card-header">
+                  <span className="card-title"><i className="fa-solid fa-door-open"></i> Portail & Entrée</span>
+                </div>
+                <button
+                  className="btn-control"
+                  style={{ width: "100%", padding: "14px", fontSize: "0.95rem" }}
+                  onClick={handleTriggerGate}
+                >
+                  <i className="fa-solid fa-unlock"></i> Déverrouiller le Portail Principal (Digital Join #40)
+                </button>
+              </div>
+
+              <div className="card">
+                <div className="card-header">
+                  <span className="card-title"><i className="fa-solid fa-shield-cat"></i> Système d'Alarme</span>
+                </div>
+                <p style={{ marginBottom: "10px", fontSize: "0.88rem" }}>
+                  Statut:{" "}
+                  <b style={{ color: alarmArmed ? "var(--accent-rose)" : "var(--accent-emerald)" }}>
+                    {alarmArmed ? "ARMÉE (TOTAL)" : "DÉSARMÉE"}
+                  </b>
+                </p>
+                <button
+                  className={`btn-control ${alarmArmed ? "btn-danger active" : "btn-danger"}`}
+                  style={{ width: "100%", padding: "12px" }}
+                  onClick={handleToggleAlarm}
+                >
+                  <i className="fa-solid fa-shield"></i> Armer / Désarmer l'Alarme (Digital Join #20)
+                </button>
+              </div>
+            </div>
+          </section>
+
+          {/* VIEW 7: SPA */}
+          <section className={`view-section ${activeView === "spa" ? "active" : ""}`}>
+            <div className="section-title-bar">
+              <h2>Espace Spa & Wellness</h2>
+              <span className="section-subtitle">Piscine Chauffée, Sauna & Jacuzzi</span>
+            </div>
+
+            <div className="grid-2">
+              <div className="card">
+                <div className="card-header">
+                  <span className="card-title"><i className="fa-solid fa-water"></i> Jacuzzi Hydro-massage</span>
+                  <button
+                    className={`btn-control ${spaJets ? "active" : ""}`}
+                    onClick={() => {
+                      const next = !spaJets;
+                      setSpaJets(next);
+                      addLog("digital", 30, `${next ? "HIGH (1) - Jacuzzi Jets On" : "LOW (0) - Jacuzzi Jets Off"}`);
+                    }}
+                  >
+                    Activer Jets
+                  </button>
+                </div>
+                <p style={{ fontSize: "0.82rem", color: "var(--text-muted)" }}>
+                  Température eau: <b>38.5 °C</b>
+                </p>
+              </div>
+
+              <div className="card">
+                <div className="card-header">
+                  <span className="card-title"><i className="fa-solid fa-temperature-high"></i> Sauna Nordique</span>
+                  <button
+                    className={`btn-control ${saunaActive ? "active" : ""}`}
+                    onClick={() => {
+                      const next = !saunaActive;
+                      setSaunaActive(next);
+                      addLog("digital", 31, `${next ? "HIGH (1) - Sauna Heating On" : "LOW (0) - Sauna Off"}`);
+                    }}
+                  >
+                    Chauffe Sauna
+                  </button>
+                </div>
+                <p style={{ fontSize: "0.82rem", color: "var(--text-muted)" }}>
+                  Température cible: <b>85 °C</b>
+                </p>
+              </div>
+            </div>
+          </section>
         </main>
       </div>
     </div>

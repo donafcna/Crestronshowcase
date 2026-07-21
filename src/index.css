@@ -1916,7 +1916,726 @@ html, body, #root {
   top: 15px !important;
 }
 /* ==========================================================================
-   CHALET ZERMATT INTERACTIVE SIMULATOR STYLES
+   VILLA ZERMATT / CHALET ZERMATT CRESTRON DOMOTIC UI DESIGN SYSTEM
+   ========================================================================== */
+
+.chalet-zermatt-ui {
+  --bg-dark: #07090e;
+  --bg-canvas: #0c1017;
+  --bg-card: rgba(18, 24, 37, 0.75);
+  --bg-card-hover: rgba(26, 35, 54, 0.85);
+  --bg-card-active: rgba(0, 229, 255, 0.12);
+  --border-card: rgba(255, 255, 255, 0.08);
+  --border-glow: rgba(0, 229, 255, 0.4);
+
+  --crestron-blue: #00e5ff;
+  --crestron-blue-glow: rgba(0, 229, 255, 0.25);
+  --accent-gold: #f5b041;
+  --accent-amber: #ff9f43;
+  --accent-emerald: #10b981;
+  --accent-rose: #f43f5e;
+  --accent-purple: #a855f7;
+
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --text-dim: #64748b;
+  --font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  --sidebar-width: 240px;
+  --topbar-height: 64px;
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+  --shadow-main: 0 10px 30px -5px rgba(0, 0, 0, 0.5);
+  --backdrop-blur: blur(20px);
+  --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+
+  width: 100%;
+  height: 100%;
+  background-color: var(--bg-canvas);
+  color: var(--text-main);
+  font-family: var(--font-family);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Device Mode Wrapper Scoping */
+.chalet-zermatt-ui.mode-ts1070 {
+  border-radius: 20px;
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.1);
+}
+
+.chalet-zermatt-ui.mode-mobile {
+  border-radius: 24px;
+}
+
+/* Device Controls Bar */
+.chalet-zermatt-ui .device-controls-bar {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(10, 14, 23, 0.85);
+  backdrop-filter: var(--backdrop-blur);
+  -webkit-backdrop-filter: var(--backdrop-blur);
+  border: 1px solid var(--border-card);
+  padding: 5px 12px;
+  border-radius: 30px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+}
+
+.chalet-zermatt-ui .device-controls-bar span {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-right: 4px;
+}
+
+.chalet-zermatt-ui .device-btn {
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--text-muted);
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: var(--transition);
+}
+
+.chalet-zermatt-ui .device-btn:hover {
+  color: var(--text-main);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.chalet-zermatt-ui .device-btn.active {
+  background: var(--crestron-blue);
+  color: #000;
+  font-weight: 700;
+  box-shadow: 0 0 12px var(--crestron-blue-glow);
+}
+
+/* App Container */
+.chalet-zermatt-ui .app-container {
+  display: flex;
+  flex: 1;
+  height: calc(100% - var(--topbar-height));
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Top Header */
+.chalet-zermatt-ui .top-header {
+  height: var(--topbar-height);
+  background: rgba(12, 16, 23, 0.9);
+  backdrop-filter: var(--backdrop-blur);
+  -webkit-backdrop-filter: var(--backdrop-blur);
+  border-bottom: 1px solid var(--border-card);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  z-index: 100;
+  flex-shrink: 0;
+}
+
+.chalet-zermatt-ui .brand-section {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.chalet-zermatt-ui .crestron-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.chalet-zermatt-ui .logo-badge {
+  background: linear-gradient(135deg, #00e5ff, #0088ff);
+  color: #000;
+  font-weight: 800;
+  font-size: 0.75rem;
+  padding: 4px 8px;
+  border-radius: 6px;
+  letter-spacing: 1px;
+}
+
+.chalet-zermatt-ui .project-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-main);
+  letter-spacing: -0.3px;
+  line-height: 1.2;
+}
+
+.chalet-zermatt-ui .project-subtitle {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.chalet-zermatt-ui .header-status-group {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.chalet-zermatt-ui .status-indicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-card);
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 0.78rem;
+}
+
+.chalet-zermatt-ui .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--accent-emerald);
+  box-shadow: 0 0 10px var(--accent-emerald);
+}
+
+.chalet-zermatt-ui .dot.offline {
+  background-color: var(--accent-rose);
+  box-shadow: 0 0 10px var(--accent-rose);
+}
+
+.chalet-zermatt-ui .weather-widget {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.82rem;
+  color: var(--text-main);
+  font-weight: 600;
+}
+
+.chalet-zermatt-ui .time-display {
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--crestron-blue);
+  letter-spacing: 1px;
+}
+
+/* Sidebar Navigation */
+.chalet-zermatt-ui .sidebar {
+  width: var(--sidebar-width);
+  background: rgba(9, 12, 18, 0.95);
+  border-right: 1px solid var(--border-card);
+  display: flex;
+  flex-direction: column;
+  padding: 16px 10px;
+  gap: 6px;
+  z-index: 90;
+  overflow-y: auto;
+  flex-shrink: 0;
+}
+
+.chalet-zermatt-ui .nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: var(--radius-md);
+  color: var(--text-muted);
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  border: 1px solid transparent;
+}
+
+.chalet-zermatt-ui .nav-item:hover {
+  color: var(--text-main);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.chalet-zermatt-ui .nav-item.active {
+  background: linear-gradient(90deg, rgba(0, 229, 255, 0.15), rgba(0, 229, 255, 0.03));
+  border-color: rgba(0, 229, 255, 0.3);
+  color: var(--crestron-blue);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.chalet-zermatt-ui .nav-item i {
+  font-size: 1.15rem;
+  width: 22px;
+  text-align: center;
+}
+
+/* Main Content Area */
+.chalet-zermatt-ui .main-content {
+  flex: 1;
+  height: 100%;
+  overflow-y: auto;
+  padding: 20px;
+  position: relative;
+  scroll-behavior: smooth;
+}
+
+/* Content Views */
+.chalet-zermatt-ui .view-section {
+  display: none;
+  animation: fadeIn 0.35s ease;
+}
+
+.chalet-zermatt-ui .view-section.active {
+  display: block;
+}
+
+/* Section Header */
+.chalet-zermatt-ui .section-title-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+.chalet-zermatt-ui .section-title-bar h2 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.chalet-zermatt-ui .section-subtitle {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+/* Grid Layouts */
+.chalet-zermatt-ui .grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.chalet-zermatt-ui .grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.chalet-zermatt-ui .grid-4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+
+/* UI Cards */
+.chalet-zermatt-ui .card {
+  background: var(--bg-card);
+  backdrop-filter: var(--backdrop-blur);
+  -webkit-backdrop-filter: var(--backdrop-blur);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-lg);
+  padding: 18px;
+  transition: var(--transition);
+  box-shadow: var(--shadow-main);
+  position: relative;
+  overflow: hidden;
+}
+
+.chalet-zermatt-ui .card:hover {
+  border-color: rgba(255, 255, 255, 0.15);
+  background: var(--bg-card-hover);
+}
+
+.chalet-zermatt-ui .card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.chalet-zermatt-ui .card-title {
+  font-size: 1rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.chalet-zermatt-ui .card-title i {
+  color: var(--crestron-blue);
+}
+
+/* Quick Scene Cards */
+.chalet-zermatt-ui .scene-card {
+  background: linear-gradient(135deg, rgba(22, 30, 46, 0.8), rgba(14, 19, 31, 0.9));
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-md);
+  padding: 14px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  transition: var(--transition);
+}
+
+.chalet-zermatt-ui .scene-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--crestron-blue);
+  box-shadow: 0 8px 25px rgba(0, 229, 255, 0.15);
+}
+
+.chalet-zermatt-ui .scene-card.active {
+  background: linear-gradient(135deg, rgba(0, 229, 255, 0.2), rgba(0, 136, 255, 0.1));
+  border-color: var(--crestron-blue);
+}
+
+.chalet-zermatt-ui .scene-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  color: var(--crestron-blue);
+}
+
+.chalet-zermatt-ui .scene-name {
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.chalet-zermatt-ui .scene-desc {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  line-height: 1.3;
+}
+
+/* Controls: Buttons, Sliders, Toggles */
+.chalet-zermatt-ui .btn-control {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--border-card);
+  color: var(--text-main);
+  padding: 8px 14px;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: var(--transition);
+}
+
+.chalet-zermatt-ui .btn-control:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.chalet-zermatt-ui .btn-control:active, 
+.chalet-zermatt-ui .btn-control.active {
+  background: var(--crestron-blue);
+  color: #000;
+  border-color: var(--crestron-blue);
+  box-shadow: 0 0 15px var(--crestron-blue-glow);
+}
+
+.chalet-zermatt-ui .btn-danger {
+  background: rgba(244, 63, 94, 0.15);
+  border-color: rgba(244, 63, 94, 0.3);
+  color: var(--accent-rose);
+}
+
+.chalet-zermatt-ui .btn-danger:hover {
+  background: var(--accent-rose);
+  color: #fff;
+}
+
+/* Custom Range Slider */
+.chalet-zermatt-ui .slider-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 10px 0;
+}
+
+.chalet-zermatt-ui .slider-label-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.chalet-zermatt-ui .slider-value {
+  color: var(--crestron-blue);
+  font-family: var(--font-mono);
+}
+
+.chalet-zermatt-ui input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 8px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  outline: none;
+  cursor: pointer;
+}
+
+.chalet-zermatt-ui input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--crestron-blue);
+  box-shadow: 0 0 10px var(--crestron-blue-glow);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.chalet-zermatt-ui input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+}
+
+/* HVAC Dial Thermostat Widget */
+.chalet-zermatt-ui .thermostat-widget {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.chalet-zermatt-ui .temp-dial {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(16, 24, 39, 0.9) 0%, rgba(8, 11, 18, 0.95) 100%);
+  border: 5px solid rgba(0, 229, 255, 0.3);
+  box-shadow: 0 0 25px rgba(0, 229, 255, 0.15), inset 0 0 20px rgba(0, 0, 0, 0.8);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 14px 0;
+  position: relative;
+}
+
+.chalet-zermatt-ui .temp-display {
+  font-size: 2.5rem;
+  font-weight: 800;
+  letter-spacing: -1px;
+  color: var(--text-main);
+  line-height: 1;
+}
+
+.chalet-zermatt-ui .temp-unit {
+  font-size: 1.1rem;
+  color: var(--crestron-blue);
+  vertical-align: top;
+}
+
+.chalet-zermatt-ui .temp-target {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+.chalet-zermatt-ui .temp-btn-row {
+  display: flex;
+  gap: 14px;
+}
+
+.chalet-zermatt-ui .btn-circle {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--border-card);
+  color: var(--text-main);
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.chalet-zermatt-ui .btn-circle:hover {
+  background: var(--crestron-blue);
+  color: #000;
+  box-shadow: 0 0 15px var(--crestron-blue-glow);
+}
+
+/* Join Monitor Panel */
+.chalet-zermatt-ui .join-monitor {
+  background: #05070a;
+  border: 1px solid rgba(0, 229, 255, 0.2);
+  border-radius: var(--radius-md);
+  padding: 14px;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  max-height: 260px;
+  overflow-y: auto;
+}
+
+.chalet-zermatt-ui .join-log-line {
+  display: flex;
+  gap: 10px;
+  padding: 4px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.chalet-zermatt-ui .join-type-digital { color: #00e5ff; }
+.chalet-zermatt-ui .join-type-analog { color: #f5b041; }
+.chalet-zermatt-ui .join-type-serial { color: #a855f7; }
+
+/* CCTV Simulated Feeds */
+.chalet-zermatt-ui .cctv-container {
+  width: 100%;
+  height: 180px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  position: relative;
+  border: 1px solid var(--border-card);
+}
+
+.chalet-zermatt-ui .cctv-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.chalet-zermatt-ui .cctv-overlay {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: rgba(0,0,0,0.7);
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.72rem;
+  font-family: var(--font-mono);
+  color: #00e676;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.chalet-zermatt-ui .rec-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #f43f5e;
+  animation: pulse 1s infinite;
+}
+
+/* Hero Villa Header Banner */
+.chalet-zermatt-ui .hero-banner {
+  width: 100%;
+  height: 160px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  position: relative;
+  margin-bottom: 18px;
+  border: 1px solid var(--border-card);
+}
+
+.chalet-zermatt-ui .hero-banner img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(0.65);
+}
+
+.chalet-zermatt-ui .hero-overlay-text {
+  position: absolute;
+  bottom: 16px;
+  left: 16px;
+  z-index: 10;
+}
+
+.chalet-zermatt-ui .hero-overlay-text h1 {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -0.5px;
+}
+
+.chalet-zermatt-ui .hero-overlay-text p {
+  font-size: 0.85rem;
+  color: var(--crestron-blue);
+  font-weight: 600;
+}
+
+/* Mobile Responsive Overrides */
+.chalet-zermatt-ui.mode-mobile .app-container {
+  flex-direction: column;
+}
+
+.chalet-zermatt-ui.mode-mobile .sidebar {
+  width: 100%;
+  height: 54px;
+  flex-direction: row;
+  order: 2;
+  padding: 0 6px;
+  justify-content: space-around;
+  border-right: none;
+  border-top: 1px solid var(--border-card);
+  overflow-x: auto;
+}
+
+.chalet-zermatt-ui.mode-mobile .nav-item {
+  flex-direction: column;
+  padding: 4px 6px;
+  font-size: 0.62rem;
+  gap: 3px;
+  border-radius: 8px;
+}
+
+.chalet-zermatt-ui.mode-mobile .nav-item i {
+  font-size: 1rem;
+}
+
+.chalet-zermatt-ui.mode-mobile .main-content {
+  height: calc(100% - 118px);
+  padding: 12px;
+}
+
+.chalet-zermatt-ui.mode-mobile .grid-2,
+.chalet-zermatt-ui.mode-mobile .grid-3,
+.chalet-zermatt-ui.mode-mobile .grid-4 {
+  grid-template-columns: 1fr;
+}
+
+.chalet-zermatt-ui.mode-mobile .top-header {
+  padding: 0 12px;
+}
+
+.chalet-zermatt-ui.mode-mobile .project-subtitle,
+.chalet-zermatt-ui.mode-mobile .weather-widget {
+  display: none;
+}
+
+/* ==========================================================================
+   YACHT, BOARDROOM, CLUB, BOUTIQUE & SUSHI BAR SPECIFIC SIMULATOR BACKGROUNDS & WIDGETS
    ========================================================================== */
 
 .chalet-zermatt-ui {
@@ -3299,4 +4018,226 @@ html, body, #root {
 .sushi-bar-kyoto-ui {
   position: relative !important;
   z-index: 1 !important;
+}
+
+/* ==========================================================================
+   VILLA NYON CONTAINER HEIGHT & NO-SCROLL OPTIMIZATION
+   ========================================================================== */
+
+.gemini-ui-root:not(.phone) .controls-main {
+  overflow: hidden !important;
+  padding: 10px 12px !important;
+  height: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+.gemini-ui-root:not(.phone) .widgets-container {
+  display: grid !important;
+  grid-template-columns: repeat(2, 1fr) !important;
+  grid-template-rows: repeat(2, 1fr) !important;
+  gap: 10px !important;
+  height: 100% !important;
+  max-height: 100% !important;
+  overflow: hidden !important;
+}
+
+.gemini-ui-root:not(.phone) .control-card {
+  height: 100% !important;
+  max-height: 100% !important;
+  padding: 8px 12px !important;
+  gap: 4px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+  box-sizing: border-box !important;
+}
+
+.gemini-ui-root:not(.phone) .card-header {
+  padding-bottom: 3px !important;
+  margin-bottom: 2px !important;
+  flex-shrink: 0 !important;
+}
+
+.gemini-ui-root:not(.phone) .card-title {
+  font-size: 0.82rem !important;
+}
+
+.gemini-ui-root:not(.phone) .card-content {
+  flex-grow: 1 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-evenly !important;
+  gap: 4px !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+}
+
+/* 1. Éclairage Container Optimization */
+.gemini-ui-root:not(.phone) .lights-list {
+  justify-content: space-evenly !important;
+  gap: 4px !important;
+}
+
+.gemini-ui-root:not(.phone) .light-row {
+  gap: 6px !important;
+  margin: 0 !important;
+}
+
+.gemini-ui-root:not(.phone) .light-label {
+  font-size: 0.72rem !important;
+  width: 100px !important;
+}
+
+.gemini-ui-root:not(.phone) .value-label {
+  font-size: 0.72rem !important;
+  width: 30px !important;
+}
+
+/* 2. Climatisation Container Optimization */
+.gemini-ui-root:not(.phone) .thermostat-flex {
+  justify-content: space-evenly !important;
+  align-items: center !important;
+  gap: 4px !important;
+}
+
+.gemini-ui-root:not(.phone) .temp-display-circle {
+  width: 72px !important;
+  height: 72px !important;
+  min-height: 72px !important;
+  border-width: 3px !important;
+}
+
+.gemini-ui-root:not(.phone) .temp-display-circle .target-num {
+  font-size: 1.15rem !important;
+}
+
+.gemini-ui-root:not(.phone) .temp-display-circle .current-num {
+  font-size: 0.55rem !important;
+}
+
+.gemini-ui-root:not(.phone) .temp-adjust-buttons {
+  gap: 8px !important;
+}
+
+.gemini-ui-root:not(.phone) .temp-btn {
+  width: 24px !important;
+  height: 24px !important;
+  font-size: 0.7rem !important;
+}
+
+.gemini-ui-root:not(.phone) .hvac-modes {
+  gap: 4px !important;
+}
+
+.gemini-ui-root:not(.phone) .mode-btn {
+  padding: 3px 2px !important;
+  font-size: 0.68rem !important;
+}
+
+/* 3. Sonorisation Container Optimization */
+.gemini-ui-root:not(.phone) .audio-player {
+  justify-content: space-evenly !important;
+  gap: 4px !important;
+}
+
+.gemini-ui-root:not(.phone) .audio-sources .source-btn {
+  padding: 2px 5px !important;
+  font-size: 0.6rem !important;
+}
+
+.gemini-ui-root:not(.phone) .track-info-block {
+  gap: 6px !important;
+}
+
+.gemini-ui-root:not(.phone) .album-art {
+  width: 32px !important;
+  height: 32px !important;
+  border-radius: 4px !important;
+}
+
+.gemini-ui-root:not(.phone) .track-title {
+  font-size: 0.75rem !important;
+  max-width: 140px !important;
+}
+
+.gemini-ui-root:not(.phone) .track-artist {
+  font-size: 0.65rem !important;
+}
+
+.gemini-ui-root:not(.phone) .player-controls {
+  margin: 0 !important;
+  gap: 10px !important;
+}
+
+.gemini-ui-root:not(.phone) .play-pause-btn {
+  width: 26px !important;
+  height: 26px !important;
+}
+
+.gemini-ui-root:not(.phone) .volume-control-row {
+  gap: 6px !important;
+}
+
+/* 4. Sécurité Container Optimization */
+.gemini-ui-root:not(.phone) .security-layout {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: flex-start !important;
+  gap: 6px !important;
+  height: 100% !important;
+}
+
+.gemini-ui-root:not(.phone) .alarm-status-panel {
+  padding: 4px 8px !important;
+  flex-shrink: 0 !important;
+}
+
+.gemini-ui-root:not(.phone) .alarm-state-text {
+  font-size: 0.72rem !important;
+}
+
+.gemini-ui-root:not(.phone) .alarm-btn {
+  padding: 2px 5px !important;
+  font-size: 0.62rem !important;
+}
+
+.gemini-ui-root:not(.phone) .camera-feed-block {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 4px !important;
+  flex-grow: 1 !important;
+  min-height: 0 !important;
+}
+
+.gemini-ui-root:not(.phone) .cam-selector-tabs {
+  flex-shrink: 0 !important;
+}
+
+.gemini-ui-root:not(.phone) .cam-tab {
+  padding: 2px !important;
+  font-size: 0.62rem !important;
+}
+
+.gemini-ui-root:not(.phone) .cam-feed-viewer {
+  flex-grow: 1 !important;
+  height: 100% !important;
+  max-height: none !important;
+  min-height: 0 !important;
+  aspect-ratio: auto !important;
+  position: relative !important;
+  overflow: hidden !important;
+  border-radius: 6px !important;
+}
+
+.gemini-ui-root:not(.phone) .cam-image {
+  object-fit: cover !important;
+  width: 100% !important;
+  height: 100% !important;
+  display: block !important;
+}
+
+.gemini-ui-root:not(.phone) .cam-overlay-info {
+  padding: 3px 5px !important;
+  font-size: 0.55rem !important;
 }
