@@ -40,15 +40,20 @@ Tests sur les différents périphériques
 - [ ] iPad
 - [ ] iPhone
 
-**Liste beug:** 
-Bouton Musique: enlever le cadre blanc, feedback non synchronisé entre les périphériques
+**To do / List bugs** 
+- [ ] Renommer tous les fichiers compilé en VillaCrans
 
-Bouton Musique: Animation son activé pas présent 
-Slider volume Son se reset. N'enlevè pas l'affichage de l'animation son "activé" sur le bouton source sélectionné
+- [ ] Bouton Musique: enlever le cadre blanc, feedback non synchronisé entre les périphériques.
 
-Widget meteo / rss n'enclenche pas l'affichage de la page web
-
-Amilorer popup pilotage des sources
-
-Quand on sélectionne une permiere piece et que l'on change les sources audio/Video, et que l'on va sur un autre périphérique, selectionne cette meme piece, il affichera le feedback source sélectioné de cette piece + celui de l'autre pièce qu'affichait l'autre interface avant de sélectionner ladite piece.
+- [ ] Bouton Musique: Animation son activé pas présent
+      
+- [ ] Debuguer / Revoir iPhone: impossible de fermer la popup "Control Global"
+      
+- [ ] Slider volume Son se reset et ne fait pas disparraitre l'affichage de l'animation son "activé" sur le bouton source sélectionné
+      
+- [ ] Widget meteo / rss n'enclenche pas l'affichage de la page web
+      
+- [ ] Amelorer popup pilotage des sources
+      
+- [ ] Quand on sélectionne une permiere piece et que l'on change les sources audio/Video, et que l'on va sur un autre périphérique, selectionne cette meme piece, il affichera le feedback source sélectioné de cette piece + celui de l'autre pièce qu'affichait l'autre interface avant de sélectionner ladite piece.
 
