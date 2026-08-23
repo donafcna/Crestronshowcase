@@ -1,0 +1,13 @@
+.vs/
+bin/
+obj/
+*.user
+*.zip
+*.vtp
+deploy.secrets.psd1
+node_modules/
+packages/
+dist/
+olddist/
+console_web_log.txt
+*.log
