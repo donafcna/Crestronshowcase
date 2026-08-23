@@ -2693,17 +2693,33 @@
                                 console.log('CH5 iPhone: Configuration villa_config reçue du CP4 (' + tot + ' chunks).');
                                 villaConfigFromCp4 = true;
                                 window.villaConfig = vc;
-                                try { localStorage.setItem('villa_config_json', JSON.stringify(vc)); } catch (e) {}
+                                try {
+                                    localStorage.setItem('villa_config_json', JSON.stringify(vc));
+                                    if (cp4ConfigHash) localStorage.setItem('villa_config_hash', cp4ConfigHash);
+                                } catch (e) {}
                                 rebuildFromVillaConfig();
                             } catch (e) {
                                 console.error('CH5 iPhone: villa_config JSON invalide :', e);
+                                try { localStorage.removeItem('villa_config_hash'); } catch (e2) {}
                             }
                         }
                     });
-                    setTimeout(function() {
-                        CrComLib.publishEvent('b', '250', true);
-                        CrComLib.publishEvent('b', '250', false);
-                    }, 2000);
+
+                    // Protocole à empreinte : transfert complet uniquement si le cache diffère (Serial 106)
+                    let cp4ConfigHash = '';
+                    let hashReqTimer = null;
+                    CrComLib.subscribeState('s', '106', function(v) {
+                        if (!v) return;
+                        cp4ConfigHash = v;
+                        let cached = '';
+                        try { cached = localStorage.getItem('villa_config_hash') || ''; } catch (e) {}
+                        if (v === cached && window.villaConfig) return;
+                        clearTimeout(hashReqTimer);
+                        hashReqTimer = setTimeout(function() {
+                            CrComLib.publishEvent('b', '250', true);
+                            CrComLib.publishEvent('b', '250', false);
+                        }, 1000);
+                    });
                 };
 
                 // Source par défaut garantie : villa_config.js embarqué en <script> (comme config.js)

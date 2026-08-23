@@ -55,9 +55,12 @@ namespace VillaFrequenceTvAutomation
 
         // --- Configuration villa_config.json (dimensionnement du GUI) ---
         private const string VillaConfigPath = "/user/villa_config.json";
-        private const int ConfigChunkSize = 2000;
+        // 180 caractères par chunk : les serials CIP natifs des dalles tronquent au-delà de ~255 octets
+        private const int ConfigChunkSize = 180;
         private const uint ConfigSerialJoin = 105;   // Config.Json : transport JSON vers le CH5
+        private const uint ConfigHashJoin = 106;     // Config.Hash : empreinte publiée aux panels (transfert seulement si différente)
         private const uint ConfigSyncJoin = 250;     // Digital = demande de config, Analog = ack de chunk
+        private string _configHash = "";
         private Newtonsoft.Json.Linq.JObject _villaConfig = null;
         private List<string> _configChunks = new List<string>();
         private Dictionary<uint, int> _configChunkCursor = new Dictionary<uint, int>();
@@ -195,13 +198,28 @@ namespace VillaFrequenceTvAutomation
                     int len = Math.Min(ConfigChunkSize, minified.Length - start);
                     _configChunks.Add(string.Format("VCFG|{0}|{1}|{2}", i + 1, total, minified.Substring(start, len)));
                 }
-                CrestronConsole.PrintLine("CONFIG: villa_config.json chargé ({0} caractères, {1} chunks).", minified.Length, total);
+                _configHash = ComputeConfigHash(minified) + "-" + total;
+                CrestronConsole.PrintLine("CONFIG: villa_config.json chargé ({0} caractères, {1} chunks, empreinte {2}).", minified.Length, total, _configHash);
             }
             catch (Exception ex)
             {
                 _villaConfig = null;
                 _configChunks.Clear();
                 ErrorLog.Error("CONFIG: Échec de lecture de villa_config.json : {0}", ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Empreinte FNV-1a de la configuration : permet aux panels de ne demander le transfert
+        /// complet que lorsque leur cache diffère.
+        /// </summary>
+        private static string ComputeConfigHash(string s)
+        {
+            unchecked
+            {
+                uint h = 2166136261;
+                foreach (char c in s) { h ^= c; h *= 16777619; }
+                return h.ToString("X8");
             }
         }
 
@@ -332,9 +350,10 @@ namespace VillaFrequenceTvAutomation
                     int roomId = _activeRoomPerDevice.ContainsKey(panel.ID) ? _activeRoomPerDevice[panel.ID] : 1;
                     UpdateScreenStateForPanel(panel, roomId);
 
-                    // Pousse la configuration de dimensionnement dès la connexion (sauf vers l'EISC)
+                    // Publie l'empreinte de la configuration : le panel demandera le transfert
+                    // complet (Digital 250) uniquement si son cache diffère.
                     if (panel != _eisc)
-                        StartConfigSend(panel);
+                        panel.StringInput[ConfigHashJoin].StringValue = _configHash;
                     else
                         MirrorAllRoomsToEisc(); // slot 2 en ligne : pousser l'état de toutes les pièces exposées
 
@@ -1047,9 +1066,10 @@ namespace VillaFrequenceTvAutomation
             // Envoi de l'IP ID sur le String Join 99
             panel.StringInput[99].StringValue = panel.ID.ToString("D2");
 
-            // Envoi des informations sur le fichier CPZ (Joins 101 et 102)
+            // Envoi des informations sur le fichier CPZ (Joins 101 et 102) et de l'empreinte de config (106)
             panel.StringInput[101].StringValue = _cpzFileName;
             panel.StringInput[102].StringValue = _cpzCompileDate;
+            panel.StringInput[ConfigHashJoin].StringValue = _configHash;
             panel.StringInput[104].StringValue = _validationDates.ContainsKey(panel.ID) ? _validationDates[panel.ID] : "";
 
             // Native Room Selection Feedback (Digital 11-40, jusqu'à 30 pièces - contrat v2)

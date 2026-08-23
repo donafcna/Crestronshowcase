@@ -78,6 +78,45 @@ Réglage global villa (pas par pièce) — `"actif": false` masque le widget :
 - `meteoActualites` : le widget météo Nyon / actualités RSS de la colonne de gauche.
 - `bandeauActualites` : le bandeau défilant « Dernières Actualités » du bloc multimédia.
 
+### Surcharges par périphérique (`widgets.parPeripherique`)
+
+Chaque appareil peut avoir son propre réglage, clé = **IP-ID hexadécimal** :
+
+```json
+"parPeripherique": {
+  "03": { "nom": "TSW dalle tactile", "meteoActualites": false },
+  "04": { "nom": "XPanel navigateur" },
+  "05": { "nom": "iPad" },
+  "06": { "nom": "iPhone", "bandeauActualites": false }
+}
+```
+
+### Surcharges par pièce (`pieces[].widgets`)
+
+Chaque pièce peut aussi imposer son réglage — appliqué quand cette pièce est
+affichée, sur tous les appareils ou pour un appareil précis :
+
+```json
+{
+  "id": 8,
+  "nom": "Home Cinéma",
+  "widgets": {
+    "bandeauActualites": false,
+    "parPeripherique": { "03": { "meteoActualites": false } }
+  }
+}
+```
+
+### Règle de résolution (du général au particulier, le plus précis gagne)
+
+1. `widgets.<widget>.actif` — réglage global villa
+2. `widgets.parPeripherique[ipid]` — réglage de l'appareil
+3. `pieces[].widgets.<widget>` — réglage de la pièce affichée
+4. `pieces[].widgets.parPeripherique[ipid]` — réglage pièce + appareil
+
+Le GUI identifie son IP-ID via le String Join 99 et ré-évalue le masquage à chaque
+changement de pièce. Structure extensible à d'autres paramètres d'affichage.
+
 ## Limites à respecter
 
 | Élément            | Maximum |

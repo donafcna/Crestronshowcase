@@ -61,6 +61,7 @@
       <button class="btn primary" onclick="deploy('all')">🚀 Tout déployer (build + TSW + CP4)</button>
       <button class="btn warn" onclick="deploy('tsw')">📺 TSW seule (build + ch5z)</button>
       <button class="btn warn" onclick="deploy('cp4')">🧠 CP4 seul (config + cpz)</button>
+      <button class="btn" onclick="deploy('config')">📄 Config seule (villa_config → CP4)</button>
       <button class="btn" onclick="deploy('tsw', true)">TSW sans rebuild</button>
       <span class="hint" id="deploy-status"></span>
     </div>
@@ -109,6 +110,10 @@
       <input id="dbg-join" type="number" placeholder="Join" style="width:110px">
       <input id="dbg-label" placeholder="Libellé (optionnel)" style="width:240px">
       <button class="btn primary mini" onclick="addWatchFromForm()">+ Surveiller</button>
+      <div style="position:relative;">
+        <button class="btn mini" id="filter-btn" onclick="toggleFilterPanel()">🏠 Filtrer par pièce ▾</button>
+        <div id="filter-panel" style="display:none; position:absolute; top:115%; left:0; z-index:60; background:var(--panel); border:1px solid var(--border); border-radius:10px; padding:12px 16px; min-width:240px; box-shadow:0 10px 30px rgba(0,0,0,.6);"></div>
+      </div>
       <span class="hint">Blocs pièces : base = 1000 + (id−1)×100 (ex : 1021 = scène 1 pièce 1) — chargés automatiquement pour les pièces en intersystem</span>
     </div>
     <div id="dbg-wrap">
@@ -221,6 +226,58 @@ window.addEventListener('CONNECT_CIP', () => setDbgStatus(true, 'CIP connecté (
 window.addEventListener('DISCONNECT_WS', () => setDbgStatus(false, 'Déconnecté'));
 window.addEventListener('DISCONNECT_CIP', () => setDbgStatus(false, 'CIP déconnecté'));
 
+// --- Filtre des signaux par pièce (0 = signaux globaux, join >= 1000 = bloc pièce) ---
+let roomFilter = null; // null = tout afficher ; sinon Set des pièces cochées
+try {
+  const saved = localStorage.getItem('dbg_room_filter');
+  if (saved) roomFilter = new Set(JSON.parse(saved));
+} catch (e) {}
+function joinRoom(join) {
+  join = parseInt(join, 10);
+  return join >= 1000 ? Math.floor((join - 1000) / 100) + 1 : 0;
+}
+function roomAllowed(room) { return !roomFilter || roomFilter.has(room); }
+function toggleFilterPanel() {
+  const p = document.getElementById('filter-panel');
+  if (p.style.display === 'none') { buildFilterPanel(); p.style.display = 'block'; }
+  else p.style.display = 'none';
+}
+function buildFilterPanel() {
+  const p = document.getElementById('filter-panel');
+  const vc = window.__villaCfg;
+  const entries = [{ id: 0, nom: 'Signaux globaux' }];
+  if (vc) (vc.pieces || []).filter(pc => pc.intersystem !== false).forEach(pc => entries.push({ id: pc.id, nom: pc.id + ' — ' + pc.nom }));
+  let html = '<div style="display:flex; gap:8px; margin-bottom:8px;">' +
+             '<button class="btn mini" onclick="setAllRoomFilter(true)">Tout</button>' +
+             '<button class="btn mini" onclick="setAllRoomFilter(false)">Aucun</button></div>';
+  entries.forEach(e => {
+    html += '<label style="display:flex; align-items:center; gap:8px; padding:3px 0; cursor:pointer; font-size:.85rem;">' +
+            '<input type="checkbox" class="room-filter-cb" data-room="' + e.id + '"' + (roomAllowed(e.id) ? ' checked' : '') + ' onchange="applyRoomFilter()"> ' +
+            escapeHtml(e.nom) + '</label>';
+  });
+  p.innerHTML = html;
+}
+function setAllRoomFilter(on) {
+  document.querySelectorAll('.room-filter-cb').forEach(cb => cb.checked = on);
+  applyRoomFilter();
+}
+function applyRoomFilter() {
+  const cbs = [...document.querySelectorAll('.room-filter-cb')];
+  if (cbs.length) {
+    const checked = cbs.filter(cb => cb.checked).map(cb => parseInt(cb.dataset.room, 10));
+    roomFilter = (checked.length === cbs.length) ? null : new Set(checked);
+    try {
+      if (roomFilter) localStorage.setItem('dbg_room_filter', JSON.stringify([...roomFilter]));
+      else localStorage.removeItem('dbg_room_filter');
+    } catch (e) {}
+  }
+  document.querySelectorAll('#dbg-rows tr').forEach(tr => {
+    tr.style.display = roomAllowed(parseInt(tr.dataset.room || '0', 10)) ? '' : 'none';
+  });
+  const btn = document.getElementById('filter-btn');
+  if (btn) btn.textContent = roomFilter ? '🏠 Filtre actif (' + roomFilter.size + ') ▾' : '🏠 Filtrer par pièce ▾';
+}
+
 // --- Bascule d'affichage : partagé / table plein écran / trace plein écran ---
 let dbgLayout = 'split';
 function toggleDbgLayout(mode) {
@@ -246,6 +303,8 @@ function traceEvent(type, join, label, value) {
   if (!wrap) return;
   // Le transport de configuration (Serial 105, chunks VCFG) polluerait la trace : ignoré
   if (type === 's' && String(join) === '105') return;
+  // Le filtre par pièce s'applique aussi à la trace
+  if (!roomAllowed(joinRoom(join))) return;
   if (type === 's' && typeof value === 'string' && value.length > 150) value = value.slice(0, 150) + '… [tronqué]';
   const now = new Date();
   const ts = now.toTimeString().slice(0, 8) + '.' + String(now.getMilliseconds()).padStart(3, '0');
@@ -311,6 +370,8 @@ function addWatch(type, join, label) {
   } else {
     forceHtml = '<input id="force-s-' + join + '" style="width:150px" class="mini"> <button class="btn mini" onclick="forceVal(\'s\',' + join + ')">Envoyer</button>';
   }
+  tr.dataset.room = joinRoom(join);
+  if (!roomAllowed(joinRoom(join))) tr.style.display = 'none';
   tr.innerHTML = '<td>' + typeName + '</td><td><b>' + join + '</b></td><td class="hint">' + escapeHtml(w.label) + '</td>' +
                  '<td><span class="val" id="val-' + type + '-' + join + '">—</span></td>' +
                  '<td>' + forceHtml + '</td>' +
@@ -369,6 +430,7 @@ function forceVal(type, join, val) {
 async function loadContractSignals() {
   try {
     const vc = await (await fetch('/villa_config.json')).json();
+    window.__villaCfg = vc; // utilisé par le filtre par pièce
     const typeMap = { digital: 'b', analog: 'n', serial: 's' };
     (vc.contrat.signauxGlobaux || []).forEach(sig => {
       const t = typeMap[sig.type];

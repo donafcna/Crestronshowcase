@@ -5668,6 +5668,8 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
             } catch (e) {}
             applyPilotageVisibility(roomId);
             window.currentActiveRoomId = roomId.toString();
+            // Les widgets peuvent dépendre de la pièce affichée : ré-évaluation à chaque changement
+            if (typeof window.applyWidgetsVisibility === 'function') window.applyWidgetsVisibility();
             const roomObj = config.rooms.find(r => r.id === roomId);
             const rawRoomName = roomObj ? roomObj.name : ("Pièce " + roomId);
             const roomName = toSentenceCase(rawRoomName);
@@ -6313,15 +6315,42 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
             }
             window.villaRebuildUI = rebuildFromVillaConfig;
 
-            // Affichage/masquage des widgets selon la section 'widgets' du fichier de configuration
-            function applyWidgetsVisibility() {
+            // Affichage/masquage des widgets selon la section 'widgets' du fichier de configuration.
+            // Réglage global, surchargeable par appareil via widgets.parPeripherique (clé = IP-ID hexa).
+            function myDeviceId() {
+                return String(window.crestronIpId || '').replace(/^0x/i, '').padStart(2, '0').toUpperCase();
+            }
+            function currentRoomId() {
+                let r = parseInt(window.currentActiveRoomId || '0', 10);
+                if (!r) { try { r = parseInt(localStorage.getItem('active_room_id') || '1', 10); } catch (e) { r = 1; } }
+                return r || 1;
+            }
+            function devEntry(container) {
+                if (!container) return null;
+                const id = myDeviceId();
+                return container[id] || container[id.toLowerCase()] || container[String(parseInt(id, 16))] || null;
+            }
+            // Résolution du réglage d'un widget, du général au particulier :
+            // global -> par périphérique -> par pièce -> par pièce ET périphérique
+            function widgetOn(key) {
                 const vc = window.villaConfig;
                 const w = (vc && vc.widgets) || {};
-                const on = k => !(w[k] && w[k].actif === false);
+                let on = !(w[key] && w[key].actif === false);
+                const dev = devEntry(w.parPeripherique);
+                if (dev && typeof dev[key] === 'boolean') on = dev[key];
+                const piece = vc ? (vc.pieces || []).find(p => p.id === currentRoomId()) : null;
+                if (piece && piece.widgets) {
+                    if (typeof piece.widgets[key] === 'boolean') on = piece.widgets[key];
+                    const roomDev = devEntry(piece.widgets.parPeripherique);
+                    if (roomDev && typeof roomDev[key] === 'boolean') on = roomDev[key];
+                }
+                return on;
+            }
+            function applyWidgetsVisibility() {
                 const weather = document.getElementById('weather-widget');
-                if (weather) weather.style.display = on('meteoActualites') ? '' : 'none';
+                if (weather) weather.style.display = widgetOn('meteoActualites') ? '' : 'none';
                 const banner = document.getElementById('news-banner');
-                if (banner) banner.style.display = on('bandeauActualites') ? 'flex' : 'none';
+                if (banner) banner.style.display = widgetOn('bandeauActualites') ? 'flex' : 'none';
             }
             window.applyWidgetsVisibility = applyWidgetsVisibility;
 
@@ -6375,18 +6404,40 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
                             console.log('CH5: Configuration villa_config reçue du CP4 (' + tot + ' chunks).');
                             villaConfigFromCp4 = true;
                             window.villaConfig = vc;
-                            try { localStorage.setItem('villa_config_json', JSON.stringify(vc)); } catch (e) {}
+                            try {
+                                localStorage.setItem('villa_config_json', JSON.stringify(vc));
+                                if (cp4ConfigHash) localStorage.setItem('villa_config_hash', cp4ConfigHash);
+                            } catch (e) {}
                             rebuildFromVillaConfig();
                         } catch (e) {
                             console.error('CH5: villa_config JSON invalide :', e);
+                            try { localStorage.removeItem('villa_config_hash'); } catch (e2) {}
                         }
                     }
                 });
-                // Demande initiale de la configuration au CP4
-                setTimeout(function() {
-                    CrComLib.publishEvent('b', '250', true);
-                    CrComLib.publishEvent('b', '250', false);
-                }, 2000);
+
+                // Protocole à empreinte : le CP4 publie l'empreinte de sa config (Serial 106).
+                // On ne demande le transfert complet (Digital 250) que si notre cache diffère.
+                let cp4ConfigHash = '';
+                let hashReqTimer = null;
+                CrComLib.subscribeState('s', '106', function(v) {
+                    if (!v) return;
+                    cp4ConfigHash = v;
+                    let cached = '';
+                    try { cached = localStorage.getItem('villa_config_hash') || ''; } catch (e) {}
+                    if (v === cached && window.villaConfig) return; // config à jour, pas de transfert
+                    clearTimeout(hashReqTimer);
+                    hashReqTimer = setTimeout(function() {
+                        console.log('CH5: empreinte de config différente (' + v + ') - demande du transfert complet.');
+                        CrComLib.publishEvent('b', '250', true);
+                        CrComLib.publishEvent('b', '250', false);
+                    }, 1000);
+                });
+
+                // Ré-appliquer le masquage par périphérique dès que notre IP-ID est connu (s99)
+                CrComLib.subscribeState('s', '99', function(v) {
+                    if (v) setTimeout(applyWidgetsVisibility, 200);
+                });
             };
 
             // Source par défaut garantie : villa_config.js embarqué en <script> (fonctionne aussi sur

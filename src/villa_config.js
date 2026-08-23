@@ -107,18 +107,33 @@ window.villaConfigEmbedded = {
   "widgets": {
     "description": "Affichage des widgets du GUI (true = affiche, false = masque). Reglage global villa.",
     "meteoActualites": {
-      "actif": true,
+      "actif": false,
       "description": "Widget meteo Nyon / actualites RSS de la colonne de gauche"
     },
     "bandeauActualites": {
-      "actif": true,
+      "actif": false,
       "description": "Bandeau defilant Dernieres Actualites du bloc multimedia"
+    },
+    "parPeripherique": {
+      "description": "Surcharges par appareil (cle = IP-ID hexadecimal). Pour chaque widget : true = affiche, false = masque sur CET appareil ; cle absente = reglage global. Extensible a d autres parametres d affichage.",
+      "03": {
+        "nom": "TSW dalle tactile"
+      },
+      "04": {
+        "nom": "XPanel navigateur"
+      },
+      "05": {
+        "nom": "iPad"
+      },
+      "06": {
+        "nom": "iPhone"
+      }
     }
   },
   "pieces": [
     {
       "id": 1,
-      "nom": "Salle de Jeux",
+      "nom": "Salle de Play",
       "intersystem": true,
       "pilotages": {
         "eclairages": {
@@ -199,7 +214,7 @@ window.villaConfigEmbedded = {
     },
     {
       "id": 2,
-      "nom": "Chambre Ami",
+      "nom": "Chambre Maman",
       "intersystem": true,
       "pilotages": {
         "eclairages": {
@@ -274,7 +289,7 @@ window.villaConfigEmbedded = {
     },
     {
       "id": 3,
-      "nom": "Simulateur Golf",
+      "nom": "Chambre Papa",
       "intersystem": true,
       "pilotages": {
         "eclairages": {
@@ -349,7 +364,7 @@ window.villaConfigEmbedded = {
     },
     {
       "id": 4,
-      "nom": "Suite bébé",
+      "nom": "Suite amis",
       "intersystem": false,
       "pilotages": {
         "eclairages": {
@@ -1926,6 +1941,14 @@ window.villaConfigEmbedded = {
         "description": "Transport de villa_config.json vers le CH5 (chunks 'VCFG|i|n|payload')"
       },
       {
+        "contractName": "Config.Hash",
+        "type": "serial",
+        "join": 106,
+        "direction": "sortie",
+        "eiscJoin": 106,
+        "description": "Empreinte de villa_config.json publiee aux panels : le GUI ne demande le transfert complet (Digital 250) que si son cache differe."
+      },
+      {
         "contractName": "AV.Source.Select",
         "type": "digital",
         "joinDebut": 150,
@@ -2214,4 +2237,5 @@ window.villaConfigEmbedded = {
       ]
     }
   }
-};
+}
+;

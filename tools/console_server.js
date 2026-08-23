@@ -167,7 +167,7 @@ const server = http.createServer((req, res) => {
 
   if (req.method === 'POST' && url === '/api/deploy') {
     return readBody(req, body => {
-      const target = ['all', 'tsw', 'cp4'].indexOf(body.target) >= 0 ? body.target : 'all';
+      const target = ['all', 'tsw', 'cp4', 'config'].indexOf(body.target) >= 0 ? body.target : 'all';
       streamDeploy(res, target, !!body.skipBuild);
     });
   }

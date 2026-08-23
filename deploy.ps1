@@ -7,7 +7,7 @@
 # Les identifiants sont lus dans deploy.secrets.psd1 (jamais commite).
 
 param(
-    [ValidateSet('all', 'tsw', 'cp4')]
+    [ValidateSet('all', 'tsw', 'cp4', 'config')]
     [string]$Target = 'all',
     [switch]$SkipBuild
 )
@@ -55,7 +55,8 @@ function Send-ConsoleCommands {
     if ($joined -notmatch 'Disconnecting Bye') {
         throw "Session console incomplete sur $($Device.Host) : $($out -join ' | ')"
     }
-    $errCount = @($out | Where-Object { $_ -match 'ERROR' }).Count
+    # Seuls les refus de commande console comptent (pas les [ERROR] des logs applicatifs relayes)
+    $errCount = @($out | Where-Object { $_ -match '^ERROR:' }).Count
     if ($errCount -gt 1) {
         # 1 erreur max toleree : celle de la ligne sacrificielle corrompue
         throw "Commande refusee par $($Device.Host) : $($out -join ' | ')"
@@ -76,7 +77,7 @@ function Copy-ToDevice {
 }
 
 # --- Build CH5 ---
-if (-not $SkipBuild -and $Target -ne 'cp4') {
+if (-not $SkipBuild -and $Target -notin @('cp4', 'config')) {
     Write-Host "[1/3] Compilation de l'archive CH5 (villaftv.ch5z)..." -ForegroundColor Cyan
     # Embarquer la configuration dans le projet CH5 (source par defaut du GUI sans liaison CP4).
     # Version .js en <script> obligatoire : fetch() est bloque en contexte local sur les dalles.
@@ -103,6 +104,29 @@ if ($Target -in @('all', 'tsw')) {
     Write-Host "  Chargement du projet (PROJECTLOAD)..."
     Send-ConsoleCommands -Device $S.TSW -Commands @('PROJECTLOAD') | Out-Null
     Write-Host "  TSW : projet charge." -ForegroundColor Green
+}
+
+# --- CONFIG SEULE : envoi de villa_config.json au CP4 + redemarrage du programme (sans recharger le cpz) ---
+if ($Target -eq 'config') {
+    Write-Host "[config] Envoi de villa_config.json sur le CP4 $($S.CP4.Host)..." -ForegroundColor Cyan
+    $villaCfg = Join-Path $root 'villa_config.json'
+    if (-not (Test-Path $villaCfg)) { throw "villa_config.json introuvable a la racine du projet" }
+
+    # Validation JSON avant envoi (evite de charger une config corrompue)
+    try { Get-Content $villaCfg -Raw -Encoding UTF8 | ConvertFrom-Json | Out-Null }
+    catch { throw "villa_config.json invalide : $($_.Exception.Message)" }
+
+    # Resynchroniser les copies embarquees du GUI (prises en compte au prochain build TSW)
+    Copy-Item $villaCfg (Join-Path $root 'src\villa_config.json') -Force
+    $cfgJson = Get-Content $villaCfg -Raw -Encoding UTF8
+    [System.IO.File]::WriteAllText((Join-Path $root 'src\villa_config.js'), "window.villaConfigEmbedded = $cfgJson;", (New-Object System.Text.UTF8Encoding $false))
+
+    Copy-ToDevice -Device $S.CP4 -LocalFile $villaCfg -RemotePath '/user/villa_config.json'
+    Write-Host "  Redemarrage du programme (progreset) pour recharger la configuration..."
+    Send-ConsoleCommands -Device $S.CP4 -Commands @('progreset -p:01') | Out-Null
+    Write-Host "  Configuration rechargee - les panels la recevront a la reconnexion." -ForegroundColor Green
+    Write-Host "Deploiement termine." -ForegroundColor Green
+    exit 0
 }
 
 # --- CP4 ---
