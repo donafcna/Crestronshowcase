@@ -2998,6 +2998,7 @@
             </div>
             <div class="pub-client cl-gauche">
                 <div class="cl-tabouret"></div>
+                <div class="cl-jambes"></div>
                 <div class="cl-corps"></div>
                 <div class="cl-bras"></div>
                 <div class="cl-avantbras"></div>
@@ -3005,6 +3006,7 @@
             </div>
             <div class="pub-client cl-droite">
                 <div class="cl-tabouret"></div>
+                <div class="cl-jambes"></div>
                 <div class="cl-bras-haut"></div>
                 <div class="cl-boire"><div class="cl-boire-verre"></div></div>
                 <div class="cl-corps"></div>
@@ -3147,8 +3149,8 @@
         .bm-bras-tireuse::after { content:''; position:absolute; top:-14px; left:-3px; width:21px; height:21px; border-radius:50%;
             background:#eec096; } /* main sur la poignée */
         @keyframes bmBrasTire { 0%,4% { transform:rotate(13deg); } 8%,55% { transform:rotate(-1deg); } 62%,100% { transform:rotate(13deg); } }
-        .bm-bras-repos { position:absolute; bottom:126px; left:14px; width:15px; height:88px; border-radius:8px;
-            background:#f0ece4; transform:rotate(-10deg); }
+        .bm-bras-repos { position:absolute; bottom:122px; left:31px; width:15px; height:92px; border-radius:8px;
+            background:#f0ece4; transform-origin:top center; transform:rotate(-14deg); } /* épaule ancrée dans le torse (corps 35..135) */
         .bm-bras-repos::after { content:''; position:absolute; bottom:-13px; left:-2px; width:19px; height:19px; border-radius:50%;
             background:#eec096; }
         /* Clients accoudés au comptoir (vus de dos, sur tabourets), de part et d'autre */
@@ -3160,9 +3162,15 @@
         .cl-tabouret { position:absolute; bottom:74px; left:30px; width:90px; height:15px; border-radius:8px 8px 4px 4px; background:#4a3016; }
         .cl-tabouret::before { content:''; position:absolute; top:15px; left:50%; margin-left:-6px; width:12px; height:74px; background:#2a1a0e; }
         .cl-tabouret::after { content:''; position:absolute; top:52px; left:8px; right:8px; height:6px; border-radius:3px; background:#241608; } /* repose-pieds */
+        /* Torse avec démarcation nette chemise / bassin (pantalon) + jambes visibles jusqu'au repose-pieds */
         .cl-corps { position:absolute; bottom:85px; left:28px; width:94px; height:185px; border-radius:38px 38px 10px 10px; }
-        .cl-gauche .cl-corps { background:linear-gradient(180deg, #52627a, #3c4a5e); }
-        .cl-droite .cl-corps { background:linear-gradient(180deg, #7a4a30, #5c3622); }
+        .cl-gauche .cl-corps { background:linear-gradient(180deg, #52627a 0 68%, #2a3444 68%); }
+        .cl-droite .cl-corps { background:linear-gradient(180deg, #7a4a30 0 68%, #3c2618 68%); }
+        .cl-jambes { position:absolute; bottom:34px; left:43px; width:64px; height:56px; border-radius:0 0 6px 6px; }
+        .cl-gauche .cl-jambes { background:linear-gradient(90deg, #2a3444 0 42%, #1a2230 42% 58%, #2a3444 58%); }
+        .cl-droite .cl-jambes { background:linear-gradient(90deg, #3c2618 0 42%, #241610 42% 58%, #3c2618 58%); }
+        .cl-jambes::before { content:''; position:absolute; bottom:-9px; left:-6px; width:34px; height:11px; border-radius:6px 4px 2px 6px; background:#14100c; }
+        .cl-jambes::after { content:''; position:absolute; bottom:-9px; right:-6px; width:34px; height:11px; border-radius:4px 6px 6px 2px; background:#14100c; }
         .cl-tete { position:absolute; bottom:258px; left:52px; width:48px; height:54px; border-radius:48%; }
         .cl-gauche .cl-tete { background:radial-gradient(circle at 50% 34%, #46321e, #30220f); }
         .cl-droite .cl-tete { background:radial-gradient(circle at 50% 34%, #776753, #57493a); }
@@ -3178,12 +3186,12 @@
         @keyframes hocheTete { 0%,55%,100% { transform:rotate(-6deg); } 63%,72% { transform:rotate(-13deg); } 80% { transform:rotate(-3deg); } }
         /* Client de droite : boit une gorgée de temps en temps — l'avant-bras pivote sur le coude
            posé sur le comptoir et porte le verre à la bouche */
-        .cl-bras-haut { position:absolute; bottom:150px; left:30px; width:15px; height:72px; border-radius:8px;
-            background:#68402a; transform-origin:top center; transform:rotate(-25deg); } /* épaule -> coude : relie le bras au corps */
+        .cl-bras-haut { position:absolute; bottom:150px; left:27px; width:15px; height:72px; border-radius:8px;
+            background:#68402a; transform-origin:top center; transform:rotate(-8deg); } /* épaule collée au flanc, coude au bord du torse */
         /* Avant-bras : au repos il est couché sur le comptoir, la main sur le verre posé ;
            pendant la gorgée il pivote sur le coude et le verre passe DERRIÈRE le torse
            (peint avant .cl-corps) -> il disparaît au niveau du corps : le client est vu de dos. */
-        .cl-boire { position:absolute; bottom:158px; left:0px; width:15px; height:80px; border-radius:8px;
+        .cl-boire { position:absolute; bottom:158px; left:16px; width:15px; height:80px; border-radius:8px;
             background:#d8a276; transform-origin:bottom center; transform:rotate(-80deg);
             animation:boitGorgee 9s ease-in-out infinite; }
         .cl-boire-verre { position:absolute; top:-38px; left:-7px; width:26px; height:40px;
