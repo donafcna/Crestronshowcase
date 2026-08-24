@@ -1,0 +1,14 @@
+export type TCh5ButtonListButtonType = 'default' | 'danger' | 'text' | 'warning' | 'info' | 'success' | 'primary' | 'secondary';
+export type TCh5ButtonListButtonHAlignLabel = 'center' | 'left' | 'right';
+export type TCh5ButtonListButtonVAlignLabel = 'middle' | 'top' | 'bottom';
+export type TCh5ButtonListButtonCheckboxPosition = 'left' | 'right';
+export type TCh5ButtonListButtonIconPosition = 'first' | 'last' | 'top' | 'bottom';
+export type TCh5ButtonListButtonShape = 'rounded-rectangle' | 'rectangle';
+export type TCh5ButtonListButtonModeState = 'normal' | 'pressed' | 'selected';
+export type TCh5ButtonListAttributesOrientation = 'horizontal' | 'vertical';
+export type TCh5ButtonListAttributesStretch = 'both';
+export type TCh5ButtonListContractItemLabelType = 'none' | 'textContent' | 'innerHTML';
+export type TCh5ButtonListContractItemIconType = 'none' | 'iconClass' | 'url' | 'sgStateName' | 'sgStateNumber';
+export type TCh5ButtonListSgIconTheme = 'icons-lg' | 'icons-sm' | 'media-transports-accents' | 'media-transports-light' | 'media-transports-dark';
+export type TCh5ButtonListAttributesLoadItems = 'visible-only' | 'load-new' | 'all';
+export type TCh5ButtonListButtonIconUrlFillType = 'stretch' | 'stretch-aspect' | 'center' | 'tile' | 'initial';

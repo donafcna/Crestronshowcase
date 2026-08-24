@@ -1,0 +1,75 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\donat\\Desktop\\Villaftv\\Backend\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{7D31EFEF-38A2-48D1-9751-B611C77B4DE4}|Backend\\Villaftv.csproj|c:\\users\\donat\\desktop\\villaftv\\backend\\backend\\controlsystem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7D31EFEF-38A2-48D1-9751-B611C77B4DE4}|Backend\\Villaftv.csproj|solutionrelative:backend\\controlsystem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7D31EFEF-38A2-48D1-9751-B611C77B4DE4}|Backend\\Backend.csproj|C:\\Users\\donat\\Desktop\\Villaftv\\Backend\\backend\\controlsystem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7D31EFEF-38A2-48D1-9751-B611C77B4DE4}|Backend\\Backend.csproj|solutionrelative:backend\\controlsystem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{00000000-0000-0000-0000-000000000000}|\u003CSolution\u003E|Villaftv||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7D31EFEF-38A2-48D1-9751-B611C77B4DE4}|Backend\\Backend.csproj|c:\\users\\donat\\desktop\\villaftv\\backend\\backend\\||{B270807C-D8C6-49EB-8EBE-8E8D566637A1}|a54ad834-9219-4aa6-b589-607af21c3e26"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "ControlSystem.cs",
+              "DocumentMoniker": "C:\\Users\\donat\\Desktop\\Villaftv\\Backend\\Backend\\ControlSystem.cs",
+              "RelativeDocumentMoniker": "Backend\\ControlSystem.cs",
+              "ToolTip": "C:\\Users\\donat\\Desktop\\Villaftv\\Backend\\Backend\\ControlSystem.cs",
+              "RelativeToolTip": "Backend\\ControlSystem.cs",
+              "ViewState": "AgIAAEEAAAAAAAAAAAAmwE8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-18T14:33:08.777Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Villaftv",
+              "DocumentMoniker": "C:\\Users\\donat\\Desktop\\Villaftv\\Backend\\Backend\\Villaftv.csproj",
+              "RelativeDocumentMoniker": "Backend\\Villaftv.csproj",
+              "ToolTip": "C:\\Users\\donat\\Desktop\\Villaftv\\Backend\\Backend\\Villaftv.csproj",
+              "RelativeToolTip": "Backend\\Villaftv.csproj",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2026-07-18T14:32:09.484Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "ControlSystem.cs",
+              "DocumentMoniker": "C:\\Users\\donat\\Desktop\\Villaftv\\Backend\\Backend\\ControlSystem.cs",
+              "RelativeDocumentMoniker": "Backend\\ControlSystem.cs",
+              "ToolTip": "C:\\Users\\donat\\Desktop\\Villaftv\\Backend\\Backend\\ControlSystem.cs",
+              "RelativeToolTip": "Backend\\ControlSystem.cs",
+              "ViewState": "AgIAAEEAAAAAAAAAAAAmwE8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-18T14:31:32.992Z"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{cce594b6-0c39-4442-ba28-10c64ac7e89f}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
