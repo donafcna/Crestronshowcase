@@ -121,6 +121,35 @@ namespace VillaFrequenceTvAutomation
             BroadcastTswVolume();
         }
 
+        // Barre d'outils virtuelle de la TS-1070 (ordre affiché : 1=Power, 2=Home, 3=Ampoule,
+        // 4=Flèche haut, 5=Flèche bas, 6=Micro). Home referme l'application ouverte (navigateur
+        // YouTube) pour revenir immédiatement au projet CH5 ; les flèches ajustent le volume ±5.
+        private void OnTswToolbarSigChange(Crestron.SimplSharpPro.DeviceExtender ext, SigEventArgs args)
+        {
+            try
+            {
+                if (_mainTswPanel == null || args.Sig.Type != eSigType.Bool) return;
+                CrestronConsole.PrintLine("TOOLBAR: sig {0} = {1}", args.Sig.Number, args.Sig.BoolValue);
+                if (!args.Sig.BoolValue) return; // front montant uniquement
+                var tb = _mainTswPanel.ExtenderButtonToolbarReservedSigs;
+
+                if (args.Sig == tb.Button2OnFeedback) // Home : retour au projet CH5
+                {
+                    CrestronConsole.PrintLine("TOOLBAR: Home pressé -> fermeture de l'application ouverte.");
+                    _mainTswPanel.ExtenderApplicationControlReservedSigs.HideOpenedApplication();
+                }
+                else if (args.Sig == tb.Button4OnFeedback) // Flèche haut : volume +5
+                {
+                    SetTswVolume((ushort)Math.Min(100, _tswVolPct + 5));
+                }
+                else if (args.Sig == tb.Button5OnFeedback) // Flèche bas : volume -5
+                {
+                    SetTswVolume((ushort)Math.Max(0, _tswVolPct - 5));
+                }
+            }
+            catch (Exception ex) { ErrorLog.Notice("Notice: toolbar TSW: {0}", ex.Message); }
+        }
+
         private void OnTswAudioExtenderSigChange(Crestron.SimplSharpPro.DeviceExtender ext, SigEventArgs args)
         {
             try
@@ -213,6 +242,9 @@ namespace VillaFrequenceTvAutomation
                 {
                     mainTsw.ExtenderAudioReservedSigs.Use();
                     mainTsw.ExtenderAudioReservedSigs.DeviceExtenderSigChange += OnTswAudioExtenderSigChange;
+                    mainTsw.ExtenderButtonToolbarReservedSigs.Use();
+                    mainTsw.ExtenderButtonToolbarReservedSigs.DeviceExtenderSigChange += OnTswToolbarSigChange;
+                    mainTsw.ExtenderApplicationControlReservedSigs.Use();
                     _mainTswPanel = mainTsw;
                 }
                 catch (Exception ex)
