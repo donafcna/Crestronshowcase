@@ -253,6 +253,26 @@ namespace VillaFrequenceTvAutomation
                 }
                 RegisterUserInterface(mainTsw);
 
+                // Commandes console de diagnostic (tapées sur la console du CP4) :
+                // villahome  = ferme l'application ouverte sur la dalle (retour au projet CH5)
+                // villavol N = règle le volume matériel de la dalle (0-100)
+                CrestronConsole.AddNewConsoleCommand(s =>
+                {
+                    try
+                    {
+                        if (_mainTswPanel == null) { CrestronConsole.ConsoleCommandResponse("villahome: dalle indisponible\r\n"); return; }
+                        _mainTswPanel.ExtenderApplicationControlReservedSigs.HideOpenedApplication();
+                        CrestronConsole.ConsoleCommandResponse("villahome: HideOpenedApplication envoye a la dalle\r\n");
+                    }
+                    catch (Exception ex2) { CrestronConsole.ConsoleCommandResponse("villahome: erreur {0}\r\n", ex2.Message); }
+                }, "villahome", "Ferme l'application ouverte sur la dalle TSW (retour CH5)", ConsoleAccessLevelEnum.AccessOperator);
+                CrestronConsole.AddNewConsoleCommand(s =>
+                {
+                    ushort v;
+                    if (ushort.TryParse((s ?? "").Trim(), out v)) { SetTswVolume(v); CrestronConsole.ConsoleCommandResponse("villavol: volume {0}% applique\r\n", v); }
+                    else CrestronConsole.ConsoleCommandResponse("villavol: usage 'villavol 0-100' (actuel {0}%)\r\n", _tswVolPct);
+                }, "villavol", "Regle le volume materiel de la dalle TSW (0-100)", ConsoleAccessLevelEnum.AccessOperator);
+
                 // 3. Déclaration et instanciation du Web XPanel HTML5 sur l'IP ID 0x04
                 RegisterUserInterface(new XpanelForHtml5(0x04, this));
 
