@@ -71,6 +71,72 @@ namespace VillaFrequenceTvAutomation
         private const uint MainPanelIpId = 0x03;
         private ushort _tswActiveRoom = 1;
 
+        // Volume audio matériel de la dalle TSW (page Vidéo) : Analog 260 = volume 0-100
+        // (extender AllAudioVolume, échelle 0-65535), Digital 261 = bascule mute.
+        private const uint TswVolumeJoin = 260;
+        private const uint TswMuteJoin = 261;
+        private Tsw1070GV _mainTswPanel = null;
+        private ushort _tswVolPct = 50;
+        private ushort _tswVolBeforeMute = 50;
+        private bool _tswVolMuted = false;
+
+        private void BroadcastTswVolume()
+        {
+            if (_touchPanels == null) return;
+            foreach (var dev in _touchPanels)
+            {
+                dev.UShortInput[TswVolumeJoin].UShortValue = _tswVolPct;
+                dev.BooleanInput[TswMuteJoin].BoolValue = _tswVolMuted;
+            }
+        }
+
+        private void ApplyTswVolumeHardware(ushort pct)
+        {
+            _tswVolPct = pct;
+            if (_mainTswPanel != null)
+                _mainTswPanel.ExtenderAudioReservedSigs.AllAudioVolume.UShortValue = (ushort)(pct * 65535 / 100);
+        }
+
+        private void SetTswVolume(ushort pct)
+        {
+            if (pct > 100) pct = 100;
+            if (pct > 0) { _tswVolMuted = false; _tswVolBeforeMute = pct; }
+            else _tswVolMuted = true;
+            ApplyTswVolumeHardware(pct);
+            BroadcastTswVolume();
+        }
+
+        private void ToggleTswMute()
+        {
+            _tswVolMuted = !_tswVolMuted;
+            if (_tswVolMuted)
+            {
+                _tswVolBeforeMute = _tswVolPct > 0 ? _tswVolPct : (ushort)50;
+                ApplyTswVolumeHardware(0);
+            }
+            else
+            {
+                ApplyTswVolumeHardware(_tswVolBeforeMute);
+            }
+            BroadcastTswVolume();
+        }
+
+        private void OnTswAudioExtenderSigChange(Crestron.SimplSharpPro.DeviceExtender ext, SigEventArgs args)
+        {
+            try
+            {
+                if (_mainTswPanel == null) return;
+                var fb = _mainTswPanel.ExtenderAudioReservedSigs.AllAudioVolumeFeedback;
+                if (args.Sig == fb)
+                {
+                    _tswVolPct = (ushort)Math.Round(fb.UShortValue * 100.0 / 65535.0);
+                    CrestronConsole.PrintLine("VOLUME DALLE: feedback matériel {0}% (brut {1}).", _tswVolPct, fb.UShortValue);
+                    BroadcastTswVolume();
+                }
+            }
+            catch { /* feedback best-effort */ }
+        }
+
         private void BroadcastTswRoom()
         {
             if (_touchPanels == null) return;
@@ -141,7 +207,19 @@ namespace VillaFrequenceTvAutomation
                 _touchPanels = new List<BasicTriList>();
 
                 // 2. Déclaration et instanciation de la dalle tactile principale TSW-1070 sur l'IP ID 0x03
-                RegisterUserInterface(new Tsw1070GV(0x03, this));
+                //    L'extender audio (volume matériel) doit être activé AVANT le Register.
+                var mainTsw = new Tsw1070GV(0x03, this);
+                try
+                {
+                    mainTsw.ExtenderAudioReservedSigs.Use();
+                    mainTsw.ExtenderAudioReservedSigs.DeviceExtenderSigChange += OnTswAudioExtenderSigChange;
+                    _mainTswPanel = mainTsw;
+                }
+                catch (Exception ex)
+                {
+                    ErrorLog.Notice("Notice: extender audio de la dalle TSW indisponible: {0}", ex.Message);
+                }
+                RegisterUserInterface(mainTsw);
 
                 // 3. Déclaration et instanciation du Web XPanel HTML5 sur l'IP ID 0x04
                 RegisterUserInterface(new XpanelForHtml5(0x04, this));
@@ -379,6 +457,10 @@ namespace VillaFrequenceTvAutomation
 
                     // Informe le nouvel arrivant de la pièce affichée par la dalle principale
                     panel.UShortInput[TswRoomBroadcastJoin].UShortValue = _tswActiveRoom;
+
+                    // ... et du volume matériel courant de la dalle (page Vidéo)
+                    panel.UShortInput[TswVolumeJoin].UShortValue = _tswVolPct;
+                    panel.BooleanInput[TswMuteJoin].BoolValue = _tswVolMuted;
                 }
             }
         }
@@ -801,6 +883,11 @@ namespace VillaFrequenceTvAutomation
                     SendFeedbackBoolToRoom(activeRoomId, 55, selectedRoom.IsAudioMuted);
                     break;
 
+                case (ushort)TswMuteJoin: // Bascule mute du volume matériel de la dalle TSW (page Vidéo)
+                    CrestronConsole.PrintLine("VOLUME DALLE: bascule mute demandée par IP-ID {0:X2}.", currentDevice.ID);
+                    ToggleTswMute();
+                    break;
+
                 // Stores groupés Volets/Rideaux/Stores (61-69) - écho différencié vers le bloc pièce EISC (+1..+9)
                 case 61:
                 case 62:
@@ -1038,6 +1125,11 @@ namespace VillaFrequenceTvAutomation
                 case (ushort)ConfigSyncJoin:
                     // Accusé de réception d'un chunk de configuration (Analog 250)
                     OnConfigChunkAck(currentDevice, rawValue);
+                    break;
+
+                case (ushort)TswVolumeJoin: // Volume matériel de la dalle TSW (0-100), page Vidéo
+                    CrestronConsole.PrintLine("VOLUME DALLE: {0}% demandé par IP-ID {1:X2}.", rawValue, currentDevice.ID);
+                    SetTswVolume(rawValue);
                     break;
 
                 case 21:

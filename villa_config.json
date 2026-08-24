@@ -2132,6 +2132,22 @@
         "direction": "sortie",
         "eiscJoin": 240,
         "description": "Piece actuellement affichee par la dalle principale (IP-ID 03), diffusee a tous les peripheriques (suivi par le debugger virtuel)."
+      },
+      {
+        "contractName": "Systeme.VolumeDalle",
+        "type": "analog",
+        "join": 260,
+        "direction": "entree/sortie",
+        "eiscJoin": 260,
+        "description": "Volume audio materiel de la dalle TSW (0-100), pilote l'extender AllAudioVolume. Utilise par la page Video. Feedback diffuse a tous les peripheriques."
+      },
+      {
+        "contractName": "Systeme.MuteDalle",
+        "type": "digital",
+        "join": 261,
+        "direction": "entree/sortie",
+        "eiscJoin": 261,
+        "description": "Bascule mute du volume materiel de la dalle TSW (memorise/restaure le dernier volume). Feedback = etat mute."
       }
     ],
     "blocsPieces": {

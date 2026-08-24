@@ -2928,12 +2928,28 @@
             <div class="neon-sub">HTML5 · CSS3 · Crestron CH5</div>
         </div>
         <div id="anim-css-carousel" class="anim-css-scene" style="display:none;">
-            <div class="carousel-wrap"><div class="carousel">
-                <div class="car-card" style="--i:0;">🛋️<br>Salon</div><div class="car-card" style="--i:1;">🍳<br>Cuisine</div>
-                <div class="car-card" style="--i:2;">🎬<br>Cinéma</div><div class="car-card" style="--i:3;">🏊<br>Piscine</div>
-                <div class="car-card" style="--i:4;">🛏️<br>Chambre</div><div class="car-card" style="--i:5;">💼<br>Bureau</div>
-                <div class="car-card" style="--i:6;">🌿<br>Jardin</div><div class="car-card" style="--i:7;">🧖<br>Spa</div>
-            </div></div>
+            <div style="position:absolute; top:16px; left:0; right:0; text-align:center; color:rgba(255,255,255,0.5); font-size:.85rem; z-index:2;">◀ toucher à gauche · toucher la tuile de face = ouvrir la pièce · toucher à droite ▶</div>
+            <div class="carousel-wrap"><div class="carousel" id="carousel-3d"><!-- tuiles générées depuis villa_config --></div></div>
+        </div>
+        <div id="anim-css-biere" class="anim-css-scene" style="display:none;">
+            <div class="bar-lumiere"></div>
+            <div class="bar-comptoir"></div>
+            <div class="tireuse">
+                <div class="tireuse-poignee"></div>
+                <div class="tireuse-colonne"></div>
+                <div class="tireuse-bec"></div>
+            </div>
+            <div class="biere-jet"></div>
+            <div class="verre-biere">
+                <div class="biere-liquide">
+                    <div class="biere-mousse"></div>
+                    <div class="bulle bu1"></div><div class="bulle bu2"></div><div class="bulle bu3"></div>
+                    <div class="bulle bu4"></div><div class="bulle bu5"></div><div class="bulle bu6"></div>
+                </div>
+                <div class="verre-reflet"></div>
+                <div class="verre-logo">Fréquence<span>TV</span></div>
+                <div class="verre-anse"></div>
+            </div>
         </div>
         <div id="anim-css-gyro" class="anim-css-scene" style="display:none;">
             <div class="gyro-wrap">
@@ -2943,6 +2959,7 @@
             </div>
         </div>
         <div id="anim-menu" style="position:absolute; left:0; right:0; bottom:0; z-index:3; display:flex; gap:8px; padding:10px 14px; overflow-x:auto; background:rgba(2,3,8,0.75); backdrop-filter:blur(8px); border-top:1px solid rgba(255,255,255,0.1);"></div>
+        <button id="anim-resume-btn" onclick="window.resumeAnimCycle()" style="display:none; position:absolute; top:10px; left:14px; z-index:3; height:38px; padding:0 18px; background:rgba(16,185,129,0.2); border:1px solid #10b981; color:#10b981; border-radius:8px; font-weight:bold; cursor:pointer;">▶ Défilement auto</button>
         <button onclick="window.closeSpecialPage()" style="position:absolute; top:10px; right:14px; z-index:3; height:38px; padding:0 18px; background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.3); color:#fff; border-radius:8px; font-weight:bold; cursor:pointer;">FERMER</button>
     </div>
     <style>
@@ -2970,15 +2987,70 @@
         @keyframes blobFloat3 { 0%,100% { transform:translate(35vw,60vh) scale(0.9); } 50% { transform:translate(65vw,8vh) scale(1.5); } }
         .anim-menu-btn { flex-shrink:0; height:40px; padding:0 16px; border-radius:8px; border:1px solid rgba(255,255,255,0.2); background:rgba(255,255,255,0.06); color:#cbd5e1; font-weight:600; font-size:.85rem; cursor:pointer; }
         .anim-menu-btn.active { background:rgba(16,185,129,0.2); border-color:#10b981; color:#10b981; }
+        /* 🍺 Bière Fréquence TV au bar — cycle de 9s : tirage (0-55%), pause pleine, reset */
+        #anim-css-biere { background:radial-gradient(ellipse at 50% 20%, #2a1c10, #0d0805 70%); }
+        .bar-lumiere { position:absolute; top:0; left:50%; transform:translateX(-50%); width:600px; height:380px;
+            background:radial-gradient(ellipse at 50% 0%, rgba(245,190,90,0.22), transparent 70%); }
+        .bar-comptoir { position:absolute; bottom:0; left:0; right:0; height:22%;
+            background:linear-gradient(180deg, #6b4423, #4a2d15 30%, #2e1a0a);
+            border-top:6px solid #8a5a2e; box-shadow:0 -8px 30px rgba(0,0,0,0.6); }
+        /* Tireuse ENTIÈREMENT AU-DESSUS du verre : ancre à 240px au-dessus du comptoir
+           (le bord du verre est à ~206px), colonne qui monte, bec qui avance jusqu'au
+           centre du verre, jet aligné au centre qui tombe dedans. */
+        .tireuse { position:absolute; left:50%; bottom:calc(22% + 240px); transform:translateX(-170px); z-index:3; }
+        .tireuse-colonne { position:absolute; bottom:0; left:0; width:46px; height:150px; border-radius:20px 20px 6px 6px;
+            background:linear-gradient(90deg, #7a8494, #d7dde6 35%, #98a2b2 70%, #5d6673); box-shadow:0 4px 18px rgba(0,0,0,0.55); }
+        .tireuse-bec { position:absolute; bottom:8px; left:34px; width:126px; height:20px; border-radius:0 8px 14px 4px;
+            background:linear-gradient(180deg, #cfd6df, #848e9c); }
+        .tireuse-bec::after { content:''; position:absolute; right:2px; top:18px; width:12px; height:14px;
+            background:linear-gradient(90deg, #9aa3b1, #6d7684); border-radius:0 0 5px 5px; }
+        .tireuse-poignee { position:absolute; bottom:146px; left:14px; width:14px; height:64px; border-radius:8px;
+            background:linear-gradient(90deg, #0e7a4f, #10b981 45%, #0a5c3c); box-shadow:0 0 12px rgba(16,185,129,0.4);
+            transform-origin:bottom center; animation:pousseTirette 9s ease-in-out infinite; }
+        .tireuse-poignee::before { content:''; position:absolute; top:-16px; left:-6px; width:26px; height:26px; border-radius:50%;
+            background:radial-gradient(circle at 35% 30%, #34d399, #0a5c3c); }
+        @keyframes pousseTirette { 0%,4% { transform:rotate(0); } 8%,55% { transform:rotate(-38deg); } 62%,100% { transform:rotate(0); } }
+        .biere-jet { position:absolute; left:50%; bottom:calc(22% + 30px); transform:translateX(-6px); width:9px; height:212px;
+            background:linear-gradient(180deg, rgba(245,190,60,0.95), rgba(250,205,90,0.75)); border-radius:4px;
+            filter:blur(0.4px); animation:couleJet 9s linear infinite; z-index:1; }
+        @keyframes couleJet { 0%,7% { opacity:0; } 9%,54% { opacity:1; } 57%,100% { opacity:0; } }
+        .verre-biere { position:absolute; left:50%; bottom:22%; transform:translateX(-71px); z-index:2; width:130px; height:200px;
+            border:6px solid rgba(220,235,255,0.5); border-top-width:2px; border-radius:10px 10px 22px 22px;
+            background:rgba(200,220,255,0.06); box-shadow:inset 0 0 24px rgba(255,255,255,0.08), 0 10px 26px rgba(0,0,0,0.5); }
+        .verre-anse { position:absolute; right:-52px; top:38px; width:52px; height:96px;
+            border:11px solid rgba(220,235,255,0.45); border-left:none; border-radius:0 40px 40px 0; }
+        .biere-liquide { position:absolute; left:0; right:0; bottom:0; border-radius:0 0 16px 16px; overflow:visible;
+            background:linear-gradient(180deg, #f5b73c, #e09520 55%, #c77e12); animation:remplitBiere 9s linear infinite; }
+        @keyframes remplitBiere { 0%,7% { height:0%; } 55% { height:82%; } 90% { height:82%; } 96%,100% { height:0%; } }
+        .biere-mousse { position:absolute; top:-13px; left:-3px; right:-3px; height:22px; border-radius:12px;
+            background:radial-gradient(circle at 18% 60%, #fff 22%, transparent 24%), radial-gradient(circle at 45% 40%, #fff 26%, transparent 28%),
+                       radial-gradient(circle at 72% 62%, #fff 24%, transparent 26%), radial-gradient(circle at 92% 45%, #fff 18%, transparent 20%),
+                       linear-gradient(180deg, #ffffff, #f2ead8);
+            box-shadow:0 -3px 8px rgba(255,255,255,0.35); animation:mousseVit 9s linear infinite; }
+        @keyframes mousseVit { 0%,7% { opacity:0; } 14% { opacity:1; } 90% { opacity:1; } 96%,100% { opacity:0; } }
+        .bulle { position:absolute; bottom:4px; width:7px; height:7px; border-radius:50%;
+            background:radial-gradient(circle at 30% 30%, rgba(255,255,255,0.95), rgba(255,240,190,0.25)); opacity:0; }
+        .bu1 { left:12%; animation:monteBulle 2.1s linear 0.2s infinite; } .bu2 { left:30%; width:5px; height:5px; animation:monteBulle 1.7s linear 0.9s infinite; }
+        .bu3 { left:48%; animation:monteBulle 2.5s linear 0.5s infinite; } .bu4 { left:63%; width:4px; height:4px; animation:monteBulle 1.5s linear 1.3s infinite; }
+        .bu5 { left:78%; animation:monteBulle 2.2s linear 0s infinite; } .bu6 { left:88%; width:5px; height:5px; animation:monteBulle 1.9s linear 0.6s infinite; }
+        @keyframes monteBulle { 0% { transform:translateY(0); opacity:0; } 12% { opacity:0.9; } 92% { opacity:0.7; } 100% { transform:translateY(-150px); opacity:0; } }
+        .verre-reflet { position:absolute; top:8px; left:10px; width:16px; height:150px; border-radius:10px;
+            background:linear-gradient(180deg, rgba(255,255,255,0.35), rgba(255,255,255,0.04)); }
+        .verre-logo { position:absolute; top:44%; left:0; right:0; text-align:center; z-index:2;
+            font:italic 900 1.15rem 'Segoe UI'; color:rgba(255,255,255,0.9); letter-spacing:1px;
+            text-shadow:0 1px 3px rgba(0,0,0,0.5); transform:rotate(-4deg); }
+        .verre-logo span { display:block; font-size:1.7rem; letter-spacing:5px; color:#fff;
+            text-shadow:0 0 12px rgba(16,185,129,0.9), 0 1px 3px rgba(0,0,0,0.5); }
         /* Carrousel de cartes 3D (CSS pur) */
         .carousel-wrap { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; perspective:1100px; }
-        .carousel { position:relative; width:190px; height:250px; transform-style:preserve-3d; animation:carouselSpin 16s linear infinite; }
+        .carousel { position:relative; width:190px; height:250px; transform-style:preserve-3d;
+            transition:transform 0.7s cubic-bezier(.2,.85,.25,1); }
         .car-card { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px;
             font:bold 1.5rem 'Segoe UI'; color:#fff; text-align:center; border-radius:14px; border:1px solid rgba(255,255,255,0.45);
             background:linear-gradient(160deg, rgba(16,185,129,0.4), rgba(56,189,248,0.25), rgba(139,92,246,0.4));
-            box-shadow:0 0 30px rgba(56,189,248,0.25); backdrop-filter:blur(2px);
-            transform:rotateY(calc(var(--i) * 45deg)) translateZ(300px); font-size:2.6rem; }
-        @keyframes carouselSpin { from { transform:rotateX(-8deg) rotateY(0); } to { transform:rotateX(-8deg) rotateY(-360deg); } }
+            box-shadow:0 0 30px rgba(56,189,248,0.25); backdrop-filter:blur(2px); font-size:2.6rem; cursor:pointer; }
+        .car-card .car-nom { font-size:1.05rem; line-height:1.2; }
+        .car-card.front { border-color:#10b981; box-shadow:0 0 45px rgba(16,185,129,0.65); }
         /* Gyroscope 3D (CSS pur) */
         .gyro-wrap { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; perspective:1000px; }
         .gyro-ring { position:absolute; border-radius:50%; border:3px solid; transform-style:preserve-3d; }
@@ -2995,6 +3067,17 @@
     </style>
     <div id="special-video" style="display:none; position:fixed; inset:0; z-index:1200; background:#000; align-items:center; justify-content:center;">
         <div id="video-frame-holder" style="position:absolute; inset:60px 20px 20px 20px;"></div>
+        <!-- Barre supérieure : volume matériel de la dalle (Analog 260 / Digital 261) + FERMER. Géométrie fixe. -->
+        <div style="position:absolute; top:10px; left:14px; z-index:2; height:38px; display:flex; align-items:center; gap:10px;">
+            <span style="color:rgba(255,255,255,0.7); font-size:0.85rem; font-weight:bold; width:92px;">🔊 Dalle TSW</span>
+            <button onclick="window.dalleVolDelta(-5)" style="width:46px; height:38px; background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.3); color:#fff; border-radius:8px; font-weight:bold; font-size:1.1rem; cursor:pointer;">−</button>
+            <div style="width:150px; height:14px; border-radius:7px; background:rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.25); overflow:hidden;">
+                <div id="dalle-vol-bar" style="width:50%; height:100%; background:linear-gradient(90deg,#38bdf8,#0ea5e9); transition:width 0.15s;"></div>
+            </div>
+            <button onclick="window.dalleVolDelta(5)" style="width:46px; height:38px; background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.3); color:#fff; border-radius:8px; font-weight:bold; font-size:1.1rem; cursor:pointer;">+</button>
+            <span id="dalle-vol-label" style="color:#fff; font-size:0.85rem; font-weight:bold; width:44px; text-align:right;">50%</span>
+            <button id="dalle-mute-btn" onclick="window.dalleMuteToggle()" style="width:52px; height:38px; background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.3); color:#fff; border-radius:8px; font-size:1rem; cursor:pointer;">🔇</button>
+        </div>
         <button onclick="window.closeSpecialPage()" style="position:absolute; top:10px; right:14px; z-index:2; height:38px; padding:0 18px; background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.3); color:#fff; border-radius:8px; font-weight:bold; cursor:pointer;">FERMER</button>
     </div>
     <div class="app-container">
@@ -6640,6 +6723,7 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
             let specialRaf = null;
             window.closeSpecialPage = function() {
                 if (specialRaf) { cancelAnimationFrame(specialRaf); specialRaf = null; }
+                if (window.specialCycle) { clearInterval(window.specialCycle); window.specialCycle = null; }
                 ['special-game', 'special-anim', 'special-video'].forEach(id => { document.getElementById(id).style.display = 'none'; });
                 document.getElementById('video-frame-holder').innerHTML = ''; // stoppe la lecture YouTube
             };
@@ -6648,15 +6732,67 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
                 if (kind === 'jeux') { document.getElementById('special-game').style.display = 'block'; startSpaceGame(); }
                 else if (kind === 'animation') { document.getElementById('special-anim').style.display = 'block'; startParticleShow(); }
                 else if (kind === 'video') {
-                    document.getElementById('special-video').style.display = 'block';
                     const sp = (window.villaConfig && window.villaConfig.pagesSpeciales) || {};
                     const recherche = (sp.video && sp.video.youtubeRecherche) || 'football highlights';
+                    document.getElementById('special-video').style.display = 'block';
                     const holder = document.getElementById('video-frame-holder');
-                    holder.innerHTML = '<iframe style="width:100%; height:100%; border:0; border-radius:12px;" ' +
-                        'src="https://www.youtube.com/embed?listType=search&list=' + encodeURIComponent(recherche) + '&autoplay=1" ' +
-                        'allow="autoplay; encrypted-media; fullscreen" allowfullscreen></iframe>';
+                    // En contexte local (dalle : projet chargé en file://), YouTube refuse l'embed
+                    // (erreur 153, pas de Referer) : la page devient une télécommande — réglage du
+                    // volume matériel de la dalle + bouton qui ouvre le navigateur du panel
+                    // (retour à l'interface via le menu Home, ou FERMER ici avant de lancer).
+                    if (location.protocol === 'file:') {
+                        holder.innerHTML =
+                            '<div style="width:100%; height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:24px;">' +
+                            '<div style="font-size:3rem;">⚽</div>' +
+                            '<div style="color:#fff; font-size:1.3rem; font-weight:bold; letter-spacing:2px;">VIDÉO YOUTUBE</div>' +
+                            '<button onclick="window.dalleOpenYoutube()" style="width:320px; height:64px; background:linear-gradient(135deg,#dc2626,#991b1b); border:1px solid rgba(255,255,255,0.3); color:#fff; border-radius:12px; font-size:1.15rem; font-weight:bold; cursor:pointer;">▶&nbsp;&nbsp;OUVRIR YOUTUBE</button>' +
+                            '<div style="color:rgba(255,255,255,0.55); font-size:0.9rem; text-align:center; max-width:520px; line-height:1.5;">' +
+                            'Réglez le volume de la dalle avec la barre en haut (utilisable aussi pendant la lecture depuis un autre écran).<br>' +
+                            'La vidéo s’ouvre dans le navigateur de la dalle : pour revenir à l’interface, utilisez le menu Home de la dalle.</div>' +
+                            '</div>';
+                    } else {
+                        holder.innerHTML = '<iframe style="width:100%; height:100%; border:0; border-radius:12px;" ' +
+                            'src="https://www.youtube.com/embed?listType=search&list=' + encodeURIComponent(recherche) + '&autoplay=1" ' +
+                            'allow="autoplay; encrypted-media; fullscreen" allowfullscreen></iframe>';
+                    }
                 }
             };
+
+            // --- Volume matériel de la dalle TSW (contrat : Analog 260 = 0-100, Digital 261 = mute) ---
+            let dalleVol = 50, dalleMuted = false;
+            function updateDalleVolUi() {
+                const bar = document.getElementById('dalle-vol-bar');
+                const lbl = document.getElementById('dalle-vol-label');
+                const mb = document.getElementById('dalle-mute-btn');
+                if (bar) bar.style.width = (dalleMuted ? 0 : dalleVol) + '%';
+                if (lbl) lbl.textContent = dalleMuted ? 'MUTE' : (dalleVol + '%');
+                if (mb) {
+                    mb.style.background = dalleMuted ? 'rgba(220,38,38,0.55)' : 'rgba(255,255,255,0.1)';
+                    mb.style.borderColor = dalleMuted ? '#ef4444' : 'rgba(255,255,255,0.3)';
+                }
+            }
+            window.dalleVolDelta = function(d) {
+                dalleVol = Math.max(0, Math.min(100, dalleVol + d));
+                CrComLib.publishEvent('n', '260', dalleVol);
+                updateDalleVolUi();
+            };
+            window.dalleMuteToggle = function() {
+                CrComLib.publishEvent('b', '261', true);
+                CrComLib.publishEvent('b', '261', false);
+            };
+            window.dalleOpenYoutube = function() {
+                const sp = (window.villaConfig && window.villaConfig.pagesSpeciales) || {};
+                const recherche = (sp.video && sp.video.youtubeRecherche) || 'football highlights';
+                window.open('https://www.youtube.com/results?search_query=' + encodeURIComponent(recherche), '_blank');
+            };
+            CrComLib.subscribeState('n', '260', function(v) {
+                const n = parseInt(v, 10);
+                if (!isNaN(n)) { dalleVol = Math.max(0, Math.min(100, n)); updateDalleVolUi(); }
+            });
+            CrComLib.subscribeState('b', '261', function(v) {
+                dalleMuted = (v === true || v === 'true');
+                updateDalleVolUi();
+            });
 
             // --- Jeu : vaisseau spatial (canvas) ---
             function startSpaceGame() {
@@ -6771,20 +6907,185 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
                             return --s.l > 0;
                         });
                     } },
-                    { id: 'ocean', nom: '🌊 Océan', reset() {}, frame(t) {
-                        const g0 = ctx.createLinearGradient(0, 0, 0, H());
-                        g0.addColorStop(0, '#0a1230'); g0.addColorStop(0.6, '#123'); g0.addColorStop(1, '#031018');
-                        ctx.fillStyle = g0; ctx.fillRect(0, 0, W(), H());
-                        ctx.fillStyle = 'rgba(245,200,80,0.9)'; ctx.beginPath(); ctx.arc(W() * 0.75, H() * 0.28 + Math.sin(t * 0.0003) * 12, 42, 0, 7); ctx.fill();
-                        for (let l = 0; l < 5; l++) {
+                    { id: 'ocean', nom: '🌊 Océan', reset() {
+                        const HZ = () => H() * 0.4;
+                        state.hz = HZ;
+                        state.surf = (x, t) => HZ() + Math.sin(x * 0.008 + t * 0.0011) * 7 + Math.sin(x * 0.021 - t * 0.0017) * 3.5;
+                        state.fish = Array.from({ length: 13 }, () => ({ x: Math.random() * W(), y: HZ() + 60 + Math.random() * (H() - HZ() - 90), s: 7 + Math.random() * 9, d: Math.random() < 0.5 ? 1 : -1, v: 0.6 + Math.random() * 1.1, h: [200, 30, 330, 160][Math.floor(Math.random() * 4)], ph: Math.random() * 9 }));
+                        state.jelly = Array.from({ length: 3 }, () => ({ x: Math.random() * W(), y: HZ() + 120 + Math.random() * (H() - HZ() - 180), s: 14 + Math.random() * 10, ph: Math.random() * 9 }));
+                        state.etoiles = Array.from({ length: 70 }, () => ({ x: Math.random() * W(), y: Math.random() * HZ() * 0.85, r: Math.random() * 1.4 + 0.3 }));
+                        state.nuages = Array.from({ length: 4 }, (_, i) => ({ x: Math.random() * W(), y: 24 + i * 26, s: 55 + Math.random() * 55, v: 0.06 + Math.random() * 0.1 }));
+                        state.bulles = [];
+                        state.movers = [];
+                        state.prochains = { requin: 3000, baleine: 10000, sousmarin: 16000, paquebot: 5000, chalutier: 12000 };
+                        state.barques = [ { fx: 0.26, ph: 0 }, { fx: 0.7, ph: 4500 } ];
+                    }, frame(t) {
+                        const HZ = state.hz(), surf = state.surf;
+                        // Ciel étoilé, lune, nuages
+                        const ciel = ctx.createLinearGradient(0, 0, 0, HZ);
+                        ciel.addColorStop(0, '#060a1e'); ciel.addColorStop(1, '#1a2a4a');
+                        ctx.fillStyle = ciel; ctx.fillRect(0, 0, W(), HZ);
+                        state.etoiles.forEach(e => { ctx.globalAlpha = 0.4 + 0.6 * Math.abs(Math.sin(t * 0.001 + e.x)); ctx.fillStyle = '#fff'; ctx.fillRect(e.x, e.y, e.r, e.r); });
+                        ctx.globalAlpha = 1;
+                        const lx = W() * 0.78, ly = HZ * 0.35;
+                        const lg = ctx.createRadialGradient(lx, ly, 0, lx, ly, 60);
+                        lg.addColorStop(0, '#fdf6d8'); lg.addColorStop(0.5, 'rgba(250,235,180,0.5)'); lg.addColorStop(1, 'transparent');
+                        ctx.fillStyle = lg; ctx.beginPath(); ctx.arc(lx, ly, 60, 0, 7); ctx.fill();
+                        ctx.fillStyle = '#f4ecc8'; ctx.beginPath(); ctx.arc(lx, ly, 26, 0, 7); ctx.fill();
+                        state.nuages.forEach(n => { n.x = (n.x + n.v) % (W() + 200) - (n.x + n.v > W() + 200 ? 200 : 0);
+                            ctx.fillStyle = 'rgba(180,195,220,0.13)';
+                            ctx.beginPath(); ctx.ellipse(n.x, n.y, n.s, n.s * 0.32, 0, 0, 7); ctx.ellipse(n.x + n.s * 0.5, n.y - 8, n.s * 0.6, n.s * 0.25, 0, 0, 7); ctx.fill(); });
+                        // Masse d'eau (dégradé de profondeur)
+                        const mer = ctx.createLinearGradient(0, HZ, 0, H());
+                        mer.addColorStop(0, '#173f5f'); mer.addColorStop(0.35, '#0e2b46'); mer.addColorStop(1, '#03101f');
+                        ctx.fillStyle = mer; ctx.fillRect(0, HZ - 6, W(), H() - HZ + 6);
+                        // Reflet de lune scintillant
+                        for (let i = 0; i < 16; i++) { const yy = HZ + 8 + i * 9;
+                            ctx.fillStyle = 'rgba(250,238,190,' + (0.16 - i * 0.009) + ')';
+                            const ww = 34 + Math.sin(t * 0.004 + i * 1.7) * 14;
+                            ctx.fillRect(lx - ww / 2 + Math.sin(t * 0.002 + i) * 6, yy, ww, 3); }
+
+                        // --- Faune et navires programmés ---
+                        const sp = state.prochains;
+                        if (t > sp.requin) { state.movers.push({ type: 'requin', x: -80, d: 1, y: HZ + 90 + Math.random() * 120, v: 1.7, s: 34 }); sp.requin = t + 17000 + Math.random() * 9000; }
+                        if (t > sp.baleine) { state.movers.push({ type: 'baleine', x: W() + 150, d: -1, y: HZ + 170 + Math.random() * 90, v: 0.55, s: 70, ph: 0 }); sp.baleine = t + 26000 + Math.random() * 12000; }
+                        if (t > sp.sousmarin) { state.movers.push({ type: 'sousmarin', x: -160, d: 1, y: HZ + 130 + Math.random() * 130, v: 0.9, s: 55 }); sp.sousmarin = t + 22000 + Math.random() * 12000; }
+                        if (t > sp.paquebot) { state.movers.push({ type: 'paquebot', x: W() + 260, d: -1, v: 0.5, s: 110 }); sp.paquebot = t + 30000 + Math.random() * 15000; }
+                        if (t > sp.chalutier) { state.movers.push({ type: 'chalutier', x: -140, d: 1, v: 0.7, s: 55 }); sp.chalutier = t + 24000 + Math.random() * 12000; }
+
+                        // Poissons (banc permanent)
+                        state.fish.forEach(f => {
+                            f.x += f.v * f.d; if (f.x > W() + 30) { f.x = -30; } if (f.x < -30) { f.x = W() + 30; }
+                            const y = f.y + Math.sin(t * 0.003 + f.ph) * 6;
+                            ctx.save(); ctx.translate(f.x, y); ctx.scale(f.d, 1);
+                            ctx.fillStyle = 'hsla(' + f.h + ',60%,55%,0.85)';
+                            ctx.beginPath(); ctx.ellipse(0, 0, f.s, f.s * 0.42, 0, 0, 7); ctx.fill();
+                            ctx.beginPath(); ctx.moveTo(-f.s, 0); ctx.lineTo(-f.s - f.s * 0.6, -f.s * 0.45); ctx.lineTo(-f.s - f.s * 0.6, f.s * 0.45); ctx.closePath(); ctx.fill();
+                            ctx.fillStyle = '#031018'; ctx.beginPath(); ctx.arc(f.s * 0.55, -1, 1.6, 0, 7); ctx.fill();
+                            ctx.restore();
+                        });
+                        // Méduses
+                        state.jelly.forEach(j => {
+                            const y = j.y + Math.sin(t * 0.0012 + j.ph) * 26;
+                            ctx.fillStyle = 'rgba(190,150,255,0.4)';
+                            ctx.beginPath(); ctx.arc(j.x, y, j.s, Math.PI, 0); ctx.fill();
+                            ctx.strokeStyle = 'rgba(190,150,255,0.35)'; ctx.lineWidth = 1.6;
+                            for (let k = -2; k <= 2; k++) { ctx.beginPath(); ctx.moveTo(j.x + k * j.s * 0.3, y);
+                                ctx.quadraticCurveTo(j.x + k * j.s * 0.3 + Math.sin(t * 0.004 + k) * 6, y + j.s, j.x + k * j.s * 0.35 + Math.sin(t * 0.004 + k + 1) * 8, y + j.s * 1.9); ctx.stroke(); }
+                        });
+                        // Traversants (requins, baleines, sous-marins, navires)
+                        state.movers = state.movers.filter(m => {
+                            m.x += m.v * m.d;
+                            if (m.d > 0 && m.x > W() + 320) return false;
+                            if (m.d < 0 && m.x < -320) return false;
+                            ctx.save();
+                            if (m.type === 'requin') {
+                                ctx.translate(m.x, m.y + Math.sin(t * 0.002) * 4); ctx.scale(m.d, 1);
+                                ctx.fillStyle = 'rgba(140,155,170,0.9)';
+                                ctx.beginPath(); ctx.ellipse(0, 0, m.s, m.s * 0.32, 0, 0, 7); ctx.fill();
+                                ctx.beginPath(); ctx.moveTo(-m.s * 0.95, 0); ctx.lineTo(-m.s * 1.5, -m.s * 0.4); ctx.lineTo(-m.s * 1.4, 0.1); ctx.closePath(); ctx.fill();
+                                ctx.beginPath(); ctx.moveTo(-m.s * 0.1, -m.s * 0.26); ctx.lineTo(m.s * 0.16, -m.s * 0.75); ctx.lineTo(m.s * 0.3, -m.s * 0.24); ctx.closePath(); ctx.fill();
+                                ctx.fillStyle = '#031018'; ctx.beginPath(); ctx.arc(m.s * 0.62, -3, 2.2, 0, 7); ctx.fill();
+                                ctx.strokeStyle = 'rgba(3,16,24,0.6)'; ctx.beginPath(); ctx.arc(m.s * 0.7, m.s * 0.12, 6, 0.3, 1.4); ctx.stroke();
+                            } else if (m.type === 'baleine') {
+                                ctx.translate(m.x, m.y + Math.sin(t * 0.001) * 8); ctx.scale(m.d, 1);
+                                ctx.fillStyle = 'rgba(70,95,125,0.92)';
+                                ctx.beginPath(); ctx.ellipse(0, 0, m.s, m.s * 0.38, 0, 0, 7); ctx.fill();
+                                const tp = Math.sin(t * 0.004) * 0.3;
+                                ctx.beginPath(); ctx.moveTo(-m.s * 0.94, 0); ctx.lineTo(-m.s * 1.45, -m.s * 0.34 + tp * 18); ctx.lineTo(-m.s * 1.28, 3); ctx.lineTo(-m.s * 1.45, m.s * 0.3 + tp * 18); ctx.closePath(); ctx.fill();
+                                ctx.fillStyle = 'rgba(200,220,240,0.35)'; ctx.beginPath(); ctx.ellipse(m.s * 0.15, m.s * 0.2, m.s * 0.6, m.s * 0.14, 0, 0, 7); ctx.fill();
+                                ctx.fillStyle = '#031018'; ctx.beginPath(); ctx.arc(m.s * 0.72, -m.s * 0.1, 2.6, 0, 7); ctx.fill();
+                                if ((t % 6000) < 1400) { ctx.fillStyle = 'rgba(200,225,255,0.5)';
+                                    for (let k = 0; k < 6; k++) { ctx.beginPath(); ctx.arc(m.s * 0.5 + (Math.random() - .5) * 8, -m.s * 0.5 - k * 9, 3 + k, 0, 7); ctx.fill(); } }
+                            } else if (m.type === 'sousmarin') {
+                                ctx.translate(m.x, m.y + Math.sin(t * 0.0009) * 5); ctx.scale(m.d, 1);
+                                ctx.fillStyle = 'rgba(55,65,60,0.95)';
+                                ctx.beginPath(); ctx.ellipse(0, 0, m.s, m.s * 0.26, 0, 0, 7); ctx.fill();
+                                ctx.fillRect(-m.s * 0.18, -m.s * 0.52, m.s * 0.36, m.s * 0.3);
+                                ctx.fillRect(-m.s * 0.02, -m.s * 0.72, 3, m.s * 0.22);
+                                ctx.fillStyle = 'rgba(250,235,150,0.8)';
+                                for (let k = -2; k <= 2; k++) { ctx.beginPath(); ctx.arc(k * m.s * 0.3, 0, 2.2, 0, 7); ctx.fill(); }
+                                if (Math.random() < 0.3) state.bulles.push({ x: m.x - m.d * m.s, y: m.y, r: 1.5 + Math.random() * 2.5 });
+                            } else if (m.type === 'paquebot') {
+                                const sy = surf(m.x, t);
+                                ctx.translate(m.x, sy + 2); ctx.scale(m.d, 1);
+                                ctx.fillStyle = '#1c2836';
+                                ctx.beginPath(); ctx.moveTo(-m.s, 0); ctx.lineTo(m.s, 0); ctx.lineTo(m.s * 0.82, m.s * 0.22); ctx.lineTo(-m.s * 0.86, m.s * 0.22); ctx.closePath(); ctx.fill();
+                                ctx.fillStyle = '#dfe5ec';
+                                ctx.fillRect(-m.s * 0.72, -m.s * 0.18, m.s * 1.35, m.s * 0.18);
+                                ctx.fillRect(-m.s * 0.55, -m.s * 0.32, m.s * 1.0, m.s * 0.14);
+                                ctx.fillStyle = '#c2483a';
+                                ctx.fillRect(-m.s * 0.28, -m.s * 0.5, m.s * 0.12, m.s * 0.18); ctx.fillRect(m.s * 0.05, -m.s * 0.5, m.s * 0.12, m.s * 0.18);
+                                ctx.fillStyle = 'rgba(255,225,130,0.9)';
+                                for (let k = 0; k < 12; k++) ctx.fillRect(-m.s * 0.68 + k * m.s * 0.11, -m.s * 0.13, 4, 4);
+                                ctx.fillStyle = 'rgba(200,210,225,0.25)';
+                                ctx.beginPath(); ctx.arc(-m.s * 0.22 - (t % 900) / 55, -m.s * 0.6 - (t % 900) / 70, 6, 0, 7); ctx.fill();
+                            } else if (m.type === 'chalutier') {
+                                const sy = surf(m.x, t);
+                                ctx.translate(m.x, sy + 2); ctx.scale(m.d, 1);
+                                ctx.fillStyle = '#28425c';
+                                ctx.beginPath(); ctx.moveTo(-m.s, 0); ctx.lineTo(m.s * 0.95, 0); ctx.lineTo(m.s * 0.7, m.s * 0.3); ctx.lineTo(-m.s * 0.75, m.s * 0.3); ctx.closePath(); ctx.fill();
+                                ctx.fillStyle = '#d8dee7'; ctx.fillRect(m.s * 0.2, -m.s * 0.34, m.s * 0.42, m.s * 0.34);
+                                ctx.strokeStyle = '#9aa5b3'; ctx.lineWidth = 3;
+                                ctx.beginPath(); ctx.moveTo(-m.s * 0.3, 0); ctx.lineTo(-m.s * 0.85, -m.s * 0.62); ctx.stroke();
+                                ctx.strokeStyle = 'rgba(200,215,235,0.5)'; ctx.lineWidth = 1;
+                                ctx.beginPath(); ctx.moveTo(-m.s * 0.85, -m.s * 0.62); ctx.lineTo(-m.s * 1.35, m.s * 0.5); ctx.stroke();
+                            }
+                            ctx.restore();
+                            return true;
+                        });
+                        // Barques de pêche fixes : marins qui lancent le filet (cycle 9 s)
+                        state.barques.forEach(b => {
+                            const x = W() * b.fx, sy = surf(x, t) + 2;
+                            const cyc = ((t + b.ph) % 9000) / 1000;
+                            ctx.save(); ctx.translate(x, sy);
+                            ctx.fillStyle = '#5a3a1e';
+                            ctx.beginPath(); ctx.moveTo(-34, 0); ctx.lineTo(34, 0); ctx.lineTo(24, 13); ctx.lineTo(-24, 13); ctx.closePath(); ctx.fill();
+                            // marin : tête + corps, bras animé pendant le lancer
+                            ctx.fillStyle = '#e8b88a'; ctx.beginPath(); ctx.arc(6, -21, 5, 0, 7); ctx.fill();
+                            ctx.strokeStyle = '#c9a227'; ctx.lineWidth = 4;
+                            ctx.beginPath(); ctx.moveTo(6, -16); ctx.lineTo(6, -2); ctx.stroke();
+                            const bras = (cyc > 0.4 && cyc < 1.2) ? -2.2 + (cyc - 0.4) * 2.4 : 0.6;
+                            ctx.lineWidth = 3;
+                            ctx.beginPath(); ctx.moveTo(6, -13); ctx.lineTo(6 + Math.cos(bras) * 13, -13 + Math.sin(bras) * 13); ctx.stroke();
+                            ctx.restore();
+                            // filet : vol (1,2 s), puis immersion et remontée
+                            if (cyc > 1.2 && cyc < 5.5) {
+                                const fl = Math.min(1, (cyc - 1.2) / 0.9);
+                                const fx = x + 40 + fl * 62, fy = sy - 18 + fl * fl * 30 + (cyc > 2.1 ? (cyc - 2.1) * 14 : 0);
+                                const fr = 12 + fl * 26;
+                                ctx.strokeStyle = 'rgba(220,230,245,' + (0.65 - (cyc > 4 ? (cyc - 4) * 0.4 : 0)) + ')'; ctx.lineWidth = 1;
+                                ctx.beginPath(); ctx.arc(fx, Math.max(fy, sy - 14), fr, 0, Math.PI); ctx.stroke();
+                                for (let k = -2; k <= 2; k++) { ctx.beginPath(); ctx.moveTo(fx + k * fr / 2.5, Math.max(fy, sy - 14)); ctx.lineTo(fx + k * fr / 3, Math.max(fy, sy - 14) + fr * 0.8); ctx.stroke(); }
+                                ctx.beginPath(); ctx.moveTo(x + 12, sy - 12); ctx.lineTo(fx, Math.max(fy, sy - 14)); ctx.stroke();
+                                if (cyc > 1.9 && cyc < 2.5) { ctx.fillStyle = 'rgba(220,240,255,0.5)';
+                                    for (let k = 0; k < 5; k++) ctx.fillRect(fx - 12 + k * 6, sy - 3 - Math.random() * 8, 2, 5); }
+                            }
+                        });
+                        // Bulles
+                        state.bulles = state.bulles.filter(bu => {
+                            bu.y -= 0.8; bu.x += Math.sin(bu.y * 0.05) * 0.4;
+                            ctx.strokeStyle = 'rgba(200,230,255,0.4)'; ctx.lineWidth = 1;
+                            ctx.beginPath(); ctx.arc(bu.x, bu.y, bu.r, 0, 7); ctx.stroke();
+                            return bu.y > HZ + 6;
+                        });
+                        // Vagues de surface réalistes : 3 bandes + écume
+                        for (let l = 0; l < 3; l++) {
                             ctx.beginPath(); ctx.moveTo(0, H());
-                            for (let x = 0; x <= W(); x += 8) {
-                                const y = H() * (0.5 + l * 0.1) + Math.sin(x * 0.011 + t * 0.0016 * (1 + l * 0.35) + l * 2) * (16 + l * 7) + Math.sin(x * 0.031 + t * 0.0027) * 5;
+                            for (let x = 0; x <= W(); x += 7) {
+                                const y = surf(x, t) + l * 10 + Math.sin(x * 0.045 + t * 0.0031 + l * 2.1) * 2.4;
                                 ctx.lineTo(x, y);
                             }
                             ctx.lineTo(W(), H()); ctx.closePath();
-                            ctx.fillStyle = 'hsla(' + (195 + l * 8) + ',75%,' + (34 - l * 5) + '%,0.55)'; ctx.fill();
+                            ctx.fillStyle = 'hsla(' + (202 + l * 6) + ',70%,' + (30 - l * 6) + '%,' + (0.32 - l * 0.07) + ')'; ctx.fill();
                         }
+                        ctx.strokeStyle = 'rgba(230,245,255,0.28)'; ctx.lineWidth = 1.4;
+                        ctx.beginPath();
+                        for (let x = 0; x <= W(); x += 7) { const y = surf(x, t); x === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y); }
+                        ctx.stroke();
+                        for (let k = 0; k < 26; k++) { const fx = (k * 137 + t * 0.05) % W(); const fy = surf(fx, t);
+                            ctx.fillStyle = 'rgba(240,250,255,' + (0.12 + 0.14 * Math.abs(Math.sin(t * 0.003 + k))) + ')';
+                            ctx.fillRect(fx, fy - 1, 7 + (k % 5) * 2, 2); }
                     } },
                     { id: 'warp', nom: '🌌 Hyperespace', reset() { state.st = Array.from({ length: 420 }, () => ({ x: Math.random() * 2 - 1, y: Math.random() * 2 - 1, z: Math.random() })); }, frame(t) {
                         ctx.fillStyle = 'rgba(2,3,8,0.35)'; ctx.fillRect(0, 0, W(), H());
@@ -6995,7 +7296,8 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
                     { id: 'cube', nom: '🧊 Cube 3D (CSS)', css: 'anim-css-cube' },
                     { id: 'carousel', nom: '🎠 Carrousel 3D (CSS)', css: 'anim-css-carousel' },
                     { id: 'gyro', nom: '🪩 Gyroscope 3D (CSS)', css: 'anim-css-gyro' },
-                    { id: 'neon', nom: '💡 Néon (CSS)', css: 'anim-css-neon' }
+                    { id: 'neon', nom: '💡 Néon (CSS)', css: 'anim-css-neon' },
+                    { id: 'biere', nom: '🍺 Bière FTV (CSS)', css: 'anim-css-biere' }
                 ];
 
                 let current = null;
@@ -7005,9 +7307,88 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
                     cv.style.display = current.css ? 'none' : 'block';
                     if (current.css) document.getElementById(current.css).style.display = 'block';
                     else { cv.width = cv.clientWidth; cv.height = cv.clientHeight; state = {}; current.reset(); }
+                    if (id === 'carousel') buildCarousel();
                     document.querySelectorAll('.anim-menu-btn').forEach(b => b.classList.toggle('active', b.dataset.anim === id));
                 }
                 window.selectAnim = selectAnim;
+
+                // --- Carrousel 3D interactif : sélecteur de pièces ---
+                // Figé par défaut ; zone gauche/droite = rotation, tuile de face = ouvrir la pièce.
+                let carIndex = 0;
+                function carPieces() {
+                    return (window.villaConfig && window.villaConfig.pieces) ? window.villaConfig.pieces : [];
+                }
+                function carApply() {
+                    const car = document.getElementById('carousel-3d');
+                    const n = carPieces().length || 1;
+                    car.style.transform = 'rotateX(-8deg) rotateY(' + (-carIndex * (360 / n)) + 'deg)';
+                    const front = ((carIndex % n) + n) % n;
+                    [...car.children].forEach((el, i) => el.classList.toggle('front', i === front));
+                }
+                function buildCarousel() {
+                    const car = document.getElementById('carousel-3d');
+                    const pieces = carPieces();
+                    const n = pieces.length || 1;
+                    const rayon = Math.round(95 / Math.tan(Math.PI / Math.max(3, n))) + 45;
+                    car.innerHTML = '';
+                    pieces.forEach((p, i) => {
+                        const d = document.createElement('div');
+                        d.className = 'car-card';
+                        d.dataset.idx = i;
+                        d.dataset.room = p.id;
+                        d.innerHTML = (p.icone || '🏠') + '<div class="car-nom">' + (window.villaTranslateName ? window.villaTranslateName(p.nom) : p.nom) + '</div>';
+                        d.style.transform = 'rotateY(' + (i * 360 / n) + 'deg) translateZ(' + rayon + 'px)';
+                        car.appendChild(d);
+                    });
+                    carApply();
+                }
+                document.getElementById('anim-css-carousel').addEventListener('click', function(e) {
+                    const n = carPieces().length || 1;
+                    const front = ((carIndex % n) + n) % n;
+                    const card = e.target.closest('.car-card');
+                    if (card && parseInt(card.dataset.idx, 10) === front) {
+                        // Tuile de face : ouvrir la pièce dans le GUI
+                        const roomId = parseInt(card.dataset.room, 10);
+                        window.closeSpecialPage();
+                        if (typeof window.selectRoomFromConfig === 'function') window.selectRoomFromConfig(roomId);
+                        return;
+                    }
+                    const w = this.clientWidth;
+                    if (e.clientX < w / 2) carIndex--; else carIndex++;
+                    carApply();
+                    // Interaction avec le carrousel : repousse le défilement auto de 10 s (s'il est actif)
+                    if (typeof window.deferAnimCycle === 'function') window.deferAnimCycle(10000);
+                });
+
+                // Diaporama : défilement automatique toutes les 5 s en boucle, jusqu'au FERMER.
+                // - Défilement MANUEL du menu : pause de 10 s (l'animation en cours reste affichée)
+                //   pour laisser le temps de choisir, puis reprise automatique.
+                // - Sélection MANUELLE d'une animation : arrêt complet du diaporama, un bouton
+                //   "▶ Défilement auto" permet de le relancer.
+                let browsingPauseUntil = 0;
+                let autoScrollGuard = false;
+                function startCycle() {
+                    if (window.specialCycle) clearInterval(window.specialCycle);
+                    document.getElementById('anim-resume-btn').style.display = 'none';
+                    window.specialCycle = setInterval(() => {
+                        if (Date.now() < browsingPauseUntil) return; // l'utilisateur parcourt le menu
+                        const idx = ANIMS.findIndex(a => current && a.id === current.id);
+                        selectAnim(ANIMS[(idx + 1) % ANIMS.length].id);
+                        const activeBtn = document.querySelector('.anim-menu-btn.active');
+                        if (activeBtn) {
+                            autoScrollGuard = true;
+                            activeBtn.scrollIntoView({ inline: 'center', block: 'nearest' });
+                            setTimeout(() => { autoScrollGuard = false; }, 900);
+                        }
+                    }, 5000);
+                }
+                function stopCycle() {
+                    if (window.specialCycle) { clearInterval(window.specialCycle); window.specialCycle = null; }
+                    document.getElementById('anim-resume-btn').style.display = 'block';
+                }
+                function deferCycle(ms) { browsingPauseUntil = Date.now() + ms; }
+                window.resumeAnimCycle = function() { browsingPauseUntil = 0; startCycle(); };
+                window.deferAnimCycle = deferCycle;
 
                 // Barre de menu
                 const menu = document.getElementById('anim-menu');
@@ -7017,10 +7398,13 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
                     b.className = 'anim-menu-btn';
                     b.dataset.anim = a.id;
                     b.textContent = a.nom;
-                    b.onclick = () => selectAnim(a.id);
+                    b.onclick = () => { selectAnim(a.id); stopCycle(); }; // choix manuel = arrêt du diaporama
                     menu.appendChild(b);
                 });
+                // Défilement manuel du menu : pause de 10 s (en ignorant les recentrages automatiques)
+                menu.addEventListener('scroll', () => { if (!autoScrollGuard) deferCycle(10000); }, { passive: true });
                 selectAnim('particules');
+                startCycle();
 
                 function frame(t) {
                     if (document.getElementById('special-anim').style.display === 'none') return;
