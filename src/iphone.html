@@ -12,6 +12,7 @@
     <script src="config.js"></script>
     <!-- Configuration de dimensionnement embarquée (générée depuis villa_config.json par deploy.ps1) -->
     <script src="villa_config.js"></script>
+    <script src="version.js"></script>
     <!-- Le script ch5-components.js est injecté automatiquement par le module de build de la tablette -->
     <script src="js/webxpanel.js"></script>
     <script src="js/ch5-components.js"></script>
@@ -2384,9 +2385,10 @@
             };
 
             // --- UPDATE DYNAMIC ROOM UI ---
-            // Masque les sections du GUI selon les flags 'actif: false' des pilotages de la pièce (villa_config.json)
+            // Masque les sections du GUI selon les flags 'actif: false' des pilotages de la pièce.
+            // RÈGLE : géométrie fixe — visibility:hidden conserve l'espace, rien ne bouge entre les pièces.
             function applyPilotageVisibility(roomId) {
-                const setDisp = (el, show, disp) => { if (el) el.style.display = show ? (disp || '') : 'none'; };
+                const setVis = (el, show) => { if (el) el.style.visibility = show ? '' : 'hidden'; };
                 let ecl = true, mot = true, cvc = true, av = true;
                 const vc = window.villaConfig;
                 if (vc) {
@@ -2396,16 +2398,16 @@
                     ecl = on('eclairages'); mot = on('moteurs'); cvc = on('cvc'); av = on('audioVideo');
                 }
 
-                // Onglet Lumières & Stores : sous-sections indépendantes, onglet entier si les deux sont inactifs
-                setDisp(document.getElementById('iphone-lights-header'), ecl, 'flex');
-                setDisp(document.getElementById('iphone-scenes-row'), ecl, 'flex');
-                setDisp(document.getElementById('iphone-shades-header'), mot, 'flex');
-                setDisp(document.getElementById('iphone-shades-rows'), mot, 'flex');
-                setDisp(document.getElementById('nav-lights'), ecl || mot);
+                // Onglet Lumières & Stores : sous-sections invisibles mais en place
+                setVis(document.getElementById('iphone-lights-header'), ecl);
+                setVis(document.getElementById('iphone-scenes-row'), ecl);
+                setVis(document.getElementById('iphone-shades-header'), mot);
+                setVis(document.getElementById('iphone-shades-rows'), mot);
+                setVis(document.getElementById('nav-lights'), ecl || mot);
 
-                // Onglets HVAC et Audio/Vidéo
-                setDisp(document.getElementById('nav-hvac'), cvc);
-                setDisp(document.getElementById('nav-audio'), av);
+                // Onglets HVAC et Audio/Vidéo (boutons de nav invisibles mais en place)
+                setVis(document.getElementById('nav-hvac'), cvc);
+                setVis(document.getElementById('nav-audio'), av);
 
                 // Si l'onglet actif est devenu invisible, basculer sur le premier onglet disponible
                 const activePanel = document.querySelector('.tab-panel.active');
@@ -2721,6 +2723,9 @@
                         }, 1000);
                     });
                 };
+
+                // Version applicative (générée par deploy.ps1 dans version.js)
+                if (window.appVersion) { const vl = document.getElementById('version-label'); if (vl) vl.textContent = window.appVersion; }
 
                 // Source par défaut garantie : villa_config.js embarqué en <script> (comme config.js)
                 let villaConfigFromCp4 = false;

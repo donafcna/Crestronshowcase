@@ -8,6 +8,8 @@ sources A/V, traductions et contrat de joins.
 
 1. **Remplir** `villa_config.json` :
    - `pieces[]` : une entrée par pièce (id séquentiel, nom en français).
+     Le champ **`icone`** (un emoji, ex. `"🎮"`) choisit l'icône affichée à gauche
+     du nom dans le menu de navigation ; absent = icône déduite du nom ou 🏠.
    - Pour chaque pièce, la section `pilotages` active ou non chaque module :
      `eclairages`, `moteurs` (volets/stores/rideaux), `cvc`, `controlesGeneraux`, `audioVideo`.
    - Éclairages : `scenes.nombre` (max **4**) + noms, `circuits.nombre` (max **10**) + noms.

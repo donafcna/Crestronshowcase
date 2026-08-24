@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Objectifs — Villa Crans</title>
+<style>
+  :root { --bg:#0f1218; --panel:#161920; --border:rgba(255,255,255,.09); --txt:#e2e8f0; --muted:#94a3b8; --accent:#10b981; --blue:#38bdf8; --gold:#c49a45; --red:#ef4444; --violet:#8b5cf6; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--txt); font-family:'Segoe UI',system-ui,sans-serif; line-height:1.5; }
+  header { padding:18px 28px; border-bottom:1px solid var(--border); background:var(--panel); display:flex; align-items:baseline; gap:14px; position:sticky; top:0; z-index:10; }
+  header h1 { margin:0; font-size:1.2rem; color:var(--accent); }
+  header .sub { color:var(--muted); font-size:.8rem; }
+  main { max-width:1000px; margin:0 auto; padding:24px 28px 60px; }
+  h2 { color:var(--blue); font-size:1.05rem; border-bottom:1px solid var(--border); padding-bottom:8px; margin:34px 0 14px; }
+  h3 { color:var(--gold); font-size:.92rem; margin:22px 0 8px; }
+  h4 { color:var(--txt); font-size:.85rem; margin:16px 0 6px; }
+  ul { margin:6px 0 14px; padding-left:22px; }
+  li { margin:4px 0; font-size:.88rem; }
+  .done li::marker { content:"✓  "; color:var(--accent); }
+  .card { background:var(--panel); border:1px solid var(--border); border-radius:12px; padding:18px 24px; margin:14px 0; }
+  .todo label { display:flex; gap:10px; align-items:flex-start; padding:5px 0; font-size:.88rem; cursor:pointer; }
+  .todo input { margin-top:3px; accent-color:var(--accent); flex-shrink:0; }
+  .todo label.checked { color:var(--muted); text-decoration:line-through; }
+  .badge { display:inline-block; padding:2px 10px; border-radius:6px; font-size:.72rem; font-weight:700; margin-left:8px; vertical-align:middle; }
+  .badge.cur { background:rgba(16,185,129,.15); color:var(--accent); border:1px solid var(--accent); }
+  .badge.old { background:rgba(255,255,255,.06); color:var(--muted); border:1px solid var(--border); }
+  .bug li::marker { content:"🐛 "; }
+  .hint { color:var(--muted); font-size:.75rem; }
+</style>
+</head>
+<body>
+<header>
+  <h1>🎯 Objectifs — Villa Crans</h1>
+  <span class="sub">Fréquence TV · les cases à cocher sont mémorisées dans ce navigateur</span>
+</header>
+<main>
+
+<h2>Objectifs</h2>
+
+<div class="card">
+  <h3>🎨 Objectifs Graphiques</h3>
+  <ul>
+    <li>Utiliser le code déjà fait par Alex pour voir les optimisations qu'on peut apporter</li>
+    <li>Créer une page Home avec vue d'ensemble de toutes les pièces</li>
+    <li>Créer une page pour TSW où on ne voit que certaines parties de la Villa</li>
+    <li>Améliorer le design des versions Glace et des versions White</li>
+  </ul>
+
+  <h3>⚙️ Objectifs Backend</h3>
+  <ul>
+    <li>Utiliser des contrats plutôt que les Joins — à voir dans le code C#</li>
+    <li>Intégration du fichier de configuration JSON afin de pouvoir facilement adapter le design en fonction de la configuration du projet</li>
+    <li>Faire aussi une version Démo pour les commerciaux et une version optimisée, en réfléchissant à ce qu'il est préférable de mettre dans le Frontend et dans le Backend</li>
+  </ul>
+</div>
+
+<h2>Liste des bugs</h2>
+<div class="card">
+  <ul class="bug">
+    <li>Bouton Musique : enlever le cadre blanc, feedback non synchronisé entre les périphériques</li>
+    <li>Bouton Musique : animation « son activé » pas présente</li>
+    <li>Slider volume Son se reset. N'enlève pas l'affichage de l'animation son « activé » sur le bouton source sélectionné</li>
+    <li>Widget météo / RSS n'enclenche pas l'affichage de la page web</li>
+    <li>Améliorer la popup pilotage des sources</li>
+    <li>Quand on sélectionne une première pièce et que l'on change les sources Audio/Vidéo, puis que l'on va sur un autre périphérique et qu'on sélectionne cette même pièce, il affichera le feedback source sélectionné de cette pièce + celui de l'autre pièce qu'affichait l'autre interface avant de sélectionner ladite pièce</li>
+  </ul>
+</div>
+
+<h2>🛠️ Suivi des versions</h2>
+
+<div class="card">
+  <h3>v.1.1.x <span class="badge cur">EN COURS</span></h3>
+
+  <h4>Navigation gauche</h4>
+  <ul class="done">
+    <li>Liste des pièces avec leur feedback</li>
+    <li>Feedback des pièces désynchronisé d'un périphérique à l'autre</li>
+    <li>Bouton haut / bas pour afficher les pièces</li>
+    <li>Widget Météo et RSS, pages web s'ouvrent, possibilité de revenir à l'interface sur les TS à l'aide du menu Home</li>
+    <li>Tailles et positions de tous les textes</li>
+  </ul>
+
+  <h4>Container horizontal haut de la page</h4>
+  <ul class="done">
+    <li>Affichage de la dernière pièce sélectionnée, avec ses statuts/états corrects sur tous les containers en dessous</li>
+    <li>Popups Alarme, Caméras et Contrôle Global : feedback, sélection des différents Presets</li>
+    <li>Popup Admin</li>
+    <li>Tailles et positions de tous les textes</li>
+  </ul>
+
+  <h4>Container éclairages</h4>
+  <ul class="done">
+    <li>Affichage de la dernière Scène activée</li>
+    <li>Popups Lumières et Stores</li>
+    <li>Popup Lumières : activation des scènes et feedback sur les circuits, fonction Save</li>
+    <li>Popup Stores : boutons et feedback icônes moteurs, presets généraux</li>
+    <li>Tailles et positions de tous les textes</li>
+    <li>Tailles et positions de toutes les animations</li>
+  </ul>
+
+  <h4>Container HVAC</h4>
+  <ul class="done">
+    <li>Affichage des températures et consigne</li>
+    <li>Boutons + et −</li>
+    <li>Tailles et positions de tous les textes</li>
+  </ul>
+
+  <h4>Container Sélection Source audio et vidéo</h4>
+  <ul class="done">
+    <li>Interlock de sélection des sources, feedback boutons des sources, popup pilotage</li>
+    <li>Animation « son activé » sur chaque bouton de source, en corrélation avec Mute</li>
+    <li>Boutons Mute, Off et Slider volume</li>
+    <li>Tailles et positions de tous les textes</li>
+  </ul>
+
+  <h4>Tests sur les différents périphériques</h4>
+  <ul class="done">
+    <li>XPanel</li>
+    <li>TS1070</li>
+    <li>iPad</li>
+    <li>iPhone</li>
+  </ul>
+
+  <h4>To do / Liste bugs</h4>
+  <div class="todo" id="todo-list">
+    <label><input type="checkbox"> Renommer tous les fichiers compilés en VillaCrans</label>
+    <label><input type="checkbox"> Bouton Musique : enlever le cadre blanc, feedback non synchronisé entre les périphériques</label>
+    <label><input type="checkbox"> Bouton Musique : animation « son activé » pas présente</label>
+    <label><input type="checkbox"> Débuguer / Revoir iPhone : impossible de fermer la popup « Contrôle Global »</label>
+    <label><input type="checkbox"> Slider volume Son se reset et ne fait pas disparaître l'animation son « activé » sur le bouton source sélectionné</label>
+    <label><input type="checkbox"> Widget météo / RSS n'enclenche pas l'affichage de la page web</label>
+    <label><input type="checkbox"> Améliorer la popup pilotage des sources</label>
+    <label><input type="checkbox"> Feedback source : mélange des feedbacks entre pièces lors du changement de périphérique (voir Liste des bugs)</label>
+    <label><input type="checkbox"> Application disponible sur l'App Store et Google Play</label>
+    <label><input type="checkbox"> Fichier JSON config</label>
+    <label><input type="checkbox"> Contract Joins</label>
+    <label><input type="checkbox"> Étudier / Tester / Débuguer le code et le maîtriser</label>
+    <label><input type="checkbox"> Party Mode</label>
+    <label><input type="checkbox"> Traduction pas réalisée à 100 %</label>
+    <label><input type="checkbox"> Retravailler les différents thèmes</label>
+    <label><input type="checkbox"> Mode vacances à réfléchir : fonction search</label>
+  </div>
+</div>
+
+<div class="card">
+  <h3>v.1.0.149 <span class="badge old">LIVRÉE</span></h3>
+
+  <h4>Navigation gauche</h4>
+  <ul class="done">
+    <li>Liste des pièces avec leur feedback</li>
+    <li>Feedback des pièces désynchronisé d'un périphérique à l'autre</li>
+    <li>Bouton haut / bas pour afficher les pièces</li>
+    <li>Widget Météo et RSS, pages web s'ouvrent, possibilité de revenir à l'interface sur les TS à l'aide du menu Home</li>
+    <li>Tailles et positions de tous les textes</li>
+  </ul>
+
+  <h4>Container horizontal haut de la page</h4>
+  <ul class="done">
+    <li>Affichage de la dernière pièce sélectionnée, avec ses statuts/états corrects sur tous les containers en dessous</li>
+    <li>Popups Alarme, Caméras et Contrôle Global : feedback, sélection des différents Presets</li>
+    <li>Popup Admin</li>
+    <li>Tailles et positions de tous les textes</li>
+  </ul>
+
+  <h4>Container éclairages</h4>
+  <ul class="done">
+    <li>Affichage de la dernière Scène activée</li>
+    <li>Popups Lumières et Stores</li>
+    <li>Popup Lumières : activation des scènes et feedback sur les circuits, fonction Save</li>
+    <li>Popup Stores : boutons et feedback icônes moteurs, presets généraux</li>
+    <li>Tailles et positions de tous les textes</li>
+    <li>Tailles et positions de toutes les animations</li>
+  </ul>
+
+  <h4>Container HVAC</h4>
+  <ul class="done">
+    <li>Affichage des températures et consigne</li>
+    <li>Boutons + et −</li>
+    <li>Tailles et positions de tous les textes</li>
+  </ul>
+
+  <h4>Container Sélection Source audio et vidéo</h4>
+  <ul class="done">
+    <li>Interlock de sélection des sources, feedback boutons des sources, popup pilotage</li>
+    <li>Animation « son activé » sur chaque bouton de source, en corrélation avec Mute</li>
+    <li>Boutons Mute, Off et Slider volume</li>
+    <li>Tailles et positions de tous les textes</li>
+  </ul>
+
+  <h4>Tests sur les différents périphériques</h4>
+  <ul class="done">
+    <li>XPanel</li>
+    <li>TS1070</li>
+    <li>iPad</li>
+    <li>iPhone</li>
+  </ul>
+</div>
+
+<p class="hint">Page générée depuis la Console Web Villa Crans — pour modifier ce contenu : tools/objectifs.html</p>
+</main>
+
+<script>
+// Cases à cocher persistées dans le navigateur
+document.querySelectorAll('#todo-list label').forEach((label, i) => {
+  const cb = label.querySelector('input');
+  const key = 'objectif_todo_' + i;
+  try { cb.checked = localStorage.getItem(key) === '1'; } catch (e) {}
+  label.classList.toggle('checked', cb.checked);
+  cb.addEventListener('change', () => {
+    try { localStorage.setItem(key, cb.checked ? '1' : '0'); } catch (e) {}
+    label.classList.toggle('checked', cb.checked);
+  });
+});
+</script>
+</body>
+</html>

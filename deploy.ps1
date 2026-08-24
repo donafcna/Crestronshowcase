@@ -79,6 +79,19 @@ function Copy-ToDevice {
 # --- Build CH5 ---
 if (-not $SkipBuild -and $Target -notin @('cp4', 'config')) {
     Write-Host "[1/3] Compilation de l'archive CH5 (villaftv.ch5z)..." -ForegroundColor Cyan
+    # Increment automatique de la version (version.json -> src/version.js, affichee par le GUI)
+    $verFile = Join-Path $root 'version.json'
+    $ver = '1.0.149'
+    if (Test-Path $verFile) { try { $ver = (Get-Content $verFile -Raw -Encoding UTF8 | ConvertFrom-Json).version } catch {} }
+    $vParts = $ver.Split('.')
+    $vParts[2] = [string]([int]$vParts[2] + 1)
+    $newVer = $vParts -join '.'
+    $utf8NoBom = New-Object System.Text.UTF8Encoding $false
+    [System.IO.File]::WriteAllText($verFile, "{`n  `"version`": `"$newVer`"`n}`n", $utf8NoBom)
+    [System.IO.File]::WriteAllText((Join-Path $root 'src\version.js'), "window.appVersion = 'v$newVer';", $utf8NoBom)
+    [System.IO.File]::WriteAllText((Join-Path $root 'src\build_date.json'), "{`"compileDate`":`"$((Get-Date).ToString('dd/MM/yyyy HH:mm:ss'))`"}", $utf8NoBom)
+    Write-Host "  Version : v$newVer" -ForegroundColor Cyan
+
     # Embarquer la configuration dans le projet CH5 (source par defaut du GUI sans liaison CP4).
     # Version .js en <script> obligatoire : fetch() est bloque en contexte local sur les dalles.
     $cfgSrc = Join-Path $root 'villa_config.json'

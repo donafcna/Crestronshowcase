@@ -132,6 +132,7 @@ const server = http.createServer((req, res) => {
 
   if (req.method === 'GET') {
     if (url === '/' || url === '/console.html') return serveFile(res, path.join(__dirname, 'console.html'));
+    if (url === '/objectifs.html' || url === '/objectifs') return serveFile(res, path.join(__dirname, 'objectifs.html'));
     if (url === '/js/webxpanel.js') return serveFile(res, path.join(ROOT, 'src', 'js', 'webxpanel.js'));
     if (url === '/js/ch5-components.js') return serveFile(res, path.join(ROOT, 'src', 'js', 'ch5-components.js'));
     if (url.startsWith('/js/') && url.endsWith('.worker.js')) return serveFile(res, path.join(ROOT, 'src', 'js', path.basename(url)));

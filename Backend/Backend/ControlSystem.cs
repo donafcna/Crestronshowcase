@@ -188,8 +188,11 @@ namespace VillaFrequenceTvAutomation
                 string raw = System.IO.File.ReadAllText(VillaConfigPath);
                 _villaConfig = Newtonsoft.Json.Linq.JObject.Parse(raw);
 
-                // Transport minifié, découpé en chunks acquittés "VCFG|i|n|payload"
-                string minified = _villaConfig.ToString(Newtonsoft.Json.Formatting.None);
+                // Transport minifié, découpé en chunks acquittés "VCFG|i|n|payload".
+                // Tout caractère non-ASCII est échappé en \uXXXX (notation JSON standard) :
+                // le lien série CIP des dalles remplace les caractères hors plan de base
+                // (emojis...) par des '?', un flux 100% ASCII est insensible à l'encodage.
+                string minified = EscapeNonAscii(_villaConfig.ToString(Newtonsoft.Json.Formatting.None));
                 _configChunks.Clear();
                 int total = (minified.Length + ConfigChunkSize - 1) / ConfigChunkSize;
                 for (int i = 0; i < total; i++)
@@ -207,6 +210,23 @@ namespace VillaFrequenceTvAutomation
                 _configChunks.Clear();
                 ErrorLog.Error("CONFIG: Échec de lecture de villa_config.json : {0}", ex.Message);
             }
+        }
+
+        /// <summary>
+        /// Échappe tous les caractères non-ASCII d'un JSON minifié en séquences \uXXXX.
+        /// (Le non-ASCII n'apparaît que dans les littéraux de chaîne : l'échappement global est sûr.)
+        /// </summary>
+        private static string EscapeNonAscii(string s)
+        {
+            var sb = new System.Text.StringBuilder(s.Length + 64);
+            foreach (char ch in s)
+            {
+                if (ch > 0x7E || ch < 0x20)
+                    sb.AppendFormat("\\u{0:x4}", (int)ch);
+                else
+                    sb.Append(ch);
+            }
+            return sb.ToString();
         }
 
         /// <summary>
@@ -468,16 +488,18 @@ namespace VillaFrequenceTvAutomation
         {
             if (_touchPanels == null) return;
             if (!_roomsRegistry.ContainsKey(roomId)) return;
-            if (!_roomEiscEnabled.ContainsKey(roomId) || !_roomEiscEnabled[roomId]) return;
+            bool eiscEnabled = _roomEiscEnabled.ContainsKey(roomId) && _roomEiscEnabled[roomId];
 
             try
             {
                 RoomState room = _roomsRegistry[roomId];
                 uint b = RoomBlockStart(roomId);
 
-                // Diffusé vers l'EISC (slot 2) ET les panels : le debugger virtuel (XPanel) voit ainsi les blocs pièces.
+                // Panels (debugger virtuel compris) : TOUTES les pièces sont diffusées.
+                // EISC (slot 2) : uniquement les pièces avec 'intersystem': true (limite le debugger SIMPL).
                 foreach (var dev in _touchPanels)
                 {
+                    if (dev == _eisc && !eiscEnabled) continue;
                     // Digitals : scènes éclairage (+21..24), scènes stores (+41..44), mute (+50), source (+51..56)
                     for (uint s = 0; s < 4; s++)
                         dev.BooleanInput[b + 21 + s].BoolValue = (room.ActiveScene == s + 1);
@@ -522,13 +544,14 @@ namespace VillaFrequenceTvAutomation
         /// <summary>
         /// Traite une commande reçue du programme SIMPL du slot 2 sur un bloc pièce de l'EISC.
         /// </summary>
-        private void ProcessEiscRoomSignal(SigEventArgs args)
+        private void ProcessEiscRoomSignal(BasicTriList sourceDevice, SigEventArgs args)
         {
             uint join = args.Sig.Number;
             int roomId = (int)((join - RoomBlockBase) / RoomBlockSize) + 1;
             uint offset = (join - RoomBlockBase) % RoomBlockSize;
             if (!_roomsRegistry.ContainsKey(roomId)) return;
-            if (!_roomEiscEnabled.ContainsKey(roomId) || !_roomEiscEnabled[roomId]) return;
+            // Le flag 'intersystem' ne restreint que le slot 2 ; les panels (debugger) pilotent toutes les pièces
+            if (sourceDevice == _eisc && (!_roomEiscEnabled.ContainsKey(roomId) || !_roomEiscEnabled[roomId])) return;
 
             RoomState room = _roomsRegistry[roomId];
 
@@ -595,7 +618,7 @@ namespace VillaFrequenceTvAutomation
             // Les joins réservés firmware (ex : 29731) tombent hors registre et sont ignorés.
             if (args.Sig.Number >= RoomBlockBase)
             {
-                ProcessEiscRoomSignal(args);
+                ProcessEiscRoomSignal(currentDevice, args);
                 return;
             }
 
@@ -789,11 +812,13 @@ namespace VillaFrequenceTvAutomation
                 case 68:
                 case 69:
                     CrestronConsole.PrintLine("STORE CONTROL - Event on digital join {0} received (pièce {1}).", joinNumber, activeRoomId);
-                    if (_touchPanels != null && _roomEiscEnabled.ContainsKey(activeRoomId) && _roomEiscEnabled[activeRoomId])
+                    if (_touchPanels != null)
                     {
+                        bool grpEisc = _roomEiscEnabled.ContainsKey(activeRoomId) && _roomEiscEnabled[activeRoomId];
                         uint groupJoin = RoomBlockStart(activeRoomId) + 1 + (uint)(joinNumber - 61);
                         foreach (var dev in _touchPanels)
                         {
+                            if (dev == _eisc && !grpEisc) continue;
                             dev.BooleanInput[groupJoin].BoolValue = true;
                             dev.BooleanInput[groupJoin].BoolValue = false;
                         }
@@ -805,11 +830,13 @@ namespace VillaFrequenceTvAutomation
                 case 87: case 88: case 89: case 90: case 91: case 92:
                 case 93: case 94: case 95: case 96: case 97: case 98:
                     CrestronConsole.PrintLine("MOTEURS: Commande join {0} (pièce {1}).", joinNumber, activeRoomId);
-                    if (_touchPanels != null && _roomEiscEnabled.ContainsKey(activeRoomId) && _roomEiscEnabled[activeRoomId])
+                    if (_touchPanels != null)
                     {
+                        bool motEisc = _roomEiscEnabled.ContainsKey(activeRoomId) && _roomEiscEnabled[activeRoomId];
                         uint motorJoin = RoomBlockStart(activeRoomId) + 61 + (uint)(joinNumber - 81);
                         foreach (var dev in _touchPanels)
                         {
+                            if (dev == _eisc && !motEisc) continue;
                             dev.BooleanInput[motorJoin].BoolValue = true;
                             dev.BooleanInput[motorJoin].BoolValue = false;
                         }

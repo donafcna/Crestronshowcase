@@ -24,6 +24,9 @@
   .btn.warn { background:rgba(196,154,69,.15); border-color:var(--gold); color:var(--gold); }
   .btn.danger { background:rgba(239,68,68,.12); border-color:var(--red); color:#fca5a5; }
   .btn:disabled { opacity:.4; cursor:not-allowed; }
+  .type-filter-btn { opacity:.35; }
+  .type-filter-btn.on { opacity:1; background:rgba(56,189,248,.12); border-color:var(--blue); color:var(--blue); }
+  th.sorted { color:var(--accent); }
   .term { flex:1; background:#0a0d12; border:1px solid var(--border); border-radius:10px; padding:12px 14px; font-family:'Cascadia Mono','Consolas',monospace; font-size:.8rem; line-height:1.45; overflow-y:auto; white-space:pre-wrap; word-break:break-all; color:#c9d4e3; }
   .term .cmd { color:var(--accent); font-weight:700; }
   .term .err { color:#fca5a5; }
@@ -51,6 +54,7 @@
     <button id="tab-dbg" class="active" onclick="showTab('dbg')">🔍 Debugger</button>
     <button id="tab-term" onclick="showTab('term')">💻 Terminal</button>
     <button id="tab-deploy" onclick="showTab('deploy')">🚀 Déploiement</button>
+    <button onclick="window.open('/objectifs.html', '_blank')">🎯 Objectifs</button>
   </nav>
 </header>
 <main>
@@ -106,7 +110,8 @@
       <button class="btn mini danger" onclick="clearWatch()">Vider</button>
     </div>
     <div class="row" id="dbg-addrow">
-      <select id="dbg-type"><option value="b">Digital</option><option value="n">Analog</option><option value="s">Serial</option></select>
+      <span class="hint" title="Ajouter un signal à la table : choisir son type, son join, puis + Surveiller">Ajouter :</span>
+      <select id="dbg-type" title="Type du signal à ajouter (un même numéro de join existe en Digital, Analog et Serial)"><option value="b">Digital</option><option value="n">Analog</option><option value="s">Serial</option></select>
       <input id="dbg-join" type="number" placeholder="Join" style="width:110px">
       <input id="dbg-label" placeholder="Libellé (optionnel)" style="width:240px">
       <button class="btn primary mini" onclick="addWatchFromForm()">+ Surveiller</button>
@@ -114,11 +119,20 @@
         <button class="btn mini" id="filter-btn" onclick="toggleFilterPanel()">🏠 Filtrer par pièce ▾</button>
         <div id="filter-panel" style="display:none; position:absolute; top:115%; left:0; z-index:60; background:var(--panel); border:1px solid var(--border); border-radius:10px; padding:12px 16px; min-width:240px; box-shadow:0 10px 30px rgba(0,0,0,.6);"></div>
       </div>
+      <span class="hint" title="Filtre l'affichage de la table (ne supprime rien)">Afficher :</span>
+      <button class="btn mini type-filter-btn" id="tf-b" onclick="toggleTypeFilter('b')" title="Afficher/masquer les signaux digitaux">Digital</button>
+      <button class="btn mini type-filter-btn" id="tf-n" onclick="toggleTypeFilter('n')" title="Afficher/masquer les signaux analogiques">Analog</button>
+      <button class="btn mini type-filter-btn" id="tf-s" onclick="toggleTypeFilter('s')" title="Afficher/masquer les signaux série">Serial</button>
       <span class="hint">Blocs pièces : base = 1000 + (id−1)×100 (ex : 1021 = scène 1 pièce 1) — chargés automatiquement pour les pièces en intersystem</span>
     </div>
     <div id="dbg-wrap">
       <table>
-        <thead><tr><th style="width:70px">Type</th><th style="width:80px">Join</th><th>Libellé</th><th style="width:140px">Valeur live</th><th style="width:260px">Forcer</th><th style="width:40px"></th></tr></thead>
+        <thead><tr>
+          <th style="width:70px; cursor:pointer;" id="th-type" onclick="setSort('type')" title="Trier par type">Type</th>
+          <th style="width:80px; cursor:pointer;" id="th-join" onclick="setSort('join')" title="Trier par join">Join</th>
+          <th style="cursor:pointer;" id="th-label" onclick="setSort('label')" title="Trier par libellé">Libellé</th>
+          <th style="width:140px">Valeur live</th><th style="width:260px">Forcer</th><th style="width:40px"></th>
+        </tr></thead>
         <tbody id="dbg-rows"></tbody>
       </table>
     </div>
@@ -126,6 +140,7 @@
     <div class="row" id="trace-row" style="margin-top:2px;">
       <b style="font-size:.85rem;">📜 Trace des signaux</b>
       <span class="hint" id="trace-count">0 événement</span>
+      <span class="hint" id="trace-status" style="color:var(--red);"></span>
       <button class="btn mini" id="layout-trace-btn" style="margin-left:auto" onclick="toggleDbgLayout('trace')">⛶ Trace plein écran</button>
       <button class="btn mini" id="trace-pause-btn" onclick="toggleTracePause()">⏸ Pause défilement</button>
       <button class="btn mini" onclick="clearTrace()">Vider la trace</button>
@@ -217,9 +232,40 @@ const DBG_IPID = '0x04';
 let crReady = false;
 const watches = []; // {type, join, label, subId}
 
+let dbgConnected = false;
+let dbgWasConnected = false;
+let reconnectTimer = null;
+let reconnectCountdown = null;
 function setDbgStatus(connected, label) {
+  dbgConnected = connected;
   document.getElementById('dbg-dot').classList.toggle('on', connected);
   document.getElementById('dbg-status').textContent = label;
+  updateTraceStatus();
+
+  // Reconnexion automatique : si on a déjà été connecté dans cette session et que la
+  // liaison reste coupée 15 s (redémarrage du CP4, onglet gelé...), la page se recharge.
+  if (connected) {
+    dbgWasConnected = true;
+    clearTimeout(reconnectTimer); reconnectTimer = null;
+    clearInterval(reconnectCountdown); reconnectCountdown = null;
+  } else if (dbgWasConnected && !reconnectTimer) {
+    let restant = 15;
+    const statusEl = document.getElementById('dbg-status');
+    reconnectCountdown = setInterval(() => {
+      restant--;
+      if (restant > 0 && !dbgConnected) statusEl.textContent = 'Déconnecté — reconnexion auto dans ' + restant + ' s';
+    }, 1000);
+    reconnectTimer = setTimeout(() => {
+      if (!dbgConnected) location.reload();
+    }, 15000);
+  }
+}
+function updateTraceStatus() {
+  const el = document.getElementById('trace-status');
+  if (!el) return;
+  if (!dbgConnected) { el.textContent = '⚠ déconnecté du CP4 : aucun événement ne peut arriver'; el.style.color = 'var(--red)'; }
+  else if (roomFilter) { el.textContent = '🏠 filtre actif : seules les pièces cochées sont tracées'; el.style.color = 'var(--gold)'; }
+  else { el.textContent = ''; }
 }
 window.addEventListener('CONNECT_WS', () => setDbgStatus(true, 'WebSocket connecté'));
 window.addEventListener('CONNECT_CIP', () => setDbgStatus(true, 'CIP connecté (live)'));
@@ -237,6 +283,69 @@ function joinRoom(join) {
   return join >= 1000 ? Math.floor((join - 1000) / 100) + 1 : 0;
 }
 function roomAllowed(room) { return !roomFilter || roomFilter.has(room); }
+
+// --- Filtre par type de signal (Digital / Analog / Serial) ---
+let typeFilter = { b: true, n: true, s: true };
+try {
+  const savedTf = localStorage.getItem('dbg_type_filter');
+  if (savedTf) typeFilter = JSON.parse(savedTf);
+} catch (e) {}
+function typeAllowed(t) { return typeFilter[t] !== false; }
+function toggleTypeFilter(t) {
+  typeFilter[t] = !typeAllowed(t);
+  try { localStorage.setItem('dbg_type_filter', JSON.stringify(typeFilter)); } catch (e) {}
+  updateTypeFilterButtons();
+  refreshRowVisibility();
+}
+function updateTypeFilterButtons() {
+  ['b', 'n', 's'].forEach(t => {
+    const btn = document.getElementById('tf-' + t);
+    if (btn) btn.classList.toggle('on', typeAllowed(t));
+  });
+}
+
+// --- Tri de la table (type / join / libellé, ascendant puis descendant) ---
+let sortState = { key: 'join', dir: 1 };
+try {
+  const savedSort = localStorage.getItem('dbg_sort');
+  if (savedSort) sortState = JSON.parse(savedSort);
+} catch (e) {}
+function setSort(key) {
+  if (sortState.key === key) sortState.dir = -sortState.dir;
+  else sortState = { key: key, dir: 1 };
+  try { localStorage.setItem('dbg_sort', JSON.stringify(sortState)); } catch (e) {}
+  applySort();
+}
+function applySort() {
+  const tbody = document.getElementById('dbg-rows');
+  const rows = [...tbody.querySelectorAll('tr')].filter(tr => tr.id !== 'dbg-empty-hint');
+  const typeOrder = { b: 1, n: 2, s: 3 };
+  rows.sort((a, b) => {
+    let va, vb;
+    if (sortState.key === 'join') {
+      va = parseInt(a.dataset.join, 10); vb = parseInt(b.dataset.join, 10);
+      if (va === vb) { va = typeOrder[a.dataset.stype]; vb = typeOrder[b.dataset.stype]; }
+      return (va - vb) * sortState.dir;
+    }
+    if (sortState.key === 'type') {
+      va = typeOrder[a.dataset.stype]; vb = typeOrder[b.dataset.stype];
+      if (va === vb) return (parseInt(a.dataset.join, 10) - parseInt(b.dataset.join, 10)) * sortState.dir;
+      return (va - vb) * sortState.dir;
+    }
+    return (a.dataset.label || '').localeCompare(b.dataset.label || '', 'fr') * sortState.dir;
+  });
+  rows.forEach(tr => tbody.appendChild(tr));
+  const hint = document.getElementById('dbg-empty-hint');
+  if (hint) tbody.appendChild(hint);
+  // Indicateurs visuels sur les entêtes
+  [['th-type', 'type'], ['th-join', 'join'], ['th-label', 'label']].forEach(([id, key]) => {
+    const th = document.getElementById(id);
+    if (!th) return;
+    const base = { 'th-type': 'Type', 'th-join': 'Join', 'th-label': 'Libellé' }[id];
+    th.classList.toggle('sorted', sortState.key === key);
+    th.textContent = base + (sortState.key === key ? (sortState.dir === 1 ? ' ▲' : ' ▼') : '');
+  });
+}
 function toggleFilterPanel() {
   const p = document.getElementById('filter-panel');
   if (p.style.display === 'none') { buildFilterPanel(); p.style.display = 'block'; }
@@ -246,7 +355,7 @@ function buildFilterPanel() {
   const p = document.getElementById('filter-panel');
   const vc = window.__villaCfg;
   const entries = [{ id: 0, nom: 'Signaux globaux' }];
-  if (vc) (vc.pieces || []).filter(pc => pc.intersystem !== false).forEach(pc => entries.push({ id: pc.id, nom: pc.id + ' — ' + pc.nom }));
+  if (vc) (vc.pieces || []).forEach(pc => entries.push({ id: pc.id, nom: pc.id + ' — ' + pc.nom + (pc.intersystem === false ? '' : ' 🔗') }));
   let html = '<div style="display:flex; gap:8px; margin-bottom:8px;">' +
              '<button class="btn mini" onclick="setAllRoomFilter(true)">Tout</button>' +
              '<button class="btn mini" onclick="setAllRoomFilter(false)">Aucun</button></div>';
@@ -261,21 +370,41 @@ function setAllRoomFilter(on) {
   document.querySelectorAll('.room-filter-cb').forEach(cb => cb.checked = on);
   applyRoomFilter();
 }
+function saveRoomFilter() {
+  try {
+    if (roomFilter) localStorage.setItem('dbg_room_filter', JSON.stringify([...roomFilter]));
+    else localStorage.removeItem('dbg_room_filter');
+  } catch (e) {}
+}
+function refreshRowVisibility() {
+  const rows = [...document.querySelectorAll('#dbg-rows tr')].filter(tr => tr.id !== 'dbg-empty-hint');
+  rows.forEach(tr => {
+    const ok = roomAllowed(parseInt(tr.dataset.room || '0', 10)) && typeAllowed(tr.dataset.stype || 'b');
+    tr.style.display = ok ? '' : 'none';
+  });
+  const btn = document.getElementById('filter-btn');
+  if (btn) btn.textContent = roomFilter ? '🏠 Filtre actif (' + roomFilter.size + ') ▾' : '🏠 Filtrer par pièce ▾';
+  updateTraceStatus();
+  // Message explicatif quand le filtre masque tout
+  const visibles = rows.filter(tr => tr.style.display !== 'none').length;
+  let hint = document.getElementById('dbg-empty-hint');
+  if (rows.length && !visibles) {
+    if (!hint) {
+      hint = document.createElement('tr');
+      hint.id = 'dbg-empty-hint';
+      hint.innerHTML = '<td colspan="6" class="hint" style="padding:18px; text-align:center;">Tous les signaux sont masqués par le filtre 🏠 — cochez des pièces (ou « Tout ») pour les afficher.</td>';
+      document.getElementById('dbg-rows').appendChild(hint);
+    }
+  } else if (hint) hint.remove();
+}
 function applyRoomFilter() {
   const cbs = [...document.querySelectorAll('.room-filter-cb')];
   if (cbs.length) {
     const checked = cbs.filter(cb => cb.checked).map(cb => parseInt(cb.dataset.room, 10));
     roomFilter = (checked.length === cbs.length) ? null : new Set(checked);
-    try {
-      if (roomFilter) localStorage.setItem('dbg_room_filter', JSON.stringify([...roomFilter]));
-      else localStorage.removeItem('dbg_room_filter');
-    } catch (e) {}
+    saveRoomFilter();
   }
-  document.querySelectorAll('#dbg-rows tr').forEach(tr => {
-    tr.style.display = roomAllowed(parseInt(tr.dataset.room || '0', 10)) ? '' : 'none';
-  });
-  const btn = document.getElementById('filter-btn');
-  if (btn) btn.textContent = roomFilter ? '🏠 Filtre actif (' + roomFilter.size + ') ▾' : '🏠 Filtrer par pièce ▾';
+  refreshRowVisibility();
 }
 
 // --- Bascule d'affichage : partagé / table plein écran / trace plein écran ---
@@ -371,7 +500,10 @@ function addWatch(type, join, label) {
     forceHtml = '<input id="force-s-' + join + '" style="width:150px" class="mini"> <button class="btn mini" onclick="forceVal(\'s\',' + join + ')">Envoyer</button>';
   }
   tr.dataset.room = joinRoom(join);
-  if (!roomAllowed(joinRoom(join))) tr.style.display = 'none';
+  tr.dataset.join = join;
+  tr.dataset.stype = type;
+  tr.dataset.label = w.label || '';
+  if (!roomAllowed(joinRoom(join)) || !typeAllowed(type)) tr.style.display = 'none';
   tr.innerHTML = '<td>' + typeName + '</td><td><b>' + join + '</b></td><td class="hint">' + escapeHtml(w.label) + '</td>' +
                  '<td><span class="val" id="val-' + type + '-' + join + '">—</span></td>' +
                  '<td>' + forceHtml + '</td>' +
@@ -396,6 +528,25 @@ function addWatchFromForm() {
   if (!join) return;
   addWatch(type, join, document.getElementById('dbg-label').value);
   document.getElementById('dbg-join').value = ''; document.getElementById('dbg-label').value = '';
+
+  // Si la pièce du signal est masquée par le filtre, on la ré-active pour que la ligne soit visible
+  const room = joinRoom(join);
+  if (roomFilter && !roomFilter.has(room)) {
+    roomFilter.add(room);
+    saveRoomFilter();
+    const cb = document.querySelector('.room-filter-cb[data-room="' + room + '"]');
+    if (cb) cb.checked = true;
+    refreshRowVisibility();
+  }
+  // Mettre la ligne (nouvelle ou déjà existante) en évidence
+  const valEl = document.getElementById('val-' + type + '-' + join);
+  const tr = valEl ? valEl.closest('tr') : null;
+  if (tr) {
+    tr.scrollIntoView({ block: 'center' });
+    tr.style.transition = 'background 1.5s';
+    tr.style.background = 'rgba(16,185,129,.25)';
+    setTimeout(() => { tr.style.background = ''; }, 1600);
+  }
 }
 function removeWatch(type, join, btn) {
   const i = watches.findIndex(w => w.type === type && w.join === join);
@@ -441,8 +592,9 @@ async function loadContractSignals() {
         for (let i = 0; i < n; i++) addWatch(t, sig.joinDebut + i, sig.contractName + '.' + (i + 1));
       }
     });
-    // Blocs pièces : signaux de chaque pièce exposée en intersystem (base = 1000 + (id-1)*100)
-    const pieces = (vc.pieces || []).filter(p => p.intersystem !== false);
+    // Blocs pièces : signaux de TOUTES les pièces du fichier de configuration
+    // (le flag intersystem ne restreint que l'exposition vers le SIMPL du slot 2)
+    const pieces = vc.pieces || [];
     const offsets = (vc.contrat.blocsPieces && vc.contrat.blocsPieces.offsets) || [];
     pieces.forEach(p => {
       const base = 1000 + (p.id - 1) * 100;
@@ -457,6 +609,9 @@ async function loadContractSignals() {
         }
       });
     });
+    refreshRowVisibility(); // applique les filtres mémorisés (texte du bouton + message éventuel)
+    updateTypeFilterButtons();
+    applySort();
   } catch (e) { alert('villa_config.json illisible : ' + e.message); }
 }
 

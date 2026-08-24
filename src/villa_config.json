@@ -19,10 +19,33 @@
       "4) Au démarrage, le CP4 lit ce fichier et le transmet au CH5 qui modèle le GUI en conséquence.",
       "RÈGLES : maximum 4 scènes d'éclairage par pièce. Maximum 10 circuits par pièce. Maximum 6 moteurs par pièce.",
       "Un nom laissé vide (\"\") reprend le nom par défaut indiqué dans 'valeursParDefaut'.",
-      "Un pilotage avec \"actif\": false masque toute la section correspondante dans le GUI pour cette pièce."
+      "Un pilotage avec \"actif\": false masque toute la section correspondante dans le GUI pour cette pièce.",
+      "ICONES : chaque piece a un champ icone (emoji affiche dans le menu de gauche). Choisir dans valeursParDefaut.iconesDisponibles et copier-coller."
     ]
   },
   "valeursParDefaut": {
+    "iconesDisponibles": {
+      "🛋️": "Salon",
+      "🍳": "Cuisine",
+      "🍽️": "Salle à Manger",
+      "🛏️": "Chambre",
+      "💼": "Bureau",
+      "🎬": "Home Cinéma",
+      "🎮": "Salle de Jeux",
+      "🚪": "Suite Invités",
+      "🌿": "Terrasse & Jardin",
+      "🏊": "Piscine & Spa",
+      "🧖": "Sauna & Hammam",
+      "🏖️": "Pool House",
+      "🚗": "Garage",
+      "📺": "Salle TV",
+      "🎵": "Salle de Musique",
+      "🧺": "Buanderie",
+      "🍷": "Cave à Vin",
+      "🏋️": "Salle de Sport",
+      "🛁": "Salle de Bain",
+      "🏠": "Pièce générique"
+    },
     "scenesEclairage": [
       "OFF",
       "Sex",
@@ -133,7 +156,8 @@
   "pieces": [
     {
       "id": 1,
-      "nom": "Salle de Play",
+      "nom": "Salle de Jeux",
+      "icone": "🎮",
       "intersystem": true,
       "pilotages": {
         "eclairages": {
@@ -164,7 +188,7 @@
           }
         },
         "moteurs": {
-          "actif": true,
+          "actif": false,
           "nombre": 6,
           "liste": [
             {
@@ -197,11 +221,11 @@
           "actif": false
         },
         "controlesGeneraux": {
-          "actif": false,
+          "actif": true,
           "partitionsAlarme": 4
         },
         "audioVideo": {
-          "actif": true,
+          "actif": false,
           "sources": [
             1,
             2,
@@ -215,6 +239,7 @@
     {
       "id": 2,
       "nom": "Chambre Maman",
+      "icone": "🛏️",
       "intersystem": true,
       "pilotages": {
         "eclairages": {
@@ -290,6 +315,7 @@
     {
       "id": 3,
       "nom": "Chambre Papa",
+      "icone": "🛏️",
       "intersystem": true,
       "pilotages": {
         "eclairages": {
@@ -365,6 +391,7 @@
     {
       "id": 4,
       "nom": "Suite amis",
+      "icone": "🚪",
       "intersystem": false,
       "pilotages": {
         "eclairages": {
@@ -440,6 +467,7 @@
     {
       "id": 5,
       "nom": "Chambre Amis",
+      "icone": "🛏️",
       "intersystem": false,
       "pilotages": {
         "eclairages": {
@@ -515,6 +543,7 @@
     {
       "id": 6,
       "nom": "Chambre 2",
+      "icone": "🛏️",
       "intersystem": false,
       "pilotages": {
         "eclairages": {
@@ -590,6 +619,7 @@
     {
       "id": 7,
       "nom": "Bureau",
+      "icone": "💼",
       "intersystem": false,
       "pilotages": {
         "eclairages": {
@@ -665,6 +695,7 @@
     {
       "id": 8,
       "nom": "Home Cinéma",
+      "icone": "🎬",
       "intersystem": false,
       "pilotages": {
         "eclairages": {
@@ -740,6 +771,7 @@
     {
       "id": 9,
       "nom": "Chambre 3",
+      "icone": "🛏️",
       "intersystem": false,
       "pilotages": {
         "eclairages": {
@@ -815,6 +847,7 @@
     {
       "id": 10,
       "nom": "Suite Invités",
+      "icone": "🚪",
       "intersystem": false,
       "pilotages": {
         "eclairages": {
@@ -890,6 +923,7 @@
     {
       "id": 11,
       "nom": "Terrasse & Jardin",
+      "icone": "🌿",
       "intersystem": false,
       "pilotages": {
         "eclairages": {
@@ -965,6 +999,7 @@
     {
       "id": 12,
       "nom": "Piscine & Spa",
+      "icone": "🏊",
       "intersystem": false,
       "pilotages": {
         "eclairages": {
@@ -1040,6 +1075,7 @@
     {
       "id": 13,
       "nom": "Sauna & Hammam",
+      "icone": "🧖",
       "intersystem": false,
       "pilotages": {
         "eclairages": {
@@ -1115,6 +1151,7 @@
     {
       "id": 14,
       "nom": "Pool House",
+      "icone": "🏖️",
       "intersystem": false,
       "pilotages": {
         "eclairages": {
@@ -1190,6 +1227,7 @@
     {
       "id": 15,
       "nom": "Garage & Ateliers",
+      "icone": "🚗",
       "intersystem": false,
       "pilotages": {
         "eclairages": {
@@ -2235,6 +2273,25 @@
           "description": "Nom de la pièce (langue de référence)"
         }
       ]
+    }
+  },
+  "pagesSpeciales": {
+    "description": "Pages speciales du menu de navigation (true = presente dans le menu). youtubeRecherche personnalise la video.",
+    "jeux": {
+      "actif": true,
+      "nom": "Jeux",
+      "icone": "🚀"
+    },
+    "animation": {
+      "actif": true,
+      "nom": "Animation",
+      "icone": "✨"
+    },
+    "video": {
+      "actif": true,
+      "nom": "Vidéo",
+      "icone": "⚽",
+      "youtubeRecherche": "football highlights"
     }
   }
 }
