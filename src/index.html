@@ -2944,19 +2944,20 @@
             <div class="pub-cadre pc2">👑</div>
             <div class="pub-cadre pc3">🎸</div>
             <div class="pub-etagere pe1">
-                <i class="btl" style="left:10px;  height:46px; background:linear-gradient(90deg,#1d4d1d,#3c8a3c 40%,#1d4d1d);"></i>
-                <i class="btl" style="left:34px;  height:38px; background:linear-gradient(90deg,#5c3210,#a05c1c 40%,#5c3210);"></i>
-                <i class="btl" style="left:58px;  height:50px; background:linear-gradient(90deg,#3c1020,#7a2040 40%,#3c1020);"></i>
-                <i class="btl" style="left:82px;  height:42px; background:linear-gradient(90deg,#0e3c50,#1c7aa0 40%,#0e3c50);"></i>
-                <i class="btl" style="left:106px; height:47px; background:linear-gradient(90deg,#4a3c10,#8a721c 40%,#4a3c10);"></i>
+                <i class="btl2 b-vodka" style="left:8px;"></i>
+                <i class="btl2 b-whisky" style="left:30px;"></i>
+                <i class="btl2 b-gin" style="left:56px;"></i>
+                <i class="btl2 b-vin" style="left:80px;"></i>
+                <i class="btl2 b-sake" style="left:103px;"></i>
                 <i class="gls" style="left:136px;"></i><i class="gls" style="left:156px;"></i><i class="gls" style="left:176px;"></i>
             </div>
             <div class="pub-etagere pe2">
-                <i class="gls" style="left:10px;"></i><i class="gls" style="left:30px;"></i><i class="gls" style="left:50px;"></i>
-                <i class="btl" style="left:80px;  height:44px; background:linear-gradient(90deg,#14401e,#2c7a3c 40%,#14401e);"></i>
-                <i class="btl" style="left:104px; height:36px; background:linear-gradient(90deg,#401020,#801c3c 40%,#401020);"></i>
-                <i class="btl" style="left:128px; height:48px; background:linear-gradient(90deg,#20344a,#3c608a 40%,#20344a);"></i>
-                <i class="btl" style="left:152px; height:40px; background:linear-gradient(90deg,#4c2c0c,#8a5218 40%,#4c2c0c);"></i>
+                <i class="gls" style="left:8px;"></i><i class="gls" style="left:28px;"></i>
+                <i class="btl2 b-vin" style="left:56px;"></i>
+                <i class="btl2 b-sake" style="left:79px;"></i>
+                <i class="btl2 b-whisky" style="left:106px;"></i>
+                <i class="btl2 b-vodka" style="left:132px;"></i>
+                <i class="btl2 b-gin" style="left:154px;"></i>
             </div>
             <div class="pub-lampe pl1"></div>
             <div class="pub-lampe pl2"></div>
@@ -3007,8 +3008,9 @@
                 <div class="cl-corps"></div>
                 <div class="cl-bras"></div>
                 <div class="cl-avantbras"></div>
-                <div class="cl-tete"></div>
+                <div class="cl-bras-haut"></div>
                 <div class="cl-boire"><div class="cl-boire-verre"></div></div>
+                <div class="cl-tete"></div>
             </div>
             <div id="biere-son-hint" class="biere-son-hint">🔇 toucher l'écran pour le son</div>
         </div>
@@ -3084,43 +3086,68 @@
         .pub-etagere { position:absolute; left:3.5%; width:206px; height:8px; background:linear-gradient(180deg, #6b4423, #3a2410);
             border-radius:2px; box-shadow:0 5px 10px rgba(0,0,0,0.5); }
         .pe1 { top:24%; } .pe2 { top:41%; }
-        .btl { position:absolute; bottom:8px; width:15px; border-radius:3px 3px 2px 2px; box-shadow:inset -2px 0 4px rgba(0,0,0,0.4); }
-        .btl::after { content:''; position:absolute; top:-9px; left:50%; margin-left:-3px; width:6px; height:10px; background:inherit; border-radius:2px 2px 0 0; }
+        /* Bouteilles typées : silhouettes et couleurs reconnaissables */
+        .btl2 { position:absolute; bottom:8px; box-shadow:inset -2px 0 4px rgba(0,0,0,0.35); }
+        .b-vodka { width:13px; height:50px; border-radius:3px 3px 2px 2px; background:linear-gradient(90deg, #aebfd0, #e8f2fa 45%, #9db0c2); }
+        .b-vodka::before { content:''; position:absolute; top:-13px; left:50%; margin-left:-2.5px; width:5px; height:13px;
+            background:linear-gradient(90deg, #aebfd0, #eef6fc); border-top:4px solid #6d7a88; }
+        .b-vodka::after { content:''; position:absolute; top:14px; left:1.5px; right:1.5px; height:16px; background:#f4f8fc; border-top:3px solid #2c5c9c; }
+        .b-whisky { width:17px; height:38px; border-radius:2px; background:linear-gradient(90deg, #7a4210, #c07828 45%, #6b3a0e); }
+        .b-whisky::before { content:''; position:absolute; top:-11px; left:50%; margin-left:-3px; width:6px; height:11px;
+            background:#8a4c14; border-top:4px solid #241a10; }
+        .b-whisky::after { content:''; position:absolute; top:10px; left:2px; right:2px; height:14px; background:#e8d8b0; }
+        .b-gin { width:15px; height:46px; border-radius:7px 7px 2px 2px; background:linear-gradient(90deg, #14381c, #2c6a3c 45%, #123018); }
+        .b-gin::before { content:''; position:absolute; top:-12px; left:50%; margin-left:-2.5px; width:5px; height:12px;
+            background:#1c4424; border-top:4px solid #c9a227; }
+        .b-gin::after { content:''; position:absolute; top:13px; left:2px; right:2px; height:15px; background:#f2ead8; border-radius:2px; }
+        .b-sake { width:19px; height:34px; border-radius:8px 8px 3px 3px; background:linear-gradient(90deg, #cfc4b0, #f4ecd8 45%, #bfb49e); }
+        .b-sake::before { content:''; position:absolute; top:-9px; left:50%; margin-left:-3.5px; width:7px; height:9px;
+            background:#e8dcc4; border-top:3px solid #8a2c2c; }
+        .b-sake::after { content:''; position:absolute; top:9px; left:0; right:0; height:9px; background:#a83030; }
+        .b-vin { width:14px; height:52px; border-radius:6px 6px 2px 2px; background:linear-gradient(90deg, #2c1218, #5c2030 45%, #241014); }
+        .b-vin::before { content:''; position:absolute; top:-15px; left:50%; margin-left:-2.5px; width:5px; height:15px;
+            background:#2c1218; border-top:5px solid #8a1c24; }
+        .b-vin::after { content:''; position:absolute; top:20px; left:1.5px; right:1.5px; height:13px; background:#e8ddc8; }
         .gls { position:absolute; bottom:8px; width:15px; height:19px; border:2px solid rgba(230,240,255,0.55); border-top:none;
             border-radius:0 0 5px 5px; background:linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.14)); }
-        /* Suspensions chaudes */
-        .pub-lampe { position:absolute; top:0; width:4px; height:11%; background:#1c1208; }
-        .pub-lampe::before { content:''; position:absolute; top:100%; left:50%; transform:translateX(-50%);
-            border-left:26px solid transparent; border-right:26px solid transparent; border-top:34px solid #5c3c1a; }
-        .pub-lampe::after { content:''; position:absolute; top:calc(100% + 22px); left:50%; transform:translateX(-50%);
-            width:120px; height:90px; border-radius:50%;
-            background:radial-gradient(ellipse at 50% 0%, rgba(255,205,110,0.4), transparent 70%); }
+        /* Suspensions en laiton : tige, dôme martelé, ampoule visible, halo qui respire */
+        .pub-lampe { position:absolute; top:0; width:5px; height:9%; background:linear-gradient(180deg, #14100a, #4a3416); border-radius:0 0 2px 2px; }
+        .pub-lampe::before { content:''; position:absolute; top:100%; left:50%; transform:translateX(-50%); width:66px; height:38px;
+            clip-path:polygon(50% 0, 60% 8%, 90% 74%, 100% 100%, 0 100%, 10% 74%, 40% 8%);
+            background:linear-gradient(180deg, #5c3c16, #8a5c24 55%, #c9963f 88%, #6b4a22);
+            filter:drop-shadow(0 3px 6px rgba(0,0,0,0.5)); }
+        .pub-lampe::after { content:''; position:absolute; top:calc(100% + 30px); left:50%; transform:translateX(-50%);
+            width:140px; height:120px;
+            background:radial-gradient(circle at 50% 8px, #fff8dc 0 5px, rgba(255,224,150,0.9) 6px 9px, transparent 11px),
+                       radial-gradient(ellipse at 50% 8%, rgba(255,205,110,0.34), transparent 68%);
+            animation:lampePulse 5s ease-in-out infinite; }
+        @keyframes lampePulse { 0%, 100% { opacity:0.88; } 50% { opacity:1; } }
         .pl1 { left:22%; } .pl2 { left:72%; }
         /* Barman à GAUCHE de la tireuse, buste seulement (jambes cachées par le comptoir).
            Son bras droit tendu vers la poignée suit pousseTirette sur le cycle de 9 s. */
-        .pub-barman { position:absolute; left:50%; bottom:calc(22% - 46px); transform:translateX(-295px); width:170px; height:400px; }
-        .bm-corps { position:absolute; bottom:0; left:35px; width:100px; height:266px; border-radius:42px 42px 0 0;
-            background:linear-gradient(180deg, #f0ece4 0 36%, #23232c 36%);
-            box-shadow:inset 0 -30px 22px rgba(0,0,0,0.3); }
-        .bm-corps::before { content:''; position:absolute; top:33%; left:50%; margin-left:-16px;
+        .pub-barman { position:absolute; left:50%; bottom:calc(22% - 12px); transform:translateX(-295px); width:170px; height:400px; }
+        .bm-corps { position:absolute; bottom:0; left:35px; width:100px; height:220px; border-radius:42px 42px 0 0;
+            background:linear-gradient(180deg, #f0ece4 0 40%, #23232c 40%);
+            box-shadow:inset 0 -26px 20px rgba(0,0,0,0.3); }
+        .bm-corps::before { content:''; position:absolute; top:37%; left:50%; margin-left:-16px;
             border-left:16px solid transparent; border-right:16px solid transparent; border-top:24px solid #f0ece4; } /* col en V du gilet */
         .bm-corps::after { content:''; position:absolute; top:8px; left:50%; transform:translateX(-50%); width:32px; height:11px; background:#1a1a22;
             clip-path:polygon(0 0, 38% 50%, 0 100%, 50% 62%, 100% 100%, 62% 50%, 100% 0, 50% 38%); } /* nœud papillon */
-        .bm-tete { position:absolute; bottom:258px; left:56px; width:58px; height:66px; border-radius:46%;
+        .bm-tete { position:absolute; bottom:212px; left:56px; width:58px; height:66px; border-radius:46%;
             background:linear-gradient(180deg, #eec096 66%, #e0ac80); }
         .bm-tete::before { content:''; position:absolute; top:-5px; left:-3px; right:-3px; height:26px; border-radius:50% 50% 32% 32%;
             background:#3a2a1a; }
         .bm-tete::after { content:''; position:absolute; bottom:15px; left:14px; width:30px; height:7px; border-radius:4px; background:#4c3826; } /* moustache */
-        .bm-yeux { position:absolute; bottom:296px; left:70px; width:30px; height:6px;
+        .bm-yeux { position:absolute; bottom:250px; left:70px; width:30px; height:6px;
             background:radial-gradient(circle at 4px 3px, #20140c 2.6px, transparent 3.2px),
                        radial-gradient(circle at 26px 3px, #20140c 2.6px, transparent 3.2px); }
-        .bm-bras-tireuse { position:absolute; bottom:250px; left:128px; width:15px; height:135px; border-radius:8px;
-            background:#f0ece4; transform-origin:bottom center; transform:rotate(12deg);
+        .bm-bras-tireuse { position:absolute; bottom:205px; left:128px; width:15px; height:160px; border-radius:8px;
+            background:#f0ece4; transform-origin:bottom center; transform:rotate(8deg);
             animation:bmBrasTire 9s ease-in-out infinite; }
         .bm-bras-tireuse::after { content:''; position:absolute; top:-14px; left:-3px; width:21px; height:21px; border-radius:50%;
             background:#eec096; } /* main sur la poignée */
-        @keyframes bmBrasTire { 0%,4% { transform:rotate(12deg); } 8%,55% { transform:rotate(-4deg); } 62%,100% { transform:rotate(12deg); } }
-        .bm-bras-repos { position:absolute; bottom:170px; left:14px; width:15px; height:95px; border-radius:8px;
+        @keyframes bmBrasTire { 0%,4% { transform:rotate(8deg); } 8%,55% { transform:rotate(-7deg); } 62%,100% { transform:rotate(8deg); } }
+        .bm-bras-repos { position:absolute; bottom:126px; left:14px; width:15px; height:88px; border-radius:8px;
             background:#f0ece4; transform:rotate(-10deg); }
         .bm-bras-repos::after { content:''; position:absolute; bottom:-13px; left:-2px; width:19px; height:19px; border-radius:50%;
             background:#eec096; }
@@ -3129,8 +3156,10 @@
         .cl-gauche { left:calc(50% - 480px); animation:clientBob 4.6s ease-in-out infinite alternate; }
         .cl-droite { left:calc(50% + 250px); animation:clientBob 5.4s ease-in-out 1.2s infinite alternate; }
         @keyframes clientBob { from { transform:translateY(0); } to { transform:translateY(4px); } }
-        .cl-tabouret { position:absolute; bottom:0; left:35px; width:80px; height:14px; border-radius:7px; background:#3a2414; }
-        .cl-tabouret::after { content:''; position:absolute; top:14px; left:50%; margin-left:-5px; width:10px; height:44px; background:#2a1a0e; }
+        /* Tabouret dont l'assise arrive SOUS les fesses du client (fessier à bottom:85px) */
+        .cl-tabouret { position:absolute; bottom:74px; left:30px; width:90px; height:15px; border-radius:8px 8px 4px 4px; background:#4a3016; }
+        .cl-tabouret::before { content:''; position:absolute; top:15px; left:50%; margin-left:-6px; width:12px; height:74px; background:#2a1a0e; }
+        .cl-tabouret::after { content:''; position:absolute; top:52px; left:8px; right:8px; height:6px; border-radius:3px; background:#241608; } /* repose-pieds */
         .cl-corps { position:absolute; bottom:85px; left:28px; width:94px; height:185px; border-radius:38px 38px 10px 10px; }
         .cl-gauche .cl-corps { background:linear-gradient(180deg, #52627a, #3c4a5e); }
         .cl-droite .cl-corps { background:linear-gradient(180deg, #7a4a30, #5c3622); }
@@ -3149,7 +3178,9 @@
         @keyframes hocheTete { 0%,55%,100% { transform:rotate(-6deg); } 63%,72% { transform:rotate(-13deg); } 80% { transform:rotate(-3deg); } }
         /* Client de droite : boit une gorgée de temps en temps — l'avant-bras pivote sur le coude
            posé sur le comptoir et porte le verre à la bouche */
-        .cl-boire { position:absolute; bottom:158px; left:-16px; width:15px; height:80px; border-radius:8px;
+        .cl-bras-haut { position:absolute; bottom:150px; left:30px; width:15px; height:72px; border-radius:8px;
+            background:#68402a; transform-origin:top center; transform:rotate(-25deg); } /* épaule -> coude : relie le bras au corps */
+        .cl-boire { position:absolute; bottom:158px; left:0px; width:15px; height:80px; border-radius:8px;
             background:#d8a276; transform-origin:bottom center; transform:rotate(-8deg);
             animation:boitGorgee 9s ease-in-out infinite; }
         .cl-boire-verre { position:absolute; top:-38px; left:-7px; width:26px; height:40px;
