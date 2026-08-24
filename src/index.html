@@ -3005,11 +3005,11 @@
             </div>
             <div class="pub-client cl-droite">
                 <div class="cl-tabouret"></div>
+                <div class="cl-bras-haut"></div>
+                <div class="cl-boire"><div class="cl-boire-verre"></div></div>
                 <div class="cl-corps"></div>
                 <div class="cl-bras"></div>
                 <div class="cl-avantbras"></div>
-                <div class="cl-bras-haut"></div>
-                <div class="cl-boire"><div class="cl-boire-verre"></div></div>
                 <div class="cl-tete"></div>
             </div>
             <div id="biere-son-hint" class="biere-son-hint">🔇 toucher l'écran pour le son</div>
@@ -3141,12 +3141,12 @@
         .bm-yeux { position:absolute; bottom:250px; left:70px; width:30px; height:6px;
             background:radial-gradient(circle at 4px 3px, #20140c 2.6px, transparent 3.2px),
                        radial-gradient(circle at 26px 3px, #20140c 2.6px, transparent 3.2px); }
-        .bm-bras-tireuse { position:absolute; bottom:205px; left:128px; width:15px; height:160px; border-radius:8px;
-            background:#f0ece4; transform-origin:bottom center; transform:rotate(8deg);
-            animation:bmBrasTire 9s ease-in-out infinite; }
+        .bm-bras-tireuse { position:absolute; bottom:200px; left:112px; width:15px; height:165px; border-radius:8px;
+            background:#f0ece4; transform-origin:bottom center; transform:rotate(13deg);
+            animation:bmBrasTire 9s ease-in-out infinite; } /* épaule ancrée DANS le torse (corps 35..135) */
         .bm-bras-tireuse::after { content:''; position:absolute; top:-14px; left:-3px; width:21px; height:21px; border-radius:50%;
             background:#eec096; } /* main sur la poignée */
-        @keyframes bmBrasTire { 0%,4% { transform:rotate(8deg); } 8%,55% { transform:rotate(-7deg); } 62%,100% { transform:rotate(8deg); } }
+        @keyframes bmBrasTire { 0%,4% { transform:rotate(13deg); } 8%,55% { transform:rotate(-1deg); } 62%,100% { transform:rotate(13deg); } }
         .bm-bras-repos { position:absolute; bottom:126px; left:14px; width:15px; height:88px; border-radius:8px;
             background:#f0ece4; transform:rotate(-10deg); }
         .bm-bras-repos::after { content:''; position:absolute; bottom:-13px; left:-2px; width:19px; height:19px; border-radius:50%;
@@ -3180,13 +3180,18 @@
            posé sur le comptoir et porte le verre à la bouche */
         .cl-bras-haut { position:absolute; bottom:150px; left:30px; width:15px; height:72px; border-radius:8px;
             background:#68402a; transform-origin:top center; transform:rotate(-25deg); } /* épaule -> coude : relie le bras au corps */
+        /* Avant-bras : au repos il est couché sur le comptoir, la main sur le verre posé ;
+           pendant la gorgée il pivote sur le coude et le verre passe DERRIÈRE le torse
+           (peint avant .cl-corps) -> il disparaît au niveau du corps : le client est vu de dos. */
         .cl-boire { position:absolute; bottom:158px; left:0px; width:15px; height:80px; border-radius:8px;
-            background:#d8a276; transform-origin:bottom center; transform:rotate(-8deg);
+            background:#d8a276; transform-origin:bottom center; transform:rotate(-80deg);
             animation:boitGorgee 9s ease-in-out infinite; }
         .cl-boire-verre { position:absolute; top:-38px; left:-7px; width:26px; height:40px;
             border:2px solid rgba(230,240,255,0.55); border-top:none; border-radius:3px 3px 6px 6px;
-            background:linear-gradient(180deg, #ffffff 0 14%, #f5b73c 14%); }
-        @keyframes boitGorgee { 0%,34% { transform:rotate(-8deg); } 44%,56% { transform:rotate(38deg); } 66%,100% { transform:rotate(-8deg); } }
+            background:linear-gradient(180deg, #ffffff 0 14%, #f5b73c 14%);
+            transform-origin:50% 100%; transform:rotate(80deg); animation:boitVerre 9s ease-in-out infinite; }
+        @keyframes boitGorgee { 0%,34% { transform:rotate(-80deg); } 46%,58% { transform:rotate(28deg); } 70%,100% { transform:rotate(-80deg); } }
+        @keyframes boitVerre { 0%,34% { transform:rotate(80deg); } 46%,58% { transform:rotate(-10deg); } 70%,100% { transform:rotate(80deg); } }
         /* Ami DEBOUT à gauche : discute avec l'accoudé, grands gestes et éclats de rire */
         .cl-debout { left:calc(50% - 625px); bottom:6px; height:470px; width:160px; animation:none; }
         .db-jambes { position:absolute; bottom:0; left:48px; width:64px; height:172px; border-radius:8px 8px 4px 4px;
@@ -3204,8 +3209,8 @@
         @keyframes rireTete { 0%,58%,100% { transform:rotate(0); } 63% { transform:rotate(-16deg); } 66% { transform:rotate(-12deg); }
             69% { transform:rotate(-16deg); } 74% { transform:rotate(-4deg); } }
         @keyframes rireBouche { 0%,58%,78%,100% { transform:scale(1); } 62%,72% { transform:scale(1.7, 2.6); } }
-        .db-bras-geste { position:absolute; bottom:272px; left:106px; width:15px; height:95px; border-radius:8px;
-            background:#6a5c40; transform-origin:bottom center; animation:grandsGestes 7s ease-in-out infinite; }
+        .db-bras-geste { position:absolute; bottom:296px; left:100px; width:15px; height:95px; border-radius:8px;
+            background:#6a5c40; transform-origin:bottom center; animation:grandsGestes 7s ease-in-out infinite; } /* base à l'épaule, dans le torse */
         .db-bras-geste::after { content:''; position:absolute; top:-12px; left:-2px; width:19px; height:19px; border-radius:50%; background:#e2b088; }
         @keyframes grandsGestes { 0%,8% { transform:rotate(38deg); } 20% { transform:rotate(96deg); } 32% { transform:rotate(56deg); }
             44% { transform:rotate(112deg); } 56% { transform:rotate(42deg); } 63%,70% { transform:rotate(102deg); }
