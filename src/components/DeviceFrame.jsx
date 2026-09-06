@@ -51,7 +51,7 @@ export const DeviceFrame = ({
   onEnterFullscreen = () => {},
 }) => {
   const cfg = getDeviceConfig(deviceType);
-  const { stageRef, scale: chassisScale } = useFitScale(cfg.chassisW, cfg.chassisH, { max: 1 });
+  const { stageRef, scale: chassisScale } = useFitScale(cfg.chassisW, cfg.chassisH, { max: 1, margin: 0.06 });
   // screenW/H and guiW/H are both fixed design constants (not measured), so
   // guiScale is a plain derived number — no separate ResizeObserver needed.
   const guiScale = Math.min(cfg.screenW / cfg.guiW, cfg.screenH / cfg.guiH);

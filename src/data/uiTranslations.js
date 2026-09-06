@@ -13,7 +13,7 @@ export const uiTranslations = {
     nav_cta: "Demander une démo",
     nav_updated: "Site mis à jour le",
     nav_ready: "Site mis à jour le",
-    brand_subtitle: "Interfaces Crestron CH5, par",
+    brand_subtitle: "Interfaces designed by",
 
     hero_tagline: "Interfaces tactiles Crestron CH5",
     hero_title: "Vos interfaces domotiques, au niveau de votre projet",
@@ -62,7 +62,7 @@ export const uiTranslations = {
     nav_cta: "Request a demo",
     nav_updated: "Site updated on",
     nav_ready: "Site updated on",
-    brand_subtitle: "Crestron CH5 interfaces, by",
+    brand_subtitle: "Interfaces designed by",
 
     hero_tagline: "Crestron CH5 touch interfaces",
     hero_title: "Home-automation interfaces that match your project",
@@ -111,7 +111,7 @@ export const uiTranslations = {
     nav_cta: "Demo anfragen",
     nav_updated: "Website aktualisiert am",
     nav_ready: "Website aktualisiert am",
-    brand_subtitle: "Crestron-CH5-Oberflächen, von",
+    brand_subtitle: "Interfaces designed by",
 
     hero_tagline: "Crestron-CH5-Touch-Oberflächen",
     hero_title: "Smart-Home-Oberflächen auf dem Niveau Ihres Projekts",

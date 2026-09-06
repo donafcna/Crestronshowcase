@@ -6,7 +6,7 @@ import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react
 // its real/native size). Pure transform:scale, so the design box itself
 // never reflows: it always lays out at designW x designH and is only ever
 // visually scaled down (or up to `max`) to fit whatever space is available.
-export const useFitScale = (designW, designH, { max = 1 } = {}) => {
+export const useFitScale = (designW, designH, { max = 1, margin = 0 } = {}) => {
   const stageRef = useRef(null);
   const [scale, setScale] = useState(max);
 
@@ -15,8 +15,10 @@ export const useFitScale = (designW, designH, { max = 1 } = {}) => {
     if (!el || !designW || !designH) return;
     const { width, height } = el.getBoundingClientRect();
     if (width <= 0 || height <= 0) return;
-    setScale(Math.min(width / designW, height / designH, max));
-  }, [designW, designH, max]);
+    // `margin` (0..1) garde une respiration autour du design (ombres, boutons
+    // latéraux, coins arrondis) : 0.06 = 6 % d'air de chaque côté.
+    setScale(Math.min(width / designW, height / designH, max) * (1 - margin));
+  }, [designW, designH, max, margin]);
 
   useLayoutEffect(() => {
     recompute();
