@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import * as Icons from "lucide-react";
+import { Icons } from "../../icons";
 import { useTranslation } from "../../context/LanguageContext";
 import { crestronHomeTranslations } from "../../data/crestronHomeTranslations";
 

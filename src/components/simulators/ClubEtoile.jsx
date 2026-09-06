@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import * as Icons from "lucide-react";
+import { Icons } from "../../icons";
 
 export const ClubEtoile = ({ deviceType }) => {
   const [activeTab, setActiveTab] = useState("hvac"); // hvac, audio_limit, effects

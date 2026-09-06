@@ -1,5 +1,11 @@
 export const translations = {
   "fr": {
+    "demo_title": "Démos Marketing",
+    "demo_subtitle": "Interfaces Crestron CH5 — Frequence TV",
+    "demo_install_hint": "Astuce : ajoutez cette page à l'écran d'accueil (Partager → Sur l'écran d'accueil) pour une démo plein écran, comme une vraie app Crestron.",
+    "demo_badge_interactive": "Simulateur live",
+    "demo_badge_ch5": "CH5 réel",
+    "demo_full_site": "Ouvrir le site complet",
     "brand_subtitle": "User Interfaces Showcase, by",
     "nav_dashboard": "Tableau de bord",
     "nav_all_uis": "Toutes les UIs",
@@ -133,6 +139,12 @@ export const translations = {
     "filter_phone": "Smartphone"
   },
   "en": {
+    "demo_title": "Marketing Demos",
+    "demo_subtitle": "Crestron CH5 interfaces — Frequence TV",
+    "demo_install_hint": "Tip: add this page to your Home Screen (Share → Add to Home Screen) for a full-screen demo, just like a real Crestron app.",
+    "demo_badge_interactive": "Live simulator",
+    "demo_badge_ch5": "Real CH5",
+    "demo_full_site": "Open full site",
     "brand_subtitle": "User Interfaces Showcase, by",
     "nav_dashboard": "Dashboard",
     "nav_all_uis": "All UIs",
@@ -266,6 +278,12 @@ export const translations = {
     "filter_phone": "Smartphone"
   },
   "de": {
+    "demo_title": "Marketing-Demos",
+    "demo_subtitle": "Crestron-CH5-Interfaces — Frequence TV",
+    "demo_install_hint": "Tipp: Seite zum Home-Bildschirm hinzufügen (Teilen → Zum Home-Bildschirm) für eine Vollbild-Demo wie eine echte Crestron-App.",
+    "demo_badge_interactive": "Live-Simulator",
+    "demo_badge_ch5": "Echtes CH5",
+    "demo_full_site": "Vollständige Website öffnen",
     "brand_subtitle": "User Interfaces Showcase, by",
     "nav_dashboard": "Dashboard",
     "nav_all_uis": "Alle UIs",

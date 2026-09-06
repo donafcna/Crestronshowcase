@@ -1,178 +1,249 @@
-import React, { useState, useEffect } from "react";
-import * as LucideIcons from "lucide-react";
+import React, { Suspense, lazy, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { Icons as LucideIcons } from "../icons";
 import { useTranslation } from "../context/LanguageContext";
-import { projects, devices } from "../data/projects";
+import { projects, getDeviceById, getProjectText, getProjectName, getStatusLabel } from "../data/projects";
 import { BackgroundVideo } from "./BackgroundVideo";
-import { DeviceViewport } from "./DeviceViewport";
+import { DeviceFrame } from "./DeviceFrame";
+import { DemoToolbar } from "./DemoToolbar";
+import { useRouter, buildShowcasePath } from "../router";
+import { useDemoSettings } from "../hooks/useDemoSettings";
 
-// Simulators
-import { VillaGemini } from "./simulators/VillaGemini";
-import { HotelGeneva } from "./simulators/HotelGeneva";
-import { CrestronHome } from "./simulators/CrestronHome";
-import { YachtMonaco } from "./simulators/YachtMonaco";
-import { ChaletZermatt } from "./simulators/ChaletZermatt";
-import { BoardroomFutureAV } from "./simulators/BoardroomFutureAV";
-import { ClubEtoile } from "./simulators/ClubEtoile";
-import { BoutiqueHermes } from "./simulators/BoutiqueHermes";
-import { SushiBarKyoto } from "./simulators/SushiBarKyoto";
-import { AuditoriumRichmond } from "./simulators/AuditoriumRichmond";
+// Simulateurs chargés à la demande : seul celui du projet affiché est
+// téléchargé (≈ 20–35 ko chacun), ce qui rend la première visite rapide en 4G.
+const lazyNamed = (loader, name) => lazy(() => loader().then((m) => ({ default: m[name] })));
+const SIMULATORS = {
+  "villa-gemini": lazyNamed(() => import("./simulators/VillaGemini"), "VillaGemini"),
+  "hotel-geneva": lazyNamed(() => import("./simulators/HotelGeneva"), "HotelGeneva"),
+  "crestron-home": lazyNamed(() => import("./simulators/CrestronHome"), "CrestronHome"),
+  "yacht-monaco": lazyNamed(() => import("./simulators/YachtMonaco"), "YachtMonaco"),
+  "chalet-zermatt": lazyNamed(() => import("./simulators/ChaletZermatt"), "ChaletZermatt"),
+  "boardroom-futureav": lazyNamed(() => import("./simulators/BoardroomFutureAV"), "BoardroomFutureAV"),
+  "club-etoile": lazyNamed(() => import("./simulators/ClubEtoile"), "ClubEtoile"),
+  "boutique-hermes": lazyNamed(() => import("./simulators/BoutiqueHermes"), "BoutiqueHermes"),
+  "sushi-bar-kyoto": lazyNamed(() => import("./simulators/SushiBarKyoto"), "SushiBarKyoto"),
+  "auditorium-richmond": lazyNamed(() => import("./simulators/AuditoriumRichmond"), "AuditoriumRichmond"),
+};
 
-export const Showcase = ({ initialSectorId, initialProjectId }) => {
-  const { t } = useTranslation();
-  const [selectedSectorId, setSelectedSectorId] = useState(initialSectorId);
-  const [activeProject, setActiveProject] = useState(projects[0]);
-  const [viewportDevice, setViewportDevice] = useState("tablet");
-  const [ledStatus] = useState("green");
+const VIEWPORT_IDS = ["phone", "tablet", "wallpanel", "wallpanel_hd", "desktop"];
+const PRESENT_DEVICE_MS = 7000; // durée d'affichage d'un support en mode présentation
+const KIOSK_IDLE_MS = 45000; // reprise automatique du défilement après inactivité (mode salon)
+
+const SimulatorFallback = () => (
+  <div className="simulator-loading">
+    <div className="page-loader-spinner" />
+  </div>
+);
+
+export const Showcase = ({ sectorId, projectId, device }) => {
+  const { t, lang } = useTranslation();
+  const { navigate } = useRouter();
+  const { clientName, kiosk } = useDemoSettings();
+
+  // ---- Projets visibles pour le secteur courant --------------------------
+  const filteredProjects = useMemo(
+    () => projects.filter((p) => !sectorId || p.sectors.includes(sectorId)),
+    [sectorId]
+  );
+
+  const activeProject = useMemo(() => {
+    const fromUrl = projectId && projects.find((p) => p.id === projectId);
+    return fromUrl || filteredProjects[0] || projects[0];
+  }, [projectId, filteredProjects]);
+
+  // Supports proposés pour ce projet (dédoublonnés par gabarit physique).
+  const projectViewports = useMemo(() => {
+    const seen = new Map();
+    activeProject.devices.forEach((dId) => {
+      const dev = getDeviceById(dId);
+      if (dev && !seen.has(dev.viewport)) seen.set(dev.viewport, dev);
+    });
+    return Array.from(seen.values());
+  }, [activeProject]);
+
+  const defaultViewport = projectViewports[0]?.viewport || "wallpanel";
+  const viewportDevice =
+    device && VIEWPORT_IDS.includes(device) && projectViewports.some((d) => d.viewport === device)
+      ? device
+      : defaultViewport;
+
+  // URL canonique : on complète l'adresse (projet + support) pour qu'elle
+  // soit toujours copiable telle quelle.
+  useEffect(() => {
+    const canonical = buildShowcasePath({ sectorId, projectId: activeProject.id, device: viewportDevice });
+    if (window.location.pathname !== canonical) navigate(canonical, { replace: true });
+  }, [sectorId, activeProject.id, viewportDevice, navigate]);
+
+  const goTo = useCallback(
+    (proj, vp, { replace = false } = {}) =>
+      navigate(buildShowcasePath({ sectorId, projectId: proj.id, device: vp }), { replace }),
+    [navigate, sectorId]
+  );
+
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [presenting, setPresenting] = useState(false);
   const [expandedProjectId, setExpandedProjectId] = useState(null);
   const [sentenceIndex, setSentenceIndex] = useState(0);
+  const [capturing, setCapturing] = useState(false);
+  const [captureNotice, setCaptureNotice] = useState("");
+  const stageRef = useRef(null);
 
+  // ---- Plein écran ---------------------------------------------------------
   useEffect(() => {
-    if (initialSectorId !== undefined) {
-      setSelectedSectorId(initialSectorId);
-      const sectorProjects = projects.filter(
-        (p) => !initialSectorId || p.sectors.includes(initialSectorId)
-      );
-      if (sectorProjects.length > 0) {
-        const isCurrentInSector = activeProject && sectorProjects.some((p) => p.id === activeProject.id);
-        if (!isCurrentInSector) {
-          setActiveProject(sectorProjects[0]);
-          setDefaultDeviceForProject(sectorProjects[0]);
-          setExpandedProjectId(null);
-        }
-      }
-    }
-  }, [initialSectorId, activeProject]);
-
-  useEffect(() => {
-    if (initialProjectId) {
-      const proj = projects.find((p) => p.id === initialProjectId);
-      if (proj) {
-        setActiveProject(proj);
-        setDefaultDeviceForProject(proj);
-        setExpandedProjectId(null);
-      }
-    }
-  }, [initialProjectId]);
-
-  const setDefaultDeviceForProject = (proj) => {
-    if (proj.devices.includes("ios_tablet") || proj.devices.includes("android_tablet")) {
-      setViewportDevice("tablet");
-    } else if (proj.devices.includes("crestron")) {
-      setViewportDevice("wallpanel");
-    } else if (proj.devices.includes("ios_phone") || proj.devices.includes("android_phone")) {
-      setViewportDevice("phone");
-    } else {
-      setViewportDevice("desktop");
-    }
-  };
-
-  useEffect(() => {
-    if (isFullscreen) {
-      document.body.classList.add("workspace-maximized");
-    } else {
-      document.body.classList.remove("workspace-maximized");
-    }
-    return () => {
-      document.body.classList.remove("workspace-maximized");
-    };
+    document.body.classList.toggle("workspace-maximized", isFullscreen);
+    return () => document.body.classList.remove("workspace-maximized");
   }, [isFullscreen]);
 
-  // Sentence cycler effect for expanded details
+  // ---- Mode présentation : supports puis projets, en boucle ---------------
+  const advance = useCallback(() => {
+    const vps = projectViewports.map((d) => d.viewport);
+    const idx = vps.indexOf(viewportDevice);
+    if (idx < vps.length - 1) {
+      goTo(activeProject, vps[idx + 1], { replace: true });
+      return;
+    }
+    const pIdx = filteredProjects.findIndex((p) => p.id === activeProject.id);
+    const next = filteredProjects[(pIdx + 1) % filteredProjects.length] || activeProject;
+    const nextDev = getDeviceById(next.devices[0])?.viewport;
+    goTo(next, nextDev, { replace: true });
+  }, [projectViewports, viewportDevice, activeProject, filteredProjects, goTo]);
+
+  useEffect(() => {
+    if (!presenting) return;
+    const id = setInterval(advance, PRESENT_DEVICE_MS);
+    return () => clearInterval(id);
+  }, [presenting, advance]);
+
+  const startPresentation = useCallback(() => {
+    setExpandedProjectId(null);
+    setIsFullscreen(true);
+    setPresenting(true);
+  }, []);
+  const stopPresentation = useCallback(() => {
+    setPresenting(false);
+    setIsFullscreen(false);
+  }, []);
+
+  useEffect(() => {
+    const onKey = (e) => {
+      if (e.key === "Escape") {
+        if (presenting) stopPresentation();
+        else if (isFullscreen) setIsFullscreen(false);
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [presenting, isFullscreen, stopPresentation]);
+
+  // Mode salon (?kiosk=1) : démarre la présentation et la relance après
+  // inactivité, pour une tablette ou un écran laissé en libre-service.
+  useEffect(() => {
+    if (!kiosk) return;
+    let timer;
+    const arm = () => {
+      clearTimeout(timer);
+      timer = setTimeout(startPresentation, KIOSK_IDLE_MS);
+    };
+    const onActivity = () => {
+      setPresenting(false);
+      arm();
+    };
+    startPresentation();
+    ["pointerdown", "keydown", "touchstart"].forEach((ev) => window.addEventListener(ev, onActivity));
+    arm();
+    return () => {
+      clearTimeout(timer);
+      ["pointerdown", "keydown", "touchstart"].forEach((ev) => window.removeEventListener(ev, onActivity));
+    };
+  }, [kiosk, startPresentation]);
+
+  // ---- Défilement des phrases de description --------------------------------
+  const projectText = getProjectText(activeProject, lang);
+  const sentences = useMemo(
+    () =>
+      (projectText.details || "")
+        .split(/(?<=[.!?])\s+/)
+        .map((s) => s.trim())
+        .filter(Boolean),
+    [projectText.details]
+  );
+
   useEffect(() => {
     if (!expandedProjectId) return;
-    const descriptionText = t(`proj_${getProjectKeyPrefix(activeProject.id)}_details`);
-    const sentences = descriptionText
-      .split(/(?<=[.!?])\s+/)
-      .map((s) => s.trim())
-      .filter(Boolean);
-
     setSentenceIndex(0);
-
     if (sentences.length <= 1) return;
-
-    const interval = setInterval(() => {
-      setSentenceIndex((prev) => (prev + 1) % sentences.length);
-    }, 5000);
-
+    const interval = setInterval(() => setSentenceIndex((prev) => (prev + 1) % sentences.length), 5000);
     return () => clearInterval(interval);
-  }, [activeProject.id, expandedProjectId]);
+  }, [activeProject.id, expandedProjectId, sentences.length]);
 
-  const getDeviceViewportType = (dId) => {
-    if (dId === "xpanel") return "desktop";
-    if (dId === "crestron") return "wallpanel";
-    if (dId === "tablet" || dId === "ios_tablet" || dId === "android_tablet") return "tablet";
-    return "phone";
-  };
+  const currentSentence = sentences[sentenceIndex] || sentences[0] || "";
 
-  const getDeviceLabel = (dId) => {
-    if (dId === "xpanel") return "PC Monitoring";
-    if (dId === "crestron") return "Dalle tactile";
-    if (dId === "tablet" || dId === "ios_tablet" || dId === "android_tablet") return "Tablette";
-    return "Smartphone";
-  };
-
-  const getDeviceIconName = (dId) => {
-    if (dId === "xpanel") return "Monitor";
-    if (dId === "crestron") return "LayoutGrid";
-    if (dId === "tablet" || dId === "ios_tablet" || dId === "android_tablet") return "Tablet";
-    return "Smartphone";
-  };
-
-  const getProjectKeyPrefix = (projectId) => {
-    let key = projectId.replace(/-/g, "_");
-    if (key.includes("frequencetv")) {
-      key = key.replace("frequencetv", "freq");
+  // ---- Capture d'écran de l'appareil (PNG) -----------------------------------
+  const handleCapture = async () => {
+    if (capturing) return;
+    if (!activeProject.isInteractive) {
+      setCaptureNotice(t("tool_capture_iframe"));
+      setTimeout(() => setCaptureNotice(""), 6000);
+      return;
     }
-    return key;
+    const el = stageRef.current?.querySelector(".device-stage");
+    if (!el) return;
+    setCapturing(true);
+    try {
+      const { default: html2canvas } = await import("html2canvas");
+      const canvas = await html2canvas(el, { backgroundColor: null, useCORS: true, scale: 2, logging: false });
+      const a = document.createElement("a");
+      const safe = `${activeProject.id}-${viewportDevice}`.replace(/[^a-z0-9-]/gi, "_");
+      a.download = `frequence-tv-${safe}.png`;
+      a.href = canvas.toDataURL("image/png");
+      a.click();
+    } catch (err) {
+      console.warn("Capture failed", err);
+    } finally {
+      setCapturing(false);
+    }
   };
 
+  // ---- Rendu ---------------------------------------------------------------
   const renderIcon = (iconName, size = 14, className = "") => {
     const IconComp = LucideIcons[iconName] || LucideIcons.HelpCircle;
     return <IconComp size={size} className={className} />;
   };
 
   const handleToggleProjectDetails = (e, projId) => {
+    e.preventDefault();
     e.stopPropagation();
     if (expandedProjectId === projId) {
       setExpandedProjectId(null);
     } else {
       setExpandedProjectId(projId);
       const proj = projects.find((p) => p.id === projId);
-      if (proj) {
-        setActiveProject(proj);
-        setDefaultDeviceForProject(proj);
-      }
+      if (proj && proj.id !== activeProject.id) goTo(proj, getDeviceById(proj.devices[0])?.viewport);
     }
   };
 
-  const handleProjectClick = (proj) => {
-    setActiveProject(proj);
-    setDefaultDeviceForProject(proj);
-  };
-
-  // Filter projects only by active sector
-  const filteredProjects = projects.filter((p) => {
-    return !selectedSectorId || p.sectors.includes(selectedSectorId);
-  });
-
-  // Split description text into sentences for cycler
-  const descriptionText = t(`proj_${getProjectKeyPrefix(activeProject.id)}_details`);
-  const sentences = descriptionText
-    .split(/(?<=[.!?])\s+/)
-    .map((s) => s.trim())
-    .filter(Boolean);
-  const currentSentence = sentences[sentenceIndex] || sentences[0] || "";
+  const shareUrl = `${buildShowcasePath({ sectorId, projectId: activeProject.id, device: viewportDevice })}${
+    clientName ? `?client=${encodeURIComponent(clientName)}` : ""
+  }`;
+  const sheetUrl = `/fiche/${activeProject.id}${clientName ? `?client=${encodeURIComponent(clientName)}` : ""}`;
+  const embedSrc =
+    !activeProject.isInteractive && activeProject.embedUrl
+      ? viewportDevice === "phone" && activeProject.embedPhoneUrl
+        ? activeProject.embedPhoneUrl
+        : activeProject.embedUrl
+      : null;
+  const displayTitle = clientName || getProjectName(activeProject, lang);
+  const Simulator = SIMULATORS[activeProject.id] || SIMULATORS["villa-gemini"];
+  const simulatorType = viewportDevice === "wallpanel_hd" ? "wallpanel" : viewportDevice;
 
   return (
-    <div className={`showcase-container fade-in sector-${selectedSectorId || "all"} ${isFullscreen ? "fullscreen-mode" : ""}`}>
-      {/* Background Video */}
-      <BackgroundVideo sectionId={selectedSectorId || activeProject.sectors[0]} />
+    <div
+      className={`showcase-container fade-in sector-${sectorId || "all"} ${isFullscreen ? "fullscreen-mode" : ""}`}
+      ref={stageRef}
+    >
+      <BackgroundVideo sectionId={sectorId || activeProject.sectors[0]} />
 
-      {/* Main Workspace Container */}
       <div className={`main-workspace-container transparent-workspace ${isFullscreen ? "fullscreen-mode" : ""}`}>
-        
-        {/* 1. Projects Horizontal List (compact card style, no client description line) */}
+        {/* 1. Liste horizontale des projets */}
         {!isFullscreen && (
           <section className="projects-horizontal-list-bar compact-header compact-cards-version">
             {filteredProjects.length === 0 ? (
@@ -181,16 +252,11 @@ export const Showcase = ({ initialSectorId, initialProjectId }) => {
                 <p>{t("showcase_empty_projects")}</p>
               </div>
             ) : expandedProjectId ? (
-              /* Morph to single project card with description details */
               <div className="project-expanded-layout fade-in compact-cards-expanded">
                 <div className="project-list-card horizontal-card selected expanded-state compact-row-card">
-                  <img
-                    src={activeProject.thumbnailUrl}
-                    alt={activeProject.name}
-                    className="card-thumb-compact"
-                  />
+                  <img src={activeProject.thumbnailUrl} alt="" className="card-thumb-compact" />
                   <div className="card-info-block-compact">
-                    <span className="proj-name-compact">{activeProject.name}</span>
+                    <span className="proj-name-compact">{getProjectName(activeProject, lang)}</span>
                     <button
                       onClick={(e) => handleToggleProjectDetails(e, activeProject.id)}
                       className="card-plus-btn-compact active"
@@ -200,12 +266,16 @@ export const Showcase = ({ initialSectorId, initialProjectId }) => {
                     </button>
                   </div>
                 </div>
-
-                {/* Vertical Divider */}
                 <div className="expanded-vertical-divider" />
-
-                {/* Animated sentence cycler */}
                 <div className="expanded-info-details">
+                  <div className="expanded-meta-row">
+                    <span className={`status-pill status-${activeProject.status}`}>
+                      {renderIcon(activeProject.status === "realisation" ? "BadgeCheck" : "Sparkles", 12)}
+                      {getStatusLabel(activeProject.status, lang)}
+                    </span>
+                    <span className="meta-pill">{activeProject.client}</span>
+                    <span className="meta-pill">{activeProject.year}</span>
+                  </div>
                   <div className="description-cycler-container">
                     <p key={sentenceIndex} className="cycler-sentence-text fade-in-sentence">
                       {currentSentence}
@@ -214,180 +284,118 @@ export const Showcase = ({ initialSectorId, initialProjectId }) => {
                 </div>
               </div>
             ) : (
-              /* Normal horizontal scrollbar view with compact single-row cards (no client description) */
               <div className="projects-horizontal-scroll-wrapper compact-cards-row">
                 {filteredProjects.map((proj) => (
-                  <div
+                  <a
                     key={proj.id}
-                    onClick={() => handleProjectClick(proj)}
+                    href={buildShowcasePath({ sectorId, projectId: proj.id })}
+                    onClick={(e) => {
+                      if (e.metaKey || e.ctrlKey) return;
+                      e.preventDefault();
+                      goTo(proj, getDeviceById(proj.devices[0])?.viewport);
+                    }}
                     className={`project-list-card horizontal-card glass-panel compact-row-card ${
                       activeProject.id === proj.id ? "selected" : "glass-panel-hover"
                     }`}
                   >
-                    <img
-                      src={proj.thumbnailUrl}
-                      alt={proj.name}
-                      className="card-thumb-compact"
-                    />
+                    <img src={proj.thumbnailUrl} alt="" className="card-thumb-compact" loading="lazy" />
                     <div className="card-info-block-compact">
-                      <span className="proj-name-compact">{proj.name}</span>
+                      <span className="proj-name-compact">
+                        {proj.status === "realisation" && renderIcon("BadgeCheck", 12, "realisation-mark")}
+                        {getProjectName(proj, lang)}
+                      </span>
                       <button
                         onClick={(e) => handleToggleProjectDetails(e, proj.id)}
                         className="card-plus-btn-compact"
-                        title={t("showcase_details_tooltip") || "Plus d'infos"}
+                        title={t("showcase_details_tooltip")}
                       >
                         {renderIcon("Plus", 10)}
                       </button>
                     </div>
-                  </div>
+                  </a>
                 ))}
               </div>
             )}
           </section>
         )}
 
-        {/* Fullscreen Overlay Header Row (only Frequence TV logo in top right) */}
+        {/* 2. Barre d'outils de démo */}
+        {!isFullscreen && (
+          <DemoToolbar
+            project={activeProject}
+            shareUrl={shareUrl}
+            sheetUrl={sheetUrl}
+            embedUrl={embedSrc}
+            presenting={presenting}
+            onTogglePresentation={presenting ? stopPresentation : startPresentation}
+            onCapture={handleCapture}
+            capturing={capturing}
+          />
+        )}
+        {captureNotice && <div className="demo-notice glass-panel">{captureNotice}</div>}
+
+        {/* Bandeau plein écran */}
         {isFullscreen && (
           <div className="fullscreen-overlay-header">
-            {/* Top Left is now empty */}
-            <div className="fullscreen-overlay-header-left" />
-
-            {/* Top Right contains Frequence TV logo pill */}
+            <div className="fullscreen-overlay-header-left">
+              {presenting && (
+                <div className="present-hint glass-panel">
+                  {renderIcon("Presentation", 14)}
+                  <span>
+                    {getProjectName(activeProject, lang)} · {t("present_hint")}
+                  </span>
+                </div>
+              )}
+            </div>
             <div className="fullscreen-overlay-header-right">
               <div className="fullscreen-frequencetv-logo-card">
-                <img
-                  src="/assets/logo-frequence-tv-5LGUrtbd.png"
-                  alt="Frequence TV"
-                  className="frequencetv-logo-img-fs"
-                />
+                <img src="/assets/logo-frequence-tv-5LGUrtbd.png" alt="Fréquence TV" className="frequencetv-logo-img-fs" />
               </div>
             </div>
           </div>
         )}
 
-        {/* Row holding Simulator (left) and Vertical Device Selector (right) */}
+        {/* 3. Appareil + sélecteur de support */}
         <div className="workspace-main-content-row">
-          {/* Device Viewport Frame */}
           <main className="project-workspace">
             <div className={`device-display-workspace ${isFullscreen ? "fullscreen-mode" : ""}`}>
-              <DeviceViewport
+              <DeviceFrame
                 deviceType={viewportDevice}
-                ledStatus={ledStatus}
-                title={activeProject.name}
+                title={displayTitle}
                 isFullscreen={isFullscreen}
-                onExitFullscreen={() => setIsFullscreen(false)}
+                onExitFullscreen={() => (presenting ? stopPresentation() : setIsFullscreen(false))}
                 onEnterFullscreen={() => setIsFullscreen(true)}
               >
                 {activeProject.isInteractive ? (
-                  activeProject.id === "hotel-geneva" ? (
-                    <HotelGeneva deviceType={viewportDevice} />
-                  ) : activeProject.id === "crestron-home" ? (
-                    <CrestronHome deviceType={viewportDevice} />
-                  ) : activeProject.id === "yacht-monaco" ? (
-                    <YachtMonaco deviceType={viewportDevice} />
-                  ) : activeProject.id === "chalet-zermatt" ? (
-                    <ChaletZermatt deviceType={viewportDevice} />
-                  ) : activeProject.id === "boardroom-futureav" ? (
-                    <BoardroomFutureAV deviceType={viewportDevice} />
-                  ) : activeProject.id === "club-etoile" ? (
-                    <ClubEtoile deviceType={viewportDevice} />
-                  ) : activeProject.id === "boutique-hermes" ? (
-                    <BoutiqueHermes deviceType={viewportDevice} />
-                  ) : activeProject.id === "sushi-bar-kyoto" ? (
-                    <SushiBarKyoto deviceType={viewportDevice} />
-                  ) : activeProject.id === "auditorium-richmond" ? (
-                    <AuditoriumRichmond deviceType={viewportDevice} />
-                  ) : (
-                    <VillaGemini deviceType={viewportDevice} />
-                  )
-                ) : activeProject.embedUrl ? (
+                  <Suspense fallback={<SimulatorFallback />}>
+                    <Simulator deviceType={simulatorType} clientName={clientName} />
+                  </Suspense>
+                ) : embedSrc ? (
                   <iframe
-                    src={
-                      viewportDevice === "phone" && activeProject.embedPhoneUrl
-                        ? activeProject.embedPhoneUrl
-                        : activeProject.embedUrl
-                    }
-                    title={activeProject.name}
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      border: "none",
-                      backgroundColor: "#080b11",
-                    }}
+                    src={embedSrc}
+                    title={displayTitle}
+                    style={{ width: "100%", height: "100%", border: "none", backgroundColor: "#080b11" }}
                     sandbox="allow-scripts allow-same-origin"
                   />
-                ) : (
-                  <div className="static-mockup-wrapper">
-                    <div className="static-overlay">
-                      {renderIcon("Lock", 40, "lock-illustration")}
-                      <h2>{t("showcase_static_mode")}</h2>
-                      <p>
-                        {t("showcase_ready_ch5")}{" "}
-                        (<strong>{activeProject.name}</strong> - {viewportDevice.toUpperCase()})
-                      </p>
-                      <div className="spec-bullets">
-                        <div className="spec-card glass-panel">
-                          <span className="spec-name">{t("showcase_resolution")}</span>
-                          <span className="spec-val">
-                            {viewportDevice === "desktop" && "1920 x 1080 (HD)"}
-                            {viewportDevice === "tablet" && "2048 x 1536 (Retina)"}
-                            {viewportDevice === "wallpanel" && "1280 x 800 (TS1070)"}
-                            {viewportDevice === "phone" && "1170 x 2532 (Super Retina)"}
-                          </span>
-                        </div>
-                        <div className="spec-card glass-panel">
-                          <span className="spec-name">{t("showcase_integration")}</span>
-                          <span className="spec-val">Crestron HTML5 / CH5</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="static-screen-design">
-                      <div className="mock-grid">
-                        <div className="mock-widget glass-panel">
-                          {renderIcon("Lightbulb", 24, "mock-ic")}
-                          <span>Lights Zone</span>
-                        </div>
-                        <div className="mock-widget glass-panel">
-                          {renderIcon("Layers", 24, "mock-ic")}
-                          <span>Scenes</span>
-                        </div>
-                        <div className="mock-widget glass-panel">
-                          {renderIcon("VolumeX", 24, "mock-ic")}
-                          <span>Mute Audio</span>
-                        </div>
-                        <div className="mock-widget glass-panel">
-                          {renderIcon("Menu", 24, "mock-ic")}
-                          <span>Blinds</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </DeviceViewport>
+                ) : null}
+              </DeviceFrame>
             </div>
           </main>
 
-          {/* Vertical Device Selector (Transparent sidebar, title label removed, icons added) */}
           <aside className="workspace-device-sidebar">
             <div className="device-buttons-column">
-              {activeProject.devices.map((dId) => {
-                const dev = devices.find((d) => d.id === dId);
-                if (!dev) return null;
-                const type = getDeviceViewportType(dId);
-                return (
-                  <button
-                    key={dId}
-                    onClick={() => setViewportDevice(type)}
-                    className={`device-vertical-btn ${viewportDevice === type ? "active" : ""}`}
-                  >
-                    <div className="vertical-btn-inner">
-                      {renderIcon(getDeviceIconName(dId), 14, "btn-device-icon")}
-                      <span>{getDeviceLabel(dId)}</span>
-                    </div>
-                  </button>
-                );
-              })}
+              {projectViewports.map((dev) => (
+                <button
+                  key={dev.viewport}
+                  onClick={() => goTo(activeProject, dev.viewport, { replace: true })}
+                  className={`device-vertical-btn ${viewportDevice === dev.viewport ? "active" : ""}`}
+                >
+                  <div className="vertical-btn-inner">
+                    {renderIcon(dev.iconName, 14, "btn-device-icon")}
+                    <span>{dev.label[lang] || dev.label.fr}</span>
+                  </div>
+                </button>
+              ))}
             </div>
           </aside>
         </div>

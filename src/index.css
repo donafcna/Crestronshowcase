@@ -4241,3 +4241,25 @@ html, body, #root {
   padding: 3px 5px !important;
   font-size: 0.55rem !important;
 }
+/* ===== Portage iPhone / iPad (outil démo marketing) ===== */
+
+/* Boutique : grille 2 colonnes -> 1 colonne sur smartphone */
+.boutique-hermes-ui.phone .zermatt-grid-layout {
+  grid-template-columns: 1fr !important;
+  gap: 10px !important;
+}
+
+/* Chalet Zermatt : en-tête compact et fluide sur smartphone */
+.chalet-zermatt-ui.mode-mobile .top-header {
+  flex-wrap: wrap;
+  height: auto;
+  min-height: 0;
+  padding: 8px 12px;
+  gap: 6px;
+}
+
+.chalet-zermatt-ui.mode-mobile .header-status-group {
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: flex-end;
+}

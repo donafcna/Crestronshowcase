@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import * as Icons from "lucide-react";
+import { Icons } from "../../icons";
 
 export const BoutiqueHermes = ({ deviceType }) => {
   const [activeTab, setActiveTab] = useState("circadian"); // circadian, scent, audio, astro

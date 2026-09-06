@@ -1,40 +1,54 @@
 import React from "react";
-import * as Icons from "lucide-react";
+import { Icons } from "../icons";
 import { useTranslation } from "../context/LanguageContext";
 import { sectors } from "../data/projects";
+import { Link, useRouter, buildShowcasePath } from "../router";
 
 // Asset paths
 const logoFrequenceTv = "/assets/logo-frequence-tv-5LGUrtbd.png";
 const logoCrestron = "/assets/logo-crestron-CSWzrfLt.png";
 
-export const Sidebar = ({ currentPage, selectedSector, onPageChange, onSectorSelect }) => {
-  const { t } = useTranslation();
+// Date de build injectée par vite.config.js (define) — remplace la date
+// saisie à la main dans les traductions.
+const BUILD_DATE = typeof __BUILD_DATE__ !== "undefined" ? __BUILD_DATE__ : "";
 
-  const handleSectorClick = (sectorId) => {
-    onSectorSelect(sectorId);
-    onPageChange("showcase");
-  };
+const formatDate = (iso, lang) => {
+  if (!iso) return "";
+  try {
+    return new Date(iso).toLocaleDateString(lang === "en" ? "en-GB" : lang === "de" ? "de-CH" : "fr-CH", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+    });
+  } catch {
+    return iso;
+  }
+};
+
+export const Sidebar = () => {
+  const { t, lang } = useTranslation();
+  const route = useRouter();
+  const currentPage = route.page;
+  const selectedSector = route.page === "showcase" ? route.sectorId : undefined;
 
   const renderIcon = (iconName, size = 18) => {
     const IconComp = Icons[iconName] || Icons.HelpCircle;
     return <IconComp size={size} />;
   };
 
+  const navClass = (active, extra = "") => `nav-btn ${extra} ${active ? "active" : ""}`;
+
   return (
     <nav className="glass-panel sidebar-nav">
       {/* Brand Header */}
       <div className="brand-header">
-        <div className="brand-logo-container">
+        <Link to="/" className="brand-logo-container" aria-label="Accueil">
           <img src={logoCrestron} alt="Crestron" className="crestron-logo-img" />
-        </div>
+        </Link>
         <span className="brand-subtitle">{t("brand_subtitle")}</span>
         <div className="brand-by-logo">
           <div className="frequencetv-logo-wrapper">
-            <img
-              src={logoFrequenceTv}
-              alt="Frequence TV"
-              className="frequencetv-logo-img"
-            />
+            <img src={logoFrequenceTv} alt="Fréquence TV" className="frequencetv-logo-img" />
           </div>
         </div>
       </div>
@@ -44,24 +58,31 @@ export const Sidebar = ({ currentPage, selectedSector, onPageChange, onSectorSel
         <h3 className="nav-section-title">{t("nav_title")}</h3>
         <ul className="nav-list">
           <li>
-            <button
-              onClick={() => onPageChange("dashboard")}
-              className={`nav-btn ${currentPage === "dashboard" ? "active" : ""}`}
-            >
+            <Link to="/" className={navClass(currentPage === "dashboard")}>
               {renderIcon("LayoutDashboard", 18)}
               <span>{t("nav_dashboard")}</span>
-            </button>
+            </Link>
           </li>
           <li>
-            <button
-              onClick={() => handleSectorClick(null)}
-              className={`nav-btn ${
-                currentPage === "showcase" && selectedSector === null ? "active" : ""
-              }`}
+            <Link
+              to={buildShowcasePath()}
+              className={navClass(currentPage === "showcase" && !selectedSector)}
             >
               {renderIcon("Layers", 18)}
               <span>{t("nav_all_uis")}</span>
-            </button>
+            </Link>
+          </li>
+          <li>
+            <Link to="/pourquoi-ch5" className={navClass(currentPage === "why")}>
+              {renderIcon("Sparkles", 18)}
+              <span>{t("nav_why_ch5")}</span>
+            </Link>
+          </li>
+          <li>
+            <Link to="/contact" className={navClass(currentPage === "contact")}>
+              {renderIcon("MessageSquare", 18)}
+              <span>{t("nav_contact")}</span>
+            </Link>
           </li>
         </ul>
       </div>
@@ -72,79 +93,55 @@ export const Sidebar = ({ currentPage, selectedSector, onPageChange, onSectorSel
         <ul className="nav-list scrolling-list">
           {sectors.map((sector) => (
             <li key={sector.id}>
-              <button
-                onClick={() => handleSectorClick(sector.id)}
-                className={`nav-btn sector-btn ${
-                  currentPage === "showcase" && selectedSector === sector.id ? "active" : ""
-                }`}
+              <Link
+                to={buildShowcasePath({ sectorId: sector.id })}
+                className={navClass(currentPage === "showcase" && selectedSector === sector.id, "sector-btn")}
               >
                 <span className="icon-wrapper">{renderIcon(sector.iconName, 18)}</span>
                 <span className="sector-name">{t(`sector_${sector.id}_name`)}</span>
-              </button>
+              </Link>
             </li>
           ))}
         </ul>
       </div>
 
-      {/* Nav Footer */}
+      {/* Nav Footer : appel à l'action + date de mise à jour */}
       <div className="nav-footer">
-        <div className="status-indicator">
-          <span className="status-dot" />
-          <span>{t("nav_ready")}</span>
-        </div>
-        <div className="version-tag">v1.0.0 (Capacitor)</div>
+        <Link to="/contact" className="btn btn-primary sidebar-cta">
+          {renderIcon("CalendarCheck", 16)}
+          <span>{t("nav_cta")}</span>
+        </Link>
+        {BUILD_DATE && (
+          <div className="status-indicator">
+            <span className="status-dot" />
+            <span>
+              {t("nav_updated")} {formatDate(BUILD_DATE, lang)}
+            </span>
+          </div>
+        )}
       </div>
 
       {/* Mobile Bottom Tab Bar */}
       <div className="mobile-tab-bar">
-        <button
-          onClick={() => onPageChange("dashboard")}
-          className={`tab-item ${currentPage === "dashboard" ? "active" : ""}`}
-        >
+        <Link to="/" className={`tab-item ${currentPage === "dashboard" ? "active" : ""}`}>
           {renderIcon("LayoutDashboard", 20)}
           <span>{t("nav_dashboard")}</span>
-        </button>
-        <button
-          onClick={() => handleSectorClick(null)}
-          className={`tab-item ${
-            currentPage === "showcase" && selectedSector === null ? "active" : ""
-          }`}
+        </Link>
+        <Link
+          to={buildShowcasePath()}
+          className={`tab-item ${currentPage === "showcase" ? "active" : ""}`}
         >
           {renderIcon("Layers", 20)}
           <span>{t("nav_all_uis")}</span>
-        </button>
-        <button
-          onClick={() => handleSectorClick("residentiel")}
-          className={`tab-item ${
-            currentPage === "showcase" && selectedSector === "residentiel" ? "active" : ""
-          }`}
-        >
-          {renderIcon("Home", 20)}
-          <span>{t("sector_residentiel_name")}</span>
-        </button>
-        <button
-          onClick={() => handleSectorClick("yacht")}
-          className={`tab-item ${
-            currentPage === "showcase" && selectedSector === "yacht" ? "active" : ""
-          }`}
-        >
-          {renderIcon("Ship", 20)}
-          <span>{t("sector_yacht_name")}</span>
-        </button>
-        <button
-          onClick={() => handleSectorClick("hotellerie")}
-          className={`tab-item ${
-            currentPage === "showcase" &&
-            selectedSector !== null &&
-            selectedSector !== "residentiel" &&
-            selectedSector !== "yacht"
-              ? "active"
-              : ""
-          }`}
-        >
-          {renderIcon("LayoutGrid", 20)}
-          <span>{t("nav_sectors")}</span>
-        </button>
+        </Link>
+        <Link to="/pourquoi-ch5" className={`tab-item ${currentPage === "why" ? "active" : ""}`}>
+          {renderIcon("Sparkles", 20)}
+          <span>CH5</span>
+        </Link>
+        <Link to="/contact" className={`tab-item ${currentPage === "contact" ? "active" : ""}`}>
+          {renderIcon("MessageSquare", 20)}
+          <span>{t("nav_contact")}</span>
+        </Link>
       </div>
     </nav>
   );

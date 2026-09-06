@@ -1,29 +1,38 @@
 # Crestron GUI Showcase
 
-Site vitrine (React 19 + Vite 8) présentant des interfaces domotiques Crestron/Lutron (CH5) par secteur — projet entrepreneurial parallèle au travail chez Fréquence TV. Contexte métier/marketing complet dans la note Obsidian `10_Travail/Dev Crestron/Crestron Showcase Website.md` (vault vault Obsidian, voir son `CLAUDE.md`).
+Site vitrine (React 19 + Vite 8) présentant des interfaces domotiques Crestron/Lutron (CH5) par secteur — projet entrepreneurial parallèle au travail chez Fréquence TV, devenu outil pour l'équipe marketing. Contexte métier/marketing complet dans la note Obsidian `10_Travail/Dev Crestron/Crestron Showcase Website.md` (vault Obsidian, voir son `CLAUDE.md`).
 
-Déployé sur Vercel : https://crestrongui.vercel.app/
+Déployé sur Vercel : https://crestrongui.vercel.app/ — le projet Vercel n'est PAS connecté au repo GitHub : déployer avec `npx vercel --prod` depuis ce dossier.
 
 ## Stack
 
-- React 19 + Vite 8, lint via `oxlint` (pas ESLint)
+- React 19 + Vite 8, lint via `oxlint` (pas ESLint) ; deps : `lucide-react` (via `src/icons.js`, imports nommés), `qrcode`, `html2canvas` (imports dynamiques)
 - `npm run dev` / `npm run build` / `npm run lint` / `npm run preview`
 
 ## Structure
 
-- `src/data/projects.js` — source de vérité unique : `sectors` (résidentiel, hôtellerie, meeting, conférence, discothèque, yacht, boutique, chalet, restaurant), `devices` (xpanel, dalle Crestron, tablette/smartphone iOS/Android), `projects` (chaque étude de cas : sectors, devices, features, année, `isInteractive`, éventuellement `embedUrl`/`interactiveComponent`).
-- `src/components/simulators/` — un composant par projet interactif (ex. `VillaGemini`, `HotelGeneva`, `CrestronHome`, `YachtMonaco`, `ChaletZermatt`, `BoardroomFutureAV`, `ClubEtoile`, `BoutiqueHermes`, `SushiBarKyoto`, `AuditoriumRichmond`) — ajouter un nouveau projet interactif = ajouter une entrée dans `projects.js` + un composant simulateur ici.
-- `src/components/` — `Dashboard`, `Showcase` (orchestrateur principal), `Sidebar`, `DeviceViewport`, `BackgroundVideo`.
-- `src/context/LanguageContext.jsx` + `src/data/*Translations.js` — i18n (au moins FR/EN, translations dédiées par showcase ex. `yachtMonacoTranslations.js`).
-- `public/showcases/<id>/index.html` (+ `iphone.html`) — pour les projets non-interactifs qui embarquent une vraie interface CH5 réelle (ex. `villa-gemini-frequencetv`, `hotel-geneva`) via `embedUrl`/`embedPhoneUrl`.
+- `src/data/projects.js` — source de vérité unique du contenu : `sectors`, `devices` (avec `viewport`/`simulatorType`, dont TSW-1080 = wallpanel_hd), `projects` (textes FR/EN/DE dans `text`, `status` realisation/concept, `isInteractive`, éventuellement `embedUrl`/`embedPhoneUrl`). Helpers `getProjectText/getProjectName/getStatusLabel/getDeviceById`. Guide non-dev : `docs/GUIDE-MARKETING.md`.
+- `src/router.jsx` — mini-routeur History API maison : `/interfaces/:secteur/:projet/:support`, `/pourquoi-ch5`, `/contact`, `/fiche/:projet` ; query `?client=`, `?kiosk=1`, `?lang=` ; rewrites dans `vercel.json`.
+- `src/components/simulators/` — un composant par projet interactif, lazy-loadés (ajouter un projet = entrée dans `projects.js` + simulateur ici + entrée dans les maps SIMULATORS de `Showcase.jsx` et `DemoMode.jsx`).
+- `src/components/` — `Dashboard`, `Showcase` (orchestrateur, mode présentation/kiosque), `Sidebar` (avec tab-bar mobile), `DeviceFrame` (boîtiers, échelle via `useFitScale`), `DemoToolbar` (copier lien, QR, présentation, fiche PDF, capture PNG, nom client), `BackgroundVideo`.
+- `src/components/DemoMode.jsx` + `src/demo.css` — **mode démo mobile** (outil marketing) : routes hash `#demo` (launcher tactile) et `#demo/<projectId>` (interface en plein écran réel, deviceType auto iPhone→phone / iPad→tablet) ; redirection auto vers `#demo` sur mobile UNIQUEMENT à la racine (jamais sur un lien profond partagé) ; `#site` force le site classique. PWA : `public/manifest.webmanifest`, `public/sw.js`, `public/icons/`.
+- `src/pages/` — `WhyCH5`, `Contact`, `ProjectSheet` (fiche A4 imprimable, rendue sans sidebar) — lazy-loadées depuis `App.jsx`.
+- `src/context/LanguageContext.jsx` — langues publiques FR/EN/DE (`SUPPORTED_LANGS` dans `src/data/uiTranslations.js`, qui prime sur `src/data/translations.js`).
+- `src/hooks/` — `useDemoSettings` (`?client=`, `?kiosk=`), `useFitScale`.
+- `public/showcases/<id>/index.html` (+ `iphone.html`) — projets non-interactifs embarquant une vraie interface CH5 via `embedUrl`/`embedPhoneUrl`.
 
 ## Convention importante
 
 `README.md` sert de **journal daté** (entrées chronologiques des sessions de dev), pas de readme statique — continuer à ajouter des entrées plutôt que de le réécrire.
 
-## TODO connus (issus de la note Obsidian)
+## Leçon du 5/9/2026
 
-- Supprimer le secteur "Chalet", le fusionner dans "Résidentiel".
+Deux sessions Claude ont livré en parallèle (v2 marketing et mode démo mobile) et l'écrasement mutuel de `App.jsx`/`main.jsx` a cassé la prod (« useRouter must be used within RouterProvider », rollback Vercel nécessaire). Avant toute livraison : vérifier que le dossier local n'a pas divergé du point de départ, et builder + tester avant `vercel --prod`.
+
+## TODO connus
+
+- Activer Vercel Web Analytics dans le dashboard.
+- Confirmer l'e-mail de contact dans `src/data/company.js` (info@frequence-tv.ch = hypothèse).
+- Remplacer vignettes Unsplash / vidéos Mixkit par des médias Fréquence TV.
+- Affichage du simulateur de `/interfaces` sur très petit écran à améliorer (le mode `#demo` est la voie mobile prévue).
 - Tester le déploiement sur Apple Store / Play Store.
-- Garder le projet "Gemini" créé par défaut, réintégrer "Villa Gemini".
-- Possibilité future : vente de template, vidéos de démo multilingues (FR/EN/ES/DE).

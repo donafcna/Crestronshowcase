@@ -1,16 +1,20 @@
 {
   "name": "crestronshowcase",
   "private": true,
-  "version": "0.0.0",
+  "version": "2.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "prebuild": "node scripts/generate-sitemap.mjs",
     "build": "vite build",
     "lint": "oxlint",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "sitemap": "node scripts/generate-sitemap.mjs"
   },
   "dependencies": {
+    "html2canvas": "^1.4.1",
     "lucide-react": "^1.25.0",
+    "qrcode": "^1.5.4",
     "react": "^19.2.7",
     "react-dom": "^19.2.7"
   },

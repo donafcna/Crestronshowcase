@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import * as Icons from "lucide-react";
+import { Icons } from "../../icons";
 
 export const VillaGemini = ({ deviceType }) => {
   const [activeRoom, setActiveRoom] = useState("salon");

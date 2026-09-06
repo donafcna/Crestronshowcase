@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import * as Icons from "lucide-react";
+import { Icons } from "../../icons";
 import { useTranslation } from "../../context/LanguageContext";
 
 const localTranslations = {
@@ -342,7 +342,7 @@ export const HotelGeneva = ({ deviceType }) => {
             {renderIcon("Hotel", 20, "property-icon")}
             <div className="property-details">
               <span className="back-arrow-hotel">‹</span>
-              <span className="property-name">Four Seasons Geneve</span>
+              <span className="property-name">Palace Genève</span>
             </div>
           </div>
 

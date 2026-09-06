@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+Disallow: /fiche/
+Sitemap: https://crestrongui.vercel.app/sitemap.xml

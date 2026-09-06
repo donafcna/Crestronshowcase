@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import * as Icons from "lucide-react";
+import { Icons } from "../../icons";
 
 export const BoardroomFutureAV = ({ deviceType }) => {
   const [activeTab, setActiveTab] = useState("video_matrix"); // video_matrix, conference, mics, shades

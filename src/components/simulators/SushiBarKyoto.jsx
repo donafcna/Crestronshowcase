@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import * as Icons from "lucide-react";
+import { Icons } from "../../icons";
 
 export const SushiBarKyoto = ({ deviceType }) => {
   const [activeTab, setActiveTab] = useState("table_lights"); // table_lights, bar_glow, kitchen_fan, service_call

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import * as Icons from "lucide-react";
+import { Icons } from "../../icons";
 
 export const YachtMonaco = ({ deviceType }) => {
   const [activeTab, setActiveTab] = useState("ambient_lights"); // ambient_lights, disco_lights, audio

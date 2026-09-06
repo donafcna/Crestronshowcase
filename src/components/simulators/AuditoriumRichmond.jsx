@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import * as Icons from "lucide-react";
+import { Icons } from "../../icons";
 
 export const AuditoriumRichmond = ({ deviceType }) => {
   const [activeTab, setActiveTab] = useState("stage_lights"); // stage_lights, ptz_cameras, audio_dante, led_wall

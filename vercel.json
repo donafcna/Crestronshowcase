@@ -1,0 +1,15 @@
+{
+  "rewrites": [
+    { "source": "/((?!assets/|showcases/|videos/|sw\\.js|manifest\\.webmanifest|robots\\.txt|sitemap\\.xml|favicon\\.svg|icons/|og-image\\.jpg).*)", "destination": "/index.html" }
+  ],
+  "headers": [
+    {
+      "source": "/sw.js",
+      "headers": [{ "key": "Cache-Control", "value": "no-cache" }]
+    },
+    {
+      "source": "/assets/(.*)",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
+    }
+  ]
+}

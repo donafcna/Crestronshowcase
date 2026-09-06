@@ -1,3 +1,7 @@
+# Dépendances et build — générés, ne jamais committer
+node_modules/
+dist/
+# Visual Studio / divers
 .vs/
 bin/
 obj/
@@ -5,3 +9,4 @@ obj/
 *.zip
 *.vtp
 .vercel
+.DS_Store
