@@ -4389,6 +4389,262 @@ html, body, #root {
   height: 100%;
 }
 
+/* ===== Boîtiers réalistes iPhone / iPad (page /interfaces) ===== */
+/* Les dimensions viennent de devices.js (--chassis-w/h) ; ici uniquement
+   l'habillage : titane, bords, coins, Dynamic Island, caméra, boutons. */
+
+.device-viewport-container {
+  padding: 28px !important;
+}
+
+/* --- iPhone --- */
+.device-stage > .phone-device-frame {
+  background: linear-gradient(160deg, #3a3c41 0%, #1b1c20 45%, #2c2e33 100%);
+  border: 2px solid #5a5d63;
+  border-radius: 68px;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.08),
+    0 30px 60px -20px rgba(0, 0, 0, 0.8),
+    0 10px 24px -10px rgba(0, 0, 0, 0.6);
+  overflow: visible !important;
+}
+
+.device-stage .phone-bezel {
+  inset: 5px;
+  background: #050505;
+  border-radius: 62px;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+}
+
+.device-stage .phone-screen {
+  border-radius: 46px;
+  border: none;
+  background: #000;
+}
+
+/* Dynamic Island (dessinée par-dessus l'écran) */
+.device-stage .phone-dynamic-island {
+  top: 44px;
+  width: 124px;
+  height: 36px;
+  border-radius: 20px;
+  background: #000;
+  padding-right: 14px;
+  justify-content: flex-end;
+  align-items: center;
+  z-index: 20;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.03);
+}
+
+.device-stage .phone-dynamic-island .island-camera {
+  width: 10px;
+  height: 10px;
+  background: radial-gradient(circle at 35% 35%, #2a3550, #0b0f1c 70%);
+  box-shadow: inset 0 0 2px rgba(120, 160, 255, 0.35);
+}
+
+.device-stage .phone-speaker,
+.device-stage .phone-home-line {
+  display: none;
+}
+
+/* Boutons latéraux : action + volume à gauche, marche/veille à droite */
+.device-stage > .phone-device-frame::before,
+.device-stage > .phone-device-frame::after,
+.device-stage .phone-bezel::after {
+  content: "";
+  position: absolute;
+  width: 4px;
+  background: linear-gradient(90deg, #4a4d53, #2b2d31);
+  border-radius: 2px;
+}
+
+.device-stage > .phone-device-frame::before {
+  left: -6px;
+  top: 178px;
+  height: 36px;
+}
+
+.device-stage > .phone-device-frame::after {
+  left: -6px;
+  top: 240px;
+  height: 66px;
+  box-shadow: 0 82px 0 0 #3a3d42;
+}
+
+.device-stage .phone-bezel::after {
+  right: -11px;
+  top: 252px;
+  height: 104px;
+  background: linear-gradient(270deg, #4a4d53, #2b2d31);
+}
+
+/* --- iPad --- */
+.device-stage > .tablet-device-frame {
+  background: linear-gradient(160deg, #2a2b30 0%, #131417 50%, #24252a 100%);
+  border: 2px solid #4c4f56;
+  border-radius: 64px;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.07),
+    0 40px 80px -24px rgba(0, 0, 0, 0.8),
+    0 12px 30px -12px rgba(0, 0, 0, 0.6);
+  overflow: visible !important;
+}
+
+.device-stage .tablet-bezel {
+  inset: 5px;
+  background: #050505;
+  border-radius: 58px;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+}
+
+.device-stage .tablet-screen {
+  border-radius: 28px;
+  border: none;
+  background: #000;
+}
+
+/* Caméra frontale sur le bord long (orientation paysage) */
+.device-stage .tablet-camera {
+  top: 17px;
+  width: 9px;
+  height: 9px;
+  background: radial-gradient(circle at 35% 35%, #2a3550, #0b0f1c 70%);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.05), inset 0 0 2px rgba(120, 160, 255, 0.35);
+}
+
+.device-stage .tablet-home-indicator {
+  display: none;
+}
+
+/* Bouton marche/veille (haut droite) et volume (haut gauche) */
+.device-stage > .tablet-device-frame::before,
+.device-stage > .tablet-device-frame::after {
+  content: "";
+  position: absolute;
+  top: -6px;
+  height: 4px;
+  background: linear-gradient(180deg, #4a4d53, #2b2d31);
+  border-radius: 2px;
+}
+
+.device-stage > .tablet-device-frame::before {
+  right: 84px;
+  width: 64px;
+}
+
+.device-stage > .tablet-device-frame::after {
+  left: 84px;
+  width: 48px;
+  box-shadow: 64px 0 0 0 #3a3d42;
+}
+
+/* --- Barre d'état iOS / iPadOS et indicateur home --- */
+.ios-status-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 25;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #fff;
+  font-family: -apple-system, "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+  font-weight: 600;
+  pointer-events: none;
+  background: #000;
+}
+
+.ios-status-bar--phone {
+  height: 59px;
+  padding: 14px 30px 0 34px;
+  font-size: 17px;
+}
+
+.ios-status-bar--tablet {
+  height: 24px;
+  padding: 0 22px;
+  font-size: 13px;
+}
+
+.ios-status-bar--phone .ios-status-time {
+  min-width: 90px;
+  text-align: center;
+  letter-spacing: -0.3px;
+}
+
+.ios-status-icons {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.ios-status-bar--tablet .ios-status-icons svg {
+  width: 14px;
+  height: 10px;
+}
+
+.ios-status-battery {
+  position: relative;
+  display: inline-block;
+  width: 27px;
+  height: 13px;
+  border: 1.5px solid rgba(255, 255, 255, 0.55);
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.ios-status-battery::after {
+  content: "";
+  position: absolute;
+  right: -4px;
+  top: 3px;
+  width: 2px;
+  height: 5px;
+  border-radius: 0 1px 1px 0;
+  background: rgba(255, 255, 255, 0.55);
+}
+
+.ios-status-battery-level {
+  position: absolute;
+  left: 1.5px;
+  top: 1.5px;
+  bottom: 1.5px;
+  width: 78%;
+  border-radius: 2px;
+  background: #fff;
+}
+
+.ios-status-bar--tablet .ios-status-battery {
+  width: 22px;
+  height: 11px;
+}
+
+.ios-home-indicator {
+  position: absolute;
+  left: 50%;
+  bottom: 9px;
+  z-index: 25;
+  width: 140px;
+  height: 5px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.85);
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.tablet-screen .ios-home-indicator {
+  bottom: 7px;
+  width: 300px;
+}
+
+/* Fond noir sous la GUI dans la zone home (la GUI s'arrête au-dessus) */
+.phone-screen,
+.tablet-screen {
+  background: #000 !important;
+}
+
 /* ===== Fiche projet : galerie d'aperçus de l'interface ===== */
 .sheet-gallery {
   margin-top: 18px;

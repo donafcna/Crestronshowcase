@@ -1,6 +1,41 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { getDeviceConfig } from "../data/devices";
 import { useFitScale } from "../hooks/useFitScale";
+
+// Barre d'état iOS (heure réelle, réseau, batterie) dessinée dans la zone
+// "safe area" du haut de l'écran, comme sur un vrai iPhone / iPad. La GUI est
+// placée en dessous (voir safeTop dans devices.js), exactement comme en mode
+// démo plein écran où iOS réserve cette zone.
+const IosStatusBar = ({ variant }) => {
+  const [time, setTime] = useState(() => new Date());
+  useEffect(() => {
+    const id = setInterval(() => setTime(new Date()), 15000);
+    return () => clearInterval(id);
+  }, []);
+  const hh = String(time.getHours()).padStart(2, "0");
+  const mm = String(time.getMinutes()).padStart(2, "0");
+  return (
+    <div className={`ios-status-bar ios-status-bar--${variant}`} aria-hidden="true">
+      <span className="ios-status-time">{hh}:{mm}</span>
+      <span className="ios-status-icons">
+        <svg className="ios-status-cell" viewBox="0 0 20 12" width="18" height="11">
+          <rect x="0" y="8" width="3" height="4" rx="0.8" fill="currentColor" />
+          <rect x="5" y="5.5" width="3" height="6.5" rx="0.8" fill="currentColor" />
+          <rect x="10" y="3" width="3" height="9" rx="0.8" fill="currentColor" />
+          <rect x="15" y="0" width="3" height="12" rx="0.8" fill="currentColor" />
+        </svg>
+        <svg className="ios-status-wifi" viewBox="0 0 16 12" width="16" height="12">
+          <path d="M8 11.2 5.9 8.9a3 3 0 0 1 4.2 0L8 11.2Z" fill="currentColor" />
+          <path d="M3.4 6.3a6.6 6.6 0 0 1 9.2 0l-1.5 1.5a4.5 4.5 0 0 0-6.2 0L3.4 6.3Z" fill="currentColor" />
+          <path d="M.8 3.6a10.3 10.3 0 0 1 14.4 0l-1.5 1.5a8.2 8.2 0 0 0-11.4 0L.8 3.6Z" fill="currentColor" />
+        </svg>
+        <span className="ios-status-battery">
+          <span className="ios-status-battery-level" />
+        </span>
+      </span>
+    </div>
+  );
+};
 
 // Renders a device chassis at a FIXED design resolution (from devices.js)
 // and fits it into the available space with a single transform:scale —
@@ -43,7 +78,7 @@ export const DeviceFrame = ({
   const guiCanvas = (
     <div
       className="gui-canvas"
-      style={{ width: cfg.guiW, height: cfg.guiH, transform: `scale(${guiScale})` }}
+      style={{ width: cfg.guiW, height: cfg.guiH, top: cfg.safeTop || 0, transform: `scale(${guiScale})` }}
     >
       {children}
     </div>
@@ -94,7 +129,9 @@ export const DeviceFrame = ({
             <div className="tablet-bezel">
               <div className="tablet-camera" />
               <div className="tablet-screen device-screen" style={{ width: cfg.screenW, height: cfg.screenH }}>
+                <IosStatusBar variant="tablet" />
                 {guiCanvas}
+                <div className="ios-home-indicator" aria-hidden="true" />
               </div>
               <div className="tablet-home-indicator" />
             </div>
@@ -110,7 +147,9 @@ export const DeviceFrame = ({
                 <div className="island-camera" />
               </div>
               <div className="phone-screen device-screen" style={{ width: cfg.screenW, height: cfg.screenH }}>
+                <IosStatusBar variant="phone" />
                 {guiCanvas}
+                <div className="ios-home-indicator" aria-hidden="true" />
               </div>
               <div className="phone-home-line" />
             </div>

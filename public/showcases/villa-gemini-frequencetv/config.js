@@ -32,16 +32,5 @@ window.crestronConfig = {
     { "id": 74, "name": "Ruban LED" },
     { "id": 75, "name": "Liseuse" },
     { "id": 76, "name": "Éclairage Table" }
-  ],
-  "admin_monitors": [
-    { "join": "10", "type": "analog", "label": "Pièce active (Join 10)" },
-    { "join": "31", "type": "analog", "label": "Température consigne (Join 31)" },
-    { "join": "51", "type": "analog", "label": "Source active (Join 51)" },
-    { "join": "52", "type": "analog", "label": "Volume multimédia (Join 52)" },
-    { "join": "53", "type": "digital", "label": "Statut Mute (Join 53)" },
-    { "join": "71", "type": "analog", "label": "Spots Plafond (Join 71)" },
-    { "join": "72", "type": "analog", "label": "Lustre Central (Join 72)" },
-    { "join": "73", "type": "analog", "label": "Appliques Murales (Join 73)" },
-    { "join": "74", "type": "analog", "label": "Ruban LED (Join 74)" }
   ]
 };

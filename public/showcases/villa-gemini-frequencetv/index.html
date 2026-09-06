@@ -3,239 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Désactivation agressive du cache pour Crestron Go -->
+    <!-- Désactivation du cache (démo toujours à jour) -->
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
     <title>Fréquence TV - Villa Automation</title>
-    <!-- Chargement de la configuration unifiée locale (bypasse CORS en file://) -->
+    <!-- Configuration locale de la villa (pièces, sources, moteurs, circuits) -->
     <script src="config.js"></script>
-    <!-- WebXPanel support pour XPanel dans les navigateurs PC/Mac (DOIT ÊTRE CHARGÉ EN PREMIER) -->
-    <script src="js/webxpanel.js"></script>
     <script>
-        // Redirection immédiate si c'est un iPhone (avec cache-buster temporel pour forcer la mise à jour)
+        // Redirection immédiate vers la version iPhone
         var isIphone = /iPhone|iPod/.test(navigator.userAgent) && !/iPad/.test(navigator.userAgent);
         if (isIphone) {
             window.location.replace("iphone.html?v=" + Date.now());
         }
 
-        console.log("CH5: Tentative de chargement de WebXPanel...");
-        if (typeof WebXPanel !== 'undefined') {
-            var panelInstance = WebXPanel;
-            // Force l'activation du WebXPanel pour navigateur de bureau
-            if (typeof WebXPanel.getWebXPanel === 'function') {
-                console.log("CH5: Activation forcée de l'instance WebXPanel...");
-                panelInstance = WebXPanel.getWebXPanel(true);
-            }
-            
-            // Déterminer l'IP-ID dynamiquement via URL (?ipid=0x05) ou localStorage de manière sécurisée
-            var urlParams = new URLSearchParams(window.location.search);
-            var ipId = '0x04';
-            try {
-                ipId = urlParams.get('ipid') || localStorage.getItem('crestron_ipid') || '0x04';
-                if (urlParams.has('ipid')) {
-                    localStorage.setItem('crestron_ipid', urlParams.get('ipid'));
-                }
-            } catch (e) {
-                console.warn("Storage not available in this context:", e);
-            }
-            
-            console.log("CH5: IP-ID configuré pour WebXPanel : " + ipId);
-            
-            window.crestronIpId = ipId;
-            window.isCp4Connected = false;
-
-            window.updateConnectionStatusUI = function(connected) {
-                window.isCp4Connected = connected;
-                const statusEl = document.getElementById('connection-status');
-                if (statusEl) {
-                    const dot = statusEl.querySelector('.status-dot');
-                    const text = statusEl.querySelector('.status-text');
-                    
-                    let cleanId = '??';
-                    if (window.crestronIpId) {
-                        let idNum = parseInt(window.crestronIpId, 16);
-                        if (!isNaN(idNum)) {
-                            cleanId = idNum.toString().padStart(2, '0');
-                        }
-                    }
-                    
-                    if (connected) {
-                        dot.style.backgroundColor = '#10b981'; // Vert
-                        dot.style.boxShadow = '0 0 8px rgba(16, 185, 129, 0.6)';
-                        statusEl.style.color = '#10b981';
-                        text.textContent = 'Online (' + cleanId + ')';
-                    } else {
-                        dot.style.backgroundColor = '#ef4444'; // Rouge
-                        dot.style.boxShadow = '0 0 8px rgba(239, 68, 68, 0.6)';
-                        statusEl.style.color = '#ef4444';
-                        text.textContent = 'Offline (' + cleanId + ')';
-                    }
-                }
-            };
-
-            // Listen for WebXPanel connection events
-            window.addEventListener('CONNECT_WS', function() {
-                console.log('WebXPanel WebSocket Connected');
-                window.updateConnectionStatusUI(true);
-            });
-            window.addEventListener('DISCONNECT_WS', function() {
-                console.log('WebXPanel WebSocket Disconnected');
-                window.updateConnectionStatusUI(false);
-            });
-            window.addEventListener('CONNECT_CIP', function() {
-                console.log('WebXPanel CIP Connected');
-                window.updateConnectionStatusUI(true);
-                if (typeof window.refreshIptable === 'function') {
-                    window.refreshIptable();
-                }
-            });
-
-            window.addEventListener('DOMContentLoaded', function() {
-                if (typeof WebXPanel === 'undefined' || !WebXPanel.isActive) {
-                    window.updateConnectionStatusUI(true); // Default native connection assumes active
-                    if (typeof window.refreshIptable === 'function') {
-                        window.refreshIptable();
-                    }
-                } else {
-                    window.updateConnectionStatusUI(false); // Wait for WebXPanel connection events
-                }
-
-                // Initialisation du date picker de validation hybride (Calendrier TSW / Dropdowns XPanel)
-                const datePicker = document.getElementById('validation-date-picker');
-                const selectsContainer = document.getElementById('validation-date-selects-container');
-                const daySelect = document.getElementById('valid-day');
-                const monthSelect = document.getElementById('valid-month');
-                const yearSelect = document.getElementById('valid-year');
-                
-                // Détecter si on utilise WebXPanel (XPanel) ou natif (TSW)
-                const isXpanel = (typeof WebXPanel !== 'undefined' && WebXPanel.isActive);
-                if (isXpanel) {
-                    if (selectsContainer) selectsContainer.style.display = 'flex';
-                    if (datePicker) datePicker.style.display = 'none';
-                } else {
-                    if (selectsContainer) selectsContainer.style.display = 'none';
-                    if (datePicker) datePicker.style.display = 'block';
-                }
-                
-                // Remplir les dropdowns (XPanel)
-                if (daySelect && monthSelect && yearSelect) {
-                    for (let i = 1; i <= 31; i++) {
-                        let valStr = i.toString().padStart(2, '0');
-                        daySelect.add(new Option(valStr, valStr));
-                    }
-                    for (let i = 1; i <= 12; i++) {
-                        let valStr = i.toString().padStart(2, '0');
-                        monthSelect.add(new Option(valStr, valStr));
-                    }
-                    for (let i = 2020; i <= 2035; i++) {
-                        let valStr = i.toString();
-                        yearSelect.add(new Option(valStr, valStr));
-                    }
-                }
-                
-                const sendDateToCrestron = (dateStr) => {
-                    localStorage.setItem('last_validation_date', dateStr);
-                    if (typeof CrComLib !== 'undefined') {
-                        console.log("CH5: Envoi de la date de validation au CP4 : " + dateStr);
-                        CrComLib.publishEvent('s', '104', dateStr);
-                    }
-                };
-                
-                // Event Listener pour le calendrier natif (TSW)
-                if (datePicker) {
-                    datePicker.addEventListener('change', function(e) {
-                        const rawVal = e.target.value; // format YYYY-MM-DD
-                        if (rawVal) {
-                            const parts = rawVal.split('-');
-                            if (parts.length === 3) {
-                                const formatted = `${parts[2]}/${parts[1]}/${parts[0]}`; // DD/MM/YYYY
-                                sendDateToCrestron(formatted);
-                            }
-                        }
-                    });
-                }
-                
-                // Event Listeners pour les selects (XPanel)
-                const onSelectChange = () => {
-                    if (daySelect && monthSelect && yearSelect) {
-                        const dateStr = `${daySelect.value}/${monthSelect.value}/${yearSelect.value}`;
-                        sendDateToCrestron(dateStr);
-                    }
-                };
-                if (daySelect) daySelect.addEventListener('change', onSelectChange);
-                if (monthSelect) monthSelect.addEventListener('change', onSelectChange);
-                if (yearSelect) yearSelect.addEventListener('change', onSelectChange);
-                
-                // Fonction globale pour configurer visuellement la date reçue ou locale (format DD/MM/YYYY)
-                window.setDateFields = function(dateString) {
-                    if (!dateString) return;
-                    localStorage.setItem('last_validation_date', dateString);
-                    
-                    const parts = dateString.split('/');
-                    if (parts.length === 3) {
-                        // 1. Mise à jour des selects (XPanel)
-                        if (daySelect) daySelect.value = parts[0];
-                        if (monthSelect) monthSelect.value = parts[1];
-                        if (yearSelect) yearSelect.value = parts[2];
-                        
-                        // 2. Mise à jour du calendrier natif (TSW) au format YYYY-MM-DD
-                        if (datePicker) {
-                            datePicker.value = `${parts[2]}-${parts[1]}-${parts[0]}`;
-                        }
-                    }
-                };
-                
-                const savedDate = localStorage.getItem('last_validation_date');
-                if (savedDate) {
-                    window.setDateFields(savedDate);
-                }
-            });
-            
-            var webxpanelConfig = {
-                ipId: ipId
-            };
-
-            if (panelInstance) {
-                if (panelInstance.WebXPanel && typeof panelInstance.WebXPanel.initialize === 'function') {
-                    console.log("CH5: Initialisation de WebXPanel sur IPID " + ipId + "...");
-                    panelInstance.WebXPanel.initialize(webxpanelConfig);
-                } else if (typeof panelInstance.initialize === 'function') {
-                    console.log("CH5: Initialisation de WebXPanel (direct) sur IPID " + ipId + "...");
-                    panelInstance.initialize(webxpanelConfig);
-                } else if (panelInstance.default && typeof panelInstance.default.initialize === 'function') {
-                    console.log("CH5: Initialisation de WebXPanel (default) sur IPID " + ipId + "...");
-                    panelInstance.default.initialize(webxpanelConfig);
-                } else {
-                    console.error("CH5: Impossible de trouver la méthode initialize sur l'instance WebXPanel.");
-                }
-            } else {
-                console.error("CH5: Instance WebXPanel introuvable après activation.");
-            }
-        } else {
-            console.error("CH5: La bibliothèque WebXPanel n'est pas chargée.");
-        }
-
-        // Gestionnaire global pour clic/tap sur le widget météo/RSS (Anti-rebond 500ms)
+        // Gestionnaire global pour clic/tap sur le widget météo/RSS (anti-rebond 500 ms)
         var lastWeatherTapTime = 0;
         window.weatherWidgetClicked = function(e) {
             var now = Date.now();
             if (now - lastWeatherTapTime < 500) {
-                return; // Cooldown de 500ms
+                return;
             }
             lastWeatherTapTime = now;
-            
-            console.log("Weather widget clicked via inline handler!");
             if (typeof window.playFunnySound === 'function') {
                 window.playFunnySound();
             }
-            if (typeof CrComLib !== 'undefined') {
-                CrComLib.publishEvent('b', '37', true);
-                setTimeout(function() { CrComLib.publishEvent('b', '37', false); }, 100);
+            if (typeof Villa !== 'undefined') {
+                Villa.press(Villa.SIG.WEATHER_TAP);
             }
         };
 
-        // Fallback pour les images RSS qui échouent à charger (offline ou certificat SSL invalide sur Android)
+        // Fallback pour les images RSS qui échouent à charger (offline ou certificat SSL invalide)
         window.setRssImageFallback = function(img) {
             if (img) {
                 img.onerror = null; // éviter boucle infinie
@@ -243,9 +41,9 @@
             }
         };
     </script>
-    <!-- Le script ch5-components.js est injecté automatiquement par le module de build de la tablette -->
+    <!-- Composants CH5 (rendu des boutons / sliders) puis moteur d'état local 100 % front-end -->
     <script src="js/ch5-components.js"></script>
-    <script src="js/frontend-feedback.js"></script>
+    <script src="js/local-feedback.js"></script>
     <link rel="stylesheet" href="themes/dark-theme.css">    <style>
         :root {
             /* Variables par défaut - Thème Sombre */
@@ -807,10 +605,6 @@
                 <span data-i18n="rooms">Pièces Villa</span> 
                 <span id="version-label" style="font-size: 0.8rem; color: rgba(255,255,255,0.3); font-weight: normal; margin-left: auto;">v1.0.12</span>
             </h2>
-            <div id="connection-status" style="font-size: 0.75rem; margin-top: 4px; font-weight: 500; transition: color 0.3s; display: flex; align-items: center; gap: 5px; color: #ef4444; padding-left: 0; cursor: pointer; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none;">
-                <span class="status-dot" style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background-color: #ef4444; transition: background-color 0.3s; box-shadow: 0 0 8px rgba(239, 68, 68, 0.4);"></span>
-                <span class="status-text" style="color: inherit;">Offline</span>
-            </div>
         </div>
         
         <!-- Conteneur flex pour la liste des pièces avec boutons de défilement intégrés -->
@@ -898,12 +692,12 @@
         <!-- BARRE DE TITRE DYNAMIQUE -->
         <div class="header-bar">
             <h1 style="margin: 0; font-size: 1.8rem; display: flex; align-items: center; gap: 10px;">
-                <svg id="admin-trigger-logo" viewBox="0 0 576 512" style="width: 28px; height: 28px; fill: #10b981; cursor: pointer;"><path d="M575.8 255.5c0 18-15 32.1-32 32.1h-32l.7 160.2c0 2.7-.2 5.4-.5 8.1V472c0 22.1-17.9 40-40 40H400c-22.1 0-40-17.9-40-40V376c0-13.3-10.7-24-24-24H240c-13.3 0-24 10.7-24 24v96c0 22.1-17.9 40-40 40H40c-22.1 0-40-17.9-40-40V255.6C0 237.6 15 223.5 32 223.5h32V64C64 28.7 92.7 0 128 0H448c35.3 0 64 28.7 64 64v159.5h32c17 0 32 14.1 32 32z"/></svg>
-                <span id="admin-trigger-label" style="cursor: pointer; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none;"><span data-i18n="active_piece">PIÈCE ACTIVE :</span></span> <span id="active-room-title" style="color: #10b981;" data-ch5-textcontent="10">Salon</span>
+                <svg viewBox="0 0 576 512" style="width: 28px; height: 28px; fill: #10b981;"><path d="M575.8 255.5c0 18-15 32.1-32 32.1h-32l.7 160.2c0 2.7-.2 5.4-.5 8.1V472c0 22.1-17.9 40-40 40H400c-22.1 0-40-17.9-40-40V376c0-13.3-10.7-24-24-24H240c-13.3 0-24 10.7-24 24v96c0 22.1-17.9 40-40 40H40c-22.1 0-40-17.9-40-40V255.6C0 237.6 15 223.5 32 223.5h32V64C64 28.7 92.7 0 128 0H448c35.3 0 64 28.7 64 64v159.5h32c17 0 32 14.1 32 32z"/></svg>
+                <span data-i18n="active_piece">PIÈCE ACTIVE :</span> <span id="active-room-title" style="color: #10b981;" data-ch5-textcontent="10">Salon</span>
             </h1>
             <div style="display: flex; align-items: center; gap: 12px;">
                 <span data-i18n="alarm_title" style="font-weight: bold;">Alarme Globale :</span>
-                <!-- Gestion Sécurité (Digital Joins 41 et 42) -->
+                <!-- Alarme : signaux 41 (armer) / 42 (désarmer) du moteur local -->
                 <ch5-button label="ARMER" data-i18n="alarm_arm" customClass="alarm-btn" sendEventOnClick="41" receiveStateSelected="41"></ch5-button>
                 <ch5-button label="DÉSARMER" data-i18n="alarm_disarm" customClass="alarm-btn" sendEventOnClick="42" receiveStateSelected="42"></ch5-button>
             </div>
@@ -988,19 +782,19 @@
                 <div style="display: flex; justify-content: space-between; align-items: center;">
                     <div>
                         <p style="margin: 0; color: var(--text-secondary);" data-i18n="temp_actual">Actuelle :</p>
-                        <!-- Reçoit la température formatée (String Join 32) -->
+                        <!-- Température mesurée (signal texte 32) -->
                         <div class="temp-display"><span id="temp-val" class="measured-temp-val" data-ch5-textcontent="32">--.-</span> °C</div>
                     </div>
                     <div style="text-align: right;">
                         <p style="margin: 0; color: var(--text-secondary);" data-i18n="temp_mode">Mode Actif :</p>
-                        <!-- Reçoit le mode (String Join 33) "CHAUFFAGE" ou "CLIMATISATION" -->
+                        <!-- Mode CVC (signal texte 33) -->
                         <div class="hvac-mode-val" style="font-weight: bold; font-size: 1.2rem; margin-top: 10px;">
                             <span id="hvac-mode-val" data-ch5-textcontent="33">--</span>
                         </div>
                     </div>
                 </div>
                 <p style="margin-bottom: 5px;" data-i18n="temp_requested">Consigne Demandée :</p>
-                <!-- Ajustement de la consigne par boutons +/- (Analog Join 31) -->
+                <!-- Ajustement de la consigne par boutons +/- (signaux 35 / 36) -->
                 <div style="display: flex; align-items: center; justify-content: center; gap: 15px; margin-top: 10px;">
                     <ch5-button label="-" customClass="temp-adjust-btn" sendEventOnClick="36"></ch5-button>
                     <span id="consigne-val" class="consigne-temp-val" data-ch5-textcontent="34" style="font-size: 2rem; font-weight: bold; min-width: 80px; text-align: center;">--.-</span>
@@ -1134,177 +928,9 @@
         </div>
     </div>
 
-    <!-- POPUP CONSOLE D'ADMINISTRATION ET DE MONITORING (Hidden Admin Panel) -->
-    <div id="admin-overlay" class="custom-overlay-panel" style="width: 85%; height: 85%; background-color: rgba(15, 23, 42, 0.98); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.1); color: white; padding: 25px; box-sizing: border-box;">
-        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; margin-bottom: 20px;">
-            <div style="display: flex; align-items: center; gap: 15px;">
-                <!-- Logo rotatif Fréquence TV (Symbole Q rotatif + Texte statique) -->
-                <div style="position: relative; width: 50px; height: 50px;">
-                    <svg class="rotating-logo" viewBox="0 0 100 100" style="width: 50px; height: 50px;">
-                        <circle cx="50" cy="50" r="32" stroke="#f18a00" stroke-width="9" fill="none"/>
-                        <rect x="42" y="38" width="34" height="12" rx="6" transform="rotate(45 50 50)" fill="#f18a00"/>
-                    </svg>
-                </div>
-                <div>
-                    <!-- Texte du logo fidèle à l'image -->
-                    <div style="font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: 1.5rem; letter-spacing: 1px; line-height: 1; display: flex; align-items: center; gap: 1px; text-shadow: 0 0 10px rgba(0,0,0,0.5);">
-                        <span style="color: #ffffff; text-transform: uppercase;">FRÉ</span>
-                        <span style="color: #f18a00; font-size: 1.7rem; line-height: 0.8; margin: 0 -2px; font-weight: 900;">Q</span>
-                        <span style="color: #ffffff; text-transform: uppercase;">UENCE</span>
-                        <span style="color: #f18a00; text-transform: uppercase; margin-left: 5px;">TV</span>
-                    </div>
-                    <div style="font-family: 'Montserrat', sans-serif; font-size: 0.52rem; color: rgba(255,255,255,0.7); letter-spacing: 4.8px; text-transform: uppercase; margin-top: 5px; font-weight: bold; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 4px;">
-                        SON IMAGE & DOMOTIQUE
-                    </div>
-                </div>
-                <!-- Infos CPZ & CH5Z -->
-                <div style="margin-left: 25px; padding-left: 15px; border-left: 1px solid rgba(255,255,255,0.15); font-family: 'Montserrat', sans-serif; font-size: 0.8rem; color: rgba(255,255,255,0.7); display: flex; flex-direction: column; gap: 3px;">
-                    <div>Fichier CPZ : <span id="cpz-filename" style="color: #38bdf8; font-weight: bold;">--</span></div>
-                    <div>Compilation CPZ : <span id="cpz-compiledate" style="color: #38bdf8; font-weight: bold;">--</span></div>
-                    <div>Fichier CH5Z : <span id="ch5z-filename" style="color: #38bdf8; font-weight: bold;">villaftv.ch5z</span></div>
-                    <div>Compilation CH5Z : <span id="ch5z-compiledate" style="color: #38bdf8; font-weight: bold;">--</span></div>
-                </div>
-                <!-- Date de dernière validation -->
-                <div style="margin-left: 25px; padding-left: 15px; border-left: 1px solid rgba(255,255,255,0.15); font-family: 'Montserrat', sans-serif; font-size: 0.8rem; color: rgba(255,255,255,0.7); display: flex; flex-direction: column; gap: 3px;">
-                    <label style="font-weight: bold; color: rgba(255,255,255,0.9); margin-bottom: 2px;">Date de dernière validation :</label>
-                    <!-- Calendrier natif pour TSW (visible par défaut, masqué si XPanel) -->
-                    <input type="date" id="validation-date-picker" style="background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(255, 255, 255, 0.2); color: white; border-radius: 4px; padding: 2px 6px; outline: none; font-size: 0.8rem; height: 25px; box-sizing: border-box;">
-                    <!-- Sélecteurs Jour/Mois/Année pour XPanel (masqués par défaut, affichés si XPanel) -->
-                    <div id="validation-date-selects-container" style="display: none; gap: 5px; align-items: center;">
-                        <select id="valid-day" style="background: rgba(0, 0, 0, 0.6); border: 1px solid rgba(255, 255, 255, 0.2); color: white; border-radius: 4px; padding: 2px; font-size: 0.8rem; outline: none; height: 25px; box-sizing: border-box;"></select>
-                        <select id="valid-month" style="background: rgba(0, 0, 0, 0.6); border: 1px solid rgba(255, 255, 255, 0.2); color: white; border-radius: 4px; padding: 2px; font-size: 0.8rem; outline: none; height: 25px; box-sizing: border-box;"></select>
-                        <select id="valid-year" style="background: rgba(0, 0, 0, 0.6); border: 1px solid rgba(255, 255, 255, 0.2); color: white; border-radius: 4px; padding: 2px; font-size: 0.8rem; outline: none; height: 25px; box-sizing: border-box;"></select>
-                    </div>
-                </div>
-            </div>
-            <button onclick="closeAdminModal()" style="height: 35px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 6px; cursor: pointer; font-weight: bold; padding: 0 15px; font-size: 0.85rem;" data-i18n="close">FERMER</button>
-        </div>
-        <div style="overflow-y: auto; height: calc(100% - 90px); padding-right: 10px;">
-            <!-- Contexte de la pièce active -->
-            <h3 id="admin-active-room-context" style="color: #10b981; font-size: 1rem; margin: 0 0 15px 0; text-transform: uppercase;">
-                📍 Valeurs listées ci-dessous pour la pièce active : <span id="admin-active-room-name" style="color: #ffffff;">Salon (ID 1)</span>
-            </h3>
-            
-            <!-- Partie 1: Simulation globale -->
-            <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.95rem;">
-                <thead>
-                    <tr style="border-bottom: 2px solid rgba(255,255,255,0.1); color: #94a3b8;">
-                        <th style="padding: 10px;">Paramètre</th>
-                        <th style="padding: 10px; width: 100px;">Join ID</th>
-                        <th style="padding: 10px; width: 100px;">Type</th>
-                        <th style="padding: 10px; width: 150px;">Valeur Actuelle</th>
-                        <th style="padding: 10px; width: 250px;">Contrôle de Simulation</th>
-                    </tr>
-                </thead>
-                <tbody id="admin-monitors-body">
-                    <!-- Généré dynamiquement -->
-                </tbody>
-            </table>
-
-            <!-- Partie 2: Monitoring pièce par pièce -->
-            <h3 style="color: #38bdf8; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 8px; margin-top: 30px; text-transform: uppercase; font-size: 1.1rem;">
-                📊 Monitoring Pièce par Pièce (Derniers retours reçus)
-            </h3>
-            <div style="overflow-x: auto; margin-top: 15px; background: rgba(0,0,0,0.2); padding: 15px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05);">
-                <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.85rem; min-width: 1200px;">
-                    <thead>
-                        <tr style="border-bottom: 2px solid rgba(255,255,255,0.1); color: #94a3b8;">
-                            <th style="padding: 8px;">Pièce</th>
-                            <th style="padding: 8px; width: 40px;">ID</th>
-                            <th style="padding: 8px; color: #00b4c5;">Consigne (J34)</th>
-                            <th style="padding: 8px; color: #00b4c5;">Actuelle (J32)</th>
-                            <th style="padding: 8px; color: #00b4c5;">Mode (J33)</th>
-                            <th style="padding: 8px; color: #8b5cf6;">Source (J51)</th>
-                            <th style="padding: 8px; color: #8b5cf6;">Volume (J52)</th>
-                            <th style="padding: 8px; color: #8b5cf6;">Mute (J53)</th>
-                            <th style="padding: 8px; color: #eab308;">Dimmer (J21)</th>
-                            <th style="padding: 8px; color: #eab308;">Spots (J71)</th>
-                            <th style="padding: 8px; color: #eab308;">Lustre (J72)</th>
-                            <th style="padding: 8px; color: #eab308;">Appliques (J73)</th>
-                            <th style="padding: 8px; color: #eab308;">Ruban (J74)</th>
-                            <th style="padding: 8px; color: #eab308;">Liseuse (J75)</th>
-                            <th style="padding: 8px; color: #eab308;">Table (J76)</th>
-                        </tr>
-                    </thead>
-                    <tbody id="admin-rooms-grid-body">
-                        <!-- Généré dynamiquement -->
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- Section Console Terminal du Processeur CP4 -->
-            <h3 style="color: #38bdf8; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 8px; margin-top: 30px; text-transform: uppercase; font-size: 1.1rem; display: flex; justify-content: space-between; align-items: center;">
-                <span>💻 Terminal Console du Processeur CP4</span>
-            </h3>
-            <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 15px; width: 100%; box-sizing: border-box;">
-                <!-- Zone d'affichage de la console (largeur 50% sous index.html) -->
-                <pre id="processor-iptable" style="background: #000000; border: 1px solid rgba(56, 189, 248, 0.3); padding: 15px; border-radius: 8px; font-family: 'Courier New', Courier, monospace; font-size: 0.85rem; overflow-x: auto; white-space: pre; height: 300px; overflow-y: auto; color: #38bdf8; margin: 0; box-shadow: inset 0 0 10px rgba(0,0,0,0.8); box-sizing: border-box; width: 100%;">Console prête. Entrez une commande...
-Exemples: ver, ipt, err, uptime, reboot</pre>
-                
-                <!-- Zone de saisie -->
-                <div style="display: flex; gap: 8px; width: 100%;">
-                    <input type="text" id="console-cmd-input" placeholder="Entrez une commande console (ex: ver, ipt)..." style="flex: 1; background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.15); border-radius: 6px; padding: 10px 15px; color: #ffffff; font-family: monospace; font-size: 0.9rem; outline: none; transition: border-color 0.2s; min-width: 0;" onfocus="this.style.borderColor='#38bdf8'" onblur="this.style.borderColor='rgba(255,255,255,0.15)'" onkeydown="if(event.key==='Enter') window.sendConsoleCommand()">
-                    <button onclick="window.sendConsoleCommand()" style="background: #38bdf8; border: none; color: #000000; border-radius: 6px; padding: 10px 20px; font-size: 0.9rem; font-weight: bold; cursor: pointer; transition: all 0.2s; white-space: nowrap;" onmouseover="this.style.background='#56cbfd'" onmouseout="this.style.background='#38bdf8'">
-                        Envoyer
-                    </button>
-                </div>
-                
-                <!-- Commandes rapides -->
-                <div style="display: flex; gap: 6px; flex-wrap: wrap; width: 100%;">
-                    <span style="color: rgba(255,255,255,0.4); font-size: 0.8rem; align-self: center; margin-right: 5px;">Raccourcis:</span>
-                    <button onclick="window.quickConsoleCommand('ver')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #ffffff; border-radius: 4px; padding: 4px 10px; cursor: pointer; font-size: 0.75rem; transition: all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'">ver</button>
-                    <button onclick="window.quickConsoleCommand('ipt')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #ffffff; border-radius: 4px; padding: 4px 10px; cursor: pointer; font-size: 0.75rem; transition: all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'">ipt</button>
-                    <button onclick="window.quickConsoleCommand('err')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #ffffff; border-radius: 4px; padding: 4px 10px; cursor: pointer; font-size: 0.75rem; transition: all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'">err</button>
-                    <button onclick="window.quickConsoleCommand('uptime')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #ffffff; border-radius: 4px; padding: 4px 10px; cursor: pointer; font-size: 0.75rem; transition: all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'">uptime</button>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <!-- Script de synchronisation, configuration dynamique et multilingue -->
     <script>
-        // Logger console vers Crestron String Join 100 pour débogage
-        (function() {
-            function sendToCrestron(type, args) {
-                if (typeof CrComLib !== 'undefined') {
-                    try {
-                        const argsArr = Array.prototype.slice.call(args);
-                        const msg = "[" + type + "] " + argsArr.map(arg => {
-                            if (typeof arg === 'object') {
-                                try { return JSON.stringify(arg); } catch(e) { return String(arg); }
-                            }
-                            return String(arg);
-                        }).join(' ');
-                        CrComLib.publishEvent('s', '100', msg.substring(0, 250)); // limit length
-                    } catch(e) {}
-                }
-            }
-            
-            const originalLog = console.log;
-            const originalWarn = console.warn;
-            const originalError = console.error;
-            
-            console.log = function() {
-                originalLog.apply(console, arguments);
-                sendToCrestron("LOG", arguments);
-            };
-            console.warn = function() {
-                originalWarn.apply(console, arguments);
-                sendToCrestron("WARN", arguments);
-            };
-            console.error = function() {
-                originalError.apply(console, arguments);
-                sendToCrestron("ERROR", arguments);
-            };
-            
-            window.onerror = function(message, source, lineno, colno, error) {
-                const errorStr = `Error: ${message} at ${source}:${lineno}:${colno}`;
-                sendToCrestron("UNHANDLED", [errorStr]);
-                return false;
-            };
-            
-            console.log("Logger initialisé sur String Join 100");
-        })();
 
         // Dictionnaire de traductions
         const translations = {
@@ -1461,7 +1087,7 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
                 theme_light: "Светлая Элегантная ☀️",
                 theme_glass: "Матовое Стекло ❄️",
                 theme_cyber: "Киберпанк Синий 🌌",
-                active_piece: "PIECE ACTIVE :", // preserving join bindings context if any
+                active_piece: "АКТИВНАЯ КОМНАТА :",
                 alarm_title: "Общая Сигнализация:",
                 alarm_arm: "ОХРАНА",
                 alarm_disarm: "СНЯТЬ",
@@ -1652,28 +1278,10 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
             document.getElementById('motors-overlay').style.display = 'none';
             if (backdrop) backdrop.style.display = 'none';
         };
-        window.openAdminModal = function() {
-            document.getElementById('admin-overlay').style.display = 'block';
-            document.getElementById('modal-backdrop').style.display = 'block';
-            if (typeof window.refreshIptable === 'function') {
-                window.refreshIptable();
-            }
-        };
-
-        window.refreshIptable = function() {
-            if (typeof window.quickConsoleCommand === 'function') {
-                window.quickConsoleCommand('ipt');
-            }
-        };
-        window.closeAdminModal = function() {
-            document.getElementById('admin-overlay').style.display = 'none';
-            document.getElementById('modal-backdrop').style.display = 'none';
-        };
         window.closeAllModals = function() {
             window.closeCircuitsModal();
             window.closeMotorsModal();
             window.closeSettingsModal();
-            window.closeAdminModal();
         };
 
         // 5. Navigation Onglet (Lumières / Stores)
@@ -1723,11 +1331,6 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
             const lightsTitleEl = document.getElementById('lights-room-title');
             if (lightsTitleEl) lightsTitleEl.innerText = roomName;
 
-            // Mettre à jour l'entête du contexte admin
-            const adminActiveRoomName = document.getElementById('admin-active-room-name');
-            if (adminActiveRoomName) {
-                adminActiveRoomName.innerText = `${roomName} (ID ${roomId})`;
-            }
 
             // Mettre à jour les labels des moteurs
             const motors = config.roomMotors[roomId.toString()] || ["Moteur 1", "Moteur 2", "Moteur 3", "Moteur 4", "Moteur 5", "Moteur 6"];
@@ -1737,19 +1340,6 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
             }
         }
 
-        window.publishAdminValue = function(joinId, type, val) {
-            if (typeof CrComLib !== 'undefined') {
-                if (type === 'digital' || type === 'b') {
-                    const parsedVal = (val === 'true' || val === true);
-                    CrComLib.publishEvent('b', joinId, parsedVal);
-                } else if (type === 'analog' || type === 'n') {
-                    const parsedVal = parseInt(val, 10);
-                    CrComLib.publishEvent('n', joinId, parsedVal);
-                } else if (type === 'string' || type === 's') {
-                    CrComLib.publishEvent('s', joinId, val.toString());
-                }
-            }
-        };
 
         window.changeRoomUI = function(roomId) {
             updateActiveRoomUI(roomId);
@@ -1761,46 +1351,6 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
             if (activeBtn) activeBtn.classList.add('is-active');
         };
 
-        function initAdminRoomsGrid() {
-            const gridBody = document.getElementById('admin-rooms-grid-body');
-            if (!gridBody) return;
-            gridBody.innerHTML = '';
-            
-            const rooms = [
-                { id: 1, name: "Salon" },
-                { id: 2, name: "Cuisine" },
-                { id: 3, name: "Salle à Manger" },
-                { id: 4, name: "Suite Parentale" },
-                { id: 5, name: "Chambre 1" },
-                { id: 6, name: "Chambre 2" },
-                { id: 7, name: "Bureau" },
-                { id: 8, name: "Home Cinéma" }
-            ];
-            
-            rooms.forEach(r => {
-                const tr = document.createElement('tr');
-                tr.style.borderBottom = "1px solid rgba(255,255,255,0.05)";
-                
-                tr.innerHTML = `
-                    <td style="padding: 8px; font-weight: bold; color: #ffffff;">${r.name}</td>
-                    <td style="padding: 8px; color: #94a3b8; font-weight: bold;">${r.id}</td>
-                    <td style="padding: 8px; color: #38bdf8;" id="room-grid-${r.id}-tempConsigne">--</td>
-                    <td style="padding: 8px; color: #10b981;" id="room-grid-${r.id}-tempActual">--</td>
-                    <td style="padding: 8px; color: #fb7185;" id="room-grid-${r.id}-hvacMode">--</td>
-                    <td style="padding: 8px; color: #c084fc;" id="room-grid-${r.id}-source">--</td>
-                    <td style="padding: 8px; color: #fb923c;" id="room-grid-${r.id}-volume">--</td>
-                    <td style="padding: 8px; color: #94a3b8;" id="room-grid-${r.id}-mute">--</td>
-                    <td style="padding: 8px; color: #facc15;" id="room-grid-${r.id}-dimmer">--</td>
-                    <td style="padding: 8px; color: #facc15;" id="room-grid-${r.id}-spots">--</td>
-                    <td style="padding: 8px; color: #facc15;" id="room-grid-${r.id}-lustre">--</td>
-                    <td style="padding: 8px; color: #facc15;" id="room-grid-${r.id}-appliques">--</td>
-                    <td style="padding: 8px; color: #facc15;" id="room-grid-${r.id}-ruban">--</td>
-                    <td style="padding: 8px; color: #facc15;" id="room-grid-${r.id}-liseuse">--</td>
-                    <td style="padding: 8px; color: #facc15;" id="room-grid-${r.id}-table">--</td>
-                `;
-                gridBody.appendChild(tr);
-            });
-        }
 
         // 7. Initialisation des composants dynamiques
         function generateDynamicUI(cfg) {
@@ -1886,157 +1436,6 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
                 }
             }
 
-            // E. Remplir le tableau de monitoring d'administration
-            const adminBody = document.getElementById('admin-monitors-body');
-            if (adminBody && config.admin_monitors) {
-                adminBody.innerHTML = '';
-                config.admin_monitors.forEach(item => {
-                    const row = document.createElement('tr');
-                    row.style.borderBottom = "1px solid rgba(255,255,255,0.05)";
-                    
-                    const tdLabel = document.createElement('td');
-                    tdLabel.style.padding = "12px 10px";
-                    tdLabel.innerText = item.label;
-                    
-                    const tdJoin = document.createElement('td');
-                    tdJoin.style.padding = "12px 10px";
-                    tdJoin.innerText = item.join;
-                    
-                    const tdType = document.createElement('td');
-                    tdType.style.padding = "12px 10px";
-                    tdType.innerText = item.type;
-                    
-                    const tdValue = document.createElement('td');
-                    tdValue.id = `admin-val-${item.join}`;
-                    tdValue.style.padding = "12px 10px";
-                    tdValue.style.fontWeight = "bold";
-                    tdValue.style.color = "#10b981";
-                    tdValue.innerText = "--";
-                    
-                    const tdControl = document.createElement('td');
-                    tdControl.style.padding = "12px 10px";
-                    
-                    if (item.type === "analog") {
-                        const container = document.createElement('div');
-                        container.style.display = "flex";
-                        container.style.alignItems = "center";
-                        container.style.gap = "8px";
-                        
-                        const input = document.createElement('input');
-                        input.type = "range";
-                        input.min = "0";
-                        input.max = "65535";
-                        input.style.flex = "1";
-                        input.id = `admin-input-${item.join}`;
-                        input.oninput = (e) => {
-                            publishAdminValue(item.join, 'analog', e.target.value);
-                        };
-                        
-                        const num = document.createElement('input');
-                        num.type = "number";
-                        num.style.width = "65px";
-                        num.style.background = "rgba(0,0,0,0.5)";
-                        num.style.border = "1px solid rgba(255,255,255,0.2)";
-                        num.style.color = "white";
-                        num.style.borderRadius = "4px";
-                        num.id = `admin-num-${item.join}`;
-                        num.onchange = (e) => {
-                            publishAdminValue(item.join, 'analog', e.target.value);
-                        };
-                        
-                        container.appendChild(input);
-                        container.appendChild(num);
-                        tdControl.appendChild(container);
-                    } else if (item.type === "digital") {
-                        const btnToggle = document.createElement('button');
-                        btnToggle.innerText = "TOGGLE";
-                        btnToggle.style.background = "rgba(239, 68, 68, 0.2)";
-                        btnToggle.style.border = "1px solid #ef4444";
-                        btnToggle.style.color = "#fca5a5";
-                        btnToggle.style.padding = "4px 10px";
-                        btnToggle.style.borderRadius = "4px";
-                        btnToggle.style.cursor = "pointer";
-                        btnToggle.style.fontWeight = "bold";
-                        btnToggle.onclick = () => {
-                            const valEl = document.getElementById(`admin-val-${item.join}`);
-                            const curVal = valEl ? valEl.innerText : "false";
-                            const newVal = (curVal === "false" || curVal === "0" || curVal === "");
-                            publishAdminValue(item.join, 'digital', newVal ? 'true' : 'false');
-                        };
-                        tdControl.appendChild(btnToggle);
-                    } else {
-                        const textInput = document.createElement('input');
-                        textInput.type = "text";
-                        textInput.style.width = "100%";
-                        textInput.style.background = "rgba(0,0,0,0.5)";
-                        textInput.style.border = "1px solid rgba(255,255,255,0.2)";
-                        textInput.style.color = "white";
-                        textInput.style.padding = "4px 8px";
-                        textInput.style.borderRadius = "4px";
-                        textInput.onchange = (e) => {
-                            publishAdminValue(item.join, 'string', e.target.value);
-                        };
-                        tdControl.appendChild(textInput);
-                    }
-                    
-                    row.appendChild(tdLabel);
-                    row.appendChild(tdJoin);
-                    row.appendChild(tdType);
-                    row.appendChild(tdValue);
-                    row.appendChild(tdControl);
-                    adminBody.appendChild(row);
-                });
-
-                // Souscriptions dynamiques de la console d'administration
-                if (typeof CrComLib !== 'undefined') {
-                    config.admin_monitors.forEach(item => {
-                        const typeChar = (item.type === 'digital') ? 'b' : (item.type === 'analog' ? 'n' : 's');
-                        CrComLib.subscribeState(typeChar, item.join, (value) => {
-                            const valEl = document.getElementById(`admin-val-${item.join}`);
-                            if (valEl) {
-                                valEl.innerText = value;
-                            }
-                            const inputEl = document.getElementById(`admin-input-${item.join}`);
-                            if (inputEl && inputEl.type === "range") {
-                                inputEl.value = value;
-                            }
-                            const numEl = document.getElementById(`admin-num-${item.join}`);
-                            if (numEl) {
-                                numEl.value = value;
-                            }
-                        });
-                    });
-                }
-            }
-            
-            // F. Initialisation de la grille de monitoring pièce par pièce
-            initAdminRoomsGrid();
-
-            // G. Trigger console admin secrète par appui long de 3 secondes sur le titre "Pièce Active"
-            const connStatusEl = document.getElementById('admin-trigger-label');
-            if (connStatusEl) {
-                let longPressTimeout;
-                const startPress = (e) => {
-                    if (e && e.cancelable) {
-                        e.preventDefault();
-                    }
-                    clearTimeout(longPressTimeout);
-                    longPressTimeout = setTimeout(() => {
-                        window.openAdminModal();
-                    }, 3000); // 3 secondes d'appui
-                };
-                const endPress = () => {
-                    clearTimeout(longPressTimeout);
-                };
-                
-                connStatusEl.addEventListener('mousedown', startPress);
-                connStatusEl.addEventListener('mouseup', endPress);
-                connStatusEl.addEventListener('mouseleave', endPress);
-                
-                connStatusEl.addEventListener('touchstart', startPress);
-                connStatusEl.addEventListener('touchend', endPress);
-                connStatusEl.addEventListener('touchcancel', endPress);
-            }
 
             // Forcer le rafraîchissement
             let curRoom = 1;
@@ -2045,300 +1444,51 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
             } catch (e) {}
             updateActiveRoomUI(curRoom);
 
-            // Détermination dynamique de la compilation CH5Z
-            const ch5zEl = document.getElementById('ch5z-compiledate');
-            if (ch5zEl) {
-                // Fetch de la date locale de compilation générée au build
-                fetch('build_date.json')
-                    .then(res => res.json())
-                    .then(data => {
-                        ch5zEl.textContent = data.compileDate;
-                    })
-                    .catch(() => {
-                        let ch5zDate = "Inconnue";
-                        try {
-                            if (document.lastModified) {
-                                const d = new Date(document.lastModified);
-                                if (!isNaN(d.getTime())) {
-                                    const pad = (num) => String(num).padStart(2, '0');
-                                    ch5zDate = `${pad(d.getDate())}/${pad(d.getMonth() + 1)}/${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
-                                }
-                            }
-                        } catch (e) {}
-                        ch5zEl.textContent = ch5zDate;
-                    });
-            }
         }
 
-        // 8. Chargement de la configuration unifiée (bypasse CORS local via config.js)
-        if (typeof window.crestronConfig !== 'undefined') {
-            console.log("CH5: Configuration locale config.js chargée.");
-            generateDynamicUI(window.crestronConfig);
-        } else {
-            console.log("CH5: Recherche de config.json via fetch...");
-            fetch('config.json')
-                .then(res => res.json())
-                .then(data => {
-                    // Suivi de l'ID de la pièce active (Analog Join 10)
-                    CrComLib.subscribeState('n', '10', (value) => {
-                        if (value >= 1 && value <= 8) {
-                            activeRoomId = value;
-                        }
-                    });
+        // 8. Chargement de la configuration locale (config.js) et démarrage du moteur d'état
+        const bootConfig = (typeof window.crestronConfig !== 'undefined') ? window.crestronConfig : fallbackConfig;
+        generateDynamicUI(bootConfig);
+        (function startEngine() {
+            if (typeof Villa === 'undefined') { setTimeout(startEngine, 50); return; }
+            Villa.init(bootConfig);
+        })();
 
-                    // ID du périphérique (String Join 99)
-                    CrComLib.subscribeState('s', '99', (value) => {
-                        if (value) {
-                            console.log("CH5: ID du périphérique reçu (Join 99) : " + value);
-                            let idNum = parseInt(value, 10);
-                            if (!isNaN(idNum)) {
-                                window.crestronIpId = '0x' + idNum.toString(16).padStart(2, '0');
-                                window.updateConnectionStatusUI(true);
-                            }
-                        }
-                    });
+        // 9. Abonnements aux signaux du moteur local (affichages texte)
+        function initLocalSubscriptions() {
+            if (typeof Villa === 'undefined') { setTimeout(initLocalSubscriptions, 50); return; }
 
-                    // Nom du fichier CPZ (String Join 101)
-                    CrComLib.subscribeState('s', '101', (value) => {
-                        if (value) {
-                            const el = document.getElementById('cpz-filename');
-                            if (el) el.textContent = value;
-                        }
-                    });
+            // Pièce active → titres et sélection visuelle
+            Villa.on('n', Villa.SIG.ROOM_ID, (id) => { if (id >= 1 && id <= 8) changeRoomUI(id); });
 
-                    // Date de compilation du CPZ (String Join 102)
-                    CrComLib.subscribeState('s', '102', (value) => {
-                        if (value) {
-                            const el = document.getElementById('cpz-compiledate');
-                            if (el) el.textContent = value;
-                        }
-                    });
+            // Mute : grise le slider de volume
+            Villa.on('b', Villa.SIG.MUTE, (value) => {
+                const slider = document.querySelector('.volume-slider');
+                const muteBtn = document.querySelector('.mute-btn');
+                if (value) {
+                    if (slider) { slider.classList.add('muted-slider'); slider.setAttribute('disabled', 'true'); }
+                    if (muteBtn) muteBtn.setAttribute('selected', 'true');
+                } else {
+                    if (slider) { slider.classList.remove('muted-slider'); slider.removeAttribute('disabled'); }
+                    if (muteBtn) muteBtn.removeAttribute('selected');
+                }
+            });
 
-                    // IP Table (String Join 103)
-                    CrComLib.subscribeState('s', '103', (value) => {
-                        console.log("CH5 config index.html: Réception IP Table (Join 103):", value);
-                        if (value) {
-                            const el = document.getElementById('processor-iptable');
-                            if (el) {
-                                // Remplacer les retours à la ligne par <br> pour un affichage HTML multi-ligne garanti
-                                el.innerHTML = value.replace(/\r\n/g, '<br>').replace(/\n/g, '<br>').replace(/\r/g, '<br>');
-                            }
-                        }
-                    });
-
-                    // Date de dernière validation (String Join 104)
-                    CrComLib.subscribeState('s', '104', (value) => {
-                        if (value) {
-                            console.log("CH5: Date de validation reçue du CP4 (Join 104) : " + value);
-                            localStorage.setItem('last_validation_date', value);
-                            if (typeof window.setDateFields === 'function') {
-                                window.setDateFields(value);
-                            }
-                        }
-                    });
-                    
-                    // Suivi de l'ID de la pièce active (Analog Join 10)
-                    CrComLib.subscribeState('n', '10', (value) => {
-                        if (value >= 1 && value <= 8) {
-                            activeRoomId = value;
-                        }
-                    });
-                    console.log("CH5: Fichier config.json chargé avec succès.");
-                    generateDynamicUI(data);
-                })
-                .catch(err => {
-                    console.warn("CH5: Erreur lors du chargement de config.json, utilisation du fallback local.", err);
-                    generateDynamicUI(fallbackConfig);
-                });
+            // CVC : consigne, température mesurée, mode
+            Villa.on('s', Villa.SIG.TEMP_SETPOINT, (value) => {
+                const el = document.getElementById('consigne-val');
+                if (el) el.innerText = value;
+            });
+            Villa.on('s', Villa.SIG.TEMP_ACTUAL, (value) => {
+                const el = document.getElementById('temp-val');
+                if (el) el.innerText = value;
+            });
+            Villa.on('s', Villa.SIG.HVAC_MODE, (value) => {
+                const el = document.getElementById('hvac-mode-val');
+                if (el) el.innerText = value;
+            });
         }
-
-        // 9. Initialisation et Abonnements Crestron avec Polling pour TS1070
-        let currentConsigne = 210;
-        let activeRoomId = 1;
-        function initCrestronSubscriptions() {
-            if (typeof CrComLib !== 'undefined') {
-                console.log("CH5: CrComLib est prêt, initialisation des abonnements.");
-                
-                // Suivi de l'ID de la pièce active (Analog Join 10)
-                CrComLib.subscribeState('n', '10', (value) => {
-                    if (value >= 1 && value <= 8) {
-                        activeRoomId = value;
-                    }
-                });
-
-                // ID du périphérique (String Join 99)
-                CrComLib.subscribeState('s', '99', (value) => {
-                    if (value) {
-                        console.log("CH5: ID du périphérique reçu (Join 99) : " + value);
-                        let idNum = parseInt(value, 10);
-                        if (!isNaN(idNum)) {
-                            window.crestronIpId = '0x' + idNum.toString(16).padStart(2, '0');
-                            window.updateConnectionStatusUI(true);
-                        }
-                    }
-                });
-
-                // Nom du fichier CPZ (String Join 101)
-                CrComLib.subscribeState('s', '101', (value) => {
-                    if (value) {
-                        const el = document.getElementById('cpz-filename');
-                        if (el) el.textContent = value;
-                    }
-                });
-
-                // Date de compilation du CPZ (String Join 102)
-                CrComLib.subscribeState('s', '102', (value) => {
-                    if (value) {
-                        const el = document.getElementById('cpz-compiledate');
-                        if (el) el.textContent = value;
-                    }
-                });
-
-                // IP Table (String Join 103)
-                CrComLib.subscribeState('s', '103', (value) => {
-                    console.log("CH5 index.html: Réception IP Table (Join 103):", value);
-                    if (value) {
-                        const el = document.getElementById('processor-iptable');
-                        if (el) {
-                            // Remplacer les retours à la ligne par <br> pour un affichage HTML multi-ligne garanti
-                            el.innerHTML = value.replace(/\r\n/g, '<br>').replace(/\n/g, '<br>').replace(/\r/g, '<br>');
-                        }
-                    }
-                });
-
-                // Date de dernière validation (String Join 104)
-                CrComLib.subscribeState('s', '104', (value) => {
-                    if (value) {
-                        console.log("CH5: Date de validation reçue du CP4 (Join 104) : " + value);
-                        localStorage.setItem('last_validation_date', value);
-                        if (typeof window.setDateFields === 'function') {
-                            window.setDateFields(value);
-                        }
-                    }
-                });
-
-                // Mute (Mettre à jour l'état du slider de volume + Grid)
-                CrComLib.subscribeState('b', '53', (value) => {
-                    const slider = document.querySelector('.volume-slider');
-                    const muteBtn = document.querySelector('.mute-btn');
-                    if (value) {
-                        if (slider) {
-                            slider.classList.add('muted-slider');
-                            slider.setAttribute('disabled', 'true');
-                        }
-                        if (muteBtn) muteBtn.setAttribute('selected', 'true');
-                    } else {
-                        if (slider) {
-                            slider.classList.remove('muted-slider');
-                            slider.removeAttribute('disabled');
-                        }
-                        if (muteBtn) muteBtn.removeAttribute('selected');
-                    }
-                    
-                    const gridEl = document.getElementById(`room-grid-${activeRoomId}-mute`);
-                    if (gridEl) gridEl.innerText = value ? "MUTÉ" : "ACTIF";
-                });
-
-                // Consigne température (String Join 34) - Synchronise l'affichage et la valeur locale pour le clic +/-
-                CrComLib.subscribeState('s', '34', (value) => {
-                    const el = document.getElementById('consigne-val');
-                    if (el) el.innerText = value;
-                    
-                    if (value) {
-                        const sanitized = value.toString().replace(',', '.');
-                        const parsed = parseFloat(sanitized);
-                        if (!isNaN(parsed) && parsed > 0) {
-                            currentConsigne = Math.round(parsed * 10);
-                        }
-                    }
-                    
-                    const gridEl = document.getElementById(`room-grid-${activeRoomId}-tempConsigne`);
-                    if (gridEl) gridEl.innerText = value;
-                });
-
-                // Température Actuelle (String Join 32)
-                CrComLib.subscribeState('s', '32', (value) => {
-                    const el = document.getElementById('temp-val');
-                    if (el) el.innerText = value;
-                    
-                    const gridEl = document.getElementById(`room-grid-${activeRoomId}-tempActual`);
-                    if (gridEl) gridEl.innerText = value;
-                });
-
-                // HVAC Mode (String Join 33)
-                CrComLib.subscribeState('s', '33', (value) => {
-                    const el = document.getElementById('hvac-mode-val');
-                    if (el) el.innerText = value;
-                    
-                    const gridEl = document.getElementById(`room-grid-${activeRoomId}-hvacMode`);
-                    if (gridEl) gridEl.innerText = value;
-                });
-
-                // Source active (Analog Join 51)
-                CrComLib.subscribeState('n', '51', (value) => {
-                    const gridEl = document.getElementById(`room-grid-${activeRoomId}-source`);
-                    if (gridEl) {
-                        const srcNames = ["STANDBY/OFF", "APPLE TV", "SKY Q", "SWISSCOM TV", "IPTV"];
-                        gridEl.innerText = srcNames[value] || ("Source " + value);
-                    }
-                });
-
-                // Volume (Analog Join 52)
-                CrComLib.subscribeState('n', '52', (value) => {
-                    const gridEl = document.getElementById(`room-grid-${activeRoomId}-volume`);
-                    if (gridEl) gridEl.innerText = value;
-                });
-
-                // Dimmer Général (Analog Join 21)
-                CrComLib.subscribeState('n', '21', (value) => {
-                    const gridEl = document.getElementById(`room-grid-${activeRoomId}-dimmer`);
-                    if (gridEl) gridEl.innerText = value;
-                });
-
-                // Spots Plafond (Analog Join 71)
-                CrComLib.subscribeState('n', '71', (value) => {
-                    const gridEl = document.getElementById(`room-grid-${activeRoomId}-spots`);
-                    if (gridEl) gridEl.innerText = value;
-                });
-
-                // Lustre Central (Analog Join 72)
-                CrComLib.subscribeState('n', '72', (value) => {
-                    const gridEl = document.getElementById(`room-grid-${activeRoomId}-lustre`);
-                    if (gridEl) gridEl.innerText = value;
-                });
-
-                // Appliques Murales (Analog Join 73)
-                CrComLib.subscribeState('n', '73', (value) => {
-                    const gridEl = document.getElementById(`room-grid-${activeRoomId}-appliques`);
-                    if (gridEl) gridEl.innerText = value;
-                });
-
-                // Ruban LED (Analog Join 74)
-                CrComLib.subscribeState('n', '74', (value) => {
-                    const gridEl = document.getElementById(`room-grid-${activeRoomId}-ruban`);
-                    if (gridEl) gridEl.innerText = value;
-                });
-
-                // Liseuse (Analog Join 75)
-                CrComLib.subscribeState('n', '75', (value) => {
-                    const gridEl = document.getElementById(`room-grid-${activeRoomId}-liseuse`);
-                    if (gridEl) gridEl.innerText = value;
-                });
-
-                // Éclairage Table (Analog Join 76)
-                CrComLib.subscribeState('n', '76', (value) => {
-                    const gridEl = document.getElementById(`room-grid-${activeRoomId}-table`);
-                    if (gridEl) gridEl.innerText = value;
-                });
-
-            } else {
-                console.log("CH5: CrComLib non détecté, nouvelle tentative dans 100ms...");
-                setTimeout(initCrestronSubscriptions, 100);
-            }
-        }
-        
-        // Lancer l'initialisation asynchrone
-        initCrestronSubscriptions();
+        initLocalSubscriptions();
 
         // Appliquer la langue et le thème sauvés au chargement
         applyLanguage(currentLang);
@@ -2687,34 +1837,6 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
         }
     };
 
-    window.sendConsoleCommand = function() {
-        if (typeof CrComLib !== 'undefined') {
-            const inputEl = document.getElementById('console-cmd-input');
-            const cmd = inputEl ? inputEl.value.trim() : '';
-            if (cmd) {
-                console.log("CH5: Envoi de la commande console : " + cmd);
-                const el = document.getElementById('processor-iptable');
-                if (el) el.textContent = "> " + cmd + "\nExécution en cours...";
-                CrComLib.publishEvent('s', '103', cmd);
-                if (inputEl) inputEl.value = '';
-            }
-        } else {
-            console.warn("CH5: CrComLib non défini.");
-        }
-    };
-    
-    window.quickConsoleCommand = function(cmd) {
-        const inputEl = document.getElementById('console-cmd-input');
-        if (inputEl) {
-            inputEl.value = cmd;
-            window.sendConsoleCommand();
-        }
-    };
-
-    window.refreshIptable = function() {
-        console.log("CH5: Rafraîchissement initial de la console (ipt)");
-        window.quickConsoleCommand('ipt');
-    };
 
     function playSynthSound() {
         try {

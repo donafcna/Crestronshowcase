@@ -17,20 +17,32 @@ export const DEVICES = {
     label: "Smartphone",
     screenW: 402,
     screenH: 874,
+    // La GUI occupe l'écran hors zones réservées par iOS (barre d'état avec
+    // Dynamic Island : 59 pt en haut, indicateur home : 34 pt en bas), comme
+    // en mode démo plein écran sur un vrai iPhone.
     guiW: 402,
-    guiH: 874,
-    chassisW: 422,
-    chassisH: 894,
+    guiH: 781,
+    safeTop: 59,
+    safeBottom: 34,
+    // Boîtier aux proportions d'un iPhone 16 Pro : bords de 24 px sur les
+    // côtés, 33 px en haut / bas (149,6 x 71,5 mm pour un écran de 402 x 874 pt).
+    chassisW: 450,
+    chassisH: 940,
   },
   tablet: {
     id: "tablet",
     label: "Tablette",
     screenW: 1376,
     screenH: 1032,
+    // Barre d'état iPadOS (24 pt) en haut, indicateur home (20 pt) en bas.
     guiW: 1376,
-    guiH: 1032,
-    chassisW: 1408,
-    chassisH: 1064,
+    guiH: 988,
+    safeTop: 24,
+    safeBottom: 20,
+    // Boîtier aux proportions d'un iPad Pro 13" : bords uniformes de 45 px
+    // (281,6 x 215,5 mm pour un écran de 1376 x 1032 pt).
+    chassisW: 1466,
+    chassisH: 1122,
   },
   wallpanel: {
     id: "wallpanel",
