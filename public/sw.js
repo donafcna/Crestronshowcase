@@ -1,10 +1,11 @@
 /* Service worker — Crestron GUI Showcase (outil démo marketing)
  * Stratégie simple et sûre :
  *  - network-first pour les documents et le bundle (toujours à jour en ligne)
- *  - cache-first pour les assets statiques locaux (icônes, svg, images, showcases CH5)
+ *  - network-first aussi pour les projets CH5 embarqués (/showcases/)
+ *  - cache-first pour les assets statiques locaux (icônes, svg, images)
  *  - jamais de cache pour les vidéos et hôtes externes (mixkit, unsplash)
  */
-const CACHE_NAME = "ftv-showcase-v1";
+const CACHE_NAME = "ftv-showcase-v2";
 
 self.addEventListener("install", (event) => {
   self.skipWaiting();
@@ -42,8 +43,11 @@ self.addEventListener("fetch", (event) => {
 
   const isDocument = req.mode === "navigate";
   const isBundle = url.pathname.startsWith("/assets/") && url.pathname.endsWith(".js");
+  // Les projets CH5 embarqués évoluent (HTML + JS + config) : toujours réseau d'abord,
+  // sinon un ancien config.js / local-feedback.js en cache casse la nouvelle page.
+  const isShowcase = url.pathname.startsWith("/showcases/");
 
-  if (isDocument || isBundle) {
+  if (isDocument || isBundle || isShowcase) {
     // Network-first: fresh when online, cached fallback offline
     event.respondWith(
       fetch(req)

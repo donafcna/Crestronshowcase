@@ -4668,6 +4668,91 @@ html, body, #root {
   }
 }
 
+/* ===== Bandeau de sélection des projets : toutes les cartes visibles, détails non rognés ===== */
+.projects-horizontal-list-bar.compact-cards-version {
+  height: auto !important;
+  overflow: visible !important;
+}
+
+/* Les cartes passent à la ligne au lieu de disparaître dans un défilement
+   horizontal sans barre visible (6e projet invisible). */
+.projects-horizontal-scroll-wrapper.compact-cards-row {
+  flex-wrap: wrap !important;
+  overflow: visible !important;
+  gap: 6px !important;
+}
+
+.projects-horizontal-list-bar.compact-header .project-list-card.horizontal-card.compact-row-card {
+  width: auto !important;
+  min-width: 0 !important;
+  max-width: 260px !important;
+  flex: 0 0 auto !important;
+  height: 32px !important;
+  padding: 3px 6px 3px 4px !important;
+  gap: 5px !important;
+}
+
+.projects-horizontal-list-bar.compact-header .compact-row-card .card-thumb-compact {
+  width: 24px !important;
+  height: 24px !important;
+  border-radius: 6px !important;
+}
+
+.projects-horizontal-list-bar.compact-header .compact-row-card .proj-name-compact {
+  font-size: 0.72rem !important;
+}
+
+.projects-horizontal-list-bar.compact-header .compact-row-card .card-plus-btn-compact {
+  width: 18px !important;
+  height: 18px !important;
+}
+
+.projects-horizontal-list-bar.compact-header .compact-row-card .card-info-block-compact {
+  gap: 6px !important;
+  flex: 0 1 auto !important;
+  width: auto !important;
+  min-width: 0 !important;
+}
+
+.projects-horizontal-list-bar.compact-header .compact-row-card .proj-name-compact {
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  max-width: 190px !important;
+}
+
+/* Carte dépliée : pastilles et phrase sur une ligne (retour à la ligne si étroit) */
+.project-expanded-layout.compact-cards-expanded {
+  min-height: 0 !important;
+  overflow: visible !important;
+  flex-wrap: wrap !important;
+}
+
+.project-expanded-layout.compact-cards-expanded .expanded-info-details {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  flex-wrap: wrap !important;
+  gap: 8px 14px !important;
+  flex: 1 1 320px !important;
+}
+
+.project-expanded-layout.compact-cards-expanded .expanded-meta-row {
+  flex-shrink: 0 !important;
+  margin: 0 !important;
+}
+
+.project-expanded-layout.compact-cards-expanded .description-cycler-container {
+  flex: 1 1 260px !important;
+  height: auto !important;
+  min-height: 0 !important;
+  overflow: visible !important;
+}
+
+.project-expanded-layout.compact-cards-expanded .cycler-sentence-text {
+  white-space: normal !important;
+}
+
 /* ===== Fiche projet : galerie d'aperçus de l'interface ===== */
 .sheet-gallery {
   margin-top: 18px;
