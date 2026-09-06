@@ -1,36 +1,28 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Icons } from "../icons";
 import { useTranslation } from "../context/LanguageContext";
-import { useDemoSettings } from "../hooks/useDemoSettings";
 import { SITE_URL } from "../data/company";
 
 // Barre d'outils "démo" affichée au-dessus de l'appareil : partage du lien,
-// QR code, mode présentation, fiche PDF, capture d'écran et personnalisation
-// du nom du client. Tout est piloté par l'URL, donc reproductible.
+// QR code, mode présentation, fiche PDF. Tout est piloté par l'URL, donc
+// reproductible. (Le nom du client reste pilotable via ?client= dans l'URL.)
 export const DemoToolbar = ({
   project,
   shareUrl,
   onTogglePresentation,
   presenting,
-  onCapture,
-  capturing,
   sheetUrl,
   embedUrl,
 }) => {
   const { t } = useTranslation();
-  const { clientName, setClientName } = useDemoSettings();
   const [copied, setCopied] = useState(false);
   const [qrOpen, setQrOpen] = useState(false);
-  const [clientOpen, setClientOpen] = useState(false);
-  const [draftName, setDraftName] = useState(clientName);
-  const inputRef = useRef(null);
-
-  useEffect(() => setDraftName(clientName), [clientName]);
-  useEffect(() => {
-    if (clientOpen) inputRef.current?.focus();
-  }, [clientOpen]);
 
   const absoluteShareUrl = shareUrl.startsWith("http") ? shareUrl : `${SITE_URL}${shareUrl}`;
+  // Le QR code cible le mode démo mobile (#demo/<id>) : sur iPhone / iPad
+  // l'interface s'ouvre en plein écran réel (version phone ou tablette
+  // détectée automatiquement), pas la page du site avec le châssis simulé.
+  const demoUrl = project?.id ? `${SITE_URL}/#demo/${project.id}` : absoluteShareUrl;
 
   const copyLink = async () => {
     try {
@@ -41,12 +33,6 @@ export const DemoToolbar = ({
     }
     setCopied(true);
     setTimeout(() => setCopied(false), 1800);
-  };
-
-  const submitClient = (e) => {
-    e.preventDefault();
-    setClientName(draftName);
-    setClientOpen(false);
   };
 
   const Btn = ({ icon, label, onClick, active, href, title }) => {
@@ -85,48 +71,11 @@ export const DemoToolbar = ({
       </div>
       <div className="demo-toolbar-group">
         <Btn icon="FileText" label={t("tool_sheet")} href={sheetUrl} />
-        <Btn icon="Camera" label={capturing ? t("tool_capture_busy") : t("tool_capture")} onClick={onCapture} />
         {embedUrl && <Btn icon="ExternalLink" label={t("tool_open_tab")} href={embedUrl} />}
-        <Btn
-          icon="UserPen"
-          label={clientName ? clientName : t("tool_client")}
-          onClick={() => setClientOpen((v) => !v)}
-          active={!!clientName || clientOpen}
-        />
       </div>
 
-      {clientOpen && (
-        <form className="demo-client-popover glass-panel" onSubmit={submitClient}>
-          <label htmlFor="demo-client-name">{t("tool_client")}</label>
-          <input
-            id="demo-client-name"
-            ref={inputRef}
-            value={draftName}
-            onChange={(e) => setDraftName(e.target.value)}
-            placeholder={t("tool_client_placeholder")}
-            maxLength={40}
-          />
-          <small>{t("tool_client_hint")}</small>
-          <div className="demo-client-actions">
-            <button
-              type="button"
-              className="btn btn-secondary"
-              onClick={() => {
-                setDraftName("");
-                setClientName("");
-                setClientOpen(false);
-              }}
-            >
-              {t("tool_client_clear")}
-            </button>
-            <button type="submit" className="btn btn-primary">
-              OK
-            </button>
-          </div>
-        </form>
-      )}
 
-      {qrOpen && <QrModal url={absoluteShareUrl} project={project} onClose={() => setQrOpen(false)} />}
+      {qrOpen && <QrModal url={demoUrl} project={project} onClose={() => setQrOpen(false)} />}
     </div>
   );
 };

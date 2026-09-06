@@ -49,7 +49,12 @@ export const DeviceFrame = ({
     </div>
   );
 
+  // Les dimensions passent aussi en variables CSS : le stylesheet du stage
+  // les impose en !important (aucun padding / max-width hérité ne peut
+  // agrandir le boîtier au-delà de sa taille de conception).
   const chassisStyle = {
+    "--chassis-w": `${cfg.chassisW}px`,
+    "--chassis-h": `${cfg.chassisH}px`,
     width: cfg.chassisW,
     height: cfg.chassisH,
     transform: `translate(-50%, -50%) scale(${chassisScale})`,
