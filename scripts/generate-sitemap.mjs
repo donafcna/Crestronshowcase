@@ -8,7 +8,6 @@ const today = new Date().toISOString().slice(0, 10);
 const urls = [
   { loc: '/', priority: 1.0 },
   { loc: '/interfaces', priority: 0.9 },
-  { loc: '/pourquoi-ch5', priority: 0.9 },
   { loc: '/contact', priority: 0.8 },
   ...sectors.map((s) => ({ loc: `/interfaces/${s.id}`, priority: 0.7 })),
   ...projects.map((p) => ({ loc: `/interfaces/${p.sectors[0]}/${p.id}`, priority: 0.8 })),

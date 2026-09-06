@@ -7,6 +7,8 @@ import { DeviceFrame } from "./DeviceFrame";
 import { DemoToolbar } from "./DemoToolbar";
 import { useRouter, buildShowcasePath } from "../router";
 import { useDemoSettings } from "../hooks/useDemoSettings";
+import { useAutoDemo, isDesktopPointer } from "../hooks/useAutoDemo";
+import { DemoCursor, DemoCountdown } from "./DemoOverlay";
 
 // Simulateurs chargés à la demande : seul celui du projet affiché est
 // téléchargé (≈ 20–35 ko chacun), ce qui rend la première visite rapide en 4G.
@@ -29,8 +31,7 @@ const SIMULATORS = {
 };
 
 const VIEWPORT_IDS = ["phone", "tablet", "wallpanel", "wallpanel_hd", "desktop"];
-const PRESENT_DEVICE_MS = 7000; // durée d'affichage d'un support en mode présentation
-const KIOSK_IDLE_MS = 45000; // reprise automatique du défilement après inactivité (mode salon)
+const IDLE_RESUME_MS = 10000; // reprise de la démo automatique après inactivité
 
 const SimulatorFallback = () => (
   <div className="simulator-loading">
@@ -84,7 +85,6 @@ export const Showcase = ({ sectorId, projectId, device }) => {
   );
 
   const [isFullscreen, setIsFullscreen] = useState(false);
-  const [presenting, setPresenting] = useState(false);
   const [expandedProjectId, setExpandedProjectId] = useState(null);
   const [sentenceIndex, setSentenceIndex] = useState(0);
   const [capturing, setCapturing] = useState(false);
@@ -97,7 +97,7 @@ export const Showcase = ({ sectorId, projectId, device }) => {
     return () => document.body.classList.remove("workspace-maximized");
   }, [isFullscreen]);
 
-  // ---- Mode présentation : supports puis projets, en boucle ---------------
+  // ---- Fin de parcours d'un GUI : support suivant, puis projet suivant ------
   const advance = useCallback(() => {
     const vps = projectViewports.map((d) => d.viewport);
     const idx = vps.indexOf(viewportDevice);
@@ -111,54 +111,84 @@ export const Showcase = ({ sectorId, projectId, device }) => {
     goTo(next, nextDev, { replace: true });
   }, [projectViewports, viewportDevice, activeProject, filteredProjects, goTo]);
 
-  useEffect(() => {
-    if (!presenting) return;
-    const id = setInterval(advance, PRESENT_DEVICE_MS);
-    return () => clearInterval(id);
-  }, [presenting, advance]);
+  // ---- Démo automatique ("Présentation") -----------------------------------
+  // Sur PC (et en mode salon), la démo tourne d'elle-même : le curseur presse
+  // les boutons du GUI, change de pièce, etc. Toute action de l'utilisateur
+  // (ou un appui sur « Présentation ») la met en pause ; elle reprend après
+  // IDLE_RESUME_MS sans activité. Sur mobile / tablette elle est inactive par
+  // défaut et s'active avec le bouton.
+  const [demoEnabled, setDemoEnabled] = useState(() => kiosk || isDesktopPointer());
+  const [demoRunning, setDemoRunning] = useState(() => kiosk || isDesktopPointer());
+  const [resumeAt, setResumeAt] = useState(null);
+  const resumeTimer = useRef(null);
 
-  const startPresentation = useCallback(() => {
-    setExpandedProjectId(null);
-    setIsFullscreen(true);
-    setPresenting(true);
+  const armResume = useCallback(() => {
+    clearTimeout(resumeTimer.current);
+    setResumeAt(Date.now() + IDLE_RESUME_MS);
+    resumeTimer.current = setTimeout(() => {
+      setResumeAt(null);
+      setDemoRunning(true);
+    }, IDLE_RESUME_MS);
   }, []);
-  const stopPresentation = useCallback(() => {
-    setPresenting(false);
-    setIsFullscreen(false);
+
+  const pauseDemo = useCallback(() => {
+    setDemoRunning(false);
+    armResume();
+  }, [armResume]);
+
+  const resumeDemo = useCallback(() => {
+    clearTimeout(resumeTimer.current);
+    setResumeAt(null);
+    setDemoEnabled(true);
+    setDemoRunning(true);
   }, []);
+
+  useEffect(() => () => clearTimeout(resumeTimer.current), []);
+
+  // Onglet en arrière-plan : on suspend pour ne pas dérouler dans le vide.
+  useEffect(() => {
+    const onVis = () => {
+      if (document.hidden) {
+        clearTimeout(resumeTimer.current);
+        setResumeAt(null);
+        setDemoRunning(false);
+      } else if (demoEnabled) {
+        armResume();
+      }
+    };
+    document.addEventListener("visibilitychange", onVis);
+    return () => document.removeEventListener("visibilitychange", onVis);
+  }, [demoEnabled, armResume]);
+
+  const { cursor } = useAutoDemo({
+    enabled: demoEnabled,
+    running: demoRunning && !expandedProjectId,
+    stageRef,
+    guiKey: `${activeProject.id}/${viewportDevice}`,
+    onCycleEnd: advance,
+    onUserActivity: pauseDemo,
+  });
+
+  const handleTogglePresentation = useCallback(() => {
+    if (demoEnabled && demoRunning) pauseDemo();
+    else resumeDemo();
+  }, [demoEnabled, demoRunning, pauseDemo, resumeDemo]);
 
   useEffect(() => {
     const onKey = (e) => {
-      if (e.key === "Escape") {
-        if (presenting) stopPresentation();
-        else if (isFullscreen) setIsFullscreen(false);
-      }
+      if (e.key === "Escape" && isFullscreen) setIsFullscreen(false);
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [presenting, isFullscreen, stopPresentation]);
+  }, [isFullscreen]);
 
-  // Mode salon (?kiosk=1) : démarre la présentation et la relance après
-  // inactivité, pour une tablette ou un écran laissé en libre-service.
+  // Mode salon (?kiosk=1) : plein écran + démo automatique.
   useEffect(() => {
-    if (!kiosk) return;
-    let timer;
-    const arm = () => {
-      clearTimeout(timer);
-      timer = setTimeout(startPresentation, KIOSK_IDLE_MS);
-    };
-    const onActivity = () => {
-      setPresenting(false);
-      arm();
-    };
-    startPresentation();
-    ["pointerdown", "keydown", "touchstart"].forEach((ev) => window.addEventListener(ev, onActivity));
-    arm();
-    return () => {
-      clearTimeout(timer);
-      ["pointerdown", "keydown", "touchstart"].forEach((ev) => window.removeEventListener(ev, onActivity));
-    };
-  }, [kiosk, startPresentation]);
+    if (kiosk) {
+      setExpandedProjectId(null);
+      setIsFullscreen(true);
+    }
+  }, [kiosk]);
 
   // ---- Défilement des phrases de description --------------------------------
   const projectText = getProjectText(activeProject, lang);
@@ -330,8 +360,8 @@ export const Showcase = ({ sectorId, projectId, device }) => {
             shareUrl={shareUrl}
             sheetUrl={sheetUrl}
             embedUrl={embedSrc}
-            presenting={presenting}
-            onTogglePresentation={presenting ? stopPresentation : startPresentation}
+            presenting={demoEnabled && demoRunning}
+            onTogglePresentation={handleTogglePresentation}
             onCapture={handleCapture}
             capturing={capturing}
           />
@@ -342,7 +372,7 @@ export const Showcase = ({ sectorId, projectId, device }) => {
         {isFullscreen && (
           <div className="fullscreen-overlay-header">
             <div className="fullscreen-overlay-header-left">
-              {presenting && (
+              {demoEnabled && demoRunning && (
                 <div className="present-hint glass-panel">
                   {renderIcon("Presentation", 14)}
                   <span>
@@ -367,7 +397,7 @@ export const Showcase = ({ sectorId, projectId, device }) => {
                 deviceType={viewportDevice}
                 title={displayTitle}
                 isFullscreen={isFullscreen}
-                onExitFullscreen={() => (presenting ? stopPresentation() : setIsFullscreen(false))}
+                onExitFullscreen={() => setIsFullscreen(false)}
                 onEnterFullscreen={() => setIsFullscreen(true)}
               >
                 {activeProject.isInteractive ? (
@@ -404,6 +434,10 @@ export const Showcase = ({ sectorId, projectId, device }) => {
           </aside>
         </div>
       </div>
+      {demoEnabled && <DemoCursor cursor={cursor} />}
+      {demoEnabled && !demoRunning && resumeAt && (
+        <DemoCountdown resumeAt={resumeAt} total={IDLE_RESUME_MS} onResumeNow={resumeDemo} />
+      )}
     </div>
   );
 };

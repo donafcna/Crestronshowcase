@@ -73,12 +73,6 @@ export const Sidebar = () => {
             </Link>
           </li>
           <li>
-            <Link to="/pourquoi-ch5" className={navClass(currentPage === "why")}>
-              {renderIcon("Sparkles", 18)}
-              <span>{t("nav_why_ch5")}</span>
-            </Link>
-          </li>
-          <li>
             <Link to="/contact" className={navClass(currentPage === "contact")}>
               {renderIcon("MessageSquare", 18)}
               <span>{t("nav_contact")}</span>
@@ -133,10 +127,6 @@ export const Sidebar = () => {
         >
           {renderIcon("Layers", 20)}
           <span>{t("nav_all_uis")}</span>
-        </Link>
-        <Link to="/pourquoi-ch5" className={`tab-item ${currentPage === "why" ? "active" : ""}`}>
-          {renderIcon("Sparkles", 20)}
-          <span>CH5</span>
         </Link>
         <Link to="/contact" className={`tab-item ${currentPage === "contact" ? "active" : ""}`}>
           {renderIcon("MessageSquare", 20)}

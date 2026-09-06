@@ -11,7 +11,6 @@ import React, { createContext, useCallback, useContext, useEffect, useMemo, useS
 //   /interfaces/:secteur/:projet/:support    + support affiché
 //                                            (phone | tablet | wallpanel |
 //                                             wallpanel_hd | desktop)
-//   /pourquoi-ch5                            argumentaire HTML5 / CH5
 //   /contact                                 coordonnées + demande de démo
 //   /fiche/:projet                           fiche projet imprimable (PDF)
 //
@@ -35,8 +34,6 @@ export const parsePath = (pathname) => {
         projectId: b || null,
         device: c || null,
       };
-    case "pourquoi-ch5":
-      return { page: "why" };
     case "contact":
       return { page: "contact" };
     case "fiche":

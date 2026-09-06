@@ -88,3 +88,16 @@ Réparation du conflit entre les deux livraisons du jour (v2 « outil marketing 
 - **Bouton « Dalle TSW-1080 » retiré** de tous les projets (`crestron_1080` retiré des listes `devices`) : la page `/…/wallpanel_hd` redirige vers le support par défaut et disparaît du sitemap.
 - (suite) **Bandeau de sélection des projets** : les cartes défilaient horizontalement sans barre visible → le 6e projet (Appartement Eaux-Vives) était invisible ; les cartes sont compactées et passent à la ligne si besoin. La carte dépliée (« + ») débordait du bandeau (hauteur fixe) : pastilles et description sur une ligne, bandeau en hauteur automatique.
 - **Service worker** : `/showcases/` passait en cache-first → un ancien `config.js` / `local-feedback.js` en cache avec le nouveau HTML (valeurs CVC vides sur Villa Crans-Montana après mise à jour). Désormais réseau d'abord pour `/showcases/`, cache renommé `ftv-showcase-v2` (purge automatique). Si une page semble ancienne : recharger une fois.
+
+
+# maj 6/9/2026 — retrait de la page « Pourquoi le CH5 ? »
+
+Page, entrée de navigation (desktop + mobile), boutons du dashboard, route `/pourquoi-ch5`, entrée du sitemap et styles `why-*` retirés. Le fichier `src/pages/WhyCH5.jsx` est déplacé dans `_to_delete/` (à supprimer).
+
+
+# maj 6/9/2026 — démo automatique des GUI
+
+- « Présentation » devient une **démo automatique** : sur PC (pointeur souris, écran ≥ 900 px) elle démarre seule à l'affichage d'un GUI. Un curseur animé (`DemoOverlay.jsx`) presse les boutons, glisse les curseurs, change de pièce (liste de navigation détectée dans le DOM), puis passe au support / projet suivant. Moteur générique dans `src/hooks/useAutoDemo.js` (fonctionne aussi dans l'iframe CH5 réelle : `ch5-button`, `onclick`). Timings dans `TIMING` (≈ 2 s par action, 2,4 s après un changement de pièce, 4–6 actions par pièce, 6 pièces max).
+- Toute action réelle de l'utilisateur (`isTrusted`) ou un appui sur « Présentation » met la démo en pause ; chronomètre circulaire « Reprise de la démo dans X secondes » (10 s d'inactivité, `IDLE_RESUME_MS`), clic dessus = reprise immédiate. Mobile/tablette : inactive par défaut. `?kiosk=1` = plein écran + démo.
+- L'ancien défilement fixe (7 s par support) est supprimé.
+- À savoir : la Villa Crans-Montana appelle `window.playAudioDemo` / `window.openWeatherWebsite` qui n'existent pas dans l'export 100 % front-end (erreurs console préexistantes, déclenchées aussi par la démo).

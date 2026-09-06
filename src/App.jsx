@@ -8,7 +8,6 @@ import { Showcase } from "./components/Showcase";
 import { DemoMode, isMobileDevice } from "./components/DemoMode";
 
 // Pages secondaires chargées à la demande (perf. première visite)
-const WhyCH5 = lazy(() => import("./pages/WhyCH5"));
 const Contact = lazy(() => import("./pages/Contact"));
 const ProjectSheet = lazy(() => import("./pages/ProjectSheet"));
 
@@ -104,10 +103,6 @@ function App() {
             projectId={route.projectId}
             device={route.device}
           />
-        ) : route.page === "why" ? (
-          <Suspense fallback={<PageLoader />}>
-            <WhyCH5 />
-          </Suspense>
         ) : route.page === "contact" ? (
           <Suspense fallback={<PageLoader />}>
             <Contact />

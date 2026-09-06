@@ -21,7 +21,6 @@ Chaque écran a sa propre adresse. Exemples :
 | Un secteur (ex. hôtellerie) | `/interfaces/hotellerie` |
 | Une interface précise | `/interfaces/residentiel/villa-gemini-frequencetv` |
 | … sur un support précis | `/interfaces/residentiel/villa-gemini-frequencetv/phone` |
-| Argumentaire « Pourquoi le CH5 ? » | `/pourquoi-ch5` |
 | Contact / demande de démo | `/contact` |
 
 Supports possibles en fin d'adresse : `phone`, `tablet`, `wallpanel` (TSW-1070),
@@ -39,13 +38,23 @@ et sur la fiche PDF. Le lien reste valable : `…/phone?client=Villa+Dupont`.
 Bouton **« QR code »** : le client scanne et ouvre la même interface sur son
 appareil, avec le nom personnalisé.
 
-### Mode présentation (salon, showroom, écran d'accueil)
-Bouton **« Présentation »** : plein écran, puis défilement automatique de tous les
-supports (7 s chacun) et de tous les projets du secteur affiché. `Échap` pour sortir.
+### Démo automatique (bouton « Présentation »)
+Sur un PC, la démo tourne toute seule dès qu'une interface est affichée : un
+curseur presse les boutons de l'écran, fait glisser les curseurs, change de pièce,
+puis passe au support suivant et au projet suivant. Le bouton **« Présentation »**
+est en surbrillance tant qu'elle tourne.
 
-Pour une tablette laissée en libre-service, ajoutez `?kiosk=1` à l'adresse
-(ex. `https://crestrongui.vercel.app/interfaces/tous?kiosk=1`) : la présentation
-démarre seule et **reprend après 45 s d'inactivité** si quelqu'un a touché l'écran.
+- **Reprendre la main** : cliquez sur l'interface (ou sur « Présentation »). La
+  démo se met en pause et un chronomètre indique « Reprise de la démo dans X
+  secondes » ; elle repart d'elle-même après **10 s sans action**. Un clic sur le
+  chronomètre la relance immédiatement.
+- Sur tablette et smartphone, la démo est inactive par défaut ; « Présentation »
+  l'active.
+- Pour une tablette en libre-service (salon, showroom), ajoutez `?kiosk=1` à
+  l'adresse : plein écran + démo automatique.
+- Pour exclure un bouton de la démo dans un simulateur : attribut
+  `data-demo-ignore` ; pour désigner la liste des pièces : `data-demo-nav` sur
+  leur conteneur (sinon elle est détectée automatiquement).
 
 ### Produire du contenu (LinkedIn, brochure, devis)
 - **« Capture »** : télécharge un PNG haute définition de l'interface dans son
@@ -77,8 +86,8 @@ Tout le contenu éditorial est dans **deux fichiers** :
 - `src/data/projects.js` — secteurs, supports, projets (textes FR / EN / DE).
 - `src/data/company.js` — coordonnées, showrooms, horaires, réseaux sociaux.
 
-Les textes des pages « Pourquoi le CH5 ? », « Contact » et de la fiche PDF sont en
-tête de leurs fichiers respectifs : `src/pages/WhyCH5.jsx`, `src/pages/Contact.jsx`,
+Les textes de la page « Contact » et de la fiche PDF sont en
+tête de leurs fichiers respectifs : `src/pages/Contact.jsx`,
 `src/pages/ProjectSheet.jsx` (bloc `TEXT = { fr: …, en: …, de: … }`).
 Les libellés de navigation sont dans `src/data/uiTranslations.js`.
 

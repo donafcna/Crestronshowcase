@@ -32,10 +32,6 @@ export const Dashboard = () => {
               {renderIcon("Layers", "w-4 h-4")}
               <span>{t("nav_all_uis")}</span>
             </Link>
-            <Link to="/pourquoi-ch5" className="btn btn-secondary">
-              {renderIcon("Sparkles", "w-4 h-4")}
-              <span>{t("dash_why_btn")}</span>
-            </Link>
           </div>
         </div>
       </section>
@@ -147,10 +143,6 @@ export const Dashboard = () => {
           <Link to="/contact" className="btn btn-primary">
             {renderIcon("CalendarCheck", "w-4 h-4")}
             <span>{t("nav_cta")}</span>
-          </Link>
-          <Link to="/pourquoi-ch5" className="btn btn-secondary">
-            {renderIcon("Sparkles", "w-4 h-4")}
-            <span>{t("dash_why_btn")}</span>
           </Link>
         </div>
       </section>

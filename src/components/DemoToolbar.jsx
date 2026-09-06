@@ -64,7 +64,8 @@ export const DemoToolbar = ({
         <Btn icon="QrCode" label={t("tool_qr")} onClick={() => setQrOpen(true)} />
         <Btn
           icon={presenting ? "Square" : "Presentation"}
-          label={presenting ? t("tool_present_stop") : t("tool_present")}
+          label={t("tool_present")}
+          title={presenting ? t("tool_present_stop") : t("tool_present")}
           onClick={onTogglePresentation}
           active={presenting}
         />
