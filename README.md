@@ -56,3 +56,4 @@ Réparation du conflit entre les deux livraisons du jour (v2 « outil marketing 
 - `node_modules/` et `dist/` étaient encore suivis par git (5 296 fichiers) malgré le `.gitignore` — retirés de l'index.
 - Commit `a3a8960` poussé sur `origin/main` (github.com/donafcna/Crestronshowcase).
 - Déploiement : le projet Vercel `crestrongui` n'est pas connecté au repo et le déploiement CLI n'était pas possible depuis la session → à connecter dans le dashboard Vercel (Settings → Git → Connect Git Repository → `donafcna/Crestronshowcase`, branche `main`, framework Vite, output `dist`). Ensuite chaque push sur `main` déploiera la prod automatiquement.
+- 6/9 (suite) : projet Vercel reconnecté au repo (Disconnect → Connect), premier déploiement Git `e6367e7` promu en production. Vérifié en prod : `/`, `/contact`, `/pourquoi-ch5`, `/fiche/chalet-zermatt` (rewrites SPA OK), `sw.js`, `manifest.webmanifest`, `sitemap.xml` (21 URLs). Désormais : push sur `main` = déploiement prod.
