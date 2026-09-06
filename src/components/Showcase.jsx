@@ -28,6 +28,9 @@ const SIMULATORS = {
   "huddle-room-nyon": lazyNamed(() => import("./simulators/HuddleRoomNyon"), "HuddleRoomNyon"),
   "suite-palace-montreux": lazyNamed(() => import("./simulators/SuitePalaceMontreux"), "SuitePalaceMontreux"),
   "appartement-eaux-vives": lazyNamed(() => import("./simulators/AppartementEauxVives"), "AppartementEauxVives"),
+  "villa-leman": lazyNamed(() => import("./simulators/VillaLeman"), "VillaLeman"),
+  "siege-nyon": lazyNamed(() => import("./simulators/SiegeNyon"), "SiegeNyon"),
+  "appartement-carouge": lazyNamed(() => import("./simulators/AppartementCarouge"), "AppartementCarouge"),
 };
 
 const VIEWPORT_IDS = ["phone", "tablet", "wallpanel", "wallpanel_hd", "desktop"];

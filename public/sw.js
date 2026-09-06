@@ -5,7 +5,7 @@
  *  - cache-first pour les assets statiques locaux (icônes, svg, images)
  *  - jamais de cache pour les vidéos et hôtes externes (mixkit, unsplash)
  */
-const CACHE_NAME = "ftv-showcase-v2";
+const CACHE_NAME = "ftv-showcase-v3";
 
 self.addEventListener("install", (event) => {
   self.skipWaiting();

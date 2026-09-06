@@ -1,0 +1,219 @@
+/* ===== Villa Léman — thème « Obsidienne » ===== */
+
+.villa-leman-ui {
+  --vl-bg: #0B0D10;
+  --vl-surface: rgba(255, 255, 255, 0.035);
+  --vl-surface-2: rgba(255, 255, 255, 0.07);
+  --vl-line: #262C34;
+  --vl-text: #EEF1F4;
+  --vl-muted: #AEB6C0;
+  --vl-dim: #6F7987;
+  --vl-accent: #5FD3EA;
+  --vl-accent-soft: rgba(95, 211, 234, 0.12);
+  --vl-ok: #4CC38A;
+  --vl-cond: "Barlow Condensed", "Arial Narrow", sans-serif;
+  --vl-sans: "Barlow", "Helvetica Neue", Arial, sans-serif;
+  background: var(--vl-bg);
+  color: var(--vl-text);
+  font-family: var(--vl-sans);
+  flex-direction: row;
+}
+.villa-leman-ui button { font-family: inherit; color: inherit; }
+.villa-leman-ui h1, .villa-leman-ui h2 { font-family: var(--vl-cond); text-transform: uppercase; letter-spacing: 0.02em; font-weight: 500; margin: 0; line-height: 0.95; }
+.vl-backdrop { position: absolute; inset: 0; background: radial-gradient(900px 520px at 72% 18%, var(--tint) 0%, var(--vl-bg) 70%); opacity: 0.9; transition: background 0.6s; pointer-events: none; }
+.vl-backdrop::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(11, 13, 16, 0.95) 0%, rgba(11, 13, 16, 0.78) 45%, rgba(11, 13, 16, 0.55) 100%); }
+
+/* Rail */
+.vl-rail { position: relative; z-index: 2; width: 88px; flex-shrink: 0; display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 22px 0 18px; border-right: 1px solid rgba(255, 255, 255, 0.07); background: rgba(9, 11, 14, 0.72); }
+.vl-rail-mark { width: 32px; height: 32px; border: 1.5px solid var(--vl-accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+.vl-rail-mark i { width: 9px; height: 9px; background: var(--vl-accent); border-radius: 50%; }
+.vl-rail-items { display: flex; flex-direction: column; gap: 6px; }
+.vl-rail-items button { display: flex; flex-direction: column; align-items: center; gap: 5px; width: 74px; padding: 10px 0 8px; border: 0; background: transparent; color: var(--vl-dim); cursor: pointer; border-radius: 6px; position: relative; }
+.vl-rail-items button span { font-family: var(--vl-cond); font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; }
+.vl-rail-items button.active { color: var(--vl-accent); }
+.vl-rail-items button.active::after { content: ""; position: absolute; bottom: 2px; width: 22px; height: 2px; background: var(--vl-accent); }
+.vl-rail-items button:hover { color: var(--vl-muted); }
+.vl-rail-clock { display: flex; flex-direction: column; align-items: center; font-family: var(--vl-cond); text-transform: uppercase; letter-spacing: 0.1em; color: var(--vl-dim); }
+.vl-rail-clock span { font-size: 11px; }
+.vl-rail-clock b { font-size: 18px; font-weight: 500; color: var(--vl-text); }
+
+/* Main */
+.vl-main { position: relative; z-index: 1; flex: 1; min-width: 0; overflow-y: auto; padding: 26px 34px 26px 34px; scrollbar-width: none; }
+.vl-main::-webkit-scrollbar { display: none; }
+.vl-page { display: flex; flex-direction: column; gap: 18px; min-height: 100%; }
+.vl-eyebrow { font-family: var(--vl-cond); font-size: 12px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--vl-accent); }
+.vl-label { display: flex; align-items: center; gap: 6px; font-family: var(--vl-cond); font-size: 11.5px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--vl-dim); }
+.vl-label em { font-style: normal; margin-left: auto; letter-spacing: 0.06em; color: var(--vl-dim); }
+.vl-card { display: flex; flex-direction: column; gap: 10px; padding: 16px 18px; border: 1px solid rgba(255, 255, 255, 0.08); background: var(--vl-surface); border-radius: 6px; }
+.vl-card.selected { border-color: var(--vl-accent); }
+.vl-big { font-family: var(--vl-cond); font-size: 40px; font-weight: 500; line-height: 1; letter-spacing: 0.01em; }
+.vl-big.small { font-size: 26px; }
+.vl-big.ok { color: var(--vl-ok); }
+.vl-page-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.vl-page-head h2 { font-size: 40px; }
+.vl-head-btns { display: flex; gap: 8px; }
+.vl-ghost { display: inline-flex; align-items: center; gap: 6px; padding: 9px 14px; border: 1px solid rgba(255, 255, 255, 0.14); background: transparent; border-radius: 4px; font-family: var(--vl-cond); font-size: 14px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--vl-muted); cursor: pointer; }
+.vl-ghost:hover { border-color: var(--vl-accent); color: var(--vl-text); }
+
+/* Segments & sliders */
+.vl-seg { display: flex; gap: 6px; }
+.vl-seg button { flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 4px; min-height: 40px; padding: 0 8px; border: 1px solid rgba(255, 255, 255, 0.1); background: transparent; border-radius: 4px; font-family: var(--vl-cond); font-size: 14px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--vl-muted); cursor: pointer; white-space: nowrap; }
+.vl-seg button.active { border-color: var(--vl-accent); background: var(--vl-accent-soft); color: var(--vl-accent); }
+.vl-seg.inline { flex: 0 0 auto; }
+.vl-seg.inline button { flex: 0 0 auto; padding: 0 14px; }
+.villa-leman-ui input[type="range"] { -webkit-appearance: none; appearance: none; width: 100%; height: 4px; border-radius: 2px; background: linear-gradient(90deg, var(--vl-accent) var(--val, 0%), var(--vl-line) var(--val, 0%)); outline: none; cursor: pointer; }
+.villa-leman-ui input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 20px; height: 20px; border-radius: 50%; background: var(--vl-bg); border: 2px solid var(--vl-accent); }
+.villa-leman-ui input[type="range"]::-moz-range-thumb { width: 18px; height: 18px; border-radius: 50%; background: var(--vl-bg); border: 2px solid var(--vl-accent); }
+
+/* Cadran */
+.vl-dial { position: relative; margin: 0 auto; flex-shrink: 0; }
+.vl-dial svg { display: block; }
+.vl-dial-center { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; pointer-events: none; }
+.vl-dial-center b { font-family: var(--vl-cond); font-size: 26px; font-weight: 500; line-height: 1; }
+.vl-dial-center span { font-family: var(--vl-cond); font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--vl-dim); }
+.vl-dial-btn { position: absolute; bottom: -2px; width: 36px; height: 36px; border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.14); background: var(--vl-bg); color: var(--vl-muted); display: flex; align-items: center; justify-content: center; cursor: pointer; }
+.vl-dial-btn.minus { left: -4px; } .vl-dial-btn.plus { right: -4px; }
+.vl-dial-btn:hover { border-color: var(--vl-accent); color: var(--vl-accent); }
+.vl-card-dial { align-items: stretch; }
+.vl-card-dial .vl-dial { margin-top: 4px; }
+
+/* Accueil */
+.vl-hero { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; }
+.vl-hero h1 { font-size: 60px; margin-top: 4px; }
+.vl-hero p { margin: 8px 0 0; font-size: 15px; font-weight: 300; color: var(--vl-muted); }
+.vl-weather { display: flex; align-items: center; gap: 12px; color: var(--vl-muted); padding-top: 6px; }
+.vl-weather b { display: block; font-family: var(--vl-cond); font-size: 30px; font-weight: 500; line-height: 1; color: var(--vl-text); text-align: right; }
+.vl-weather span { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--vl-dim); }
+.vl-home-row { display: grid; grid-template-columns: 300px minmax(0, 1fr); gap: 16px; }
+.vl-climate-mini { flex-direction: row; align-items: center; gap: 16px; padding: 14px 18px; }
+.vl-mini-text { display: flex; flex-direction: column; gap: 3px; }
+.vl-mini-text b { font-family: var(--vl-cond); font-size: 22px; font-weight: 500; }
+.vl-mini-text em { font-style: normal; font-size: 13px; color: var(--vl-accent); }
+.vl-actions { display: flex; flex-direction: column; justify-content: center; gap: 10px; }
+.vl-action-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+.vl-action { min-height: 60px; border: 1px solid rgba(255, 255, 255, 0.1); background: transparent; border-radius: 6px; font-family: var(--vl-cond); font-size: 17px; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; }
+.vl-action.active { border-color: var(--vl-accent); background: var(--vl-accent-soft); color: var(--vl-accent); }
+.vl-floors { display: flex; gap: 20px; }
+.vl-floors button { padding: 0 0 5px; border: 0; border-bottom: 2px solid transparent; background: transparent; font-family: var(--vl-cond); font-size: 21px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--vl-dim); cursor: pointer; }
+.vl-floors button.active { color: var(--vl-text); border-color: var(--vl-accent); }
+.vl-tiles { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; flex: 1; min-height: 200px; }
+.vl-tile { position: relative; display: flex; flex-direction: column; justify-content: flex-end; gap: 2px; min-height: 180px; padding: 14px; border: 1px solid rgba(255, 255, 255, 0.06); border-radius: 6px; background: linear-gradient(160deg, var(--tint) 0%, #14181D 75%); text-align: left; cursor: pointer; overflow: hidden; }
+.vl-tile.selected { border-color: var(--vl-accent); }
+.vl-tile-photo { position: absolute; top: 12px; left: 14px; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--vl-dim); }
+.vl-tile-dot { position: absolute; top: 12px; right: 14px; width: 8px; height: 8px; border-radius: 50%; background: var(--vl-accent); box-shadow: 0 0 8px var(--vl-accent); }
+.vl-tile-name { font-family: var(--vl-cond); font-size: 22px; letter-spacing: 0.04em; text-transform: uppercase; }
+.vl-tile-meta { font-size: 12.5px; color: var(--vl-muted); }
+
+/* Pièce */
+.vl-room-list { display: flex; gap: 8px; flex-wrap: wrap; }
+.vl-room-list button { display: inline-flex; align-items: center; gap: 8px; min-height: 38px; padding: 0 14px; border: 1px solid rgba(255, 255, 255, 0.1); background: transparent; border-radius: 20px; font-family: var(--vl-cond); font-size: 14px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--vl-muted); cursor: pointer; }
+.vl-room-list button i { width: 6px; height: 6px; border-radius: 50%; background: var(--vl-accent); }
+.vl-room-list button.active { border-color: var(--vl-accent); background: var(--vl-accent-soft); color: var(--vl-accent); }
+.vl-room-detail { display: flex; flex-direction: column; gap: 14px; }
+.vl-room-head { display: flex; align-items: flex-end; gap: 16px; }
+.vl-room-head h2 { font-size: 44px; flex: 1; }
+.vl-room-head > .vl-eyebrow { align-self: flex-end; padding-bottom: 6px; }
+.vl-room-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.vl-room-grid .vl-card { min-height: 150px; justify-content: space-between; }
+
+/* Éclairage global */
+.vl-light-list { display: flex; flex-direction: column; gap: 8px; }
+.vl-light-row { display: grid; grid-template-columns: 44px 170px 1fr 52px 52px; align-items: center; gap: 14px; padding: 10px 16px; border: 1px solid rgba(255, 255, 255, 0.07); background: var(--vl-surface); border-radius: 6px; }
+.vl-light-row b { font-family: var(--vl-cond); font-size: 19px; font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; }
+.vl-badge { font-family: var(--vl-cond); font-size: 11px; letter-spacing: 0.1em; padding: 3px 0; text-align: center; border-radius: 3px; background: var(--vl-line); color: var(--vl-dim); }
+.vl-light-row.on .vl-badge { background: rgba(76, 195, 138, 0.18); color: var(--vl-ok); }
+.vl-pct { font-family: var(--vl-cond); font-size: 16px; color: var(--vl-muted); text-align: right; font-variant-numeric: tabular-nums; }
+.vl-switch { width: 46px; height: 26px; border-radius: 13px; border: 1px solid rgba(255, 255, 255, 0.14); background: transparent; position: relative; cursor: pointer; justify-self: end; }
+.vl-switch i { position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; border-radius: 50%; background: var(--vl-dim); transition: all 0.2s; }
+.vl-switch.on { border-color: var(--vl-accent); background: var(--vl-accent-soft); }
+.vl-switch.on i { left: 23px; background: var(--vl-accent); }
+.vl-scenes .vl-seg button { min-height: 44px; }
+
+/* Climat */
+.vl-climate-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+.vl-climate-grid .vl-card { cursor: pointer; }
+
+/* Médias */
+.vl-media { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 14px; }
+.vl-now { background: linear-gradient(160deg, var(--tint) 0%, #0F1216 80%); justify-content: space-between; min-height: 300px; }
+.vl-track { font-family: var(--vl-cond); font-size: 40px; font-weight: 500; line-height: 1; letter-spacing: 0.01em; margin-top: auto; }
+.vl-now em { font-style: normal; color: var(--vl-muted); font-size: 14px; }
+.vl-transport { display: flex; align-items: center; justify-content: center; gap: 18px; padding: 12px 0; }
+.vl-transport button { width: 52px; height: 52px; border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.14); background: transparent; color: var(--vl-text); display: flex; align-items: center; justify-content: center; cursor: pointer; }
+.vl-transport .vl-play { width: 68px; height: 68px; background: var(--vl-accent); border-color: var(--vl-accent); color: #06171C; }
+.vl-volume { display: flex; align-items: center; gap: 12px; }
+.vl-volume button { width: 36px; height: 36px; border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.14); background: transparent; color: var(--vl-muted); display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; }
+.vl-media-side { display: flex; flex-direction: column; gap: 14px; }
+.vl-source-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.vl-source-list button { display: grid; grid-template-columns: 22px 1fr; grid-template-rows: auto auto; column-gap: 10px; align-items: center; text-align: left; padding: 10px 12px; border: 1px solid rgba(255, 255, 255, 0.1); background: transparent; border-radius: 4px; cursor: pointer; }
+.vl-source-list button svg { grid-row: span 2; color: var(--vl-dim); }
+.vl-source-list button b { font-family: var(--vl-cond); font-size: 16px; letter-spacing: 0.04em; text-transform: uppercase; font-weight: 500; }
+.vl-source-list button em { font-style: normal; font-size: 12px; color: var(--vl-dim); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.vl-source-list button.active { border-color: var(--vl-accent); background: var(--vl-accent-soft); }
+.vl-source-list button.active svg { color: var(--vl-accent); }
+.vl-zone-list { display: flex; flex-wrap: wrap; gap: 8px; }
+.vl-zone-list button { display: inline-flex; align-items: center; gap: 8px; min-height: 36px; padding: 0 12px; border: 1px solid rgba(255, 255, 255, 0.1); background: transparent; border-radius: 18px; font-family: var(--vl-cond); font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--vl-muted); cursor: pointer; }
+.vl-zone-list button i { width: 6px; height: 6px; border-radius: 50%; background: var(--vl-line); }
+.vl-zone-list button.on { border-color: var(--vl-accent); color: var(--vl-text); }
+.vl-zone-list button.on i { background: var(--vl-accent); }
+
+/* Sécurité */
+.vl-state { display: inline-flex; align-items: center; gap: 6px; font-family: var(--vl-cond); font-size: 15px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--vl-accent); }
+.vl-state.ok { color: var(--vl-ok); }
+.vl-security { display: grid; grid-template-columns: 300px minmax(0, 1fr); gap: 14px; }
+.vl-keypad-card { align-items: center; }
+.vl-code { display: flex; gap: 12px; padding: 6px 0; }
+.vl-code i { width: 12px; height: 12px; border-radius: 50%; border: 1px solid var(--vl-dim); }
+.vl-code i.on { background: var(--vl-accent); border-color: var(--vl-accent); }
+.vl-keypad { display: grid; grid-template-columns: repeat(3, 68px); gap: 10px; }
+.vl-keypad button { height: 56px; border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.12); background: transparent; font-family: var(--vl-cond); font-size: 22px; color: var(--vl-text); cursor: pointer; display: flex; align-items: center; justify-content: center; }
+.vl-keypad button.ok { background: var(--vl-accent); border-color: var(--vl-accent); color: #06171C; }
+.vl-keypad button.del { color: var(--vl-dim); }
+.vl-lock-list { display: flex; flex-direction: column; gap: 8px; }
+.vl-lock { display: grid; grid-template-columns: 1fr auto auto auto; align-items: center; gap: 10px; padding: 8px 12px; border: 1px solid rgba(255, 255, 255, 0.07); border-radius: 6px; }
+.vl-lock b { font-family: var(--vl-cond); font-size: 17px; font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; }
+.vl-lock em { font-style: normal; font-size: 12px; color: var(--vl-dim); }
+.vl-lock.locked em { color: var(--vl-ok); }
+.vl-lock button { width: 40px; height: 40px; border-radius: 50%; border: 1px solid rgba(255, 255, 255, 0.12); background: transparent; color: var(--vl-dim); display: flex; align-items: center; justify-content: center; cursor: pointer; }
+.vl-lock button.active { border-color: var(--vl-accent); color: var(--vl-accent); }
+.vl-cams { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+.vl-cam { position: relative; aspect-ratio: 16 / 10; border-radius: 4px; background: linear-gradient(160deg, #1E2730, #0F1216); border: 1px solid rgba(255, 255, 255, 0.06); overflow: hidden; }
+.vl-cam span { position: absolute; left: 8px; bottom: 6px; font-family: var(--vl-cond); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--vl-muted); }
+.vl-cam i { position: absolute; top: 6px; right: 8px; width: 6px; height: 6px; border-radius: 50%; background: #E0485A; }
+
+/* Tablette */
+.villa-leman-ui.tablet .vl-tiles { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.villa-leman-ui.tablet .vl-climate-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.villa-leman-ui.tablet .vl-room-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.villa-leman-ui.tablet .vl-light-row { grid-template-columns: 44px 150px 1fr 52px 52px; }
+
+/* Smartphone */
+.villa-leman-ui.phone { flex-direction: column; }
+.villa-leman-ui.phone .vl-main { padding: 18px 16px 16px; }
+.villa-leman-ui.phone .vl-page { gap: 14px; }
+.villa-leman-ui.phone .vl-hero h1 { font-size: 44px; }
+.villa-leman-ui.phone .vl-hero p { font-size: 13px; }
+.villa-leman-ui.phone .vl-weather { display: none; }
+.villa-leman-ui.phone .vl-home-row { grid-template-columns: 1fr; }
+.villa-leman-ui.phone .vl-action-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.villa-leman-ui.phone .vl-action { min-height: 52px; font-size: 15px; }
+.villa-leman-ui.phone .vl-floors { gap: 14px; overflow-x: auto; }
+.villa-leman-ui.phone .vl-floors button { font-size: 17px; white-space: nowrap; }
+.villa-leman-ui.phone .vl-tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.villa-leman-ui.phone .vl-tile { min-height: 140px; }
+.villa-leman-ui.phone .vl-page-head h2, .villa-leman-ui.phone .vl-room-head h2 { font-size: 32px; }
+.villa-leman-ui.phone .vl-room-grid, .villa-leman-ui.phone .vl-climate-grid, .villa-leman-ui.phone .vl-media, .villa-leman-ui.phone .vl-security { grid-template-columns: 1fr; }
+.villa-leman-ui.phone .vl-light-row { grid-template-columns: 40px 1fr 44px 46px; }
+.villa-leman-ui.phone .vl-light-row input { grid-column: 1 / -1; grid-row: 2; }
+.villa-leman-ui.phone .vl-light-row b { font-size: 16px; }
+.villa-leman-ui.phone .vl-keypad { grid-template-columns: repeat(3, 72px); }
+.villa-leman-ui.phone .vl-cams { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.villa-leman-ui.phone .vl-now { min-height: 240px; }
+.villa-leman-ui.phone .vl-track { font-size: 30px; }
+.villa-leman-ui.phone .vl-source-list { grid-template-columns: 1fr; }
+.villa-leman-ui.phone .vl-page-head .vl-seg.inline { width: 100%; }
+.villa-leman-ui.phone .vl-page-head .vl-seg.inline button { flex: 1; padding: 0; }
+.vl-tabbar { position: relative; z-index: 2; display: grid; grid-template-columns: repeat(6, 1fr); padding: 8px 4px; border-top: 1px solid rgba(255, 255, 255, 0.08); background: rgba(9, 11, 14, 0.9); flex-shrink: 0; }
+.vl-tabbar button { display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 6px 0 4px; border: 0; background: transparent; color: var(--vl-dim); cursor: pointer; }
+.vl-tabbar button span { font-family: var(--vl-cond); font-size: 9.5px; letter-spacing: 0.1em; text-transform: uppercase; }
+.vl-tabbar button.active { color: var(--vl-accent); }

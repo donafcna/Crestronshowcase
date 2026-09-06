@@ -101,3 +101,24 @@ Page, entrée de navigation (desktop + mobile), boutons du dashboard, route `/po
 - Toute action réelle de l'utilisateur (`isTrusted`) ou un appui sur « Présentation » met la démo en pause ; chronomètre circulaire « Reprise de la démo dans X secondes » (10 s d'inactivité, `IDLE_RESUME_MS`), clic dessus = reprise immédiate. Mobile/tablette : inactive par défaut. `?kiosk=1` = plein écran + démo.
 - L'ancien défilement fixe (7 s par support) est supprimé.
 - À savoir : la Villa Crans-Montana appelle `window.playAudioDemo` / `window.openWeatherWebsite` qui n'existent pas dans l'export 100 % front-end (erreurs console préexistantes, déclenchées aussi par la démo).
+
+# maj 6/9/2026 (soir) — correctifs démo automatique
+
+- Villa Crans-Montana : la démo n'attendait que 10 s le chargement de l'iframe CH5 (plusieurs Mo de bibliothèque/thèmes/polices) et exigeait `readyState === "complete"` ; en ligne elle abandonnait avant que l'interface soit prête (pas de curseur, passage direct au support suivant). Désormais : attente jusqu'à 45 s, dès que le document est interactif et qu'au moins 3 boutons sont détectés.
+- `local-feedback.js` : ajout de `window.playAudioDemo` (joue `funny.mp3` via `playFunnySound`) et `window.openWeatherWebsite` (ouvre MétéoSuisse sur un vrai clic seulement, jamais pendant la démo) → plus d'erreurs console.
+- Service worker : cache `ftv-showcase-v3` (purge les anciens caches à la prochaine visite).
+- Dossier `_to_delete/` supprimé.
+
+# maj 7/9/2026 — précision du curseur de démo et faders
+
+- Le curseur était décalé : rendu dans `.showcase-container` dont l'animation `fade-in` laisse un `transform`, ce qui fait de `position: fixed` une position relative au conteneur. Curseur et chronomètre sont maintenant rendus dans `<body>` via un portail React (`DemoOverlay.jsx`).
+- Cible exacte : pour un `<input type="range">` le curseur vise le thumb (position calculée depuis la valeur, largeur de thumb ≈ 18 px sur piste fine), pour un `<ch5-slider>` la poignée noUiSlider.
+- Faders : appui + maintien (260 ms, curseur « enfoncé ») puis glissement progressif (1 s) jusqu'à la nouvelle valeur — `input`/`change` pour React, vrai `mousedown/mousemove/mouseup` sur la poignée pour noUiSlider. Les pistes fines (3 px) sont désormais détectées (elles étaient filtrées par la taille minimale).
+- Chaque pièce montre en priorité un fader s'il y en a un ; la liste des cibles est recalculée avant chaque action (fenêtres modales, changements d'onglet).
+
+# maj 6/9/2026 — trois interfaces « thèmes » issues du mood board
+
+- Trois nouveaux simulateurs (concepts) déclinant les trois directions validées sur le canevas de maquettes : **Villa Léman** (résidentiel, thème Obsidienne — anthracite, accent cyan, capitales condensées Barlow, cadran circulaire, tuiles photo par étage), **Siège Lakeside Nyon** (salle de réunion, thème Atelier clair — cartes blanches sur gris chaud, Outfit, cadran dégradé ; accueil, salles, présentation, visio, agenda) et **Appartement Carouge** (résidentiel, thème Spectre — une couleur par système, Sora/Rubik ; médias, éclairage, climat, stores, accès, routines).
+- Fichiers : `src/components/simulators/{VillaLeman,SiegeNyon,AppartementCarouge}.jsx` + CSS ; entrées ajoutées dans `projects.js`, `Showcase.jsx` et `DemoMode.jsx`. Dalle TSW-1070/1080, tablette et smartphone, FR/EN/DE, compatibles démo automatique (`data-demo-nav` sur les sélecteurs de pièces).
+- Polices Google chargées par un hook `useFonts` (balise `<link>` injectée) et non par `@import` CSS : un `@import` bloqué faisait échouer le chargement du chunk CSS lazy et laissait l'interface vide.
+- À faire : remplacer les emplacements « Photo · … » et les vignettes Unsplash par des médias Fréquence TV.

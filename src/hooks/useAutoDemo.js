@@ -26,7 +26,8 @@ export const TIMING = {
   afterAction: 1900, // pause après chaque action
   actionsPerRoom: [4, 6], // nombre d'actions par pièce (min, max)
   maxRooms: 6, // pièces visitées au maximum par GUI
-  slider: 900, // durée d'un glissement de curseur
+  slider: 1000, // durée d'un glissement de fader
+  hold: 260, // maintien de l'appui avant de faire glisser un fader
 };
 
 const CLICKABLE_SELECTOR = [
@@ -75,7 +76,11 @@ const classString = (el) =>
 const isVisible = (raw, win) => {
   const el = hitEl(raw);
   const r = el.getBoundingClientRect();
-  if (r.width < 10 || r.height < 10) return false;
+  // Un fader peut être une piste de 3 px de haut : on tolère une dimension
+  // fine pour les curseurs, pas pour les boutons.
+  const isSliderEl = (raw.tagName === "INPUT" && raw.type === "range") || raw.tagName === "CH5-SLIDER";
+  if (Math.max(r.width, r.height) < 10) return false;
+  if (!isSliderEl && Math.min(r.width, r.height) < 10) return false;
   const cs = win.getComputedStyle(el);
   if (cs.visibility === "hidden" || cs.display === "none" || Number(cs.opacity) === 0) return false;
   if (cs.pointerEvents === "none") return false;
@@ -113,7 +118,7 @@ const resolveGui = (stage) => {
   if (iframe) {
     try {
       const doc = iframe.contentDocument;
-      if (doc && doc.readyState === "complete" && doc.body) {
+      if (doc && doc.readyState !== "loading" && doc.body) {
         return { doc, win: iframe.contentWindow, root: doc.body, iframe };
       }
     } catch {
@@ -217,6 +222,55 @@ const press = (el, gui) => {
   if (target !== el && typeof el.click === "function") el.click();
 };
 
+// Conversion d'un point (coordonnées du document du GUI) vers la fenêtre
+// principale — même formule que centerOf, pour un point arbitraire.
+const toPagePoint = (x, y, gui) => {
+  if (!gui.iframe) return { x, y };
+  const fr = gui.iframe.getBoundingClientRect();
+  const scale = gui.win.innerWidth ? fr.width / gui.win.innerWidth : 1;
+  return { x: fr.left + x * scale, y: fr.top + y * scale };
+};
+
+// Centre exact du curseur (thumb) d'un <input type="range"> pour une valeur
+// donnée : le thumb se déplace entre thumbW/2 et width - thumbW/2.
+const rangeThumbPoint = (input, value) => {
+  const r = input.getBoundingClientRect();
+  const min = Number(input.min || 0);
+  const max = Number(input.max || 100);
+  const pct = Math.min(1, Math.max(0, (value - min) / (max - min || 1)));
+  const vertical = r.height > r.width;
+  // Largeur du thumb : celle de la piste si elle est épaisse, sinon ~18 px
+  // (valeur usuelle des thumbs personnalisés en CSS).
+  const across = vertical ? r.width : r.height;
+  const thumb = across >= 12 ? Math.min(across, 22) : 18;
+  if (vertical) {
+    return { x: r.left + r.width / 2, y: r.bottom - thumb / 2 - (r.height - thumb) * pct };
+  }
+  return { x: r.left + thumb / 2 + (r.width - thumb) * pct, y: r.top + r.height / 2 };
+};
+
+// Glissement souris réel (mousedown → mousemove… → mouseup) sur un élément
+// — utilisé pour les curseurs CH5 (noUiSlider) et les faders sur mesure.
+const dragPointer = async (handle, from, to, gui, steps, token, onStep) => {
+  const doc = gui.doc;
+  const base = { button: 0, pointerId: 1, pointerType: "mouse", isPrimary: true };
+  fire(handle, "pointerdown", { ...base, clientX: from.x, clientY: from.y, buttons: 1 }, gui.win);
+  fire(handle, "mousedown", { ...base, clientX: from.x, clientY: from.y, buttons: 1 }, gui.win);
+  for (let i = 1; i <= steps; i++) {
+    if (token.cancelled) break;
+    const x = from.x + ((to.x - from.x) * i) / steps;
+    const y = from.y + ((to.y - from.y) * i) / steps;
+    const target = doc.elementFromPoint(x, y) || handle;
+    fire(target, "pointermove", { ...base, clientX: x, clientY: y, buttons: 1 }, gui.win);
+    fire(target, "mousemove", { ...base, clientX: x, clientY: y, buttons: 1 }, gui.win);
+    onStep?.(x, y);
+    await sleep(TIMING.slider / steps, token);
+  }
+  const target = doc.elementFromPoint(to.x, to.y) || handle;
+  fire(target, "pointerup", { ...base, clientX: to.x, clientY: to.y, buttons: 0 }, gui.win);
+  fire(target, "mouseup", { ...base, clientX: to.x, clientY: to.y, buttons: 0 }, gui.win);
+};
+
 const setRangeValue = (input, value, win) => {
   const proto = win.HTMLInputElement.prototype;
   const setter = Object.getOwnPropertyDescriptor(proto, "value")?.set;
@@ -235,24 +289,10 @@ const shuffle = (arr) => {
   return a;
 };
 
-// Choisit des actions variées : pas deux fois le même parent de suite.
-const pickActions = (actions, count) => {
-  const pool = shuffle(actions);
-  const chosen = [];
-  let lastParent = null;
-  for (const el of pool) {
-    if (chosen.length >= count) break;
-    if (el.parentElement === lastParent && pool.length > count) continue;
-    chosen.push(el);
-    lastParent = el.parentElement;
-  }
-  return chosen;
-};
-
 const randomBetween = ([min, max]) => min + Math.floor(Math.random() * (max - min + 1));
 
 export const useAutoDemo = ({ enabled, running, stageRef, guiKey, onCycleEnd, onUserActivity }) => {
-  const [cursor, setCursor] = useState({ x: -100, y: -100, visible: false, pulse: 0 });
+  const [cursor, setCursor] = useState({ x: -100, y: -100, visible: false, pulse: 0, pressed: false });
   const tokenRef = useRef(null);
   const onCycleEndRef = useRef(onCycleEnd);
   const onActivityRef = useRef(onUserActivity);
@@ -319,9 +359,21 @@ export const useAutoDemo = ({ enabled, running, stageRef, guiKey, onCycleEnd, on
     tokenRef.current = token;
 
     // Déplace le curseur ; renvoie false si la cible n'est plus à l'écran.
+    const targetPoint = (el, gui) => {
+      if (el.tagName === "INPUT" && el.type === "range") {
+        const p = rangeThumbPoint(el, Number(el.value || el.min || 0));
+        return toPagePoint(p.x, p.y, gui);
+      }
+      if (el.tagName === "CH5-SLIDER") {
+        const handle = el.querySelector(".noUi-handle, [class*='handle'], [class*='thumb']");
+        if (handle) return centerOf(handle, gui);
+      }
+      return centerOf(el, gui);
+    };
+
     const moveTo = async (el, gui) => {
       if (!insideScreen(el, gui, stage)) return false;
-      const { x, y } = centerOf(el, gui);
+      const { x, y } = targetPoint(el, gui);
       setCursor((c) => ({ ...c, x, y, visible: true }));
       await sleep(TIMING.travel, token);
       if (token.cancelled) return false;
@@ -331,33 +383,67 @@ export const useAutoDemo = ({ enabled, running, stageRef, guiKey, onCycleEnd, on
     };
 
     const act = async (el, gui) => {
-      setCursor((c) => ({ ...c, pulse: c.pulse + 1 }));
       const isRange = el.tagName === "INPUT" && el.type === "range";
       const isCh5Slider = el.tagName === "CH5-SLIDER";
+
       if (isRange) {
+        // Appui, maintien, puis glissement du thumb jusqu'à la nouvelle valeur.
         const min = Number(el.min || 0);
         const max = Number(el.max || 100);
         const from = Number(el.value || min);
-        const to = from > (min + max) / 2 ? min + (max - min) * (0.15 + Math.random() * 0.25) : min + (max - min) * (0.6 + Math.random() * 0.35);
-        const steps = 18;
+        const to =
+          from > (min + max) / 2
+            ? min + (max - min) * (0.15 + Math.random() * 0.25)
+            : min + (max - min) * (0.6 + Math.random() * 0.35);
+        setCursor((c) => ({ ...c, pulse: c.pulse + 1, pressed: true }));
+        await sleep(TIMING.hold, token);
+        const steps = 20;
         for (let i = 1; i <= steps; i++) {
-          if (token.cancelled) return;
+          if (token.cancelled) break;
           const v = from + ((to - from) * i) / steps;
           setRangeValue(el, Math.round(v), gui.win);
-          const r = el.getBoundingClientRect();
-          const pct = (v - min) / (max - min || 1);
-          const knob = { left: r.left + r.width * pct, top: r.top + r.height / 2 };
-          const { x, y } = centerOf({ getBoundingClientRect: () => ({ left: knob.left, top: knob.top, width: 0, height: 0 }) }, gui);
+          const p = rangeThumbPoint(el, Number(el.value));
+          const { x, y } = toPagePoint(p.x, p.y, gui);
           setCursor((c) => ({ ...c, x, y }));
           await sleep(TIMING.slider / steps, token);
         }
+        setCursor((c) => ({ ...c, pressed: false }));
         return;
       }
+
       if (isCh5Slider) {
+        // Curseur CH5 (noUiSlider) : vrai glissement de la poignée.
+        const handle = el.querySelector(".noUi-handle, [class*='handle'], [class*='thumb']");
+        const track = el.querySelector(".noUi-base, .noUi-target") || el;
+        if (handle) {
+          const hr = handle.getBoundingClientRect();
+          const tr = track.getBoundingClientRect();
+          const vertical = tr.height > tr.width;
+          const from = { x: hr.left + hr.width / 2, y: hr.top + hr.height / 2 };
+          const pct = vertical ? 1 - (from.y - tr.top) / (tr.height || 1) : (from.x - tr.left) / (tr.width || 1);
+          const targetPct = pct > 0.5 ? 0.15 + Math.random() * 0.25 : 0.6 + Math.random() * 0.35;
+          const to = vertical
+            ? { x: from.x, y: tr.bottom - tr.height * targetPct }
+            : { x: tr.left + tr.width * targetPct, y: from.y };
+          setCursor((c) => ({ ...c, pulse: c.pulse + 1, pressed: true }));
+          await sleep(TIMING.hold, token);
+          await dragPointer(handle, from, to, gui, 20, token, (x, y) => {
+            const p = toPagePoint(x, y, gui);
+            setCursor((c) => ({ ...c, x: p.x, y: p.y }));
+          });
+          setCursor((c) => ({ ...c, pressed: false }));
+          return;
+        }
+        setCursor((c) => ({ ...c, pulse: c.pulse + 1 }));
         press(el, gui);
         return;
       }
+
+      // Bouton : appui bref (visuel enfoncé pendant ~120 ms).
+      setCursor((c) => ({ ...c, pulse: c.pulse + 1, pressed: true }));
       press(el, gui);
+      await sleep(120, token);
+      setCursor((c) => ({ ...c, pressed: false }));
     };
 
     const run = async () => {
@@ -365,10 +451,12 @@ export const useAutoDemo = ({ enabled, running, stageRef, guiKey, onCycleEnd, on
       if (token.cancelled) return;
 
       // Attendre que le GUI soit prêt (iframe chargée / simulateur monté).
+      // Une interface CH5 réelle charge plusieurs Mo (bibliothèque, thèmes,
+      // polices) : on patiente jusqu'à 45 s avant de passer à la suite.
       let gui = null;
-      for (let i = 0; i < 40 && !token.cancelled; i++) {
+      for (let i = 0; i < 180 && !token.cancelled; i++) {
         gui = resolveGui(stage);
-        if (gui && collect(gui).actions.length > 0) break;
+        if (gui && collect(gui).actions.length >= 3) break;
         gui = null;
         await sleep(250, token);
       }
@@ -392,15 +480,33 @@ export const useAutoDemo = ({ enabled, running, stageRef, guiKey, onCycleEnd, on
             if (token.cancelled) return;
           }
         }
-        const fresh = collect(gui);
-        const navSet = new Set(fresh.nav);
-        const actions = fresh.actions.filter((el) => !navSet.has(el));
-        const chosen = pickActions(actions, randomBetween(TIMING.actionsPerRoom));
-        for (const el of chosen) {
+        // Actions dans la pièce : la liste est recalculée avant chaque action
+        // (un clic peut ouvrir une fenêtre, changer d'onglet…). Un fader est
+        // montré en priorité s'il y en a un, puis des boutons variés.
+        const count = randomBetween(TIMING.actionsPerRoom);
+        const used = new Set();
+        let lastParent = null;
+        let sliderDone = false;
+        for (let k = 0; k < count; k++) {
           if (token.cancelled) return;
-          if (!el.isConnected) continue;
-          // L'élément peut avoir disparu (changement d'écran) : re-vérifier.
-          if (!isVisible(el, gui.win) || isCovered(el, gui.doc)) continue;
+          const fresh = collect(gui);
+          const navSet = new Set(fresh.nav);
+          const candidates = fresh.actions.filter((el) => !navSet.has(el) && !used.has(el));
+          if (!candidates.length) break;
+          const isSlider = (el) => (el.tagName === "INPUT" && el.type === "range") || el.tagName === "CH5-SLIDER";
+          let el = null;
+          if (!sliderDone && k >= 1) {
+            const sliders = candidates.filter(isSlider);
+            if (sliders.length) el = sliders[Math.floor(Math.random() * sliders.length)];
+          }
+          if (!el) {
+            const pool = shuffle(candidates.filter((c) => !isSlider(c) || sliderDone));
+            el = pool.find((c) => c.parentElement !== lastParent) || pool[0] || candidates[0];
+          }
+          used.add(el);
+          lastParent = el.parentElement;
+          if (isSlider(el)) sliderDone = true;
+          if (!el.isConnected || !isVisible(el, gui.win) || isCovered(el, gui.doc)) continue;
           const ok = await moveTo(el, gui);
           if (token.cancelled) return;
           if (!ok) continue;

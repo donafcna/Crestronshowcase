@@ -397,3 +397,19 @@
     get activeRoom() { return activeRoom; },
   };
 })();
+
+/* ------------------------------------------------------------------ */
+/* Fonctions appelées par des onclick de la page (titre « Sélection      */
+/* Source Audio et Vidéo », widget météo) mais absentes de l'export      */
+/* 100 % front-end : définies ici pour éviter les erreurs console.       */
+/* ------------------------------------------------------------------ */
+window.playAudioDemo = function () {
+  if (typeof window.playFunnySound === "function") window.playFunnySound();
+};
+window.openWeatherWebsite = function () {
+  // Ouvre MétéoSuisse uniquement sur un vrai clic — jamais pendant la démo
+  // automatique (événements synthétiques, isTrusted === false).
+  var ev = window.event;
+  if (ev && ev.isTrusted === false) return;
+  window.open("https://www.meteosuisse.admin.ch/", "_blank", "noopener");
+};

@@ -1,18 +1,23 @@
 import React, { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { Icons } from "../icons";
 import { useTranslation } from "../context/LanguageContext";
 
-// Curseur animé de la démo automatique (dessiné par-dessus l'appareil).
-export const DemoCursor = ({ cursor }) => (
-  <div
-    className={`demo-cursor ${cursor.visible ? "visible" : ""}`}
-    style={{ transform: `translate(${cursor.x}px, ${cursor.y}px)` }}
-    aria-hidden="true"
-  >
-    <span key={cursor.pulse} className="demo-cursor-pulse" />
-    <span className="demo-cursor-dot" />
-  </div>
-);
+// Curseur animé de la démo automatique. Rendu dans <body> par un portail :
+// un ancêtre avec transform (animation fade-in) ferait sinon de position:fixed
+// une position relative à cet ancêtre, et le curseur serait décalé.
+export const DemoCursor = ({ cursor }) =>
+  createPortal(
+    <div
+      className={`demo-cursor ${cursor.visible ? "visible" : ""} ${cursor.pressed ? "pressed" : ""}`}
+      style={{ transform: `translate(${cursor.x}px, ${cursor.y}px)` }}
+      aria-hidden="true"
+    >
+      <span key={cursor.pulse} className="demo-cursor-pulse" />
+      <span className="demo-cursor-dot" />
+    </div>,
+    document.body
+  );
 
 // Chronomètre de reprise : anneau de progression (en %) + compte à rebours.
 export const DemoCountdown = ({ resumeAt, total, onResumeNow }) => {
@@ -30,7 +35,7 @@ export const DemoCountdown = ({ resumeAt, total, onResumeNow }) => {
   const R = 17;
   const C = 2 * Math.PI * R;
 
-  return (
+  return createPortal(
     <button type="button" className="demo-countdown glass-panel" onClick={onResumeNow} title={t("demo_resume_now")}>
       <svg className="demo-countdown-ring" viewBox="0 0 40 40" aria-hidden="true">
         <circle className="demo-countdown-track" cx="20" cy="20" r={R} />
@@ -50,6 +55,7 @@ export const DemoCountdown = ({ resumeAt, total, onResumeNow }) => {
         <Icons.Presentation size={13} />
         {t("demo_resume_in").replace("{s}", String(seconds))}
       </span>
-    </button>
+    </button>,
+    document.body
   );
 };
