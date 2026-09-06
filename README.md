@@ -47,3 +47,12 @@ Réparation du conflit entre les deux livraisons du jour (v2 « outil marketing 
 - Clés `demo_*` ajoutées en DE ; page 404 ajoutée.
 - Vérifié par captures : desktop (accueil, showcase + toolbar, pourquoi-ch5, contact, fiche), iPhone (launcher démo, simulateurs, lien profond préservé). Build OK, bundle principal ~360 kB (code splitting v2 conservé).
 - À surveiller : l'affichage du simulateur de la page `/interfaces` sur très petit écran (le mode démo `#demo` est la voie prévue sur mobile).
+
+
+# maj 6/9/2026 — Publication de la fusion sur GitHub
+
+- Vérification du dossier après la fusion v2 + mode démo : `App.jsx`/`main.jsx` cohérents (RouterProvider + `#demo`), build Vite OK (bundle principal ~360 kB), lint OK (seule erreur : fichier CH5 minifié dans `public/showcases`, non concerné).
+- `vercel.json` : l'exclusion des rewrites visait `og-image.png` alors que le fichier est `og-image.jpg` — corrigé.
+- `node_modules/` et `dist/` étaient encore suivis par git (5 296 fichiers) malgré le `.gitignore` — retirés de l'index.
+- Commit `a3a8960` poussé sur `origin/main` (github.com/donafcna/Crestronshowcase).
+- Déploiement : le projet Vercel `crestrongui` n'est pas connecté au repo et le déploiement CLI n'était pas possible depuis la session → à connecter dans le dashboard Vercel (Settings → Git → Connect Git Repository → `donafcna/Crestronshowcase`, branche `main`, framework Vite, output `dist`). Ensuite chaque push sur `main` déploiera la prod automatiquement.

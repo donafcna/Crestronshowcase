@@ -2,7 +2,7 @@
 
 Site vitrine (React 19 + Vite 8) présentant des interfaces domotiques Crestron/Lutron (CH5) par secteur — projet entrepreneurial parallèle au travail chez Fréquence TV, devenu outil pour l'équipe marketing. Contexte métier/marketing complet dans la note Obsidian `10_Travail/Dev Crestron/Crestron Showcase Website.md` (vault Obsidian, voir son `CLAUDE.md`).
 
-Déployé sur Vercel : https://crestrongui.vercel.app/ — le projet Vercel n'est PAS connecté au repo GitHub : déployer avec `npx vercel --prod` depuis ce dossier.
+Déployé sur Vercel : https://crestrongui.vercel.app/ — le projet Vercel était déployé via `npx vercel --prod` (non connecté au repo) ; depuis le 6/9/2026 la fusion est sur GitHub (`donafcna/Crestronshowcase`, branche `main`) et le projet doit être connecté au repo dans le dashboard Vercel pour déployer à chaque push. `node_modules/` et `dist/` ne sont plus suivis par git.
 
 ## Stack
 
