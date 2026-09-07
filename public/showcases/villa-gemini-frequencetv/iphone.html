@@ -3,16 +3,194 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Désactivation du cache (démo toujours à jour) -->
+    <!-- Désactivation agressive du cache pour Crestron Go -->
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
     <title>Fréquence TV - Villa (iPhone)</title>
-    <!-- Configuration locale de la villa (pièces, sources, moteurs, circuits) -->
+    <!-- Chargement de la configuration unifiée locale (bypasse CORS en file://) -->
     <script src="config.js"></script>
-    <!-- Composants CH5 (rendu des boutons / sliders) puis moteur d'état local 100 % front-end -->
-    <script src="js/ch5-components.js"></script>
+    <!-- Configuration de dimensionnement embarquée (générée depuis villa_config.json par deploy.ps1) -->
+    <script src="villa_config.js"></script>
+    <script src="version.js"></script>
+    <!-- Le script ch5-components.js est injecté automatiquement par le module de build de la tablette -->
     <script src="js/local-feedback.js"></script>
+    <script src="js/ch5-components.js"></script>
+    <script>
+        console.log("CH5: Tentative de chargement de WebXPanel sur iPhone...");
+        if (typeof WebXPanel !== 'undefined') {
+            var panelInstance = WebXPanel;
+            if (typeof WebXPanel.getWebXPanel === 'function') {
+                panelInstance = WebXPanel.getWebXPanel(true);
+            }
+            
+            // IP-ID via URL (?ipId=0x1N depuis un QR code, ou ?ipid= historique) ou localStorage, 0x06 par défaut.
+            var urlParams = new URLSearchParams(window.location.search);
+            var urlIpId = urlParams.get('ipId') || urlParams.get('ipid');
+            var ipId = '0x06';
+            try {
+                ipId = urlIpId || localStorage.getItem('crestron_ipid_iphone') || '0x06'; // 0x06 par défaut pour l'iPhone
+                if (urlIpId) {
+                    localStorage.setItem('crestron_ipid_iphone', urlIpId);
+                }
+            } catch (e) {
+                console.warn("Storage not available on iPhone context:", e);
+                if (urlIpId) ipId = urlIpId;
+            }
+            // Pièce demandée par le QR code (?room=N) et jeton d'authentification CP4 (?authtoken=...)
+            var urlRoomId = parseInt(urlParams.get('room'), 10);
+            window.crestronUrlRoomId = (urlRoomId >= 1 && urlRoomId <= 30) ? urlRoomId : 0;
+            var urlAuthToken = urlParams.get('authtoken') || urlParams.get('token') || '';
+            
+            console.log("CH5: IP-ID configuré pour WebXPanel iPhone : " + ipId);
+            
+            window.crestronIpId = ipId;
+            window.isCp4Connected = false;
+
+            window.updateConnectionStatusUI = function(connected) {
+                window.isCp4Connected = connected;
+                const statusEl = document.getElementById('connection-status');
+                if (statusEl) {
+                    const dot = statusEl.querySelector('.status-dot');
+                    const text = statusEl.querySelector('.status-text');
+                    
+                    let cleanId = '??';
+                    if (window.crestronIpId) {
+                        let idNum = parseInt(window.crestronIpId, 16);
+                        if (!isNaN(idNum)) {
+                            cleanId = idNum.toString().padStart(2, '0');
+                        }
+                    }
+                    
+                    if (connected) {
+                        dot.style.backgroundColor = '#10b981'; // Vert
+                        statusEl.style.color = '#10b981';
+                        text.textContent = '(' + cleanId + ')';
+                    } else {
+                        dot.style.backgroundColor = '#ef4444'; // Rouge
+                        statusEl.style.color = '#ef4444';
+                        text.textContent = '(' + cleanId + ')';
+                    }
+                }
+            };
+
+
+
+            window.openAdminModal = function() {
+                const backdrop = document.getElementById('modal-backdrop');
+                const adminOverlay = document.getElementById('admin-overlay');
+                if (backdrop && adminOverlay) {
+                    backdrop.style.display = 'block';
+                    adminOverlay.style.display = 'block';
+                    window.refreshIptable();
+                }
+            };
+
+            window.closeAdminModal = function() {
+                const backdrop = document.getElementById('modal-backdrop');
+                const adminOverlay = document.getElementById('admin-overlay');
+                if (backdrop && adminOverlay) {
+                    backdrop.style.display = 'none';
+                    adminOverlay.style.display = 'none';
+                }
+            };
+
+            window.sendConsoleCommand = function() {
+                if (typeof CrComLib !== 'undefined') {
+                    const inputEl = document.getElementById('console-cmd-input');
+                    const cmd = inputEl ? inputEl.value.trim() : '';
+                    if (cmd) {
+                        console.log("CH5: Envoi de la commande console : " + cmd);
+                        const el = document.getElementById('processor-iptable');
+                        if (el) el.textContent = "> " + cmd + "\nExécution en cours...";
+                        CrComLib.publishEvent('s', '103', cmd);
+                        if (inputEl) inputEl.value = '';
+                    }
+                } else {
+                    console.warn("CH5: CrComLib non défini.");
+                }
+            };
+            
+            window.quickConsoleCommand = function(cmd) {
+                const inputEl = document.getElementById('console-cmd-input');
+                if (inputEl) {
+                    inputEl.value = cmd;
+                    window.sendConsoleCommand();
+                }
+            };
+
+            window.refreshIptable = function() {
+                console.log("CH5: Rafraîchissement initial de la console (ipt)");
+                window.quickConsoleCommand('ipt');
+            };
+
+            // Listen for WebXPanel connection events
+            window.addEventListener('CONNECT_WS', function() {
+                console.log('WebXPanel WebSocket Connected');
+                window.updateConnectionStatusUI(true);
+            });
+            window.addEventListener('DISCONNECT_WS', function() {
+                console.log('WebXPanel WebSocket Disconnected');
+                window.updateConnectionStatusUI(false);
+            });
+            window.addEventListener('CONNECT_CIP', function() {
+                console.log('WebXPanel CIP Connected');
+                window.updateConnectionStatusUI(true);
+                // QR code : ouvrir directement la pièce demandée (?room=N). Le CP4 force déjà la pièce
+                // pour les IP-ID QR (0x11+) ; ceci aligne l'affichage local (sélecteur de pièce).
+                if (window.crestronUrlRoomId) {
+                    setTimeout(function() {
+                        try {
+                            if (typeof window.changeRoomIphone === 'function') window.changeRoomIphone(window.crestronUrlRoomId);
+                        } catch (e) { console.warn('CH5 iPhone: sélection pièce URL impossible', e); }
+                    }, 1500);
+                }
+            });
+
+            window.addEventListener('DOMContentLoaded', function() {
+                if (typeof WebXPanel === 'undefined' || !WebXPanel.isActive) {
+                    window.updateConnectionStatusUI(true); // Default native connection assumes active
+                } else {
+                    window.updateConnectionStatusUI(false); // Wait for WebXPanel connection events
+                }
+
+                // G. Trigger console admin secrète par appui long de 3 secondes sur le titre "Pièce Active" (après chargement du DOM)
+                const connStatusEl = document.getElementById('admin-trigger-label');
+                if (connStatusEl) {
+                    let longPressTimeout;
+                    const startPress = (e) => {
+                        if (e && e.cancelable) {
+                            e.preventDefault();
+                        }
+                        clearTimeout(longPressTimeout);
+                        longPressTimeout = setTimeout(() => {
+                            window.openAdminModal();
+                        }, 3000); // 3 secondes d'appui
+                    };
+                    const endPress = () => {
+                        clearTimeout(longPressTimeout);
+                    };
+                    
+                    connStatusEl.addEventListener('mousedown', startPress);
+                    connStatusEl.addEventListener('mouseup', endPress);
+                    connStatusEl.addEventListener('mouseleave', endPress);
+                    
+                    connStatusEl.addEventListener('touchstart', startPress);
+                    connStatusEl.addEventListener('touchend', endPress);
+                    connStatusEl.addEventListener('touchcancel', endPress);
+                }
+            });
+
+            var webxpanelConfig = {
+                ipId: ipId
+            };
+            if (urlAuthToken) { webxpanelConfig.authToken = urlAuthToken; }
+
+            if (panelInstance) {
+                panelInstance.initialize(webxpanelConfig);
+            }
+        }
+    </script>
     <link rel="stylesheet" href="themes/dark-theme.css">
     <style>
         :root {
@@ -560,6 +738,9 @@
             align-items: center;
         }
     </style>
+    <!-- Vitrine : pas de processeur, indicateur de connexion masqué -->
+    <style>#connection-status{display:none !important}</style>
+    <script>window.updateConnectionStatusUI = function () {};</script>
 </head>
 <body>
     <!-- Fond grisé pour modales (Backdrop) -->
@@ -569,8 +750,12 @@
     <div class="header-section">
         <div class="room-row">
             <div style="white-space: nowrap; display: flex; align-items: center; gap: 5px;">
-                <span data-i18n="active_piece">Pièce Active</span>
+                <span id="admin-trigger-label" style="font-weight: bold; font-size: 0.95rem; color: var(--text-secondary); cursor: pointer; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none;"><span data-i18n="active_piece">Pièce Active</span></span>
                 <span id="version-label" style="font-size: 0.75rem; color: rgba(255,255,255,0.3); font-weight: normal;">v1.0.149</span>
+                <span id="connection-status" style="font-size: 0.7rem; font-weight: normal; transition: color 0.3s; display: inline-flex; align-items: center; gap: 3px; color: #ef4444; cursor: pointer; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none;">
+                    <span class="status-dot" style="display: inline-block; width: 6px; height: 6px; border-radius: 50%; background-color: #ef4444; transition: background-color 0.3s;"></span>
+                    <span class="status-text" style="color: inherit;">Déconnecté</span>
+                </span>
                 <span style="color: var(--text-secondary); font-weight: bold; font-size: 0.95rem;">:</span>
             </div>
             <select id="room-select" class="room-dropdown" onchange="changeRoomIphone(this.value)">
@@ -603,7 +788,7 @@
                 <span data-i18n="tab_lights">LUMIÈRES & STORES</span>
             </h2>
             
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <div id="iphone-lights-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
                 <span style="font-weight: bold; font-size: 0.9rem; color: var(--text-secondary);" data-i18n="circuits_title">Circuits :</span>
                 <!-- Bouton Réglages Lumières -->
                 <button class="popup-trigger-btn" onclick="openCircuitsModal()" style="width: auto; height: 32px; padding: 0 10px; margin: 0; font-size: 1rem; display: flex; align-items: center; justify-content: center; border-radius: 8px;">
@@ -612,14 +797,15 @@
             </div>
             
             <!-- Choix Scènes -->
-            <div style="display: flex; flex-wrap: wrap; gap: 8px; justify-content: space-between; width: 100%; margin-bottom: 15px;">
-                <button id="scene-btn-21" class="scene-btn-mobile" onclick="pressDigital(21)">OFF</button>
-                <button id="scene-btn-22" class="scene-btn-mobile" onclick="pressDigital(22)">CINÉMA</button>
-                <button id="scene-btn-23" class="scene-btn-mobile" onclick="pressDigital(23)">REPAS</button>
-                <button id="scene-btn-24" class="scene-btn-mobile" onclick="pressDigital(24)">TOTAL</button>
+            <div id="iphone-scenes-row" style="display: flex; flex-wrap: wrap; gap: 8px; justify-content: space-between; width: 100%; margin-bottom: 15px;">
+                <!-- Contrat v2 : scènes d'éclairage sur joins 51-54 -->
+                <button id="scene-btn-51" class="scene-btn-mobile" onclick="pressDigital(51)">OFF</button>
+                <button id="scene-btn-52" class="scene-btn-mobile" onclick="pressDigital(52)">CINÉMA</button>
+                <button id="scene-btn-53" class="scene-btn-mobile" onclick="pressDigital(53)">REPAS</button>
+                <button id="scene-btn-54" class="scene-btn-mobile" onclick="pressDigital(54)">TOTAL</button>
             </div>
 
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-top: 1px solid var(--border-color); padding-top: 15px; margin-top: 15px;">
+            <div id="iphone-shades-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-top: 1px solid var(--border-color); padding-top: 15px; margin-top: 15px;">
                 <div style="display: flex; align-items: center; gap: 8px;">
                     <!-- Icône de Store -->
                     <svg viewBox="0 0 512 512" style="width: 18px; height: 18px; fill: #00b4c5;">
@@ -634,7 +820,7 @@
             </div>
 
             <!-- Stores Rapides -->
-            <div style="display: flex; flex-direction: column; gap: 6px;">
+            <div id="iphone-shades-rows" style="display: flex; flex-direction: column; gap: 6px;">
                 <div class="shade-control-row">
                     <span class="shade-label">Volets Ext.</span>
                     <div style="display: flex; gap: 6px;">
@@ -675,12 +861,12 @@
                 <div style="text-align: center;">
                     <span style="color: var(--text-secondary); font-size: 0.95rem; font-weight: bold; text-transform: uppercase; display: block; margin-bottom: 5px;" data-i18n="temp_requested">Consigne</span>
                     <div style="display: flex; align-items: center; justify-content: center; gap: 25px; margin: 5px 0;">
-                        <ch5-button label="-" customClass="temp-btn-mobile" sendEventOnClick="36"></ch5-button>
+                        <ch5-button label="-" customClass="temp-btn-mobile" sendEventOnClick="50"></ch5-button>
                         <div style="font-size: 2.8rem; font-weight: bold; display: flex; align-items: center; gap: 2px; min-width: 100px; justify-content: center;">
                             <span id="consigne-val" class="consigne-temp-val" data-ch5-textcontent="34">--.-</span>
                             <span class="consigne-temp-val" style="font-size: 1.8rem; font-weight: bold;">°C</span>
                         </div>
-                        <ch5-button label="+" customClass="temp-btn-mobile" sendEventOnClick="35"></ch5-button>
+                        <ch5-button label="+" customClass="temp-btn-mobile" sendEventOnClick="49"></ch5-button>
                     </div>
                 </div>
 
@@ -714,7 +900,7 @@
                 <!-- Réglage du Volume et Extinction -->
                 <div style="border-top: 1px solid var(--border-color); padding-top: 15px; margin-top: 10px;">
                     <div style="display: flex; align-items: center; justify-content: space-between; width: 100%; box-sizing: border-box; padding: 0 5px;">
-                        <button id="mute-btn-mobile" class="mute-btn-mobile" onclick="pressDigital(53)"></button>
+                        <button id="mute-btn-mobile" class="mute-btn-mobile" onclick="pressDigital(55)"></button>
                         <div style="flex: 1; max-width: 220px; min-width: 110px; display: flex; align-items: center; justify-content: center; margin: 0 10px; overflow: visible; position: relative; box-sizing: border-box;">
                             <ch5-slider id="volume-slider-mobile-element" class="volume-slider-mobile" min="0" max="65535" sendEventOnChange="52" receiveStateValue="52" style="width: 100% !important; margin: 0; padding: 0; position: relative;"></ch5-slider>
                         </div>
@@ -742,7 +928,7 @@
     </div>
 
     <!-- POPUP REGLAGE DES CIRCUITS (Mobile Optimized) -->
-    <div id="circuits-overlay" class="custom-overlay-panel" style="flex-direction: column;">
+    <div id="circuits-overlay" class="custom-overlay-panel" style="display: none; flex-direction: column;">
         <div class="overlay-header">
             <h3 style="display: flex; align-items: center; gap: 8px; color: #eab308; margin: 0; font-size: 1.1rem; text-transform: uppercase;">
                 <svg viewBox="0 0 352 512" style="width: 18px; height: 18px; fill: #eab308;"><path d="M176 0C78.8 0 0 78.8 0 176c0 53.2 23.3 101 60.1 133.9C90.2 338.2 112 379.7 112 424v16c0 17.7 14.3 32 32 32h64c17.7 0 32-14.3 32-32v-16c0-44.3 21.8-85.8 51.9-114.1C328.7 277 352 229.2 352 176 352 78.8 273.2 0 176 0zm74.8 285.5c-30.6 28.7-50.8 69.1-50.8 122.5v16h-48v-16c0-53.4-20.2-93.8-50.8-122.5C70.1 257.5 48 219.7 48 176c0-70.6 57.4-128 128-128s128 57.4 128 128c0 43.7-22.1 81.5-53.2 109.5z"/></svg>
@@ -756,16 +942,16 @@
         <div style="padding: 10px 15px; border-top: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.2);">
             <p style="margin: 0 0 8px 0; font-weight: bold; color: #eab308; font-size: 0.85rem; text-transform: uppercase;">Scénarios Éclairage :</p>
             <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px;">
-                <ch5-button label="TOTAL" customClass="scene-btn" style="height: 36px;" sendEventOnClick="24" receiveStateSelected="24"></ch5-button>
-                <ch5-button label="REPAS" customClass="scene-btn" style="height: 36px;" sendEventOnClick="23" receiveStateSelected="23"></ch5-button>
-                <ch5-button label="CINÉMA" customClass="scene-btn" style="height: 36px;" sendEventOnClick="22" receiveStateSelected="22"></ch5-button>
-                <ch5-button label="OFF" customClass="scene-btn" style="height: 36px; --ch5-button-selected-background-color: #dc2626;" sendEventOnClick="21" receiveStateSelected="21"></ch5-button>
+                <ch5-button label="TOTAL" customClass="scene-btn" style="height: 36px;" sendEventOnClick="54" receiveStateSelected="54"></ch5-button>
+                <ch5-button label="REPAS" customClass="scene-btn" style="height: 36px;" sendEventOnClick="53" receiveStateSelected="53"></ch5-button>
+                <ch5-button label="CINÉMA" customClass="scene-btn" style="height: 36px;" sendEventOnClick="52" receiveStateSelected="52"></ch5-button>
+                <ch5-button label="OFF" customClass="scene-btn" style="height: 36px; --ch5-button-selected-background-color: #dc2626;" sendEventOnClick="51" receiveStateSelected="51"></ch5-button>
             </div>
         </div>
     </div>
 
     <!-- POPUP REGLAGE DES MOTEURS (Mobile Optimized) -->
-    <div id="motors-overlay" class="custom-overlay-panel" style="flex-direction: column;">
+    <div id="motors-overlay" class="custom-overlay-panel" style="display: none; flex-direction: column;">
         <div class="overlay-header">
             <h3 style="display: flex; align-items: center; gap: 8px; color: #00b4c5; margin: 0; font-size: 1.1rem; text-transform: uppercase;">
                 <svg viewBox="0 0 512 512" style="width: 18px; height: 18px; fill: #00b4c5;"><path d="M0 64C0 28.7 28.7 0 64 0H448c35.3 0 64 28.7 64 64V448c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V64zm64 64V224H224V128H64zm0 160V384H224V288H64zm384-160H288V224H448V128zm0 160H288V384H448V288z"/></svg>
@@ -818,6 +1004,353 @@
         </div>
     </div>
 
+    <!-- POPUP ADMIN SIMPLIFIE (iPhone) -->
+    <div id="admin-overlay" class="custom-overlay-panel" style="width: 90% !important; max-width: 380px !important; height: auto !important; max-height: 80% !important;">
+        <div class="overlay-header">
+            <h3 style="display: flex; align-items: center; gap: 8px; color: #f43f5e; margin: 0; font-size: 1.1rem; text-transform: uppercase;">
+                🔒 Admin Simplifié
+            </h3>
+            <button onclick="closeAdminModal()" style="height: 32px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 6px; cursor: pointer; font-weight: bold; padding: 0 10px; font-size: 0.8rem;">FERMER</button>
+        </div>
+        <div class="overlay-content" style="gap: 15px; overflow-y: auto;">
+            <!-- Infos CPZ & CH5Z -->
+            <div style="background: rgba(255,255,255,0.02); padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.06); font-size: 0.85rem; line-height: 1.4; display: flex; flex-direction: column; gap: 8px;">
+                <div>
+                    <div style="font-weight: bold; color: rgba(255,255,255,0.5); margin-bottom: 2px; font-size: 0.75rem; text-transform: uppercase;">Fichier Processeur (CPZ)</div>
+                    <div style="font-family: monospace; color: var(--text-primary); word-break: break-all;" id="cpz-filename">--</div>
+                    <div style="font-family: monospace; color: rgba(255,255,255,0.6); font-size: 0.75rem;" id="cpz-compiledate">--</div>
+                </div>
+                <div style="border-top: 1px solid rgba(255,255,255,0.06); padding-top: 6px;">
+                    <div style="font-weight: bold; color: rgba(255,255,255,0.5); margin-bottom: 2px; font-size: 0.75rem; text-transform: uppercase;">Fichier Interface (CH5Z)</div>
+                    <div style="font-family: monospace; color: var(--text-primary);" id="ch5z-filename">villaftv.ch5z</div>
+                    <div style="font-family: monospace; color: rgba(255,255,255,0.6); font-size: 0.75rem;" id="ch5z-compiledate">--</div>
+                </div>
+            </div>
+
+            <!-- Date validation -->
+            <div>
+                <label style="display: block; font-weight: bold; margin-bottom: 6px; font-size: 0.9rem;">Date de dernière validation :</label>
+                <input type="date" id="validation-date-picker" style="width: 100%; background: var(--bg-color); color: var(--text-primary); border: 1px solid var(--border-color); padding: 8px 12px; border-radius: 8px; font-size: 0.95rem; box-sizing: border-box; outline: none;">
+            </div>
+
+            <!-- Section Console Terminal du Processeur CP4 -->
+            <div>
+                <label style="display: block; font-weight: bold; margin-bottom: 6px; font-size: 0.9rem;">Terminal Console CP4 :</label>
+                <div style="display: flex; flex-direction: column; gap: 8px; width: 100%; box-sizing: border-box;">
+                    <!-- Zone d'affichage de la console (largeur 50% sous iphone.html) -->
+                    <pre id="processor-iptable" style="background: #000000; border: 1px solid rgba(56, 189, 248, 0.3); padding: 10px; border-radius: 8px; font-family: 'Courier New', Courier, monospace; font-size: 0.75rem; overflow-x: auto; white-space: pre; height: 180px; overflow-y: auto; color: #38bdf8; margin: 0; box-shadow: inset 0 0 10px rgba(0,0,0,0.8); box-sizing: border-box; width: 100%;">Console prête...</pre>
+                    
+                    <!-- Zone de saisie -->
+                    <div style="display: flex; gap: 6px; width: 100%;">
+                        <input type="text" id="console-cmd-input" placeholder="Commande (ex: ver, ipt)..." style="flex: 1; background: rgba(0,0,0,0.6); border: 1px solid var(--border-color); border-radius: 6px; padding: 6px 10px; color: #ffffff; font-family: monospace; font-size: 0.8rem; outline: none; min-width: 0;" onkeydown="if(event.key==='Enter') window.sendConsoleCommand()">
+                        <button onclick="window.sendConsoleCommand()" style="background: #38bdf8; border: none; color: #000000; border-radius: 6px; padding: 6px 12px; font-size: 0.8rem; font-weight: bold; cursor: pointer; white-space: nowrap;">Envoyer</button>
+                    </div>
+                    
+                    <!-- Commandes rapides -->
+                    <div style="display: flex; gap: 4px; flex-wrap: wrap; width: 100%;">
+                        <button onclick="window.quickConsoleCommand('ver')" style="background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: #ffffff; border-radius: 4px; padding: 2px 6px; cursor: pointer; font-size: 0.7rem;">ver</button>
+                        <button onclick="window.quickConsoleCommand('ipt')" style="background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border-color); color: #ffffff; border-radius: 4px; padding: 2px 6px; cursor: pointer; font-size: 0.7rem;">ipt</button>
+                        <button onclick="window.quickConsoleCommand('err')" style="background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border-color); color: #ffffff; border-radius: 4px; padding: 2px 6px; cursor: pointer; font-size: 0.7rem;">err</button>
+                        <button onclick="window.quickConsoleCommand('uptime')" style="background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border-color); color: #ffffff; border-radius: 4px; padding: 2px 6px; cursor: pointer; font-size: 0.7rem;">uptime</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- POPUP CONTRÔLE DES SOURCES VIDEO (Mobile Optimized) -->
+    <div id="source-control-overlay" class="custom-overlay-panel" style="width: 90% !important; max-width: 380px !important; height: auto !important; max-height: 85% !important; padding: 15px; box-sizing: border-box;">
+        <div class="overlay-header" style="margin-bottom: 15px;">
+            <h3 style="display: flex; align-items: center; gap: 8px; color: #8b5cf6; margin: 0; font-size: 1.1rem; text-transform: uppercase;">
+                ⚙️ <span id="source-control-title" style="color: inherit;">Source</span>
+            </h3>
+            <button onclick="closeSourceControlModal()" style="height: 30px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 6px; cursor: pointer; font-weight: bold; padding: 0 10px; font-size: 0.8rem;">FERMER</button>
+        </div>
+        
+        <!-- Télécommande Virtuelle Standard -->
+        <div id="remote-standard-layout" style="display: flex; flex-direction: column; gap: 20px; align-items: center; justify-content: center; width: 100%; box-sizing: border-box;">
+            <!-- D-PAD Navigation -->
+            <div style="position: relative; width: 180px; height: 180px; background: rgba(255,255,255,0.03); border-radius: 50%; border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center;">
+                <ch5-button id="src-btn-ok" label="OK" customClass="scene-btn" style="position: absolute; width: 50px; height: 50px; border-radius: 50%; z-index: 10;" sendEventOnClick="215"></ch5-button>
+                <ch5-button id="src-btn-up" label="▲" customClass="scene-btn" style="position: absolute; top: 10px; width: 45px; height: 35px;" sendEventOnClick="211"></ch5-button>
+                <ch5-button id="src-btn-down" label="▼" customClass="scene-btn" style="position: absolute; bottom: 10px; width: 45px; height: 35px;" sendEventOnClick="212"></ch5-button>
+                <ch5-button id="src-btn-left" label="◀" customClass="scene-btn" style="position: absolute; left: 10px; width: 35px; height: 45px;" sendEventOnClick="213"></ch5-button>
+                <ch5-button id="src-btn-right" label="▶" customClass="scene-btn" style="position: absolute; right: 10px; width: 35px; height: 45px;" sendEventOnClick="214"></ch5-button>
+            </div>
+            
+            <!-- Commandes -->
+            <div style="display: flex; flex-direction: column; gap: 10px; width: 100%;">
+                <div style="display: flex; gap: 8px;">
+                    <ch5-button id="src-btn-back" label="RETOUR" customClass="scene-btn" style="flex: 1; height: 38px;" sendEventOnClick="216"></ch5-button>
+                    <ch5-button id="src-btn-home" label="HOME" customClass="scene-btn" style="flex: 1; height: 38px;" sendEventOnClick="217"></ch5-button>
+                </div>
+                <div style="display: flex; gap: 6px;">
+                    <ch5-button id="src-btn-rew" label="⏪" customClass="scene-btn" style="flex: 1; height: 38px;" sendEventOnClick="219"></ch5-button>
+                    <ch5-button id="src-btn-play" label="⏯️" customClass="scene-btn" style="flex: 1; height: 38px;" sendEventOnClick="218"></ch5-button>
+                    <ch5-button id="src-btn-fwd" label="⏩" customClass="scene-btn" style="flex: 1; height: 38px;" sendEventOnClick="220"></ch5-button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Télécommande Apple TV Style iOS -->
+        <div id="remote-appletv-layout" style="display: none; flex-direction: column; align-items: center; justify-content: center; width: 100%; position: relative; padding-top: 10px;">
+            <!-- Bouton MENU en haut à gauche -->
+            <div style="width: 100%; display: flex; justify-content: flex-start; margin-bottom: 20px; padding-left: 10px;">
+                <ch5-button id="src-btn-apple-menu" label="MENU" customStyle="background-color: #2c2c2e; border: 1px solid rgba(255,255,255,0.15); color: #fff; font-weight: bold; border-radius: 12px; width: 85px; height: 40px; font-size: 0.85rem;" sendEventOnClick="216"></ch5-button>
+            </div>
+            
+            <!-- D-PAD en croix style iOS Apple TV Remote -->
+            <div style="display: grid; grid-template-columns: repeat(3, 70px); grid-template-rows: repeat(3, 70px); gap: 12px;">
+                <!-- Row 1 -->
+                <div></div>
+                <ch5-button id="src-btn-apple-up" label="o" customStyle="background-color: #2c2c2e; border: 1px solid rgba(255,255,255,0.15); color: #aaa; border-radius: 50%; width: 70px; height: 70px; font-size: 1.3rem; display: flex; align-items: center; justify-content: center; font-weight: bold;" sendEventOnClick="211"></ch5-button>
+                <div></div>
+                
+                <!-- Row 2 -->
+                <ch5-button id="src-btn-apple-left" label="o" customStyle="background-color: #2c2c2e; border: 1px solid rgba(255,255,255,0.15); color: #aaa; border-radius: 50%; width: 70px; height: 70px; font-size: 1.3rem; display: flex; align-items: center; justify-content: center; font-weight: bold;" sendEventOnClick="213"></ch5-button>
+                <ch5-button id="src-btn-apple-ok" label="OK" customStyle="background-color: #3a3a3c; border: 1px solid rgba(255,255,255,0.25); color: #fff; border-radius: 50%; width: 70px; height: 70px; font-size: 1.1rem; display: flex; align-items: center; justify-content: center; font-weight: bold;" sendEventOnClick="215"></ch5-button>
+                <ch5-button id="src-btn-apple-right" label="o" customStyle="background-color: #2c2c2e; border: 1px solid rgba(255,255,255,0.15); color: #aaa; border-radius: 50%; width: 70px; height: 70px; font-size: 1.3rem; display: flex; align-items: center; justify-content: center; font-weight: bold;" sendEventOnClick="214"></ch5-button>
+                
+                <!-- Row 3 -->
+                <div></div>
+                <ch5-button id="src-btn-apple-down" label="o" customStyle="background-color: #2c2c2e; border: 1px solid rgba(255,255,255,0.15); color: #aaa; border-radius: 50%; width: 70px; height: 70px; font-size: 1.3rem; display: flex; align-items: center; justify-content: center; font-weight: bold;" sendEventOnClick="212"></ch5-button>
+                <div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- POPUP LECTEUR DE MUSIQUE / MEDIA PLAYER (Mobile Optimized) -->
+    <div id="media-player-overlay" class="custom-overlay-panel" style="width: 90% !important; max-width: 380px !important; height: auto !important; max-height: 85% !important; padding: 15px; box-sizing: border-box;">
+        <div class="overlay-header" style="margin-bottom: 15px;">
+            <h3 style="display: flex; align-items: center; gap: 8px; color: #c084fc; margin: 0; font-size: 1.1rem; text-transform: uppercase;">
+                🎵 Musique
+            </h3>
+            <button onclick="closeMediaPlayerModal()" style="height: 30px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 6px; cursor: pointer; font-weight: bold; padding: 0 10px; font-size: 0.8rem;">FERMER</button>
+        </div>
+        
+        <div style="display: flex; flex-direction: column; gap: 15px; align-items: center; width: 100%;">
+            <!-- Pochette Album -->
+            <div style="width: 130px; height: 130px; background: linear-gradient(135deg, #c084fc, #8b5cf6); border-radius: 12px; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 16px rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.15);">
+                <svg viewBox="0 0 24 24" style="width: 50px; height: 50px; fill: white;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 14.5c-2.48 0-4.5-2.02-4.5-4.5s2.02-4.5 4.5-4.5 4.5 2.02 4.5 4.5-2.02 4.5-4.5 4.5zM12 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
+            </div>
+            
+            <!-- Informations Musique -->
+            <div style="text-align: center; width: 100%;">
+                <h4 style="margin: 0; font-size: 1.15rem; color: white;">Stairway to Heaven</h4>
+                <p style="margin: 3px 0 0 0; color: #c084fc; font-weight: bold; font-size: 0.85rem;">Led Zeppelin</p>
+            </div>
+            
+            <!-- Barre de Progression -->
+            <div style="width: 100%;">
+                <div style="height: 4px; width: 100%; background: rgba(255,255,255,0.1); border-radius: 2px;">
+                    <div style="height: 100%; width: 45%; background: #c084fc; border-radius: 2px;"></div>
+                </div>
+                <div style="display: flex; justify-content: space-between; color: rgba(255,255,255,0.4); font-size: 0.7rem; margin-top: 6px;">
+                    <span>03:41</span>
+                    <span>08:02</span>
+                </div>
+            </div>
+            
+            <!-- Contrôles -->
+            <div style="display: flex; gap: 12px; align-items: center; justify-content: center; width: 100%;">
+                <ch5-button label="⏮️" customClass="scene-btn" style="width: 48px; height: 38px;" sendEventOnClick="253"></ch5-button>
+                <ch5-button label="⏯️" customClass="scene-btn" style="width: 60px; height: 42px;" sendEventOnClick="251"></ch5-button>
+                <ch5-button label="⏭️" customClass="scene-btn" style="width: 48px; height: 38px;" sendEventOnClick="252"></ch5-button>
+            </div>
+            
+            <!-- Volume Slider -->
+            <div style="width: 100%; display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.02); padding: 8px 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); box-sizing: border-box;">
+                <span style="font-weight: bold; font-size: 0.8rem; color: var(--text-secondary); white-space: nowrap;">Vol :</span>
+                <ch5-slider class="volume-slider-mobile" min="0" max="65535" sendEventOnChange="254" receiveStateValue="254" style="flex: 1; margin: 0; padding: 0; height: 20px;"></ch5-slider>
+            </div>
+        </div>
+    </div>
+
+    <!-- POPUP CLAVIER & PARTITIONS D'ALARME (Mobile Optimized) -->
+    <div id="alarm-overlay" class="custom-overlay-panel" style="width: 90% !important; max-width: 380px !important; height: auto !important; max-height: 85% !important; padding: 15px; box-sizing: border-box;">
+        <div class="overlay-header" style="margin-bottom: 12px;">
+            <h3 style="display: flex; align-items: center; gap: 8px; color: #ef4444; margin: 0; font-size: 1.1rem; text-transform: uppercase;">
+                🚨 Sécurité
+            </h3>
+            <button onclick="closeAlarmModal()" style="height: 30px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 6px; cursor: pointer; font-weight: bold; padding: 0 10px; font-size: 0.8rem;">FERMER</button>
+        </div>
+        
+        <!-- ÉCRAN 1: Clavier -->
+        <div id="alarm-keypad-screen" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; width: 100%;">
+            <p style="margin: 0; font-size: 0.85rem; color: #94a3b8; font-weight: bold; text-align: center;">Entrez le code d'administration :</p>
+            <div style="background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.15); border-radius: 6px; width: 180px; height: 42px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-family: monospace; letter-spacing: 5px; color: white;">
+                <span id="alarm-code-display"></span>
+            </div>
+            <div id="alarm-error-msg" style="color: #ef4444; font-weight: bold; min-height: 18px; font-size: 0.8rem; text-align: center;"></div>
+            
+            <!-- Clavier 3x4 -->
+            <div style="display: grid; grid-template-columns: repeat(3, 60px); gap: 8px;">
+                <button onclick="pressAlarmKey('1')" class="shade-btn-mobile" style="width: 60px !important; height: 48px !important; font-size: 1.1rem;">1</button>
+                <button onclick="pressAlarmKey('2')" class="shade-btn-mobile" style="width: 60px !important; height: 48px !important; font-size: 1.1rem;">2</button>
+                <button onclick="pressAlarmKey('3')" class="shade-btn-mobile" style="width: 60px !important; height: 48px !important; font-size: 1.1rem;">3</button>
+                
+                <button onclick="pressAlarmKey('4')" class="shade-btn-mobile" style="width: 60px !important; height: 48px !important; font-size: 1.1rem;">4</button>
+                <button onclick="pressAlarmKey('5')" class="shade-btn-mobile" style="width: 60px !important; height: 48px !important; font-size: 1.1rem;">5</button>
+                <button onclick="pressAlarmKey('6')" class="shade-btn-mobile" style="width: 60px !important; height: 48px !important; font-size: 1.1rem;">6</button>
+                
+                <button onclick="pressAlarmKey('7')" class="shade-btn-mobile" style="width: 60px !important; height: 48px !important; font-size: 1.1rem;">7</button>
+                <button onclick="pressAlarmKey('8')" class="shade-btn-mobile" style="width: 60px !important; height: 48px !important; font-size: 1.1rem;">8</button>
+                <button onclick="pressAlarmKey('9')" class="shade-btn-mobile" style="width: 60px !important; height: 48px !important; font-size: 1.1rem;">9</button>
+                
+                <button onclick="pressAlarmKey('C')" class="shade-btn-mobile" style="width: 60px !important; height: 48px !important; color: #ef4444; font-size: 1rem; font-weight: bold;">CLR</button>
+                <button onclick="pressAlarmKey('0')" class="shade-btn-mobile" style="width: 60px !important; height: 48px !important; font-size: 1.1rem;">0</button>
+                <button onclick="pressAlarmKey('E')" class="shade-btn-mobile" style="width: 60px !important; height: 48px !important; color: #10b981; font-size: 1.1rem; font-weight: bold;">OK</button>
+            </div>
+        </div>
+        
+        <!-- ÉCRAN 2: Partitions d'alarme -->
+        <div id="alarm-partitions-screen" style="display: none; flex-direction: column; gap: 10px; width: 100%; max-height: 320px; overflow-y: auto;">
+            <p style="margin: 0; color: #10b981; font-weight: bold; font-size: 0.85rem; text-align: center;">✅ Code correct. Gestion partitions :</p>
+            <div style="display: flex; flex-direction: column; gap: 8px; width: 100%;">
+                <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 6px; padding: 8px; display: flex; flex-direction: column; gap: 6px;">
+                    <div style="display: flex; align-items: center; justify-content: space-between;">
+                        <span style="font-weight: bold; font-size: 0.8rem;">P1 : Rez-de-Chaussée</span>
+                        <span id="alarm-part-1-status" style="font-size: 0.7rem; font-weight: bold; padding: 1px 6px; border-radius: 3px; background: rgba(16,185,129,0.1); color: #10b981;">DESACTIVÉE</span>
+                    </div>
+                    <div style="display: flex; gap: 4px;">
+                        <ch5-button label="ACTIVER" customClass="alarm-btn" sendEventOnClick="301" receiveStateSelected="301" style="height: 32px; flex: 1;"></ch5-button>
+                        <ch5-button label="PARTIEL" customClass="alarm-btn" sendEventOnClick="302" receiveStateSelected="302" style="height: 32px; flex: 1;"></ch5-button>
+                        <ch5-button label="OFF" customClass="alarm-btn" sendEventOnClick="303" receiveStateSelected="303" style="height: 32px; flex: 1.2;"></ch5-button>
+                    </div>
+                </div>
+                <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 6px; padding: 8px; display: flex; flex-direction: column; gap: 6px;">
+                    <div style="display: flex; align-items: center; justify-content: space-between;">
+                        <span style="font-weight: bold; font-size: 0.8rem;">P2 : Étage & Chambres</span>
+                        <span id="alarm-part-2-status" style="font-size: 0.7rem; font-weight: bold; padding: 1px 6px; border-radius: 3px; background: rgba(16,185,129,0.1); color: #10b981;">DESACTIVÉE</span>
+                    </div>
+                    <div style="display: flex; gap: 4px;">
+                        <ch5-button label="ACTIVER" customClass="alarm-btn" sendEventOnClick="304" receiveStateSelected="304" style="height: 32px; flex: 1;"></ch5-button>
+                        <ch5-button label="PARTIEL" customClass="alarm-btn" sendEventOnClick="305" receiveStateSelected="305" style="height: 32px; flex: 1;"></ch5-button>
+                        <ch5-button label="OFF" customClass="alarm-btn" sendEventOnClick="306" receiveStateSelected="306" style="height: 32px; flex: 1.2;"></ch5-button>
+                    </div>
+                </div>
+                <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 6px; padding: 8px; display: flex; flex-direction: column; gap: 6px;">
+                    <div style="display: flex; align-items: center; justify-content: space-between;">
+                        <span style="font-weight: bold; font-size: 0.8rem;">P3 : Dépendances</span>
+                        <span id="alarm-part-3-status" style="font-size: 0.7rem; font-weight: bold; padding: 1px 6px; border-radius: 3px; background: rgba(16,185,129,0.1); color: #10b981;">DESACTIVÉE</span>
+                    </div>
+                    <div style="display: flex; gap: 4px;">
+                        <ch5-button label="ACTIVER" customClass="alarm-btn" sendEventOnClick="307" receiveStateSelected="307" style="height: 32px; flex: 1;"></ch5-button>
+                        <ch5-button label="PARTIEL" customClass="alarm-btn" sendEventOnClick="308" receiveStateSelected="308" style="height: 32px; flex: 1;"></ch5-button>
+                        <ch5-button label="OFF" customClass="alarm-btn" sendEventOnClick="309" receiveStateSelected="309" style="height: 32px; flex: 1.2;"></ch5-button>
+                    </div>
+                </div>
+                <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 6px; padding: 8px; display: flex; flex-direction: column; gap: 6px;">
+                    <div style="display: flex; align-items: center; justify-content: space-between;">
+                        <span style="font-weight: bold; font-size: 0.8rem;">P4 : Périmètre Extérieur</span>
+                        <span id="alarm-part-4-status" style="font-size: 0.7rem; font-weight: bold; padding: 1px 6px; border-radius: 3px; background: rgba(16,185,129,0.1); color: #10b981;">DESACTIVÉE</span>
+                    </div>
+                    <div style="display: flex; gap: 4px;">
+                        <ch5-button label="ACTIVER" customClass="alarm-btn" sendEventOnClick="310" receiveStateSelected="310" style="height: 32px; flex: 1;"></ch5-button>
+                        <ch5-button label="PARTIEL" customClass="alarm-btn" sendEventOnClick="311" receiveStateSelected="311" style="height: 32px; flex: 1;"></ch5-button>
+                        <ch5-button label="OFF" customClass="alarm-btn" sendEventOnClick="312" receiveStateSelected="312" style="height: 32px; flex: 1.2;"></ch5-button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- POPUP MOSAÏQUE CAMÉRAS (Mobile Optimized) -->
+    <div id="cameras-overlay" class="custom-overlay-panel" style="width: 90% !important; max-width: 380px !important; height: auto !important; max-height: 85% !important; padding: 15px; box-sizing: border-box; display: none; flex-direction: column;">
+        <div class="overlay-header" style="margin-bottom: 12px;">
+            <h3 style="display: flex; align-items: center; gap: 8px; color: #3b82f6; margin: 0; font-size: 1.1rem; text-transform: uppercase;">
+                📷 Caméras
+            </h3>
+            <button onclick="closeCamerasModal()" style="height: 30px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 6px; cursor: pointer; font-weight: bold; padding: 0 10px; font-size: 0.8rem;">FERMER</button>
+        </div>
+        
+        <!-- Mosaïque de caméras empilées (défilement vertical sur iPhone) -->
+        <div id="cameras-grid-container" style="display: flex; flex-direction: column; gap: 10px; overflow-y: auto; flex: 1; padding-right: 2px;">
+            <!-- Généré par JS -->
+        </div>
+    </div>
+
+    <!-- POPUP CONTRÔLE GLOBAL (Mobile Optimized) -->
+    <div id="global-control-overlay" class="custom-overlay-panel" style="width: 90% !important; max-width: 380px !important; height: auto !important; max-height: 85% !important; padding: 15px; box-sizing: border-box; display: none; flex-direction: column;">
+        <div class="overlay-header" style="margin-bottom: 12px;">
+            <h3 style="display: flex; align-items: center; gap: 8px; color: #10b981; margin: 0; font-size: 1.1rem; text-transform: uppercase;">
+                🌐 Centralisation
+            </h3>
+            <button onclick="closeGlobalControlModal()" style="height: 30px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 6px; cursor: pointer; font-weight: bold; padding: 0 10px; font-size: 0.8rem;">FERMER</button>
+        </div>
+        
+        <div style="display: flex; flex-direction: column; gap: 12px; overflow-y: auto; flex: 1; padding-right: 2px;">
+            <!-- Éclairage Global -->
+            <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 8px; padding: 10px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                    <h4 style="margin: 0; font-size: 0.85rem; color: #eab308;">💡 Éclairage Global</h4>
+                    <button onclick="window.openGlobalPresetCustomizer('lighting')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; cursor: pointer; outline: none; font-size: 0.75rem;">⚙️</button>
+                </div>
+                <div style="display: flex; gap: 4px;">
+                    <ch5-button label="ON" customClass="scene-btn" style="height: 32px; flex: 1;" sendEventOnClick="401"></ch5-button>
+                    <ch5-button label="ÉCO" customClass="scene-btn" style="height: 32px; flex: 1;" sendEventOnClick="403"></ch5-button>
+                    <ch5-button label="OFF" customClass="scene-btn" style="height: 32px; flex: 1.2; --ch5-button-selected-background-color: #dc2626;" sendEventOnClick="402"></ch5-button>
+                </div>
+            </div>
+            <!-- Stores Globaux -->
+            <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 8px; padding: 10px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                    <h4 style="margin: 0; font-size: 0.85rem; color: #00b4c5;">↕️ Stores Globaux</h4>
+                    <button onclick="window.openGlobalPresetCustomizer('shades')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; cursor: pointer; outline: none; font-size: 0.75rem;">⚙️</button>
+                </div>
+                <div style="display: flex; gap: 4px;">
+                    <ch5-button label="OUVRIR" customClass="scene-btn" style="height: 32px; flex: 1;" sendEventOnClick="404"></ch5-button>
+                    <ch5-button label="INT." customClass="scene-btn" style="height: 32px; flex: 1;" sendEventOnClick="406"></ch5-button>
+                    <ch5-button label="FERMER" customClass="scene-btn" style="height: 32px; flex: 1.2; --ch5-button-selected-background-color: #dc2626;" sendEventOnClick="405"></ch5-button>
+                </div>
+            </div>
+            <!-- CVC Global -->
+            <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 8px; padding: 10px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                    <h4 style="margin: 0; font-size: 0.85rem; color: #10b981;">❄️ Climatisation Globale</h4>
+                    <button onclick="window.openGlobalPresetCustomizer('hvac')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; cursor: pointer; outline: none; font-size: 0.75rem;">⚙️</button>
+                </div>
+                <div style="display: flex; gap: 4px;">
+                    <ch5-button label="CONFORT" customClass="scene-btn" style="height: 32px; flex: 1;" sendEventOnClick="407"></ch5-button>
+                    <ch5-button label="NUIT" customClass="scene-btn" style="height: 32px; flex: 1;" sendEventOnClick="408"></ch5-button>
+                    <ch5-button label="GEL" customClass="scene-btn" style="height: 32px; flex: 1;" sendEventOnClick="409"></ch5-button>
+                </div>
+            </div>
+            <!-- Vacances -->
+            <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 8px; padding: 10px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                    <h4 style="margin: 0; font-size: 0.85rem; color: #fb7185;">✈️ Mode Vacances</h4>
+                    <button onclick="window.openGlobalPresetCustomizer('vacation')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; cursor: pointer; outline: none; font-size: 0.75rem;">⚙️</button>
+                </div>
+                <div style="display: flex; gap: 4px;">
+                    <ch5-button label="ACTIVER" customClass="scene-btn" style="height: 32px; flex: 1;" sendEventOnClick="410" receiveStateSelected="410"></ch5-button>
+                    <ch5-button label="DÉSACTIVER" customClass="scene-btn" style="height: 32px; flex: 1.5; --ch5-button-selected-background-color: #dc2626;" sendEventOnClick="411" receiveStateSelected="411"></ch5-button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- POPUP PERSONNALISATION DES PRESETS GLOBAUX (Mobile Optimized) -->
+    <div id="global-preset-custom-overlay" class="custom-overlay-panel" style="width: 90% !important; max-width: 380px !important; height: auto !important; max-height: 85% !important; padding: 15px; box-sizing: border-box; display: none; flex-direction: column; z-index: 1100;">
+        <div class="overlay-header" style="margin-bottom: 12px;">
+            <h3 style="display: flex; align-items: center; gap: 6px; color: #10b981; margin: 0; font-size: 1.05rem; text-transform: uppercase;">
+                ⚙️ Configuration Preset
+            </h3>
+            <div style="display: flex; gap: 6px;">
+                <button onclick="window.saveGlobalPresetConfig()" style="height: 28px; background: #10b981; border: none; color: white; border-radius: 6px; cursor: pointer; font-weight: bold; padding: 0 10px; font-size: 0.75rem;">SAUVER</button>
+                <button onclick="window.closeGlobalPresetCustomizer()" style="height: 28px; background: rgba(255,255,255,0.08); border: none; color: white; border-radius: 6px; cursor: pointer; font-weight: bold; padding: 0 10px; font-size: 0.75rem;">RETOUR</button>
+            </div>
+        </div>
+        
+        <!-- Sélection du sous-preset -->
+        <div style="margin-bottom: 12px; display: flex; flex-direction: column; gap: 4px; width: 100%;">
+            <span style="font-weight: bold; color: #94a3b8; font-size: 0.8rem;">Sélectionnez le Preset :</span>
+            <select id="customizer-preset-select" onchange="window.renderCustomizerFields()" style="background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.15); color: white; border-radius: 6px; padding: 4px 8px; font-size: 0.85rem; outline: none; width: 100%;"></select>
+        </div>
+        
+        <!-- Contenu du Formulaire Dynamique -->
+        <div id="customizer-form-content" style="max-height: 280px; overflow-y: auto; width: 100%;"></div>
+    </div>
 
     <!-- Script de synchronisation, configuration dynamique et multilingue -->
     <script>
@@ -962,9 +1495,9 @@
                     temp_actual: "Текущая",
                     temp_requested: "Уставка",
                     source_title: "Выбор Источника Аудио и Видео",
-                    source_video: "Активный Источник:",
-                    circuits_title: "Свет:",
-                    motors_title: "Моторы:",
+                    source_video: "Активный Источник :",
+                    circuits_title: "Свет :",
+                    motors_title: "Моторы :",
                     tab_lights: "СВЕТ",
                     tab_shades: "ШТОРЫ",
                     motors_title_section: "МОТОРЫ",
@@ -973,7 +1506,7 @@
                     weather_wind: "Ветер",
                     weather_humidity: "Влажность",
                     news_title: "Новости",
-                    video_title: "Видео умного дома"
+                    video_title: "Smart Home Video"
                 }
             };
 
@@ -1180,13 +1713,19 @@
             }
 
             // --- GESTION DES SIGNALS ET BOUTONS ---
-            // Appui sur un bouton : le moteur d'état local (js/local-feedback.js) fait le reste
-            window.pressDigital = function(signalId) {
-                if (typeof Villa !== 'undefined') Villa.press(String(signalId));
+            window.pressDigital = function(joinNumber) {
+                if (typeof CrComLib !== 'undefined') {
+                    CrComLib.publishEvent('b', joinNumber.toString(), true);
+                    CrComLib.publishEvent('b', joinNumber.toString(), false);
+                }
             };
 
             window.selectSource = function(sourceId) {
-                window.pressDigital(150 + sourceId);
+                if (typeof CrComLib !== 'undefined') {
+                    const joinNum = 150 + sourceId;
+                    CrComLib.publishEvent('b', joinNum.toString(), true);
+                    CrComLib.publishEvent('b', joinNum.toString(), false);
+                }
             };
 
             function toggleSelected(elementId, value) {
@@ -1235,6 +1774,10 @@
 
             window.changeLanguage = function(lang) {
                 applyLanguage(lang);
+                // Si une villa_config est chargée, reconstruire le GUI avec les noms traduits
+                if (window.villaConfig && typeof window.villaRebuildUI === 'function') {
+                    window.villaRebuildUI();
+                }
                 let curRoom = 1;
                 try {
                     curRoom = parseInt(localStorage.getItem('active_room_iphone') || '1', 10);
@@ -1272,7 +1815,7 @@
 
             const backdrop = document.getElementById('modal-backdrop');
             window.openCircuitsModal = () => {
-                document.getElementById('circuits-overlay').style.display = 'flex';
+                document.getElementById('circuits-overlay').style.display = 'block';
                 if (backdrop) backdrop.style.display = 'block';
             };
             window.closeCircuitsModal = () => {
@@ -1280,7 +1823,7 @@
                 if (backdrop) backdrop.style.display = 'none';
             };
             window.openMotorsModal = () => {
-                document.getElementById('motors-overlay').style.display = 'flex';
+                document.getElementById('motors-overlay').style.display = 'block';
                 if (backdrop) backdrop.style.display = 'block';
             };
             window.closeMotorsModal = () => {
@@ -1839,13 +2382,13 @@
                 // Sauvegarder dans localStorage
                 localStorage.setItem('preset_cfg_' + subPreset, JSON.stringify(finalConfig));
                 
-                // Signal texte 420 : configuration du preset (moteur d'état local)
+                // Envoyer au CP4 via Join 420
                 const payload = {
                     preset: subPreset,
                     data: finalConfig
                 };
                 if (typeof CrComLib !== 'undefined') {
-                    console.log("Villa: configuration du preset enregistrée", payload);
+                    console.log("CH5: Envoi de la configuration du preset '" + subPreset + "' au CP4 via Join 420:", payload);
                     CrComLib.publishEvent('s', '420', JSON.stringify(payload));
                 }
                 
@@ -1857,6 +2400,7 @@
                 window.closeCircuitsModal();
                 window.closeMotorsModal();
                 window.closeSettingsModal();
+                window.closeAdminModal();
                 window.closeSourceControlModal();
                 window.closeMediaPlayerModal();
                 window.closeAlarmModal();
@@ -1876,10 +2420,45 @@
             };
 
             // --- UPDATE DYNAMIC ROOM UI ---
+            // Masque les sections du GUI selon les flags 'actif: false' des pilotages de la pièce.
+            // RÈGLE : géométrie fixe — visibility:hidden conserve l'espace, rien ne bouge entre les pièces.
+            function applyPilotageVisibility(roomId) {
+                const setVis = (el, show) => { if (el) el.style.visibility = show ? '' : 'hidden'; };
+                let ecl = true, mot = true, cvc = true, av = true;
+                const vc = window.villaConfig;
+                if (vc) {
+                    const piece = (vc.pieces || []).find(p => p.id === roomId);
+                    const pil = (piece && piece.pilotages) || {};
+                    const on = m => !(pil[m] && pil[m].actif === false);
+                    ecl = on('eclairages'); mot = on('moteurs'); cvc = on('cvc'); av = on('audioVideo');
+                }
+
+                // Onglet Lumières & Stores : sous-sections invisibles mais en place
+                setVis(document.getElementById('iphone-lights-header'), ecl);
+                setVis(document.getElementById('iphone-scenes-row'), ecl);
+                setVis(document.getElementById('iphone-shades-header'), mot);
+                setVis(document.getElementById('iphone-shades-rows'), mot);
+                setVis(document.getElementById('nav-lights'), ecl || mot);
+
+                // Onglets HVAC et Audio/Vidéo (boutons de nav invisibles mais en place)
+                setVis(document.getElementById('nav-hvac'), cvc);
+                setVis(document.getElementById('nav-audio'), av);
+
+                // Si l'onglet actif est devenu invisible, basculer sur le premier onglet disponible
+                const activePanel = document.querySelector('.tab-panel.active');
+                const visibleByPanel = { 'panel-lights': (ecl || mot), 'panel-hvac': cvc, 'panel-audio': av };
+                if (activePanel && visibleByPanel[activePanel.id] === false && typeof switchTab === 'function') {
+                    if (ecl || mot) switchTab('lights');
+                    else if (cvc) switchTab('hvac');
+                    else if (av) switchTab('audio');
+                }
+            }
+
             function updateActiveRoomUI(roomId) {
                 try {
                     localStorage.setItem('active_room_iphone', roomId.toString());
                 } catch (e) {}
+                applyPilotageVisibility(roomId);
                 const roomObj = config.rooms.find(r => r.id === roomId);
                 const roomName = roomObj ? roomObj.name : ("Pièce " + roomId);
 
@@ -2020,30 +2599,267 @@
                 if (roomSelect) roomSelect.value = curRoom.toString();
                 updateActiveRoomUI(curRoom);
 
+                // Initialisation du date picker de validation pour l'iPhone
+                const datePicker = document.getElementById('validation-date-picker');
+                if (datePicker) {
+                    const savedDate = localStorage.getItem('last_validation_date');
+                    if (savedDate) {
+                        datePicker.value = savedDate;
+                    }
+                    datePicker.addEventListener('change', function(e) {
+                        localStorage.setItem('last_validation_date', e.target.value);
+                        if (typeof CrComLib !== 'undefined') {
+                            console.log("CH5 iPhone: Envoi de la date de validation au CP4 : " + e.target.value);
+                            CrComLib.publishEvent('s', '104', e.target.value);
+                        }
+                    });
+                }
+
+                // Détermination dynamique de la compilation CH5Z
+                const ch5zEl = document.getElementById('ch5z-compiledate');
+                if (ch5zEl) {
+                    // Fetch de la date locale de compilation générée au build
+                    fetch('build_date.json')
+                        .then(res => res.json())
+                        .then(data => {
+                            ch5zEl.textContent = data.compileDate;
+                        })
+                        .catch(() => {
+                            let ch5zDate = "Inconnue";
+                            try {
+                                if (document.lastModified) {
+                                    const d = new Date(document.lastModified);
+                                    if (!isNaN(d.getTime())) {
+                                        const pad = (num) => String(num).padStart(2, '0');
+                                        ch5zDate = `${pad(d.getDate())}/${pad(d.getMonth() + 1)}/${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+                                    }
+                                }
+                            } catch (e) {}
+                            ch5zEl.textContent = ch5zDate;
+                        });
+                }
             }
 
-            // --- CONFIGURATION LOCALE (config.js) ET MOTEUR D'ÉTAT ---
-            const bootConfig = (typeof window.crestronConfig !== 'undefined') ? window.crestronConfig : fallbackConfig;
-            generateDynamicUI(bootConfig);
-            setTimeout(function startEngine() {
-                if (typeof Villa === 'undefined') { setTimeout(startEngine, 50); return; }
-                Villa.init(bootConfig);
-            }, 0);
+            // --- CHARGEMENT CONFIG.JSON / CONFIG.JS ---
+            if (typeof window.crestronConfig !== 'undefined') {
+                console.log("CH5 iPhone: Configuration locale config.js chargée.");
+                generateDynamicUI(window.crestronConfig);
+            } else {
+                console.log("CH5 iPhone: Recherche de config.json via fetch...");
+                fetch('config.json')
+                    .then(res => res.json())
+                    .then(data => {
+                        console.log("CH5 iPhone: config.json chargé avec succès.");
+                        generateDynamicUI(data);
+                    })
+                    .catch(err => {
+                        console.warn("CH5 iPhone: Erreur config.json, fallback local.", err);
+                        generateDynamicUI(fallbackConfig);
+                    });
+            }
 
-            // --- ABONNEMENTS AUX SIGNAUX DU MOTEUR D'ÉTAT LOCAL ---
+            // --- VILLA CONFIG : réception de villa_config.json depuis le CP4 (String 105 / Ack Analog 250) ---
+            (function() {
+                let vcfgChunks = [];
+                let vcfgTotal = 0;
+                window.villaConfig = null;
+
+                function villaTName(name) {
+                    const vc = window.villaConfig;
+                    if (!vc || !name) return name;
+                    const refLang = (vc.meta && vc.meta.langueReference) || 'fr';
+                    if (currentLang === refLang) return name;
+                    const dict = vc.traductions && vc.traductions[currentLang];
+                    return (dict && dict[name]) || name;
+                }
+                window.villaTranslateName = villaTName;
+
+                function rebuildFromVillaConfig() {
+                    const vc = window.villaConfig;
+                    if (!vc || typeof generateDynamicUI !== 'function') return;
+                    const defs = vc.valeursParDefaut || {};
+                    const legacy = { rooms: [], sources: [], roomMotors: {}, roomCircuits: {}, circuits: [] };
+                    (vc.sourcesAudioVideo || []).forEach(s => legacy.sources.push({ id: s.id, name: villaTName(s.nom) }));
+                    (vc.pieces || []).forEach(p => {
+                        legacy.rooms.push({ id: p.id, name: villaTName(p.nom) });
+                        const pil = p.pilotages || {};
+                        const ecl = pil.eclairages || {};
+                        const nbC = Math.min((ecl.circuits && ecl.circuits.nombre) || 4, 10);
+                        const nomsC = (ecl.circuits && ecl.circuits.noms) || [];
+                        const defC = defs.circuits || [];
+                        const circuits = [];
+                        for (let i = 0; i < nbC; i++) {
+                            const nm = (nomsC[i] && nomsC[i] !== '') ? nomsC[i] : (defC[i] || ('Circuit ' + (i + 1)));
+                            circuits.push({ id: 71 + i, name: villaTName(nm) });
+                        }
+                        legacy.roomCircuits[String(p.id)] = circuits;
+                        const mot = pil.moteurs || {};
+                        const nbM = Math.min(mot.nombre || 6, 6);
+                        const lstM = mot.liste || [];
+                        const defM = defs.moteurs || [];
+                        const motors = [];
+                        for (let i = 0; i < nbM; i++) {
+                            const src = lstM[i] || defM[i] || { nom: 'Moteur ' + (i + 1) };
+                            const nm = (src.nom && src.nom !== '') ? src.nom : ((defM[i] && defM[i].nom) || ('Moteur ' + (i + 1)));
+                            motors.push(villaTName(nm));
+                        }
+                        legacy.roomMotors[String(p.id)] = motors;
+                    });
+                    legacy.circuits = (defs.circuits || ["Spots Plafond", "Lustre Central", "Appliques Murales", "Ruban LED"])
+                        .map((n, i) => ({ id: 71 + i, name: villaTName(n) }));
+                    console.log('CH5 iPhone: villa_config appliquée - ' + legacy.rooms.length + ' pièces (langue: ' + currentLang + ').');
+                    generateDynamicUI(legacy);
+                }
+                window.villaRebuildUI = rebuildFromVillaConfig;
+
+                window.initVillaConfigLink = function() {
+                    if (typeof CrComLib === 'undefined') return;
+                    CrComLib.subscribeState('s', '105', function(value) {
+                        if (!value || value.indexOf('VCFG|') !== 0) return;
+                        const p1 = value.indexOf('|', 5);
+                        const p2 = value.indexOf('|', p1 + 1);
+                        const idx = parseInt(value.substring(5, p1), 10);
+                        const tot = parseInt(value.substring(p1 + 1, p2), 10);
+                        if (isNaN(idx) || isNaN(tot)) return;
+                        if (idx === 1) { vcfgChunks = []; vcfgTotal = tot; }
+                        vcfgChunks[idx - 1] = value.substring(p2 + 1);
+                        CrComLib.publishEvent('n', '250', idx);
+                        if (idx === vcfgTotal) {
+                            try {
+                                const vc = JSON.parse(vcfgChunks.join(''));
+                                console.log('CH5 iPhone: Configuration villa_config reçue du CP4 (' + tot + ' chunks).');
+                                villaConfigFromCp4 = true;
+                                window.villaConfig = vc;
+                                try {
+                                    localStorage.setItem('villa_config_json', JSON.stringify(vc));
+                                    if (cp4ConfigHash) localStorage.setItem('villa_config_hash', cp4ConfigHash);
+                                } catch (e) {}
+                                rebuildFromVillaConfig();
+                            } catch (e) {
+                                console.error('CH5 iPhone: villa_config JSON invalide :', e);
+                                try { localStorage.removeItem('villa_config_hash'); } catch (e2) {}
+                            }
+                        }
+                    });
+
+                    // Protocole à empreinte : transfert complet uniquement si le cache diffère (Serial 106)
+                    let cp4ConfigHash = '';
+                    let hashReqTimer = null;
+                    CrComLib.subscribeState('s', '106', function(v) {
+                        if (!v) return;
+                        cp4ConfigHash = v;
+                        let cached = '';
+                        try { cached = localStorage.getItem('villa_config_hash') || ''; } catch (e) {}
+                        if (v === cached && window.villaConfig) return;
+                        clearTimeout(hashReqTimer);
+                        hashReqTimer = setTimeout(function() {
+                            CrComLib.publishEvent('b', '250', true);
+                            CrComLib.publishEvent('b', '250', false);
+                        }, 1000);
+                    });
+                };
+
+                // Version applicative (générée par deploy.ps1 dans version.js)
+                if (window.appVersion) { const vl = document.getElementById('version-label'); if (vl) vl.textContent = window.appVersion; }
+
+                // Source par défaut garantie : villa_config.js embarqué en <script> (comme config.js)
+                let villaConfigFromCp4 = false;
+                if (window.villaConfigEmbedded) {
+                    window.villaConfig = window.villaConfigEmbedded;
+                    console.log('CH5 iPhone: villa_config embarqué chargé (en attente du CP4).');
+                    setTimeout(rebuildFromVillaConfig, 300);
+                }
+
+                // Dernière configuration reçue du CP4 (cache local) : appliquée par-dessus l'embarqué
+                try {
+                    const cached = localStorage.getItem('villa_config_json');
+                    if (cached) {
+                        setTimeout(function() {
+                            if (villaConfigFromCp4) return;
+                            try {
+                                window.villaConfig = JSON.parse(cached);
+                                rebuildFromVillaConfig();
+                            } catch (e) {}
+                        }, 700);
+                    }
+                } catch (e) {}
+
+                // Repli fetch pour les contextes web si le js embarqué manque
+                if (!window.villaConfigEmbedded) {
+                    fetch('villa_config.json')
+                        .then(r => r.ok ? r.json() : null)
+                        .then(vc => {
+                            if (vc && !villaConfigFromCp4 && !window.villaConfig) {
+                                window.villaConfig = vc;
+                                rebuildFromVillaConfig();
+                            }
+                        })
+                        .catch(() => {});
+                }
+            })();
+
+            // --- ABONNEMENTS CRESTRON ---
             if (typeof CrComLib !== 'undefined') {
+                window.initVillaConfigLink();
                 
+                // ID du périphérique (String Join 99)
+                CrComLib.subscribeState('s', '99', (value) => {
+                    if (value) {
+                        console.log("CH5 iPhone: ID du périphérique reçu (Join 99) : " + value);
+                        let idNum = parseInt(value, 10);
+                        if (!isNaN(idNum)) {
+                            window.crestronIpId = '0x' + idNum.toString(16).padStart(2, '0');
+                            window.updateConnectionStatusUI(true);
+                        }
+                    }
+                });
 
+                // Nom du fichier CPZ (String Join 101)
+                CrComLib.subscribeState('s', '101', (value) => {
+                    if (value) {
+                        const el = document.getElementById('cpz-filename');
+                        if (el) el.textContent = value;
+                    }
+                });
 
+                // Date de compilation du CPZ (String Join 102)
+                CrComLib.subscribeState('s', '102', (value) => {
+                    if (value) {
+                        const el = document.getElementById('cpz-compiledate');
+                        if (el) el.textContent = value;
+                    }
+                });
 
+                // IP Table (String Join 103)
+                CrComLib.subscribeState('s', '103', (value) => {
+                    console.log("CH5 iphone.html: Réception IP Table (Join 103):", value);
+                    if (value) {
+                        const el = document.getElementById('processor-iptable');
+                        if (el) {
+                            // Remplacer les retours à la ligne par <br> pour un affichage HTML multi-ligne garanti
+                            el.innerHTML = value.replace(/\r\n/g, '<br>').replace(/\n/g, '<br>').replace(/\r/g, '<br>');
+                        }
+                    }
+                });
 
+                // Date de dernière validation (String Join 104)
+                CrComLib.subscribeState('s', '104', (value) => {
+                    if (value) {
+                        console.log("CH5 iPhone: Date de validation reçue du CP4 (Join 104) : " + value);
+                        localStorage.setItem('last_validation_date', value);
+                        const el = document.getElementById('validation-date-picker');
+                        if (el) el.value = value;
+                    }
+                });
 
                 // Pièce active - DÉSOLIDARISATION
                 // CrComLib.subscribeState('n', '10', ... ) est retiré.
                 
                 window.changeRoomIphone = function(value) {
                     const roomVal = parseInt(value, 10);
-                    if (typeof Villa !== 'undefined') Villa.selectRoom(roomVal);
+                    const joinNum = 10 + roomVal;
+                    CrComLib.publishEvent('b', joinNum.toString(), true);
+                    CrComLib.publishEvent('b', joinNum.toString(), false);
                     updateActiveRoomUI(roomVal);
                 };
 
@@ -2059,8 +2875,8 @@
                     });
                 }
 
-                // Scènes active feedback
-                [21, 22, 23, 24].forEach(join => {
+                // Scènes active feedback (contrat v2 : joins 45-48)
+                [51, 52, 53, 54].forEach(join => {
                     CrComLib.subscribeState('b', join.toString(), (value) => {
                         toggleSelected('scene-btn-' + join, value);
                     });
@@ -2115,7 +2931,7 @@
                 });
 
                 // Sources active feedback (Digital Joins 150-154)
-                for (let i = 150; i <= 155; i++) {
+                for (let i = 150; i <= 154; i++) {
                     CrComLib.subscribeState('b', i.toString(), (value) => {
                         if (value) {
                             const sourceId = i - 150;
@@ -2128,7 +2944,7 @@
                 }
 
                 // Mute feedback
-                CrComLib.subscribeState('b', '53', (value) => {
+                CrComLib.subscribeState('b', '55', (value) => {
                     const slider = document.getElementById('volume-slider-mobile-element');
                     const muteBtn = document.getElementById('mute-btn-mobile');
                     if (value) {
@@ -2278,5 +3094,7 @@
         }
     </script>
     <audio id="funny-audio" src="funny.mp3" preload="auto"></audio>
+<!-- Vitrine : console d'administration (joins, terminal CP4) sans objet -->
+<script>window.openAdminModal = function () {};</script>
 </body>
 </html>
