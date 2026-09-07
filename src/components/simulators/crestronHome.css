@@ -1,0 +1,1619 @@
+/* ===========================================================================
+   Crestron Home — réinterprétation Fréquence TV
+   ---------------------------------------------------------------------------
+   Structure et parcours repris de l'application Crestron Home OS (accueil,
+   pièces, détail de pièce, feuilles de pilotage), mais palette, typographie
+   et détails graphiques aux couleurs Fréquence TV : violet de marque,
+   cyan d'appui, ambre pour l'éclairage.
+
+   Tout est préfixé « ch- » et vit sous la racine .ch-home : aucun risque de
+   collision avec index.css. Trois gabarits :
+     .phone      402 x 781   (iPhone, portrait, barre d'onglets basse)
+     .tablet     1376 x 988  (iPad, paysage)
+     .wallpanel  1280 x 800  (dalle TSW-1070 — plus dense, cibles plus larges)
+     .desktop    1920 x 1080 (Xpanel — même logique que la tablette)
+   =========================================================================== */
+
+.ch-home {
+  /* --- Palette Fréquence TV ---------------------------------------------- */
+  --ch-violet: #6d3bf5;
+  --ch-violet-soft: rgba(109, 59, 245, 0.1);
+  --ch-cyan: #1ea7d6;
+  --ch-cyan-soft: rgba(30, 167, 214, 0.12);
+  --ch-amber: #e8a317;
+  --ch-amber-soft: rgba(232, 163, 23, 0.14);
+  --ch-coral: #e2624f;
+  --ch-coral-soft: rgba(226, 98, 79, 0.12);
+  --ch-green: #2fa877;
+
+  /* --- Surfaces (thème clair par défaut) ---------------------------------- */
+  --ch-bg: #f1f3f8;
+  --ch-surface: #ffffff;
+  --ch-surface-2: #e9ecf3;
+  --ch-line: rgba(17, 23, 33, 0.08);
+  --ch-ink: #111721;
+  --ch-muted: #6c7684;
+  --ch-dim: #98a1ad;
+  --ch-shadow: 0 6px 18px rgba(17, 23, 33, 0.06);
+  --ch-shadow-lg: 0 18px 48px rgba(17, 23, 33, 0.16);
+
+  /* --- Rythme (surchargé par gabarit) ------------------------------------ */
+  --ch-pad: 16px;
+  --ch-gap: 12px;
+  --ch-radius: 16px;
+  --ch-radius-lg: 22px;
+  --ch-fs-title: 1.35rem;
+  --ch-fs-section: 0.95rem;
+  --ch-fs-body: 0.9rem;
+  --ch-fs-small: 0.72rem;
+  --ch-tap: 34px;
+  --ch-cols: 2;
+
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--ch-bg);
+  color: var(--ch-ink);
+  font-family: "Outfit", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.ch-home.dark {
+  --ch-bg: #0e1116;
+  --ch-surface: #171b22;
+  --ch-surface-2: #21262f;
+  --ch-line: rgba(255, 255, 255, 0.08);
+  --ch-ink: #eef1f5;
+  --ch-muted: #a2acb9;
+  --ch-dim: #727d8b;
+  --ch-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+  --ch-shadow-lg: 0 18px 48px rgba(0, 0, 0, 0.55);
+  --ch-violet: #9d7bff;
+  --ch-violet-soft: rgba(157, 123, 255, 0.16);
+}
+
+.ch-home * {
+  box-sizing: border-box;
+}
+.ch-home button {
+  font: inherit;
+  color: inherit;
+  border: none;
+  background: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+/* --- Gabarits ------------------------------------------------------------ */
+.ch-home.tablet,
+.ch-home.desktop {
+  --ch-pad: 30px;
+  --ch-gap: 16px;
+  --ch-radius: 20px;
+  --ch-radius-lg: 26px;
+  --ch-fs-title: 1.6rem;
+  --ch-fs-section: 1.1rem;
+  --ch-fs-body: 0.98rem;
+  --ch-fs-small: 0.78rem;
+  --ch-tap: 44px;
+  --ch-cols: 6;
+}
+.ch-home.desktop {
+  --ch-cols: 8;
+  --ch-pad: 40px;
+}
+/* Dalle TSW-1070 : 1280 x 800. Moins de hauteur que l'iPad (988), donc
+   rythme vertical resserré ; mais c'est un panneau mural piloté au doigt à
+   bout de bras, donc cibles et libellés plus grands que sur tablette. */
+.ch-home.wallpanel {
+  --ch-pad: 24px;
+  --ch-gap: 14px;
+  --ch-radius: 18px;
+  --ch-radius-lg: 22px;
+  --ch-fs-title: 1.5rem;
+  --ch-fs-section: 1.02rem;
+  --ch-fs-body: 0.95rem;
+  --ch-fs-small: 0.76rem;
+  --ch-tap: 48px;
+  --ch-cols: 6;
+}
+
+/* ===========================================================================
+   Barre d'état (iOS) — masquée sur la dalle, qui n'en a pas
+   =========================================================================== */
+.ch-statusbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex: 0 0 auto;
+  padding: 7px var(--ch-pad) 2px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: var(--ch-ink);
+}
+.ch-statusbar .ch-sb-right {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.ch-battery {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 14px;
+  border-radius: 4px;
+  background: var(--ch-ink);
+  color: var(--ch-surface);
+  font-size: 0.58rem;
+  font-weight: 700;
+}
+.ch-home.wallpanel .ch-statusbar,
+.ch-home.desktop .ch-statusbar {
+  display: none;
+}
+
+/* Bandeau propre à la dalle murale : heure + maison + météo */
+.ch-panelbar {
+  display: none;
+  flex: 0 0 auto;
+  align-items: baseline;
+  gap: 14px;
+  padding: 14px var(--ch-pad) 0;
+  color: var(--ch-muted);
+  font-size: var(--ch-fs-small);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.ch-home.wallpanel .ch-panelbar,
+.ch-home.desktop .ch-panelbar {
+  display: flex;
+}
+.ch-panelbar strong {
+  color: var(--ch-ink);
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: none;
+}
+.ch-panelbar .ch-panelbar-sep {
+  flex: 1;
+}
+
+/* ===========================================================================
+   Barre de titre
+   =========================================================================== */
+.ch-topbar {
+  position: relative;
+  z-index: 4;
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px var(--ch-pad);
+}
+.ch-topbar h2 {
+  flex: 1;
+  margin: 0;
+  font-size: var(--ch-fs-title);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  text-align: center;
+}
+.ch-iconbtn {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  width: var(--ch-tap);
+  height: var(--ch-tap);
+  border-radius: 50%;
+  background: var(--ch-surface);
+  color: var(--ch-ink);
+  box-shadow: var(--ch-shadow);
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+.ch-iconbtn:hover {
+  transform: translateY(-1px);
+}
+.ch-iconbtn.ghost {
+  background: transparent;
+  box-shadow: none;
+  color: var(--ch-muted);
+}
+.ch-iconbtn.spacer {
+  visibility: hidden;
+}
+
+/* ===========================================================================
+   Corps défilant
+   =========================================================================== */
+.ch-body {
+  flex: 1 1 auto;
+  overflow: hidden auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+}
+.ch-body::-webkit-scrollbar {
+  width: 6px;
+}
+.ch-body::-webkit-scrollbar-thumb {
+  border-radius: 3px;
+  background: var(--ch-line);
+}
+.ch-section {
+  padding: 10px var(--ch-pad) var(--ch-gap);
+}
+.ch-section + .ch-section {
+  padding-top: 4px;
+}
+.ch-section > h3 {
+  margin: 0 0 10px;
+  font-size: var(--ch-fs-section);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.ch-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0 0 10px;
+  color: var(--ch-muted);
+  font-size: var(--ch-fs-small);
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+/* ===========================================================================
+   Accueil — héro + scènes + contrôles
+   =========================================================================== */
+.ch-hero {
+  position: relative;
+  flex: 0 0 auto;
+  background-position: center;
+  background-size: cover;
+  height: 190px;
+}
+.ch-home.tablet .ch-hero,
+.ch-home.desktop .ch-hero {
+  height: 260px;
+}
+.ch-home.wallpanel .ch-hero {
+  height: 108px;
+}
+.ch-home.wallpanel .ch-hero-text h1 {
+  font-size: 1.85rem;
+}
+.ch-home.wallpanel .ch-tile,
+.ch-home.wallpanel .ch-svc {
+  min-height: 108px;
+}
+.ch-home.wallpanel .ch-scene {
+  min-height: 76px;
+}
+.ch-home.wallpanel .ch-section {
+  padding-top: 4px;
+}
+.ch-home.tablet .ch-tile,
+.ch-home.desktop .ch-tile,
+.ch-home.wallpanel .ch-tile {
+  min-height: 152px;
+}
+.ch-home.tablet .ch-svc,
+.ch-home.desktop .ch-svc,
+.ch-home.wallpanel .ch-svc {
+  min-height: 150px;
+}
+.ch-home.tablet .ch-scene,
+.ch-home.desktop .ch-scene,
+.ch-home.wallpanel .ch-scene {
+  min-height: 92px;
+}
+.ch-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(9, 12, 18, 0.35) 0%,
+    rgba(9, 12, 18, 0.1) 45%,
+    var(--ch-bg) 100%
+  );
+}
+.ch-hero-text {
+  position: absolute;
+  right: var(--ch-pad);
+  bottom: 14px;
+  left: var(--ch-pad);
+  z-index: 2;
+}
+.ch-hero-text h1 {
+  margin: 0 0 4px;
+  font-size: 1.9rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+.ch-home.tablet .ch-hero-text h1,
+.ch-home.desktop .ch-hero-text h1 {
+  font-size: 2.4rem;
+}
+.ch-hero-text p {
+  margin: 0;
+  color: var(--ch-muted);
+  font-size: var(--ch-fs-body);
+  line-height: 1.35;
+}
+
+/* Rangée de scènes */
+.ch-scene-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(168px, 1fr));
+  gap: var(--ch-gap);
+}
+.ch-home.phone .ch-scene-row {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.ch-scene {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 14px;
+  border-radius: var(--ch-radius);
+  background: var(--ch-surface);
+  box-shadow: var(--ch-shadow);
+  text-align: left;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.ch-scene:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 26px rgba(17, 23, 33, 0.1);
+}
+.ch-scene .ch-scene-icon {
+  color: var(--ch-violet);
+}
+.ch-scene span {
+  font-size: var(--ch-fs-body);
+  font-weight: 500;
+  line-height: 1.2;
+}
+.ch-scene.fired {
+  background: var(--ch-violet);
+  color: #fff;
+}
+.ch-scene.fired .ch-scene-icon {
+  color: #fff;
+}
+
+/* Cartes de contrôle maison */
+.ch-tile-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--ch-cols), minmax(0, 1fr));
+  gap: var(--ch-gap);
+}
+.ch-home.phone .ch-tile-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.ch-tile {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 18px;
+  min-height: 116px;
+  padding: 15px;
+  border-radius: var(--ch-radius);
+  background: var(--ch-surface);
+  box-shadow: var(--ch-shadow);
+  text-align: left;
+  transition: transform 0.15s ease;
+}
+.ch-tile:hover {
+  transform: translateY(-2px);
+}
+.ch-tile .ch-tile-name {
+  display: block;
+  font-size: var(--ch-fs-body);
+  font-weight: 600;
+}
+.ch-tile .ch-tile-state {
+  display: block;
+  margin-top: 2px;
+  font-size: var(--ch-fs-small);
+  font-weight: 500;
+  color: var(--ch-dim);
+}
+.ch-tile.on .ch-tile-state {
+  color: var(--ch-violet);
+}
+.ch-tile.wide {
+  grid-column: span 2;
+}
+.ch-ic-amber {
+  color: var(--ch-amber);
+}
+.ch-ic-cyan {
+  color: var(--ch-cyan);
+}
+.ch-ic-violet {
+  color: var(--ch-violet);
+}
+.ch-ic-coral {
+  color: var(--ch-coral);
+}
+.ch-ic-muted {
+  color: var(--ch-dim);
+}
+
+/* Trio de boutons d'accès dans la tuile large */
+.ch-access-row {
+  display: flex;
+  gap: 8px;
+}
+.ch-access-btn {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  padding: 9px 4px;
+  border-radius: 12px;
+  background: var(--ch-surface-2);
+  color: var(--ch-muted);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-align: center;
+  text-transform: uppercase;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.ch-access-btn:hover {
+  color: var(--ch-ink);
+}
+.ch-access-btn.busy {
+  background: var(--ch-coral-soft);
+  color: var(--ch-coral);
+}
+.ch-access-btn.done {
+  background: rgba(47, 168, 119, 0.14);
+  color: var(--ch-green);
+}
+
+/* ===========================================================================
+   Pièces
+   =========================================================================== */
+.ch-filters {
+  display: flex;
+  gap: 8px;
+  padding: 0 var(--ch-pad) 12px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  white-space: nowrap;
+}
+.ch-filters::-webkit-scrollbar {
+  display: none;
+}
+.ch-chip {
+  flex: 0 0 auto;
+  padding: 7px 15px;
+  border: 1.5px solid transparent;
+  border-radius: 999px;
+  color: var(--ch-muted);
+  font-size: var(--ch-fs-small);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  transition: all 0.15s ease;
+}
+.ch-chip:hover {
+  color: var(--ch-ink);
+}
+.ch-chip.on {
+  border-color: var(--ch-violet);
+  color: var(--ch-violet);
+  background: var(--ch-violet-soft);
+}
+
+.ch-floor {
+  padding: 0 var(--ch-pad) 18px;
+}
+.ch-floor-head {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 10px;
+  color: var(--ch-muted);
+  font-size: var(--ch-fs-small);
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+.ch-floor-head svg {
+  transition: transform 0.2s ease;
+}
+.ch-floor-head.collapsed svg {
+  transform: rotate(-90deg);
+}
+.ch-room-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(228px, 1fr));
+  gap: var(--ch-gap);
+}
+.ch-home.phone .ch-room-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.ch-room-card {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  height: 112px;
+  border-radius: var(--ch-radius);
+  background-position: center;
+  background-size: cover;
+  box-shadow: var(--ch-shadow);
+  transition: transform 0.18s ease;
+}
+.ch-home.tablet .ch-room-card,
+.ch-home.desktop .ch-room-card {
+  height: 168px;
+}
+.ch-home.wallpanel .ch-room-card {
+  height: 142px;
+}
+.ch-room-card:hover {
+  transform: translateY(-3px);
+}
+.ch-room-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(9, 12, 18, 0.05) 35%, rgba(9, 12, 18, 0.78) 100%);
+}
+.ch-room-body {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 11px;
+  color: #fff;
+}
+.ch-room-body h4 {
+  margin: 0;
+  font-size: var(--ch-fs-body);
+  font-weight: 600;
+  line-height: 1.15;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.4);
+}
+.ch-room-body p {
+  margin: 3px 0 0;
+  font-size: var(--ch-fs-small);
+  opacity: 0.85;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ch-home.phone .ch-room-body p {
+  display: none;
+}
+/* Pastilles d'état actives, comme sur les cartes de l'app iPhone */
+.ch-room-badges {
+  display: flex;
+  gap: 6px;
+  margin-top: 6px;
+}
+.ch-room-badges svg {
+  filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.5));
+}
+.ch-fav {
+  position: absolute;
+  top: 9px;
+  right: 9px;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: rgba(9, 12, 18, 0.35);
+  color: #fff;
+  backdrop-filter: blur(6px);
+}
+.ch-fav.on {
+  background: var(--ch-amber);
+  color: #fff;
+}
+
+/* ===========================================================================
+   Détail de pièce — grille « Des services »
+   =========================================================================== */
+.ch-svc-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--ch-cols), minmax(0, 1fr));
+  gap: var(--ch-gap);
+}
+.ch-home.phone .ch-svc-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.ch-svc {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 14px;
+  min-height: 118px;
+  padding: 15px;
+  border-radius: var(--ch-radius);
+  background: var(--ch-surface);
+  box-shadow: var(--ch-shadow);
+  text-align: left;
+}
+.ch-svc h4 {
+  margin: 0;
+  font-size: var(--ch-fs-body);
+  font-weight: 600;
+}
+.ch-svc .ch-svc-state {
+  display: block;
+  margin-top: 2px;
+  font-size: var(--ch-fs-small);
+  color: var(--ch-dim);
+}
+.ch-svc .ch-svc-state.alert {
+  color: var(--ch-coral);
+  font-weight: 600;
+}
+.ch-svc.span2 {
+  grid-column: span 2;
+}
+.ch-svc-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+/* Paire de boutons ronds (éteindre / allumer, fermer / ouvrir…) */
+.ch-pair {
+  display: flex;
+  gap: 10px;
+}
+.ch-round {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border: 1.5px solid var(--ch-line);
+  border-radius: 50%;
+  background: var(--ch-surface);
+  color: var(--ch-dim);
+  transition: all 0.15s ease;
+}
+.ch-home.wallpanel .ch-round {
+  width: 50px;
+  height: 50px;
+}
+.ch-round:hover {
+  border-color: var(--ch-dim);
+}
+.ch-round.on.amber {
+  border-color: var(--ch-amber);
+  background: var(--ch-amber-soft);
+  color: var(--ch-amber);
+}
+.ch-round.on.cyan {
+  border-color: var(--ch-cyan);
+  background: var(--ch-cyan-soft);
+  color: var(--ch-cyan);
+}
+.ch-round.on.coral {
+  border-color: var(--ch-coral);
+  background: var(--ch-coral-soft);
+  color: var(--ch-coral);
+}
+.ch-round.on.violet {
+  border-color: var(--ch-violet);
+  background: var(--ch-violet-soft);
+  color: var(--ch-violet);
+}
+
+/* Carte thermostat compacte : cadran + rangée −/+ */
+.ch-thermo-card.span2 {
+  grid-column: span 2;
+}
+.ch-thermo-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 0;
+  padding: 0;
+  overflow: hidden;
+  border-radius: var(--ch-radius);
+  background: var(--ch-surface);
+  box-shadow: var(--ch-shadow);
+}
+.ch-thermo-top {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 15px;
+}
+.ch-thermo-top h4 {
+  margin: 0;
+  font-size: var(--ch-fs-body);
+  font-weight: 600;
+}
+.ch-thermo-top p {
+  margin: 2px 0 0;
+  color: var(--ch-dim);
+  font-size: var(--ch-fs-small);
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+.ch-dial-mini {
+  position: relative;
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  width: 54px;
+  height: 54px;
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+.ch-dial-mini svg {
+  position: absolute;
+  inset: 0;
+}
+.ch-dial-mini > b {
+  position: relative;
+  z-index: 1;
+  font-weight: 600;
+}
+.ch-thermo-adjust {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 18px;
+  border-top: 1px solid var(--ch-line);
+}
+.ch-thermo-adjust .ch-sp {
+  text-align: center;
+}
+.ch-thermo-adjust .ch-sp b {
+  display: block;
+  font-size: 1rem;
+  font-weight: 600;
+}
+.ch-thermo-adjust .ch-sp span {
+  color: var(--ch-dim);
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.ch-step {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  color: var(--ch-violet);
+  transition: background 0.15s ease;
+}
+.ch-step:hover {
+  background: var(--ch-violet-soft);
+}
+
+/* ===========================================================================
+   Barre d'onglets + mini-lecteur
+   =========================================================================== */
+.ch-miniplayer {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 10px;
+  padding: 9px var(--ch-pad);
+  border-top: 1px solid var(--ch-line);
+  background: var(--ch-surface);
+  color: var(--ch-ink);
+  font-size: var(--ch-fs-small);
+  text-align: left;
+}
+.ch-miniplayer span {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ch-eq {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 13px;
+}
+.ch-eq i {
+  width: 3px;
+  border-radius: 1px;
+  background: var(--ch-violet);
+  animation: ch-eq 0.9s ease-in-out infinite;
+}
+.ch-eq i:nth-child(1) {
+  height: 40%;
+  animation-delay: -0.2s;
+}
+.ch-eq i:nth-child(2) {
+  height: 100%;
+}
+.ch-eq i:nth-child(3) {
+  height: 60%;
+  animation-delay: -0.45s;
+}
+.ch-eq i:nth-child(4) {
+  height: 85%;
+  animation-delay: -0.7s;
+}
+@keyframes ch-eq {
+  0%,
+  100% {
+    transform: scaleY(0.35);
+  }
+  50% {
+    transform: scaleY(1);
+  }
+}
+
+.ch-tabbar {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: space-around;
+  height: 58px;
+  border-top: 1px solid var(--ch-line);
+  background: var(--ch-surface);
+}
+.ch-home.wallpanel .ch-tabbar,
+.ch-home.desktop .ch-tabbar {
+  height: 68px;
+  justify-content: center;
+  gap: 60px;
+}
+.ch-tab {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 18px;
+  border-radius: 999px;
+  color: var(--ch-dim);
+  font-size: var(--ch-fs-small);
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  transition: all 0.15s ease;
+}
+.ch-tab.on {
+  background: var(--ch-violet-soft);
+  color: var(--ch-violet);
+}
+
+/* ===========================================================================
+   Feuilles (overlays)
+   =========================================================================== */
+.ch-scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  background: rgba(9, 12, 18, 0.42);
+  backdrop-filter: blur(3px);
+  animation: ch-fade 0.2s ease;
+}
+.ch-home.phone .ch-scrim {
+  align-items: flex-end;
+}
+.ch-home.tablet .ch-scrim,
+.ch-home.wallpanel .ch-scrim,
+.ch-home.desktop .ch-scrim {
+  align-items: center;
+  justify-content: center;
+  padding: 4%;
+}
+@keyframes ch-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+.ch-sheet {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-height: 100%;
+  overflow: hidden;
+  background: var(--ch-bg);
+  box-shadow: var(--ch-shadow-lg);
+}
+.ch-home.phone .ch-sheet {
+  max-height: 92%;
+  border-radius: 26px 26px 0 0;
+  animation: ch-rise 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.ch-home.tablet .ch-sheet,
+.ch-home.wallpanel .ch-sheet,
+.ch-home.desktop .ch-sheet {
+  max-width: 760px;
+  border-radius: var(--ch-radius-lg);
+  animation: ch-pop 0.22s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.ch-home.desktop .ch-sheet {
+  max-width: 920px;
+}
+@keyframes ch-rise {
+  from {
+    transform: translateY(28px);
+    opacity: 0;
+  }
+}
+@keyframes ch-pop {
+  from {
+    transform: scale(0.97);
+    opacity: 0;
+  }
+}
+
+.ch-grabber {
+  flex: 0 0 auto;
+  width: 40px;
+  height: 4px;
+  margin: 9px auto 0;
+  border-radius: 2px;
+  background: var(--ch-line);
+}
+.ch-home.tablet .ch-grabber,
+.ch-home.wallpanel .ch-grabber,
+.ch-home.desktop .ch-grabber {
+  display: none;
+}
+.ch-sheet-head {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 14px var(--ch-pad) 10px;
+}
+.ch-sheet-head h3 {
+  margin: 0;
+  font-size: 1.4rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+.ch-sheet-head p {
+  margin: 2px 0 0;
+  color: var(--ch-muted);
+  font-size: var(--ch-fs-small);
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+.ch-sheet-head .ch-sheet-title {
+  flex: 1;
+}
+.ch-sheet-body {
+  flex: 1 1 auto;
+  padding: 4px var(--ch-pad) calc(var(--ch-pad) + 6px);
+  overflow: hidden auto;
+}
+
+/* Segment allumer / éteindre en tête de feuille */
+.ch-segment {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin: 2px 0 16px;
+}
+.ch-seg-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 76px;
+  height: 42px;
+  border: 1.5px solid var(--ch-line);
+  border-radius: 999px;
+  background: var(--ch-surface);
+  color: var(--ch-dim);
+  transition: all 0.15s ease;
+}
+.ch-seg-btn.on.amber {
+  border-color: var(--ch-amber);
+  background: var(--ch-amber-soft);
+  color: var(--ch-amber);
+}
+.ch-seg-btn.on.cyan {
+  border-color: var(--ch-cyan);
+  background: var(--ch-cyan-soft);
+  color: var(--ch-cyan);
+}
+
+/* Ligne « tous les éclairages » : deux paliers */
+.ch-master-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  height: 54px;
+  margin-bottom: var(--ch-gap);
+  border-radius: 999px;
+  background: var(--ch-surface);
+  box-shadow: var(--ch-shadow);
+}
+.ch-master-row button {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: var(--ch-muted);
+  border-radius: 999px;
+  transition: color 0.15s ease;
+}
+.ch-master-row button:hover {
+  color: var(--ch-amber);
+}
+
+/* Cartes de charge (éclairage, occultant) */
+.ch-load-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--ch-gap);
+}
+.ch-home.phone .ch-load-grid {
+  grid-template-columns: 1fr;
+}
+.ch-load {
+  padding: 14px 15px;
+  border-radius: var(--ch-radius);
+  background: var(--ch-surface);
+  box-shadow: var(--ch-shadow);
+}
+.ch-load-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 11px;
+}
+.ch-load-top b {
+  font-size: var(--ch-fs-body);
+  font-weight: 600;
+}
+.ch-load-top span {
+  color: var(--ch-dim);
+  font-size: var(--ch-fs-small);
+  font-weight: 600;
+}
+.ch-load-top span.on {
+  color: var(--ch-amber);
+}
+
+/* Curseur de gradation — input range stylé */
+.ch-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 34px;
+  border-radius: 999px;
+  background: var(--ch-surface-2);
+  cursor: pointer;
+}
+.ch-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 26px;
+  height: 26px;
+  border: 3px solid var(--ch-surface);
+  border-radius: 50%;
+  background: var(--ch-amber);
+  box-shadow: 0 1px 5px rgba(17, 23, 33, 0.25);
+}
+.ch-slider::-moz-range-thumb {
+  width: 26px;
+  height: 26px;
+  border: 3px solid var(--ch-surface);
+  border-radius: 50%;
+  background: var(--ch-amber);
+}
+.ch-slider.cyan::-webkit-slider-thumb {
+  background: var(--ch-cyan);
+}
+.ch-slider.cyan::-moz-range-thumb {
+  background: var(--ch-cyan);
+}
+
+/* Interrupteur */
+.ch-switch {
+  position: relative;
+  flex: 0 0 auto;
+  width: 48px;
+  height: 28px;
+  border-radius: 999px;
+  background: var(--ch-surface-2);
+  transition: background 0.2s ease;
+}
+.ch-switch::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(17, 23, 33, 0.3);
+  transition: transform 0.2s ease;
+}
+.ch-switch.on {
+  background: var(--ch-violet);
+}
+.ch-switch.on.amber {
+  background: var(--ch-amber);
+}
+.ch-switch.on::after {
+  transform: translateX(20px);
+}
+
+/* Trio Monter / Stop / Descendre */
+.ch-shade-ctrl {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+.ch-shade-ctrl button {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 40px;
+  border-radius: 12px;
+  background: var(--ch-surface-2);
+  color: var(--ch-muted);
+  font-size: var(--ch-fs-small);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  transition: all 0.15s ease;
+}
+.ch-shade-ctrl button:hover {
+  background: var(--ch-cyan-soft);
+  color: var(--ch-cyan);
+}
+
+/* ===========================================================================
+   Thermostat — cadran plein format
+   =========================================================================== */
+.ch-dial-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 22px 0 10px;
+  border-radius: var(--ch-radius) var(--ch-radius) 0 0;
+  background: var(--ch-surface);
+}
+.ch-dial {
+  position: relative;
+  width: 210px;
+  height: 210px;
+}
+.ch-home.wallpanel .ch-dial {
+  width: 186px;
+  height: 186px;
+}
+.ch-dial-val {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+}
+.ch-dial-val b {
+  font-size: 3.2rem;
+  font-weight: 300;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+.ch-dial-val small {
+  color: var(--ch-dim);
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.ch-dial-mode {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.ch-dial-fan {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  color: var(--ch-muted);
+  transform: translateX(-50%);
+  animation: ch-spin 3.5s linear infinite;
+}
+@keyframes ch-spin {
+  to {
+    transform: translateX(-50%) rotate(360deg);
+  }
+}
+.ch-setrow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 24px;
+  border-top: 1px solid var(--ch-line);
+  background: var(--ch-surface);
+}
+.ch-setrow .ch-sp b {
+  display: block;
+  color: var(--ch-cyan);
+  font-size: 1.15rem;
+  font-weight: 600;
+  text-align: center;
+}
+.ch-setrow .ch-sp span {
+  color: var(--ch-dim);
+  font-size: 0.64rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.ch-modes {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-top: 1px solid var(--ch-line);
+  border-radius: 0 0 var(--ch-radius) var(--ch-radius);
+  background: var(--ch-surface);
+  overflow: hidden;
+}
+.ch-modes button {
+  padding: 12px 6px;
+  color: var(--ch-ink);
+  text-align: center;
+  transition: background 0.15s ease;
+}
+.ch-modes button + button {
+  border-left: 1px solid var(--ch-line);
+}
+.ch-modes button:hover {
+  background: var(--ch-surface-2);
+}
+.ch-modes b {
+  display: block;
+  font-size: var(--ch-fs-body);
+  font-weight: 600;
+}
+.ch-modes span {
+  color: var(--ch-dim);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+.ch-hum {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: var(--ch-gap);
+  padding: 15px;
+  border-radius: var(--ch-radius);
+  background: var(--ch-surface);
+  box-shadow: var(--ch-shadow);
+}
+.ch-hum b {
+  flex: 1;
+  font-size: var(--ch-fs-body);
+  font-weight: 600;
+}
+.ch-hum .ch-hum-val {
+  color: var(--ch-cyan);
+  font-size: var(--ch-fs-body);
+  font-weight: 600;
+}
+
+/* ===========================================================================
+   Listes (écrans vidéo, sources, réglages, zones audio)
+   =========================================================================== */
+.ch-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  overflow: hidden;
+  border-radius: var(--ch-radius);
+  background: var(--ch-line);
+  box-shadow: var(--ch-shadow);
+}
+.ch-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 13px 15px;
+  background: var(--ch-surface);
+  text-align: left;
+  transition: background 0.15s ease;
+}
+.ch-row:hover {
+  background: var(--ch-surface-2);
+}
+.ch-row .ch-row-txt {
+  flex: 1;
+  min-width: 0;
+}
+.ch-row b {
+  display: block;
+  font-size: var(--ch-fs-body);
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ch-row span {
+  display: block;
+  margin-top: 1px;
+  color: var(--ch-dim);
+  font-size: var(--ch-fs-small);
+}
+.ch-row.on b {
+  color: var(--ch-violet);
+}
+.ch-row.on span {
+  color: var(--ch-violet);
+  opacity: 0.75;
+}
+.ch-row-power {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  color: var(--ch-dim);
+}
+.ch-row-power.on {
+  background: var(--ch-violet-soft);
+  color: var(--ch-violet);
+}
+
+/* Vignettes de services musicaux */
+.ch-services {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(78px, 1fr));
+  gap: var(--ch-gap);
+  margin-bottom: 20px;
+}
+.ch-service {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 7px;
+}
+.ch-service i {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background: var(--ch-surface);
+  box-shadow: var(--ch-shadow);
+  transition: transform 0.15s ease;
+}
+.ch-service:hover i {
+  transform: translateY(-2px);
+}
+.ch-service.on i {
+  background: var(--ch-violet);
+  color: #fff;
+}
+.ch-service span {
+  color: var(--ch-muted);
+  font-size: 0.66rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+/* Favoris musicaux */
+.ch-fav-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: var(--ch-gap);
+}
+.ch-home.phone .ch-fav-grid {
+  grid-template-columns: 1fr;
+}
+.ch-fav-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px;
+  border-radius: var(--ch-radius);
+  background: var(--ch-surface);
+  box-shadow: var(--ch-shadow);
+  text-align: left;
+  transition: transform 0.15s ease;
+}
+.ch-fav-card:hover {
+  transform: translateY(-2px);
+}
+.ch-art {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 10px;
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+.ch-fav-card b {
+  display: block;
+  font-size: var(--ch-fs-body);
+  font-weight: 600;
+  line-height: 1.2;
+}
+.ch-fav-card span {
+  display: block;
+  margin-top: 2px;
+  color: var(--ch-dim);
+  font-size: var(--ch-fs-small);
+}
+
+/* Lecteur */
+.ch-player {
+  display: flex;
+  gap: 22px;
+  align-items: center;
+  padding: 8px 0 18px;
+}
+.ch-home.phone .ch-player {
+  flex-direction: column;
+  text-align: center;
+}
+.ch-player-art {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  width: 168px;
+  height: 168px;
+  border-radius: var(--ch-radius);
+  color: #fff;
+  font-size: 2.6rem;
+  font-weight: 700;
+  box-shadow: var(--ch-shadow-lg);
+}
+.ch-player-meta {
+  flex: 1;
+}
+.ch-player-meta h4 {
+  margin: 0;
+  font-size: 1.35rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.ch-player-meta p {
+  margin: 3px 0 18px;
+  color: var(--ch-muted);
+  font-size: var(--ch-fs-body);
+}
+.ch-transport {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.ch-home.phone .ch-transport {
+  justify-content: center;
+}
+.ch-play {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--ch-violet);
+  color: #fff;
+  box-shadow: 0 6px 18px var(--ch-violet-soft);
+}
+.ch-volrow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 15px;
+  border-radius: var(--ch-radius);
+  background: var(--ch-surface);
+  box-shadow: var(--ch-shadow);
+}
+.ch-volrow .ch-slider {
+  height: 26px;
+}
+.ch-volrow .ch-slider::-webkit-slider-thumb {
+  background: var(--ch-violet);
+}
+.ch-volrow .ch-slider::-moz-range-thumb {
+  background: var(--ch-violet);
+}
+
+/* Grille de chaînes */
+.ch-ch-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+  gap: var(--ch-gap);
+}
+.ch-ch {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  aspect-ratio: 4 / 3;
+  border-radius: 14px;
+  background: var(--ch-surface);
+  box-shadow: var(--ch-shadow);
+  transition: transform 0.15s ease;
+}
+.ch-ch:hover {
+  transform: translateY(-2px);
+}
+.ch-ch.on {
+  outline: 2px solid var(--ch-violet);
+}
+.ch-ch b {
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+.ch-ch span {
+  color: var(--ch-dim);
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
+/* Réglages */
+.ch-note {
+  margin: 14px 2px 0;
+  color: var(--ch-dim);
+  font-size: var(--ch-fs-small);
+  line-height: 1.45;
+  text-align: center;
+}
+
+/* ===========================================================================
+   Divers
+   =========================================================================== */
+.ch-fadein {
+  animation: ch-fadein 0.28s ease;
+}
+@keyframes ch-fadein {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+.ch-home .ch-hidden {
+  display: none;
+}
