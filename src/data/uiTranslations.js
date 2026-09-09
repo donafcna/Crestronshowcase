@@ -8,6 +8,8 @@
 // des projets vivent dans projects.js.
 export const uiTranslations = {
   fr: {
+    scale_caption_zoom: "agrandi ×{k} par rapport à la page",
+    scale_caption_real_mm: "taille réelle ({w} × {h} mm)",
     nav_why_ch5: "Pourquoi le CH5 ?",
     nav_contact: "Contact",
     nav_cta: "Demander une démo",
@@ -67,6 +69,8 @@ export const uiTranslations = {
     demo_resume_now: "Reprendre la démo maintenant",
   },
   en: {
+    scale_caption_zoom: "enlarged ×{k} compared with the page",
+    scale_caption_real_mm: "actual size ({w} × {h} mm)",
     nav_why_ch5: "Why CH5?",
     nav_contact: "Contact",
     nav_cta: "Request a demo",
@@ -126,6 +130,8 @@ export const uiTranslations = {
     demo_resume_now: "Resume the demo now",
   },
   de: {
+    scale_caption_zoom: "×{k} gegenüber der Seite vergrößert",
+    scale_caption_real_mm: "Originalgröße ({w} × {h} mm)",
     nav_why_ch5: "Warum CH5?",
     nav_contact: "Kontakt",
     nav_cta: "Demo anfragen",

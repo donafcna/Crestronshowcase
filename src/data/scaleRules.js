@@ -4,6 +4,12 @@
 // Le châssis est dessiné à sa taille de conception (devices.js : 1 px CSS =
 // 1 px de l'écran réel, donc 100 % = « taille réelle ») puis mis à l'échelle
 // une seule fois (transform: scale) pour tenir dans la zone disponible.
+// Échelle « Taille réelle » d'un appareil : ses dimensions physiques (mm) converties en px CSS
+// (96 px par pouce, convention CSS) rapportées à la taille de conception du châssis. Sans
+// dimensions physiques (Xpanel), 1 px de conception = 1 px d'écran.
+export const realSizeScale = (device) =>
+  device.physicalW ? (device.physicalW / 25.4) * 96 / device.chassisW : 1;
+
 export const SCALE_RULES = {
   // Air conservé autour du châssis (0.03 = 3 % de chaque côté) : ombres,
   // bouton plein écran, coins arrondis.

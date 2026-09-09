@@ -14,6 +14,9 @@
 export const DEVICES = {
   phone: {
     id: "phone",
+    // Dimensions physiques du boîtier (mm) : « Taille réelle » = 96 px CSS par pouce
+    physicalW: 71.5,
+    physicalH: 149.6,
     // Caractéristiques réelles affichées dans la légende du châssis
     model: "iPhone 16 Pro",
     diagonalInches: 6.3,
@@ -36,6 +39,9 @@ export const DEVICES = {
   },
   tablet: {
     id: "tablet",
+    // Dimensions physiques du boîtier (mm) : « Taille réelle » = 96 px CSS par pouce
+    physicalW: 281.6,
+    physicalH: 215.5,
     model: "iPad Pro 13\"",
     diagonalInches: 13,
     nativeW: 2752,
@@ -55,6 +61,9 @@ export const DEVICES = {
   },
   wallpanel: {
     id: "wallpanel",
+    // Dimensions physiques du boîtier (mm) : « Taille réelle » = 96 px CSS par pouce
+    physicalW: 240,
+    physicalH: 149,
     model: "Crestron TSW-1070",
     diagonalInches: 10.1,
     nativeW: 1920,
@@ -72,6 +81,9 @@ export const DEVICES = {
   // même rapport 16:10, aucune reprise de design nécessaire.
   wallpanel_hd: {
     id: "wallpanel_hd",
+    // Dimensions physiques du boîtier (mm) : « Taille réelle » = 96 px CSS par pouce
+    physicalW: 240,
+    physicalH: 149,
     model: "Crestron TSW-1080",
     diagonalInches: 10.1,
     nativeW: 1920,

@@ -7,14 +7,16 @@ import { useTranslation } from "../context/LanguageContext";
 // - Page normale : le châssis est présenté à sa taille réelle → badge
 //   « Taille réelle » seul, sans pourcentage ni sélecteur.
 // - Plein écran : le châssis est agrandi pour occuper tout l'espace disponible
-//   (proportions conservées) → la légende indique de combien (« agrandi à
-//   145 % ») et propose deux boutons : « Responsive » (agrandi) et « Taille
-//   réelle » (100 %, pour comparer). Voir scaleRules.js.
+//   (proportions conservées) → la légende indique le facteur obtenu par rapport
+//   à la page (« agrandi ×1,4 ») et propose deux boutons : « Responsive »
+//   (agrandi) et « Taille réelle » (dimensions physiques de l'appareil en mm,
+//   converties à 96 px CSS par pouce — voir scaleRules.js).
 const fill = (tpl, vars) => tpl.replace(/\{(\w+)\}/g, (_, k) => (vars[k] !== undefined ? vars[k] : `{${k}}`));
 
 export const ChassisCaption = ({
   device,
   scale,
+  pageScale,
   mode,
   requestedMode,
   realSizeAvailable,
@@ -31,9 +33,15 @@ export const ChassisCaption = ({
   let status = null;
   if (tooSmall) status = fill(t("scale_caption_too_small"), { pct });
   else if (fullscreen) {
-    if (mode === "real" || Math.abs(scale - 1) < 0.005) status = t("scale_caption_real");
-    else if (scale > 1) status = fill(t("scale_caption_enlarged"), { pct });
-    else status = fill(t("scale_caption_reduced"), { pct });
+    if (mode === "real") {
+      status = device.physicalW
+        ? fill(t("scale_caption_real_mm"), { w: String(device.physicalW).replace(".", decimal), h: String(device.physicalH).replace(".", decimal) })
+        : t("scale_caption_real");
+    } else if (pageScale) {
+      // Agrandissement obtenu par rapport à l'affichage de la page (ex. ×1,4)
+      const k = (Math.round((scale / pageScale) * 100) / 100).toFixed(2).replace(/0$/, "").replace(".", decimal);
+      status = fill(t("scale_caption_zoom"), { k });
+    }
   }
 
   const realSelected = fullscreen ? requestedMode === "real" && realSizeAvailable : true;

@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { getDeviceConfig } from "../data/devices";
 import { useFitScale } from "../hooks/useFitScale";
 import { useDevMode } from "../hooks/useDevMode";
 import { DevMetrics } from "./DevMetrics";
 import { ChassisCaption } from "./ChassisCaption";
 import { useDemoSettings } from "../hooks/useDemoSettings";
-import { SCALE_RULES } from "../data/scaleRules";
+import { SCALE_RULES, realSizeScale } from "../data/scaleRules";
 import { useFrameInfo } from "../context/FrameInfoContext";
 
 // Barre d'état iOS (heure réelle, réseau, batterie) dessinée dans la zone
@@ -65,15 +65,21 @@ export const DeviceFrame = ({
   });
   const { devMode } = useDevMode();
   const { scaleMode, setScaleMode } = useDemoSettings();
-  const realSizeAvailable = fitScale >= SCALE_RULES.realSizeTolerance;
+  // « Taille réelle » = dimensions physiques de l'appareil (mm → px CSS), pas 100 % des px de conception.
+  const realScale = realSizeScale(cfg);
+  const realSizeAvailable = fitScale >= realScale * SCALE_RULES.realSizeTolerance;
   const effectiveMode = scaleMode === "real" && realSizeAvailable ? "real" : "auto";
   // Plein écran : le châssis occupe tout l'espace disponible (proportions
   // conservées), sans le plafond maxUpscale de la page normale.
   const upscaleCap = isFullscreen ? Infinity : SCALE_RULES.maxUpscale;
   const chassisScale =
     effectiveMode === "real"
-      ? 1
+      ? realScale
       : Math.max(SCALE_RULES.minDownscale, Math.min(fitScale, upscaleCap));
+  // Échelle de la page normale, mémorisée pour indiquer en plein écran l'agrandissement obtenu.
+  const pageScaleRef = useRef(null);
+  if (!isFullscreen && effectiveMode === "auto") pageScaleRef.current = chassisScale;
+  const pageScale = pageScaleRef.current;
   const tooSmall = effectiveMode === "auto" && fitScale < SCALE_RULES.minDownscale;
   // screenW/H and guiW/H are both fixed design constants (not measured), so
   // guiScale is a plain derived number — no separate ResizeObserver needed.
@@ -90,6 +96,8 @@ export const DeviceFrame = ({
       device: cfg,
       stage: stageSize,
       scale: chassisScale,
+      pageScale,
+      realScale,
       fitScale,
       mode: effectiveMode,
       requestedMode: scaleMode,
@@ -98,7 +106,7 @@ export const DeviceFrame = ({
       onChangeMode: setScaleMode,
       isFullscreen,
     });
-  }, [setFrameInfo, cfg, stageSize, chassisScale, fitScale, effectiveMode, scaleMode, realSizeAvailable, tooSmall, setScaleMode, isFullscreen]);
+  }, [setFrameInfo, cfg, stageSize, chassisScale, pageScale, realScale, fitScale, effectiveMode, scaleMode, realSizeAvailable, tooSmall, setScaleMode, isFullscreen]);
   useEffect(() => () => setFrameInfo?.(null), [setFrameInfo]);
   const inlineBanners = !frameInfo;
 

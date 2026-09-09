@@ -420,6 +420,7 @@ const ShowcaseInner = ({ sectorId, projectId, device }) => {
                   fullscreen
                   device={frameInfo.device}
                   scale={frameInfo.scale}
+                  pageScale={frameInfo.pageScale}
                   mode={frameInfo.mode}
                   requestedMode={frameInfo.requestedMode}
                   realSizeAvailable={frameInfo.realSizeAvailable}
