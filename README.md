@@ -169,3 +169,16 @@ téléphone, en modale centrée sur tablette / dalle / Xpanel.
 
 À faire : purger les règles `crestron-home-*` orphelines dans `index.css`, et
 remplacer les vignettes Unsplash par des photos Fréquence TV (TODO déjà listé).
+
+
+# maj 9/9/2026 — Villa Crans-Montana : retours de la direction (Antoine)
+
+Corrections demandées après la revue de l'interface par Antoine Dändliker (e-mail du 9/9/2026, 16h54), appliquées à la copie embarquée `public/showcases/villa-gemini-frequencetv/` **et** au projet source VillaCrans (`src/index.html`, `src/iphone.html`, `villa_config.json`) :
+
+- **Scènes fonctionnelles en mode démo** : chaque scène d'éclairage mémorise les niveaux des circuits **et** les positions des stores (appui long ≈ 1,2 s sur une scène, ou bouton 💾 dans la fenêtre Circuits), les restitue visuellement au rappel (curseurs + icônes de stores), avec confirmation à l'enregistrement (« Scène « REPAS » enregistrée ») et au rappel (« … rappelée »). Un point vert marque les scènes mémorisées. Stockage `localStorage` (`villa_scene_<pièce>_<scène>`), lu aussi par le moteur de démo `js/local-feedback.js`.
+- **Premier appui sur une source** = activation + ouverture immédiate de la télécommande correspondante (Musique → lecteur média). Les overlays télécommande / lecteur média, absents de la copie showcase, ont été réinjectés depuis le GUI source. Les événements synthétiques de la démo automatique n'ouvrent pas la télécommande.
+- **Fil d'actualités supprimé** (Le Monde / BBC RSS + bandeau défilant) → bandeau statique « État de la villa » : alarme, portes, source active, température → consigne, consommation, état du processeur, version. Le widget météo reste affiché en permanence (plus d'alternance).
+- **Majuscules uniformisées** (sentence case) : « Salle à manger », « Suite parentale », « Suite invités », « Contrôle global », « Mode actif », « Consigne demandée »… dans les libellés HTML, les 5 dictionnaires et les configurations.
+- **Traductions** : 32 nouvelles clés (boutons d'entête, télécommande, sécurité, contrôle global, bandeau d'état, confirmations de scène) en FR/EN/ES/DE/RU ; `active_piece` russe corrigé ; dictionnaire russe tronqué de `iphone.html` réparé (bug qui invalidait tout le script du GUI iPhone dans le projet source).
+
+Fichiers : `index.html`, `iphone.html`, `config.js`/`config.json`, `js/local-feedback.js` (scènes mémorisées, sériels 111/112 « portes » / « conso » pour la démo).

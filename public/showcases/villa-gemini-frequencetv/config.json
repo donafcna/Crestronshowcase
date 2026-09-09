@@ -10,11 +10,11 @@
     },
     {
       "id": 3,
-      "name": "Salle à Manger"
+      "name": "Salle à manger"
     },
     {
       "id": 4,
-      "name": "Suite Parentale"
+      "name": "Suite parentale"
     },
     {
       "id": 5,
@@ -30,7 +30,7 @@
     },
     {
       "id": 8,
-      "name": "Home Cinéma"
+      "name": "Home cinéma"
     },
     {
       "id": 9,
@@ -38,27 +38,27 @@
     },
     {
       "id": 10,
-      "name": "Suite Invités"
+      "name": "Suite invités"
     },
     {
       "id": 11,
-      "name": "Terrasse & Jardin"
+      "name": "Terrasse & jardin"
     },
     {
       "id": 12,
-      "name": "Piscine & Spa"
+      "name": "Piscine & spa"
     },
     {
       "id": 13,
-      "name": "Sauna & Hammam"
+      "name": "Sauna & hammam"
     },
     {
       "id": 14,
-      "name": "Pool House"
+      "name": "Pool house"
     },
     {
       "id": 15,
-      "name": "Garage & Ateliers"
+      "name": "Garage & ateliers"
     }
   ],
   "sources": [
@@ -209,195 +209,195 @@
     "1": [
       {
         "id": 71,
-        "name": "Spots Plafond Ouest"
+        "name": "Spots plafond ouest"
       },
       {
         "id": 72,
-        "name": "Lustre Principal"
+        "name": "Lustre principal"
       },
       {
         "id": 73,
-        "name": "Ruban LED Corniche"
+        "name": "Ruban LED corniche"
       },
       {
         "id": 74,
-        "name": "Applique Murale Nord"
+        "name": "Applique murale nord"
       }
     ],
     "2": [
       {
         "id": 71,
-        "name": "Spots Zone Cuisson"
+        "name": "Spots zone cuisson"
       },
       {
         "id": 72,
-        "name": "Suspension Îlot"
+        "name": "Suspension îlot"
       },
       {
         "id": 73,
-        "name": "LED Plan de Travail"
+        "name": "LED plan de travail"
       },
       {
         "id": 74,
-        "name": "Plafonnier Central"
+        "name": "Plafonnier central"
       }
     ],
     "3": [
       {
         "id": 71,
-        "name": "Lustre Table Repas"
+        "name": "Lustre table repas"
       },
       {
         "id": 72,
-        "name": "Spots Plafond"
+        "name": "Spots plafond"
       },
       {
         "id": 73,
-        "name": "Appliques Buffet Est"
+        "name": "Appliques buffet est"
       },
       {
         "id": 74,
-        "name": "Ruban LED Vaisselier"
+        "name": "Ruban LED vaisselier"
       }
     ],
     "4": [
       {
         "id": 71,
-        "name": "Plafonnier Suite"
+        "name": "Plafonnier suite"
       },
       {
         "id": 72,
-        "name": "Liseuse Lit Gauche"
+        "name": "Liseuse lit gauche"
       },
       {
         "id": 73,
-        "name": "Liseuse Lit Droite"
+        "name": "Liseuse lit droite"
       },
       {
         "id": 74,
-        "name": "Corniche LED Tête de Lit"
+        "name": "Corniche LED tête de lit"
       }
     ],
     "5": [
       {
         "id": 71,
-        "name": "Plafonnier Chambre 1"
+        "name": "Plafonnier chambre 1"
       },
       {
         "id": 72,
-        "name": "Lampe Bureau 1"
+        "name": "Lampe bureau 1"
       },
       {
         "id": 73,
-        "name": "Liseuse Lit 1"
+        "name": "Liseuse lit 1"
       },
       {
         "id": 74,
-        "name": "Spots Dressing 1"
+        "name": "Spots dressing 1"
       }
     ],
     "6": [
       {
         "id": 71,
-        "name": "Plafonnier Chambre 2"
+        "name": "Plafonnier chambre 2"
       },
       {
         "id": 72,
-        "name": "Lampe Bureau 2"
+        "name": "Lampe bureau 2"
       },
       {
         "id": 73,
-        "name": "Liseuse Lit 2"
+        "name": "Liseuse lit 2"
       },
       {
         "id": 74,
-        "name": "Spots Dressing 2"
+        "name": "Spots dressing 2"
       }
     ],
     "7": [
       {
         "id": 71,
-        "name": "Spots Plafond Bureau"
+        "name": "Spots plafond bureau"
       },
       {
         "id": 72,
-        "name": "Lampe Bureau Design"
+        "name": "Lampe bureau design"
       },
       {
         "id": 73,
-        "name": "Ruban LED Bibliothèque"
+        "name": "Ruban LED bibliothèque"
       },
       {
         "id": 74,
-        "name": "Applique Zone Accueil"
+        "name": "Applique zone accueil"
       }
     ],
     "8": [
       {
         "id": 71,
-        "name": "Nez de Marche Gradué"
+        "name": "Nez de marche gradué"
       },
       {
         "id": 72,
-        "name": "Appliques Murales Gauche"
+        "name": "Appliques murales gauche"
       },
       {
         "id": 73,
-        "name": "Appliques Murales Droite"
+        "name": "Appliques murales droite"
       },
       {
         "id": 74,
-        "name": "Ruban LED Écran"
+        "name": "Ruban LED écran"
       }
     ],
     "9": [
       {
         "id": 71,
-        "name": "Plafonnier Chambre 3"
+        "name": "Plafonnier chambre 3"
       },
       {
         "id": 72,
-        "name": "Lampe Bureau 3"
+        "name": "Lampe bureau 3"
       },
       {
         "id": 73,
-        "name": "Liseuse Lit 3"
+        "name": "Liseuse lit 3"
       },
       {
         "id": 74,
-        "name": "Spots Dressing 3"
+        "name": "Spots dressing 3"
       }
     ],
     "10": [
       {
         "id": 71,
-        "name": "Lustre Suite Invités"
+        "name": "Lustre suite invités"
       },
       {
         "id": 72,
-        "name": "Liseuse Invités"
+        "name": "Liseuse invités"
       },
       {
         "id": 73,
-        "name": "LED Tête de Lit"
+        "name": "LED tête de lit"
       },
       {
         "id": 74,
-        "name": "Spots Dressing Invités"
+        "name": "Spots dressing invités"
       }
     ],
     "11": [
       {
         "id": 71,
-        "name": "Projecteurs Avant-toit"
+        "name": "Projecteurs avant-toit"
       },
       {
         "id": 72,
-        "name": "Appliques Façade Sud"
+        "name": "Appliques façade sud"
       },
       {
         "id": 73,
-        "name": "Spots Encastrés Sol"
+        "name": "Spots encastrés sol"
       },
       {
         "id": 74,
@@ -407,88 +407,88 @@
     "12": [
       {
         "id": 71,
-        "name": "Projecteurs Subaquatiques"
+        "name": "Projecteurs subaquatiques"
       },
       {
         "id": 72,
-        "name": "Spots Plafond Spa"
+        "name": "Spots plafond spa"
       },
       {
         "id": 73,
-        "name": "Ruban LED Margelle"
+        "name": "Ruban LED margelle"
       },
       {
         "id": 74,
-        "name": "Appliques Ambiance Plage"
+        "name": "Appliques ambiance plage"
       }
     ],
     "13": [
       {
         "id": 71,
-        "name": "Plafonnier Vapeur Sauna"
+        "name": "Plafonnier vapeur sauna"
       },
       {
         "id": 72,
-        "name": "Ruban LED Sous-Banc Sauna"
+        "name": "Ruban LED Sous-Banc sauna"
       },
       {
         "id": 73,
-        "name": "Projecteurs Hammam"
+        "name": "Projecteurs hammam"
       },
       {
         "id": 74,
-        "name": "Spots Douche Pluie"
+        "name": "Spots douche pluie"
       }
     ],
     "14": [
       {
         "id": 71,
-        "name": "Suspensions Bar Pool House"
+        "name": "Suspensions bar pool house"
       },
       {
         "id": 72,
-        "name": "Spots Plafond Salon d'Été"
+        "name": "Spots plafond salon d'Été"
       },
       {
         "id": 73,
-        "name": "Ruban LED Comptoir"
+        "name": "Ruban LED comptoir"
       },
       {
         "id": 74,
-        "name": "Appliques Terrasse Pool House"
+        "name": "Appliques terrasse pool house"
       }
     ],
     "15": [
       {
         "id": 71,
-        "name": "Réglettes LED Garage"
+        "name": "Réglettes LED garage"
       },
       {
         "id": 72,
-        "name": "Spots Zone Établi"
+        "name": "Spots zone établi"
       },
       {
         "id": 73,
-        "name": "Éclairage Porte Sectionnelle"
+        "name": "Éclairage porte sectionnelle"
       },
       {
         "id": 74,
-        "name": "Appliques Entrée Garage"
+        "name": "Appliques entrée garage"
       }
     ]
   },
   "circuits": [
     {
       "id": 71,
-      "name": "Spots Plafond"
+      "name": "Spots plafond"
     },
     {
       "id": 72,
-      "name": "Lustre Central"
+      "name": "Lustre central"
     },
     {
       "id": 73,
-      "name": "Appliques Murales"
+      "name": "Appliques murales"
     },
     {
       "id": 74,

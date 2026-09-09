@@ -304,6 +304,22 @@
             box-shadow: none !important;
         }
 
+
+        /* --- Retours direction 09.09.2026 : marqueur « scène mémorisée », bandeau d'état --- */
+        ch5-button[data-saved="true"] .scene-btn { position: relative; }
+        ch5-button[data-saved="true"] .scene-btn::after {
+            content: '●'; position: absolute; top: 3px; right: 6px; font-size: 0.55rem; line-height: 1;
+            color: #10b981; text-shadow: 0 0 6px rgba(16, 185, 129, 0.8); pointer-events: none;
+        }
+        .villa-status-items { display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0; overflow: hidden;
+            white-space: nowrap; font-size: 0.82rem; color: var(--text-secondary);
+            -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 28px), transparent); mask-image: linear-gradient(to right, #000 calc(100% - 28px), transparent); }
+        .villa-status-item { display: inline-flex; align-items: center; gap: 5px; flex-shrink: 0; }
+        .villa-status-item.ok { color: #a7f3d0; }
+        .villa-status-item.warn { color: #fcd34d; }
+        .villa-status-icon { font-size: 0.9rem; }
+        .villa-status-sep { color: rgba(255,255,255,0.25); flex-shrink: 0; }
+
         /* 2. Boutons Éclairage / Scènes (Warm Bronze / Gold) - HAUTEUR (54px) */
         ch5-button[customClass~="scene-btn"] {
             width: 48% !important;
@@ -2695,19 +2711,19 @@
             <div id="rooms-container" style="flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; display: flex; flex-direction: column; gap: 4px; padding-right: 5px; min-height: 0;">
                 <ch5-button id="room-btn-1" label="🛋️ Salon" customClass="room-selector-btn my-room-btn" data-room-id="1" sendEventOnClick="11" receiveStateSelected="11" onclick="updateActiveRoomUI(1)"></ch5-button>
                 <ch5-button id="room-btn-2" label="🍳 Cuisine" customClass="room-selector-btn my-room-btn" data-room-id="2" sendEventOnClick="12" receiveStateSelected="12" onclick="updateActiveRoomUI(2)"></ch5-button>
-                <ch5-button id="room-btn-3" label="🍽️ Salle à Manger" customClass="room-selector-btn my-room-btn" data-room-id="3" sendEventOnClick="13" receiveStateSelected="13" onclick="updateActiveRoomUI(3)"></ch5-button>
-                <ch5-button id="room-btn-4" label="🛏️ Suite Parentale" customClass="room-selector-btn my-room-btn" data-room-id="4" sendEventOnClick="14" receiveStateSelected="14" onclick="updateActiveRoomUI(4)"></ch5-button>
+                <ch5-button id="room-btn-3" label="🍽️ Salle à manger" customClass="room-selector-btn my-room-btn" data-room-id="3" sendEventOnClick="13" receiveStateSelected="13" onclick="updateActiveRoomUI(3)"></ch5-button>
+                <ch5-button id="room-btn-4" label="🛏️ Suite parentale" customClass="room-selector-btn my-room-btn" data-room-id="4" sendEventOnClick="14" receiveStateSelected="14" onclick="updateActiveRoomUI(4)"></ch5-button>
                 <ch5-button id="room-btn-5" label="🛏️ Chambre 1" customClass="room-selector-btn my-room-btn" data-room-id="5" sendEventOnClick="15" receiveStateSelected="15" onclick="updateActiveRoomUI(5)"></ch5-button>
                 <ch5-button id="room-btn-6" label="🛏️ Chambre 2" customClass="room-selector-btn my-room-btn" data-room-id="6" sendEventOnClick="16" receiveStateSelected="16" onclick="updateActiveRoomUI(6)"></ch5-button>
                 <ch5-button id="room-btn-9" label="🛏️ Chambre 3" customClass="room-selector-btn my-room-btn" data-room-id="9" sendEventOnClick="19" receiveStateSelected="19" onclick="updateActiveRoomUI(9)"></ch5-button>
                 <ch5-button id="room-btn-7" label="💼 Bureau" customClass="room-selector-btn my-room-btn" data-room-id="7" sendEventOnClick="17" receiveStateSelected="17" onclick="updateActiveRoomUI(7)"></ch5-button>
-                <ch5-button id="room-btn-8" label="🎬 Home Cinéma" customClass="room-selector-btn my-room-btn" data-room-id="8" sendEventOnClick="18" receiveStateSelected="18" onclick="updateActiveRoomUI(8)"></ch5-button>
-                <ch5-button id="room-btn-10" label="🚪 Suite Invités" customClass="room-selector-btn my-room-btn" data-room-id="10" sendEventOnClick="20" receiveStateSelected="20" onclick="updateActiveRoomUI(10)"></ch5-button>
-                <ch5-button id="room-btn-11" label="🌿 Terrasse & Jardin" customClass="room-selector-btn my-room-btn" data-room-id="11" sendEventOnClick="121" receiveStateSelected="121" onclick="updateActiveRoomUI(11)"></ch5-button>
-                <ch5-button id="room-btn-12" label="🏊 Piscine & Spa" customClass="room-selector-btn my-room-btn" data-room-id="12" sendEventOnClick="122" receiveStateSelected="122" onclick="updateActiveRoomUI(12)"></ch5-button>
-                <ch5-button id="room-btn-13" label="🧖 Sauna & Hammam" customClass="room-selector-btn my-room-btn" data-room-id="13" sendEventOnClick="123" receiveStateSelected="123" onclick="updateActiveRoomUI(13)"></ch5-button>
-                <ch5-button id="room-btn-14" label="🏖️ Pool House" customClass="room-selector-btn my-room-btn" data-room-id="14" sendEventOnClick="124" receiveStateSelected="124" onclick="updateActiveRoomUI(14)"></ch5-button>
-                <ch5-button id="room-btn-15" label="🚗 Garage & Ateliers" customClass="room-selector-btn my-room-btn" data-room-id="15" sendEventOnClick="125" receiveStateSelected="125" onclick="updateActiveRoomUI(15)"></ch5-button>
+                <ch5-button id="room-btn-8" label="🎬 Home cinéma" customClass="room-selector-btn my-room-btn" data-room-id="8" sendEventOnClick="18" receiveStateSelected="18" onclick="updateActiveRoomUI(8)"></ch5-button>
+                <ch5-button id="room-btn-10" label="🚪 Suite invités" customClass="room-selector-btn my-room-btn" data-room-id="10" sendEventOnClick="20" receiveStateSelected="20" onclick="updateActiveRoomUI(10)"></ch5-button>
+                <ch5-button id="room-btn-11" label="🌿 Terrasse & jardin" customClass="room-selector-btn my-room-btn" data-room-id="11" sendEventOnClick="121" receiveStateSelected="121" onclick="updateActiveRoomUI(11)"></ch5-button>
+                <ch5-button id="room-btn-12" label="🏊 Piscine & spa" customClass="room-selector-btn my-room-btn" data-room-id="12" sendEventOnClick="122" receiveStateSelected="122" onclick="updateActiveRoomUI(12)"></ch5-button>
+                <ch5-button id="room-btn-13" label="🧖 Sauna & hammam" customClass="room-selector-btn my-room-btn" data-room-id="13" sendEventOnClick="123" receiveStateSelected="123" onclick="updateActiveRoomUI(13)"></ch5-button>
+                <ch5-button id="room-btn-14" label="🏖️ Pool house" customClass="room-selector-btn my-room-btn" data-room-id="14" sendEventOnClick="124" receiveStateSelected="124" onclick="updateActiveRoomUI(14)"></ch5-button>
+                <ch5-button id="room-btn-15" label="🚗 Garage & ateliers" customClass="room-selector-btn my-room-btn" data-room-id="15" sendEventOnClick="125" receiveStateSelected="125" onclick="updateActiveRoomUI(15)"></ch5-button>
             </div>
 
             <!-- Bouton Défiler Bas (Agrandi 2.5x) -->
@@ -2716,7 +2732,7 @@
             </button>
         </div>
 
-        <!-- Widget Météo & RSS de la Sidebar (Alternance Météo / BBC RSS) -->
+        <!-- Widget Météo de la Sidebar (prévisions Nyon, sans alternance) -->
         <div id="weather-widget" onclick="window.openWeatherWebsite()" style="cursor: pointer;" style="background: rgba(255, 255, 255, 0.02); padding: 5px 8px; border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.05); text-align: center; display: flex; flex-direction: column; justify-content: center; box-sizing: border-box; width: 100%; cursor: pointer; height: 95px; flex-shrink: 0; position: relative; overflow: hidden;">
             <!-- Face A: Météo Prévisions (Nyon) -->
             <div id="weather-face" style="transition: opacity 0.5s ease, transform 0.5s ease; width: 100%; height: 100%; display: flex; flex-direction: column; gap: 4px; justify-content: center; opacity: 1;">
@@ -2752,21 +2768,7 @@
                     </div>
                 </div>
             </div>
-            <!-- Face B: BBC / Le Monde RSS / Actualités -->
-            <div id="rss-face" style="transition: opacity 0.5s ease, transform 0.5s ease; width: 100%; height: 100%; display: none; flex-direction: row; gap: 8px; align-items: center; justify-content: flex-start; text-align: left; opacity: 0; transform: translateY(10px);">
-                <!-- Image de l'article en plein bord (bleeding) à gauche (hauteur 95px, largeur 90px) -->
-                <img id="rss-image" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjkwIiBoZWlnaHQ9Ijk1Ij48cmVjdCB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHJ4PSI0IiBmaWxsPSJyZ2JhKDE0LDE2NSwyMzMsMC4xNSkiLz48cGF0aCBkPSJNMTkgNUg1Yy0xLjEgMC0yIC45LTIgMnYxMGMwIDEuMS55IDIgMiAyaDE0YzEuMSAwIDItLjkgMi0yVjdjMC0xLjEtLjktMi0yLTJ6bS01IDEySDd2LTJoN3Yyem0zLTRIN3YtMmgxMHYyem0wLTRIN1Y3aDEwdjJ6IiBmaWxsPSIjMGVhNWU5Ii8+PC9zdmc+" onerror="window.setRssImageFallback(this)" style="width: 90px; height: 95px; margin: -5px 0 -5px -8px; border-radius: 10px 0 0 10px; object-fit: cover; flex-shrink: 0; border-right: 1px solid rgba(255,255,255,0.05);" />
-                
-                <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; padding-right: 4px;">
-                    <h3 id="rss-source-title" style="margin: 0; font-size: 0.82rem; color: #ef4444; text-transform: uppercase; font-weight: bold; display: flex; align-items: center; gap: 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-                        <span style="display: inline-block; width: 5px; height: 5px; background: #ef4444; border-radius: 50%; animation: pulse 1s infinite;"></span>
-                        BBC News RSS
-                    </h3>
-                    <div id="rss-news-headline" style="font-size: 0.78rem; color: var(--text-primary); line-height: 1.25; font-weight: 500; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;">
-                        Chargement...
-                    </div>
-                </div>
-            </div>
+            <!-- (Face B « actualités RSS » retirée le 09.09.2026 : la météo reste affichée en permanence) -->
         </div>
     </div>
 
@@ -2781,13 +2783,13 @@
             </h1>
             <div style="display: flex; align-items: center; gap: 10px; z-index: 100; position: relative;">
                 <button onclick="window.openAlarmModal()" style="height: 38px; background: rgba(239, 68, 68, 0.15); border: 1px solid #ef4444; color: #fca5a5; border-radius: 8px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 6px; padding: 0 12px; font-size: 0.85rem; transition: all 0.2s; outline: none; z-index: 100; position: relative;" onmouseover="this.style.background='rgba(239, 68, 68, 0.25)'" onmouseout="this.style.background='rgba(239, 68, 68, 0.15)'">
-                    🚨 Alarme
+                    <span data-i18n="alarm_btn">🚨 Alarme</span>
                 </button>
                 <button onclick="window.openCamerasModal()" style="height: 38px; background: rgba(59, 130, 246, 0.15); border: 1px solid #3b82f6; color: #93c5fd; border-radius: 8px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 6px; padding: 0 12px; font-size: 0.85rem; transition: all 0.2s; outline: none; z-index: 100; position: relative;" onmouseover="this.style.background='rgba(59, 130, 246, 0.25)'" onmouseout="this.style.background='rgba(59, 130, 246, 0.15)'">
-                    📷 Caméras
+                    <span data-i18n="cameras_btn">📷 Caméras</span>
                 </button>
                 <button onclick="window.openGlobalControlModal()" style="height: 38px; background: rgba(16, 185, 129, 0.15); border: 1px solid #10b981; color: #a7f3d0; border-radius: 8px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 6px; padding: 0 12px; font-size: 0.85rem; transition: all 0.2s; outline: none; z-index: 100; position: relative;" onmouseover="this.style.background='rgba(16, 185, 129, 0.25)'" onmouseout="this.style.background='rgba(16, 185, 129, 0.15)'">
-                    🌐 Contrôle Global
+                    <span data-i18n="global_btn">🌐 Contrôle global</span>
                 </button>
             </div>
         </div>
@@ -2954,7 +2956,7 @@
                 <h2 style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; padding-bottom: 6px;">
                     <div style="display: flex; align-items: center; gap: 8px;">
                         <svg viewBox="0 0 576 512" style="width: 22px; height: 22px; fill: #8b5cf6;"><path d="M528 0H48C21.5 0 0 21.5 0 48v320c0 26.5 21.5 48 48 48h192l-16 48h-72c-13.3 0-24 10.7-24 24s10.7 24 24 24h272c13.3 0 24-10.7 24-24s-10.7-24-24-24h-72l-16-48h192c26.5 0 48-21.5 48-48V48c0-26.5-21.5-48-48-48zm-16 352H64V64h448v288z"/></svg>
-                        <span onclick="window.playAudioDemo()" style="cursor: pointer; user-select: none;">Sélection Source Audio et Vidéo</span>
+                        <span onclick="window.playAudioDemo()" style="cursor: pointer; user-select: none;" data-i18n="source_title">Sélection de la source audio et vidéo</span>
                     </div>
                 </h2>
 
@@ -3025,17 +3027,10 @@
                     </div>
                 </div>
 
-                <!-- RSS MARQUEE PINNED AT VERY BOTTOM -->
-                <div style="background: var(--container-bg); backdrop-filter: var(--blur-val); -webkit-backdrop-filter: var(--blur-val); border: 1px solid var(--border-color); padding: 8px 20px; border-radius: 16px; display: flex; align-items: center; gap: 15px; overflow: hidden; height: 38px; min-height: 38px; box-sizing: border-box; width: 100%; box-shadow: var(--card-shadow); flex-shrink: 0;">
-                    <span style="background: #ef4444; color: white; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: bold; white-space: nowrap;" data-i18n="news_title">Dernières Actualités</span>
-                    <div style="overflow: hidden; width: 100%; position: relative;">
-                        <div class="news-marquee" style="display: flex; gap: 40px; font-size: 0.85rem; color: var(--text-secondary); white-space: nowrap; animation: marquee 25s linear infinite;">
-                            <span>🚀 Températures idéales dans toute la villa.</span>
-                            <span>💡 Consommation de chauffage/climatisation optimisée de 15%.</span>
-                            <span>🎥 Système de sécurité et caméras de surveillance opérationnels.</span>
-                            <span>🎵 Version logicielle v1.0.149 déployée.</span>
-                        </div>
-                    </div>
+                <!-- BANDEAU « ÉTAT DE LA VILLA » (alarme, multimédia, CVC, processeur) - remplace le fil d'actualités (09.09.2026) -->
+                <div id="news-banner" style="background: var(--container-bg); backdrop-filter: var(--blur-val); -webkit-backdrop-filter: var(--blur-val); border: 1px solid var(--border-color); padding: 8px 20px; border-radius: 16px; display: flex; align-items: center; gap: 15px; overflow: hidden; height: 38px; min-height: 38px; box-sizing: border-box; width: 100%; box-shadow: var(--card-shadow); flex-shrink: 0;">
+                    <span style="background: #10b981; color: #052e16; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: bold; white-space: nowrap;" data-i18n="status_title">État de la villa</span>
+                    <div id="villa-status-items" class="villa-status-items"></div>
                 </div>
 
             </div>
@@ -3062,25 +3057,25 @@
         </div>
         <div style="margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px; height: 85px; box-sizing: border-box;">
             <p style="margin: 0 0 8px 0; font-weight: bold; color: #eab308; font-size: 0.95rem; text-transform: uppercase; display: flex; justify-content: space-between; align-items: center;">
-                <span>Scénarios Éclairage :</span>
-                <span style="font-size: 0.75rem; text-transform: none; font-weight: normal; color: rgba(255,255,255,0.4);">Ajustez puis cliquez sur 💾 pour enregistrer</span>
+                <span data-i18n="scenes_title">Scènes d'éclairage :</span>
+                <span style="font-size: 0.75rem; text-transform: none; font-weight: normal; color: rgba(255,255,255,0.4);" data-i18n="scenes_hint">Réglez les niveaux, puis 💾 ou appui long sur une scène pour l'enregistrer</span>
             </p>
             <div style="display: flex; gap: 10px; align-items: center;">
                 <div style="flex: 1; display: flex; gap: 5px;">
                     <ch5-button label="TOTAL" customClass="scene-btn" style="flex: 1; height: 42px;" sendEventOnClick="24" receiveStateSelected="24"></ch5-button>
-                    <button onclick="saveCurrentScene(24)" style="width: 34px; height: 42px; background: rgba(234,179,8,0.1); border: 1px solid rgba(234,179,8,0.3); border-radius: 8px; color: #eab308; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; outline: none; transition: all 0.2s;" onmouseover="this.style.background='rgba(234,179,8,0.2)'" onmouseout="this.style.background='rgba(234,179,8,0.1)'">💾</button>
+                    <button onclick="saveCurrentScene(4)" title="💾" style="width: 34px; height: 42px; background: rgba(234,179,8,0.1); border: 1px solid rgba(234,179,8,0.3); border-radius: 8px; color: #eab308; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; outline: none; transition: all 0.2s;" onmouseover="this.style.background='rgba(234,179,8,0.2)'" onmouseout="this.style.background='rgba(234,179,8,0.1)'">💾</button>
                 </div>
                 <div style="flex: 1; display: flex; gap: 5px;">
                     <ch5-button label="REPAS" customClass="scene-btn" style="flex: 1; height: 42px;" sendEventOnClick="23" receiveStateSelected="23"></ch5-button>
-                    <button onclick="saveCurrentScene(23)" style="width: 34px; height: 42px; background: rgba(234,179,8,0.1); border: 1px solid rgba(234,179,8,0.3); border-radius: 8px; color: #eab308; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; outline: none; transition: all 0.2s;" onmouseover="this.style.background='rgba(234,179,8,0.2)'" onmouseout="this.style.background='rgba(234,179,8,0.1)'">💾</button>
+                    <button onclick="saveCurrentScene(3)" title="💾" style="width: 34px; height: 42px; background: rgba(234,179,8,0.1); border: 1px solid rgba(234,179,8,0.3); border-radius: 8px; color: #eab308; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; outline: none; transition: all 0.2s;" onmouseover="this.style.background='rgba(234,179,8,0.2)'" onmouseout="this.style.background='rgba(234,179,8,0.1)'">💾</button>
                 </div>
                 <div style="flex: 1; display: flex; gap: 5px;">
                     <ch5-button label="CINÉMA" customClass="scene-btn" style="flex: 1; height: 42px;" sendEventOnClick="22" receiveStateSelected="22"></ch5-button>
-                    <button onclick="saveCurrentScene(22)" style="width: 34px; height: 42px; background: rgba(234,179,8,0.1); border: 1px solid rgba(234,179,8,0.3); border-radius: 8px; color: #eab308; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; outline: none; transition: all 0.2s;" onmouseover="this.style.background='rgba(234,179,8,0.2)'" onmouseout="this.style.background='rgba(234,179,8,0.1)'">💾</button>
+                    <button onclick="saveCurrentScene(2)" title="💾" style="width: 34px; height: 42px; background: rgba(234,179,8,0.1); border: 1px solid rgba(234,179,8,0.3); border-radius: 8px; color: #eab308; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; outline: none; transition: all 0.2s;" onmouseover="this.style.background='rgba(234,179,8,0.2)'" onmouseout="this.style.background='rgba(234,179,8,0.1)'">💾</button>
                 </div>
                 <div style="flex: 1; display: flex; gap: 5px;">
                     <ch5-button label="ÉTEINDRE" customClass="scene-btn" style="flex: 1; height: 42px; --ch5-button-selected-background-color: #dc2626;" sendEventOnClick="21" receiveStateSelected="21"></ch5-button>
-                    <button onclick="saveCurrentScene(21)" style="width: 34px; height: 42px; background: rgba(220,38,38,0.1); border: 1px solid rgba(220,38,38,0.3); border-radius: 8px; color: #f87171; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; outline: none; transition: all 0.2s;" onmouseover="this.style.background='rgba(220,38,38,0.2)'" onmouseout="this.style.background='rgba(220,38,38,0.1)'">💾</button>
+                    <button onclick="saveCurrentScene(1)" title="💾" style="width: 34px; height: 42px; background: rgba(220,38,38,0.1); border: 1px solid rgba(220,38,38,0.3); border-radius: 8px; color: #f87171; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; outline: none; transition: all 0.2s;" onmouseover="this.style.background='rgba(220,38,38,0.2)'" onmouseout="this.style.background='rgba(220,38,38,0.1)'">💾</button>
                 </div>
             </div>
         </div>
@@ -3227,18 +3222,131 @@
     </div>
 
 
+    <!-- POPUP CONTRÔLE DES SOURCES VIDEO (Custom Overlay Panel) -->
+    <div id="source-control-overlay" class="custom-overlay-panel" style="width: 80%; height: 85%; background-color: rgba(22, 25, 32, 0.98); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.1); color: white; padding: 25px; box-sizing: border-box;">
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; margin-bottom: 20px;">
+            <h2 style="margin: 0; border: none; padding: 0; color: #8b5cf6; font-size: 1.5rem; text-transform: uppercase; display: flex; align-items: center; gap: 10px;">
+                ⚙️ <span id="source-control-title">Contrôle de la source</span>
+            </h2>
+            <button onclick="window.closeSourceControlModal()" style="height: 36px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.25); color: white; border-radius: 8px; cursor: pointer; font-weight: bold; padding: 0 16px; font-size: 0.85rem; outline: none; user-select: none; -webkit-user-select: none;" data-i18n="close">FERMER</button>
+        </div>
+        
+        <!-- Télécommande Virtuelle (D-PAD + Contrôles) -->
+        <div id="remote-standard-layout" style="display: flex; flex-direction: row; gap: 40px; justify-content: center; align-items: center; height: calc(100% - 90px);">
+            <!-- D-PAD de Navigation Standard -->
+            <div style="position: relative; width: 200px; height: 200px; background: rgba(255,255,255,0.03); border-radius: 50%; border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center;">
+                <ch5-button id="src-btn-ok" label="OK" customClass="scene-btn" style="position: absolute; width: 60px; height: 60px; border-radius: 50%; z-index: 10;" sendEventOnClick="215"></ch5-button>
+                <ch5-button id="src-btn-up" label="▲" customClass="scene-btn" style="position: absolute; top: 10px; width: 50px; height: 40px;" sendEventOnClick="211"></ch5-button>
+                <ch5-button id="src-btn-down" label="▼" customClass="scene-btn" style="position: absolute; bottom: 10px; width: 50px; height: 40px;" sendEventOnClick="212"></ch5-button>
+                <ch5-button id="src-btn-left" label="◀" customClass="scene-btn" style="position: absolute; left: 10px; width: 40px; height: 50px;" sendEventOnClick="213"></ch5-button>
+                <ch5-button id="src-btn-right" label="▶" customClass="scene-btn" style="position: absolute; right: 10px; width: 40px; height: 50px;" sendEventOnClick="214"></ch5-button>
+            </div>
+            
+            <!-- Boutons de fonctions à côté -->
+            <div style="display: flex; flex-direction: column; gap: 15px; width: 220px;">
+                <div style="display: flex; gap: 10px; width: 100%;">
+                    <ch5-button id="src-btn-back" label="RETOUR" customClass="scene-btn" style="flex: 1; height: 45px;" sendEventOnClick="216"></ch5-button>
+                    <ch5-button id="src-btn-home" label="HOME" customClass="scene-btn" style="flex: 1; height: 45px;" sendEventOnClick="217"></ch5-button>
+                </div>
+                <div style="display: flex; gap: 10px; width: 100%;">
+                    <ch5-button id="src-btn-rew" label="⏪" customClass="scene-btn" style="flex: 1; height: 45px;" sendEventOnClick="219"></ch5-button>
+                    <ch5-button id="src-btn-play" label="⏯️" customClass="scene-btn" style="flex: 1; height: 45px;" sendEventOnClick="218"></ch5-button>
+                    <ch5-button id="src-btn-fwd" label="⏩" customClass="scene-btn" style="flex: 1; height: 45px;" sendEventOnClick="220"></ch5-button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Télécommande Apple TV Style iOS -->
+        <div id="remote-appletv-layout" style="display: none; flex-direction: column; align-items: center; justify-content: center; height: calc(100% - 90px); width: 100%; position: relative;">
+            <!-- Bouton MENU en haut à gauche -->
+            <div style="position: absolute; top: 10px; left: 10%; width: 80%; display: flex; justify-content: flex-start;">
+                <ch5-button id="src-btn-apple-menu" label="MENU" customStyle="background-color: #2c2c2e; border: 1px solid rgba(255,255,255,0.15); color: #fff; font-weight: bold; border-radius: 12px; width: 90px; height: 45px; font-size: 0.9rem;" sendEventOnClick="216"></ch5-button>
+            </div>
+            
+            <!-- D-PAD en croix style iOS Apple TV Remote -->
+            <div style="display: grid; grid-template-columns: repeat(3, 80px); grid-template-rows: repeat(3, 80px); gap: 15px; margin-top: 50px;">
+                <!-- Row 1 -->
+                <div></div>
+                <ch5-button id="src-btn-apple-up" label="o" customStyle="background-color: #2c2c2e; border: 1px solid rgba(255,255,255,0.15); color: #aaa; border-radius: 50%; width: 80px; height: 80px; font-size: 1.5rem; display: flex; align-items: center; justify-content: center; font-weight: bold;" sendEventOnClick="211"></ch5-button>
+                <div></div>
+                
+                <!-- Row 2 -->
+                <ch5-button id="src-btn-apple-left" label="o" customStyle="background-color: #2c2c2e; border: 1px solid rgba(255,255,255,0.15); color: #aaa; border-radius: 50%; width: 80px; height: 80px; font-size: 1.5rem; display: flex; align-items: center; justify-content: center; font-weight: bold;" sendEventOnClick="213"></ch5-button>
+                <ch5-button id="src-btn-apple-ok" label="OK" customStyle="background-color: #3a3a3c; border: 1px solid rgba(255,255,255,0.25); color: #fff; border-radius: 50%; width: 80px; height: 80px; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; font-weight: bold;" sendEventOnClick="215"></ch5-button>
+                <ch5-button id="src-btn-apple-right" label="o" customStyle="background-color: #2c2c2e; border: 1px solid rgba(255,255,255,0.15); color: #aaa; border-radius: 50%; width: 80px; height: 80px; font-size: 1.5rem; display: flex; align-items: center; justify-content: center; font-weight: bold;" sendEventOnClick="214"></ch5-button>
+                
+                <!-- Row 3 -->
+                <div></div>
+                <ch5-button id="src-btn-apple-down" label="o" customStyle="background-color: #2c2c2e; border: 1px solid rgba(255,255,255,0.15); color: #aaa; border-radius: 50%; width: 80px; height: 80px; font-size: 1.5rem; display: flex; align-items: center; justify-content: center; font-weight: bold;" sendEventOnClick="212"></ch5-button>
+                <div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- POPUP LECTEUR DE MUSIQUE / MEDIA PLAYER (Custom Overlay Panel) -->
+    <div id="media-player-overlay" class="custom-overlay-panel" style="width: 80%; height: 85%; background-color: rgba(22, 25, 32, 0.98); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.1); color: white; padding: 25px; box-sizing: border-box;">
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; margin-bottom: 20px;">
+            <h2 style="margin: 0; border: none; padding: 0; color: #c084fc; font-size: 1.5rem; text-transform: uppercase; display: flex; align-items: center; gap: 10px;">
+                <span data-i18n="media_title">🎵 Lecteur média</span>
+            </h2>
+            <button onclick="window.closeMediaPlayerModal()" style="height: 36px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.25); color: white; border-radius: 8px; cursor: pointer; font-weight: bold; padding: 0 16px; font-size: 0.85rem; outline: none; user-select: none; -webkit-user-select: none;" data-i18n="close">FERMER</button>
+        </div>
+        
+        <div style="display: flex; gap: 40px; align-items: center; justify-content: center; height: calc(100% - 90px); max-width: 800px; margin: 0 auto;">
+            <!-- Pochette Album -->
+            <div style="width: 200px; height: 200px; background: linear-gradient(135deg, #c084fc, #8b5cf6); border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; border: 1px solid rgba(255,255,255,0.15);">
+                <svg viewBox="0 0 24 24" style="width: 80px; height: 80px; fill: white;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 14.5c-2.48 0-4.5-2.02-4.5-4.5s2.02-4.5 4.5-4.5 4.5 2.02 4.5 4.5-2.02 4.5-4.5 4.5zM12 10c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>
+            </div>
+            
+            <!-- Informations Musique et Commandes -->
+            <div style="flex: 1; display: flex; flex-direction: column; gap: 20px;">
+                <div>
+                    <h3 style="margin: 0; font-size: 1.6rem; color: white;">Stairway to Heaven</h3>
+                    <p style="margin: 5px 0 0 0; color: #c084fc; font-weight: 500;">Led Zeppelin</p>
+                    <p style="margin: 2px 0 0 0; color: rgba(255,255,255,0.4); font-size: 0.85rem;">Led Zeppelin IV (1971)</p>
+                </div>
+                
+                <!-- Barre de Progression -->
+                <div>
+                    <div style="height: 4px; width: 100%; background: rgba(255,255,255,0.1); border-radius: 2px; position: relative;">
+                        <div style="height: 100%; width: 45%; background: #c084fc; border-radius: 2px; position: relative;">
+                            <div style="width: 10px; height: 10px; border-radius: 50%; background: white; position: absolute; right: -5px; top: -3px; box-shadow: 0 0 8px #c084fc;"></div>
+                        </div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; color: rgba(255,255,255,0.4); font-size: 0.75rem; margin-top: 8px;">
+                        <span>03:41</span>
+                        <span>08:02</span>
+                    </div>
+                </div>
+                
+                <!-- Contrôles Multimédia -->
+                <div style="display: flex; gap: 15px; align-items: center; justify-content: center;">
+                    <ch5-button label="⏮️" customClass="scene-btn" style="width: 55px; height: 45px;" sendEventOnClick="253"></ch5-button>
+                    <ch5-button label="⏯️" customClass="scene-btn" style="width: 70px; height: 50px;" sendEventOnClick="251"></ch5-button>
+                    <ch5-button label="⏭️" customClass="scene-btn" style="width: 55px; height: 45px;" sendEventOnClick="252"></ch5-button>
+                </div>
+                
+                <!-- Volume Dédié Source Audio -->
+                <div style="display: flex; align-items: center; gap: 15px; background: rgba(255,255,255,0.02); padding: 10px 15px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.05); margin-top: 10px;">
+                    <span style="font-weight: bold; font-size: 0.85rem; color: var(--text-secondary); white-space: nowrap;"><span data-i18n="media_volume">Volume musique :</span></span>
+                    <ch5-slider class="volume-slider" min="0" max="65535" sendEventOnChange="254" receiveStateValue="254" style="flex: 1; margin: 0; padding: 0;"></ch5-slider>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- POPUP CLAVIER & PARTITIONS D'ALARME (Custom Overlay Panel) -->
     <div id="alarm-overlay" class="custom-overlay-panel" style="width: 80%; height: 85%; background-color: rgba(22, 25, 32, 0.98); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.1); color: white; padding: 25px; box-sizing: border-box;">
         <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; margin-bottom: 20px;">
             <h2 style="margin: 0; border: none; padding: 0; color: #ef4444; font-size: 1.5rem; text-transform: uppercase; display: flex; align-items: center; gap: 10px;">
-                🚨 Système de Sécurité
+                <span data-i18n="security_title">🚨 Système de sécurité</span>
             </h2>
             <button onclick="window.closeAlarmModal()" style="height: 36px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.25); color: white; border-radius: 8px; cursor: pointer; font-weight: bold; padding: 0 16px; font-size: 0.85rem; outline: none; user-select: none; -webkit-user-select: none;" data-i18n="close">FERMER</button>
         </div>
         
         <!-- ÉCRAN 1: Clavier d'autorisation -->
         <div id="alarm-keypad-screen" style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: calc(100% - 90px); gap: 15px;">
-            <p style="margin: 0; font-size: 1.1rem; color: #94a3b8; font-weight: 500;">Veuillez saisir le code d'administration :</p>
+            <p style="margin: 0; font-size: 1.1rem; color: #94a3b8; font-weight: 500;"><span data-i18n="security_code_prompt">Veuillez saisir le code d'administration :</span></p>
             <div style="background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; width: 220px; height: 50px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; font-family: monospace; letter-spacing: 5px; color: white;">
                 <span id="alarm-code-display"></span>
             </div>
@@ -3267,7 +3375,7 @@
         <!-- ÉCRAN 2: Partitions d'alarme (Masqué par défaut) -->
         <div id="alarm-partitions-screen" style="display: none; flex-direction: column; gap: 20px; overflow-y: auto; height: calc(100% - 90px); padding-right: 5px;">
             <p style="margin: 0; color: #10b981; font-weight: bold; font-size: 1.1rem; display: flex; align-items: center; gap: 8px;">
-                ✅ Code Correct. Gestion des Partitions de Sécurité :
+                <span data-i18n="security_ok">✅ Code correct. Gestion des partitions de sécurité :</span>
             </p>
             
             <div style="display: flex; flex-direction: column; gap: 15px;">
@@ -3275,8 +3383,8 @@
                 <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 10px; padding: 15px; display: flex; justify-content: space-between; align-items: center;">
                     <div>
                         <h4 style="margin: 0; font-size: 1.1rem; color: white; display: flex; align-items: center; gap: 10px;">
-                            Partition 1 : Rez-de-Chaussée
-                            <span id="alarm-part-1-status" style="font-size: 0.75rem; font-weight: bold; padding: 2px 8px; border-radius: 4px; background: rgba(16,185,129,0.1); color: #10b981;">DESACTIVÉE</span>
+                            Partition 1 : Rez-de-chaussée
+                            <span id="alarm-part-1-status" style="font-size: 0.75rem; font-weight: bold; padding: 2px 8px; border-radius: 4px; background: rgba(16,185,129,0.1); color: #10b981;">DÉSACTIVÉE</span>
                         </h4>
                         <p style="margin: 3px 0 0 0; color: #94a3b8; font-size: 0.85rem;">Détecteurs volumétriques, entrées principales et véranda.</p>
                     </div>
@@ -3290,7 +3398,7 @@
                 <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 10px; padding: 15px; display: flex; justify-content: space-between; align-items: center;">
                     <div>
                         <h4 style="margin: 0; font-size: 1.1rem; color: white; display: flex; align-items: center; gap: 10px;">
-                            Partition 2 : Étage & Chambres
+                            Partition 2 : Étage & chambres
                             <span id="alarm-part-2-status" style="font-size: 0.75rem; font-weight: bold; padding: 2px 8px; border-radius: 4px; background: rgba(16,185,129,0.1); color: #10b981; border: 1px solid rgba(16,185,129,0.3);">DÉSACTIVÉE</span>
                         </h4>
                         <p style="margin: 3px 0 0 0; color: #94a3b8; font-size: 0.85rem;">Suite parentale, chambres enfants et couloir nuit.</p>
@@ -3305,7 +3413,7 @@
                 <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 10px; padding: 15px; display: flex; justify-content: space-between; align-items: center;">
                     <div>
                         <h4 style="margin: 0; font-size: 1.1rem; color: white; display: flex; align-items: center; gap: 10px;">
-                            Partition 3 : Dépendances & Garage
+                            Partition 3 : Dépendances & garage
                             <span id="alarm-part-3-status" style="font-size: 0.75rem; font-weight: bold; padding: 2px 8px; border-radius: 4px; background: rgba(16,185,129,0.1); color: #10b981; border: 1px solid rgba(16,185,129,0.3);">DÉSACTIVÉE</span>
                         </h4>
                         <p style="margin: 3px 0 0 0; color: #94a3b8; font-size: 0.85rem;">Poolhouse, atelier technique et garage principal.</p>
@@ -3320,7 +3428,7 @@
                 <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 10px; padding: 15px; display: flex; justify-content: space-between; align-items: center;">
                     <div>
                         <h4 style="margin: 0; font-size: 1.1rem; color: white; display: flex; align-items: center; gap: 10px;">
-                            Partition 4 : Périmètre Extérieur
+                            Partition 4 : Périmètre extérieur
                             <span id="alarm-part-4-status" style="font-size: 0.75rem; font-weight: bold; padding: 2px 8px; border-radius: 4px; background: rgba(16,185,129,0.1); color: #10b981; border: 1px solid rgba(16,185,129,0.3);">DÉSACTIVÉE</span>
                         </h4>
                         <p style="margin: 3px 0 0 0; color: #94a3b8; font-size: 0.85rem;">Barrière infrarouge, éclairages extérieurs et détecteurs jardin.</p>
@@ -3339,7 +3447,7 @@
     <div id="cameras-overlay" class="custom-overlay-panel" style="width: 80%; height: 85%; background-color: rgba(22, 25, 32, 0.98); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.1); color: white; padding: 25px; box-sizing: border-box;">
         <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; margin-bottom: 20px;">
             <h2 style="margin: 0; border: none; padding: 0; color: #3b82f6; font-size: 1.5rem; text-transform: uppercase; display: flex; align-items: center; gap: 10px;">
-                📷 Caméras de Surveillance
+                <span data-i18n="cameras_title">📷 Caméras de surveillance</span>
             </h2>
             <button onclick="window.closeCamerasModal()" style="height: 36px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.25); color: white; border-radius: 8px; cursor: pointer; font-weight: bold; padding: 0 16px; font-size: 0.85rem; outline: none; user-select: none; -webkit-user-select: none;" data-i18n="close">FERMER</button>
         </div>
@@ -3354,7 +3462,7 @@
     <div id="global-control-overlay" class="custom-overlay-panel" style="width: 80%; height: 85%; background-color: rgba(22, 25, 32, 0.98); border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.1); color: white; padding: 25px; box-sizing: border-box;">
         <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; margin-bottom: 20px;">
             <h2 style="margin: 0; border: none; padding: 0; color: #10b981; font-size: 1.5rem; text-transform: uppercase; display: flex; align-items: center; gap: 10px;">
-                🌐 Contrôle Global Villa
+                <span data-i18n="global_title">🌐 Contrôle global de la villa</span>
             </h2>
             <button onclick="window.closeGlobalControlModal()" style="height: 36px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.25); color: white; border-radius: 8px; cursor: pointer; font-weight: bold; padding: 0 16px; font-size: 0.85rem; outline: none; user-select: none; -webkit-user-select: none;" data-i18n="close">FERMER</button>
         </div>
@@ -3366,7 +3474,7 @@
                 <!-- Section Éclairage Global -->
                 <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 10px; padding: 15px;">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                        <h3 style="margin: 0; font-size: 1.1rem; color: #eab308; text-transform: uppercase;">💡 Éclairage Global</h3>
+                        <h3 style="margin: 0; font-size: 1.1rem; color: #eab308; text-transform: uppercase;"><span data-i18n="global_lights">💡 Éclairage global</span></h3>
                         <button onclick="window.openGlobalPresetCustomizer('lighting')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 50%; width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; cursor: pointer; outline: none; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'">⚙️</button>
                     </div>
                     <p style="margin: 0 0 15px 0; color: #94a3b8; font-size: 0.85rem;">Commande groupée de tous les circuits d'éclairage de la villa.</p>
@@ -3379,7 +3487,7 @@
                 <!-- Section Stores Globaux -->
                 <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 10px; padding: 15px;">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                        <h3 style="margin: 0; font-size: 1.1rem; color: #00b4c5; text-transform: uppercase;">↕️ Stores Globaux</h3>
+                        <h3 style="margin: 0; font-size: 1.1rem; color: #00b4c5; text-transform: uppercase;"><span data-i18n="global_shades">↕️ Stores globaux</span></h3>
                         <button onclick="window.openGlobalPresetCustomizer('shades')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 50%; width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; cursor: pointer; outline: none; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'">⚙️</button>
                     </div>
                     <p style="margin: 0 0 15px 0; color: #94a3b8; font-size: 0.85rem;">Commande centralisée de toutes les motorisations et volets.</p>
@@ -3396,7 +3504,7 @@
                 <!-- Section Climatisation Globale -->
                 <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 10px; padding: 15px;">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                        <h3 style="margin: 0; font-size: 1.1rem; color: #10b981; text-transform: uppercase;">❄️ Climatisation Globale</h3>
+                        <h3 style="margin: 0; font-size: 1.1rem; color: #10b981; text-transform: uppercase;"><span data-i18n="global_hvac">❄️ Climatisation globale</span></h3>
                         <button onclick="window.openGlobalPresetCustomizer('hvac')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 50%; width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; cursor: pointer; outline: none; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'">⚙️</button>
                     </div>
                     <p style="margin: 0 0 15px 0; color: #94a3b8; font-size: 0.85rem;">Mode de chauffage / climatisation central de la villa.</p>
@@ -3409,7 +3517,7 @@
                 <!-- Section Mode Vacances -->
                 <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 10px; padding: 15px;">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                        <h3 style="margin: 0; font-size: 1.1rem; color: #fb7185; text-transform: uppercase;">✈️ Mode Vacances</h3>
+                        <h3 style="margin: 0; font-size: 1.1rem; color: #fb7185; text-transform: uppercase;"><span data-i18n="global_holiday">✈️ Mode vacances</span></h3>
                         <button onclick="window.openGlobalPresetCustomizer('vacation')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 50%; width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; cursor: pointer; outline: none; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'">⚙️</button>
                     </div>
                     <p style="margin: 0 0 15px 0; color: #94a3b8; font-size: 0.85rem;">Met la maison en veille prolongée (sécurité max, énergie min).</p>
@@ -3426,7 +3534,7 @@
     <div id="global-preset-custom-overlay" class="custom-overlay-panel" style="width: 80%; height: 85%; background-color: rgba(22, 25, 32, 0.98); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.1); color: white; padding: 25px; box-sizing: border-box; display: none; z-index: 1100;">
         <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; margin-bottom: 20px;">
             <h2 style="margin: 0; border: none; padding: 0; color: #10b981; font-size: 1.5rem; text-transform: uppercase; display: flex; align-items: center; gap: 10px;">
-                ⚙️ Configuration Preset Global
+                ⚙️ Configuration du preset global
             </h2>
             <div style="display: flex; gap: 10px;">
                 <button onclick="window.saveGlobalPresetConfig()" style="height: 35px; background: #10b981; border: 1px solid rgba(16,185,129,0.3); color: white; border-radius: 6px; cursor: pointer; font-weight: bold; padding: 0 15px; font-size: 0.85rem; border: none;">SAUVEGARDER</button>
@@ -3436,7 +3544,7 @@
         
         <!-- Sélection du sous-preset -->
         <div style="margin-bottom: 20px; display: flex; align-items: center; gap: 15px;">
-            <span style="font-weight: bold; color: #94a3b8; font-size: 0.95rem;">Sélectionnez le Preset à configurer :</span>
+            <span style="font-weight: bold; color: #94a3b8; font-size: 0.95rem;">Sélectionnez le preset à configurer :</span>
             <select id="customizer-preset-select" onchange="window.renderCustomizerFields()" style="background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.15); color: white; border-radius: 6px; padding: 6px 12px; font-size: 0.9rem; outline: none; min-width: 200px;"></select>
         </div>
         
@@ -3452,22 +3560,22 @@
             fr: {
                 settings: "Réglages",
                 close: "Fermer",
-                select_language: "Sélectionner la Langue :",
-                select_theme: "Sélectionner le Thème :",
-                theme_dark: "Sombre Premium 🌙",
-                theme_light: "Clair Élégant ☀️",
-                theme_glass: "Verre Dépoli ❄️",
-                theme_cyber: "Bleu Cyberpunk 🌌",
+                select_language: "Sélectionner la langue :",
+                select_theme: "Sélectionner le thème :",
+                theme_dark: "Sombre premium 🌙",
+                theme_light: "Clair élégant ☀️",
+                theme_glass: "Verre dépoli ❄️",
+                theme_cyber: "Bleu cyberpunk 🌌",
                 active_piece: "PIÈCE ACTIVE :",
-                alarm_title: "Alarme Globale :",
+                alarm_title: "Alarme globale :",
                 alarm_arm: "ARMER",
                 alarm_disarm: "DÉSARMER",
                 temp_title: "HVAC",
                 temp_actual: "Actuelle :",
-                temp_mode: "Mode Actif :",
-                temp_requested: "Consigne Demandée :",
-                source_title: "Sélection Source Audio et Vidéo",
-                source_video: "Source Vidéo active :",
+                temp_mode: "Mode actif :",
+                temp_requested: "Consigne demandée :",
+                source_title: "Sélection de la source audio et vidéo",
+                source_video: "Source vidéo active :",
                 volume_title: "Volume :",
                 circuits_title: "Circuits :",
                 motors_title: "Moteurs :",
@@ -3481,29 +3589,61 @@
                 weather_day3: "Ven.",
                 weather_wind: "Vent",
                 weather_humidity: "Humidité",
-                news_title: "Dernières Actualités",
-                video_title: "Vidéo Domotique",
-                rooms: "Pièces Villa"
+                status_title: "État de la villa",
+                video_title: "Vidéo domotique",
+                rooms: "Pièces de la villa",
+                alarm_btn: "🚨 Alarme",
+                cameras_btn: "📷 Caméras",
+                global_btn: "🌐 Contrôle global",
+                scenes_title: "Scènes d'éclairage :",
+                scenes_hint: "Réglez les niveaux, puis 💾 ou appui long sur une scène pour l'enregistrer",
+                source_ctrl_title: "Contrôle de la source",
+                media_title: "🎵 Lecteur média",
+                media_volume: "Volume musique :",
+                security_title: "🚨 Système de sécurité",
+                security_code_prompt: "Veuillez saisir le code d'administration :",
+                security_ok: "✅ Code correct. Gestion des partitions de sécurité :",
+                cameras_title: "📷 Caméras de surveillance",
+                global_title: "🌐 Contrôle global de la villa",
+                global_lights: "💡 Éclairage global",
+                global_shades: "↕️ Stores globaux",
+                global_hvac: "❄️ Climatisation globale",
+                global_holiday: "✈️ Mode vacances",
+                status_title: "État de la villa",
+                status_alarm: "Alarme",
+                status_alarm_off: "désactivée",
+                status_alarm_on: "armée",
+                status_alarm_partial: "partielle ({n}/4)",
+                status_source_off: "Multimédia en veille",
+                status_doors: "Portes :",
+                status_power: "Conso :",
+                status_cp4_on: "Processeur connecté",
+                status_cp4_off: "Processeur hors ligne",
+                status_demo: "Mode démonstration",
+                scene_saved: "Scène « {scene} » enregistrée",
+                scene_recalled: "Scène « {scene} » rappelée",
+                scene_activated: "Scène « {scene} » activée",
+                scene_generic: "Scène"
             },
             en: {
                 settings: "Settings",
                 close: "Close",
-                select_language: "Select Language:",
-                select_theme: "Select Theme:",
-                theme_dark: "Dark Premium 🌙",
-                theme_light: "Elegant Light ☀️",
-                theme_glass: "Frosted Glass ❄️",
-                theme_cyber: "Cyberpunk Blue 🌌",
+                select_language: "Select language:",
+                select_theme: "Select theme:",
+                theme_dark: "Dark premium 🌙",
+                theme_light: "Elegant light ☀️",
+                theme_glass: "Frosted glass ❄️",
+                theme_cyber: "Cyberpunk blue 🌌",
                 active_piece: "ACTIVE ROOM:",
-                alarm_title: "Global Alarm:",
+                alarm_title: "Global alarm:",
                 alarm_arm: "ARM",
                 alarm_disarm: "DISARM",
                 temp_title: "HVAC",
                 temp_actual: "Current:",
-                temp_mode: "Active Mode:",
-                temp_requested: "Requested Temp:",
-                source_title: "Audio & Video Source Selection",
-                source_video: "Active Video Source:",
+                temp_mode: "Active mode:",
+                temp_requested: "Setpoint:",
+                source_title: "Audio & video source selection",
+                source_video: "Active video source:",
                 volume_title: "Volume:",
                 circuits_title: "Circuits:",
                 motors_title: "Motors:",
@@ -3517,29 +3657,61 @@
                 weather_day3: "Fri.",
                 weather_wind: "Wind",
                 weather_humidity: "Humidity",
-                news_title: "Latest News",
-                video_title: "Automation Video",
-                rooms: "Villa Rooms"
+                status_title: "Villa status",
+                video_title: "Automation video",
+                rooms: "Villa rooms",
+                alarm_btn: "🚨 Alarm",
+                cameras_btn: "📷 Cameras",
+                global_btn: "🌐 Global control",
+                scenes_title: "Lighting scenes:",
+                scenes_hint: "Set the levels, then 💾 or long-press a scene to save it",
+                source_ctrl_title: "Source control",
+                media_title: "🎵 Media player",
+                media_volume: "Music volume:",
+                security_title: "🚨 Security system",
+                security_code_prompt: "Please enter the administration code:",
+                security_ok: "✅ Code accepted. Security partitions:",
+                cameras_title: "📷 Surveillance cameras",
+                global_title: "🌐 Whole-villa control",
+                global_lights: "💡 Global lighting",
+                global_shades: "↕️ Global shades",
+                global_hvac: "❄️ Global climate",
+                global_holiday: "✈️ Holiday mode",
+                status_title: "Villa status",
+                status_alarm: "Alarm",
+                status_alarm_off: "disarmed",
+                status_alarm_on: "armed",
+                status_alarm_partial: "partial ({n}/4)",
+                status_source_off: "Media on standby",
+                status_doors: "Doors:",
+                status_power: "Power:",
+                status_cp4_on: "Processor connected",
+                status_cp4_off: "Processor offline",
+                status_demo: "Demonstration mode",
+                scene_saved: "Scene “{scene}” saved",
+                scene_recalled: "Scene “{scene}” recalled",
+                scene_activated: "Scene “{scene}” activated",
+                scene_generic: "Scene"
             },
             es: {
                 settings: "Ajustes",
                 close: "Cerrar",
-                select_language: "Seleccionar Idioma:",
-                select_theme: "Seleccionar Tema:",
-                theme_dark: "Oscuro Premium 🌙",
-                theme_light: "Claro Elegante ☀️",
-                theme_glass: "Cristal Esmerilado ❄️",
-                theme_cyber: "Azul Cyberpunk 🌌",
+                select_language: "Seleccionar idioma:",
+                select_theme: "Seleccionar tema:",
+                theme_dark: "Oscuro premium 🌙",
+                theme_light: "Claro elegante ☀️",
+                theme_glass: "Cristal esmerilado ❄️",
+                theme_cyber: "Azul cyberpunk 🌌",
                 active_piece: "HABITACIÓN ACTIVA:",
-                alarm_title: "Alarma Global:",
+                alarm_title: "Alarma global:",
                 alarm_arm: "ARMAR",
                 alarm_disarm: "DESARMAR",
                 temp_title: "HVAC",
                 temp_actual: "Actual:",
-                temp_mode: "Modo Activo:",
-                temp_requested: "Temperatura Solicitada:",
-                source_title: "Selección de Fuentes de Audio y Video",
-                source_video: "Fuente de Video Activa:",
+                temp_mode: "Modo activo:",
+                temp_requested: "Consigna:",
+                source_title: "Selección de fuente de audio y vídeo",
+                source_video: "Fuente de vídeo activa:",
                 volume_title: "Volumen:",
                 circuits_title: "Circuitos:",
                 motors_title: "Motores:",
@@ -3553,17 +3725,49 @@
                 weather_day3: "Vie.",
                 weather_wind: "Viento",
                 weather_humidity: "Humedad",
-                news_title: "Últimas Noticias",
-                video_title: "Video Domótico",
-                rooms: "Habitaciones"
+                status_title: "Estado de la villa",
+                video_title: "Vídeo domótico",
+                rooms: "Habitaciones",
+                alarm_btn: "🚨 Alarma",
+                cameras_btn: "📷 Cámaras",
+                global_btn: "🌐 Control global",
+                scenes_title: "Escenas de iluminación:",
+                scenes_hint: "Ajuste los niveles y pulse 💾 o mantenga pulsada una escena para guardarla",
+                source_ctrl_title: "Control de la fuente",
+                media_title: "🎵 Reproductor multimedia",
+                media_volume: "Volumen de música:",
+                security_title: "🚨 Sistema de seguridad",
+                security_code_prompt: "Introduzca el código de administración:",
+                security_ok: "✅ Código correcto. Gestión de las particiones de seguridad:",
+                cameras_title: "📷 Cámaras de vigilancia",
+                global_title: "🌐 Control global de la villa",
+                global_lights: "💡 Iluminación global",
+                global_shades: "↕️ Persianas globales",
+                global_hvac: "❄️ Climatización global",
+                global_holiday: "✈️ Modo vacaciones",
+                status_title: "Estado de la villa",
+                status_alarm: "Alarma",
+                status_alarm_off: "desactivada",
+                status_alarm_on: "armada",
+                status_alarm_partial: "parcial ({n}/4)",
+                status_source_off: "Multimedia en reposo",
+                status_doors: "Puertas:",
+                status_power: "Consumo:",
+                status_cp4_on: "Procesador conectado",
+                status_cp4_off: "Procesador desconectado",
+                status_demo: "Modo demostración",
+                scene_saved: "Escena «{scene}» guardada",
+                scene_recalled: "Escena «{scene}» activada desde memoria",
+                scene_activated: "Escena «{scene}» activada",
+                scene_generic: "Escena"
             },
             de: {
                 settings: "Einstellungen",
                 close: "Schließen",
-                select_language: "Sprache Auswählen:",
-                select_theme: "Thema Auswählen:",
+                select_language: "Sprache auswählen:",
+                select_theme: "Thema auswählen:",
                 theme_dark: "Dunkel Premium 🌙",
-                theme_light: "Elegant Hell ☀️",
+                theme_light: "Elegant hell ☀️",
                 theme_glass: "Milchglas ❄️",
                 theme_cyber: "Cyberpunk Blau 🌌",
                 active_piece: "AKTIVER RAUM:",
@@ -3589,29 +3793,61 @@
                 weather_day3: "Fr.",
                 weather_wind: "Wind",
                 weather_humidity: "Feuchtigkeit",
-                news_title: "Neueste Nachrichten",
+                status_title: "Status der Villa",
                 video_title: "Smart Home Video",
-                rooms: "Räume Villa"
+                rooms: "Räume Villa",
+                alarm_btn: "🚨 Alarm",
+                cameras_btn: "📷 Kameras",
+                global_btn: "🌐 Zentralsteuerung",
+                scenes_title: "Lichtszenen:",
+                scenes_hint: "Werte einstellen, dann 💾 oder Szene lange drücken zum Speichern",
+                source_ctrl_title: "Quellensteuerung",
+                media_title: "🎵 Mediaplayer",
+                media_volume: "Musiklautstärke:",
+                security_title: "🚨 Sicherheitssystem",
+                security_code_prompt: "Bitte Administrationscode eingeben:",
+                security_ok: "✅ Code korrekt. Verwaltung der Sicherheitsbereiche:",
+                cameras_title: "📷 Überwachungskameras",
+                global_title: "🌐 Zentralsteuerung der Villa",
+                global_lights: "💡 Beleuchtung gesamt",
+                global_shades: "↕️ Beschattung gesamt",
+                global_hvac: "❄️ Klima gesamt",
+                global_holiday: "✈️ Urlaubsmodus",
+                status_title: "Status der Villa",
+                status_alarm: "Alarm",
+                status_alarm_off: "unscharf",
+                status_alarm_on: "scharf",
+                status_alarm_partial: "teilweise ({n}/4)",
+                status_source_off: "Multimedia im Standby",
+                status_doors: "Türen:",
+                status_power: "Verbrauch:",
+                status_cp4_on: "Prozessor verbunden",
+                status_cp4_off: "Prozessor offline",
+                status_demo: "Demomodus",
+                scene_saved: "Szene „{scene}“ gespeichert",
+                scene_recalled: "Szene „{scene}“ abgerufen",
+                scene_activated: "Szene „{scene}“ aktiviert",
+                scene_generic: "Szene"
             },
             ru: {
                 settings: "Настройки",
                 close: "Закрыть",
                 select_language: "Выберите язык:",
                 select_theme: "Выберите тему:",
-                theme_dark: "Темная Премиум 🌙",
-                theme_light: "Светлая Элегантная ☀️",
-                theme_glass: "Матовое Стекло ❄️",
-                theme_cyber: "Киберпанк Синий 🌌",
-                active_piece: "PIECE ACTIVE :", // preserving join bindings context if any
-                alarm_title: "Общая Сигнализация:",
+                theme_dark: "Тёмная премиум 🌙",
+                theme_light: "Светлая элегантная ☀️",
+                theme_glass: "Матовое стекло ❄️",
+                theme_cyber: "Киберпанк синий 🌌",
+                active_piece: "АКТИВНАЯ КОМНАТА :",
+                alarm_title: "Общая сигнализация:",
                 alarm_arm: "ОХРАНА",
                 alarm_disarm: "СНЯТЬ",
                 temp_title: "HVAC",
                 temp_actual: "Текущая :",
-                temp_mode: "Активный Режим :",
+                temp_mode: "Активный режим :",
                 temp_requested: "Уставка :",
-                source_title: "Выбор Источника Аудио и Видео",
-                source_video: "Активный Источник :",
+                source_title: "Выбор источника аудио и видео",
+                source_video: "Активный источник :",
                 volume_title: "Громкость :",
                 circuits_title: "Свет :",
                 motors_title: "Моторы :",
@@ -3625,9 +3861,41 @@
                 weather_day3: "Пятн.",
                 weather_wind: "Ветер",
                 weather_humidity: "Влажность",
-                news_title: "Новости",
-                video_title: "Видео Наблюдение",
-                rooms: "Комнаты Виллы"
+                status_title: "Состояние виллы",
+                video_title: "Видеонаблюдение",
+                rooms: "Комнаты виллы",
+                alarm_btn: "🚨 Сигнализация",
+                cameras_btn: "📷 Камеры",
+                global_btn: "🌐 Общее управление",
+                scenes_title: "Световые сцены:",
+                scenes_hint: "Настройте уровни, затем 💾 или удерживайте сцену для сохранения",
+                source_ctrl_title: "Управление источником",
+                media_title: "🎵 Медиаплеер",
+                media_volume: "Громкость музыки:",
+                security_title: "🚨 Система безопасности",
+                security_code_prompt: "Введите код администратора:",
+                security_ok: "✅ Код верный. Управление разделами охраны:",
+                cameras_title: "📷 Камеры видеонаблюдения",
+                global_title: "🌐 Общее управление виллой",
+                global_lights: "💡 Общее освещение",
+                global_shades: "↕️ Все шторы",
+                global_hvac: "❄️ Общий климат",
+                global_holiday: "✈️ Режим отпуска",
+                status_title: "Состояние виллы",
+                status_alarm: "Сигнализация",
+                status_alarm_off: "снята",
+                status_alarm_on: "включена",
+                status_alarm_partial: "частично ({n}/4)",
+                status_source_off: "Мультимедиа в режиме ожидания",
+                status_doors: "Двери:",
+                status_power: "Потребление:",
+                status_cp4_on: "Процессор подключён",
+                status_cp4_off: "Процессор не в сети",
+                status_demo: "Демонстрационный режим",
+                scene_saved: "Сцена «{scene}» сохранена",
+                scene_recalled: "Сцена «{scene}» вызвана",
+                scene_activated: "Сцена «{scene}» активирована",
+                scene_generic: "Сцена"
             }
         };
 
@@ -3636,19 +3904,19 @@
             rooms: [
                 { id: 1, name: "Salon" },
                 { id: 2, name: "Cuisine" },
-                { id: 3, name: "Salle à Manger" },
-                { id: 4, name: "Suite Parentale" },
+                { id: 3, name: "Salle à manger" },
+                { id: 4, name: "Suite parentale" },
                 { id: 5, name: "Chambre 1" },
                 { id: 6, name: "Chambre 2" },
                 { id: 7, name: "Bureau" },
-                { id: 8, name: "Home Cinéma" },
+                { id: 8, name: "Home cinéma" },
                 { id: 9, name: "Chambre 3" },
-                { id: 10, name: "Suite Invités" },
-                { id: 11, name: "Terrasse & Jardin" },
-                { id: 12, name: "Piscine & Spa" },
-                { id: 13, name: "Sauna & Hammam" },
-                { id: 14, name: "Pool House" },
-                { id: 15, name: "Garage & Ateliers" }
+                { id: 10, name: "Suite invités" },
+                { id: 11, name: "Terrasse & jardin" },
+                { id: 12, name: "Piscine & spa" },
+                { id: 13, name: "Sauna & hammam" },
+                { id: 14, name: "Pool house" },
+                { id: 15, name: "Garage & ateliers" }
             ],
             sources: [
                 { id: 1, name: "APPLE TV" },
@@ -3659,8 +3927,8 @@
             roomMotors: {
                 "1": ["Volet Baie Est", "Volet Baie Sud", "Rideau Écran Proj.", "Store Banne Terrasse", "Brise-Soleil Orientable", "Volet Fenêtre Ouest"],
                 "2": ["Volet Évier Cuisine", "Store Fenêtre Nord", "Volet Porte Cuisine", "Store Plafond Verrière", "Rideau Passe-Plat", "Brise-Soleil Cuisine"],
-                "3": ["Volet Salle à Manger 1", "Volet Salle à Manger 2", "Store Banne Sud", "Rideau Ouest", "Brise-Soleil Est", "Volet Porte-Fenêtre"],
-                "4": ["Volet Baie Suite", "Rideau Lit", "Store Dressing", "Volet Salle de Bain", "Brise-Soleil Suite", "Volet Fenêtre Nord"],
+                "3": ["Volet Salle à manger 1", "Volet Salle à manger 2", "Store Banne Sud", "Rideau Ouest", "Brise-Soleil Est", "Volet Porte-Fenêtre"],
+                "4": ["Volet Baie Suite", "Rideau Lit", "Store Dressing", "Volet Salle de bain", "Brise-Soleil Suite", "Volet Fenêtre Nord"],
                 "5": ["Volet Chambre 1 Est", "Rideau Chambre 1", "Store Fenêtre 1", "Volet Dressing 1", "Volet Principal 1", "Store Occultant 1"],
                 "6": ["Volet Chambre 2 Ouest", "Rideau Chambre 2", "Store Fenêtre 2", "Volet Dressing 2", "Volet Principal 2", "Store Occultant 2"],
                 "7": ["Volet Bureau Nord", "Store Fenêtre Bureau", "Rideau Bibliothèque", "Brise-Soleil Bureau", "Volet Porte Jardin", "Store Occultant Bureau"],
@@ -3670,13 +3938,13 @@
                 "11": ["Pergola Bioclimatique Lames", "Pergola Store Zip Est", "Pergola Store Zip Sud", "Store Banne Jardin", "Volet Véranda", "Store Occultant Patio"],
                 "12": ["Couverture Bassin", "Volet Baie Spa", "Rideau Transat Spa", "Store Verrière Spa", "Volet Vestiaire", "Brise-Soleil Spa"],
                 "13": ["Volet Fenêtre Sauna", "Store Intimité Hammam", "Rideau Relaxation", "Volet Vestiaire Sauna", "Brise-Soleil Entrée", "Store Occultant Rest"],
-                "14": ["Volet Baie Bar", "Store Banne Pool House", "Rideau Cuisine Été", "Volet Baie Repas", "Store Zip Sud PH", "Volet Réserve"],
+                "14": ["Volet Baie Bar", "Store Banne Pool house", "Rideau Cuisine Été", "Volet Baie Repas", "Store Zip Sud PH", "Volet Réserve"],
                 "15": ["Porte Sectionnelle Main", "Porte Sectionnelle 2", "Volet Atelier", "Store Fenêtre Garage", "Rideau Zone Lavage", "Volet Local Tech"]
             },
             circuits: [
-                { id: 71, name: "Spots Plafond" },
-                { id: 72, name: "Lustre Central" },
-                { id: 73, name: "Appliques Murales" },
+                { id: 71, name: "Spots plafond" },
+                { id: 72, name: "Lustre central" },
+                { id: 73, name: "Appliques murales" },
                 { id: 74, name: "Ruban LED" },
                 { id: 75, name: "Liseuse" },
                 { id: 76, name: "Éclairage Table" },
@@ -3687,7 +3955,7 @@
             ],
             roomCircuits: {
                 "1": [
-                    { id: 71, name: "Spots Plafond Ouest" },
+                    { id: 71, name: "Spots plafond Ouest" },
                     { id: 72, name: "Lustre Principal" },
                     { id: 73, name: "Ruban LED Corniche" },
                     { id: 74, name: "Applique Murale Nord" },
@@ -3708,7 +3976,7 @@
                 ],
                 "3": [
                     { id: 71, name: "Lustre Table Repas" },
-                    { id: 72, name: "Spots Plafond" },
+                    { id: 72, name: "Spots plafond" },
                     { id: 73, name: "Appliques Buffet Est" },
                     { id: 74, name: "Ruban LED Vaisselier" },
                     { id: 75, name: "Lumière Vitrine" },
@@ -3745,7 +4013,7 @@
                     { id: 76, name: "Veilleuse Bureau 2" }
                 ],
                 "7": [
-                    { id: 71, name: "Spots Plafond Bureau" },
+                    { id: 71, name: "Spots plafond Bureau" },
                     { id: 72, name: "Lampe Bureau Design" },
                     { id: 73, name: "Ruban LED Bibliothèque" },
                     { id: 74, name: "Applique Zone Accueil" },
@@ -3756,8 +4024,8 @@
                 ],
                 "8": [
                     { id: 71, name: "Nez de Marche Gradué" },
-                    { id: 72, name: "Appliques Murales Gauche" },
-                    { id: 73, name: "Appliques Murales Droite" },
+                    { id: 72, name: "Appliques murales Gauche" },
+                    { id: 73, name: "Appliques murales Droite" },
                     { id: 74, name: "Ruban LED Écran" },
                     { id: 75, name: "Plafonnier Ciel Étoilé" },
                     { id: 76, name: "Spots Arrière-Salle" },
@@ -3774,7 +4042,7 @@
                     { id: 76, name: "Veilleuse Bureau 3" }
                 ],
                 "10": [
-                    { id: 71, name: "Lustre Suite Invités" },
+                    { id: 71, name: "Lustre Suite invités" },
                     { id: 72, name: "Liseuse Gauche Invités" },
                     { id: 73, name: "Liseuse Droite Invités" },
                     { id: 74, name: "LED Tête de Lit Invités" },
@@ -3792,7 +4060,7 @@
                 ],
                 "12": [
                     { id: 71, name: "Projecteurs Subaquatiques" },
-                    { id: 72, name: "Spots Plafond Spa" },
+                    { id: 72, name: "Spots plafond Spa" },
                     { id: 73, name: "Ruban LED Margelle" },
                     { id: 74, name: "Appliques Ambiance Plage" },
                     { id: 75, name: "Projecteur Cascade" },
@@ -3807,10 +4075,10 @@
                     { id: 76, name: "LED Vestiaire Rest" }
                 ],
                 "14": [
-                    { id: 71, name: "Suspensions Bar Pool House" },
-                    { id: 72, name: "Spots Plafond Salon d'Été" },
+                    { id: 71, name: "Suspensions Bar Pool house" },
+                    { id: 72, name: "Spots plafond Salon d'Été" },
                     { id: 73, name: "Ruban LED Comptoir" },
-                    { id: 74, name: "Appliques Terrasse Pool House" },
+                    { id: 74, name: "Appliques Terrasse Pool house" },
                     { id: 75, name: "Projecteur Barbecue PH" }
                 ],
                 "15": [
@@ -4369,7 +4637,8 @@
                     swisscom: "SWISSCOM TV",
                     iptv: "IPTV"
                 };
-                titleEl.innerText = "Contrôle Source : " + (names[sourceId] || sourceId.toUpperCase());
+                const dictT = (typeof translations !== 'undefined' && (translations[currentLang] || translations.fr)) || {};
+                titleEl.innerText = (dictT.source_ctrl_title || "Contrôle de la source") + " : " + (names[sourceId] || sourceId.toUpperCase());
             }
             
             // Mapper les événements CH5 en fonction de la source active
@@ -4468,7 +4737,7 @@
                     { name: "Cam 2 : Entrée Nord", img: "https://images.unsplash.com/photo-1513694203232-719a280e022f?w=400&auto=format&fit=crop&q=60" },
                     { name: "Cam 3 : Allée Voitures", img: "https://images.unsplash.com/photo-1507089947368-19c1da9775ae?w=400&auto=format&fit=crop&q=60" },
                     { name: "Cam 4 : Terrasse Piscine", img: "https://images.unsplash.com/photo-1576013551627-0cc20b96c2a7?w=400&auto=format&fit=crop&q=60" },
-                    { name: "Cam 5 : Pool House", img: "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=400&auto=format&fit=crop&q=60" },
+                    { name: "Cam 5 : Pool house", img: "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=400&auto=format&fit=crop&q=60" },
                     { name: "Cam 6 : Garage Intérieur", img: "https://images.unsplash.com/photo-1616422285623-13ff0162193c?w=400&auto=format&fit=crop&q=60" },
                     { name: "Cam 7 : Jardin Est", img: "https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?w=400&auto=format&fit=crop&q=60" },
                     { name: "Cam 8 : Salon Baie Vitrée", img: "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=400&auto=format&fit=crop&q=60" },
@@ -4601,8 +4870,8 @@
                 ];
             } else if (type === 'shades') {
                 options = [
-                    { value: "shade_open", text: "Stores : Tout Ouvrir (404)" },
-                    { value: "shade_close", text: "Stores : Tout Fermer (405)" }
+                    { value: "shade_open", text: "Stores : Tout ouvrir (404)" },
+                    { value: "shade_close", text: "Stores : Tout fermer (405)" }
                 ];
             } else if (type === 'hvac') {
                 options = [
@@ -4635,9 +4904,9 @@
         
         window.applySceneToCustomizer = function(roomId, sceneJoin) {
             const circuits = config.roomCircuits && config.roomCircuits[roomId] ? config.roomCircuits[roomId] : [
-                { id: 71, name: "Spots Plafond" },
-                { id: 72, name: "Lustre Central" },
-                { id: 73, name: "Appliques Murales" },
+                { id: 71, name: "Spots plafond" },
+                { id: 72, name: "Lustre central" },
+                { id: 73, name: "Appliques murales" },
                 { id: 74, name: "Ruban LED" }
             ];
             
@@ -4688,12 +4957,12 @@
                 const roomsList = [
                     { id: 1, name: "Salon" },
                     { id: 2, name: "Cuisine" },
-                    { id: 3, name: "Salle à Manger" },
-                    { id: 4, name: "Suite Parentale" },
+                    { id: 3, name: "Salle à manger" },
+                    { id: 4, name: "Suite parentale" },
                     { id: 5, name: "Chambre 1" },
                     { id: 6, name: "Chambre 2" },
                     { id: 7, name: "Bureau" },
-                    { id: 8, name: "Home Cinéma" }
+                    { id: 8, name: "Home cinéma" }
                 ];
                 
                 roomsList.forEach(room => {
@@ -4732,9 +5001,9 @@
                     const circuits = config.roomCircuits && config.roomCircuits[room.id] ? config.roomCircuits[room.id] : [];
                     if (circuits.length === 0) {
                         const fallbackList = [
-                            { id: 71, name: "Spots Plafond" },
-                            { id: 72, name: "Lustre Central" },
-                            { id: 73, name: "Appliques Murales" },
+                            { id: 71, name: "Spots plafond" },
+                            { id: 72, name: "Lustre central" },
+                            { id: 73, name: "Appliques murales" },
                             { id: 74, name: "Ruban LED" }
                         ];
                         circuits.push(...fallbackList);
@@ -4794,12 +5063,12 @@
                 const roomsList = [
                     { id: 1, name: "Salon" },
                     { id: 2, name: "Cuisine" },
-                    { id: 3, name: "Salle à Manger" },
-                    { id: 4, name: "Suite Parentale" },
+                    { id: 3, name: "Salle à manger" },
+                    { id: 4, name: "Suite parentale" },
                     { id: 5, name: "Chambre 1" },
                     { id: 6, name: "Chambre 2" },
                     { id: 7, name: "Bureau" },
-                    { id: 8, name: "Home Cinéma" }
+                    { id: 8, name: "Home cinéma" }
                 ];
                 
                 roomsList.forEach(room => {
@@ -4848,12 +5117,12 @@
                 const roomsList = [
                     { id: 1, name: "Salon" },
                     { id: 2, name: "Cuisine" },
-                    { id: 3, name: "Salle à Manger" },
-                    { id: 4, name: "Suite Parentale" },
+                    { id: 3, name: "Salle à manger" },
+                    { id: 4, name: "Suite parentale" },
                     { id: 5, name: "Chambre 1" },
                     { id: 6, name: "Chambre 2" },
                     { id: 7, name: "Bureau" },
-                    { id: 8, name: "Home Cinéma" }
+                    { id: 8, name: "Home cinéma" }
                 ];
                 
                 roomsList.forEach(room => {
@@ -4921,19 +5190,19 @@
                 const roomsList = [
                     { id: 1, name: "Salon" },
                     { id: 2, name: "Cuisine" },
-                    { id: 3, name: "Salle à Manger" },
-                    { id: 4, name: "Suite Parentale" },
+                    { id: 3, name: "Salle à manger" },
+                    { id: 4, name: "Suite parentale" },
                     { id: 5, name: "Chambre 1" },
                     { id: 6, name: "Chambre 2" },
                     { id: 7, name: "Bureau" },
-                    { id: 8, name: "Home Cinéma" },
+                    { id: 8, name: "Home cinéma" },
                     { id: 9, name: "Chambre 3" },
-                    { id: 10, name: "Suite Invités" },
-                    { id: 11, name: "Terrasse & Jardin" },
-                    { id: 12, name: "Piscine & Spa" },
-                    { id: 13, name: "Sauna & Hammam" },
-                    { id: 14, name: "Pool House" },
-                    { id: 15, name: "Garage & Ateliers" }
+                    { id: 10, name: "Suite invités" },
+                    { id: 11, name: "Terrasse & jardin" },
+                    { id: 12, name: "Piscine & spa" },
+                    { id: 13, name: "Sauna & hammam" },
+                    { id: 14, name: "Pool house" },
+                    { id: 15, name: "Garage & ateliers" }
                 ];
                 
                 const gridContainer = lightBox.querySelector('#vacation-rooms-grid');
@@ -5537,19 +5806,19 @@
                     if (gridEl) gridEl.innerText = value;
                 });
 
-                // Spots Plafond (Analog Join 71)
+                // Spots plafond (Analog Join 71)
                 CrComLib.subscribeState('n', '71', (value) => {
                     const gridEl = document.getElementById(`room-grid-${activeRoomId}-spots`);
                     if (gridEl) gridEl.innerText = value;
                 });
 
-                // Lustre Central (Analog Join 72)
+                // Lustre central (Analog Join 72)
                 CrComLib.subscribeState('n', '72', (value) => {
                     const gridEl = document.getElementById(`room-grid-${activeRoomId}-lustre`);
                     if (gridEl) gridEl.innerText = value;
                 });
 
-                // Appliques Murales (Analog Join 73)
+                // Appliques murales (Analog Join 73)
                 CrComLib.subscribeState('n', '73', (value) => {
                     const gridEl = document.getElementById(`room-grid-${activeRoomId}-appliques`);
                     if (gridEl) gridEl.innerText = value;
@@ -5573,14 +5842,7 @@
                     if (gridEl) gridEl.innerText = value;
                 });
 
-                // Scènes éclairages : recaler les sliders locaux (v1.0.14)
-                [21, 22, 23, 24].forEach(sceneJoin => {
-                    CrComLib.subscribeState('b', sceneJoin.toString(), (value) => {
-                        if (value) {
-                            window.applySceneLevels(sceneJoin);
-                        }
-                    });
-                });
+                // Scènes d'éclairage : rappel visuel géré par le module VillaUX (fin de page)
 
             } else {
                 console.log("CH5: CrComLib non détecté, nouvelle tentative dans 100ms...");
@@ -5595,189 +5857,7 @@
         applyLanguage(currentLang);
         applyTheme(currentTheme);
 
-        // H. Alternance Météo / RSS avec support d'images
-        const mockArticles = {
-            fr: [
-                {
-                    title: "Inflation en baisse : retour vers l'objectif des 2% après trois ans de hausse",
-                    image: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=100",
-                    source: "Le Monde"
-                },
-                {
-                    title: "Espace : le télescope James Webb capture une collision spectaculaire de galaxies",
-                    image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=100",
-                    source: "Le Monde"
-                },
-                {
-                    title: "Jeux Olympiques 2026 : dernières infos et préparatifs des athlètes",
-                    image: "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=100",
-                    source: "Le Monde"
-                },
-                {
-                    title: "Technologie : les dernières innovations IA présentées lors de la conférence",
-                    image: "https://images.unsplash.com/photo-1677442136019-21780efad99a?w=100",
-                    source: "Le Monde"
-                }
-            ],
-            en: [
-                {
-                    title: "UK inflation falls back to 2% target after three years",
-                    image: "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=100",
-                    source: "BBC News"
-                },
-                {
-                    title: "Nasa's James Webb telescope captures galaxy collision",
-                    image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=100",
-                    source: "BBC News"
-                },
-                {
-                    title: "Euro 2026: Team news and updates ahead of key matches",
-                    image: "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=100",
-                    source: "BBC News"
-                },
-                {
-                    title: "Apple unveils new AI features at annual conference",
-                    image: "https://images.unsplash.com/photo-1677442136019-21780efad99a?w=100",
-                    source: "BBC News"
-                }
-            ]
-        };
-
-        let currentArticles = mockArticles.fr;
-        let currentArticleIndex = 0;
-
-        function updateRssArticleUI() {
-            const headlineEl = document.getElementById('rss-news-headline');
-            const imgEl = document.getElementById('rss-image');
-            const sourceEl = document.getElementById('rss-source-title');
-
-            if (currentArticles.length > 0) {
-                const article = currentArticles[currentArticleIndex];
-                
-                if (headlineEl) headlineEl.textContent = article.title;
-                if (sourceEl) {
-                    sourceEl.innerHTML = `<span style="display: inline-block; width: 5px; height: 5px; background: #ef4444; border-radius: 50%; animation: pulse 1s infinite;"></span> ${article.source}`;
-                }
-                if (imgEl) {
-                    const originalImage = article.image || "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjkwIiBoZWlnaHQ9Ijk1Ij48cmVjdCB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHJ4PSI0IiBmaWxsPSJyZ2JhKDE0LDE2NSwyMzMsMC4xNSkiLz48cGF0aCBkPSJNMTkgNUg1Yy0xLjEgMC0yIC45LTIgMnYxMGMwIDEuMS55IDIgMiAyaDE0YzEuMSAwIDItLjkgMi0yVjdjMC0xLjEtLjktMi0yLTJ6bS01IDEySDd2LTJoN3Yyem0zLTRIN3YtMmgxMHYyem0wLTRIN1Y3aDEwdjJ6IiBmaWxsPSIjMGVhNWU5Ii8+PC9zdmc+";
-                    if (originalImage.indexOf('http') === 0) {
-                        imgEl.src = "https://images.weserv.nl/?url=" + encodeURIComponent(originalImage);
-                    } else {
-                        imgEl.src = originalImage;
-                    }
-                }
-                
-                currentArticleIndex = (currentArticleIndex + 1) % currentArticles.length;
-            }
-        }
-
-        // Extrait de façon robuste l'URL d'image d'un item XML RSS (enclosure, media:thumbnail, img...)
-        function extractImageUrl(item) {
-            try {
-                if (!item) return null;
-                // Parcourir tous les éléments enfants pour trouver enclosure, media:thumbnail, media:content sans dépendre des namespaces
-                const nodes = item.getElementsByTagName('*');
-                for (let i = 0; i < nodes.length; i++) {
-                    const node = nodes[i];
-                    const localName = (node.localName || '').toLowerCase();
-                    const tagName = (node.tagName || '').toLowerCase();
-                    
-                    // 1. Gérer enclosure
-                    if (localName === 'enclosure' || tagName === 'enclosure') {
-                        const url = node.getAttribute('url');
-                        if (url) return url.replace(/^http:/i, 'https:');
-                    }
-                    
-                    // 2. Gérer thumbnail ou content (media:thumbnail / media:content)
-                    if (localName === 'thumbnail' || tagName === 'media:thumbnail' || tagName.endsWith(':thumbnail') ||
-                        localName === 'content' || tagName === 'media:content' || tagName.endsWith(':content')) {
-                        const url = node.getAttribute('url');
-                        if (url) return url.replace(/^http:/i, 'https:');
-                    }
-                }
-                
-                // Fallback 3 : chercher une balise <img> dans la description
-                const desc = item.querySelector('description');
-                if (desc) {
-                    const text = desc.textContent || desc.innerHTML || '';
-                    const imgMatch = text.match(/<img[^>]+src=["']([^"']+)["']/i);
-                    if (imgMatch && imgMatch[1]) {
-                        return imgMatch[1].replace(/^http:/i, 'https:');
-                    }
-                }
-            } catch (e) {
-                console.warn("Error parsing RSS image url", e);
-            }
-            return null;
-        }
-
-        function fetchLiveRss() {
-            const targetFeed = currentLang === 'fr' ? 
-                { url: 'https://www.lemonde.fr/rss/une.xml', name: 'Le Monde' } :
-                { url: 'https://feeds.bbci.co.uk/news/world/rss.xml', name: 'BBC News' };
-
-            console.log(`CH5: Chargement du flux RSS ${targetFeed.name} via XHR...`);
-            
-            const xhr = new XMLHttpRequest();
-            const proxyUrl = 'https://api.allorigins.win/get?url=' + encodeURIComponent(targetFeed.url);
-            xhr.open('GET', proxyUrl, true);
-            xhr.onload = function() {
-                if (xhr.status >= 200 && xhr.status < 300) {
-                    try {
-                        const responseJson = JSON.parse(xhr.responseText);
-                        if (!responseJson || !responseJson.contents) return;
-                        
-                        let doc;
-                        try {
-                            const parser = new DOMParser();
-                            doc = parser.parseFromString(responseJson.contents, "application/xml");
-                            if (doc.querySelector("parsererror")) {
-                                throw new Error("XML parse error");
-                            }
-                        } catch (xmlError) {
-                            console.warn("CH5: Echec de parsing XML XHR, fallback vers HTML parsing...", xmlError);
-                            const parser = new DOMParser();
-                            doc = parser.parseFromString(responseJson.contents, "text/html");
-                        }
-                        
-                        const items = doc.querySelectorAll("item");
-                        if (items.length > 0) {
-                            const parsedArticles = [];
-                            for (let idx = 0; idx < items.length; idx++) {
-                                if (idx >= 8) break; // top 8 articles
-                                const item = items[idx];
-                                const titleEl = item.querySelector("title");
-                                const title = titleEl ? titleEl.textContent : '';
-                                const image = extractImageUrl(item) || "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=100";
-                                if (title) {
-                                    parsedArticles.push({
-                                        title: title,
-                                        image: image,
-                                        source: targetFeed.name
-                                    });
-                                }
-                            }
-                            if (parsedArticles.length > 0) {
-                                currentArticles = parsedArticles;
-                                currentArticleIndex = 0;
-                                console.log(`CH5: ${targetFeed.name} RSS XHR chargé avec succès. ${parsedArticles.length} articles.`);
-                            }
-                        }
-                    } catch (e) {
-                        console.warn(`CH5: Erreur lors du traitement XHR RSS`, e);
-                        currentArticles = mockArticles[currentLang] || mockArticles.fr;
-                    }
-                } else {
-                    currentArticles = mockArticles[currentLang] || mockArticles.fr;
-                }
-            };
-            xhr.onerror = function() {
-                console.warn(`CH5: Echec XHR RSS`);
-                currentArticles = mockArticles[currentLang] || mockArticles.fr;
-            };
-            xhr.send();
-        }
-
+        // H. Météo (le flux RSS Le Monde / BBC et son alternance ont été retirés le 09.09.2026)
         function getWeatherIconSvg(code) {
             const sunSvg = `<svg viewBox="0 0 512 512" style="width: 22px; height: 22px; fill: #eab308; animation: pulse 2s infinite;"><path d="M256 160c-52.9 0-96 43.1-96 96s43.1 96 96 96 96-43.1 96-96-43.1-96-96-96zm242.9 80c-6.8-19.6-19.5-36.5-36.4-48l16.1-48.4c5.7-17.2-3.8-35.8-21.1-41.5s-35.8 3.8-41.5 21.1l-16.1 48.4c-19.6-6.8-40.8-6.8-60.4 0l-16.1-48.4c-5.7-17.2-24.3-26.8-41.5-21.1s-26.8 24.3-21.1 41.5l16.1 48.4c-16.9 11.5-29.6 28.4-36.4 48l-48.4-16.1c-17.2-5.7-35.8 3.8-41.5 21.1s3.8 35.8 21.1 41.5l48.4 16.1c-6.8 19.6-6.8 40.8 0 60.4l-48.4 16.1c-17.2 5.7-26.8 24.3-21.1 41.5s24.3 26.8 41.5 21.1l48.4-16.1c11.5 16.9 28.4 29.6 48 36.4l-16.1 48.4c-5.7 17.2 3.8 35.8 21.1 41.5 4.3 1.4 8.7 2.1 13 2.1 13 0 24.8-7.9 28.5-23.2l16.1-48.4c19.6 6.8 40.8 6.8 60.4 0l16.1 48.4c4.3 12.9-26.8-24.3-21.1-41.5z"/></svg>`;
             const variableSvg = `<svg viewBox="0 0 512 512" style="width: 22px; height: 22px; fill: #60a5fa;"><path d="M96 208c0-53 43-96 96-96h3c10.1-61.9 63.9-108 129-108c70.7 0 128 57.3 128 128c0 1.2-.1 2.4-.2 3.6c52.4 13.3 90.2 60.5 90.2 116.4C544 316.3 508.3 352 464 352H192c-53 0-96-43-96-96z m32 176c0-8.8 7.2-16 16-16h256c8.8 0 16 7.2 16 16s-7.2 16-16 16H144c-8.8 0-16-7.2-16-16z m24 64c0-8.8 7.2-16 16-16h208c8.8 0 16 7.2 16 16s-7.2 16-16 16H168c-8.8 0-16-7.2-16-16z"/></svg>`;
@@ -5860,55 +5940,12 @@
             xhr.send();
         }
 
-        function startWeatherRssAlternator() {
-            currentArticles = mockArticles[currentLang] || mockArticles.fr;
-            
-            fetchLiveRss();
-            setInterval(fetchLiveRss, 300000); // 5 minutes
-
+        function startWeatherOnly() {
             fetchLiveWeather();
             setInterval(fetchLiveWeather, 1800000); // 30 minutes
-
-            let showWeather = true;
-            const wFace = document.getElementById('weather-face');
-            const rFace = document.getElementById('rss-face');
-
-            setInterval(() => {
-                if (showWeather) {
-                    if (wFace) {
-                        wFace.style.opacity = '0';
-                        wFace.style.transform = 'translateY(-10px)';
-                    }
-                    setTimeout(() => {
-                        if (wFace) wFace.style.display = 'none';
-                        if (rFace) {
-                            rFace.style.display = 'flex';
-                            updateRssArticleUI();
-                            rFace.offsetHeight; // force reflow
-                            rFace.style.opacity = '1';
-                            rFace.style.transform = 'translateY(0)';
-                        }
-                    }, 500);
-                } else {
-                    if (rFace) {
-                        rFace.style.opacity = '0';
-                        rFace.style.transform = 'translateY(10px)';
-                    }
-                    setTimeout(() => {
-                        if (rFace) rFace.style.display = 'none';
-                        if (wFace) {
-                            wFace.style.display = 'flex';
-                            wFace.offsetHeight;
-                            wFace.style.opacity = '1';
-                            wFace.style.transform = 'translateY(0)';
-                        }
-                    }, 500);
-                }
-                showWeather = !showWeather;
-            }, 6000);
         }
 
-        startWeatherRssAlternator();
+        startWeatherOnly();
 
         // G. Le son caché est géré par l'attribut inline onclick="weatherWidgetClicked(event)" dans le HTML.
     
@@ -6295,6 +6332,302 @@
             });
         };
 
+</script>
+<script>
+/* =====================================================================
+   Retours direction du 09.09.2026 (A. Dändliker) :
+     1. scènes d'éclairage mémorisées : niveaux des circuits + positions des
+        stores, restitution visuelle au rappel, confirmation à l'enregistrement
+        et au rappel (appui long sur une scène ou bouton 💾 = enregistrer) ;
+     2. premier appui sur une source = activation + ouverture immédiate de la
+        télécommande correspondante ;
+     3. bandeau « État de la villa » (alarme, multimédia, CVC, processeur) à la
+        place du fil d'actualités.
+   Module autonome : fonctionne sur dalle / XPanel (CP4) et en démo sans automate.
+   ===================================================================== */
+(function () {
+    'use strict';
+    var SCENE_BASE = 20;            // scènes d'éclairage = joins SCENE_BASE+1 .. SCENE_BASE+4
+    var LONG_PRESS_MS = 1200;                   // maintien pour enregistrer une scène
+    var CIRCUITS = [];
+    for (var c = 71; c <= 80; c++) CIRCUITS.push(String(c));
+    var SOURCE_REMOTE = { '151': 'appletv', '152': 'skyq', '153': 'swisscom', '154': 'iptv', '155': 'media' };
+    var PARTITIONS = [['301', '302', '303'], ['304', '305', '306'], ['307', '308', '309'], ['310', '311', '312']];
+    var STATUS_SERIALS = { doors: '111', power: '112' }; // hors contrat, optionnels (affichés seulement si renseignés)
+
+    var levels = {};                            // dernier niveau connu de chaque circuit (retour analogique)
+    var partState = ['disarmed', 'disarmed', 'disarmed', 'disarmed'];
+    var activeSource = null;
+    var hvac = { temp: '', setpoint: '', mode: '' };
+    var extra = { doors: '', power: '' };
+    var feedbackSeen = false;
+    var VUX = window.VillaUX = {};
+
+    /* ---------- utilitaires ---------- */
+    function roomId() { return String(window.currentActiveRoomId || '1'); }
+    function lang() { return (typeof currentLang !== 'undefined' && currentLang) || 'fr'; }
+    function dict() { var T = (typeof translations !== 'undefined') ? translations : {}; return T[lang()] || T.fr || {}; }
+    function t(key, vars) {
+        var T = (typeof translations !== 'undefined') ? translations : {};
+        var s = dict()[key] || (T.fr && T.fr[key]) || key;
+        if (vars) Object.keys(vars).forEach(function (k) { s = s.split('{' + k + '}').join(vars[k]); });
+        return s;
+    }
+    function toast(msg) { if (typeof window.showToast === 'function') window.showToast(msg); else console.log('[toast] ' + msg); }
+    // Un événement synthétique (démo automatique, tests) ne doit pas ouvrir de fenêtre.
+    function trustedEvent() { var ev = window.event; return !(ev && ev.isTrusted === false); }
+    function publish(type, join, value) {
+        if (window.CrComLib && typeof window.CrComLib.publishEvent === 'function') {
+            try { window.CrComLib.publishEvent(type, String(join), value); } catch (e) { /* hors ligne */ }
+        }
+    }
+
+    /* ---------- 1. Scènes mémorisées ---------- */
+    function sceneIdx(ref) {
+        var n = Number(ref);
+        if (n >= 1 && n <= 4) return n;
+        if (n >= 21 && n <= 24) return n - 20;      // ancien contrat v1
+        if (n >= 51 && n <= 54) return n - 50;      // contrat v2
+        return 0;
+    }
+    function sceneKey(idx, room) { return 'villa_scene_' + (room || roomId()) + '_' + idx; }
+    function sceneButtons(idx) {
+        return document.querySelectorAll('ch5-button[customClass~="scene-btn"][sendEventOnClick="' + (SCENE_BASE + idx) + '"]');
+    }
+    VUX.sceneName = function (idx) {
+        var b = sceneButtons(idx)[0];
+        var l = b && b.getAttribute('label');
+        return l ? l : (t('scene_generic') + ' ' + idx);
+    };
+
+    // Position visuelle d'un moteur : 0 = ouvert, 1 = fermé (icônes SVG des cartes moteurs)
+    VUX.getBlindPosition = function (i) {
+        if (i === 3 || i === 4) {
+            var l = document.getElementById('curtain-left-' + i);
+            if (!l) return null;
+            var w = parseFloat(window.getComputedStyle(l).width) || 0;
+            return Math.max(0, Math.min(1, w / 8));
+        }
+        var el = document.getElementById('blind-slats-' + i);
+        if (!el) return null;
+        var h = parseFloat(window.getComputedStyle(el).height) || 0;
+        return Math.max(0, Math.min(1, h / 16));
+    };
+    function setCurtain(suffix, f) {
+        var l = document.getElementById('curtain-left-' + suffix);
+        var r = document.getElementById('curtain-right-' + suffix);
+        if (!l || !r) return;
+        var w = Math.max(0.5, 8 * f);
+        l.style.transition = 'width 1.5s ease-in-out';
+        r.style.transition = 'width 1.5s ease-in-out, x 1.5s ease-in-out';
+        l.style.width = w + 'px';
+        r.style.width = w + 'px';
+        r.setAttribute('x', String(20 - w));
+    }
+    function setSlats(id, f) {
+        var el = document.getElementById(id);
+        if (!el) return;
+        el.style.transition = 'height 1.5s ease-in-out';
+        el.style.height = (16 * f) + 'px';
+    }
+    VUX.setBlindPosition = function (i, f) {
+        f = Math.max(0, Math.min(1, Number(f) || 0));
+        if (i === 3 || i === 4) setCurtain(String(i), f); else setSlats('blind-slats-' + i, f);
+    };
+    // Icônes de groupe (Volets / Rideaux / Stores) : moyenne des deux moteurs du groupe
+    function syncGroupIcons(blinds) {
+        var avg = function (a, b) {
+            var va = blinds[a], vb = blinds[b];
+            if (va === undefined && vb === undefined) return null;
+            if (va === undefined) return vb;
+            if (vb === undefined) return va;
+            return (Number(va) + Number(vb)) / 2;
+        };
+        var v = avg(1, 2), r = avg(3, 4), s = avg(5, 6);
+        if (v !== null) { setSlats('blind-slats-main-volets', v); setSlats('blind-slats-preset-volets', v); }
+        if (r !== null) { setCurtain('main-rideaux', r); setCurtain('preset-rideaux', r); }
+        if (s !== null) { setSlats('blind-slats-main-stores', s); setSlats('blind-slats-preset-stores', s); }
+    }
+    function readBlinds() {
+        var out = {};
+        for (var i = 1; i <= 6; i++) { var f = VUX.getBlindPosition(i); if (f !== null) out[i] = Math.round(f * 100) / 100; }
+        return out;
+    }
+    function readLights() {
+        var out = {};
+        CIRCUITS.forEach(function (j) { if (levels[j] !== undefined) out[j] = levels[j]; });
+        // Repli : valeur affichée par les curseurs si aucun retour n'a encore été reçu
+        document.querySelectorAll('#circuits-container ch5-slider[sendEventOnChange]').forEach(function (s) {
+            var j = s.getAttribute('sendEventOnChange');
+            if (out[j] === undefined) { var v = parseInt(s.getAttribute('value'), 10); if (!isNaN(v)) out[j] = v; }
+        });
+        return out;
+    }
+    VUX.loadScene = function (idx, room) {
+        try { var raw = localStorage.getItem(sceneKey(idx, room)); return raw ? JSON.parse(raw) : null; } catch (e) { return null; }
+    };
+    function refreshSavedMarks() {
+        for (var idx = 1; idx <= 4; idx++) {
+            var saved = !!VUX.loadScene(idx);
+            sceneButtons(idx).forEach(function (b) {
+                if (saved) b.setAttribute('data-saved', 'true'); else b.removeAttribute('data-saved');
+            });
+        }
+    }
+    VUX.refreshSavedMarks = refreshSavedMarks;
+
+    function snapshot() { return { lights: readLights(), blinds: readBlinds() }; }
+    window.saveCurrentScene = function (ref, snap) {
+        var idx = sceneIdx(ref);
+        if (!idx) return;
+        snap = snap || snapshot();
+        var data = { room: roomId(), scene: idx, lights: snap.lights, blinds: snap.blinds, ts: Date.now() };
+        try { localStorage.setItem(sceneKey(idx), JSON.stringify(data)); }
+        catch (e) { console.warn('VillaUX: enregistrement de la scène impossible', e); }
+        refreshSavedMarks();
+        toast('💾 ' + t('scene_saved', { scene: VUX.sceneName(idx) }));
+    };
+
+    VUX.recallScene = function (ref) {
+        var idx = sceneIdx(ref);
+        if (!idx) return;
+        var data = VUX.loadScene(idx);
+        if (!data) { toast('✔ ' + t('scene_activated', { scene: VUX.sceneName(idx) })); return; }
+        Object.keys(data.lights || {}).forEach(function (j) {
+            var v = Number(data.lights[j]) || 0;
+            levels[j] = v;
+            document.querySelectorAll('ch5-slider[receiveStateValue="' + j + '"]').forEach(function (s) { s.setAttribute('value', String(v)); });
+            publish('n', j, v);   // le processeur (ou le moteur de démo) reprend les niveaux mémorisés
+        });
+        var blinds = data.blinds || {};
+        Object.keys(blinds).forEach(function (i) { VUX.setBlindPosition(Number(i), blinds[i]); });
+        syncGroupIcons(blinds);
+        toast('✔ ' + t('scene_recalled', { scene: VUX.sceneName(idx) }));
+    };
+    window.applySceneLevels = function (ref) { VUX.recallScene(ref); };   // compatibilité ancien code
+    VUX.clearScene = function (ref) { var idx = sceneIdx(ref); try { localStorage.removeItem(sceneKey(idx)); } catch (e) {} refreshSavedMarks(); };
+
+    // Appui simple = rappel (après l'envoi du join par le <ch5-button>) ; appui long = enregistrement
+    var press = { btn: null, timer: null, saved: false, snap: null };
+    function sceneOf(el) {
+        var b = el && el.closest ? el.closest('ch5-button[customClass~="scene-btn"]') : null;
+        if (!b) return 0;
+        var j = Number(b.getAttribute('sendEventOnClick'));
+        return (j > SCENE_BASE && j <= SCENE_BASE + 4) ? (j - SCENE_BASE) : 0;
+    }
+    function cancelPress() { if (press.timer) clearTimeout(press.timer); press.timer = null; }
+    document.addEventListener('pointerdown', function (ev) {
+        var idx = sceneOf(ev.target);
+        if (!idx) return;
+        cancelPress();
+        // Instantané AVANT que le <ch5-button> n'envoie le join (le processeur / la démo applique la scène dès l'appui)
+        press = { btn: ev.target, timer: null, saved: false, snap: snapshot() };
+        press.timer = setTimeout(function () {
+            press.saved = true; press.timer = null;
+            window.saveCurrentScene(idx, press.snap);
+            setTimeout(function () { press.saved = false; }, 600);   // le clic de relâchement ne doit pas rappeler la scène
+        }, LONG_PRESS_MS);
+    }, true);
+    ['pointerup', 'pointercancel', 'pointerleave'].forEach(function (evt) {
+        document.addEventListener(evt, function () { cancelPress(); }, true);
+    });
+    document.addEventListener('click', function (ev) {
+        var idx = sceneOf(ev.target);
+        if (!idx) return;
+        if (press.saved) { press.saved = false; return; }   // l'appui long vient d'enregistrer : pas de rappel
+        setTimeout(function () { VUX.recallScene(idx); }, 120);
+    }, true);
+
+    // Marqueurs « scène mémorisée » au changement de pièce
+    if (typeof window.updateActiveRoomUI === 'function') {
+        var prevUpdateRoom = window.updateActiveRoomUI;
+        window.updateActiveRoomUI = function () { var r = prevUpdateRoom.apply(this, arguments); setTimeout(refreshSavedMarks, 50); return r; };
+    }
+    setTimeout(refreshSavedMarks, 800);
+
+    /* ---------- 2. Source : premier appui = activation + télécommande ---------- */
+    function openRemoteFor(join) {
+        var kind = SOURCE_REMOTE[String(join)];
+        if (!kind || !trustedEvent()) return;
+        if (kind === 'media') { if (typeof window.openMediaPlayerModal === 'function') window.openMediaPlayerModal(); return; }
+        if (typeof window.openSourceControlModal === 'function') window.openSourceControlModal(kind);
+    }
+    var prevSelectSource = window.selectSourceSim;
+    var lastOpen = { join: null, ts: 0 };
+    window.selectSourceSim = function (join) {
+        if (typeof prevSelectSource === 'function') prevSelectSource.apply(this, arguments);
+        if (join === null || join === undefined) return;
+        var now = Date.now();
+        if (lastOpen.join === String(join) && now - lastOpen.ts < 800) return;   // un appui déclenche plusieurs appels
+        lastOpen = { join: String(join), ts: now };
+        openRemoteFor(join);
+    };
+
+    /* ---------- 3. Bandeau « État de la villa » ---------- */
+    function sourceLabel(join) {
+        var b = document.querySelector('ch5-button[customClass~="source-btn"][sendEventOnClick="' + join + '"]');
+        return (b && b.getAttribute('label')) || ('Source ' + (Number(join) - 150));
+    }
+    function statusItem(icon, text, cls) {
+        return '<span class="villa-status-item' + (cls ? ' ' + cls : '') + '"><span class="villa-status-icon">' + icon + '</span>' + text + '</span>';
+    }
+    function renderStatus() {
+        var el = document.getElementById('villa-status-items');
+        if (!el) return;
+        var items = [];
+        var armed = partState.filter(function (m) { return m === 'armed'; }).length;
+        var partial = partState.filter(function (m) { return m === 'partial'; }).length;
+        var alarmTxt = (armed === 4) ? t('status_alarm_on') : ((armed + partial) === 0 ? t('status_alarm_off') : t('status_alarm_partial', { n: armed + partial }));
+        items.push(statusItem(armed === 4 ? '🔒' : '🔓', t('status_alarm') + ' ' + alarmTxt, armed === 4 ? 'ok' : ((armed + partial) ? 'warn' : '')));
+        if (extra.doors) items.push(statusItem('🚪', t('status_doors') + ' ' + extra.doors));
+        items.push(statusItem('📺', activeSource ? sourceLabel(activeSource) : t('status_source_off'), activeSource ? 'ok' : ''));
+        if (hvac.temp) items.push(statusItem('🌡️', hvac.temp + ' → ' + (hvac.setpoint || '--') + ' °C'));
+        if (extra.power) items.push(statusItem('⚡', t('status_power') + ' ' + extra.power));
+        var demo = !!window.Villa && !window.WebXPanel;
+        var online = (typeof window.isCp4Connected === 'boolean') ? window.isCp4Connected : feedbackSeen;
+        if (demo) items.push(statusItem('🧪', t('status_demo')));
+        else items.push(statusItem(online ? '✅' : '⚠️', online ? t('status_cp4_on') : t('status_cp4_off'), online ? 'ok' : 'warn'));
+        if (window.appVersion) items.push(statusItem('🏷️', window.appVersion));
+        el.innerHTML = items.join('<span class="villa-status-sep">·</span>');
+    }
+    VUX.renderStatus = renderStatus;
+    setInterval(renderStatus, 5000);
+    setTimeout(renderStatus, 300);
+    if (typeof window.applyLanguage === 'function') {
+        var prevApplyLanguage = window.applyLanguage;
+        window.applyLanguage = function () { var r = prevApplyLanguage.apply(this, arguments); renderStatus(); return r; };
+    }
+
+    /* ---------- abonnements aux retours d'état ---------- */
+    function subscribe() {
+        var L = window.CrComLib;
+        if (!L || typeof L.subscribeState !== 'function') return false;
+        CIRCUITS.forEach(function (j) {
+            L.subscribeState('n', j, function (v) { levels[j] = Number(v) || 0; if (levels[j]) feedbackSeen = true; });
+        });
+        PARTITIONS.forEach(function (p, i) {
+            ['armed', 'partial', 'disarmed'].forEach(function (mode, k) {
+                L.subscribeState('b', p[k], function (v) { if (v) { partState[i] = mode; feedbackSeen = true; renderStatus(); } });
+            });
+        });
+        Object.keys(SOURCE_REMOTE).forEach(function (j) {
+            L.subscribeState('b', j, function (v) {
+                if (v) { activeSource = j; feedbackSeen = true; } else if (activeSource === j) activeSource = null;
+                renderStatus();
+            });
+        });
+        L.subscribeState('s', '32', function (v) { hvac.temp = String(v || ''); if (hvac.temp) feedbackSeen = true; renderStatus(); });
+        L.subscribeState('s', '33', function (v) { hvac.mode = String(v || ''); renderStatus(); });
+        L.subscribeState('s', '34', function (v) { hvac.setpoint = String(v || ''); renderStatus(); });
+        L.subscribeState('s', STATUS_SERIALS.doors, function (v) { extra.doors = String(v || ''); renderStatus(); });
+        L.subscribeState('s', STATUS_SERIALS.power, function (v) { extra.power = String(v || ''); renderStatus(); });
+        return true;
+    }
+    if (!subscribe()) {
+        var tries = 0;
+        var waitLib = setInterval(function () { if (subscribe() || ++tries > 300) clearInterval(waitLib); }, 100);
+    }
+})();
 </script>
 <audio id="funny-audio" src="funny.mp3" preload="auto"></audio>
 </body>

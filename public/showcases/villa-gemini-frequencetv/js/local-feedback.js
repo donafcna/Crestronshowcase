@@ -1,5 +1,5 @@
 /**
- * Villa Crans-Montana — moteur d'état local (100 % front-end), v1.0.149.
+ * Villa Crans-Montana — moteur d'état local (100 % front-end), v1.0.149 + retours direction 09.09.2026.
  *
  * Toute la logique métier de l'interface (15 pièces, scènes, sources, volume,
  * mute, extinction globale, alarme 4 partitions, thermostat et modes CVC,
@@ -197,10 +197,21 @@
     publishRoom(id);
   }
 
+  // Scène mémorisée depuis le GUI (appui long / 💾) : même clé localStorage que le module VillaUX
+  function savedScene(roomId, sceneId) {
+    try {
+      var raw = localStorage.getItem("villa_scene_" + roomId + "_" + (Number(sceneId) - 20));
+      var data = raw ? JSON.parse(raw) : null;
+      return data && data.lights ? data.lights : null;
+    } catch (e) { return null; }
+  }
+
   function applyScene(sceneId) {
     var r = rooms[activeRoom];
     r.scene = sceneId;
+    var saved = savedScene(activeRoom, sceneId);
     r.circuits = SCENE_PRESETS[sceneId].slice();
+    if (saved) SIG.CIRCUITS.forEach(function (c, idx) { if (saved[c] !== undefined) r.circuits[idx] = Number(saved[c]) || 0; });
     SIG.SCENES.forEach(function (s) { set("b", s, s === sceneId); });
     SIG.CIRCUITS.forEach(function (c, idx) { set("n", c, r.circuits[idx]); });
   }
@@ -313,9 +324,10 @@
     }
     var ci = SIG.CIRCUITS.indexOf(id);
     if (ci !== -1) {
+      var changed = r.circuits[ci] !== value;
       r.circuits[ci] = value;
-      // Un réglage manuel désélectionne la scène courante
-      if (r.scene) { r.scene = null; SIG.SCENES.forEach(function (s) { set("b", s, false); }); }
+      // Un réglage manuel désélectionne la scène courante (pas un rappel qui renvoie les mêmes niveaux)
+      if (changed && r.scene) { r.scene = null; SIG.SCENES.forEach(function (s) { set("b", s, false); }); }
     }
   }
 
@@ -389,6 +401,14 @@
     var start = 1;
     try { start = parseInt(localStorage.getItem("active_room_id") || "1", 10) || 1; } catch (e) {}
     selectRoom(rooms[start] ? start : 1);
+    // Bandeau « État de la villa » : informations de démonstration (sériels hors contrat 111/112)
+    set("s", "111", "toutes fermées");
+    var kw = 2.4;
+    set("s", "112", kw.toFixed(1).replace(".", ",") + " kW");
+    setInterval(function () {
+      kw = Math.max(0.6, Math.min(6.5, kw + (Math.random() - 0.5) * 0.4));
+      set("s", "112", kw.toFixed(1).replace(".", ",") + " kW");
+    }, 15000);
   }
 
   window.Villa = {

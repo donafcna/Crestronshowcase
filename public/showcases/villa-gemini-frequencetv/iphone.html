@@ -695,7 +695,7 @@
         <div id="panel-audio" class="tab-panel">
             <h2 style="display: flex; align-items: center; gap: 8px;">
                 <svg viewBox="0 0 576 512" style="width: 20px; height: 20px; fill: #8b5cf6;"><path d="M528 0H48C21.5 0 0 21.5 0 48v320c0 26.5 21.5 48 48 48h192l-16 48h-72c-13.3 0-24 10.7-24 24s10.7 24 24 24h272c13.3 0 24-10.7 24-24s-10.7-24-24-24h-72l-16-48h192c26.5 0 48-21.5 48-48V48c0-26.5-21.5-48-48-48zm-16 352H64V64h448v288z"/></svg>
-                <span data-i18n="source_title">Sélection Source Audio et Vidéo</span>
+                <span data-i18n="source_title">Sélection de la source audio et vidéo</span>
             </h2>
             <div style="display: flex; flex-direction: column; justify-content: space-between; flex: 1;">
                 <div>
@@ -706,7 +706,7 @@
                     <!-- Bouton Musique s'étendant sur toute la largeur (iPhone) -->
                     <div style="margin-top: 10px; width: 100%;">
                         <button onclick="openMediaPlayerModal()" style="width: 100%; height: 36px; background: rgba(139, 92, 246, 0.15); border: 1px solid #8b5cf6; color: #c084fc; border-radius: 8px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.85rem; transition: all 0.2s; outline: none;">
-                            🎵 Musique / Lecteur Média
+                            🎵 Musique / lecteur média
                         </button>
                     </div>
                 </div>
@@ -739,6 +739,67 @@
             <svg viewBox="0 0 576 512" style="width: 20px; height: 20px; fill: #8b5cf6; transition: all 0.2s;"><path d="M528 0H48C21.5 0 0 21.5 0 48v320c0 26.5 21.5 48 48 48h192l-16 48h-72c-13.3 0-24 10.7-24 24s10.7 24 24 24h272c13.3 0 24-10.7 24-24s-10.7-24-24-24h-72l-16-48h192c26.5 0 48-21.5 48-48V48c0-26.5-21.5-48-48-48zm-16 352H64V64h448v288z"/></svg>
             <span data-i18n="source_title">Source</span>
         </button>
+    </div>
+
+    <!-- POPUP CONTRÔLE DES SOURCES VIDEO (Mobile Optimized) -->
+    <div id="source-control-overlay" class="custom-overlay-panel" style="width: 90% !important; max-width: 380px !important; height: auto !important; max-height: 85% !important; padding: 15px; box-sizing: border-box;">
+        <div class="overlay-header" style="margin-bottom: 15px;">
+            <h3 style="display: flex; align-items: center; gap: 8px; color: #8b5cf6; margin: 0; font-size: 1.1rem; text-transform: uppercase;">
+                ⚙️ <span id="source-control-title" style="color: inherit;">Source</span>
+            </h3>
+            <button onclick="closeSourceControlModal()" style="height: 30px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 6px; cursor: pointer; font-weight: bold; padding: 0 10px; font-size: 0.8rem;">FERMER</button>
+        </div>
+        
+        <!-- Télécommande Virtuelle Standard -->
+        <div id="remote-standard-layout" style="display: flex; flex-direction: column; gap: 20px; align-items: center; justify-content: center; width: 100%; box-sizing: border-box;">
+            <!-- D-PAD Navigation -->
+            <div style="position: relative; width: 180px; height: 180px; background: rgba(255,255,255,0.03); border-radius: 50%; border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center;">
+                <ch5-button id="src-btn-ok" label="OK" customClass="scene-btn" style="position: absolute; width: 50px; height: 50px; border-radius: 50%; z-index: 10;" sendEventOnClick="215"></ch5-button>
+                <ch5-button id="src-btn-up" label="▲" customClass="scene-btn" style="position: absolute; top: 10px; width: 45px; height: 35px;" sendEventOnClick="211"></ch5-button>
+                <ch5-button id="src-btn-down" label="▼" customClass="scene-btn" style="position: absolute; bottom: 10px; width: 45px; height: 35px;" sendEventOnClick="212"></ch5-button>
+                <ch5-button id="src-btn-left" label="◀" customClass="scene-btn" style="position: absolute; left: 10px; width: 35px; height: 45px;" sendEventOnClick="213"></ch5-button>
+                <ch5-button id="src-btn-right" label="▶" customClass="scene-btn" style="position: absolute; right: 10px; width: 35px; height: 45px;" sendEventOnClick="214"></ch5-button>
+            </div>
+            
+            <!-- Commandes -->
+            <div style="display: flex; flex-direction: column; gap: 10px; width: 100%;">
+                <div style="display: flex; gap: 8px;">
+                    <ch5-button id="src-btn-back" label="RETOUR" customClass="scene-btn" style="flex: 1; height: 38px;" sendEventOnClick="216"></ch5-button>
+                    <ch5-button id="src-btn-home" label="HOME" customClass="scene-btn" style="flex: 1; height: 38px;" sendEventOnClick="217"></ch5-button>
+                </div>
+                <div style="display: flex; gap: 6px;">
+                    <ch5-button id="src-btn-rew" label="⏪" customClass="scene-btn" style="flex: 1; height: 38px;" sendEventOnClick="219"></ch5-button>
+                    <ch5-button id="src-btn-play" label="⏯️" customClass="scene-btn" style="flex: 1; height: 38px;" sendEventOnClick="218"></ch5-button>
+                    <ch5-button id="src-btn-fwd" label="⏩" customClass="scene-btn" style="flex: 1; height: 38px;" sendEventOnClick="220"></ch5-button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Télécommande Apple TV Style iOS -->
+        <div id="remote-appletv-layout" style="display: none; flex-direction: column; align-items: center; justify-content: center; width: 100%; position: relative; padding-top: 10px;">
+            <!-- Bouton MENU en haut à gauche -->
+            <div style="width: 100%; display: flex; justify-content: flex-start; margin-bottom: 20px; padding-left: 10px;">
+                <ch5-button id="src-btn-apple-menu" label="MENU" customStyle="background-color: #2c2c2e; border: 1px solid rgba(255,255,255,0.15); color: #fff; font-weight: bold; border-radius: 12px; width: 85px; height: 40px; font-size: 0.85rem;" sendEventOnClick="216"></ch5-button>
+            </div>
+            
+            <!-- D-PAD en croix style iOS Apple TV Remote -->
+            <div style="display: grid; grid-template-columns: repeat(3, 70px); grid-template-rows: repeat(3, 70px); gap: 12px;">
+                <!-- Row 1 -->
+                <div></div>
+                <ch5-button id="src-btn-apple-up" label="o" customStyle="background-color: #2c2c2e; border: 1px solid rgba(255,255,255,0.15); color: #aaa; border-radius: 50%; width: 70px; height: 70px; font-size: 1.3rem; display: flex; align-items: center; justify-content: center; font-weight: bold;" sendEventOnClick="211"></ch5-button>
+                <div></div>
+                
+                <!-- Row 2 -->
+                <ch5-button id="src-btn-apple-left" label="o" customStyle="background-color: #2c2c2e; border: 1px solid rgba(255,255,255,0.15); color: #aaa; border-radius: 50%; width: 70px; height: 70px; font-size: 1.3rem; display: flex; align-items: center; justify-content: center; font-weight: bold;" sendEventOnClick="213"></ch5-button>
+                <ch5-button id="src-btn-apple-ok" label="OK" customStyle="background-color: #3a3a3c; border: 1px solid rgba(255,255,255,0.25); color: #fff; border-radius: 50%; width: 70px; height: 70px; font-size: 1.1rem; display: flex; align-items: center; justify-content: center; font-weight: bold;" sendEventOnClick="215"></ch5-button>
+                <ch5-button id="src-btn-apple-right" label="o" customStyle="background-color: #2c2c2e; border: 1px solid rgba(255,255,255,0.15); color: #aaa; border-radius: 50%; width: 70px; height: 70px; font-size: 1.3rem; display: flex; align-items: center; justify-content: center; font-weight: bold;" sendEventOnClick="214"></ch5-button>
+                
+                <!-- Row 3 -->
+                <div></div>
+                <ch5-button id="src-btn-apple-down" label="o" customStyle="background-color: #2c2c2e; border: 1px solid rgba(255,255,255,0.15); color: #aaa; border-radius: 50%; width: 70px; height: 70px; font-size: 1.3rem; display: flex; align-items: center; justify-content: center; font-weight: bold;" sendEventOnClick="212"></ch5-button>
+                <div></div>
+            </div>
+        </div>
     </div>
 
     <!-- POPUP REGLAGE DES CIRCUITS (Mobile Optimized) -->
@@ -828,44 +889,44 @@
                 fr: {
                     settings: "Réglages",
                     close: "Fermer",
-                    select_language: "Sélectionner la Langue :",
-                    select_theme: "Sélectionner le Thème :",
-                    theme_dark: "Sombre Premium 🌙",
-                    theme_light: "Clair Élégant ☀️",
-                    theme_glass: "Verre Dépoli ❄️",
-                    theme_cyber: "Bleu Cyberpunk 🌌",
-                    active_piece: "Pièce Active",
-                    alarm_title: "Alarme Globale :",
+                    select_language: "Sélectionner la langue :",
+                    select_theme: "Sélectionner le thème :",
+                    theme_dark: "Sombre premium 🌙",
+                    theme_light: "Clair élégant ☀️",
+                    theme_glass: "Verre dépoli ❄️",
+                    theme_cyber: "Bleu cyberpunk 🌌",
+                    active_piece: "Pièce active",
+                    alarm_title: "Alarme globale :",
                     alarm_arm: "ARMER",
                     alarm_disarm: "DÉSARMER",
                     temp_title: "HVAC",
                     temp_actual: "Actuelle",
                     temp_requested: "Consigne",
-                    source_title: "Sélection Source Audio et Vidéo",
-                    source_video: "Source Active :",
+                    source_title: "Sélection de la source audio et vidéo",
+                    source_video: "Source active :",
                     circuits_title: "Circuits :",
                     motors_title: "Moteurs :",
                     tab_lights: "ÉCLAIRAGES",
                     tab_shades: "STORES",
                     motors_title_section: "MOTEURS",
                     widgets_title: "Widgets",
-                    weather_title: "Météo Locale",
+                    weather_title: "Météo locale",
                     weather_wind: "Vent",
                     weather_humidity: "Humidité",
                     news_title: "Actualités",
-                    video_title: "Vidéo Domotique"
+                    video_title: "Vidéo domotique"
                 },
                 en: {
                     settings: "Settings",
                     close: "Close",
-                    select_language: "Select Language:",
-                    select_theme: "Select Theme:",
-                    theme_dark: "Dark Premium 🌙",
-                    theme_light: "Elegant Light ☀️",
-                    theme_glass: "Frosted Glass ❄️",
-                    theme_cyber: "Cyberpunk Blue 🌌",
-                    active_piece: "Active Room",
-                    alarm_title: "Global Alarm:",
+                    select_language: "Select language:",
+                    select_theme: "Select theme:",
+                    theme_dark: "Dark premium 🌙",
+                    theme_light: "Elegant light ☀️",
+                    theme_glass: "Frosted glass ❄️",
+                    theme_cyber: "Cyberpunk blue 🌌",
+                    active_piece: "Active room",
+                    alarm_title: "Global alarm:",
                     alarm_arm: "ARM",
                     alarm_disarm: "DISARM",
                     temp_title: "HVAC",
@@ -982,19 +1043,19 @@
                 rooms: [
                     { id: 1, name: "Salon" },
                     { id: 2, name: "Cuisine" },
-                    { id: 3, name: "Salle à Manger" },
-                    { id: 4, name: "Suite Parentale" },
+                    { id: 3, name: "Salle à manger" },
+                    { id: 4, name: "Suite parentale" },
                     { id: 5, name: "Chambre 1" },
                     { id: 6, name: "Chambre 2" },
                     { id: 7, name: "Bureau" },
-                    { id: 8, name: "Home Cinéma" },
+                    { id: 8, name: "Home cinéma" },
                     { id: 9, name: "Chambre 3" },
-                    { id: 10, name: "Suite Invités" },
-                    { id: 11, name: "Terrasse & Jardin" },
-                    { id: 12, name: "Piscine & Spa" },
-                    { id: 13, name: "Sauna & Hammam" },
-                    { id: 14, name: "Pool House" },
-                    { id: 15, name: "Garage & Ateliers" }
+                    { id: 10, name: "Suite invités" },
+                    { id: 11, name: "Terrasse & jardin" },
+                    { id: 12, name: "Piscine & spa" },
+                    { id: 13, name: "Sauna & hammam" },
+                    { id: 14, name: "Pool house" },
+                    { id: 15, name: "Garage & ateliers" }
                 ],
                 sources: [
                     { id: 1, name: "APPLE TV" },
@@ -1005,7 +1066,7 @@
                 roomMotors: {
                     "1": ["Volet Baie Est", "Volet Baie Sud", "Rideau Écran Proj.", "Store Banne Terrasse", "Brise-Soleil Orientable", "Volet Fenêtre Ouest"],
                     "2": ["Volet Évier Cuisine", "Store Fenêtre Nord", "Volet Porte Cuisine", "Store Plafond Verrière", "Rideau Passe-Plat", "Brise-Soleil Cuisine"],
-                    "3": ["Volet Salle à Manger 1", "Volet Salle à Manger 2", "Store Banne Sud", "Rideau Ouest", "Brise-Soleil Est", "Volet Porte-Fenêtre"],
+                    "3": ["Volet Salle à manger 1", "Volet Salle à manger 2", "Store Banne Sud", "Rideau Ouest", "Brise-Soleil Est", "Volet Porte-Fenêtre"],
                     "4": ["Volet Baie Suite", "Rideau Lit", "Store Dressing", "Volet Salle de Bain", "Brise-Soleil Suite", "Volet Fenêtre Nord"],
                     "5": ["Volet Chambre 1 Est", "Rideau Chambre 1", "Store Fenêtre 1", "Volet Dressing 1", "Volet Principal 1", "Store Occultant 1"],
                     "6": ["Volet Chambre 2 Ouest", "Rideau Chambre 2", "Store Fenêtre 2", "Volet Dressing 2", "Volet Principal 2", "Store Occultant 2"],
@@ -1016,12 +1077,12 @@
                     "11": ["Pergola Bioclimatique Lames", "Pergola Store Zip Est", "Pergola Store Zip Sud", "Store Banne Jardin", "Volet Véranda", "Store Occultant Patio"],
                     "12": ["Couverture Bassin", "Volet Baie Spa", "Rideau Transat Spa", "Store Verrière Spa", "Volet Vestiaire", "Brise-Soleil Spa"],
                     "13": ["Volet Fenêtre Sauna", "Store Intimité Hammam", "Rideau Relaxation", "Volet Vestiaire Sauna", "Brise-Soleil Entrée", "Store Occultant Rest"],
-                    "14": ["Volet Baie Bar", "Store Banne Pool House", "Rideau Cuisine Été", "Volet Baie Repas", "Store Zip Sud PH", "Volet Réserve"],
+                    "14": ["Volet Baie Bar", "Store Banne Pool house", "Rideau Cuisine Été", "Volet Baie Repas", "Store Zip Sud PH", "Volet Réserve"],
                     "15": ["Porte Sectionnelle Main", "Porte Sectionnelle 2", "Volet Atelier", "Store Fenêtre Garage", "Rideau Zone Lavage", "Volet Local Tech"]
                 },
                 roomCircuits: {
                     "1": [
-                        { id: 71, name: "Spots Plafond Ouest" },
+                        { id: 71, name: "Spots plafond Ouest" },
                         { id: 72, name: "Lustre Principal" },
                         { id: 73, name: "Ruban LED Corniche" },
                         { id: 74, name: "Applique Murale Nord" },
@@ -1042,7 +1103,7 @@
                     ],
                     "3": [
                         { id: 71, name: "Lustre Table Repas" },
-                        { id: 72, name: "Spots Plafond" },
+                        { id: 72, name: "Spots plafond" },
                         { id: 73, name: "Appliques Buffet Est" },
                         { id: 74, name: "Ruban LED Vaisselier" },
                         { id: 75, name: "Lumière Vitrine" },
@@ -1079,7 +1140,7 @@
                         { id: 76, name: "Veilleuse Bureau 2" }
                     ],
                     "7": [
-                        { id: 71, name: "Spots Plafond Bureau" },
+                        { id: 71, name: "Spots plafond Bureau" },
                         { id: 72, name: "Lampe Bureau Design" },
                         { id: 73, name: "Ruban LED Bibliothèque" },
                         { id: 74, name: "Applique Zone Accueil" },
@@ -1090,8 +1151,8 @@
                     ],
                     "8": [
                         { id: 71, name: "Nez de Marche Gradué" },
-                        { id: 72, name: "Appliques Murales Gauche" },
-                        { id: 73, name: "Appliques Murales Droite" },
+                        { id: 72, name: "Appliques murales Gauche" },
+                        { id: 73, name: "Appliques murales Droite" },
                         { id: 74, name: "Ruban LED Écran" },
                         { id: 75, name: "Plafonnier Ciel Étoilé" },
                         { id: 76, name: "Spots Encastrés Escaliers" },
@@ -1108,7 +1169,7 @@
                         { id: 76, name: "Veilleuse Bureau 3" }
                     ],
                     "10": [
-                        { id: 71, name: "Lustre Suite Invités" },
+                        { id: 71, name: "Lustre Suite invités" },
                         { id: 72, name: "Liseuse Gauche Invités" },
                         { id: 73, name: "Liseuse Droite Invités" },
                         { id: 74, name: "LED Tête de Lit Invités" },
@@ -1126,7 +1187,7 @@
                     ],
                     "12": [
                         { id: 71, name: "Projecteurs Subaquatiques" },
-                        { id: 72, name: "Spots Plafond Spa" },
+                        { id: 72, name: "Spots plafond Spa" },
                         { id: 73, name: "Ruban LED Margelle" },
                         { id: 74, name: "Appliques Ambiance Plage" },
                         { id: 75, name: "Projecteur Cascade" },
@@ -1141,10 +1202,10 @@
                         { id: 76, name: "LED Vestiaire Rest" }
                     ],
                     "14": [
-                        { id: 71, name: "Suspensions Bar Pool House" },
-                        { id: 72, name: "Spots Plafond Salon d'Été" },
+                        { id: 71, name: "Suspensions Bar Pool house" },
+                        { id: 72, name: "Spots plafond Salon d'Été" },
                         { id: 73, name: "Ruban LED Comptoir" },
-                        { id: 74, name: "Appliques Terrasse Pool House" },
+                        { id: 74, name: "Appliques Terrasse Pool house" },
                         { id: 75, name: "Projecteur Barbecue PH" }
                     ],
                     "15": [
@@ -1156,9 +1217,9 @@
                     ]
                 },
                 circuits: [
-                    { id: 71, name: "Spots Plafond" },
-                    { id: 72, name: "Lustre Central" },
-                    { id: 73, name: "Appliques Murales" },
+                    { id: 71, name: "Spots plafond" },
+                    { id: 72, name: "Lustre central" },
+                    { id: 73, name: "Appliques murales" },
                     { id: 74, name: "Ruban LED" },
                     { id: 75, name: "Liseuse" },
                     { id: 76, name: "Éclairage Table" },
@@ -1400,7 +1461,7 @@
                         { name: "Cam 2 : Entrée Nord", img: "https://images.unsplash.com/photo-1513694203232-719a280e022f?w=400&auto=format&fit=crop&q=60" },
                         { name: "Cam 3 : Allée Voitures", img: "https://images.unsplash.com/photo-1507089947368-19c1da9775ae?w=400&auto=format&fit=crop&q=60" },
                         { name: "Cam 4 : Terrasse Piscine", img: "https://images.unsplash.com/photo-1576013551627-0cc20b96c2a7?w=400&auto=format&fit=crop&q=60" },
-                        { name: "Cam 5 : Pool House", img: "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=400&auto=format&fit=crop&q=60" },
+                        { name: "Cam 5 : Pool house", img: "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=400&auto=format&fit=crop&q=60" },
                         { name: "Cam 6 : Garage Intérieur", img: "https://images.unsplash.com/photo-1616422285623-13ff0162193c?w=400&auto=format&fit=crop&q=60" },
                         { name: "Cam 7 : Jardin Est", img: "https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?w=400&auto=format&fit=crop&q=60" },
                         { name: "Cam 8 : Salon Baie Vitrée", img: "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=400&auto=format&fit=crop&q=60" },
@@ -1511,8 +1572,8 @@
                     ];
                 } else if (type === 'shades') {
                     options = [
-                        { value: "shade_open", text: "Stores : Tout Ouvrir (404)" },
-                        { value: "shade_close", text: "Stores : Tout Fermer (405)" }
+                        { value: "shade_open", text: "Stores : Tout ouvrir (404)" },
+                        { value: "shade_close", text: "Stores : Tout fermer (405)" }
                     ];
                 } else if (type === 'hvac') {
                     options = [
@@ -1522,7 +1583,7 @@
                     ];
                 } else if (type === 'vacation') {
                     options = [
-                        { value: "vacation", text: "Mode Vacances (410)" }
+                        { value: "vacation", text: "Mode vacances (410)" }
                     ];
                 }
                 
@@ -1568,12 +1629,12 @@
                     const roomsList = [
                         { id: 1, name: "Salon" },
                         { id: 2, name: "Cuisine" },
-                        { id: 3, name: "Salle à Manger" },
-                        { id: 4, name: "Suite Parentale" },
+                        { id: 3, name: "Salle à manger" },
+                        { id: 4, name: "Suite parentale" },
                         { id: 5, name: "Chambre 1" },
                         { id: 6, name: "Chambre 2" },
                         { id: 7, name: "Bureau" },
-                        { id: 8, name: "Home Cinéma" }
+                        { id: 8, name: "Home cinéma" }
                     ];
                     
                     roomsList.forEach(room => {
@@ -1588,9 +1649,9 @@
                         const circuits = config.roomCircuits && config.roomCircuits[room.id] ? config.roomCircuits[room.id] : [];
                         if (circuits.length === 0) {
                             const fallbackList = [
-                                { id: 71, name: "Spots Plafond" },
-                                { id: 72, name: "Lustre Central" },
-                                { id: 73, name: "Appliques Murales" },
+                                { id: 71, name: "Spots plafond" },
+                                { id: 72, name: "Lustre central" },
+                                { id: 73, name: "Appliques murales" },
                                 { id: 74, name: "Ruban LED" }
                             ];
                             circuits.push(...fallbackList);
@@ -1644,12 +1705,12 @@
                     const roomsList = [
                         { id: 1, name: "Salon" },
                         { id: 2, name: "Cuisine" },
-                        { id: 3, name: "Salle à Manger" },
-                        { id: 4, name: "Suite Parentale" },
+                        { id: 3, name: "Salle à manger" },
+                        { id: 4, name: "Suite parentale" },
                         { id: 5, name: "Chambre 1" },
                         { id: 6, name: "Chambre 2" },
                         { id: 7, name: "Bureau" },
-                        { id: 8, name: "Home Cinéma" }
+                        { id: 8, name: "Home cinéma" }
                     ];
                     
                     roomsList.forEach(room => {
@@ -1697,12 +1758,12 @@
                     const roomsList = [
                         { id: 1, name: "Salon" },
                         { id: 2, name: "Cuisine" },
-                        { id: 3, name: "Salle à Manger" },
-                        { id: 4, name: "Suite Parentale" },
+                        { id: 3, name: "Salle à manger" },
+                        { id: 4, name: "Suite parentale" },
                         { id: 5, name: "Chambre 1" },
                         { id: 6, name: "Chambre 2" },
                         { id: 7, name: "Bureau" },
-                        { id: 8, name: "Home Cinéma" }
+                        { id: 8, name: "Home cinéma" }
                     ];
                     
                     roomsList.forEach(room => {
@@ -1750,8 +1811,8 @@
                     });
                 } else if (activePresetType === 'vacation') {
                     const categories = [
-                        { key: "light", text: "Éclairage Global (Éteindre)" },
-                        { key: "shade", text: "Stores Globaux (Fermer)" },
+                        { key: "light", text: "Éclairage global (Éteindre)" },
+                        { key: "shade", text: "Stores globaux (Fermer)" },
                         { key: "hvac", text: "Climatisation (Hors Gel)" }
                     ];
                     
@@ -1996,7 +2057,11 @@
                         btn.className = "source-btn-mobile";
                         btn.innerText = src.name;
                         btn.style = "width: 100%; margin: 0;";
-                        btn.onclick = () => selectSource(src.id);
+                        btn.onclick = () => {
+                            selectSource(src.id);
+                            // Premier appui = activation + ouverture immédiate de la télécommande (retour direction 09.09.2026)
+                            if (srcKeyMap[src.id] && typeof openSourceControlModal === 'function') openSourceControlModal(srcKeyMap[src.id]);
+                        };
                         
                         const cogKey = srcKeyMap[src.id] || 'appletv';
                         const cog = document.createElement('button');
