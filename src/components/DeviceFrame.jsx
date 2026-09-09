@@ -7,6 +7,7 @@ import { ChassisCaption } from "./ChassisCaption";
 import { useDemoSettings } from "../hooks/useDemoSettings";
 import { SCALE_RULES, realSizeScale } from "../data/scaleRules";
 import { useFrameInfo } from "../context/FrameInfoContext";
+import { useScreenCalibration } from "../hooks/useScreenCalibration";
 
 // Barre d'état iOS (heure réelle, réseau, batterie) dessinée dans la zone
 // "safe area" du haut de l'écran, comme sur un vrai iPhone / iPad. La GUI est
@@ -66,9 +67,12 @@ export const DeviceFrame = ({
   const { devMode } = useDevMode();
   const { scaleMode, setScaleMode } = useDemoSettings();
   // « Taille réelle » = dimensions physiques de l'appareil (mm → px CSS), pas 100 % des px de conception.
-  const realScale = realSizeScale(cfg);
+  const { pxPerMm } = useScreenCalibration();
+  const realScale = realSizeScale(cfg, pxPerMm);
+  // realSizeAvailable = la taille réelle tient dans la zone ; sinon elle est quand même
+  // appliquée (le châssis dépasse) et la légende le signale — F11 donne plus de place.
   const realSizeAvailable = fitScale >= realScale * SCALE_RULES.realSizeTolerance;
-  const effectiveMode = scaleMode === "real" && realSizeAvailable ? "real" : "auto";
+  const effectiveMode = scaleMode === "real" ? "real" : "auto";
   // Plein écran : le châssis occupe tout l'espace disponible (proportions
   // conservées), sans le plafond maxUpscale de la page normale.
   const upscaleCap = isFullscreen ? Infinity : SCALE_RULES.maxUpscale;

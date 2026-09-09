@@ -1,7 +1,7 @@
 // Résolutions de référence pour chaque support, confirmées avec le client :
 // - Dalle tactile Crestron TSW-1070 : 1280 x 800 (WXGA natif, 16:10)
 // - PC Monitoring / Xpanel        : 1920 x 1080 (16:9)
-// - Tablette iPad Pro 13"          : 1376 x 1032 (paysage, 4:3)
+// - Tablette iPad (A16) 11"         : 1180 x 820 (paysage, 2360 x 1640 px natif)
 // - Smartphone iPhone 15/16 Pro    : 402 x 874 (portrait)
 //
 // screenW/H = résolution native de l'écran (ce que la GUI doit remplir).
@@ -39,25 +39,27 @@ export const DEVICES = {
   },
   tablet: {
     id: "tablet",
-    // Dimensions physiques du boîtier (mm) : « Taille réelle » = 96 px CSS par pouce
-    physicalW: 281.6,
-    physicalH: 215.5,
-    model: "iPad Pro 13\"",
-    diagonalInches: 13,
-    nativeW: 2752,
-    nativeH: 2064,
+    // iPad (A16) — support.apple.com/en-gb/122240 : 248,6 × 179,5 × 7 mm, écran 10,86″
+    // (commercialisé « 11 pouces »), 2360 × 1640 px, 264 ppi → 1180 × 820 pt.
+    physicalW: 248.6,
+    physicalH: 179.5,
+    model: "iPad (A16)",
+    diagonalInches: 11,
+    nativeW: 2360,
+    nativeH: 1640,
     label: "Tablette",
-    screenW: 1376,
-    screenH: 1032,
-    // Barre d'état iPadOS (24 pt) en haut, indicateur home (20 pt) en bas.
-    guiW: 1376,
-    guiH: 988,
+    screenW: 1180,
+    screenH: 820,
+    // Barre d'état iPadOS (24 pt) en haut, indicateur home (20 pt) en bas ; la GUI
+    // (mise en page fluide) occupe exactement l'écran hors zones réservées.
+    guiW: 1180,
+    guiH: 776,
     safeTop: 24,
     safeBottom: 20,
-    // Boîtier aux proportions d'un iPad Pro 13" : bords uniformes de 45 px
-    // (281,6 x 215,5 mm pour un écran de 1376 x 1032 pt).
-    chassisW: 1466,
-    chassisH: 1122,
+    // Boîtier : écran 10,86″ en 1180 × 820 → 229,4 × 159,4 mm, donc bords de 9,6 mm
+    // (49 px) sur les côtés et 10 mm (52 px) en haut / bas.
+    chassisW: 1278,
+    chassisH: 924,
   },
   wallpanel: {
     id: "wallpanel",

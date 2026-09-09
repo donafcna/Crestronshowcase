@@ -411,38 +411,18 @@ const ShowcaseInner = ({ sectorId, projectId, device }) => {
         )}
         {captureNotice && <div className="demo-notice glass-panel">{captureNotice}</div>}
 
-        {/* Bandeau plein écran */}
-        {isFullscreen && (
-          <div className="fullscreen-overlay-header">
-            <div className="fullscreen-overlay-header-left">
-              {frameInfo && (
-                <ChassisCaption
-                  fullscreen
-                  device={frameInfo.device}
-                  scale={frameInfo.scale}
-                  pageScale={frameInfo.pageScale}
-                  mode={frameInfo.mode}
-                  requestedMode={frameInfo.requestedMode}
-                  realSizeAvailable={frameInfo.realSizeAvailable}
-                  tooSmall={frameInfo.tooSmall}
-                  onChangeMode={frameInfo.onChangeMode}
-                />
-              )}
-              {demoEnabled && demoRunning && (
-                <div className="present-hint glass-panel">
-                  {renderIcon("Presentation", 14)}
-                  <span>
-                    {getProjectName(activeProject, lang)} · {t("present_hint")}
-                  </span>
-                </div>
-              )}
-            </div>
-            <div className="fullscreen-overlay-header-right">
-              <div className="fullscreen-frequencetv-logo-card">
-                <img src="/assets/logo-frequence-tv-5LGUrtbd.png" alt="Fréquence TV" className="frequencetv-logo-img-fs" />
-              </div>
-            </div>
-          </div>
+        {/* Plein écran + mode Dev : mesures d'écran en haut à gauche (superposées, sans place prise) */}
+        {isFullscreen && devMode && frameInfo && (
+          <DevMetrics
+            overlay
+            fullscreen
+            device={frameInfo.device}
+            stage={frameInfo.stage}
+            scale={frameInfo.scale}
+            fitScale={frameInfo.fitScale}
+            mode={frameInfo.mode}
+            realSizeAvailable={frameInfo.realSizeAvailable}
+          />
         )}
 
         {/* 3. Appareil + sélecteur de support */}
@@ -472,7 +452,12 @@ const ShowcaseInner = ({ sectorId, projectId, device }) => {
             </div>
           </main>
 
-          <aside className="workspace-device-sidebar">
+          <aside className={`workspace-device-sidebar ${isFullscreen ? "is-fullscreen" : ""}`}>
+            {isFullscreen && (
+              <div className="fullscreen-frequencetv-logo-card">
+                <img src="/assets/logo-frequence-tv-5LGUrtbd.png" alt="Fréquence TV" className="frequencetv-logo-img-fs" />
+              </div>
+            )}
             <div className="device-buttons-column">
               {projectViewports.map((dev) => (
                 <button
@@ -487,6 +472,33 @@ const ShowcaseInner = ({ sectorId, projectId, device }) => {
                 </button>
               ))}
             </div>
+            {/* Plein écran : légende du châssis et rappel de la démo sous les boutons de support,
+                pour laisser toute la hauteur de l'écran au châssis */}
+            {isFullscreen && (
+              <div className="fullscreen-side-info">
+                {frameInfo && (
+                  <ChassisCaption
+                    fullscreen
+                    device={frameInfo.device}
+                    scale={frameInfo.scale}
+                    pageScale={frameInfo.pageScale}
+                    mode={frameInfo.mode}
+                    requestedMode={frameInfo.requestedMode}
+                    realSizeAvailable={frameInfo.realSizeAvailable}
+                    tooSmall={frameInfo.tooSmall}
+                    onChangeMode={frameInfo.onChangeMode}
+                  />
+                )}
+                {demoEnabled && demoRunning && (
+                  <div className="present-hint glass-panel">
+                    {renderIcon("Presentation", 14)}
+                    <span>
+                      {getProjectName(activeProject, lang)} · {t("present_hint")}
+                    </span>
+                  </div>
+                )}
+              </div>
+            )}
           </aside>
         </div>
       </div>

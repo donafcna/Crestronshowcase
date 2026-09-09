@@ -4664,10 +4664,10 @@ html, body, #root {
   height: 100vh !important;
   height: 100dvh !important;
   min-height: 0 !important;
-  /* haut : légende + logo Fréquence TV ; droite : sélecteur de support (superposés).
+  /* droite : logo, sélecteur de support, légende et rappel de démo (colonne superposée).
      Marges réduites au strict nécessaire : en plein écran le châssis doit occuper
      tout l'espace disponible (proportions conservées). */
-  padding: 84px 210px 16px 24px !important;
+  padding: 20px 300px 20px 24px !important;
   border-radius: 0 !important;
 }
 
@@ -4880,6 +4880,31 @@ html, body, #root {
   opacity: 0.94;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
 }
+/* Plein écran : en haut à gauche, par-dessus la scène */
+.dev-metrics--fs {
+  position: fixed !important;
+  top: 10px;
+  left: 120px; /* à droite du badge MODE DEV */
+  transform: none !important;
+  margin: 0;
+  z-index: 100001 !important;
+  pointer-events: none;
+  opacity: 0.94;
+  flex-wrap: nowrap;
+  max-width: calc(100vw - 32px);
+}
+.dev-metrics-input {
+  width: 4.2em;
+  margin: 0 2px;
+  padding: 0 4px;
+  border: 1px solid rgba(251, 191, 36, 0.6);
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.4);
+  color: #fde68a;
+  font: inherit;
+  text-align: right;
+  pointer-events: auto; /* réglable même quand le bandeau laisse passer les clics */
+}
 .dev-metrics b { color: #fbbf24; font-weight: 700; margin-right: 4px; }
 .dev-metrics-item { display: inline-flex; align-items: baseline; }
 
@@ -4940,3 +4965,40 @@ html, body, #root {
   .chassis-caption { font-size: 0.72rem; padding-left: 12px; }
   .chassis-caption-text { white-space: normal; text-align: center; }
 }
+
+/* ===== Plein écran : colonne de droite (logo, supports, légende, rappel de démo) ===== */
+.workspace-device-sidebar.is-fullscreen {
+  position: fixed !important;
+  top: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  width: 280px !important;
+  padding: 20px 20px 20px 0 !important;
+  gap: 14px !important;
+  justify-content: center !important;
+  align-items: stretch !important;
+  z-index: 100000 !important;
+  pointer-events: none !important;
+}
+.workspace-device-sidebar.is-fullscreen > * { pointer-events: auto; }
+.workspace-device-sidebar.is-fullscreen .fullscreen-frequencetv-logo-card {
+  height: auto !important;
+  padding: 10px 18px !important;
+  justify-content: center !important;
+}
+.workspace-device-sidebar.is-fullscreen .frequencetv-logo-img-fs { max-width: 100%; height: auto; }
+.workspace-device-sidebar.is-fullscreen .device-buttons-column { width: 100% !important; }
+.workspace-device-sidebar.is-fullscreen .device-vertical-btn { width: 100% !important; }
+.fullscreen-side-info { display: flex; flex-direction: column; gap: 10px; width: 100%; }
+.fullscreen-side-info .chassis-caption {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 8px;
+  width: 100%;
+  margin: 0;
+  padding: 10px 12px;
+  border-radius: 14px;
+}
+.fullscreen-side-info .chassis-caption-text { white-space: normal; line-height: 1.5; }
+.fullscreen-side-info .chassis-scale-toggle { align-self: flex-start; }
+.fullscreen-side-info .present-hint { width: 100%; box-sizing: border-box; white-space: normal; }

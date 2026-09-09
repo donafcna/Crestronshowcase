@@ -34,7 +34,7 @@ export const ChassisCaption = ({
   if (tooSmall) status = fill(t("scale_caption_too_small"), { pct });
   else if (fullscreen) {
     if (mode === "real") {
-      status = t("scale_real");
+      status = realSizeAvailable ? t("scale_real") : `${t("scale_real")} · ${t("scale_real_overflow")}`;
     } else if (pageScale) {
       // Facteur d'agrandissement obtenu par rapport à l'affichage de la page (ex. ×1,09)
       const k = (Math.round((scale / pageScale) * 100) / 100).toFixed(2).replace(/0$/, "").replace(".", decimal);
@@ -42,10 +42,10 @@ export const ChassisCaption = ({
     }
   }
 
-  const realSelected = fullscreen ? requestedMode === "real" && realSizeAvailable : true;
+  const realSelected = fullscreen ? requestedMode === "real" : true;
 
   return (
-    <div className={`chassis-caption ${tooSmall ? "is-warning" : ""}`}>
+    <div className={`chassis-caption ${tooSmall || (fullscreen && mode === "real" && !realSizeAvailable) ? "is-warning" : ""}`}>
       <p className="chassis-caption-text">
         <strong>{device.label}{device.model ? ` ${device.model}` : ""}</strong>
         {inches && (
@@ -69,8 +69,7 @@ export const ChassisCaption = ({
             type="button"
             className={`chassis-scale-btn ${realSelected ? "active" : ""}`}
             onClick={() => onChangeMode?.("real")}
-            disabled={!realSizeAvailable}
-            title={realSizeAvailable ? t("scale_real") : t("scale_real_unavailable")}
+            title={realSizeAvailable ? t("scale_real") : t("scale_real_overflow")}
           >
             {t("scale_real")}
           </button>

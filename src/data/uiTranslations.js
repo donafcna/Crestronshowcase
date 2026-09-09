@@ -8,6 +8,7 @@
 // des projets vivent dans projects.js.
 export const uiTranslations = {
   fr: {
+    scale_real_overflow: "dépasse la fenêtre : passez le navigateur en plein écran (F11)",
     scale_caption_zoom: "agrandi ×{k} par rapport à la page",
     scale_caption_real_mm: "taille réelle ({w} × {h} mm)",
     nav_why_ch5: "Pourquoi le CH5 ?",
@@ -69,6 +70,7 @@ export const uiTranslations = {
     demo_resume_now: "Reprendre la démo maintenant",
   },
   en: {
+    scale_real_overflow: "larger than the window: switch the browser to full screen (F11)",
     scale_caption_zoom: "enlarged ×{k} compared with the page",
     scale_caption_real_mm: "actual size ({w} × {h} mm)",
     nav_why_ch5: "Why CH5?",
@@ -130,6 +132,7 @@ export const uiTranslations = {
     demo_resume_now: "Resume the demo now",
   },
   de: {
+    scale_real_overflow: "größer als das Fenster: Browser in den Vollbildmodus schalten (F11)",
     scale_caption_zoom: "×{k} gegenüber der Seite vergrößert",
     scale_caption_real_mm: "Originalgröße ({w} × {h} mm)",
     nav_why_ch5: "Warum CH5?",
