@@ -5,12 +5,16 @@ import { projects, getDeviceById, getProjectText, getProjectName, getStatusLabel
 import { company, SITE_URL } from "../data/company";
 import { useDemoSettings } from "../hooks/useDemoSettings";
 import { Link, buildShowcasePath } from "../router";
+import { getSheetDoc } from "../data/sheets";
 
 // Fiche projet A4 imprimable : "Imprimer" → "Enregistrer en PDF" dans le
 // navigateur donne un PDF propre (logo, statut, supports, points clés, QR
 // code vers la démo en ligne, coordonnées). Sans bibliothèque PDF.
 const TEXT = {
   fr: {
+    detail: "Fonctionnalités en détail",
+    btnCol: "Bouton / élément",
+    fnCol: "Fonction",
     sheet: "Fiche interface",
     client: "Client",
     year: "Année",
@@ -26,6 +30,9 @@ const TEXT = {
     tech: "Technologie : Crestron CH5 (HTML5 / CSS / JavaScript) · Processeurs Crestron 4-Series",
   },
   en: {
+    detail: "Features in detail",
+    btnCol: "Button / element",
+    fnCol: "Function",
     sheet: "Interface sheet",
     client: "Client",
     year: "Year",
@@ -41,6 +48,9 @@ const TEXT = {
     tech: "Technology: Crestron CH5 (HTML5 / CSS / JavaScript) · Crestron 4-Series processors",
   },
   de: {
+    detail: "Funktionen im Detail",
+    btnCol: "Taste / Element",
+    fnCol: "Funktion",
     sheet: "Oberflächen-Datenblatt",
     client: "Kunde",
     year: "Jahr",
@@ -84,6 +94,7 @@ export default function ProjectSheet({ projectId }) {
   );
 
   const StatusIcon = project.status === "realisation" ? Icons.BadgeCheck : Icons.Sparkles;
+  const doc = getSheetDoc(project.id, lang);
 
   return (
     <div className="sheet-page">
@@ -153,6 +164,45 @@ export default function ProjectSheet({ projectId }) {
             </div>
           </aside>
         </div>
+
+        {doc && (
+          <section className="sheet-doc">
+            <h2>{tx.detail}</h2>
+            {doc.intro && <p className="sheet-doc-intro">{doc.intro}</p>}
+            {doc.sections.map((sec, i) => (
+              <article key={sec.title} className={`sheet-doc-section ${sec.portrait ? "is-portrait" : ""}`}>
+                <div className="sheet-doc-head">
+                  <h3>
+                    <span className="sheet-doc-num">{i + 1}</span> {sec.title}
+                  </h3>
+                  <div className="sheet-doc-figures">
+                    <img src={sec.image} alt={sec.title} loading="lazy" />
+                    {sec.image2 && <img src={sec.image2} alt="" loading="lazy" />}
+                  </div>
+                  <p className="sheet-doc-text">{sec.text}</p>
+                </div>
+                {sec.buttons && sec.buttons.length > 0 && (
+                  <table className="sheet-doc-table">
+                    <thead>
+                      <tr>
+                        <th>{tx.btnCol}</th>
+                        <th>{tx.fnCol}</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {sec.buttons.map(([label, fn]) => (
+                        <tr key={label}>
+                          <td>{label}</td>
+                          <td>{fn}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                )}
+              </article>
+            ))}
+          </section>
+        )}
 
         <footer className="sheet-footer">
           <div>

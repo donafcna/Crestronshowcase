@@ -575,7 +575,112 @@ a.sector-card-interactive {
   color: var(--text-muted);
 }
 
+/* ---- Fiche : fonctionnalités en détail ------------------------------------ */
+.sheet-doc {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  border-top: 1px solid #e2e8f0;
+  padding-top: 18px;
+}
+.sheet-doc > h2 {
+  margin: 0;
+  font-size: 1.05rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #4f46e5;
+}
+.sheet-doc-intro {
+  margin: 0;
+  color: #334155;
+  line-height: 1.55;
+}
+.sheet-doc-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+/* Titre + capture + texte restent ensemble ; le tableau peut se couper entre deux lignes */
+.sheet-doc-head {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+.sheet-doc-table tr { break-inside: avoid; page-break-inside: avoid; }
+.sheet-doc-section h3 {
+  margin: 8px 0 0;
+  font-size: 1rem;
+  color: #0f172a;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.sheet-doc-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #4f46e5;
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+.sheet-doc-figures {
+  display: flex;
+  gap: 10px;
+}
+.sheet-doc-figures img {
+  flex: 1 1 0;
+  min-width: 0;
+  width: 100%;
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
+  background: #0f172a;
+}
+.sheet-doc-section.is-portrait .sheet-doc-figures img {
+  flex: 0 0 auto;
+  width: 220px;
+}
+.sheet-doc-text {
+  margin: 0;
+  color: #334155;
+  line-height: 1.55;
+}
+.sheet-doc-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.82rem;
+}
+.sheet-doc-table th,
+.sheet-doc-table td {
+  text-align: left;
+  vertical-align: top;
+  padding: 6px 8px;
+  border-bottom: 1px solid #e2e8f0;
+  line-height: 1.45;
+}
+.sheet-doc-table th {
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #64748b;
+  background: #f8fafc;
+}
+.sheet-doc-table td:first-child {
+  width: 34%;
+  font-weight: 700;
+  color: #0f172a;
+}
+
 @media print {
+  .sheet-doc-figures img {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
   @page {
     size: A4;
     margin: 12mm;
