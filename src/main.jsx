@@ -5,6 +5,10 @@ import './marketing.css'
 import App from './App.jsx'
 import { LanguageProvider } from './context/LanguageContext'
 import { RouterProvider } from './router'
+import { applyDevModeFromUrl } from './hooks/useDevMode'
+
+// Mode Dev : /1 active, /0 désactive (mémorisé dans le navigateur), avant le routage
+applyDevModeFromUrl()
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
