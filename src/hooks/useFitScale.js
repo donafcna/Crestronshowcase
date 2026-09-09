@@ -6,7 +6,7 @@ import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react
 // its real/native size). Pure transform:scale, so the design box itself
 // never reflows: it always lays out at designW x designH and is only ever
 // visually scaled down (or up to `max`) to fit whatever space is available.
-export const useFitScale = (designW, designH, { max = 1, margin = 0 } = {}) => {
+export const useFitScale = (designW, designH, { max = Infinity, margin = 0 } = {}) => {
   const stageRef = useRef(null);
   const [scale, setScale] = useState(max);
   const [stageSize, setStageSize] = useState({ width: 0, height: 0 });

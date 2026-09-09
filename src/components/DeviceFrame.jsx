@@ -3,6 +3,9 @@ import { getDeviceConfig } from "../data/devices";
 import { useFitScale } from "../hooks/useFitScale";
 import { useDevMode } from "../hooks/useDevMode";
 import { DevMetrics } from "./DevMetrics";
+import { ChassisCaption } from "./ChassisCaption";
+import { useDemoSettings } from "../hooks/useDemoSettings";
+import { SCALE_RULES } from "../data/scaleRules";
 
 // Barre d'état iOS (heure réelle, réseau, batterie) dessinée dans la zone
 // "safe area" du haut de l'écran, comme sur un vrai iPhone / iPad. La GUI est
@@ -53,8 +56,21 @@ export const DeviceFrame = ({
   onEnterFullscreen = () => {},
 }) => {
   const cfg = getDeviceConfig(deviceType);
-  const { stageRef, scale: chassisScale, stageSize } = useFitScale(cfg.chassisW, cfg.chassisH, { max: 1, margin: 0.06 });
+  // fitScale = plus grande échelle qui fait tenir le châssis (marge comprise)
+  // dans la zone disponible, SANS plafond. Les règles (scaleRules.js)
+  // décident ensuite de l'échelle réellement appliquée.
+  const { stageRef, scale: fitScale, stageSize } = useFitScale(cfg.chassisW, cfg.chassisH, {
+    margin: SCALE_RULES.margin,
+  });
   const { devMode } = useDevMode();
+  const { scaleMode, setScaleMode } = useDemoSettings();
+  const realSizeAvailable = fitScale >= SCALE_RULES.realSizeTolerance;
+  const effectiveMode = scaleMode === "real" && realSizeAvailable ? "real" : "auto";
+  const chassisScale =
+    effectiveMode === "real"
+      ? 1
+      : Math.max(SCALE_RULES.minDownscale, Math.min(fitScale, SCALE_RULES.maxUpscale));
+  const tooSmall = effectiveMode === "auto" && fitScale < SCALE_RULES.minDownscale;
   // screenW/H and guiW/H are both fixed design constants (not measured), so
   // guiScale is a plain derived number — no separate ResizeObserver needed.
   const guiScale = Math.min(cfg.screenW / cfg.guiW, cfg.screenH / cfg.guiH);
@@ -100,7 +116,9 @@ export const DeviceFrame = ({
 
   return (
     <div className="device-viewport-container">
-      {devMode && <DevMetrics device={cfg} stage={stageSize} scale={chassisScale} />}
+      {devMode && (
+        <DevMetrics device={cfg} stage={stageSize} scale={chassisScale} fitScale={fitScale} mode={effectiveMode} realSizeAvailable={realSizeAvailable} />
+      )}
       <div className="device-stage" ref={stageRef}>
         {deviceType === "desktop" && (
           <div className="desktop-browser-frame glass-panel" style={chassisStyle}>
@@ -176,6 +194,17 @@ export const DeviceFrame = ({
           </div>
         )}
       </div>
+      {!isFullscreen && (
+        <ChassisCaption
+          device={cfg}
+          scale={chassisScale}
+          mode={effectiveMode}
+          requestedMode={scaleMode}
+          realSizeAvailable={realSizeAvailable}
+          tooSmall={tooSmall}
+          onChangeMode={setScaleMode}
+        />
+      )}
     </div>
   );
 };

@@ -4,7 +4,7 @@ import { useViewportMetrics } from "../hooks/useViewportMetrics";
 // Bandeau de mesures affiché juste au-dessus du châssis en mode Dev :
 // taille de la fenêtre, de l'écran, zone disponible (stage) et échelle
 // effectivement appliquée au châssis.
-export const DevMetrics = ({ device, stage, scale }) => {
+export const DevMetrics = ({ device, stage, scale, fitScale, mode, realSizeAvailable }) => {
   const m = useViewportMetrics();
   const pct = Math.round(scale * 100);
   const chassisOnScreenW = Math.round(device.chassisW * scale);
@@ -19,6 +19,9 @@ export const DevMetrics = ({ device, stage, scale }) => {
       </span>
       <span className="dev-metrics-item">
         <b>Zone châssis</b> {Math.round(stage.width)} × {Math.round(stage.height)} px
+      </span>
+      <span className="dev-metrics-item">
+        <b>Mode</b> {mode === "real" ? "taille réelle" : "responsive"} · fit {Math.round((fitScale || 0) * 100)} % · réel {realSizeAvailable ? "possible" : "impossible"}
       </span>
       <span className="dev-metrics-item">
         <b>{device.label}</b> {device.chassisW} × {device.chassisH} → {pct} % ({chassisOnScreenW} × {chassisOnScreenH} px)

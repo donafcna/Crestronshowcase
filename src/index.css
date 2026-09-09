@@ -4855,3 +4855,46 @@ html, body, #root {
 }
 .dev-metrics b { color: #fbbf24; font-weight: 700; margin-right: 4px; }
 .dev-metrics-item { display: inline-flex; align-items: baseline; }
+
+/* ===== Légende + sélecteur d'échelle sous le châssis (scaleRules.js) ===== */
+.chassis-caption {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 6px 18px;
+  margin-top: 6px;
+  min-height: 30px;
+  color: var(--text-secondary);
+  font-size: 0.78rem;
+  line-height: 1.3;
+}
+.chassis-caption-text { margin: 0; white-space: nowrap; }
+.chassis-caption-text strong { color: var(--text-primary); font-weight: 600; }
+.chassis-caption-sep { margin: 0 6px; opacity: 0.5; }
+.chassis-caption.is-warning .chassis-caption-text { color: var(--color-warning); white-space: normal; text-align: center; }
+
+.chassis-scale-toggle {
+  display: inline-flex;
+  padding: 2px;
+  border: 1px solid var(--border-glass);
+  border-radius: 8px;
+  background: var(--bg-tertiary);
+}
+.chassis-scale-btn {
+  padding: 4px 11px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text-secondary);
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background var(--transition-fast), color var(--transition-fast);
+}
+.chassis-scale-btn:hover:not(:disabled) { color: var(--text-primary); }
+.chassis-scale-btn.active { background: var(--bg-secondary); color: var(--color-primary); box-shadow: 0 1px 3px rgba(15, 23, 42, 0.12); }
+.chassis-scale-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+@media (width <= 768px) { .chassis-caption { font-size: 0.72rem; } }
