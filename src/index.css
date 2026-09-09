@@ -4855,6 +4855,22 @@ html, body, #root {
   position: relative;
   z-index: 50;
 }
+/* Superposé à la barre des projets : ne prend aucune place dans le flux,
+   laisse passer les clics vers les cartes en dessous. */
+.projects-horizontal-list-bar { position: relative; }
+.projects-horizontal-list-bar > .dev-metrics--overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin: 0;
+  flex-wrap: nowrap;
+  max-width: none;
+  z-index: 20;
+  pointer-events: none;
+  opacity: 0.94;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+}
 .dev-metrics b { color: #fbbf24; font-weight: 700; margin-right: 4px; }
 .dev-metrics-item { display: inline-flex; align-items: baseline; }
 

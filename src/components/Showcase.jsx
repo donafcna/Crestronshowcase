@@ -295,21 +295,21 @@ const ShowcaseInner = ({ sectorId, projectId, device }) => {
       <BackgroundVideo sectionId={sectorId || activeProject.sectors[0]} />
 
       <div className={`main-workspace-container transparent-workspace ${isFullscreen ? "fullscreen-mode" : ""}`}>
-        {/* 0. Mode Dev : mesures d'écran, au-dessus de la barre des projets */}
-        {!isFullscreen && devMode && frameInfo && (
-          <DevMetrics
-            device={frameInfo.device}
-            stage={frameInfo.stage}
-            scale={frameInfo.scale}
-            fitScale={frameInfo.fitScale}
-            mode={frameInfo.mode}
-            realSizeAvailable={frameInfo.realSizeAvailable}
-          />
-        )}
-
         {/* 1. Liste horizontale des projets */}
         {!isFullscreen && (
           <section className="projects-horizontal-list-bar compact-header compact-cards-version">
+            {/* Mode Dev : mesures d'écran superposées à la barre (aucune place prise dans la mise en page) */}
+            {devMode && frameInfo && (
+              <DevMetrics
+                overlay
+                device={frameInfo.device}
+                stage={frameInfo.stage}
+                scale={frameInfo.scale}
+                fitScale={frameInfo.fitScale}
+                mode={frameInfo.mode}
+                realSizeAvailable={frameInfo.realSizeAvailable}
+              />
+            )}
             {filteredProjects.length === 0 ? (
               <div className="empty-projects-state glass-panel">
                 {renderIcon("FolderOpen", 26, "empty-icon")}
