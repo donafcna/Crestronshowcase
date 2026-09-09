@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { getDeviceConfig } from "../data/devices";
 import { useFitScale } from "../hooks/useFitScale";
+import { useDevMode } from "../hooks/useDevMode";
+import { DevMetrics } from "./DevMetrics";
 
 // Barre d'état iOS (heure réelle, réseau, batterie) dessinée dans la zone
 // "safe area" du haut de l'écran, comme sur un vrai iPhone / iPad. La GUI est
@@ -51,7 +53,8 @@ export const DeviceFrame = ({
   onEnterFullscreen = () => {},
 }) => {
   const cfg = getDeviceConfig(deviceType);
-  const { stageRef, scale: chassisScale } = useFitScale(cfg.chassisW, cfg.chassisH, { max: 1, margin: 0.06 });
+  const { stageRef, scale: chassisScale, stageSize } = useFitScale(cfg.chassisW, cfg.chassisH, { max: 1, margin: 0.06 });
+  const { devMode } = useDevMode();
   // screenW/H and guiW/H are both fixed design constants (not measured), so
   // guiScale is a plain derived number — no separate ResizeObserver needed.
   const guiScale = Math.min(cfg.screenW / cfg.guiW, cfg.screenH / cfg.guiH);
@@ -97,6 +100,7 @@ export const DeviceFrame = ({
 
   return (
     <div className="device-viewport-container">
+      {devMode && <DevMetrics device={cfg} stage={stageSize} scale={chassisScale} />}
       <div className="device-stage" ref={stageRef}>
         {deviceType === "desktop" && (
           <div className="desktop-browser-frame glass-panel" style={chassisStyle}>

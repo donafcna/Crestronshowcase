@@ -6,6 +6,8 @@ import { Sidebar } from "./components/Sidebar";
 import { Dashboard } from "./components/Dashboard";
 import { Showcase } from "./components/Showcase";
 import { DemoMode, isMobileDevice } from "./components/DemoMode";
+import { DevModeBadge } from "./components/DevModeBadge";
+import { useDevModeShortcut } from "./hooks/useDevMode";
 
 // Pages secondaires chargées à la demande (perf. première visite)
 const Contact = lazy(() => import("./pages/Contact"));
@@ -25,6 +27,7 @@ function App() {
   const route = useRouter();
   const { lang, changeLanguage, supportedLangs } = useTranslation();
   const [hashRoute, setHashRoute] = useState(readHashRoute);
+  useDevModeShortcut();
 
   // Mode démo mobile (#demo, #demo/<projectId>) — indépendant du routeur
   // History API pour rester compatible avec tous les rewrites Vercel.
@@ -72,6 +75,7 @@ function App() {
 
   return (
     <React.Fragment>
+      <DevModeBadge />
       {/* Sidebar Navigation */}
       <Sidebar />
 

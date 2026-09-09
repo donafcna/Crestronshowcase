@@ -4802,3 +4802,56 @@ html, body, #root {
     border-color: #cbd5e1;
   }
 }
+
+/* ===== Mode Dev (src/data/devConfig.js, ?dev=1, Ctrl+Alt+D) ===== */
+.dev-mode-badge {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  z-index: 2147483000; /* au-dessus du plein écran (999999) */
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 11px 5px 9px;
+  border: 1px solid #f59e0b;
+  border-radius: 6px;
+  background: #1c1917;
+  color: #fbbf24;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+  pointer-events: auto;
+}
+.dev-mode-badge:hover { background: #292524; }
+.dev-mode-badge-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #f59e0b;
+  box-shadow: 0 0 6px #f59e0b;
+}
+
+.dev-metrics {
+  flex-shrink: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px 18px;
+  margin: 0 auto 8px;
+  padding: 6px 12px;
+  border: 1px dashed #f59e0b;
+  border-radius: 6px;
+  background: rgba(28, 25, 23, 0.92);
+  color: #fde68a;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 0.72rem;
+  line-height: 1.4;
+  white-space: nowrap;
+  position: relative;
+  z-index: 50;
+}
+.dev-metrics b { color: #fbbf24; font-weight: 700; margin-right: 4px; }
+.dev-metrics-item { display: inline-flex; align-items: baseline; }
