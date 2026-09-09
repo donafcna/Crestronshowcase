@@ -72,7 +72,9 @@ export const DeviceFrame = ({
   // realSizeAvailable = la taille réelle tient dans la zone ; sinon elle est quand même
   // appliquée (le châssis dépasse) et la légende le signale — F11 donne plus de place.
   const realSizeAvailable = fitScale >= realScale * SCALE_RULES.realSizeTolerance;
-  const effectiveMode = scaleMode === "real" ? "real" : "auto";
+  // « Taille réelle » ne s'applique qu'en plein écran : sur la page normale, le châssis reste
+  // responsive (un ?scale=real hérité du plein écran ne doit pas le faire déborder de la page).
+  const effectiveMode = isFullscreen && scaleMode === "real" ? "real" : "auto";
   // Plein écran : le châssis occupe tout l'espace disponible (proportions
   // conservées), sans le plafond maxUpscale de la page normale.
   const upscaleCap = isFullscreen ? Infinity : SCALE_RULES.maxUpscale;
