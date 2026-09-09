@@ -1,13 +1,21 @@
 /**
- * Villa Crans-Montana — moteur d'état local (100 % front-end), v1.0.149 + retours direction 09.09.2026.
+ * Villa Crans-Montana — moteur d'état local (100 % front-end), v1.0.166 (retours direction 09.09.2026, audio/vidéo).
  *
  * Toute la logique métier de l'interface (15 pièces, scènes, sources, volume,
  * mute, extinction globale, alarme 4 partitions, thermostat et modes CVC,
- * circuits d'éclairage par pièce, moteurs, presets globaux) vit ici, en
- * JavaScript, dans le navigateur. Aucun automate, aucun programme externe :
- * les composants CH5 (<ch5-button>, <ch5-slider>, data-ch5-textcontent) et
- * le code de la page lisent / écrivent des "signaux" nommés dans ce moteur,
- * exactement comme avec un système de contrôle, mais tout est simulé ici.
+ * circuits d'éclairage par pièce, moteurs, scènes de stores, presets globaux)
+ * vit ici, en JavaScript, dans le navigateur. Aucun automate, aucun programme
+ * externe : les composants CH5 (<ch5-button>, <ch5-slider>,
+ * data-ch5-textcontent) et le code de la page lisent / écrivent des "signaux"
+ * nommés dans ce moteur, exactement comme avec un système de contrôle, mais
+ * tout est simulé ici.
+ *
+ * Numérotation = CONTRAT DE JOINS v2 (22.08.2026, villa_config.json → contrat) :
+ *   Piece.Select 11-40 (join = 10 + id), Piece.Active analog 10, Piece.Nom serial 10,
+ *   Eclairage.Scene 51-54, AV.Mute 55, CVC.ConsignePlus/Moins 49/50,
+ *   Meteo.EasterEgg 56, AV.Source.Select 150-155 (150 = OFF), AV.SourceActive
+ *   analog 51, AV.Volume analog 52, Eclairage.Circuit analog 71-80,
+ *   Stores.Scene 201-204, Alarme.Partition 301-312, Global.* 401-411.
  *
  * API :
  *   Villa.on(type, id, cb)      s'abonner à un signal ('b' booléen, 'n' nombre, 's' texte)
@@ -22,54 +30,63 @@
   "use strict";
 
   /* ------------------------------------------------------------------ */
-  /* Table des signaux                                                    */
+  /* Table des signaux (contrat v2)                                       */
   /* ------------------------------------------------------------------ */
   var SIG = {
-    ROOM_ID: "10",          // n : pièce active (1..15) — s : nom de la pièce
-    ROOM_COUNT: 15,         // pièces 1..10 → boutons 11..20 ; pièces 11..15 → boutons 121..125
-                            // (dans le projet d'origine 21..25 entraient en collision avec les scènes 21..24)
-    SCENES: ["21", "22", "23", "24"],       // b : OFF, CINÉMA, REPAS, TOTAL (éclairage de la pièce)
+    ROOM_ID: "10",          // n : pièce active (1..N) — s : nom de la pièce
+    ROOM_SELECT_BASE: 10,   // b : Piece.Select = 10 + id (11..40)
+    ROOM_SELECT_MAX: 30,
+    MASTER_LEVEL: "21",     // n : niveau master éclairage
+    SETPOINT_X10: "31",     // n : consigne × 10
     TEMP_ACTUAL: "32",      // s : température mesurée
     HVAC_MODE: "33",        // s : mode CVC
     TEMP_SETPOINT: "34",    // s : consigne
-    TEMP_UP: "35",          // b : consigne +
-    TEMP_DOWN: "36",        // b : consigne −
-    WEATHER_TAP: "37",      // b : appui sur le widget météo (momentané)
-    ALARM_ARM: "41",        // b : ancienne alarme globale
-    ALARM_DISARM: "42",
-    POWER_OFF_LEGACY: "50", // b : extinction (ancien)
+    ALARM_ARM: "41",        // b : armement général + feedback
+    ALARM_DISARM: "42",     // b : désarmement général + feedback
+    TEMP_UP: "49",          // b : consigne +0,5 (v2, ex-35)
+    TEMP_DOWN: "50",        // b : consigne −0,5 (v2, ex-36)
+    SCENES: ["51", "52", "53", "54"], // b : OFF, CINÉMA, REPAS, TOTAL (v2, ex-21..24 : ces joins sont
+                                       //     désormais Piece.Select 11..40, donc plus jamais émis ici)
+    MUTE: "55",             // b : mute (toggle + feedback) (v2, ex-53)
+    WEATHER_TAP: "56",      // b : easter egg météo (momentané) (v2, ex-37)
     SOURCE_ID: "51",        // n : source active (0 = veille)
     VOLUME: "52",           // n : volume 0..65535
-    MUTE: "53",             // b
-    SOURCES: ["150", "151", "152", "153", "154", "155"], // b : OFF, APPLE TV, SKY Q, SWISSCOM, IPTV, MUSIQUE
+    SOURCES: ["150", "151", "152", "153", "154", "155"], // b : OFF, APPLE TV, SKY Q, SWISSCOM, IPTV, MUSIQUE (audio)
+    MUSIC_OFF: "156",       // b : l'audio revient à la source vidéo (v1.0.166)
     POWER_OFF: "200",       // b : extinction globale
-    MUTE2: "201",           // b : mute (nouveau bouton)
-    VOLUME2: "202",         // n : volume (nouveau slider)
+    STORES_SCENES: ["201", "202", "203", "204"], // b : scènes de stores + feedback
     MEDIA_POS: "254",       // n : position lecteur média
-    CIRCUITS: ["71", "72", "73", "74", "75", "76"], // n : gradateurs 0..65535
+    CIRCUITS: ["71", "72", "73", "74", "75", "76", "77", "78", "79", "80"], // n : gradateurs 0..65535
+    DALLE_VOLUME: "260",    // n : volume matériel de la dalle (0-100)
+    DALLE_MUTE: "261",      // b : mute matériel de la dalle
     ALARM_PARTITIONS: [
       { armed: "301", partial: "302", disarmed: "303" },
       { armed: "304", partial: "305", disarmed: "306" },
       { armed: "307", partial: "308", disarmed: "309" },
       { armed: "310", partial: "311", disarmed: "312" },
     ],
-    ALL_LIGHTS_ON: "401",   // b : preset global
+    ALL_LIGHTS_ON: "401",   // b : presets globaux éclairage
     ALL_LIGHTS_OFF: "402",
-    HVAC_MODES: { "403": ["ÉCO", 19.0], "406": ["POSITION INTER.", 20.5], "407": ["CONFORT", 22.0], "408": ["NUIT", 18.5], "409": ["HORS GEL", 8.0] },
-    ALL_BLINDS_OPEN: "404",
+    LIGHTS_ECO: "403",
+    ALL_BLINDS_OPEN: "404", // b : presets globaux stores (momentanés)
     ALL_BLINDS_CLOSE: "405",
-    ALARM_ALL_ARM: "410",
-    ALARM_ALL_DISARM: "411",
+    BLINDS_MIDDLE: "406",
+    HVAC_MODES: { "407": ["CONFORT", 22.0], "408": ["NUIT", 18.5], "409": ["HORS GEL", 8.0] },
+    HOLIDAY_ON: "410",      // b : mode vacances + feedback
+    HOLIDAY_OFF: "411",
+    // Sériels d'information système (affichés dans la page Réglages)
+    IPID: "99", CPZ_NAME: "101", CPZ_DATE: "102", VALIDATION_DATE: "104",
   };
   var FULL = 65535;
   var pct = function (p) { return Math.round((FULL * p) / 100); };
+  var LEGACY_MUTE_JOIN = "201"; // le GUI publie encore 201 (mute v1) en même temps que 55
 
-  // Presets d'éclairage des scènes (4 circuits par pièce + 2 anciens)
+  // Presets d'éclairage des scènes (10 circuits max par pièce)
   var SCENE_PRESETS = {
-    "21": [0, 0, 0, 0, 0, 0],
-    "22": [pct(12), 0, pct(30), pct(25), 0, 0],
-    "23": [pct(55), pct(80), pct(45), pct(30), 0, pct(100)],
-    "24": [FULL, FULL, FULL, FULL, FULL, FULL],
+    "51": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    "52": [pct(12), 0, pct(30), pct(25), 0, 0, 0, 0, 0, 0],
+    "53": [pct(55), pct(80), pct(45), pct(30), 0, pct(100), 0, 0, 0, 0],
+    "54": [FULL, FULL, FULL, FULL, FULL, FULL, FULL, FULL, FULL, FULL],
   };
 
   /* ------------------------------------------------------------------ */
@@ -79,32 +96,31 @@
   function makeRoom(temp, setpoint, mode, source, volume, scene) {
     return {
       temp: temp, setpoint: setpoint, mode: mode,
-      source: source, volume: volume, mute: false,
-      scene: scene, circuits: SCENE_PRESETS[scene].slice(),
+      source: source, music: false, volume: volume, mute: false,
+      scene: scene, circuits: SCENE_PRESETS[scene].slice(), storesScene: null,
     };
   }
   var rooms = {
-    1: makeRoom(21.5, 22.0, "CHAUFFAGE", 1, 32768, "23"),
-    2: makeRoom(22.1, 21.0, "CHAUFFAGE", 0, 20000, "24"),
-    3: makeRoom(21.8, 21.5, "CHAUFFAGE", 3, 28000, "23"),
-    4: makeRoom(20.6, 20.0, "CHAUFFAGE", 2, 24000, "22"),
-    5: makeRoom(20.2, 19.5, "CHAUFFAGE", 0, 18000, "21"),
-    6: makeRoom(20.4, 19.5, "CHAUFFAGE", 0, 18000, "21"),
-    7: makeRoom(22.4, 21.0, "CLIMATISATION", 4, 26000, "24"),
-    8: makeRoom(19.8, 20.0, "CHAUFFAGE", 1, 40000, "22"),
-    9: makeRoom(20.1, 19.5, "CHAUFFAGE", 0, 18000, "21"),
-    10: makeRoom(21.0, 21.0, "CHAUFFAGE", 5, 22000, "23"),
-    11: makeRoom(24.2, 22.0, "CLIMATISATION", 5, 30000, "24"),
-    12: makeRoom(28.5, 28.0, "CHAUFFAGE", 5, 26000, "23"),
-    13: makeRoom(45.0, 60.0, "CHAUFFAGE", 0, 12000, "22"),
-    14: makeRoom(23.1, 22.0, "CLIMATISATION", 2, 34000, "24"),
-    15: makeRoom(17.4, 16.0, "HORS GEL", 0, 10000, "21"),
+    1: makeRoom(21.5, 22.0, "CHAUFFAGE", 1, 32768, "53"),
+    2: makeRoom(22.1, 21.0, "CHAUFFAGE", 0, 20000, "54"),
+    3: makeRoom(21.8, 21.5, "CHAUFFAGE", 3, 28000, "53"),
+    4: makeRoom(20.6, 20.0, "CHAUFFAGE", 2, 24000, "52"),
+    5: makeRoom(20.2, 19.5, "CHAUFFAGE", 0, 18000, "51"),
+    6: makeRoom(20.4, 19.5, "CHAUFFAGE", 0, 18000, "51"),
+    7: makeRoom(22.4, 21.0, "CLIMATISATION", 4, 26000, "54"),
+    8: makeRoom(19.8, 20.0, "CHAUFFAGE", 1, 40000, "52"),
+    9: makeRoom(20.1, 19.5, "CHAUFFAGE", 0, 18000, "51"),
+    10: makeRoom(21.0, 21.0, "CHAUFFAGE", 5, 22000, "53"),
+    11: makeRoom(24.2, 22.0, "CLIMATISATION", 5, 30000, "54"),
+    12: makeRoom(28.5, 28.0, "CHAUFFAGE", 5, 26000, "53"),
+    13: makeRoom(45.0, 60.0, "CHAUFFAGE", 0, 12000, "52"),
+    14: makeRoom(23.1, 22.0, "CLIMATISATION", 2, 34000, "54"),
+    15: makeRoom(17.4, 16.0, "HORS GEL", 0, 10000, "51"),
   };
   var activeRoom = 1;
-  var alarmLegacyArmed = false;
   var partitions = ["disarmed", "disarmed", "armed", "disarmed"];
   var hvacPreset = "407";
-  var poweredOff = false;
+  var holiday = false;
 
   /* ------------------------------------------------------------------ */
   /* Bus de signaux                                                       */
@@ -163,29 +179,56 @@
   /* ------------------------------------------------------------------ */
   // Valeur numérique seule : l'unité (°C) est déjà dans le balisage
   function fmtTemp(v) { return v.toFixed(1); }
-  function roomJoin(id) { return String(id <= 10 ? 10 + id : 110 + id); }
-  function roomFromJoin(n) { if (n >= 11 && n <= 20) return n - 10; if (n >= 121 && n <= 125) return n - 110; return 0; }
+  function roomJoin(id) { return String(SIG.ROOM_SELECT_BASE + id); }
+  function roomFromJoin(n) {
+    var id = n - SIG.ROOM_SELECT_BASE;
+    return (id >= 1 && id <= SIG.ROOM_SELECT_MAX && rooms[id]) ? id : 0;
+  }
+  function maxLevel(r) {
+    var max = 0;
+    r.circuits.forEach(function (v) { if (v > max) max = v; });
+    return max;
+  }
+
+  function publishScenes(r) {
+    SIG.SCENES.forEach(function (s) { set("b", s, s === r.scene); });
+  }
+
+  function publishCircuits(r) {
+    SIG.CIRCUITS.forEach(function (c, idx) { set("n", c, r.circuits[idx]); });
+    set("n", SIG.MASTER_LEVEL, maxLevel(r));
+  }
+
+  function publishHvac(r) {
+    set("s", SIG.TEMP_ACTUAL, fmtTemp(r.temp));
+    set("s", SIG.TEMP_SETPOINT, fmtTemp(r.setpoint));
+    set("n", SIG.SETPOINT_X10, Math.round(r.setpoint * 10));
+    set("s", SIG.HVAC_MODE, r.mode);
+  }
+
+  // Sources : vidéo (1..4) en interlock, musique (155) indépendante (elle joue sur les
+  // haut-parleurs en gardant la vidéo à l'écran) ; 156 = l'audio revient à la source vidéo.
+  function publishSource(r) {
+    set("n", SIG.SOURCE_ID, r.source || (r.music ? 5 : 0));
+    SIG.SOURCES.forEach(function (s, idx) {
+      if (idx === 5) set("b", s, r.music);
+      else set("b", s, idx === r.source && (idx !== 0 || !r.music));
+    });
+    set("b", SIG.POWER_OFF, r.source === 0 && !r.music);
+  }
 
   function publishRoom(id) {
     var r = rooms[id];
     set("n", SIG.ROOM_ID, id);
     set("s", SIG.ROOM_ID, roomNames[id] || ("Pièce " + id));
-    for (var i = 1; i <= SIG.ROOM_COUNT; i++) set("b", roomJoin(i), i === id);
-    set("s", SIG.TEMP_ACTUAL, fmtTemp(r.temp));
-    set("s", SIG.TEMP_SETPOINT, fmtTemp(r.setpoint));
-    set("s", SIG.HVAC_MODE, r.mode);
+    for (var i = 1; i <= SIG.ROOM_SELECT_MAX; i++) set("b", roomJoin(i), i === id);
+    publishHvac(r);
     publishSource(r);
     set("n", SIG.VOLUME, r.volume);
-    set("n", SIG.VOLUME2, r.volume);
     set("b", SIG.MUTE, r.mute);
-    set("b", SIG.MUTE2, r.mute);
-    SIG.SCENES.forEach(function (s) { set("b", s, s === r.scene); });
-    SIG.CIRCUITS.forEach(function (c, idx) { set("n", c, r.circuits[idx]); });
-  }
-
-  function publishSource(r) {
-    set("n", SIG.SOURCE_ID, r.source);
-    SIG.SOURCES.forEach(function (s, idx) { set("b", s, idx === r.source); });
+    publishScenes(r);
+    publishCircuits(r);
+    SIG.STORES_SCENES.forEach(function (s) { set("b", s, s === r.storesScene); });
   }
 
   function selectRoom(id) {
@@ -200,7 +243,7 @@
   // Scène mémorisée depuis le GUI (appui long / 💾) : même clé localStorage que le module VillaUX
   function savedScene(roomId, sceneId) {
     try {
-      var raw = localStorage.getItem("villa_scene_" + roomId + "_" + (Number(sceneId) - 20));
+      var raw = localStorage.getItem("villa_scene_" + roomId + "_" + (Number(sceneId) - 50));
       var data = raw ? JSON.parse(raw) : null;
       return data && data.lights ? data.lights : null;
     } catch (e) { return null; }
@@ -209,52 +252,67 @@
   function applyScene(sceneId) {
     var r = rooms[activeRoom];
     r.scene = sceneId;
-    var saved = savedScene(activeRoom, sceneId);
     r.circuits = SCENE_PRESETS[sceneId].slice();
+    var saved = savedScene(activeRoom, sceneId);
     if (saved) SIG.CIRCUITS.forEach(function (c, idx) { if (saved[c] !== undefined) r.circuits[idx] = Number(saved[c]) || 0; });
-    SIG.SCENES.forEach(function (s) { set("b", s, s === sceneId); });
-    SIG.CIRCUITS.forEach(function (c, idx) { set("n", c, r.circuits[idx]); });
+    publishScenes(r);
+    publishCircuits(r);
+  }
+
+  function applyStoresScene(sceneId) {
+    var r = rooms[activeRoom];
+    r.storesScene = sceneId;
+    SIG.STORES_SCENES.forEach(function (s) { set("b", s, s === sceneId); });
   }
 
   function selectSource(idx) {
     var r = rooms[activeRoom];
+    if (idx === 5) { r.music = !r.music; publishSource(r); return; }   // Musique : bascule audio
     r.source = idx;
-    poweredOff = idx === 0;
+    if (idx === 0) { r.music = false; r.mute = false; set("b", SIG.MUTE, false); }
     publishSource(r);
-    if (idx === 0) { r.mute = false; set("b", SIG.MUTE, false); set("b", SIG.MUTE2, false); }
+  }
+  function musicOff() {                                                // join 156 : audio → source vidéo
+    var r = rooms[activeRoom];
+    r.music = false;
+    publishSource(r);
   }
 
+  var lastPowerOff = 0;
   function powerOff() {
+    lastPowerOff = Date.now();
     selectSource(0);
-    pulse(SIG.POWER_OFF, 250);
-    pulse(SIG.POWER_OFF_LEGACY, 250);
   }
 
   function toggleMute() {
     var r = rooms[activeRoom];
     r.mute = !r.mute;
     set("b", SIG.MUTE, r.mute);
-    set("b", SIG.MUTE2, r.mute);
+    // Le bouton mute du GUI émet à la fois l'impulsion <ch5-button> et un
+    // publishEvent(55) depuis toggleMute() : on republie l'état réel une fois
+    // l'appui terminé pour que l'affichage (window.isMuted) suive le moteur.
+    setTimeout(function () {
+      set("b", SIG.MUTE, r.mute);
+      if (typeof window.updateMuteUI === "function") window.updateMuteUI(r.mute);
+    }, 250);
   }
 
   function adjustSetpoint(delta) {
     var r = rooms[activeRoom];
     r.setpoint = Math.max(5, Math.min(90, Math.round((r.setpoint + delta) * 2) / 2));
-    set("s", SIG.TEMP_SETPOINT, fmtTemp(r.setpoint));
-    if (r.mode !== "HORS GEL") {
-      r.mode = r.setpoint < r.temp - 0.4 ? "CLIMATISATION" : "CHAUFFAGE";
-      set("s", SIG.HVAC_MODE, r.mode);
-    }
+    if (r.mode !== "HORS GEL") r.mode = r.setpoint < r.temp - 0.4 ? "CLIMATISATION" : "CHAUFFAGE";
+    publishHvac(r);
   }
 
   function setHvacPreset(id) {
     hvacPreset = id;
     Object.keys(SIG.HVAC_MODES).forEach(function (k) { set("b", k, k === id); });
-    var r = rooms[activeRoom];
-    r.setpoint = SIG.HVAC_MODES[id][1];
-    r.mode = id === "409" ? "HORS GEL" : (r.setpoint < r.temp - 0.4 ? "CLIMATISATION" : "CHAUFFAGE");
-    set("s", SIG.TEMP_SETPOINT, fmtTemp(r.setpoint));
-    set("s", SIG.HVAC_MODE, r.mode);
+    Object.keys(rooms).forEach(function (k) {
+      var r = rooms[k];
+      r.setpoint = SIG.HVAC_MODES[id][1];
+      r.mode = id === "409" ? "HORS GEL" : (r.setpoint < r.temp - 0.4 ? "CLIMATISATION" : "CHAUFFAGE");
+    });
+    publishHvac(rooms[activeRoom]);
   }
 
   function setPartition(i, mode) {
@@ -263,10 +321,7 @@
     set("b", p.armed, mode === "armed");
     set("b", p.partial, mode === "partial");
     set("b", p.disarmed, mode === "disarmed");
-    var allArmed = partitions.every(function (m) { return m === "armed"; });
     var allDisarmed = partitions.every(function (m) { return m === "disarmed"; });
-    set("b", SIG.ALARM_ALL_ARM, allArmed);
-    set("b", SIG.ALARM_ALL_DISARM, allDisarmed);
     set("b", SIG.ALARM_ARM, !allDisarmed);
     set("b", SIG.ALARM_DISARM, allDisarmed);
   }
@@ -274,11 +329,23 @@
   function setAllLights(level) {
     Object.keys(rooms).forEach(function (k) {
       rooms[k].circuits = rooms[k].circuits.map(function () { return level; });
-      rooms[k].scene = level === 0 ? "21" : level === FULL ? "24" : null;
+      rooms[k].scene = level === 0 ? "51" : level === FULL ? "54" : null;
     });
     set("b", SIG.ALL_LIGHTS_ON, level === FULL);
     set("b", SIG.ALL_LIGHTS_OFF, level === 0);
+    set("b", SIG.LIGHTS_ECO, level !== 0 && level !== FULL);
     publishRoom(activeRoom);
+  }
+
+  function setHoliday(onOff) {
+    holiday = onOff;
+    set("b", SIG.HOLIDAY_ON, holiday);
+    set("b", SIG.HOLIDAY_OFF, !holiday);
+    if (holiday) {
+      for (var i = 0; i < 4; i++) setPartition(i, "armed");
+      setAllLights(0);
+      setHvacPreset("409");
+    }
   }
 
   // Front montant d'un signal booléen (appui sur un bouton)
@@ -293,41 +360,70 @@
     if (roomFromJoin(n)) return selectRoom(roomFromJoin(n));
     if (SIG.SCENES.indexOf(id) !== -1) return applyScene(id);
     if (SIG.SOURCES.indexOf(id) !== -1) return selectSource(SIG.SOURCES.indexOf(id));
-    if (id === SIG.POWER_OFF || id === SIG.POWER_OFF_LEGACY) return powerOff();
-    if (id === SIG.MUTE || id === SIG.MUTE2) return toggleMute();
+    if (id === SIG.MUSIC_OFF) return musicOff();
+    if (id === SIG.POWER_OFF) return powerOff();
+    if (id === SIG.MUTE) return toggleMute();
     if (id === SIG.TEMP_UP) return adjustSetpoint(0.5);
-    if (id === SIG.TEMP_DOWN) return adjustSetpoint(-0.5);
+    if (id === SIG.TEMP_DOWN) {
+      // Le GUI émet encore 50 (extinction v1) juste après 200 : ne pas baisser la consigne dans ce cas
+      if (now - lastPowerOff < 300) return;
+      return adjustSetpoint(-0.5);
+    }
+    if (SIG.STORES_SCENES.indexOf(id) !== -1) {
+      if (id === LEGACY_MUTE_JOIN) {
+        // Le GUI émet encore 201 (mute v1) avec 55 : on laisse passer 55 puis on décide
+        setTimeout(function () {
+          if (lastPress[SIG.MUTE] && Math.abs(lastPress[SIG.MUTE] - now) < 200) return;
+          applyStoresScene(id);
+        }, 80);
+        return;
+      }
+      return applyStoresScene(id);
+    }
     if (SIG.HVAC_MODES[id]) return setHvacPreset(id);
     if (id === SIG.ALL_LIGHTS_ON) return setAllLights(FULL);
     if (id === SIG.ALL_LIGHTS_OFF) return setAllLights(0);
-    if (id === SIG.ALARM_ARM || id === SIG.ALARM_ALL_ARM) { for (var i = 0; i < 4; i++) setPartition(i, "armed"); return; }
-    if (id === SIG.ALARM_DISARM || id === SIG.ALARM_ALL_DISARM) { for (var j = 0; j < 4; j++) setPartition(j, "disarmed"); return; }
+    if (id === SIG.LIGHTS_ECO) return setAllLights(pct(30));
+    if (id === SIG.HOLIDAY_ON) return setHoliday(true);
+    if (id === SIG.HOLIDAY_OFF) return setHoliday(false);
+    if (id === SIG.ALARM_ARM) { for (var i = 0; i < 4; i++) setPartition(i, "armed"); return; }
+    if (id === SIG.ALARM_DISARM) { for (var j = 0; j < 4; j++) setPartition(j, "disarmed"); return; }
     for (var p = 0; p < SIG.ALARM_PARTITIONS.length; p++) {
       var part = SIG.ALARM_PARTITIONS[p];
       if (id === part.armed) return setPartition(p, "armed");
       if (id === part.partial) return setPartition(p, "partial");
       if (id === part.disarmed) return setPartition(p, "disarmed");
     }
-    // Tout le reste (moteurs 61..69 / 81..98, stores globaux 404/405, lecteur
-    // média 211..220 / 251..253, widget météo 37…) est momentané.
+    if (id === SIG.DALLE_MUTE) return set("b", id, !get("b", id));
+    // Tout le reste (moteurs 61..69 / 81..98, stores globaux 404..406, lecteur
+    // média 211..220 / 251..253, widget météo 56, resync 250…) est momentané.
     pulse(id, 120);
   }
 
-  // Valeurs analogiques émises par les sliders
+  // Valeurs analogiques émises par les sliders et le code de la page
   function setAnalog(id, value) {
     id = String(id);
+    if (id === SIG.ROOM_ID) { // Piece.Active : sélection de pièce par le GUI
+      var target = Number(value);
+      if (rooms[target] && target !== activeRoom) selectRoom(target);
+      return;
+    }
     var r = rooms[activeRoom];
     value = set("n", id, value);
-    if (id === SIG.VOLUME || id === SIG.VOLUME2) {
-      r.volume = value;
-      set("n", id === SIG.VOLUME ? SIG.VOLUME2 : SIG.VOLUME, value);
-    }
+    if (id === SIG.VOLUME) r.volume = value;
+    if (id === SIG.SETPOINT_X10) { r.setpoint = value / 10; publishHvac(r); }
     var ci = SIG.CIRCUITS.indexOf(id);
     if (ci !== -1) {
       var changed = r.circuits[ci] !== value;
       r.circuits[ci] = value;
       // Un réglage manuel désélectionne la scène courante (pas un rappel qui renvoie les mêmes niveaux)
-      if (changed && r.scene) { r.scene = null; SIG.SCENES.forEach(function (s) { set("b", s, false); }); }
+      if (changed && r.scene) { r.scene = null; publishScenes(r); }
+      set("n", SIG.MASTER_LEVEL, maxLevel(r));
+    }
+    if (id === SIG.MASTER_LEVEL) {
+      r.circuits = r.circuits.map(function () { return value; });
+      if (r.scene) { r.scene = null; publishScenes(r); }
+      SIG.CIRCUITS.forEach(function (c, idx) { set("n", c, r.circuits[idx]); });
     }
   }
 
@@ -394,10 +490,30 @@
   /* ------------------------------------------------------------------ */
   /* Initialisation                                                       */
   /* ------------------------------------------------------------------ */
-  function init(cfg) {
-    (cfg && cfg.rooms ? cfg.rooms : []).forEach(function (r) { roomNames[r.id] = r.name; });
+  var initialized = false;
+  function init() {
+    if (initialized) return;
+    initialized = true;
+    var vc = window.villaConfigEmbedded || window.villaConfig;
+    var pieces = vc && vc.pieces ? vc.pieces : [];
+    if (pieces.length) {
+      pieces.forEach(function (p) {
+        roomNames[p.id] = p.nom;
+        if (!rooms[p.id]) rooms[p.id] = makeRoom(21.0, 21.0, "CHAUFFAGE", 0, 20000, "51");
+      });
+    } else if (window.crestronConfig && window.crestronConfig.rooms) {
+      window.crestronConfig.rooms.forEach(function (r) { roomNames[r.id] = r.name; });
+    }
     for (var i = 0; i < 4; i++) setPartition(i, partitions[i]);
     Object.keys(SIG.HVAC_MODES).forEach(function (k) { set("b", k, k === hvacPreset); });
+    set("b", SIG.HOLIDAY_ON, false);
+    set("b", SIG.HOLIDAY_OFF, true);
+    set("n", SIG.DALLE_VOLUME, 65);
+    set("b", SIG.DALLE_MUTE, false);
+    set("s", SIG.IPID, "0x04");
+    set("s", SIG.CPZ_NAME, "VillaCrans_" + (window.appVersion || "v1.0.165") + ".cpz");
+    set("s", SIG.CPZ_DATE, "25/08/2026 00:08:30");
+    set("s", SIG.VALIDATION_DATE, "25/08/2026");
     var start = 1;
     try { start = parseInt(localStorage.getItem("active_room_id") || "1", 10) || 1; } catch (e) {}
     selectRoom(rooms[start] ? start : 1);
@@ -416,6 +532,24 @@
     selectRoom: selectRoom, init: init, state: state,
     get activeRoom() { return activeRoom; },
   };
+
+  // Démarrage automatique : une fois la page chargée (toutes les fonctions du
+  // GUI sont définies) et la bibliothèque CH5 branchée.
+  function autoStart() {
+    // Garde-fou : ce moteur ne tourne que sur la copie vitrine (villa_config meta.mode = "showcase").
+    // Copié par erreur dans un projet déployé sur CP4, il reste inerte.
+    var cfg = window.villaConfigEmbedded;
+    if (!cfg || !cfg.meta || cfg.meta.mode !== "showcase") {
+      console.warn("[local-feedback] meta.mode !== \"showcase\" : moteur de démonstration désactivé");
+      return;
+    }
+    var tries = 0;
+    var t = setInterval(function () {
+      if (ch5Bound || ++tries > 400) { clearInterval(t); setTimeout(init, 350); }
+    }, 25);
+  }
+  if (document.readyState === "complete") autoStart();
+  else window.addEventListener("load", autoStart);
 })();
 
 /* ------------------------------------------------------------------ */

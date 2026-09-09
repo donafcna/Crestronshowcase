@@ -20,6 +20,7 @@ Déployé sur Vercel : https://crestrongui.vercel.app/ — le projet Vercel éta
 - `src/context/LanguageContext.jsx` — langues publiques FR/EN/DE (`SUPPORTED_LANGS` dans `src/data/uiTranslations.js`, qui prime sur `src/data/translations.js`).
 - `src/hooks/` — `useDemoSettings` (`?client=`, `?kiosk=`), `useFitScale`.
 - `public/showcases/<id>/index.html` (+ `iphone.html`) — projets non-interactifs embarquant une vraie interface CH5 via `embedUrl`/`embedPhoneUrl`.
+- `scripts/sync-villa-crans.py <VillaCrans/src>` — met à jour la Villa Crans-Montana depuis les sources réelles (voir README 7/9/2026) ; ne jamais copier `villa_config.json` de développement tel quel (noms de test) ni `js/webxpanel.js` ; `js/local-feedback.js` (moteur d'état, contrat v2) est maintenu à la main.
 
 ## Convention importante
 

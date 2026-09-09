@@ -170,6 +170,15 @@ téléphone, en modale centrée sur tablette / dalle / Xpanel.
 À faire : purger les règles `crestron-home-*` orphelines dans `index.css`, et
 remplacer les vignettes Unsplash par des photos Fréquence TV (TODO déjà listé).
 
+# maj 7/9/2026 — Villa Crans-Montana mise à jour en v1.0.165 (contrat de joins v2)
+
+- **Villa Crans-Montana** (`public/showcases/villa-gemini-frequencetv/`) synchronisée avec `C:\Users\donat\Desktop\VillaCrans\src` (v1.0.165, sources du 6/9/2026) : menu des pièces généré depuis `villa_config.js` (icônes, 15 pièces, pages spéciales Jeux / Animation), contrat de joins v2 (`Piece.Select` 11-40, scènes 51-54, mute 55, consigne 49/50, easter egg météo 56, scènes de stores 201-204), redirection smartphone → `iphone.html` étendue à Android, réglages, thèmes, alarme 4 partitions, contrôle global.
+- Nouveau script **`scripts/sync-villa-crans.py <dossier src VillaCrans>`** : copie `index.html` / `iphone.html` / `version.js` / `build_date.json`, remplace `js/webxpanel.js` par `js/local-feedback.js`, masque l'indicateur Online/Offline (`#connection-status`), neutralise la console d'administration (`openAdminModal`), et génère un `villa_config.json/.js` « vitrine » : le fichier de développement contient des noms de test (pièces, scènes, sources) qui ne doivent jamais apparaître sur le site public → pièces / scènes / sources remplacées par les noms de démonstration, traductions purgées, tous les pilotages actifs, widgets météo + bandeau affichés, page « Vidéo » (YouTube autoplay) désactivée.
+- `js/local-feedback.js` réécrit pour le contrat v2 (maintenu à la main, jamais écrasé par le script) : sélection de pièce par l'analogique 10 (`Piece.Active`) ou les digitaux 11-40, feedback `receiveStateSelected` des pièces, niveau master 21, consigne ×10 (31), presets CVC globaux 407-409 appliqués à toutes les pièces, mode éco éclairage 403, mode vacances 410/411, scènes de stores, mute resynchronisé (le bouton mute du GUI émet à la fois l'impulsion `<ch5-button>` et `publishEvent(55)` / `publishEvent(201)`). Sériels 99/101/102/104 alimentés pour la page Réglages.
+- Deux bugs de la **source** VillaCrans contournés dans la copie vitrine (à corriger dans le projet) : `iphone.html` dictionnaire `ru` tronqué (chaîne non terminée → tout le script métier iPhone rejeté, cf. audit du 2/9) ; panneaux `circuits/motors/cameras/global-control-overlay` posés en `display: flex` dans le HTML donc ouverts au chargement.
+- Points relevés dans le GUI (non modifiés) : `sendPowerOff()` publie encore le digital 50 (= `CVC.ConsigneMoins` en v2) et `toggleMute()` le digital 201 (= `Stores.Scene 1` en v2) ; le moteur local les ignore quand ils accompagnent 200 / 55.
+- `user_original_html.txt` (extrait de conversation de juillet, 84 Ko, publié sur le site) supprimé.
+- Testé sous Playwright (build de production) : wallpanel, tablette, smartphone, démo automatique (curseur, changement de pièce, consigne), `#demo/villa-gemini-frequencetv` mobile, `iphone.html` (liste des pièces, changement de pièce, panneaux fermés).
 
 # maj 9/9/2026 — Villa Crans-Montana : retours de la direction (Antoine)
 
@@ -182,3 +191,10 @@ Corrections demandées après la revue de l'interface par Antoine Dändliker (e-
 - **Traductions** : 32 nouvelles clés (boutons d'entête, télécommande, sécurité, contrôle global, bandeau d'état, confirmations de scène) en FR/EN/ES/DE/RU ; `active_piece` russe corrigé ; dictionnaire russe tronqué de `iphone.html` réparé (bug qui invalidait tout le script du GUI iPhone dans le projet source).
 
 Fichiers : `index.html`, `iphone.html`, `config.js`/`config.json`, `js/local-feedback.js` (scènes mémorisées, sériels 111/112 « portes » / « conso » pour la démo).
+
+# maj 9/9/2026 (soir) — Villa Crans-Montana : sync v1.0.166 depuis VillaCrans/src
+
+- Copie vitrine régénérée par `scripts/sync-villa-crans.py` depuis `C:\Users\donat\Desktop\VillaCrans\src` (source de vérité, contrat de joins v2) : retours de la direction du 9/9 **et** logique audio/vidéo v1.0.166 (télécommandes complètes Apple TV / Sky Q / Swisscom TV / IPTV ; la Musique joue sur les haut-parleurs en gardant la vidéo à l'écran, confirmation « garder la musique / audio de la vidéo », join 156 = retour audio vidéo).
+- Le script pose `meta.mode = "showcase"` dans le `villa_config` vitrine ; `js/local-feedback.js` refuse de démarrer si ce drapeau n'est pas là (copié par erreur sur un CP4, il reste inerte).
+- `js/local-feedback.js` (contrat v2) : scènes mémorisées `localStorage` (`villa_scene_<pièce>_<1..4>`), plus de désélection d'une scène quand un curseur renvoie la même valeur, sériels 111/112 (portes / conso) pour le bandeau « État de la villa », Musique (155) hors interlock vidéo (151-154), join 156.
+- Contournements du 7/9 devenus inutiles (dictionnaire `ru`, overlays `display: flex`) : conservés dans le script, inactifs sur la source corrigée.
