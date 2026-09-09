@@ -14,6 +14,11 @@
 export const DEVICES = {
   phone: {
     id: "phone",
+    // Caractéristiques réelles affichées dans la légende du châssis
+    model: "iPhone 16 Pro",
+    diagonalInches: 6.3,
+    nativeW: 2622,
+    nativeH: 1206,
     label: "Smartphone",
     screenW: 402,
     screenH: 874,
@@ -31,6 +36,10 @@ export const DEVICES = {
   },
   tablet: {
     id: "tablet",
+    model: "iPad Pro 13\"",
+    diagonalInches: 13,
+    nativeW: 2752,
+    nativeH: 2064,
     label: "Tablette",
     screenW: 1376,
     screenH: 1032,
@@ -46,6 +55,10 @@ export const DEVICES = {
   },
   wallpanel: {
     id: "wallpanel",
+    model: "Crestron TSW-1070",
+    diagonalInches: 10.1,
+    nativeW: 1920,
+    nativeH: 1200,
     label: "Dalle tactile",
     screenW: 1280,
     screenH: 800,
@@ -59,6 +72,10 @@ export const DEVICES = {
   // même rapport 16:10, aucune reprise de design nécessaire.
   wallpanel_hd: {
     id: "wallpanel_hd",
+    model: "Crestron TSW-1080",
+    diagonalInches: 10.1,
+    nativeW: 1920,
+    nativeH: 1200,
     label: "Dalle tactile TSW-1080",
     screenW: 1920,
     screenH: 1200,
@@ -69,6 +86,9 @@ export const DEVICES = {
   },
   desktop: {
     id: "desktop",
+    model: "Xpanel",
+    nativeW: 1920,
+    nativeH: 1080,
     label: "PC Monitoring",
     screenW: 1920,
     screenH: 1080,
