@@ -99,8 +99,24 @@ const isCovered = (raw, doc) => {
   return !(el === top || el.contains(top) || top.contains(el));
 };
 
+// Bouton déjà actif / sélectionné (pièce courante, scène en cours, source en
+// lecture, onglet ouvert…) : un vrai utilisateur n'appuie pas dessus.
+const ACTIVE_RE = /(^|[\s-])(active|selected|current|checked|pressed)([\s-]|$)|ch5-button--selected|is-active|is-selected/i;
+const isAlreadyActive = (el) => {
+  if (el.getAttribute?.("aria-pressed") === "true" || el.getAttribute?.("aria-selected") === "true") return true;
+  if (el.getAttribute?.("aria-current") && el.getAttribute("aria-current") !== "false") return true;
+  if (el.tagName === "CH5-BUTTON") {
+    if (el.getAttribute("selected") === "true" || el.hasAttribute("selected")) return true;
+    const inner = el.querySelector("button");
+    if (inner && /ch5-button--selected|active/i.test(inner.getAttribute("class") || "")) return true;
+  }
+  if (el.tagName === "INPUT" && (el.type === "checkbox" || el.type === "radio") && el.checked) return true;
+  return ACTIVE_RE.test(classString(el));
+};
+
 const isExcluded = (el) => {
   if (el.closest("[data-demo-ignore]")) return true;
+  if (isAlreadyActive(el)) return true;
   // Contenus défilants (bandeau d'actualités, carrousel) : cibles mouvantes.
   if (el.closest('[class*="marquee"],[class*="ticker"],[class*="carousel"],marquee')) return true;
   if (el.disabled) return true;
@@ -471,7 +487,7 @@ export const useAutoDemo = ({ enabled, running, stageRef, guiKey, onCycleEnd, on
 
       for (const room of rooms) {
         if (token.cancelled) return;
-        if (room && room.isConnected) {
+        if (room && room.isConnected && !isAlreadyActive(room)) {
           const ok = await moveTo(room, gui);
           if (token.cancelled) return;
           if (ok) {
@@ -506,7 +522,7 @@ export const useAutoDemo = ({ enabled, running, stageRef, guiKey, onCycleEnd, on
           used.add(el);
           lastParent = el.parentElement;
           if (isSlider(el)) sliderDone = true;
-          if (!el.isConnected || !isVisible(el, gui.win) || isCovered(el, gui.doc)) continue;
+          if (!el.isConnected || !isVisible(el, gui.win) || isCovered(el, gui.doc) || isAlreadyActive(el)) continue;
           const ok = await moveTo(el, gui);
           if (token.cancelled) return;
           if (!ok) continue;
