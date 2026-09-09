@@ -67,10 +67,13 @@ export const DeviceFrame = ({
   const { scaleMode, setScaleMode } = useDemoSettings();
   const realSizeAvailable = fitScale >= SCALE_RULES.realSizeTolerance;
   const effectiveMode = scaleMode === "real" && realSizeAvailable ? "real" : "auto";
+  // Plein écran : le châssis occupe tout l'espace disponible (proportions
+  // conservées), sans le plafond maxUpscale de la page normale.
+  const upscaleCap = isFullscreen ? Infinity : SCALE_RULES.maxUpscale;
   const chassisScale =
     effectiveMode === "real"
       ? 1
-      : Math.max(SCALE_RULES.minDownscale, Math.min(fitScale, SCALE_RULES.maxUpscale));
+      : Math.max(SCALE_RULES.minDownscale, Math.min(fitScale, upscaleCap));
   const tooSmall = effectiveMode === "auto" && fitScale < SCALE_RULES.minDownscale;
   // screenW/H and guiW/H are both fixed design constants (not measured), so
   // guiScale is a plain derived number — no separate ResizeObserver needed.
@@ -217,8 +220,9 @@ export const DeviceFrame = ({
           </div>
         )}
       </div>
-      {inlineBanners && !isFullscreen && (
+      {inlineBanners && (
         <ChassisCaption
+          fullscreen={isFullscreen}
           device={cfg}
           scale={chassisScale}
           mode={effectiveMode}

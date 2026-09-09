@@ -415,6 +415,18 @@ const ShowcaseInner = ({ sectorId, projectId, device }) => {
         {isFullscreen && (
           <div className="fullscreen-overlay-header">
             <div className="fullscreen-overlay-header-left">
+              {frameInfo && (
+                <ChassisCaption
+                  fullscreen
+                  device={frameInfo.device}
+                  scale={frameInfo.scale}
+                  mode={frameInfo.mode}
+                  requestedMode={frameInfo.requestedMode}
+                  realSizeAvailable={frameInfo.realSizeAvailable}
+                  tooSmall={frameInfo.tooSmall}
+                  onChangeMode={frameInfo.onChangeMode}
+                />
+              )}
               {demoEnabled && demoRunning && (
                 <div className="present-hint glass-panel">
                   {renderIcon("Presentation", 14)}
