@@ -5,4 +5,4 @@
 // Surcharges possibles sans toucher au code :
 //   ?dev=1  → force l'affichage    ?dev=0  → force le masquage
 //   Ctrl + Alt + D → bascule pendant la session (mémorisé dans l'URL).
-export const DEV_MODE_DEFAULT = true;
+export const DEV_MODE_DEFAULT = false;
