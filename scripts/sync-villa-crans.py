@@ -110,6 +110,10 @@ def clean_config(src: Path) -> dict:
     # Page « Vidéo » = recherche YouTube en autoplay : pas dans une vitrine publique en démo automatique
     if "video" in c.get("pagesSpeciales", {}):
         c["pagesSpeciales"]["video"]["actif"] = False
+    # Jeux / Animation retirées du menu (09.09.2026) — code conservé, réactivables dans villa_config
+    for k in ("jeux", "animation"):
+        if k in c.get("pagesSpeciales", {}):
+            c["pagesSpeciales"][k]["actif"] = False
     for p in c["pieces"]:
         p["nom"] = ROOM_NAMES[p["id"] - 1] if p["id"] <= len(ROOM_NAMES) else p["nom"]
         p["icone"] = ROOM_ICONS.get(p["nom"], p.get("icone", "🏠"))

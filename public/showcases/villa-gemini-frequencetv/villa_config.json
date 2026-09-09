@@ -2322,14 +2322,14 @@
     }
   },
   "pagesSpeciales": {
-    "description": "Pages speciales du menu de navigation (true = presente dans le menu). youtubeRecherche personnalise la video.",
+    "description": "Pages speciales du menu de navigation (true = presente dans le menu). Jeux et Animation desactivees le 09.09.2026 (code conserve : remettre actif = true pour les retrouver). youtubeRecherche personnalise la video.",
     "jeux": {
-      "actif": true,
+      "actif": false,
       "nom": "Jeux",
       "icone": "🚀"
     },
     "animation": {
-      "actif": true,
+      "actif": false,
       "nom": "Animation",
       "icone": "✨"
     },
