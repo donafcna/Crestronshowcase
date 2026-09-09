@@ -122,3 +122,50 @@ Page, entrée de navigation (desktop + mobile), boutons du dashboard, route `/po
 - Fichiers : `src/components/simulators/{VillaLeman,SiegeNyon,AppartementCarouge}.jsx` + CSS ; entrées ajoutées dans `projects.js`, `Showcase.jsx` et `DemoMode.jsx`. Dalle TSW-1070/1080, tablette et smartphone, FR/EN/DE, compatibles démo automatique (`data-demo-nav` sur les sélecteurs de pièces).
 - Polices Google chargées par un hook `useFonts` (balise `<link>` injectée) et non par `@import` CSS : un `@import` bloqué faisait échouer le chargement du chunk CSS lazy et laissait l'interface vide.
 - À faire : remplacer les emplacements « Photo · … » et les vignettes Unsplash par des médias Fréquence TV.
+
+
+# maj 7/9/2026 — FTV Home (ex « Crestron Home ») refondu à partir des captures de l'app Crestron Home OS
+
+Refonte complète du simulateur `crestron-home`, à partir de 67 captures d'écran de
+l'application Crestron Home OS 4.11.4 prises sur iPhone et iPad (dossier
+`Downloads/iCloud Photos from Donatien Peigne`).
+
+**Renommé « FTV Home »** dans `projects.js`. L'identifiant reste `crestron-home` :
+les liens déjà partagés (`/interfaces/residentiel/crestron-home/...`) continuent de
+fonctionner. Le client devient « Interface résidentielle Fréquence TV » et les textes
+FR/EN/DE ont été réécrits en conséquence.
+
+**Parti pris : réinterprétation, pas copie.** Structure et parcours repris de
+l'application de référence (accueil « scènes + contrôles », pièces filtrées par étage,
+détail de pièce par services, feuilles de pilotage), mais palette, typographie et
+détails graphiques aux couleurs Fréquence TV — violet de marque `#6d3bf5`, cyan
+d'appui `#1ea7d6`, ambre `#e8a317` pour l'éclairage, typo Outfit. Aucun logo ni nom
+de service tiers.
+
+**Nouveaux fichiers**
+- `src/components/simulators/crestronHome.css` — feuille dédiée, tout est préfixé
+  `ch-` sous la racine `.ch-home` (les anciennes règles `crestron-home-*` de
+  `index.css` deviennent mortes, à purger un jour).
+- `src/data/crestronHomeUi.js` — dictionnaire FR/EN/DE du simulateur.
+  `src/data/crestronHomeTranslations.js` n'est plus importé (fichier minifié à 8
+  langues, dont 5 non exposées par le site).
+
+**Écrans couverts** — accueil (héro + 4 scènes + contrôles Lumières / Musique /
+Occultants / Thermostat / Accès / Piscine / Spa), pièces (chips Toutes / Favoris /
+étages, groupes repliables, cartes photo avec pastilles d'état et favori), détail de
+pièce (Actions + Des services), et six feuilles : Lumières (maître + gradateurs +
+interrupteurs), Occultants (position au %, Monter/Stop/Descendre), Thermostat
+(cadran dégradé, consigne, mode / ventilateur / planification, hygrométrie), Vidéo
+(écrans + sources + grille de chaînes), Musique (services, favoris, lecteur, volume),
+Réglages (thème clair/sombre, contrôles et pièces affichés). Mini-lecteur persistant
+au-dessus de la barre d'onglets.
+
+**Quatre gabarits, un seul composant** — `deviceType` pilote les variantes :
+`phone` 402×781, `tablet` 1376×988, `wallpanel` 1280×800 (dalle TSW-1070) et
+`desktop` 1920×1080. Sur la dalle : pas de barre d'état iOS mais un bandeau
+heure / maison / modèle, rythme vertical resserré pour tenir dans 800 px sans
+défiler, et cibles tactiles élargies (48 px). Les feuilles s'ouvrent en bas sur
+téléphone, en modale centrée sur tablette / dalle / Xpanel.
+
+À faire : purger les règles `crestron-home-*` orphelines dans `index.css`, et
+remplacer les vignettes Unsplash par des photos Fréquence TV (TODO déjà listé).
