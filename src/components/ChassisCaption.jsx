@@ -34,13 +34,11 @@ export const ChassisCaption = ({
   if (tooSmall) status = fill(t("scale_caption_too_small"), { pct });
   else if (fullscreen) {
     if (mode === "real") {
-      status = device.physicalW
-        ? fill(t("scale_caption_real_mm"), { w: String(device.physicalW).replace(".", decimal), h: String(device.physicalH).replace(".", decimal) })
-        : t("scale_caption_real");
+      status = t("scale_real");
     } else if (pageScale) {
-      // Agrandissement obtenu par rapport à l'affichage de la page (ex. ×1,4)
+      // Facteur d'agrandissement obtenu par rapport à l'affichage de la page (ex. ×1,09)
       const k = (Math.round((scale / pageScale) * 100) / 100).toFixed(2).replace(/0$/, "").replace(".", decimal);
-      status = fill(t("scale_caption_zoom"), { k });
+      status = `×${k}`;
     }
   }
 
