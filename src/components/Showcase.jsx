@@ -4,6 +4,10 @@ import { useTranslation } from "../context/LanguageContext";
 import { projects, getDeviceById, getProjectText, getProjectName, getStatusLabel } from "../data/projects";
 import { BackgroundVideo } from "./BackgroundVideo";
 import { DeviceFrame } from "./DeviceFrame";
+import { DevMetrics } from "./DevMetrics";
+import { ChassisCaption } from "./ChassisCaption";
+import { useDevMode } from "../hooks/useDevMode";
+import { FrameInfoProvider, useFrameInfo } from "../context/FrameInfoContext";
 import { DemoToolbar } from "./DemoToolbar";
 import { useRouter, buildShowcasePath } from "../router";
 import { useDemoSettings } from "../hooks/useDemoSettings";
@@ -42,7 +46,18 @@ const SimulatorFallback = () => (
   </div>
 );
 
-export const Showcase = ({ sectorId, projectId, device }) => {
+// Le châssis (DeviceFrame) publie ses mesures dans FrameInfoContext ; la page
+// les affiche au-dessus de la barre des projets (mesures Dev) et sur la ligne
+// des outils de démo (légende d'échelle).
+export const Showcase = (props) => (
+  <FrameInfoProvider>
+    <ShowcaseInner {...props} />
+  </FrameInfoProvider>
+);
+
+const ShowcaseInner = ({ sectorId, projectId, device }) => {
+  const { devMode } = useDevMode();
+  const frameInfo = useFrameInfo()?.info;
   const { t, lang } = useTranslation();
   const { navigate } = useRouter();
   const { clientName, kiosk } = useDemoSettings();
@@ -280,6 +295,18 @@ export const Showcase = ({ sectorId, projectId, device }) => {
       <BackgroundVideo sectionId={sectorId || activeProject.sectors[0]} />
 
       <div className={`main-workspace-container transparent-workspace ${isFullscreen ? "fullscreen-mode" : ""}`}>
+        {/* 0. Mode Dev : mesures d'écran, au-dessus de la barre des projets */}
+        {!isFullscreen && devMode && frameInfo && (
+          <DevMetrics
+            device={frameInfo.device}
+            stage={frameInfo.stage}
+            scale={frameInfo.scale}
+            fitScale={frameInfo.fitScale}
+            mode={frameInfo.mode}
+            realSizeAvailable={frameInfo.realSizeAvailable}
+          />
+        )}
+
         {/* 1. Liste horizontale des projets */}
         {!isFullscreen && (
           <section className="projects-horizontal-list-bar compact-header compact-cards-version">
@@ -367,6 +394,19 @@ export const Showcase = ({ sectorId, projectId, device }) => {
             onTogglePresentation={handleTogglePresentation}
             onCapture={handleCapture}
             capturing={capturing}
+            center={
+              frameInfo && (
+                <ChassisCaption
+                  device={frameInfo.device}
+                  scale={frameInfo.scale}
+                  mode={frameInfo.mode}
+                  requestedMode={frameInfo.requestedMode}
+                  realSizeAvailable={frameInfo.realSizeAvailable}
+                  tooSmall={frameInfo.tooSmall}
+                  onChangeMode={frameInfo.onChangeMode}
+                />
+              )
+            }
           />
         )}
         {captureNotice && <div className="demo-notice glass-panel">{captureNotice}</div>}

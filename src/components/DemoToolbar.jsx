@@ -13,6 +13,7 @@ export const DemoToolbar = ({
   presenting,
   sheetUrl,
   embedUrl,
+  center = null, // légende du châssis (support · taille · échelle), sur la même ligne
 }) => {
   const { t } = useTranslation();
   const [copied, setCopied] = useState(false);
@@ -70,6 +71,7 @@ export const DemoToolbar = ({
           active={presenting}
         />
       </div>
+      {center && <div className="demo-toolbar-center">{center}</div>}
       <div className="demo-toolbar-group">
         <Btn icon="FileText" label={t("tool_sheet")} href={sheetUrl} />
         {embedUrl && <Btn icon="ExternalLink" label={t("tool_open_tab")} href={embedUrl} />}

@@ -4836,6 +4836,8 @@ html, body, #root {
 
 .dev-metrics {
   flex-shrink: 0;
+  position: relative;
+  z-index: 6;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;

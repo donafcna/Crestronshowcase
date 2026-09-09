@@ -6,6 +6,7 @@ import { DevMetrics } from "./DevMetrics";
 import { ChassisCaption } from "./ChassisCaption";
 import { useDemoSettings } from "../hooks/useDemoSettings";
 import { SCALE_RULES } from "../data/scaleRules";
+import { useFrameInfo } from "../context/FrameInfoContext";
 
 // Barre d'état iOS (heure réelle, réseau, batterie) dessinée dans la zone
 // "safe area" du haut de l'écran, comme sur un vrai iPhone / iPad. La GUI est
@@ -76,6 +77,28 @@ export const DeviceFrame = ({
   const guiScale = Math.min(cfg.screenW / cfg.guiW, cfg.screenH / cfg.guiH);
   const normalizedTitle = title.toLowerCase().replace(/\s+/g, "-");
 
+  // Page Showcase : les bandeaux (mesures Dev, légende d'échelle) sont rendus
+  // par la page, au-dessus de la barre des projets et sur la ligne des outils.
+  const frameInfo = useFrameInfo();
+  const setFrameInfo = frameInfo?.setInfo;
+  useEffect(() => {
+    if (!setFrameInfo) return;
+    setFrameInfo({
+      device: cfg,
+      stage: stageSize,
+      scale: chassisScale,
+      fitScale,
+      mode: effectiveMode,
+      requestedMode: scaleMode,
+      realSizeAvailable,
+      tooSmall,
+      onChangeMode: setScaleMode,
+      isFullscreen,
+    });
+  }, [setFrameInfo, cfg, stageSize, chassisScale, fitScale, effectiveMode, scaleMode, realSizeAvailable, tooSmall, setScaleMode, isFullscreen]);
+  useEffect(() => () => setFrameInfo?.(null), [setFrameInfo]);
+  const inlineBanners = !frameInfo;
+
   const cornerButton = (
     <button
       className="btn-exit-fullscreen-device-corner"
@@ -116,7 +139,7 @@ export const DeviceFrame = ({
 
   return (
     <div className="device-viewport-container">
-      {devMode && (
+      {inlineBanners && devMode && (
         <DevMetrics device={cfg} stage={stageSize} scale={chassisScale} fitScale={fitScale} mode={effectiveMode} realSizeAvailable={realSizeAvailable} />
       )}
       <div className="device-stage" ref={stageRef}>
@@ -194,7 +217,7 @@ export const DeviceFrame = ({
           </div>
         )}
       </div>
-      {!isFullscreen && (
+      {inlineBanners && !isFullscreen && (
         <ChassisCaption
           device={cfg}
           scale={chassisScale}
