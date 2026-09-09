@@ -226,16 +226,6 @@
             --blur-val: blur(25px);
         }
 
-        body.theme-cyber {
-            --bg-color: #070913;
-            --bg-gradient: linear-gradient(rgba(7, 9, 19, 0.8), rgba(15, 12, 30, 0.85));
-            --container-bg: rgba(13, 17, 33, 0.7);
-            --border-color: rgba(6, 182, 212, 0.25);
-            --text-primary: #e0e7ff;
-            --text-secondary: #818cf8;
-            --card-shadow: 0 8px 32px rgba(6, 182, 212, 0.15);
-            --blur-val: blur(15px);
-        }
 
         /* Classes de styles unifiées pour les paramètres HVAC */
         .measured-temp-val {
@@ -1006,7 +996,6 @@
                     <option value="dark" data-i18n="theme_dark">Sombre Premium 🌙</option>
                     <option value="light" data-i18n="theme_light">Clair Élégant ☀️</option>
                     <option value="glass" data-i18n="theme_glass">Verre Dépoli ❄️</option>
-                    <option value="cyber" data-i18n="theme_cyber">Bleu Cyberpunk 🌌</option>
                 </select>
             </div>
         </div>
@@ -1442,7 +1431,6 @@
                     theme_dark: "Sombre premium 🌙",
                     theme_light: "Clair élégant ☀️",
                     theme_glass: "Verre dépoli ❄️",
-                    theme_cyber: "Bleu cyberpunk 🌌",
                     active_piece: "Pièce active",
                     alarm_title: "Alarme globale :",
                     alarm_arm: "ARMER",
@@ -1476,7 +1464,6 @@
                     theme_dark: "Dark premium 🌙",
                     theme_light: "Elegant light ☀️",
                     theme_glass: "Frosted glass ❄️",
-                    theme_cyber: "Cyberpunk blue 🌌",
                     active_piece: "Active room",
                     alarm_title: "Global alarm:",
                     alarm_arm: "ARM",
@@ -1510,7 +1497,6 @@
                     theme_dark: "Oscuro Premium 🌙",
                     theme_light: "Claro Elegante ☀️",
                     theme_glass: "Cristal Esmerilado ❄️",
-                    theme_cyber: "Azul Cyberpunk 🌌",
                     active_piece: "Habitación Activa",
                     alarm_title: "Alarma Global:",
                     alarm_arm: "ARMAR",
@@ -1544,7 +1530,6 @@
                     theme_dark: "Dunkel Premium 🌙",
                     theme_light: "Elegant Hell ☀️",
                     theme_glass: "Milchglas ❄️",
-                    theme_cyber: "Cyberpunk Blau 🌌",
                     active_piece: "Aktiver Raum",
                     alarm_title: "Globaler Alarm:",
                     alarm_arm: "SCHARF",
@@ -1578,7 +1563,6 @@
                     theme_dark: "Темная Премиум 🌙",
                     theme_light: "Светлая Элегантная ☀️",
                     theme_glass: "Матовое Стекло ❄️",
-                    theme_cyber: "Киберпанк Синий 🌌",
                     active_piece: "Активная Комната",
                     alarm_title: "Общая Сигнализация:",
                     alarm_arm: "ОХРАНА",
@@ -1879,6 +1863,7 @@
 
             // --- MODULE DE THÈME ---
             function applyTheme(theme) {
+            if (theme === 'cyber') theme = 'dark'; // thème Bleu Cyberpunk retiré le 09.09.2026
                 currentTheme = theme;
                 try {
                     localStorage.setItem('crestron_theme_iphone', theme);

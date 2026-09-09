@@ -313,6 +313,9 @@
             --text-secondary: #94a3b8;
             --card-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
             --blur-val: blur(12px);
+            /* Liste des pièces : couleur du survol et fond de la pièce sélectionnée (thémables) */
+            --room-hover-color: #a7f3d0;
+            --selection-bg: rgba(255, 255, 255, 0.08);
         }
 
         body.theme-light {
@@ -323,6 +326,8 @@
             --text-primary: #1e293b;
             --text-secondary: #64748b;
             --card-shadow: 0 8px 32px rgba(15, 23, 42, 0.08);
+            --room-hover-color: #059669;
+            --selection-bg: rgba(15, 23, 42, 0.08);
         }
 
         body.theme-glass {
@@ -336,16 +341,6 @@
             --blur-val: blur(25px);
         }
 
-        body.theme-cyber {
-            --bg-color: #070913;
-            --bg-gradient: linear-gradient(rgba(7, 9, 19, 0.8), rgba(15, 12, 30, 0.85));
-            --container-bg: rgba(13, 17, 33, 0.7);
-            --border-color: rgba(6, 182, 212, 0.25);
-            --text-primary: #e0e7ff;
-            --text-secondary: #818cf8;
-            --card-shadow: 0 8px 32px rgba(6, 182, 212, 0.15);
-            --blur-val: blur(15px);
-        }
 
         
         /* Classes de styles unifiées pour les paramètres HVAC (v1.0.149) */
@@ -536,7 +531,7 @@
             background: transparent !important;
             border: none !important;
             box-shadow: none !important;
-            color: #ffffff !important;
+            color: var(--text-primary) !important; /* thémable : blanc en sombre, ardoise en clair */
             border-radius: 8px !important;
             font-size: 1.15rem !important;
             font-weight: 500 !important;
@@ -549,7 +544,7 @@
         ch5-button[customClass~="room-selector-btn"]:hover button,
         ch5-button[customClass~="room-selector-btn"]:hover .cb-btn,
         .room-selector-btn:hover {
-            color: #a7f3d0 !important;
+            color: var(--room-hover-color) !important;
         }
         ch5-button[selected="true"] button,
         ch5-button[selected="true"] .cb-btn,
@@ -567,6 +562,15 @@
             color: #ffffff !important;
             font-weight: bold !important;
             box-shadow: none !important;
+        }
+        /* Pièce sélectionnée : couleurs du thème (le blanc ci-dessus reste pour les boutons à fond coloré) */
+        body ch5-button[customClass~="room-selector-btn"][selected="true"] button,
+        body ch5-button[customClass~="room-selector-btn"][selected="true"] .cb-btn,
+        body ch5-button[customClass~="room-selector-btn"].ch5-button--selected button,
+        body ch5-button[customClass~="room-selector-btn"].ch5-button--selected .cb-btn {
+            background: var(--selection-bg) !important;
+            background-color: var(--selection-bg) !important;
+            color: var(--text-primary) !important;
         }
 
 
@@ -2955,6 +2959,56 @@
         #sources-container .tv-live-badge.audio-active { display: flex !important; }
         #sources-container .tv-live-badge.audio-music { border: 2px solid #ffffff !important; background: rgba(234, 179, 8, 0.3) !important; box-shadow: 0 0 12px rgba(255, 255, 255, 0.7) !important; }
     </style>
+    <!-- ===== Lisibilité par thème =====
+         Règle du projet : aucun texte ne doit descendre sous 3:1 de contraste avec le fond réellement
+         affiché, dans TOUS les thèmes. Vérification automatique : node tools/check_contrast.mjs <url>
+         (capture d'écran + calcul WCAG), à lancer avant chaque livraison. Ce bloc corrige les couleurs
+         codées en dur (blanc, gris #94a3b8, pastels) pour les thèmes Clair et Verre dépoli. -->
+    <style id="theme-readability">
+        /* --- Liste des pièces : le thème CH5 par défaut force le libellé en blanc --- */
+        ch5-button[customClass~="room-selector-btn"] .ch5-button--label { color: var(--text-primary) !important; }
+        ch5-button[customClass~="room-selector-btn"]:hover .ch5-button--label { color: var(--room-hover-color) !important; }
+
+        /* --- Scène active (fond doré) : texte sombre dans tous les thèmes --- */
+        ch5-button[selected="true"] .scene-btn .ch5-button--label,
+        ch5-button.ch5-button--selected .scene-btn .ch5-button--label,
+        ch5-button[selected="true"] .scene-btn, ch5-button.ch5-button--selected .scene-btn { color: #1f2937 !important; }
+
+        /* --- Thème Clair élégant : fond blanc, donc plus de blanc ni de pastels --- */
+        body.theme-light #version-label { color: rgba(15, 23, 42, 0.55) !important; }
+        body.theme-light h2, body.theme-light h3, body.theme-light [style*="color: #94a3b8"] { color: #475569 !important; }
+        body.theme-light #active-room-title, body.theme-light [style*="color: #10b981"] { color: #047857 !important; }
+        body.theme-light [style*="color: #0ea5e9"] { color: #0369a1 !important; }
+        body.theme-light [style*="rgba(255,255,255,0.7)"], body.theme-light [style*="rgba(255, 255, 255, 0.7)"] { color: #334155 !important; }
+        body.theme-light [style*="color: white"], body.theme-light [style*="color: #fff"] { color: #1e293b !important; }
+        body.theme-light .temp-val, body.theme-light .temp-display, body.theme-light .measured-temp-val { color: #0e7490 !important; }
+        body.theme-light #header-global-controls button { color: #1e293b !important; background: rgba(255, 255, 255, 0.7) !important; }
+        body.theme-light #header-global-controls button:nth-child(1) { color: #b91c1c !important; }
+        body.theme-light #header-global-controls button:nth-child(2) { color: #1d4ed8 !important; }
+        body.theme-light #header-global-controls button:nth-child(3) { color: #047857 !important; }
+        body.theme-light #tab-lights-btn, body.theme-light #tab-shades-btn { color: #1e293b !important; }
+        body.theme-light .villa-status-item.ok { color: #047857 !important; }
+        body.theme-light .villa-status-item.warn { color: #b45309 !important; }
+        body.theme-light .villa-status-item, body.theme-light .villa-status-icon { color: #334155; }
+        body.theme-light ch5-button[customClass~="temp-adjust-btn"] .cb-btn, body.theme-light ch5-button[customClass~="temp-adjust-btn"] .ch5-button--label { color: #1e293b !important; background: rgba(15, 23, 42, 0.08) !important; }
+
+        /* --- Thème Verre dépoli : la photo de fond est claire → panneaux teintés + ombre portée sur le texte --- */
+        body.theme-glass { --container-bg: rgba(15, 23, 42, 0.5); --text-secondary: rgba(255, 255, 255, 0.85); }
+        body.theme-glass .app-container { text-shadow: 0 1px 3px rgba(0, 0, 0, 0.75); }
+        body.theme-glass #version-label { color: rgba(255, 255, 255, 0.85) !important; }
+        body.theme-glass h2, body.theme-glass h3, body.theme-glass [style*="color: #94a3b8"] { color: #e2e8f0 !important; }
+        body.theme-glass [style*="rgba(255,255,255,0.7)"], body.theme-glass [style*="rgba(255, 255, 255, 0.7)"] { color: #f1f5f9 !important; }
+        body.theme-glass #active-room-title, body.theme-glass [style*="color: #10b981"] { color: #6ee7b7 !important; }
+        body.theme-glass [style*="color: #0ea5e9"] { color: #7dd3fc !important; }
+        body.theme-glass .temp-val, body.theme-glass .temp-display, body.theme-glass .measured-temp-val { color: #67e8f9 !important; }
+        body.theme-glass #header-global-controls button { background: rgba(15, 23, 42, 0.6) !important; color: #ffffff !important; }
+        body.theme-glass #tab-lights-btn, body.theme-glass #tab-shades-btn { color: #ffffff !important; background: rgba(15, 23, 42, 0.45) !important; }
+        body.theme-glass .villa-status-banner, body.theme-glass #news-banner { background: rgba(15, 23, 42, 0.6) !important; }
+        body.theme-glass .villa-status-item.ok { color: #a7f3d0 !important; }
+        body.theme-glass .villa-status-item.warn { color: #fde68a !important; }
+        body.theme-glass .consigne-val, body.theme-glass .consigne-temp-val { color: #fbbf24 !important; }
+        body.theme-glass .hvac-mode-val, body.theme-glass #hvac-mode-val { color: #ffffff !important; }
+    </style>
     <!-- Vitrine : pas de processeur, indicateur de connexion masqué -->
     <style>#connection-status{display:none !important}</style>
     <script>window.updateConnectionStatusUI = function () {};</script>
@@ -3930,7 +3984,6 @@
                     <option value="dark" data-i18n="theme_dark">Sombre Premium 🌙</option>
                     <option value="light" data-i18n="theme_light">Clair Élégant ☀️</option>
                     <option value="glass" data-i18n="theme_glass">Verre Dépoli ❄️</option>
-                    <option value="cyber" data-i18n="theme_cyber">Bleu Cyberpunk 🌌</option>
                 </select>
             </div>
         </div>
@@ -4110,6 +4163,7 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
         <div style="display: flex; flex-direction: column; align-items: center; gap: 22px;"><div style="display: flex; align-items: center; justify-content: center; gap: 14px;"><ch5-button id="src-btn-sw-back" label="back" customStyle="background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.2); color: #fff; font-weight: bold; display: flex; align-items: center; justify-content: center; box-sizing: border-box; cursor: pointer; user-select: none; width: 104px; height: 62px; font-size: 1rem; border-radius: 12px; " ></ch5-button><ch5-button id="src-btn-sw-home" label="home" customStyle="background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.2); color: #fff; font-weight: bold; display: flex; align-items: center; justify-content: center; box-sizing: border-box; cursor: pointer; user-select: none; width: 104px; height: 62px; font-size: 1rem; border-radius: 12px; " ></ch5-button><ch5-button id="src-btn-sw-guide" label="guide" customStyle="background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.2); color: #fff; font-weight: bold; display: flex; align-items: center; justify-content: center; box-sizing: border-box; cursor: pointer; user-select: none; width: 104px; height: 62px; font-size: 1rem; border-radius: 12px; " ></ch5-button><ch5-button id="src-btn-sw-option" label="option" customStyle="background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.2); color: #fff; font-weight: bold; display: flex; align-items: center; justify-content: center; box-sizing: border-box; cursor: pointer; user-select: none; width: 104px; height: 62px; font-size: 1rem; border-radius: 12px; " ></ch5-button></div><div style="display: flex; align-items: center; justify-content: center; gap: 26px;"><div style="display: flex; flex-direction: column; align-items: center; gap: 28px;"><ch5-button id="src-btn-sw-pup" label="P ▲" customStyle="background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.2); color: #fff; font-weight: bold; display: flex; align-items: center; justify-content: center; box-sizing: border-box; cursor: pointer; user-select: none; width: 80px; height: 80px; font-size: 0.95rem; border-radius: 50%; " ></ch5-button><ch5-button id="src-btn-sw-pdn" label="P ▼" customStyle="background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.2); color: #fff; font-weight: bold; display: flex; align-items: center; justify-content: center; box-sizing: border-box; cursor: pointer; user-select: none; width: 80px; height: 80px; font-size: 0.95rem; border-radius: 50%; " ></ch5-button></div><div style="position: relative; width: 310px; height: 310px; border-radius: 50%; flex-shrink: 0; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.15);"><ch5-button id="src-btn-sw-up" label="⌃" customStyle="background: transparent; border: none; color: #e5e7eb; display: flex; align-items: center; justify-content: center; font-weight: bold; position: absolute; cursor: pointer; top: 8px; left: 50%; transform: translateX(-50%); width: 99px; height: 74px; font-size: 1.6rem;"></ch5-button><ch5-button id="src-btn-sw-down" label="⌄" customStyle="background: transparent; border: none; color: #e5e7eb; display: flex; align-items: center; justify-content: center; font-weight: bold; position: absolute; cursor: pointer; bottom: 8px; left: 50%; transform: translateX(-50%); width: 99px; height: 74px; font-size: 1.6rem;"></ch5-button><ch5-button id="src-btn-sw-left" label="‹" customStyle="background: transparent; border: none; color: #e5e7eb; display: flex; align-items: center; justify-content: center; font-weight: bold; position: absolute; cursor: pointer; left: 8px; top: 50%; transform: translateY(-50%); width: 74px; height: 99px; font-size: 1.6rem;"></ch5-button><ch5-button id="src-btn-sw-right" label="›" customStyle="background: transparent; border: none; color: #e5e7eb; display: flex; align-items: center; justify-content: center; font-weight: bold; position: absolute; cursor: pointer; right: 8px; top: 50%; transform: translateY(-50%); width: 74px; height: 99px; font-size: 1.6rem;"></ch5-button><ch5-button id="src-btn-sw-ok" label="ok" customStyle="background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.2); color: #fff; font-weight: bold; display: flex; align-items: center; justify-content: center; box-sizing: border-box; cursor: pointer; user-select: none; background: rgba(255,255,255,0.14); border: 1px solid rgba(255,255,255,0.35); border-radius: 50%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 112px; height: 112px; font-size: 1.05rem;"></ch5-button></div><div style="display: flex; flex-direction: column; align-items: center; gap: 28px;"><ch5-button id="src-btn-sw-volup" label="+" customStyle="background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.2); color: #fff; font-weight: bold; display: flex; align-items: center; justify-content: center; box-sizing: border-box; cursor: pointer; user-select: none; width: 80px; height: 80px; font-size: 1.3rem; border-radius: 50%; " onclick="window.remoteVolume(1)"></ch5-button><ch5-button id="src-btn-sw-voldn" label="−" customStyle="background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.2); color: #fff; font-weight: bold; display: flex; align-items: center; justify-content: center; box-sizing: border-box; cursor: pointer; user-select: none; width: 80px; height: 80px; font-size: 1.3rem; border-radius: 50%; " onclick="window.remoteVolume(-1)"></ch5-button></div></div></div>
         <div style="display: flex; flex-direction: column; align-items: center; gap: 16px;"><div style="display: grid; grid-template-columns: repeat(3, 88px); gap: 12px;"><ch5-button id="src-btn-sw-rew" label="⏪" customStyle="background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.2); color: #fff; font-weight: bold; display: flex; align-items: center; justify-content: center; box-sizing: border-box; cursor: pointer; user-select: none; width: 88px; height: 62px; font-size: 1.35rem; border-radius: 12px; " ></ch5-button><ch5-button id="src-btn-sw-play" label="⏯" customStyle="background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.2); color: #fff; font-weight: bold; display: flex; align-items: center; justify-content: center; box-sizing: border-box; cursor: pointer; user-select: none; width: 88px; height: 62px; font-size: 1.35rem; border-radius: 12px; " ></ch5-button><ch5-button id="src-btn-sw-fwd" label="⏩" customStyle="background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.2); color: #fff; font-weight: bold; display: flex; align-items: center; justify-content: center; box-sizing: border-box; cursor: pointer; user-select: none; width: 88px; height: 62px; font-size: 1.35rem; border-radius: 12px; " ></ch5-button><ch5-button id="src-btn-sw-replay" label="↶" customStyle="background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.2); color: #fff; font-weight: bold; display: flex; align-items: center; justify-content: center; box-sizing: border-box; cursor: pointer; user-select: none; width: 88px; height: 62px; font-size: 1.35rem; border-radius: 12px; " ></ch5-button><ch5-button id="src-btn-sw-rec" label="●" customStyle="background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.2); color: #fff; font-weight: bold; display: flex; align-items: center; justify-content: center; box-sizing: border-box; cursor: pointer; user-select: none; width: 88px; height: 62px; font-size: 1.35rem; border-radius: 12px; " ></ch5-button><ch5-button id="src-btn-sw-skip" label="↷" customStyle="background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.2); color: #fff; font-weight: bold; display: flex; align-items: center; justify-content: center; box-sizing: border-box; cursor: pointer; user-select: none; width: 88px; height: 62px; font-size: 1.35rem; border-radius: 12px; " ></ch5-button></div><div style="display: grid; grid-template-columns: repeat(3, 88px); gap: 10px;"><ch5-button id="src-btn-sw-d1" label="1" customStyle="background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.2); color: #fff; font-weight: bold; display: flex; align-items: center; justify-content: center; box-sizing: border-box; cursor: pointer; user-select: none; width: 88px; height: 52px; font-size: 1.1rem; border-radius: 10px; " ></ch5-button><ch5-button id="src-btn-sw-d2" label="2" customStyle="background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.2); color: #fff; font-weight: bold; display: flex; align-items: center; justify-content: center; box-sizing: border-box; cursor: pointer; user-select: none; width: 88px; height: 52px; font-size: 1.1rem; border-radius: 10px; " ></ch5-button><ch5-button id="src-btn-sw-d3" label="3" customStyle="background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.2); color: #fff; font-weight: bold; display: flex; align-items: center; justify-content: center; box-sizing: border-box; cursor: pointer; user-select: none; width: 88px; height: 52px; font-size: 1.1rem; border-radius: 10px; " ></ch5-button><ch5-button id="src-btn-sw-d4" label="4" customStyle="background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.2); color: #fff; font-weight: bold; display: flex; align-items: center; justify-content: center; box-sizing: border-box; cursor: pointer; user-select: none; width: 88px; height: 52px; font-size: 1.1rem; border-radius: 10px; " ></ch5-button><ch5-button id="src-btn-sw-d5" label="5" customStyle="background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.2); color: #fff; font-weight: bold; display: flex; align-items: center; justify-content: center; box-sizing: border-box; cursor: pointer; user-select: none; width: 88px; height: 52px; font-size: 1.1rem; border-radius: 10px; " ></ch5-button><ch5-button id="src-btn-sw-d6" label="6" customStyle="background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.2); color: #fff; font-weight: bold; display: flex; align-items: center; justify-content: center; box-sizing: border-box; cursor: pointer; user-select: none; width: 88px; height: 52px; font-size: 1.1rem; border-radius: 10px; " ></ch5-button><ch5-button id="src-btn-sw-d7" label="7" customStyle="background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.2); color: #fff; font-weight: bold; display: flex; align-items: center; justify-content: center; box-sizing: border-box; cursor: pointer; user-select: none; width: 88px; height: 52px; font-size: 1.1rem; border-radius: 10px; " ></ch5-button><ch5-button id="src-btn-sw-d8" label="8" customStyle="background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.2); color: #fff; font-weight: bold; display: flex; align-items: center; justify-content: center; box-sizing: border-box; cursor: pointer; user-select: none; width: 88px; height: 52px; font-size: 1.1rem; border-radius: 10px; " ></ch5-button><ch5-button id="src-btn-sw-d9" label="9" customStyle="background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.2); color: #fff; font-weight: bold; display: flex; align-items: center; justify-content: center; box-sizing: border-box; cursor: pointer; user-select: none; width: 88px; height: 52px; font-size: 1.1rem; border-radius: 10px; " ></ch5-button><ch5-button id="src-btn-sw-txt" label="txt" customStyle="background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.2); color: #fff; font-weight: bold; display: flex; align-items: center; justify-content: center; box-sizing: border-box; cursor: pointer; user-select: none; width: 88px; height: 52px; font-size: 0.9rem; border-radius: 10px; " ></ch5-button><ch5-button id="src-btn-sw-d0" label="0" customStyle="background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.2); color: #fff; font-weight: bold; display: flex; align-items: center; justify-content: center; box-sizing: border-box; cursor: pointer; user-select: none; width: 88px; height: 52px; font-size: 1.1rem; border-radius: 10px; " ></ch5-button><ch5-button id="src-btn-sw-radio" label="radio" customStyle="background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.2); color: #fff; font-weight: bold; display: flex; align-items: center; justify-content: center; box-sizing: border-box; cursor: pointer; user-select: none; width: 88px; height: 52px; font-size: 0.9rem; border-radius: 10px; " ></ch5-button></div><div style="display: flex; align-items: center; justify-content: center; gap: 22px; padding-top: 2px;"><ch5-button id="src-btn-sw-red" label="" customStyle="border: none; border-radius: 50%; background: #e0202a; width: 56px; height: 56px; cursor: pointer;"></ch5-button><ch5-button id="src-btn-sw-green" label="" customStyle="border: none; border-radius: 50%; background: #27ae60; width: 56px; height: 56px; cursor: pointer;"></ch5-button><ch5-button id="src-btn-sw-yellow" label="" customStyle="border: none; border-radius: 50%; background: #f5c518; width: 56px; height: 56px; cursor: pointer;"></ch5-button><ch5-button id="src-btn-sw-blue" label="" customStyle="border: none; border-radius: 50%; background: #2f80ed; width: 56px; height: 56px; cursor: pointer;"></ch5-button></div></div>
         </div></div>
+            </div><!-- /source-control-overlay -->
         
         
         <!-- POPUP LECTEUR DE MUSIQUE / MEDIA PLAYER (Custom Overlay Panel) -->
@@ -4440,7 +4494,6 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
                 theme_dark: "Sombre premium 🌙",
                 theme_light: "Clair élégant ☀️",
                 theme_glass: "Verre dépoli ❄️",
-                theme_cyber: "Bleu cyberpunk 🌌",
                 active_piece: "PIÈCE ACTIVE :",
                 alarm_title: "Alarme globale :",
                 alarm_arm: "ARMER",
@@ -4512,7 +4565,6 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
                 theme_dark: "Dark premium 🌙",
                 theme_light: "Elegant light ☀️",
                 theme_glass: "Frosted glass ❄️",
-                theme_cyber: "Cyberpunk blue 🌌",
                 active_piece: "ACTIVE ROOM:",
                 alarm_title: "Global alarm:",
                 alarm_arm: "ARM",
@@ -4584,7 +4636,6 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
                 theme_dark: "Oscuro premium 🌙",
                 theme_light: "Claro elegante ☀️",
                 theme_glass: "Cristal esmerilado ❄️",
-                theme_cyber: "Azul cyberpunk 🌌",
                 active_piece: "HABITACIÓN ACTIVA:",
                 alarm_title: "Alarma global:",
                 alarm_arm: "ARMAR",
@@ -4656,7 +4707,6 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
                 theme_dark: "Dunkel Premium 🌙",
                 theme_light: "Elegant hell ☀️",
                 theme_glass: "Milchglas ❄️",
-                theme_cyber: "Cyberpunk Blau 🌌",
                 active_piece: "AKTIVER RAUM:",
                 alarm_title: "Globaler Alarm:",
                 alarm_arm: "SCHARFSCHALTEN",
@@ -4728,7 +4778,6 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
                 theme_dark: "Тёмная премиум 🌙",
                 theme_light: "Светлая элегантная ☀️",
                 theme_glass: "Матовое стекло ❄️",
-                theme_cyber: "Киберпанк синий 🌌",
                 active_piece: "АКТИВНАЯ КОМНАТА :",
                 alarm_title: "Общая сигнализация:",
                 alarm_arm: "ОХРАНА",
@@ -5066,6 +5115,7 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
 
         // 2. Gestion des Thèmes
         function applyTheme(theme) {
+            if (theme === 'cyber') theme = 'dark'; // thème Bleu Cyberpunk retiré le 09.09.2026
             currentTheme = theme;
             try {
                 localStorage.setItem('crestron_theme', theme);
