@@ -3010,6 +3010,18 @@
         #customizer-form-content input[type="checkbox"] { width: 24px !important; height: 24px !important; accent-color: #10b981; }
         #customizer-form-content input[type="range"] { width: 240px !important; height: 8px; }
         #customizer-form-content span[id^="cfg-"] { font-size: 1.15rem !important; width: 60px !important; }
+        /* Presets climat / vacances : consignes et listes de pièces lisibles */
+        #customizer-form-content input[type="number"], #customizer-form-content input[type="text"] { font-size: 1.35rem !important; width: 96px !important; height: 48px !important; padding: 0 10px !important; text-align: center !important; border-radius: 8px !important; }
+        #customizer-form-content h3, #customizer-form-content h5 { font-size: 1.3rem !important; }
+        #customizer-form-content span, #customizer-form-content label, #customizer-form-content p { font-size: 1.15rem !important; }
+        #customizer-form-content > div > div > div, #customizer-form-content > div > div { font-size: 1.15rem !important; }
+
+        /* Caméras : cadre à 3 % des bords, mosaïque 4 colonnes qui remplit toute la hauteur */
+        #cameras-overlay { width: 94% !important; height: 94% !important; }
+        #cameras-overlay h2 { font-size: 1.7rem !important; }
+        #cameras-grid-container { grid-template-columns: repeat(4, 1fr) !important; grid-auto-rows: 1fr !important; gap: 16px !important; overflow: hidden !important; padding-right: 0 !important; }
+        #cameras-grid-container > div { aspect-ratio: auto !important; height: 100% !important; min-height: 0 !important; border-radius: 12px !important; }
+        #cameras-grid-container > div > div:nth-child(3), #cameras-grid-container > div > div:nth-child(4), #cameras-grid-container > div > div:nth-child(5) { font-size: 1rem !important; padding: 6px 12px !important; }
     </style>
     <style id="theme-readability">
         /* --- Liste des pièces : le thème CH5 par défaut force le libellé en blanc --- */

@@ -62,7 +62,8 @@ export const DeviceFrame = ({
   // dans la zone disponible, SANS plafond. Les règles (scaleRules.js)
   // décident ensuite de l'échelle réellement appliquée.
   const { stageRef, scale: fitScale, stageSize } = useFitScale(cfg.chassisW, cfg.chassisH, {
-    margin: SCALE_RULES.margin,
+    // plein écran : marge minimale, le châssis doit occuper tout l'espace
+    margin: isFullscreen ? SCALE_RULES.fullscreenMargin : SCALE_RULES.margin,
   });
   const { devMode } = useDevMode();
   const { scaleMode, setScaleMode } = useDemoSettings();
@@ -72,9 +73,13 @@ export const DeviceFrame = ({
   // realSizeAvailable = la taille réelle tient dans la zone ; sinon elle est quand même
   // appliquée (le châssis dépasse) et la légende le signale — F11 donne plus de place.
   const realSizeAvailable = fitScale >= realScale * SCALE_RULES.realSizeTolerance;
-  // « Taille réelle » ne s'applique qu'en plein écran : sur la page normale, le châssis reste
-  // responsive (un ?scale=real hérité du plein écran ne doit pas le faire déborder de la page).
-  const effectiveMode = isFullscreen && scaleMode === "real" ? "real" : "auto";
+  // RÈGLE GÉNÉRALE (tous les projets, tous les supports) — voir scaleRules.js :
+  //  - « Taille réelle » : le châssis est affiché à ses dimensions physiques calibrées, à
+  //    l'identique sur la page et en plein écran (s'il dépasse, il est rogné et la légende
+  //    invite à passer en plein écran F11) ;
+  //  - « Responsive » : le châssis remplit l'espace disponible (page : plafonné à maxUpscale ;
+  //    plein écran : sans plafond).
+  const effectiveMode = scaleMode === "real" ? "real" : "auto";
   // Plein écran : le châssis occupe tout l'espace disponible (proportions
   // conservées), sans le plafond maxUpscale de la page normale.
   const upscaleCap = isFullscreen ? Infinity : SCALE_RULES.maxUpscale;

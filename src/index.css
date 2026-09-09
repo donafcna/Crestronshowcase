@@ -4667,7 +4667,7 @@ html, body, #root {
   /* droite : logo, sélecteur de support, légende et rappel de démo (colonne superposée).
      Marges réduites au strict nécessaire : en plein écran le châssis doit occuper
      tout l'espace disponible (proportions conservées). */
-  padding: 20px 300px 20px 24px !important;
+  padding: 8px 350px 8px 8px !important;
   border-radius: 0 !important;
 }
 
@@ -4966,27 +4966,30 @@ html, body, #root {
   .chassis-caption-text { white-space: normal; text-align: center; }
 }
 
-/* ===== Plein écran : colonne de droite (logo, supports, légende, rappel de démo) ===== */
+/* ===== Plein écran : colonne de droite (logo, supports, légende, rappel de démo) =====
+   Colonne FIGÉE : largeur, position et tailles ne varient ni avec le mode (Taille réelle /
+   Responsive), ni avec le support, ni avec la longueur de la légende. */
 .workspace-device-sidebar.is-fullscreen {
   position: fixed !important;
   top: 0 !important;
   right: 0 !important;
   bottom: 0 !important;
-  width: 280px !important;
+  width: 340px !important;
   padding: 20px 20px 20px 0 !important;
   gap: 14px !important;
-  justify-content: center !important;
+  justify-content: flex-start !important;
   align-items: stretch !important;
   z-index: 100000 !important;
   pointer-events: none !important;
 }
 .workspace-device-sidebar.is-fullscreen > * { pointer-events: auto; }
 .workspace-device-sidebar.is-fullscreen .fullscreen-frequencetv-logo-card {
-  height: auto !important;
+  height: 90px !important;
   padding: 10px 18px !important;
   justify-content: center !important;
+  margin-top: 28vh !important; /* bloc logo + supports ancré, indépendant de la légende */
 }
-.workspace-device-sidebar.is-fullscreen .frequencetv-logo-img-fs { max-width: 100%; height: auto; }
+.workspace-device-sidebar.is-fullscreen .frequencetv-logo-img-fs { max-width: 100%; max-height: 100%; height: auto; }
 .workspace-device-sidebar.is-fullscreen .device-buttons-column { width: 100% !important; }
 .workspace-device-sidebar.is-fullscreen .device-vertical-btn { width: 100% !important; }
 .fullscreen-side-info { display: flex; flex-direction: column; gap: 10px; width: 100%; }
@@ -4995,10 +4998,16 @@ html, body, #root {
   align-items: stretch;
   gap: 8px;
   width: 100%;
+  min-height: 108px; /* 2 lignes de texte + sélecteur : hauteur stable quel que soit le statut */
   margin: 0;
   padding: 10px 12px;
   border-radius: 14px;
+  box-sizing: border-box;
 }
-.fullscreen-side-info .chassis-caption-text { white-space: normal; line-height: 1.5; }
+.fullscreen-side-info .chassis-caption-text { white-space: normal; line-height: 1.45; display: flex; flex-direction: column; gap: 2px; }
+.fullscreen-side-info .chassis-caption-name { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.fullscreen-side-info .chassis-caption-sep--name { display: none; }
 .fullscreen-side-info .chassis-scale-toggle { align-self: flex-start; }
 .fullscreen-side-info .present-hint { width: 100%; box-sizing: border-box; white-space: normal; }
+/* Page normale : le châssis à taille réelle qui dépasse est rogné, jamais superposé aux barres */
+.device-stage { overflow: hidden; }

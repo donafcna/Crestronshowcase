@@ -15,6 +15,8 @@ export const SCALE_RULES = {
   // Air conservé autour du châssis (0.03 = 3 % de chaque côté) : ombres,
   // bouton plein écran, coins arrondis.
   margin: 0.03,
+  // Idem en plein écran : quasi nulle, l'objectif est d'agrandir le châssis au maximum.
+  fullscreenMargin: 0.005,
 
   // Mode Responsive : agrandissement maximal autorisé au-delà de 100 %
   // (1.6 = 160 %). Au-delà, les photos et vidéos de fond commencent à se
