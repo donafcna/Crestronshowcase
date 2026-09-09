@@ -4911,6 +4911,7 @@ html, body, #root {
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.08);
 }
+.chassis-scale-badge { cursor: default; }
 .chassis-scale-btn {
   padding: 4px 12px;
   border: none;
