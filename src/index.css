@@ -4857,44 +4857,58 @@ html, body, #root {
 .dev-metrics-item { display: inline-flex; align-items: baseline; }
 
 /* ===== Légende + sélecteur d'échelle sous le châssis (scaleRules.js) ===== */
+/* Pastille sombre translucide : lisible sur fond clair comme sur vidéo. */
 .chassis-caption {
   flex-shrink: 0;
+  position: relative;
+  z-index: 60;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 6px 18px;
-  margin-top: 6px;
-  min-height: 30px;
-  color: var(--text-secondary);
-  font-size: 0.78rem;
+  gap: 6px 14px;
+  width: fit-content;
+  max-width: 100%;
+  margin: 12px auto 0;
+  padding: 6px 8px 6px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 999px;
+  background: rgba(15, 20, 32, 0.82);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+  color: #d5dbe6;
+  font-size: 0.8rem;
   line-height: 1.3;
 }
 .chassis-caption-text { margin: 0; white-space: nowrap; }
-.chassis-caption-text strong { color: var(--text-primary); font-weight: 600; }
-.chassis-caption-sep { margin: 0 6px; opacity: 0.5; }
-.chassis-caption.is-warning .chassis-caption-text { color: var(--color-warning); white-space: normal; text-align: center; }
+.chassis-caption-text strong { color: #fff; font-weight: 700; }
+.chassis-caption-sep { margin: 0 7px; color: rgba(255, 255, 255, 0.35); }
+.chassis-caption.is-warning { border-color: rgba(251, 191, 36, 0.6); }
+.chassis-caption.is-warning .chassis-caption-text { color: #fbbf24; white-space: normal; text-align: center; }
 
 .chassis-scale-toggle {
   display: inline-flex;
   padding: 2px;
-  border: 1px solid var(--border-glass);
-  border-radius: 8px;
-  background: var(--bg-tertiary);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
 }
 .chassis-scale-btn {
-  padding: 4px 11px;
+  padding: 4px 12px;
   border: none;
-  border-radius: 6px;
+  border-radius: 999px;
   background: transparent;
-  color: var(--text-secondary);
+  color: rgba(255, 255, 255, 0.7);
   font-family: var(--font-sans);
   font-size: 0.75rem;
   font-weight: 600;
   cursor: pointer;
   transition: background var(--transition-fast), color var(--transition-fast);
 }
-.chassis-scale-btn:hover:not(:disabled) { color: var(--text-primary); }
-.chassis-scale-btn.active { background: var(--bg-secondary); color: var(--color-primary); box-shadow: 0 1px 3px rgba(15, 23, 42, 0.12); }
-.chassis-scale-btn:disabled { opacity: 0.4; cursor: not-allowed; }
-@media (width <= 768px) { .chassis-caption { font-size: 0.72rem; } }
+.chassis-scale-btn:hover:not(:disabled) { color: #fff; }
+.chassis-scale-btn.active { background: var(--color-primary); color: #fff; box-shadow: 0 2px 8px rgba(79, 70, 229, 0.45); }
+.chassis-scale-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+@media (width <= 768px) {
+  .chassis-caption { font-size: 0.72rem; padding-left: 12px; }
+  .chassis-caption-text { white-space: normal; text-align: center; }
+}
