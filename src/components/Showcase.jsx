@@ -558,7 +558,7 @@ const ShowcaseInner = ({ sectorId, projectId, device }) => {
       {calibOpen && <CalibrateCard onClose={() => setCalibOpen(false)} />}
       {demoEnabled && <DemoCursor cursor={cursor} />}
       {demoEnabled && !demoRunning && resumeAt && (
-        <DemoCountdown resumeAt={resumeAt} total={IDLE_RESUME_MS} onResumeNow={resumeDemo} />
+        <DemoCountdown resumeAt={resumeAt} total={IDLE_RESUME_MS} onResumeNow={resumeDemo} side={isFullscreen ? "left" : "right"} />
       )}
     </div>
   );

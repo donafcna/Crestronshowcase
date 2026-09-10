@@ -20,7 +20,7 @@ export const DemoCursor = ({ cursor }) =>
   );
 
 // Chronomètre de reprise : anneau de progression (en %) + compte à rebours.
-export const DemoCountdown = ({ resumeAt, total, onResumeNow }) => {
+export const DemoCountdown = ({ resumeAt, total, onResumeNow, side = "right" }) => {
   const { t } = useTranslation();
   const [now, setNow] = useState(Date.now());
 
@@ -36,7 +36,7 @@ export const DemoCountdown = ({ resumeAt, total, onResumeNow }) => {
   const C = 2 * Math.PI * R;
 
   return createPortal(
-    <button type="button" className="demo-countdown glass-panel" onClick={onResumeNow} title={t("demo_resume_now")}>
+    <button type="button" className={`demo-countdown glass-panel demo-countdown--${side}`} onClick={onResumeNow} title={t("demo_resume_now")}>
       <svg className="demo-countdown-ring" viewBox="0 0 40 40" aria-hidden="true">
         <circle className="demo-countdown-track" cx="20" cy="20" r={R} />
         <circle
