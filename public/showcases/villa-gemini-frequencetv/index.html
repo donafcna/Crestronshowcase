@@ -3071,7 +3071,14 @@
         body.theme-light ch5-button[customClass~="temp-adjust-btn"] .cb-btn, body.theme-light ch5-button[customClass~="temp-adjust-btn"] .ch5-button--label { color: #1e293b !important; background: rgba(15, 23, 42, 0.08) !important; }
 
         /* --- Thème Verre dépoli : la photo de fond est claire → panneaux teintés + ombre portée sur le texte --- */
-        body.theme-glass { --container-bg: rgba(15, 23, 42, 0.8); --text-secondary: rgba(255, 255, 255, 0.92); }
+        body.theme-glass {
+            /* Panneaux réellement translucides : la photo reste visible au travers.
+               La lisibilité vient du backdrop-filter (flou + assombrissement) et non
+               d'un fond opaque (correction du 10.09.2026 : le thème ressemblait au thème Sombre). */
+            --container-bg: rgba(15, 23, 42, 0.42);
+            --text-secondary: rgba(255, 255, 255, 0.92);
+            --blur-val: blur(20px) saturate(1.2) brightness(0.3);
+        }
         body.theme-glass .app-container { text-shadow: 0 1px 3px rgba(0, 0, 0, 0.75); }
         body.theme-glass #version-label { color: rgba(255, 255, 255, 0.85) !important; }
         body.theme-glass h2, body.theme-glass h3, body.theme-glass [style*="color: #94a3b8"] { color: #e2e8f0 !important; }
@@ -3079,13 +3086,59 @@
         body.theme-glass #active-room-title, body.theme-glass [style*="color: #10b981"] { color: #6ee7b7 !important; }
         body.theme-glass [style*="color: #0ea5e9"] { color: #7dd3fc !important; }
         body.theme-glass .temp-val, body.theme-glass .temp-display, body.theme-glass .measured-temp-val { color: #67e8f9 !important; }
-        body.theme-glass #header-global-controls button { background: rgba(15, 23, 42, 0.8) !important; color: #ffffff !important; }
-        body.theme-glass #tab-lights-btn, body.theme-glass #tab-shades-btn { color: #ffffff !important; background: rgba(15, 23, 42, 0.7) !important; }
-        body.theme-glass .villa-status-banner, body.theme-glass #news-banner { background: rgba(15, 23, 42, 0.82) !important; }
+        body.theme-glass #header-global-controls button { background: rgba(15, 23, 42, 0.45) !important; color: #ffffff !important; }
+        body.theme-glass #tab-lights-btn, body.theme-glass #tab-shades-btn { color: #ffffff !important; background: rgba(15, 23, 42, 0.45) !important; }
+        body.theme-glass .villa-status-banner, body.theme-glass #news-banner {
+            background: rgba(15, 23, 42, 0.42) !important;
+            -webkit-backdrop-filter: var(--blur-val); backdrop-filter: var(--blur-val);
+        }
         body.theme-glass .villa-status-item.ok { color: #a7f3d0 !important; }
         body.theme-glass .villa-status-item.warn { color: #fde68a !important; }
         body.theme-glass .consigne-val, body.theme-glass .consigne-temp-val { color: #fbbf24 !important; }
         body.theme-glass .hvac-mode-val, body.theme-glass #hvac-mode-val { color: #ffffff !important; }
+    </style>
+    <style id="settings-xl">
+        /* Fenêtre Réglages (10.09.2026) : agrandie et proportionnée sur tous les
+           supports et dans tous les thèmes. Sélecteurs en body#app-body pour
+           passer devant les styles inline et les règles internes en #id. */
+        body#app-body #settings-overlay {
+            width: 640px !important;
+            max-width: 92% !important;
+            padding: 30px !important;
+        }
+        body#app-body #settings-overlay > div:first-child { padding-bottom: 18px !important; margin-bottom: 24px !important; }
+        body#app-body #settings-overlay h2 { font-size: 1.5rem !important; gap: 12px !important; }
+        body#app-body #settings-overlay > div:first-child button { height: 46px !important; font-size: 1.05rem !important; padding: 0 22px !important; }
+        body#app-body #settings-overlay label { font-size: 1.2rem !important; margin-bottom: 12px !important; }
+        body#app-body #settings-overlay > div:last-child { gap: 24px !important; }
+        body#app-body #settings-overlay .lang-btn { height: 62px !important; border-radius: 12px !important; gap: 9px !important; }
+        body#app-body #settings-overlay .lang-btn svg { width: 30px !important; height: auto !important; }
+        body#app-body #settings-overlay .lang-btn span { font-size: 1.1rem !important; }
+        body#app-body #settings-overlay #theme-select { height: 54px !important; font-size: 1.15rem !important; padding: 0 14px !important; border-radius: 10px !important; }
+        /* Langue active : bien visible dans tous les thèmes */
+        body#app-body #settings-overlay .lang-btn-active {
+            background: rgba(16, 185, 129, 0.25) !important;
+            border-color: #10b981 !important;
+            box-shadow: 0 0 0 1px rgba(16, 185, 129, 0.45) inset !important;
+        }
+        body#app-body.theme-light #settings-overlay .lang-btn-active {
+            background: rgba(4, 120, 87, 0.16) !important;
+            border-color: #047857 !important;
+            box-shadow: 0 0 0 1px rgba(4, 120, 87, 0.45) inset !important;
+        }
+        body#app-body.theme-light #settings-overlay .lang-btn-active span { color: #065f46 !important; }
+        /* Fenêtre basse (smartphone en paysage, XPanel réduit) : version compacte */
+        @media (max-height: 620px) {
+            body#app-body #settings-overlay { padding: 18px !important; width: 520px !important; }
+            body#app-body #settings-overlay h2 { font-size: 1.15rem !important; }
+            body#app-body #settings-overlay > div:first-child { padding-bottom: 10px !important; margin-bottom: 14px !important; }
+            body#app-body #settings-overlay label { font-size: 1rem !important; margin-bottom: 8px !important; }
+            body#app-body #settings-overlay > div:last-child { gap: 14px !important; }
+            body#app-body #settings-overlay .lang-btn { height: 46px !important; }
+            body#app-body #settings-overlay .lang-btn svg { width: 22px !important; }
+            body#app-body #settings-overlay .lang-btn span { font-size: 0.9rem !important; }
+            body#app-body #settings-overlay #theme-select { height: 42px !important; font-size: 1rem !important; }
+        }
     </style>
     <style id="theme-overlays">
         /* =====================================================================
@@ -3189,7 +3242,7 @@
         body#app-body.theme-light .custom-overlay-panel ch5-button:not([selected="true"]):not(.ch5-button--selected) label {
             color: #0f172a !important;
         }
-        body#app-body.theme-light .custom-overlay-panel ch5-button:not([selected="true"]):not(.ch5-button--selected) > .ch5-button:not([style*="gradient"]) {
+        body#app-body.theme-light .custom-overlay-panel ch5-button:not([selected="true"]):not(.ch5-button--selected):not([customStyle*="background:#"]):not([customStyle*="background: #"]) > .ch5-button:not([style*="gradient"]) {
             background-color: rgba(15, 23, 42, 0.06) !important;
         }
         /* Boutons HTML (les boutons peints en dur #hex gardent leur couleur) */
@@ -3213,6 +3266,45 @@
         body#app-body.theme-light .custom-overlay-panel input[type="number"] {
             background: #ffffff !important; color: #0f172a !important; border-color: rgba(15, 23, 42, 0.25) !important;
         }
+        /* Popup « Source audio » (sans classe custom-overlay-panel) */
+        body#app-body.theme-light #audio-confirm-overlay {
+            background: #f8fafc !important;
+            border-color: rgba(15, 23, 42, 0.14) !important;
+            color: #0f172a !important;
+            box-shadow: 0 18px 48px rgba(15, 23, 42, 0.18) !important;
+        }
+        body#app-body.theme-light #audio-confirm-overlay p,
+        body#app-body.theme-light #audio-confirm-overlay button { color: #0f172a !important; }
+        body#app-body.theme-light #audio-confirm-overlay h2 { color: #6d28d9 !important; }
+        body#app-body.theme-light #audio-confirm-music { background: rgba(161, 98, 7, 0.14) !important; border-color: #a16207 !important; }
+        body#app-body.theme-light #audio-confirm-video { background: rgba(109, 40, 217, 0.14) !important; border-color: #6d28d9 !important; }
+        body#app-body.theme-glass #audio-confirm-overlay {
+            background: rgba(11, 17, 30, 0.55) !important;
+            -webkit-backdrop-filter: blur(22px) saturate(1.2) brightness(0.32) !important;
+            backdrop-filter: blur(22px) saturate(1.2) brightness(0.32) !important;
+        }
+
+        /* Contours visibles en thème Clair : engrenages, flèches de la liste des pièces,
+           et tout bouton dont le fond et la bordure étaient pensés pour un fond sombre. */
+        body#app-body.theme-light #scroll-up-btn,
+        body#app-body.theme-light #scroll-down-btn,
+        body#app-body.theme-light #shades-config-cog,
+        body#app-body.theme-light #lights-config-cog,
+        body#app-body.theme-light .popup-trigger-btn,
+        body#app-body.theme-light [style*="rgba(255, 255, 255, 0.04)"],
+        body#app-body.theme-light [style*="rgba(255,255,255,0.04)"] {
+            background: rgba(15, 23, 42, 0.05) !important;
+            border: 1px solid rgba(15, 23, 42, 0.22) !important;
+            color: #0f172a !important;
+        }
+        /* Icônes (engrenages, flèches) des boutons de la page en thème Clair */
+        body#app-body.theme-light .app-container button { color: #0f172a; }
+        body#app-body.theme-light .app-container button[style*="rgba(255, 255, 255, 0.05)"],
+        body#app-body.theme-light .app-container button[style*="rgba(255,255,255,0.05)"] {
+            background: rgba(15, 23, 42, 0.05) !important;
+            border: 1px solid rgba(15, 23, 42, 0.22) !important;
+        }
+
         /* Badges d'état */
         body#app-body.theme-light [style*="rgba(16,185,129,0.1)"] { background: rgba(4, 120, 87, 0.14) !important; color: #047857 !important; }
         body#app-body.theme-light [style*="rgba(220,38,38,0.1)"] { background: rgba(185, 28, 28, 0.14) !important; color: #b91c1c !important; }
@@ -3226,7 +3318,9 @@
         /* ---------- Thème Verre dépoli : fenêtres translucides sombres ---------- */
         body#app-body.theme-glass .modal-backdrop { background-color: rgba(8, 12, 20, 0.86) !important; }
         body#app-body.theme-glass .custom-overlay-panel {
-            background: rgba(11, 17, 30, 0.92) !important; background-color: rgba(11, 17, 30, 0.92) !important;
+            background: rgba(11, 17, 30, 0.55) !important; background-color: rgba(11, 17, 30, 0.55) !important;
+            -webkit-backdrop-filter: blur(22px) saturate(1.2) brightness(0.32) !important;
+            backdrop-filter: blur(22px) saturate(1.2) brightness(0.32) !important;
             border-color: rgba(255, 255, 255, 0.18) !important; color: #f8fafc !important; text-shadow: none !important;
         }
         body#app-body.theme-glass .custom-overlay-panel [style*="color: #94a3b8"] {
@@ -3293,7 +3387,7 @@ body#app-body.theme-light ch5-button[customClass~="scene-btn"]:not([selected="tr
         /* ---------- Sombre et Verre dépoli : textes secondaires trop pâles ---------- */
         body#app-body:not(.theme-light) .custom-overlay-panel [style*="rgba(255,255,255,0.4)"],
         body#app-body:not(.theme-light) .custom-overlay-panel [style*="rgba(255, 255, 255, 0.4)"] { color: rgba(255, 255, 255, 0.72) !important; }
-        body#app-body:not(.theme-light) #alarm-keypad-screen .alarm-key-clr { color: #f87171 !important; }
+        body#app-body:not(.theme-light) #alarm-keypad-screen .alarm-key-clr { color: #fca5a5 !important; }
     </style>
     <!-- Vitrine : pas de processeur, indicateur de connexion masqué -->
     <style>#connection-status{display:none !important}</style>
@@ -5372,9 +5466,12 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
             const langButtons = document.querySelectorAll('.lang-btn');
             langButtons.forEach(btn => {
                 if (btn.id === 'lang-btn-' + lang) {
+                    // Langue active : marquée par la classe (thémée en CSS) et non plus par un style en dur
+                    btn.classList.add('lang-btn-active');
                     btn.style.background = 'rgba(16, 185, 129, 0.25)';
                     btn.style.borderColor = '#10b981';
                 } else {
+                    btn.classList.remove('lang-btn-active');
                     btn.style.background = 'rgba(255, 255, 255, 0.05)';
                     btn.style.borderColor = 'rgba(255, 255, 255, 0.1)';
                 }
