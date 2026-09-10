@@ -780,11 +780,10 @@
         ch5-button[customClass~="power-off-btn"] .ch5-button--pressed,
         .power-off-btn:active {
             border-radius: 50% !important;
-            background-color: rgba(220, 38, 38, 0.9) !important;
-            background: rgba(220, 38, 38, 0.9) !important;
-            border-color: #ffffff !important;
-            transform: scale(0.90) !important;
-            box-shadow: inset 0 4px 10px rgba(0, 0, 0, 0.7), 0 0 15px rgba(220, 38, 38, 0.8) !important;
+            background-color: rgba(220, 38, 38, 0.6) !important;
+            background: rgba(220, 38, 38, 0.6) !important;
+            transform: scale(0.94) !important;
+            box-shadow: none !important;
         }
 
         .preset-text-btn,
@@ -2463,32 +2462,7 @@
             color: #ffffff !important;
         }
 
-        /* Power OFF Selected / Active Effect (Enlarge logo, bright white, red glow & white border) (v1.0.149) */
-        ch5-button[customClass~="power-off-btn"][selected="true"],
-        ch5-button[customClass~="power-off-btn"].ch5-button--selected,
-        ch5-button[customClass~="power-off-btn"][selected="true"] button,
-        ch5-button[customClass~="power-off-btn"].ch5-button--selected button,
-        ch5-button[customClass~="power-off-btn"][selected="true"] .cb-btn,
-        ch5-button[customClass~="power-off-btn"].ch5-button--selected .cb-btn,
-        .power-off-btn[selected="true"],
-        .power-off-btn.ch5-button--selected,
-        .power-off-btn:active {
-            background-color: #dc2626 !important;
-            background: #dc2626 !important;
-            border: 2px solid #ffffff !important;
-            color: #ffffff !important;
-            box-shadow: 0 0 25px rgba(220, 38, 38, 0.95), inset 0 0 10px rgba(255, 255, 255, 0.4) !important;
-            transform: scale(1.15) !important;
-        }
-
-        ch5-button[customClass~="power-off-btn"][selected="true"] svg,
-        ch5-button[customClass~="power-off-btn"].ch5-button--selected svg,
-        .power-off-btn[selected="true"] svg,
-        .power-off-btn.ch5-button--selected svg {
-            fill: #ffffff !important;
-            stroke: #ffffff !important;
-            transform: scale(1.3) !important;
-            filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.9)) !important;
+        /* (ancien effet rouge / halo du bouton OFF sélectionné retiré le 10.09.2026 — voir plus bas « Power OFF ACTIVE ») */
         }
 
         /* Security System / Alarm Keypad Buttons 40% Text Size Reduction (v1.0.149) */
@@ -2536,31 +2510,6 @@
         }
 
 
-        /* Power OFF Button Selection Feedback (v1.0.149) */
-        ch5-button[customClass~="power-off-btn"][selected="true"] button,
-        ch5-button[customClass~="power-off-btn"].ch5-button--selected button,
-        ch5-button[customClass~="power-off-btn"][selected="true"] .cb-btn,
-        ch5-button[customClass~="power-off-btn"].ch5-button--selected .cb-btn,
-        .power-off-btn[selected="true"],
-        .power-off-btn.ch5-button--selected,
-        .power-off-btn:active {
-            background-color: #dc2626 !important;
-            background: #dc2626 !important;
-            border: 2px solid #ffffff !important;
-            box-shadow: 0 0 25px rgba(220, 38, 38, 0.95), inset 0 0 10px rgba(255, 255, 255, 0.4) !important;
-            transform: scale(1.15) !important;
-        }
-
-        ch5-button[customClass~="power-off-btn"][selected="true"] svg,
-        ch5-button[customClass~="power-off-btn"].ch5-button--selected svg,
-        .power-off-btn[selected="true"] svg,
-        .power-off-btn.ch5-button--selected svg,
-        ch5-button[customClass~="power-off-btn"][selected="true"] path,
-        ch5-button[customClass~="power-off-btn"].ch5-button--selected path {
-            fill: #ffffff !important;
-            stroke: #ffffff !important;
-            filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.9)) !important;
-        }
 
         /* Mute Button Active Feedback (v1.0.149) */
         ch5-button[customClass~="mute-btn"][selected="true"] button,
@@ -2593,21 +2542,30 @@
             transition: all 0.2s ease !important;
         }
 
-        /* Power OFF ACTIVE / SELECTED State (Bright Red, White Border, White Icon) */
+        /* Power OFF ACTIVE (= tout est éteint, multimédia en veille) : aspect « veille » neutre,
+           gris, sans surbrillance ni agrandissement (demande du 10.09.2026). Le rouge n'est utilisé
+           que pour l'état inactif, c'est-à-dire l'invitation à éteindre quand une source est active. */
+        ch5-button[customClass~="power-off-btn"][selected="true"],
+        ch5-button[customClass~="power-off-btn"].ch5-button--selected,
+        ch5-button[customClass~="power-off-btn"][selected="true"] .ch5-button,
+        ch5-button[customClass~="power-off-btn"].ch5-button--selected .ch5-button,
         ch5-button[customClass~="power-off-btn"][selected="true"] button,
         ch5-button[customClass~="power-off-btn"].ch5-button--selected button,
         ch5-button[customClass~="power-off-btn"][selected="true"] .cb-btn,
         ch5-button[customClass~="power-off-btn"].ch5-button--selected .cb-btn,
         .power-off-btn[selected="true"],
         .power-off-btn.ch5-button--selected,
-        .power-off-btn.power-off-active,
-        .power-off-btn:active {
-            background-color: #dc2626 !important;
-            background: #dc2626 !important;
-            border: 2px solid #ffffff !important;
-            box-shadow: 0 0 25px rgba(220, 38, 38, 0.95), inset 0 0 10px rgba(255, 255, 255, 0.4) !important;
-            transform: scale(1.15) !important;
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23ffffff"><path d="M13 3h-2v10h2V3zm4.83 2.17l-1.42 1.42C17.99 7.86 19 9.81 19 12c0 3.87-3.13 7-7 7s-7-3.13-7-7c0-2.19 1.01-4.14 2.58-5.42L6.17 5.17C4.23 6.82 3 9.26 3 12c0 4.97 4.03 9 9 9s9-4.03 9-9c0-2.74-1.23-5.18-3.17-6.83z"/></svg>') !important;
+        .power-off-btn.power-off-active {
+            background-color: rgba(148, 163, 184, 0.12) !important;
+            background: rgba(148, 163, 184, 0.12) !important;
+            border: 2px solid rgba(148, 163, 184, 0.45) !important;
+            box-shadow: none !important;
+            transform: none !important;
+            opacity: 0.85;
+            background-size: 28px 28px !important;
+            background-repeat: no-repeat !important;
+            background-position: center !important;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%2394a3b8"><path d="M13 3h-2v10h2V3zm4.83 2.17l-1.42 1.42C17.99 7.86 19 9.81 19 12c0 3.87-3.13 7-7 7s-7-3.13-7-7c0-2.19 1.01-4.14 2.58-5.42L6.17 5.17C4.23 6.82 3 9.26 3 12c0 4.97 4.03 9 9 9s9-4.03 9-9c0-2.74-1.23-5.18-3.17-6.83z"/></svg>') !important;
         }
 
         /* Mute Button - Default & Active Muted State (v1.0.149) */
@@ -4435,7 +4393,7 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
                     <p style="margin: 0 0 15px 0; color: #94a3b8; font-size: 0.85rem;">Commande centralisée de toutes les motorisations et volets.</p>
                     <div style="display: flex; gap: 10px;">
                         <ch5-button label="TOUT OUVRIR" customClass="scene-btn" style="flex: 1; height: 42px;" sendEventOnClick="404" receiveStateSelected="404" onclick="window.selectGlobalControl(this)"></ch5-button>
-                        <ch5-button label="POSITION INTER." customClass="scene-btn" style="flex: 1; height: 42px;" sendEventOnClick="406" receiveStateSelected="406" onclick="window.selectGlobalControl(this)"></ch5-button>
+                        <ch5-button label="PRESET" customClass="scene-btn" style="flex: 1; height: 42px;" sendEventOnClick="406" receiveStateSelected="406" onclick="window.selectGlobalControl(this)"></ch5-button>
                         <ch5-button label="TOUT FERMER" customClass="scene-btn" style="flex: 1; height: 42px; --ch5-button-selected-background-color: #dc2626;" sendEventOnClick="405" receiveStateSelected="405" onclick="window.selectGlobalControl(this)"></ch5-button>
                     </div>
                 </div>
