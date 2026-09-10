@@ -124,7 +124,7 @@ export const DeviceFrame = ({
 
   // VOCABULAIRE (fixé par Donatien le 10.09.2026, à respecter partout) — 4 modes d'affichage :
   //  1. « Mode normal » : la page du site (menu, bandeau des projets, barre d'outils, châssis, supports).
-  //  2. « Mode Plein écran » : bouton de la barre d'outils → la GUI brute dans un nouvel onglet, sans châssis
+  //  2. « Plein écran » : bouton de la barre d'outils → la GUI brute dans un nouvel onglet, sans châssis
   //     (dalle et tablette uniquement, jamais smartphone).
   //  3. « Mode Scène » : ce bouton d'angle du châssis → le châssis seul, agrandi au maximum dans la fenêtre
   //     du site, avec la colonne de droite (logo, supports, légende). isFullscreen = mode Scène dans le code.

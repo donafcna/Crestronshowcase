@@ -436,7 +436,7 @@ const ShowcaseInner = ({ sectorId, projectId, device }) => {
             project={activeProject}
             shareUrl={shareUrl}
             sheetUrl={sheetUrl}
-            embedUrl={viewportDevice === "phone" ? null : embedSrc} // « Mode Plein écran » (GUI seule dans un nouvel onglet) : dalle et tablette seulement
+            embedUrl={viewportDevice === "phone" ? null : embedSrc} // « Plein écran » (GUI seule dans un nouvel onglet) : dalle et tablette seulement
             presenting={demoEnabled && demoRunning}
             onTogglePresentation={handleTogglePresentation}
             onCapture={handleCapture}

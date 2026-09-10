@@ -52,7 +52,7 @@ export const uiTranslations = {
     tool_capture_busy: "Capture en cours…",
     tool_capture_iframe:
       "Cette interface réelle s'affiche dans un cadre isolé : ouvrez-la en plein écran puis utilisez la capture d'écran de votre appareil.",
-    tool_open_tab: "Mode Plein écran",
+    tool_open_tab: "Plein écran",
     stage_mode_enter: "Mode Scène : le châssis seul, agrandi au maximum",
     stage_mode_exit: "Quitter le mode Scène",
     tool_client: "Nom du client",
@@ -116,7 +116,7 @@ export const uiTranslations = {
     tool_capture_busy: "Capturing…",
     tool_capture_iframe:
       "This real interface runs in an isolated frame: open it full screen and use your device's screenshot.",
-    tool_open_tab: "Full-screen mode",
+    tool_open_tab: "Full screen",
     stage_mode_enter: "Stage mode: the chassis alone, as large as possible",
     stage_mode_exit: "Leave stage mode",
     tool_client: "Client name",
@@ -180,7 +180,7 @@ export const uiTranslations = {
     tool_capture_busy: "Aufnahme läuft…",
     tool_capture_iframe:
       "Diese echte Oberfläche läuft in einem isolierten Rahmen: im Vollbild öffnen und den Screenshot Ihres Geräts verwenden.",
-    tool_open_tab: "Vollbildmodus",
+    tool_open_tab: "Vollbild",
     stage_mode_enter: "Bühnenmodus: nur das Gehäuse, maximal vergrössert",
     stage_mode_exit: "Bühnenmodus verlassen",
     tool_client: "Kundenname",
