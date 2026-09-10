@@ -5,8 +5,8 @@ import { DEV_MODE_DEFAULT } from "../data/devConfig";
 //
 // Le choix est mémorisé dans le navigateur (localStorage), donc il survit à
 // la navigation et aux rechargements — aucun push git nécessaire :
-//   https://crestrongui.vercel.app/1   → active  (puis redirige vers /)
-//   https://crestrongui.vercel.app/0   → désactive (puis redirige vers /)
+//   <n'importe quelle adresse>/1 → active, <adresse>/0 → désactive (le suffixe est retiré,
+//   on reste sur la page) — ex. crestrongui.vercel.app/interfaces/residentiel/villa-gemini-frequencetv/wallpanel/1
 //   ?dev=1 / ?dev=0 sur n'importe quelle page → même effet
 //   Ctrl + Alt + D → bascule ; clic sur le badge → désactive
 // Sans choix mémorisé, c'est DEV_MODE_DEFAULT (src/data/devConfig.js) qui
@@ -38,9 +38,12 @@ export const setDevModeStored = (on) => {
 // À appeler AVANT le rendu (main.jsx) : gère /1, /0 et ?dev=… dans l'URL.
 export const applyDevModeFromUrl = () => {
   const { pathname, search, hash } = window.location;
-  if (pathname === "/1" || pathname === "/0") {
-    setDevModeStored(pathname === "/1");
-    window.history.replaceState(null, "", `/${search}${hash}`);
+  // « /1 » ou « /0 » ajouté à N'IMPORTE QUELLE adresse (racine, /interfaces/…, /fiche/…) :
+  // active / désactive, puis retire le suffixe et reste sur la page courante.
+  const m = pathname.match(/^(.*?)\/([01])\/?$/);
+  if (m) {
+    setDevModeStored(m[2] === "1");
+    window.history.replaceState(null, "", `${m[1] || "/"}${search}${hash}`);
     return;
   }
   const dev = new URLSearchParams(search).get("dev");
