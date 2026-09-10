@@ -4905,6 +4905,22 @@ html, body, #root {
   text-align: right;
   pointer-events: auto; /* réglable même quand le bandeau laisse passer les clics */
 }
+/* Règle de 100 mm : à vérifier avec une règle physique, c'est elle qui garantit la « Taille réelle » */
+.dev-ruler {
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 8px;
+  height: 12px;
+  line-height: 12px;
+  border-left: 2px solid #fbbf24;
+  border-right: 2px solid #fbbf24;
+  border-bottom: 1px solid #fbbf24;
+  box-sizing: border-box;
+  text-align: center;
+  font-size: 0.62rem;
+  color: #fde68a;
+  pointer-events: none;
+}
 .dev-metrics b { color: #fbbf24; font-weight: 700; margin-right: 4px; }
 .dev-metrics-item { display: inline-flex; align-items: baseline; }
 

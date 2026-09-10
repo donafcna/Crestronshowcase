@@ -31,6 +31,9 @@ export const DevMetrics = ({ device, stage, scale, fitScale, mode, realSizeAvail
           aria-label="Diagonale de l'écran en pouces"
         />
         ″ · {pxPerMm.toFixed(2)} px/mm
+        <span className="dev-ruler" style={{ width: `${pxPerMm * 100}px` }} title="Règle de contrôle : doit mesurer 100 mm sur l'écran (ajustez la diagonale jusqu'à ce que ce soit le cas)">
+          100 mm
+        </span>
       </span>
       <span className="dev-metrics-item">
         <b>Zone châssis</b> {Math.round(stage.width)} × {Math.round(stage.height)} px
