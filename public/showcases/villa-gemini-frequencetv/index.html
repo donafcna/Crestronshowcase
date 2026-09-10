@@ -2474,14 +2474,68 @@
             font-size: 0.85rem !important;
             font-weight: bold !important;
         }
-        /* Clavier Alarme (10.09.2026) : touches parfaitement rondes (64 × 64), CLR et OK réduits pour tenir dans le rond */
+        /* Système de sécurité (10.09.2026) : conteneur à 3 % des bords comme Contrôle global et Caméras,
+           tout le contenu (clavier, partitions, boutons) agrandi proportionnellement. */
+        #alarm-overlay { padding: 30px !important; }
+        #alarm-overlay > div:first-child { padding-bottom: 18px !important; margin-bottom: 24px !important; }
+        #alarm-overlay h2 { font-size: 1.7rem !important; }
+        #alarm-overlay > div:first-child button { height: 46px !important; font-size: 1.05rem !important; padding: 0 22px !important; }
+
+        /* Écran 1 : saisie du code */
+        #alarm-keypad-screen { height: calc(100% - 110px) !important; gap: 20px !important; overflow-y: auto !important; }
+        #alarm-keypad-screen > p { font-size: 1.4rem !important; }
+        #alarm-keypad-screen > div:nth-of-type(1) { width: 300px !important; height: 66px !important; font-size: 2.3rem !important; }
+        #alarm-error-msg { font-size: 1.1rem !important; min-height: 26px !important; }
+        #alarm-keypad-grid { grid-template-columns: repeat(3, 84px) !important; gap: 14px !important; }
+        /* Touches parfaitement rondes ; CLR et OK réduits pour tenir dans le rond */
         #alarm-keypad-screen .alarm-key {
-            width: 64px !important; height: 64px !important; min-width: 64px !important; min-height: 64px !important;
+            width: 84px !important; height: 84px !important; min-width: 84px !important; min-height: 84px !important;
             padding: 0 !important; border-radius: 50% !important; aspect-ratio: 1 / 1;
-            font-size: 1.9rem !important; line-height: 1 !important; letter-spacing: 0 !important;
+            font-size: 2.5rem !important; line-height: 1 !important; letter-spacing: 0 !important;
         }
-        #alarm-keypad-screen .alarm-key-clr { font-size: 0.78rem !important; }
-        #alarm-keypad-screen .alarm-key-ok { font-size: 1.05rem !important; }
+        #alarm-keypad-screen .alarm-key-clr { font-size: 1.02rem !important; color: #ef4444 !important; }
+        #alarm-keypad-screen .alarm-key-ok { font-size: 1.38rem !important; color: #10b981 !important; }
+
+        /* Écran 2 : partitions */
+        #alarm-partitions-screen { height: calc(100% - 110px) !important; gap: 26px !important; }
+        #alarm-partitions-screen > div { gap: 20px !important; }
+        #alarm-partitions-screen > div > div { padding: 18px 26px !important; border-radius: 14px !important; }
+        #alarm-partitions-screen h4 { font-size: 1.45rem !important; }
+        #alarm-partitions-screen h4 span { font-size: 0.95rem !important; padding: 4px 12px !important; border-radius: 6px !important; }
+        #alarm-partitions-screen p { font-size: 1.1rem !important; margin-top: 6px !important; }
+        #alarm-partitions-screen > div > div > div:last-child { gap: 12px !important; }
+        #alarm-partitions-screen ch5-button[customClass~="alarm-btn"] { height: 62px !important; width: 132px !important; }
+        #alarm-partitions-screen ch5-button[customClass~="alarm-btn"] > .ch5-button,
+        #alarm-partitions-screen ch5-button[customClass~="alarm-btn"] .cb-btn {
+            height: 100% !important; width: 100% !important; box-sizing: border-box !important;
+            display: flex !important; align-items: center !important; justify-content: center !important;
+        }
+        #alarm-partitions-screen ch5-button[customClass~="alarm-btn"] .cb-btn,
+        #alarm-partitions-screen ch5-button[customClass~="alarm-btn"] .ch5-button--label { font-size: 1.05rem !important; }
+        /* ligne « Code correct… » : après les règles génériques pour ne pas être écrasée */
+        #alarm-partitions-screen > p:first-child { font-size: 1.35rem !important; }
+        /* Fenêtre basse (XPanel réduit) : clavier et partitions compactés pour rester entiers */
+        @media (max-height: 700px) {
+            #alarm-overlay { padding: 18px !important; }
+            #alarm-overlay > div:first-child { padding-bottom: 10px !important; margin-bottom: 12px !important; }
+            #alarm-overlay h2 { font-size: 1.25rem !important; }
+            #alarm-keypad-screen, #alarm-partitions-screen { height: calc(100% - 70px) !important; gap: 10px !important; }
+            #alarm-keypad-screen > p { font-size: 1rem !important; }
+            #alarm-keypad-screen > div:nth-of-type(1) { width: 220px !important; height: 46px !important; font-size: 1.6rem !important; }
+            #alarm-error-msg { font-size: 0.85rem !important; min-height: 16px !important; }
+            #alarm-keypad-grid { grid-template-columns: repeat(3, 58px) !important; gap: 8px !important; }
+            #alarm-keypad-screen .alarm-key { width: 58px !important; height: 58px !important; min-width: 58px !important; min-height: 58px !important; font-size: 1.7rem !important; }
+            #alarm-keypad-screen .alarm-key-clr { font-size: 0.72rem !important; }
+            #alarm-keypad-screen .alarm-key-ok { font-size: 0.95rem !important; }
+            #alarm-partitions-screen > div > div { padding: 10px 14px !important; }
+            #alarm-partitions-screen > div { gap: 10px !important; }
+            #alarm-partitions-screen h4 { font-size: 1.05rem !important; }
+            #alarm-partitions-screen p { font-size: 0.85rem !important; }
+            #alarm-partitions-screen > p:first-child { font-size: 1rem !important; }
+            #alarm-partitions-screen ch5-button[customClass~="alarm-btn"] { height: 44px !important; width: 104px !important; }
+            #alarm-partitions-screen ch5-button[customClass~="alarm-btn"] .cb-btn,
+            #alarm-partitions-screen ch5-button[customClass~="alarm-btn"] .ch5-button--label { font-size: 0.82rem !important; }
+        }
 
 
         /* STORE POPUP PRESET TEXT SIZE REDUCTION (-30% to -40%) (1.05rem bold) (v1.0.149) */
@@ -3003,7 +3057,8 @@
         body.theme-light #active-room-title, body.theme-light [style*="color: #10b981"] { color: #047857 !important; }
         body.theme-light [style*="color: #0ea5e9"] { color: #0369a1 !important; }
         body.theme-light [style*="rgba(255,255,255,0.7)"], body.theme-light [style*="rgba(255, 255, 255, 0.7)"] { color: #334155 !important; }
-        body.theme-light [style*="color: white"], body.theme-light [style*="color: #fff"] { color: #1e293b !important; }
+        body.theme-light [style*="color: white"]:not([style*="background:#"]):not([style*="background: #"]):not([style*="background-color:#"]):not([style*="background-color: #"]),
+        body.theme-light [style*="color: #fff"]:not([style*="background:#"]):not([style*="background: #"]):not([style*="background-color:#"]):not([style*="background-color: #"]) { color: #1e293b !important; }
         body.theme-light .temp-val, body.theme-light .temp-display, body.theme-light .measured-temp-val { color: #0e7490 !important; }
         body.theme-light #header-global-controls button { color: #1e293b !important; background: rgba(255, 255, 255, 0.7) !important; }
         body.theme-light #header-global-controls button:nth-child(1) { color: #b91c1c !important; }
@@ -3016,7 +3071,7 @@
         body.theme-light ch5-button[customClass~="temp-adjust-btn"] .cb-btn, body.theme-light ch5-button[customClass~="temp-adjust-btn"] .ch5-button--label { color: #1e293b !important; background: rgba(15, 23, 42, 0.08) !important; }
 
         /* --- Thème Verre dépoli : la photo de fond est claire → panneaux teintés + ombre portée sur le texte --- */
-        body.theme-glass { --container-bg: rgba(15, 23, 42, 0.5); --text-secondary: rgba(255, 255, 255, 0.85); }
+        body.theme-glass { --container-bg: rgba(15, 23, 42, 0.8); --text-secondary: rgba(255, 255, 255, 0.92); }
         body.theme-glass .app-container { text-shadow: 0 1px 3px rgba(0, 0, 0, 0.75); }
         body.theme-glass #version-label { color: rgba(255, 255, 255, 0.85) !important; }
         body.theme-glass h2, body.theme-glass h3, body.theme-glass [style*="color: #94a3b8"] { color: #e2e8f0 !important; }
@@ -3024,19 +3079,227 @@
         body.theme-glass #active-room-title, body.theme-glass [style*="color: #10b981"] { color: #6ee7b7 !important; }
         body.theme-glass [style*="color: #0ea5e9"] { color: #7dd3fc !important; }
         body.theme-glass .temp-val, body.theme-glass .temp-display, body.theme-glass .measured-temp-val { color: #67e8f9 !important; }
-        body.theme-glass #header-global-controls button { background: rgba(15, 23, 42, 0.6) !important; color: #ffffff !important; }
-        body.theme-glass #tab-lights-btn, body.theme-glass #tab-shades-btn { color: #ffffff !important; background: rgba(15, 23, 42, 0.45) !important; }
-        body.theme-glass .villa-status-banner, body.theme-glass #news-banner { background: rgba(15, 23, 42, 0.6) !important; }
+        body.theme-glass #header-global-controls button { background: rgba(15, 23, 42, 0.8) !important; color: #ffffff !important; }
+        body.theme-glass #tab-lights-btn, body.theme-glass #tab-shades-btn { color: #ffffff !important; background: rgba(15, 23, 42, 0.7) !important; }
+        body.theme-glass .villa-status-banner, body.theme-glass #news-banner { background: rgba(15, 23, 42, 0.82) !important; }
         body.theme-glass .villa-status-item.ok { color: #a7f3d0 !important; }
         body.theme-glass .villa-status-item.warn { color: #fde68a !important; }
         body.theme-glass .consigne-val, body.theme-glass .consigne-temp-val { color: #fbbf24 !important; }
         body.theme-glass .hvac-mode-val, body.theme-glass #hvac-mode-val { color: #ffffff !important; }
     </style>
+    <style id="theme-overlays">
+        /* =====================================================================
+           Cohérence des thèmes sur toutes les fenêtres (10.09.2026)
+           Les overlays portent des fonds sombres en style inline : en thème
+           Clair élégant ils restaient sombres alors que les textes passaient au
+           foncé (illisibles). On repeint ici fonds ET textes pour chaque thème.
+           Les sélecteurs partent de body#app-body : plusieurs règles internes du
+           GUI sont en #id !important, il faut donc au moins la même spécificité.
+           ===================================================================== */
+        body#app-body.theme-light .modal-backdrop { background-color: rgba(203, 213, 225, 0.92) !important; }
+
+        /* Coque des fenêtres : fond clair opaque, bord net, ombre douce */
+        body#app-body.theme-light .custom-overlay-panel {
+            background: #f8fafc !important; background-color: #f8fafc !important;
+            border-color: rgba(15, 23, 42, 0.14) !important; color: #0f172a !important;
+            box-shadow: 0 18px 48px rgba(15, 23, 42, 0.18) !important;
+        }
+        /* Cartes internes (fonds blancs translucides à l'origine) */
+        body#app-body.theme-light .custom-overlay-panel [style*="rgba(255,255,255,0.02)"]:not([style*="gradient"]),
+        body#app-body.theme-light .custom-overlay-panel [style*="rgba(255,255,255,0.03)"]:not([style*="gradient"]),
+        body#app-body.theme-light .custom-overlay-panel [style*="rgba(255,255,255,0.05)"]:not([style*="gradient"]),
+        body#app-body.theme-light .custom-overlay-panel [style*="rgba(255,255,255,0.06)"]:not([style*="gradient"]),
+        body#app-body.theme-light .custom-overlay-panel [style*="rgba(255,255,255,0.07)"]:not([style*="gradient"]),
+        body#app-body.theme-light .custom-overlay-panel [style*="rgba(255,255,255,0.08)"]:not([style*="gradient"]),
+        body#app-body.theme-light .custom-overlay-panel [style*="rgba(255,255,255,0.14)"]:not([style*="gradient"]),
+        body#app-body.theme-light .custom-overlay-panel [style*="rgba(255, 255, 255, 0.05)"]:not([style*="gradient"]),
+        body#app-body.theme-light .custom-overlay-panel [style*="rgba(255, 255, 255, 0.08)"]:not([style*="gradient"]) {
+            background: rgba(15, 23, 42, 0.06) !important; background-color: rgba(15, 23, 42, 0.06) !important;
+            border-color: rgba(15, 23, 42, 0.12) !important;
+        }
+        /* Zones « enfoncées » : afficheurs, listes, vignettes */
+        body#app-body.theme-light .custom-overlay-panel [style*="rgba(0,0,0,0.2)"]:not([style*="gradient"]),
+        body#app-body.theme-light .custom-overlay-panel [style*="rgba(0,0,0,0.4)"]:not([style*="gradient"]),
+        body#app-body.theme-light .custom-overlay-panel [style*="rgba(0,0,0,0.5)"]:not([style*="gradient"]),
+        body#app-body.theme-light .custom-overlay-panel [style*="rgba(0,0,0,0.6)"]:not([style*="gradient"]),
+        body#app-body.theme-light .custom-overlay-panel [style*="rgba(0, 0, 0, 0.4)"]:not([style*="gradient"]),
+        body#app-body.theme-light .custom-overlay-panel [style*="rgba(0, 0, 0, 0.6)"]:not([style*="gradient"]) {
+            background: rgba(15, 23, 42, 0.10) !important; background-color: rgba(15, 23, 42, 0.10) !important;
+            border-color: rgba(15, 23, 42, 0.18) !important; color: #0f172a !important;
+        }
+        /* Textes : foncés et francs sur fond clair */
+        body#app-body.theme-light .custom-overlay-panel,
+        body#app-body.theme-light .custom-overlay-panel p,
+        body#app-body.theme-light .custom-overlay-panel span,
+        body#app-body.theme-light .custom-overlay-panel div,
+        body#app-body.theme-light .custom-overlay-panel h4,
+        body#app-body.theme-light .custom-overlay-panel label,
+        body#app-body.theme-light .custom-overlay-panel strong {
+            color: #0f172a;
+        }
+        body#app-body.theme-light .custom-overlay-panel [style*="color: white"]:not([style*="background:#"]):not([style*="background: #"]):not([style*="background-color:#"]):not([style*="background-color: #"]),
+        body#app-body.theme-light .custom-overlay-panel [style*="color:#fff"]:not([style*="background:#"]):not([style*="background: #"]):not([style*="background-color:#"]):not([style*="background-color: #"]),
+        body#app-body.theme-light .custom-overlay-panel [style*="color: #fff"]:not([style*="background:#"]):not([style*="background: #"]):not([style*="background-color:#"]):not([style*="background-color: #"]),
+        body#app-body.theme-light .custom-overlay-panel [style*="color: #ffffff"]:not([style*="background:#"]):not([style*="background: #"]):not([style*="background-color:#"]):not([style*="background-color: #"]),
+        body#app-body.theme-light .custom-overlay-panel [style*="color: #e5e7eb"]:not([style*="background:#"]):not([style*="background: #"]):not([style*="background-color:#"]):not([style*="background-color: #"]) {
+            color: #0f172a !important;
+        }
+        body#app-body.theme-light .custom-overlay-panel [style*="color: #94a3b8"],
+        body#app-body.theme-light .custom-overlay-panel [style*="rgba(255,255,255,0.7)"],
+        body#app-body.theme-light .custom-overlay-panel [style*="rgba(255, 255, 255, 0.7)"],
+        body#app-body.theme-light .custom-overlay-panel [style*="rgba(255,255,255,0.9)"],
+        body#app-body.theme-light .custom-overlay-panel [style*="rgba(255,255,255,0.4)"],
+        body#app-body.theme-light .custom-overlay-panel [style*="rgba(255, 255, 255, 0.4)"] {
+            color: #475569 !important;
+        }
+        /* Accents : versions foncées (contraste ≥ 4,5:1 sur #f8fafc) */
+        body#app-body.theme-light .custom-overlay-panel [style*="color: #10b981"],
+        body#app-body.theme-light .custom-overlay-panel [style*="color: #a7f3d0"],
+        body#app-body.theme-light .custom-overlay-panel [style*="color: #34d399"] {
+            color: #047857 !important;
+        }
+        body#app-body.theme-light .custom-overlay-panel [style*="color: #38bdf8"],
+        body#app-body.theme-light .custom-overlay-panel [style*="color: #3b82f6"],
+        body#app-body.theme-light .custom-overlay-panel [style*="color: #60a5fa"] {
+            color: #1d4ed8 !important;
+        }
+        body#app-body.theme-light .custom-overlay-panel [style*="color: #00b4c5"],
+        body#app-body.theme-light .custom-overlay-panel [style*="color: #22d3ee"] {
+            color: #0e7490 !important;
+        }
+        body#app-body.theme-light .custom-overlay-panel [style*="color: #eab308"],
+        body#app-body.theme-light .custom-overlay-panel [style*="color: #f18a00"],
+        body#app-body.theme-light .custom-overlay-panel [style*="color: #fbbf24"],
+        body#app-body.theme-light .custom-overlay-panel [style*="color: #fcd34d"] {
+            color: #a16207 !important;
+        }
+        body#app-body.theme-light .custom-overlay-panel [style*="color: #8b5cf6"],
+        body#app-body.theme-light .custom-overlay-panel [style*="color: #c084fc"],
+        body#app-body.theme-light .custom-overlay-panel [style*="color: #a78bfa"] {
+            color: #6d28d9 !important;
+        }
+        body#app-body.theme-light .custom-overlay-panel [style*="color: #ef4444"],
+        body#app-body.theme-light .custom-overlay-panel [style*="color: #f87171"],
+        body#app-body.theme-light .custom-overlay-panel [style*="color: #fb7185"] {
+            color: #b91c1c !important;
+        }
+        /* Boutons CH5 non sélectionnés (les sélectionnés gardent leur couleur) */
+        body#app-body.theme-light .custom-overlay-panel ch5-button:not([selected="true"]):not(.ch5-button--selected) .ch5-button--label,
+        body#app-body.theme-light .custom-overlay-panel ch5-button:not([selected="true"]):not(.ch5-button--selected) .cb-btn,
+        body#app-body.theme-light .custom-overlay-panel ch5-button:not([selected="true"]):not(.ch5-button--selected) label {
+            color: #0f172a !important;
+        }
+        body#app-body.theme-light .custom-overlay-panel ch5-button:not([selected="true"]):not(.ch5-button--selected) > .ch5-button:not([style*="gradient"]) {
+            background-color: rgba(15, 23, 42, 0.06) !important;
+        }
+        /* Boutons HTML (les boutons peints en dur #hex gardent leur couleur) */
+        body#app-body.theme-light .custom-overlay-panel button:not([style*="background:#"]):not([style*="background: #"]):not([style*="background-color:#"]):not([style*="background-color: #"]):not([style*="gradient"]) {
+            background: rgba(15, 23, 42, 0.06) !important; border-color: rgba(15, 23, 42, 0.20) !important;
+            color: #0f172a !important;
+        }
+        body#app-body.theme-light .custom-overlay-panel button:not([style*="background:#"]):not([style*="background: #"]):not([style*="background-color:#"]):not([style*="background-color: #"]):not([style*="gradient"]):hover {
+            background: rgba(15, 23, 42, 0.12) !important;
+        }
+        /* Curseurs et champs */
+        body#app-body.theme-light .custom-overlay-panel input[type="range"] {
+            background: rgba(15, 23, 42, 0.18) !important; border: 1px solid rgba(15, 23, 42, 0.15) !important;
+        }
+        body#app-body.theme-light .custom-overlay-panel input[type="range"]::-webkit-slider-thumb {
+            background: #ffffff !important; border: 2px solid #334155 !important;
+            box-shadow: 0 1px 4px rgba(15, 23, 42, 0.35) !important;
+        }
+        body#app-body.theme-light .custom-overlay-panel select,
+        body#app-body.theme-light .custom-overlay-panel input[type="text"],
+        body#app-body.theme-light .custom-overlay-panel input[type="number"] {
+            background: #ffffff !important; color: #0f172a !important; border-color: rgba(15, 23, 42, 0.25) !important;
+        }
+        /* Badges d'état */
+        body#app-body.theme-light [style*="rgba(16,185,129,0.1)"] { background: rgba(4, 120, 87, 0.14) !important; color: #047857 !important; }
+        body#app-body.theme-light [style*="rgba(220,38,38,0.1)"] { background: rgba(185, 28, 28, 0.14) !important; color: #b91c1c !important; }
+        body#app-body.theme-light [style*="rgba(234,179,8,0.1)"] { background: rgba(161, 98, 7, 0.16) !important; color: #a16207 !important; }
+        /* Clavier de l'alarme */
+        body#app-body.theme-light #alarm-keypad-screen .alarm-key { background-color: rgba(15, 23, 42, 0.07) !important; border-color: rgba(15, 23, 42, 0.30) !important; color: #0f172a !important; }
+        body#app-body.theme-light #alarm-keypad-screen .alarm-key-clr { color: #b91c1c !important; }
+        body#app-body.theme-light #alarm-keypad-screen .alarm-key-ok { color: #047857 !important; }
+        body#app-body.theme-light #alarm-code-display { color: #0f172a !important; }
+
+        /* ---------- Thème Verre dépoli : fenêtres translucides sombres ---------- */
+        body#app-body.theme-glass .modal-backdrop { background-color: rgba(8, 12, 20, 0.86) !important; }
+        body#app-body.theme-glass .custom-overlay-panel {
+            background: rgba(11, 17, 30, 0.92) !important; background-color: rgba(11, 17, 30, 0.92) !important;
+            border-color: rgba(255, 255, 255, 0.18) !important; color: #f8fafc !important; text-shadow: none !important;
+        }
+        body#app-body.theme-glass .custom-overlay-panel [style*="color: #94a3b8"] {
+            color: #cbd5e1 !important;
+        }
+        body#app-body.theme-glass .custom-overlay-panel [style*="color: #ef4444"],
+        body#app-body.theme-glass .custom-overlay-panel .alarm-key-clr {
+            color: #fca5a5 !important;
+        }
+        /* Détails de contraste relevés au contrôle automatique (10.09.2026) */
+        body#app-body #version-label { color: rgba(255, 255, 255, 0.72) !important; }
+        body#app-body.theme-light #version-label { color: rgba(15, 23, 42, 0.72) !important; }
+        body#app-body .villa-status-sep { color: rgba(255, 255, 255, 0.5) !important; }
+        body#app-body.theme-light .villa-status-sep { color: rgba(15, 23, 42, 0.6) !important; }
+        body#app-body.theme-light #hvac-mode-val, body#app-body.theme-light .hvac-mode-val { color: #1d4ed8 !important; }
+        body#app-body.theme-light #consigne-val, body#app-body.theme-light .consigne-temp-val, body#app-body.theme-light .consigne-val { color: #b45309 !important; }
+
+        /* Page principale en thème clair : scènes, sources, mute et presets restaient
+           en cartes sombres (fonds définis en dur) -> même fond clair que le reste. */
+body#app-body.theme-light ch5-button[customClass~="scene-btn"]:not([selected="true"]):not(.ch5-button--selected) > .ch5-button,
+        body#app-body.theme-light .scene-btn:not([selected="true"]):not(.ch5-button--selected),
+        body#app-body.theme-light ch5-button[customClass~="source-btn"]:not([selected="true"]):not(.ch5-button--selected) > .ch5-button,
+        body#app-body.theme-light .source-btn:not([selected="true"]):not(.ch5-button--selected),
+        body#app-body.theme-light ch5-button[customClass~="my-source-btn"]:not([selected="true"]):not(.ch5-button--selected) > .ch5-button,
+        body#app-body.theme-light .my-source-btn:not([selected="true"]):not(.ch5-button--selected),
+        body#app-body.theme-light ch5-button[customClass~="mute-btn"]:not([selected="true"]):not(.ch5-button--selected) > .ch5-button,
+        body#app-body.theme-light .mute-btn:not([selected="true"]):not(.ch5-button--selected),
+        body#app-body.theme-light ch5-button[customClass~="preset-btn"]:not([selected="true"]):not(.ch5-button--selected) > .ch5-button,
+        body#app-body.theme-light .preset-btn:not([selected="true"]):not(.ch5-button--selected),
+        body#app-body.theme-light ch5-button[customClass~="preset-text-btn"]:not([selected="true"]):not(.ch5-button--selected) > .ch5-button,
+        body#app-body.theme-light .preset-text-btn:not([selected="true"]):not(.ch5-button--selected) {
+            background-color: rgba(15, 23, 42, 0.06) !important;
+            border-color: rgba(15, 23, 42, 0.18) !important;
+        }
+        body#app-body.theme-light ch5-button[customClass~="scene-btn"]:not([selected="true"]):not(.ch5-button--selected) .ch5-button--label,
+        body#app-body.theme-light ch5-button[customClass~="scene-btn"]:not([selected="true"]):not(.ch5-button--selected) .cb-btn,
+        body#app-body.theme-light ch5-button[customClass~="source-btn"]:not([selected="true"]):not(.ch5-button--selected) .ch5-button--label,
+        body#app-body.theme-light ch5-button[customClass~="source-btn"]:not([selected="true"]):not(.ch5-button--selected) .cb-btn,
+        body#app-body.theme-light ch5-button[customClass~="my-source-btn"]:not([selected="true"]):not(.ch5-button--selected) .ch5-button--label,
+        body#app-body.theme-light ch5-button[customClass~="my-source-btn"]:not([selected="true"]):not(.ch5-button--selected) .cb-btn,
+        body#app-body.theme-light ch5-button[customClass~="mute-btn"]:not([selected="true"]):not(.ch5-button--selected) .ch5-button--label,
+        body#app-body.theme-light ch5-button[customClass~="mute-btn"]:not([selected="true"]):not(.ch5-button--selected) .cb-btn,
+        body#app-body.theme-light ch5-button[customClass~="preset-btn"]:not([selected="true"]):not(.ch5-button--selected) .ch5-button--label,
+        body#app-body.theme-light ch5-button[customClass~="preset-btn"]:not([selected="true"]):not(.ch5-button--selected) .cb-btn,
+        body#app-body.theme-light ch5-button[customClass~="preset-text-btn"]:not([selected="true"]):not(.ch5-button--selected) .ch5-button--label,
+        body#app-body.theme-light ch5-button[customClass~="preset-text-btn"]:not([selected="true"]):not(.ch5-button--selected) .cb-btn {
+            color: #0f172a !important;
+        }
+
+        /* Curseurs CH5 (noUiSlider) en thème clair : rail visible, poignée nette */
+        body#app-body.theme-light .noUi-target,
+        body#app-body.theme-light .noUi-connects {
+            background: rgba(15, 23, 42, 0.16) !important;
+            border-color: rgba(15, 23, 42, 0.20) !important;
+            box-shadow: none !important;
+        }
+        body#app-body.theme-light .noUi-connect { background: #0284c7 !important; }
+        body#app-body.theme-light .noUi-handle {
+            background: #ffffff !important;
+            border: 2px solid #334155 !important;
+            box-shadow: 0 1px 4px rgba(15, 23, 42, 0.35) !important;
+        }
+
+        /* ---------- Sombre et Verre dépoli : textes secondaires trop pâles ---------- */
+        body#app-body:not(.theme-light) .custom-overlay-panel [style*="rgba(255,255,255,0.4)"],
+        body#app-body:not(.theme-light) .custom-overlay-panel [style*="rgba(255, 255, 255, 0.4)"] { color: rgba(255, 255, 255, 0.72) !important; }
+        body#app-body:not(.theme-light) #alarm-keypad-screen .alarm-key-clr { color: #f87171 !important; }
+    </style>
     <!-- Vitrine : pas de processeur, indicateur de connexion masqué -->
     <style>#connection-status{display:none !important}</style>
     <script>window.updateConnectionStatusUI = function () {};</script>
 </head>
-<body>
+<body id="app-body">
     <!-- Fond grisé pour modales (Backdrop) -->
     <div id="modal-backdrop" class="modal-backdrop" onclick="window.closeAllModals()"></div>
 
@@ -4242,7 +4505,7 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
     </div>
 
     <!-- POPUP CLAVIER & PARTITIONS D'ALARME (Custom Overlay Panel) -->
-    <div id="alarm-overlay" class="custom-overlay-panel" style="width: 80%; height: 85%; background-color: rgba(22, 25, 32, 0.98); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.1); color: white; padding: 25px; box-sizing: border-box;">
+    <div id="alarm-overlay" class="custom-overlay-panel" style="width: 94%; height: 94%; background-color: rgba(22, 25, 32, 0.98); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.1); color: white; padding: 25px; box-sizing: border-box;">
         <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; margin-bottom: 20px;">
             <h2 style="margin: 0; border: none; padding: 0; color: #ef4444; font-size: 1.5rem; text-transform: uppercase; display: flex; align-items: center; gap: 10px;">
                 <span data-i18n="security_title">🚨 Système de sécurité</span>
@@ -4259,22 +4522,22 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
             <div id="alarm-error-msg" style="color: #ef4444; font-weight: bold; min-height: 20px; font-size: 0.9rem;"></div>
             
             <!-- Clavier 3x4 -->
-            <div style="display: grid; grid-template-columns: repeat(3, 64px); gap: 10px;">
-                <button onclick="pressAlarmKey('1')" class="temp-adjust-btn alarm-key" style="width: 64px !important; height: 64px !important;">1</button>
-                <button onclick="pressAlarmKey('2')" class="temp-adjust-btn alarm-key" style="width: 64px !important; height: 64px !important;">2</button>
-                <button onclick="pressAlarmKey('3')" class="temp-adjust-btn alarm-key" style="width: 64px !important; height: 64px !important;">3</button>
+            <div id="alarm-keypad-grid" style="display: grid;">
+                <button onclick="pressAlarmKey('1')" class="temp-adjust-btn alarm-key">1</button>
+                <button onclick="pressAlarmKey('2')" class="temp-adjust-btn alarm-key">2</button>
+                <button onclick="pressAlarmKey('3')" class="temp-adjust-btn alarm-key">3</button>
                 
-                <button onclick="pressAlarmKey('4')" class="temp-adjust-btn alarm-key" style="width: 64px !important; height: 64px !important;">4</button>
-                <button onclick="pressAlarmKey('5')" class="temp-adjust-btn alarm-key" style="width: 64px !important; height: 64px !important;">5</button>
-                <button onclick="pressAlarmKey('6')" class="temp-adjust-btn alarm-key" style="width: 64px !important; height: 64px !important;">6</button>
+                <button onclick="pressAlarmKey('4')" class="temp-adjust-btn alarm-key">4</button>
+                <button onclick="pressAlarmKey('5')" class="temp-adjust-btn alarm-key">5</button>
+                <button onclick="pressAlarmKey('6')" class="temp-adjust-btn alarm-key">6</button>
                 
-                <button onclick="pressAlarmKey('7')" class="temp-adjust-btn alarm-key" style="width: 64px !important; height: 64px !important;">7</button>
-                <button onclick="pressAlarmKey('8')" class="temp-adjust-btn alarm-key" style="width: 64px !important; height: 64px !important;">8</button>
-                <button onclick="pressAlarmKey('9')" class="temp-adjust-btn alarm-key" style="width: 64px !important; height: 64px !important;">9</button>
+                <button onclick="pressAlarmKey('7')" class="temp-adjust-btn alarm-key">7</button>
+                <button onclick="pressAlarmKey('8')" class="temp-adjust-btn alarm-key">8</button>
+                <button onclick="pressAlarmKey('9')" class="temp-adjust-btn alarm-key">9</button>
                 
-                <button onclick="pressAlarmKey('C')" class="temp-adjust-btn alarm-key alarm-key-clr" style="width: 64px !important; height: 64px !important; color: #ef4444;">CLR</button>
-                <button onclick="pressAlarmKey('0')" class="temp-adjust-btn alarm-key" style="width: 64px !important; height: 64px !important;">0</button>
-                <button onclick="pressAlarmKey('E')" class="temp-adjust-btn alarm-key alarm-key-ok" style="width: 64px !important; height: 64px !important; color: #10b981;">OK</button>
+                <button onclick="pressAlarmKey('C')" class="temp-adjust-btn alarm-key alarm-key-clr">CLR</button>
+                <button onclick="pressAlarmKey('0')" class="temp-adjust-btn alarm-key">0</button>
+                <button onclick="pressAlarmKey('E')" class="temp-adjust-btn alarm-key alarm-key-ok">OK</button>
             </div>
         </div>
         
@@ -4443,7 +4706,7 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
                 ⚙️ Configuration du preset global
             </h2>
             <div style="display: flex; gap: 10px;">
-                <button onclick="window.saveGlobalPresetConfig()" style="height: 35px; background: #10b981; border: 1px solid rgba(16,185,129,0.3); color: white; border-radius: 6px; cursor: pointer; font-weight: bold; padding: 0 15px; font-size: 0.85rem; border: none;">SAUVEGARDER</button>
+                <button onclick="window.saveGlobalPresetConfig()" style="height: 35px; background: #047857; border: 1px solid rgba(4,120,87,0.35); color: #ffffff; border-radius: 6px; cursor: pointer; font-weight: bold; padding: 0 15px; font-size: 0.85rem; border: none;">SAUVEGARDER</button>
                 <button onclick="window.closeGlobalPresetCustomizer()" style="height: 35px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 6px; cursor: pointer; font-weight: bold; padding: 0 15px; font-size: 0.85rem; border: none;">ANNULER</button>
             </div>
         </div>
