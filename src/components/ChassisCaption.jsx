@@ -4,7 +4,8 @@ import { useTranslation } from "../context/LanguageContext";
 // Légende du châssis : support et caractéristiques réelles de l'appareil
 // (modèle, diagonale, résolution native).
 //
-// Mode normal : badge « Taille réelle » seul (l'affichage de la page est la référence).
+// Mode normal : badge « Taille réelle » si le châssis est affiché à sa taille physique (à ±3 %),
+// sinon « réduit à N % » / « agrandi à N % » (N = échelle affichée / échelle taille réelle).
 // Mode Scène : sélecteur « Taille réelle » (dimensions physiques calibrées) /
 // « Responsive » (remplit l'espace ; la légende indique ×k par rapport à la page).
 const fill = (tpl, vars) => tpl.replace(/\{(\w+)\}/g, (_, k) => (vars[k] !== undefined ? vars[k] : `{${k}}`));
@@ -13,6 +14,7 @@ export const ChassisCaption = ({
   device,
   scale,
   pageScale,
+  realScale,
   mode,
   requestedMode,
   realSizeAvailable,
@@ -37,6 +39,19 @@ export const ChassisCaption = ({
     status = `×${k}`;
   }
   const realSelected = fullscreen ? requestedMode === "real" : true;
+  // Mode normal : rapport entre l'échelle affichée et l'échelle « taille réelle » (calibrée)
+  let normalBadge = t("scale_real");
+  let normalIsReal = true;
+  if (!fullscreen && realScale > 0) {
+    const ratio = scale / realScale;
+    if (ratio < 0.97) {
+      normalBadge = fill(t("scale_reduced"), { pct: Math.round(ratio * 100) });
+      normalIsReal = false;
+    } else if (ratio > 1.03) {
+      normalBadge = fill(t("scale_enlarged"), { pct: Math.round(ratio * 100) });
+      normalIsReal = false;
+    }
+  }
   const warning = tooSmall || (fullscreen && mode === "real" && !realSizeAvailable);
 
   return (
@@ -85,8 +100,8 @@ export const ChassisCaption = ({
           )}
         </div>
       ) : (
-        <span className="chassis-scale-toggle" aria-label={t("scale_real")}>
-          <span className="chassis-scale-btn active chassis-scale-badge">{t("scale_real")}</span>
+        <span className="chassis-scale-toggle" aria-label={normalBadge}>
+          <span className={`chassis-scale-btn chassis-scale-badge ${normalIsReal ? "active" : "is-scaled"}`}>{normalBadge}</span>
         </span>
       )}
     </div>

@@ -44,6 +44,8 @@ export const uiTranslations = {
     proj_test_live: "Tester l'interface en direct",
 
     scale_real: "Taille réelle",
+    scale_reduced: "réduit à {pct} %",
+    scale_enlarged: "agrandi à {pct} %",
     scale_auto: "Responsive",
     scale_real_unavailable: "Écran trop petit pour afficher ce châssis à taille réelle",
     scale_caption_real: "affiché à taille réelle (100 %)",
@@ -115,6 +117,8 @@ export const uiTranslations = {
     proj_test_live: "Try the interface live",
 
     scale_real: "Actual size",
+    scale_reduced: "reduced to {pct} %",
+    scale_enlarged: "enlarged to {pct} %",
     scale_auto: "Responsive",
     scale_real_unavailable: "Screen too small to show this chassis at actual size",
     scale_caption_real: "shown at actual size (100%)",
@@ -186,6 +190,8 @@ export const uiTranslations = {
     proj_test_live: "Oberfläche live testen",
 
     scale_real: "Originalgröße",
+    scale_reduced: "verkleinert auf {pct} %",
+    scale_enlarged: "vergrößert auf {pct} %",
     scale_auto: "Responsiv",
     scale_real_unavailable: "Bildschirm zu klein für die Originalgröße dieses Gehäuses",
     scale_caption_real: "in Originalgröße (100 %)",

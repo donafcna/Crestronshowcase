@@ -75,13 +75,15 @@ export const DeviceFrame = ({
   // appliquée (le châssis dépasse) et la légende le signale — F11 donne plus de place.
   const realSizeAvailable = fitScale >= realScale * SCALE_RULES.realSizeTolerance;
   // RÈGLE GÉNÉRALE (tous les projets, tous les supports) — voir scaleRules.js :
-  //  - Mode normal : châssis ajusté à la page, badge « Taille réelle » seul (pas de sélecteur) ;
+  //  - Mode normal : châssis ajusté à la page sans dépasser la taille réelle (calibrée) ;
+  //    légende « Taille réelle » si atteinte, sinon « réduit à N % » (pas de sélecteur) ;
   //  - Mode Scène : « Taille réelle » = dimensions physiques calibrées (rognées si trop grandes,
   //    légende → F11) ; « Responsive » = remplit l'espace sans plafond.
   const effectiveMode = isFullscreen && scaleMode === "real" ? "real" : "auto";
-  // Plein écran : le châssis occupe tout l'espace disponible (proportions
-  // conservées), sans le plafond maxUpscale de la page normale.
-  const upscaleCap = isFullscreen ? Infinity : SCALE_RULES.maxUpscale;
+  // Plein écran : le châssis occupe tout l'espace disponible (proportions conservées), sans plafond.
+  // Mode normal : jamais plus grand que la taille réelle (10.09.2026 : la légende annonce alors
+  // « Taille réelle » à juste titre, sinon « réduit à N % »).
+  const upscaleCap = isFullscreen ? Infinity : Math.min(SCALE_RULES.maxUpscale, realScale || SCALE_RULES.maxUpscale);
   const chassisScale =
     effectiveMode === "real"
       ? realScale
@@ -128,9 +130,20 @@ export const DeviceFrame = ({
   //     du site, avec la colonne de droite (logo, supports, légende). isFullscreen = mode Scène dans le code.
   //  4. « Plein écran navigateur F11 » : indépendant du site.
   const { t } = useTranslation();
+  // Mode normal : le bouton Scène est posé en haut à droite de la scène, à taille fixe (il n'est pas
+  // réduit avec le châssis — 10.09.2026). Mode Scène : à l'angle du châssis comme avant.
   const cornerButton = (
     <button
-      className="btn-exit-fullscreen-device-corner"
+      className={`btn-exit-fullscreen-device-corner ${isFullscreen ? "" : "btn-exit-fullscreen-device-corner--stage"}`}
+      style={
+        isFullscreen
+          ? undefined
+          : {
+              // à l'angle supérieur droit du châssis (centré dans la scène), sans jamais sortir de la scène
+              "--corner-right": `max(4px, calc(50% - ${Math.round((cfg.chassisW * chassisScale) / 2)}px - 42px))`,
+              "--corner-top": `max(4px, calc(50% - ${Math.round((cfg.chassisH * chassisScale) / 2)}px))`,
+            }
+      }
       onClick={isFullscreen ? onExitFullscreen : onEnterFullscreen}
       title={isFullscreen ? t("stage_mode_exit") : t("stage_mode_enter")}
       aria-label={isFullscreen ? t("stage_mode_exit") : t("stage_mode_enter")}
@@ -173,9 +186,10 @@ export const DeviceFrame = ({
         <DevMetrics device={cfg} stage={stageSize} scale={chassisScale} fitScale={fitScale} mode={effectiveMode} realSizeAvailable={realSizeAvailable} />
       )}
       <div className="device-stage" ref={stageRef}>
+        {!isFullscreen && cornerButton}
         {deviceType === "desktop" && (
           <div className="desktop-browser-frame glass-panel" style={chassisStyle}>
-            {cornerButton}
+            {isFullscreen && cornerButton}
             <div className="browser-header">
               <div className="browser-controls">
                 <span className="dot close" />
@@ -200,7 +214,7 @@ export const DeviceFrame = ({
 
         {deviceType === "tablet" && (
           <div className="tablet-device-frame" style={chassisStyle}>
-            {cornerButton}
+            {isFullscreen && cornerButton}
             <div className="tablet-bezel">
               <div className="tablet-camera" />
               <div className="tablet-screen device-screen" style={{ width: cfg.screenW, height: cfg.screenH }}>
@@ -215,7 +229,7 @@ export const DeviceFrame = ({
 
         {deviceType === "phone" && (
           <div className="phone-device-frame" style={chassisStyle}>
-            {cornerButton}
+            {isFullscreen && cornerButton}
             <div className="phone-bezel">
               <div className="phone-speaker" />
               <div className="phone-dynamic-island">
@@ -233,7 +247,7 @@ export const DeviceFrame = ({
 
         {(deviceType === "wallpanel" || deviceType === "wallpanel_hd") && (
           <div className="crestron-panel-frame" style={chassisStyle}>
-            {cornerButton}
+            {isFullscreen && cornerButton}
             <div className="crestron-bezel">
               <div className="crestron-camera-sensor" />
               <div className="crestron-screen device-screen" style={{ width: cfg.screenW, height: cfg.screenH }}>

@@ -3,8 +3,9 @@ import { Icons } from "../icons";
 import { useTranslation } from "../context/LanguageContext";
 import { SITE_URL } from "../data/company";
 
-// Barre d'outils "démo" affichée au-dessus de l'appareil : partage du lien,
-// QR code, mode présentation, fiche PDF. Tout est piloté par l'URL, donc
+// Outils "démo" : QR code, mode présentation, fiche PDF, plein écran. En Mode normal
+// ils sont empilés dans la colonne de droite au-dessus des boutons de support
+// (demande du 10.09.2026 : laisser toute la hauteur au châssis sur petit écran). Tout est piloté par l'URL, donc
 // reproductible. (Le nom du client reste pilotable via ?client= dans l'URL.)
 export const DemoToolbar = ({
   project,
@@ -14,6 +15,7 @@ export const DemoToolbar = ({
   sheetUrl,
   embedUrl,
   center = null, // légende du châssis (support · taille · échelle), sur la même ligne
+  vertical = false, // Mode normal : boutons empilés dans la colonne de droite, au-dessus des supports
 }) => {
   const { t } = useTranslation();
   const [qrOpen, setQrOpen] = useState(false);
@@ -48,7 +50,7 @@ export const DemoToolbar = ({
   };
 
   return (
-    <div className="demo-toolbar">
+    <div className={`demo-toolbar ${vertical ? "demo-toolbar--vertical" : ""}`}>
       <div className="demo-toolbar-group">
         {/* « Copier le lien » retiré le 10.09.2026 (demande de Donatien) — le QR code et la fiche portent le lien */}
         <Btn icon="QrCode" label={t("tool_qr")} onClick={() => setQrOpen(true)} />

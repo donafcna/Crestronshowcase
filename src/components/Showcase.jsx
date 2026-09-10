@@ -434,32 +434,6 @@ const ShowcaseInner = ({ sectorId, projectId, device }) => {
           </section>
         )}
 
-        {/* 2. Barre d'outils de démo */}
-        {!isFullscreen && (
-          <DemoToolbar
-            project={activeProject}
-            shareUrl={shareUrl}
-            sheetUrl={sheetUrl}
-            embedUrl={viewportDevice === "phone" ? null : embedSrc} // « Plein écran » (GUI seule dans un nouvel onglet) : dalle et tablette seulement
-            presenting={demoEnabled && demoRunning}
-            onTogglePresentation={handleTogglePresentation}
-            onCapture={handleCapture}
-            capturing={capturing}
-            center={
-              frameInfo && (
-                <ChassisCaption
-                  device={frameInfo.device}
-                  scale={frameInfo.scale}
-                  mode={frameInfo.mode}
-                  requestedMode={frameInfo.requestedMode}
-                  realSizeAvailable={frameInfo.realSizeAvailable}
-                  tooSmall={frameInfo.tooSmall}
-                  onChangeMode={frameInfo.onChangeMode}
-                />
-              )
-            }
-          />
-        )}
         {captureNotice && <div className="demo-notice glass-panel">{captureNotice}</div>}
 
         {/* Plein écran + mode Dev : mesures d'écran en haut à gauche (superposées, sans place prise) */}
@@ -510,6 +484,35 @@ const ShowcaseInner = ({ sectorId, projectId, device }) => {
                 <img src="/assets/logo-frequence-tv-5LGUrtbd.png" alt="Fréquence TV" className="frequencetv-logo-img-fs" />
               </div>
             )}
+            {/* Mode normal : outils de démo puis légende du châssis (2 lignes) au-dessus des supports,
+                pour laisser toute la hauteur de la page au châssis (demande du 10.09.2026) */}
+            {!isFullscreen && (
+              <div className="side-info side-info--tools">
+                <DemoToolbar
+                  vertical
+                  project={activeProject}
+                  shareUrl={shareUrl}
+                  sheetUrl={sheetUrl}
+                  embedUrl={viewportDevice === "phone" ? null : embedSrc} // « Plein écran » (GUI seule dans un nouvel onglet) : dalle et tablette seulement
+                  presenting={demoEnabled && demoRunning}
+                  onTogglePresentation={handleTogglePresentation}
+                  onCapture={handleCapture}
+                  capturing={capturing}
+                />
+                {frameInfo && (
+                  <ChassisCaption
+                    device={frameInfo.device}
+                    scale={frameInfo.scale}
+                    realScale={frameInfo.realScale}
+                    mode={frameInfo.mode}
+                    requestedMode={frameInfo.requestedMode}
+                    realSizeAvailable={frameInfo.realSizeAvailable}
+                    tooSmall={frameInfo.tooSmall}
+                    onChangeMode={frameInfo.onChangeMode}
+                  />
+                )}
+              </div>
+            )}
             <div className="device-buttons-column">
               {projectViewports.map((dev) => (
                 <button
@@ -527,7 +530,7 @@ const ShowcaseInner = ({ sectorId, projectId, device }) => {
             {/* Plein écran : légende du châssis et rappel de la démo sous les boutons de support,
                 pour laisser toute la hauteur de l'écran au châssis */}
             {isFullscreen && (
-              <div className="fullscreen-side-info">
+              <div className="side-info fullscreen-side-info">
                 {frameInfo && (
                   <ChassisCaption
                     fullscreen

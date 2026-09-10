@@ -981,6 +981,11 @@ html, body, #root {
   .workspace-main-content-row {
     flex-direction: column !important;
   }
+  .workspace-main-content-row .project-workspace {
+    width: 100% !important; /* 10.09.2026 : le châssis disparaissait (largeur 0) sous 1000 px */
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+  }
   .workspace-device-sidebar {
     width: 100% !important;
     align-items: center !important;
@@ -3844,10 +3849,13 @@ html, body, #root {
   margin-top: 44px !important;
   padding: 12px !important;
 }
-/* Adjust normal mode device display workspace padding and overflow visibility to prevent button clipping */
+/* Mode normal : bouton Scène en haut à droite de la scène, taille fixe (jamais réduit avec le châssis) */
+.device-stage { position: relative; }
+.btn-exit-fullscreen-device-corner--stage { width: 34px !important; height: 34px !important; right: var(--corner-right, 4px) !important; top: var(--corner-top, 4px) !important; }
+/* Mode normal : plus de marge droite réservée (10.09.2026) — toute la largeur va au châssis */
 .device-display-workspace {
   overflow: visible !important;
-  padding-right: 65px !important;
+  padding-right: 0 !important;
 }
 
 /* Cybersecurity/Neon Theme overrides for Auditorium Richmond (Drastically different colors) */
@@ -5041,8 +5049,8 @@ html, body, #root {
 .workspace-device-sidebar.is-fullscreen .frequencetv-logo-img-fs { max-width: 100%; max-height: 100%; height: auto; }
 .workspace-device-sidebar.is-fullscreen .device-buttons-column { width: 100% !important; }
 .workspace-device-sidebar.is-fullscreen .device-vertical-btn { width: 100% !important; }
-.fullscreen-side-info { display: flex; flex-direction: column; gap: 10px; width: 100%; }
-.fullscreen-side-info .chassis-caption {
+.side-info { display: flex; flex-direction: column; gap: 10px; width: 100%; }
+.side-info .chassis-caption {
   flex-direction: column;
   align-items: stretch;
   gap: 8px;
@@ -5053,13 +5061,26 @@ html, body, #root {
   border-radius: 14px;
   box-sizing: border-box;
 }
-.fullscreen-side-info .chassis-caption-text { white-space: normal; line-height: 1.45; display: flex; flex-direction: column; gap: 2px; }
+.side-info .chassis-caption-text { white-space: normal; line-height: 1.45; display: flex; flex-direction: column; gap: 2px; }
 /* Ligne 2 (diagonale · résolution · état) : sur une ligne si la largeur le permet, sinon retour à la ligne */
-.fullscreen-side-info .chassis-caption-specs { white-space: normal; }
-.fullscreen-side-info .chassis-caption-name { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.fullscreen-side-info .chassis-caption-sep--name { display: none; }
-.fullscreen-side-info .chassis-scale-toggle { align-self: flex-start; }
-.fullscreen-side-info .present-hint { width: 100%; box-sizing: border-box; white-space: normal; }
+.side-info .chassis-caption-specs { white-space: normal; }
+.side-info .chassis-caption-name { white-space: normal; }
+.side-info .chassis-caption-sep--name { display: none; }
+.side-info .chassis-scale-toggle { align-self: flex-start; }
+.side-info .present-hint { width: 100%; box-sizing: border-box; white-space: normal; }
+/* Mode normal : outils de démo empilés + légende dans la colonne de droite (au-dessus des supports) */
+.side-info--tools { gap: 12px; }
+.demo-toolbar.demo-toolbar--vertical { flex-direction: column; align-items: stretch; gap: 6px; width: 100%; }
+.demo-toolbar--vertical .demo-toolbar-group { flex-direction: column; align-items: stretch; gap: 6px; }
+.demo-toolbar--vertical .demo-tool-btn { width: 100%; box-sizing: border-box; justify-content: flex-start; padding: 9px 14px; border-radius: 10px; }
+.side-info .chassis-scale-badge.is-scaled { background: rgba(255, 255, 255, 0.12); color: #fff; box-shadow: none; }
+@media (max-width: 1000px) {
+  .side-info--tools { flex-direction: row; flex-wrap: wrap; justify-content: center; }
+  .demo-toolbar--vertical { flex-direction: row; flex-wrap: wrap; justify-content: center; }
+  .demo-toolbar--vertical .demo-toolbar-group { flex-direction: row; }
+  .demo-toolbar--vertical .demo-tool-btn { width: auto; }
+  .side-info .chassis-caption { width: auto; min-height: 0; }
+}
 /* Page normale : le châssis à taille réelle qui dépasse est rogné, jamais superposé aux barres */
 .device-stage { overflow: hidden; }
 
@@ -5133,7 +5154,7 @@ html, body, #root {
   cursor: pointer;
 }
 .chassis-calib-link:hover { border-style: solid; color: #fff; }
-.fullscreen-side-info .chassis-scale-toggle { flex-wrap: wrap; row-gap: 6px; }
+.side-info .chassis-scale-toggle { flex-wrap: wrap; row-gap: 6px; }
 .dev-metrics-btn {
   margin-left: 8px;
   padding: 1px 8px;
@@ -5150,12 +5171,17 @@ html, body, #root {
 @media (max-width: 1400px), (max-height: 720px) {
   .workspace-device-sidebar.is-fullscreen { padding: 12px 12px 12px 0 !important; gap: 8px !important; }
   .workspace-device-sidebar.is-fullscreen .fullscreen-frequencetv-logo-card { height: 56px !important; padding: 6px 12px !important; margin-top: 16vh !important; }
-  .workspace-device-sidebar.is-fullscreen .device-vertical-btn { padding: 7px 10px !important; font-size: 0.72rem !important; }
-  .workspace-device-sidebar.is-fullscreen .device-buttons-column { gap: 6px !important; }
-  .fullscreen-side-info .chassis-caption { min-height: 0; padding: 8px 10px; font-size: 0.7rem; gap: 6px; }
-  .fullscreen-side-info .chassis-scale-btn { padding: 3px 9px; font-size: 0.68rem; }
-  .fullscreen-side-info .chassis-calib-link { font-size: 0.66rem; padding: 3px 8px; }
-  .fullscreen-side-info .present-hint { font-size: 0.68rem; padding: 6px 10px; }
+  .workspace-device-sidebar .device-vertical-btn { padding: 7px 10px !important; font-size: 0.72rem !important; }
+  .workspace-device-sidebar .device-buttons-column { gap: 6px !important; }
+  .workspace-device-sidebar { gap: 8px !important; }
+  .side-info--tools { gap: 8px; }
+  .demo-toolbar--vertical .demo-tool-btn { padding: 6px 10px; font-size: 0.68rem; }
+  .device-viewport-container { padding: 10px !important; }
+  .workspace-main-content-row { gap: 12px !important; }
+  .side-info .chassis-caption { min-height: 0; padding: 8px 10px; font-size: 0.7rem; gap: 6px; }
+  .side-info .chassis-scale-btn { padding: 3px 9px; font-size: 0.68rem; }
+  .side-info .chassis-calib-link { font-size: 0.66rem; padding: 3px 8px; }
+  .side-info .present-hint { font-size: 0.68rem; padding: 6px 10px; }
   /* bandeau Dev : plus petit et sur plusieurs lignes, jamais par-dessus la colonne de droite */
   .dev-metrics { font-size: 0.6rem; gap: 2px 10px; padding: 4px 8px; }
   .dev-metrics--fs { left: 104px; max-width: calc(100vw - 104px - var(--scene-col) - 16px); flex-wrap: wrap; }

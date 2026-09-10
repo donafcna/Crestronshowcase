@@ -2923,20 +2923,18 @@
          (capture d'écran + calcul WCAG), à lancer avant chaque livraison. Ce bloc corrige les couleurs
          codées en dur (blanc, gris #94a3b8, pastels) pour les thèmes Clair et Verre dépoli. -->
     <style id="tablet-sidebar">
-        /* Tablette (iPad, ≤ 1200 px de large) : le bouton Réglages, le widget météo et le numéro de
-           version sont regroupés dans un même cadre au-dessus du menu des pièces (demande du 09.09.2026).
-           La dalle TSW-1070 (1280 px) et le XPanel gardent la disposition d'origine (météo en bas). */
-        @media (max-width: 1200px) {
-            .sidebar { display: flex; flex-direction: column; }
-            #sidebar-header { order: 0; margin-bottom: 0 !important; padding: 8px 10px 6px; }
-            #weather-widget { order: 1; margin: 0 0 14px !important; border-radius: 0 0 12px 12px !important; }
-            #sidebar-header, #weather-widget {
-                background: rgba(255, 255, 255, 0.05) !important;
-                border: 1px solid var(--border-color) !important;
-            }
-            #sidebar-header { border-radius: 12px 12px 0 0; border-bottom: none !important; }
-            #rooms-block { order: 2; margin-bottom: 0 !important; }
+        /* Menu de gauche (toutes largeurs, dalle comprise — demande du 10.09.2026) : le bouton Réglages,
+           le widget météo et le numéro de version sont regroupés dans un même cadre au-dessus du menu
+           des pièces. (Initialement réservé à la tablette ≤ 1200 px, généralisé le 10.09.2026.) */
+        .sidebar { display: flex; flex-direction: column; }
+        #sidebar-header { order: 0; margin-bottom: 0 !important; padding: 8px 10px 6px; }
+        #weather-widget { order: 1; margin: 0 0 14px !important; border-radius: 0 0 12px 12px !important; }
+        #sidebar-header, #weather-widget {
+            background: rgba(255, 255, 255, 0.05) !important;
+            border: 1px solid var(--border-color) !important;
         }
+        #sidebar-header { border-radius: 12px 12px 0 0; border-bottom: none !important; }
+        #rooms-block { order: 2; margin-bottom: 0 !important; }
     </style>
     <style id="global-modals-xl">
         /* Contrôle global + configuration des presets globaux (demande du 09.09.2026) :
