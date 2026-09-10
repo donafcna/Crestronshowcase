@@ -5005,6 +5005,8 @@ html, body, #root {
   box-sizing: border-box;
 }
 .fullscreen-side-info .chassis-caption-text { white-space: normal; line-height: 1.45; display: flex; flex-direction: column; gap: 2px; }
+/* Ligne 2 (diagonale · résolution · état) : sur une ligne si la largeur le permet, sinon retour à la ligne */
+.fullscreen-side-info .chassis-caption-specs { white-space: normal; }
 .fullscreen-side-info .chassis-caption-name { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .fullscreen-side-info .chassis-caption-sep--name { display: none; }
 .fullscreen-side-info .chassis-scale-toggle { align-self: flex-start; }

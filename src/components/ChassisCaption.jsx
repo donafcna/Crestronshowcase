@@ -30,7 +30,7 @@ export const ChassisCaption = ({
   let status = null;
   if (tooSmall) status = fill(t("scale_caption_too_small"), { pct });
   else if (mode === "real") {
-    status = realSizeAvailable ? null : t("scale_real_overflow");
+    status = realSizeAvailable ? t("scale_real") : `${t("scale_real")} · ${t("scale_real_overflow")}`;
   } else if (fullscreen && pageScale) {
     // Facteur d'agrandissement obtenu par rapport à l'affichage de la page (ex. ×1,18)
     const k = (Math.round((scale / pageScale) * 100) / 100).toFixed(2).replace(/0$/, "").replace(".", decimal);
