@@ -198,3 +198,15 @@ Fichiers : `index.html`, `iphone.html`, `config.js`/`config.json`, `js/local-fee
 - Le script pose `meta.mode = "showcase"` dans le `villa_config` vitrine ; `js/local-feedback.js` refuse de démarrer si ce drapeau n'est pas là (copié par erreur sur un CP4, il reste inerte).
 - `js/local-feedback.js` (contrat v2) : scènes mémorisées `localStorage` (`villa_scene_<pièce>_<1..4>`), plus de désélection d'une scène quand un curseur renvoie la même valeur, sériels 111/112 (portes / conso) pour le bandeau « État de la villa », Musique (155) hors interlock vidéo (151-154), join 156.
 - Contournements du 7/9 devenus inutiles (dictionnaire `ru`, overlays `display: flex`) : conservés dans le script, inactifs sur la source corrigée.
+
+# maj 10/9/2026 — supports, Crestron Home, Chalet Zermatt, Home Cinéma, son Villa
+
+- Supports : ordre fixe pour tous les projets — Dalle TSW-1070, Dalle TSW-1080, PC / Xpanel, Tablette, Smartphone (`VIEWPORT_ORDER`, `Showcase.jsx`) ; support ouvert par défaut et enchaînement de la démo dans ce même ordre.
+- Crestron Home : la remise à zéro `.ch-home button { padding: 0 }` l'emportait sur les paddings des classes (textes et icônes collés au bord gauche) → `:where(button)` ; tailles de texte augmentées (corps 0,98 → 1,18 rem sur tablette / PC, 0,95 → 1,15 rem sur dalle, 0,9 → 1 rem sur téléphone ; petits textes et titres de section à l'avenant).
+- Chalet Zermatt : icône « Volets & Ombrage » (`fa-blinds` n'existe pas dans Font Awesome 6) → `fa-bars-staggered` ; sélecteur de support flottant (XPanel / iPad / TS-1070 / Smartphone) retiré, le support est choisi dans la vitrine.
+- Home Cinéma Cologny : toutes les tailles de texte × 1,2 (`homeCinema.css`).
+- Villa Crans-Montana : son caché retiré (`playFunnySound` / `playSynthSound`, balise audio, `onclick` du titre source, compteur 3 clics du widget météo, `playAudioDemo` inerte, `funny.mp3` supprimé).
+- Villa Léman : photos de pièces (Unsplash) en fond des tuiles de pièces (`photo` dans `ROOMS`, calque `.vl-tile-img` + dégradé), placeholder « Photo · … » retiré ; textes du rail de navigation agrandis (10,5 → 13 px).
+- Supports : le bouton TSW-1080 n'est plus proposé sur aucun projet (gabarit conservé dans `devices`) ; libellé « Dalle TSW-1070 » → « Dalle TSW ».
+- Appartement Carouge : textes du menu latéral 13 → 16 px, icônes 18 → 21 px.
+- Palace Genève (Connect Dashboard) : boutons, textes et panneaux agrandis d'un bloc — `zoom` 1,35 sur la racine `.hotel-geneva-dashboard` (1,5 sur Xpanel), fin d'`index.css`.

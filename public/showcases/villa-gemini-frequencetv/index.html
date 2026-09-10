@@ -3144,12 +3144,17 @@
 
         /* --- Thème Verre dépoli : la photo de fond est claire → panneaux teintés + ombre portée sur le texte --- */
         body.theme-glass {
-            /* Panneaux réellement translucides : la photo reste visible au travers.
-               La lisibilité vient du backdrop-filter (flou + assombrissement) et non
-               d'un fond opaque (correction du 10.09.2026 : le thème ressemblait au thème Sombre). */
-            --container-bg: rgba(15, 23, 42, 0.42);
+            /* Verre dépoli : voile blanc laiteux + flou + saturation, pour que la photo
+               reste visible et colorée au travers des panneaux.
+               10.09.2026 (soir) : le voile était un bleu ardoise foncé et le backdrop
+               assombri à 30 % — le rendu final était quasiment celui du thème Sombre.
+               Le voile passe en blanc translucide et l'assombrissement du fond est
+               ramené à 50 %, assez pour garder les textes blancs lisibles. */
+            --container-bg: rgba(255, 255, 255, 0.10);
+            --border-color: rgba(255, 255, 255, 0.35);
             --text-secondary: rgba(255, 255, 255, 0.92);
-            --blur-val: blur(20px) saturate(1.2) brightness(0.3);
+            --card-shadow: 0 8px 32px rgba(0, 0, 0, 0.30);
+            --blur-val: blur(18px) saturate(1.8) brightness(0.5);
         }
         body.theme-glass .app-container { text-shadow: 0 1px 3px rgba(0, 0, 0, 0.75); }
         body.theme-glass #version-label { color: rgba(255, 255, 255, 0.85) !important; }
@@ -3158,10 +3163,10 @@
         body.theme-glass #active-room-title, body.theme-glass [style*="color: #10b981"] { color: #6ee7b7 !important; }
         body.theme-glass [style*="color: #0ea5e9"] { color: #7dd3fc !important; }
         body.theme-glass .temp-val, body.theme-glass .temp-display, body.theme-glass .measured-temp-val { color: #67e8f9 !important; }
-        body.theme-glass #header-global-controls button { background: rgba(15, 23, 42, 0.45) !important; color: #ffffff !important; }
-        body.theme-glass #tab-lights-btn, body.theme-glass #tab-shades-btn { color: #ffffff !important; background: rgba(15, 23, 42, 0.45) !important; }
+        body.theme-glass #header-global-controls button { background: rgba(15, 23, 42, 0.38) !important; color: #ffffff !important; }
+        body.theme-glass #tab-lights-btn, body.theme-glass #tab-shades-btn { color: #ffffff !important; background: rgba(15, 23, 42, 0.38) !important; }
         body.theme-glass .villa-status-banner, body.theme-glass #news-banner {
-            background: rgba(15, 23, 42, 0.42) !important;
+            background: rgba(255, 255, 255, 0.10) !important;
             -webkit-backdrop-filter: var(--blur-val); backdrop-filter: var(--blur-val);
         }
         body.theme-glass .villa-status-item.ok { color: #a7f3d0 !important; }
@@ -9631,97 +9636,11 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
 
         startWeatherOnly();
 
-        // G. Le son caché est géré par l'attribut inline onclick="weatherWidgetClicked(event)" dans le HTML.
+        // G. Son caché du widget météo retiré (10/9/2026).
     
     // Son caché « funny.mp3 » désactivé le 10.09.2026 : la fonction reste définie
     // (des onclick historiques peuvent l'appeler) mais ne joue plus rien.
-    window.playFunnySound = function() { /* silencieux */ };
-
-    window.sendConsoleCommand = function() {
-        if (typeof CrComLib !== 'undefined') {
-            const inputEl = document.getElementById('console-cmd-input');
-            const cmd = inputEl ? inputEl.value.trim() : '';
-            if (cmd) {
-                console.log("CH5: Envoi de la commande console : " + cmd);
-                const el = document.getElementById('processor-iptable');
-                if (el) el.textContent = "> " + cmd + "\nExécution en cours...";
-                CrComLib.publishEvent('s', '103', cmd);
-                if (inputEl) inputEl.value = '';
-            }
-        } else {
-            console.warn("CH5: CrComLib non défini.");
-        }
-    };
-    
-    window.quickConsoleCommand = function(cmd) {
-        const inputEl = document.getElementById('console-cmd-input');
-        if (inputEl) {
-            inputEl.value = cmd;
-            window.sendConsoleCommand();
-        }
-    };
-
-    window.refreshIptable = function() {
-        console.log("CH5: Rafraîchissement initial de la console (ipt)");
-        window.quickConsoleCommand('ipt');
-    };
-
-    function playSynthSound() {
-        try {
-            const AudioContext = window.AudioContext || window.webkitAudioContext;
-            if (!AudioContext) return;
-            const ctx = new AudioContext();
-            let now = ctx.currentTime;
-            
-            // 1. Boing cartoon (0s - 0.7s)
-            const osc1 = ctx.createOscillator();
-            const gain1 = ctx.createGain();
-            osc1.type = 'triangle';
-            osc1.frequency.setValueAtTime(100, now);
-            osc1.frequency.exponentialRampToValueAtTime(800, now + 0.3);
-            osc1.frequency.exponentialRampToValueAtTime(150, now + 0.6);
-            gain1.gain.setValueAtTime(0.3, now);
-            gain1.gain.exponentialRampToValueAtTime(0.01, now + 0.7);
-            osc1.connect(gain1);
-            gain1.connect(ctx.destination);
-            osc1.start(now);
-            osc1.stop(now + 0.7);
-            
-            // 2. Rire retro robot (0.8s - 2.8s)
-            const notes = [440, 554, 659, 880, 659, 554, 440, 330];
-            let noteTime = now + 0.8;
-            notes.forEach((freq) => {
-                const osc = ctx.createOscillator();
-                const gain = ctx.createGain();
-                osc.type = 'sawtooth';
-                osc.frequency.setValueAtTime(freq, noteTime);
-                osc.frequency.linearRampToValueAtTime(freq + 40, noteTime + 0.15);
-                osc.frequency.linearRampToValueAtTime(freq - 40, noteTime + 0.25);
-                gain.gain.setValueAtTime(0.15, noteTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, noteTime + 0.28);
-                osc.connect(gain);
-                gain.connect(ctx.destination);
-                osc.start(noteTime);
-                osc.stop(noteTime + 0.3);
-                noteTime += 0.25;
-            });
-            
-            // 3. Chute/dégonflement comique (3.0s - 4.5s)
-            const osc3 = ctx.createOscillator();
-            const gain3 = ctx.createGain();
-            osc3.type = 'sine';
-            osc3.frequency.setValueAtTime(400, now + 3.0);
-            osc3.frequency.linearRampToValueAtTime(80, now + 4.5);
-            gain3.gain.setValueAtTime(0.2, now + 3.0);
-            gain3.gain.linearRampToValueAtTime(0.01, now + 4.5);
-            osc3.connect(gain3);
-            gain3.connect(ctx.destination);
-            osc3.start(now + 3.0);
-            osc3.stop(now + 4.6);
-        } catch (e) {
-            console.log("Synthesizer failed", e);
-        }
-    }
+    // (playFunnySound / playSynthSound supprimés — son caché retiré le 10/9/2026)
 // Master Mute & Power OFF Logic (v1.0.149)
         window.isMuted = false;
         window.powerOffState = false;

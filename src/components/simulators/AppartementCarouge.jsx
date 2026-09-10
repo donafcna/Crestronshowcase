@@ -322,7 +322,7 @@ export const AppartementCarouge = ({ deviceType, clientName }) => {
 
   return (
     <div className={`gemini-ui-root carouge-ui ${deviceType}`}>
-      {!isPhone && <nav className="ac-nav">{NAV.map((n) => <button key={n.id} className={`${n.id} ${tab === n.id ? "active" : ""}`} onClick={() => setTab(n.id)}><Icon name={n.icon} size={18} /><span>{n.label}</span></button>)}</nav>}
+      {!isPhone && <nav className="ac-nav">{NAV.map((n) => <button key={n.id} className={`${n.id} ${tab === n.id ? "active" : ""}`} onClick={() => setTab(n.id)}><Icon name={n.icon} size={21} /><span>{n.label}</span></button>)}</nav>}
       <main className="ac-main">{PAGES[tab]()}</main>
       {isPhone && <nav className="ac-tabbar">{NAV.filter((n) => n.id !== "routines").map((n) => <button key={n.id} className={`${n.id} ${tab === n.id ? "active" : ""}`} onClick={() => setTab(n.id)}><Icon name={n.icon} size={20} /><span>{n.label}</span></button>)}</nav>}
     </div>

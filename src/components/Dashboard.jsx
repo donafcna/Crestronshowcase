@@ -27,12 +27,6 @@ export const Dashboard = () => {
           <span className="hero-tagline">{t("hero_tagline")}</span>
           <h1>{t("hero_title")}</h1>
           <p>{t("hero_desc")}</p>
-          <div className="hero-actions">
-            <Link to={buildShowcasePath()} className="btn btn-primary">
-              {renderIcon("Layers", "w-4 h-4")}
-              <span>{t("nav_all_uis")}</span>
-            </Link>
-          </div>
         </div>
       </section>
 

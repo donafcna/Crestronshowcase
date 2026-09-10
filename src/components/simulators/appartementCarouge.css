@@ -25,7 +25,7 @@
 
 /* Navigation latérale */
 .ac-nav { width: 132px; flex-shrink: 0; display: flex; flex-direction: column; gap: 4px; padding: 18px 10px; border-right: 1px solid rgba(255, 255, 255, 0.06); }
-.ac-nav button { display: flex; align-items: center; gap: 10px; min-height: 46px; padding: 0 12px; border: 0; border-radius: 12px; background: transparent; color: var(--ac-muted); font-size: 13px; font-weight: 500; cursor: pointer; text-align: left; }
+.ac-nav button { display: flex; align-items: center; gap: 12px; min-height: 52px; padding: 0 14px; border: 0; border-radius: 12px; background: transparent; color: var(--ac-muted); font-size: 16px; font-weight: 500; cursor: pointer; text-align: left; }
 .ac-nav button.active { background: var(--ac-panel-2); color: var(--ac-text); }
 .ac-nav button.active.media svg { color: var(--ac-media); } .ac-nav button.active.lights svg { color: var(--ac-lights); } .ac-nav button.active.shades svg { color: var(--ac-shades); } .ac-nav button.active.access svg { color: var(--ac-access); } .ac-nav button.active.routines svg { color: var(--ac-routines); } .ac-nav button.active.climate svg { color: #9FB3CC; }
 

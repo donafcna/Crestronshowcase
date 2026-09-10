@@ -64,15 +64,6 @@ export const Sidebar = () => {
             </Link>
           </li>
           <li>
-            <Link
-              to={buildShowcasePath()}
-              className={navClass(currentPage === "showcase" && !selectedSector)}
-            >
-              {renderIcon("Layers", 18)}
-              <span>{t("nav_all_uis")}</span>
-            </Link>
-          </li>
-          <li>
             <Link to="/contact" className={navClass(currentPage === "contact")}>
               {renderIcon("MessageSquare", 18)}
               <span>{t("nav_contact")}</span>
@@ -120,13 +111,6 @@ export const Sidebar = () => {
         <Link to="/" className={`tab-item ${currentPage === "dashboard" ? "active" : ""}`}>
           {renderIcon("LayoutDashboard", 20)}
           <span>{t("nav_dashboard")}</span>
-        </Link>
-        <Link
-          to={buildShowcasePath()}
-          className={`tab-item ${currentPage === "showcase" ? "active" : ""}`}
-        >
-          {renderIcon("Layers", 20)}
-          <span>{t("nav_all_uis")}</span>
         </Link>
         <Link to="/contact" className={`tab-item ${currentPage === "contact" ? "active" : ""}`}>
           {renderIcon("MessageSquare", 20)}

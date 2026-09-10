@@ -24,12 +24,12 @@
 .vl-backdrop::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(11, 13, 16, 0.95) 0%, rgba(11, 13, 16, 0.78) 45%, rgba(11, 13, 16, 0.55) 100%); }
 
 /* Rail */
-.vl-rail { position: relative; z-index: 2; width: 88px; flex-shrink: 0; display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 22px 0 18px; border-right: 1px solid rgba(255, 255, 255, 0.07); background: rgba(9, 11, 14, 0.72); }
+.vl-rail { position: relative; z-index: 2; width: 96px; flex-shrink: 0; display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 22px 0 18px; border-right: 1px solid rgba(255, 255, 255, 0.07); background: rgba(9, 11, 14, 0.72); }
 .vl-rail-mark { width: 32px; height: 32px; border: 1.5px solid var(--vl-accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
 .vl-rail-mark i { width: 9px; height: 9px; background: var(--vl-accent); border-radius: 50%; }
 .vl-rail-items { display: flex; flex-direction: column; gap: 6px; }
-.vl-rail-items button { display: flex; flex-direction: column; align-items: center; gap: 5px; width: 74px; padding: 10px 0 8px; border: 0; background: transparent; color: var(--vl-dim); cursor: pointer; border-radius: 6px; position: relative; }
-.vl-rail-items button span { font-family: var(--vl-cond); font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; }
+.vl-rail-items button { display: flex; flex-direction: column; align-items: center; gap: 6px; width: 84px; padding: 10px 0 8px; border: 0; background: transparent; color: var(--vl-dim); cursor: pointer; border-radius: 6px; position: relative; }
+.vl-rail-items button span { font-family: var(--vl-cond); font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; }
 .vl-rail-items button.active { color: var(--vl-accent); }
 .vl-rail-items button.active::after { content: ""; position: absolute; bottom: 2px; width: 22px; height: 2px; background: var(--vl-accent); }
 .vl-rail-items button:hover { color: var(--vl-muted); }
@@ -99,7 +99,12 @@
 .vl-tiles { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; flex: 1; min-height: 200px; }
 .vl-tile { position: relative; display: flex; flex-direction: column; justify-content: flex-end; gap: 2px; min-height: 180px; padding: 14px; border: 1px solid rgba(255, 255, 255, 0.06); border-radius: 6px; background: linear-gradient(160deg, var(--tint) 0%, #14181D 75%); text-align: left; cursor: pointer; overflow: hidden; }
 .vl-tile.selected { border-color: var(--vl-accent); }
-.vl-tile-photo { position: absolute; top: 12px; left: 14px; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--vl-dim); }
+/* Photo de la pièce en fond de tuile, assombrie vers le bas pour garder le nom lisible. */
+.vl-tile-img { position: absolute; inset: 0; background: center / cover no-repeat; opacity: 0.85; transition: transform 0.6s ease, opacity 0.3s; }
+.vl-tile-img::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(20, 24, 29, 0.05) 0%, rgba(20, 24, 29, 0.35) 45%, rgba(20, 24, 29, 0.92) 100%); }
+.vl-tile:hover .vl-tile-img { transform: scale(1.04); }
+.vl-tile-name, .vl-tile-meta, .vl-tile-dot { position: relative; z-index: 1; }
+.vl-tile-dot { position: absolute; }
 .vl-tile-dot { position: absolute; top: 12px; right: 14px; width: 8px; height: 8px; border-radius: 50%; background: var(--vl-accent); box-shadow: 0 0 8px var(--vl-accent); }
 .vl-tile-name { font-family: var(--vl-cond); font-size: 22px; letter-spacing: 0.04em; text-transform: uppercase; }
 .vl-tile-meta { font-size: 12.5px; color: var(--vl-muted); }

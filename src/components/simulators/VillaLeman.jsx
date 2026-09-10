@@ -39,15 +39,15 @@ const T = {
 };
 
 const ROOMS = [
-  { id: "salon", floor: "ground", name: { fr: "Salon", en: "Living room", de: "Wohnzimmer" }, tint: "#2B3A47", temp: 21.5, set: 22, light: 60, shade: 0, source: "spotify" },
-  { id: "cuisine", floor: "ground", name: { fr: "Cuisine", en: "Kitchen", de: "Küche" }, tint: "#3A3129", temp: 22, set: 21.5, light: 80, shade: 0, source: null },
-  { id: "bureau", floor: "ground", name: { fr: "Bureau", en: "Office", de: "Büro" }, tint: "#23303A", temp: 20, set: 20.5, light: 0, shade: 40, source: null },
-  { id: "cinema", floor: "ground", name: { fr: "Home cinéma", en: "Home cinema", de: "Heimkino" }, tint: "#1A1F2A", temp: 19, set: 20, light: 8, shade: 100, source: "appletv" },
-  { id: "suite", floor: "floor", name: { fr: "Suite parentale", en: "Master suite", de: "Elternsuite" }, tint: "#34303B", temp: 20.5, set: 20, light: 0, shade: 100, source: null },
-  { id: "enfants", floor: "floor", name: { fr: "Chambre enfants", en: "Kids' room", de: "Kinderzimmer" }, tint: "#2C3640", temp: 20, set: 20, light: 15, shade: 100, source: null },
-  { id: "sdb", floor: "floor", name: { fr: "Salle de bain", en: "Bathroom", de: "Bad" }, tint: "#2A3A3D", temp: 23, set: 23, light: 0, shade: 80, source: null },
-  { id: "terrasse", floor: "outside", name: { fr: "Terrasse", en: "Terrace", de: "Terrasse" }, tint: "#243342", temp: 14, set: null, light: 30, shade: null, source: "spotify" },
-  { id: "piscine", floor: "outside", name: { fr: "Piscine", en: "Pool", de: "Pool" }, tint: "#1E3A45", temp: 27, set: 27, light: 40, shade: null, source: null },
+  { id: "salon", floor: "ground", photo: "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=640&q=70", name: { fr: "Salon", en: "Living room", de: "Wohnzimmer" }, tint: "#2B3A47", temp: 21.5, set: 22, light: 60, shade: 0, source: "spotify" },
+  { id: "cuisine", floor: "ground", photo: "https://images.unsplash.com/photo-1556911220-bff31c812dba?auto=format&fit=crop&w=640&q=70", name: { fr: "Cuisine", en: "Kitchen", de: "Küche" }, tint: "#3A3129", temp: 22, set: 21.5, light: 80, shade: 0, source: null },
+  { id: "bureau", floor: "ground", photo: "https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=640&q=70", name: { fr: "Bureau", en: "Office", de: "Büro" }, tint: "#23303A", temp: 20, set: 20.5, light: 0, shade: 40, source: null },
+  { id: "cinema", floor: "ground", photo: "https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?auto=format&fit=crop&w=640&q=70", name: { fr: "Home cinéma", en: "Home cinema", de: "Heimkino" }, tint: "#1A1F2A", temp: 19, set: 20, light: 8, shade: 100, source: "appletv" },
+  { id: "suite", floor: "floor", photo: "https://images.unsplash.com/photo-1540518614846-7eded433c457?auto=format&fit=crop&w=640&q=70", name: { fr: "Suite parentale", en: "Master suite", de: "Elternsuite" }, tint: "#34303B", temp: 20.5, set: 20, light: 0, shade: 100, source: null },
+  { id: "enfants", floor: "floor", photo: "https://images.unsplash.com/photo-1519710164239-da123dc03ef4?auto=format&fit=crop&w=640&q=70", name: { fr: "Chambre enfants", en: "Kids' room", de: "Kinderzimmer" }, tint: "#2C3640", temp: 20, set: 20, light: 15, shade: 100, source: null },
+  { id: "sdb", floor: "floor", photo: "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?auto=format&fit=crop&w=640&q=70", name: { fr: "Salle de bain", en: "Bathroom", de: "Bad" }, tint: "#2A3A3D", temp: 23, set: 23, light: 0, shade: 80, source: null },
+  { id: "terrasse", floor: "outside", photo: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=640&q=70", name: { fr: "Terrasse", en: "Terrace", de: "Terrasse" }, tint: "#243342", temp: 14, set: null, light: 30, shade: null, source: "spotify" },
+  { id: "piscine", floor: "outside", photo: "https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=640&q=70", name: { fr: "Piscine", en: "Pool", de: "Pool" }, tint: "#1E3A45", temp: 27, set: 27, light: 40, shade: null, source: null },
 ];
 
 const SOURCES = [
@@ -154,7 +154,7 @@ export const VillaLeman = ({ deviceType, clientName }) => {
 
   const RoomTile = ({ r, compact }) => (
     <button className={`vl-tile ${selected === r.id ? "selected" : ""} ${compact ? "compact" : ""}`} style={{ "--tint": r.tint }} onClick={() => { setSelected(r.id); setTab("rooms"); }}>
-      <span className="vl-tile-photo">{t("photo")} · {name(r)}</span>
+      {r.photo && <span className="vl-tile-img" style={{ backgroundImage: `url(${r.photo})` }} aria-hidden="true" />}
       {r.light > 0 && <span className="vl-tile-dot" />}
       <span className="vl-tile-name">{name(r)}</span>
       <span className="vl-tile-meta">{r.temp.toFixed(1).replace(".", ",")}° · {r.source ? (r.source === "appletv" ? t("movie") : t("music")) : r.light > 0 ? t("lit") : t("quiet")}</span>

@@ -5189,3 +5189,9 @@ html, body, #root {
 }
 /* En mode Scène, la bulle « Reprise de la démo » va en bas à GAUCHE : la colonne de droite (légende) reste libre */
 .demo-countdown.demo-countdown--left { right: auto; left: 16px; bottom: 16px; }
+
+/* Palace Genève (tableau de bord Connect) : boutons et textes agrandis — tout le
+   tableau de bord est rendu à 1,35x (zoom) et sa racine réduite d'autant pour
+   rester dans l'écran (10/9/2026). */
+.hotel-geneva-dashboard{zoom:1.35}
+.desktop-browser-frame .hotel-geneva-dashboard{zoom:1.5}

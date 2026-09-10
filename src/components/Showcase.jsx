@@ -39,6 +39,14 @@ const SIMULATORS = {
 };
 
 const VIEWPORT_IDS = ["phone", "tablet", "wallpanel", "wallpanel_hd", "desktop"];
+// Ordre d'affichage des supports, identique pour tous les projets :
+// Dalle TSW (1070 puis 1080), PC / Xpanel, Tablette, Smartphone.
+const VIEWPORT_ORDER = ["wallpanel", "wallpanel_hd", "desktop", "tablet", "phone"];
+// Premier support d'un projet dans cet ordre (à l'ouverture d'un projet).
+const firstViewportOf = (proj) => {
+  const vps = proj.devices.map((id) => getDeviceById(id)?.viewport).filter(Boolean);
+  return VIEWPORT_ORDER.find((v) => vps.includes(v)) || vps[0];
+};
 const IDLE_RESUME_MS = 10000; // reprise de la démo automatique après inactivité
 
 const SimulatorFallback = () => (
@@ -118,7 +126,9 @@ const ShowcaseInner = ({ sectorId, projectId, device }) => {
       const dev = getDeviceById(dId);
       if (dev && !seen.has(dev.viewport)) seen.set(dev.viewport, dev);
     });
-    return Array.from(seen.values());
+    return Array.from(seen.values()).sort(
+      (a, b) => VIEWPORT_ORDER.indexOf(a.viewport) - VIEWPORT_ORDER.indexOf(b.viewport)
+    );
   }, [activeProject]);
 
   const defaultViewport = projectViewports[0]?.viewport || "wallpanel";
@@ -163,7 +173,7 @@ const ShowcaseInner = ({ sectorId, projectId, device }) => {
     }
     const pIdx = filteredProjects.findIndex((p) => p.id === activeProject.id);
     const next = filteredProjects[(pIdx + 1) % filteredProjects.length] || activeProject;
-    const nextDev = getDeviceById(next.devices[0])?.viewport;
+    const nextDev = firstViewportOf(next);
     goTo(next, nextDev, { replace: true });
   }, [projectViewports, viewportDevice, activeProject, filteredProjects, goTo]);
 
@@ -307,7 +317,7 @@ const ShowcaseInner = ({ sectorId, projectId, device }) => {
     } else {
       setExpandedProjectId(projId);
       const proj = projects.find((p) => p.id === projId);
-      if (proj && proj.id !== activeProject.id) goTo(proj, getDeviceById(proj.devices[0])?.viewport);
+      if (proj && proj.id !== activeProject.id) goTo(proj, firstViewportOf(proj));
     }
   };
 
@@ -401,7 +411,7 @@ const ShowcaseInner = ({ sectorId, projectId, device }) => {
                     onClick={(e) => {
                       if (e.metaKey || e.ctrlKey) return;
                       e.preventDefault();
-                      goTo(proj, getDeviceById(proj.devices[0])?.viewport);
+                      goTo(proj, firstViewportOf(proj));
                     }}
                     className={`project-list-card horizontal-card glass-panel compact-row-card ${
                       activeProject.id === proj.id ? "selected" : "glass-panel-hover"

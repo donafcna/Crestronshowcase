@@ -218,14 +218,15 @@
         body.theme-glass {
             --bg-color: transparent;
             --bg-gradient: linear-gradient(rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.05));
-            /* 10.09.2026 : panneaux translucides (la photo reste visible) mais le
-               backdrop est assombri, donc les textes blancs restent lisibles. */
-            --container-bg: rgba(15, 23, 42, 0.42);
-            --border-color: rgba(255, 255, 255, 0.18);
+            /* Verre dépoli : voile blanc laiteux, flou et saturation — la photo reste
+               visible au travers. 10.09.2026 (soir) : le voile bleu ardoise + un fond
+               assombri à 30 % donnaient un rendu identique au thème Sombre. */
+            --container-bg: rgba(255, 255, 255, 0.10);
+            --border-color: rgba(255, 255, 255, 0.35);
             --text-primary: #ffffff;
-            --text-secondary: rgba(255, 255, 255, 0.9);
-            --card-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
-            --blur-val: blur(20px) saturate(1.2) brightness(0.3);
+            --text-secondary: rgba(255, 255, 255, 0.92);
+            --card-shadow: 0 8px 32px rgba(0, 0, 0, 0.30);
+            --blur-val: blur(18px) saturate(1.8) brightness(0.5);
         }
 
 
@@ -3254,64 +3255,7 @@
         });
 
         // Son caché « funny.mp3 » désactivé le 10.09.2026 : fonction conservée mais silencieuse.
-        window.playFunnySound = function() { /* silencieux */ };
-
-        function playSynthSound() {
-            try {
-                const AudioContext = window.AudioContext || window.webkitAudioContext;
-                if (!AudioContext) return;
-                const ctx = new AudioContext();
-                let now = ctx.currentTime;
-                
-                // 1. Boing cartoon (0s - 0.7s)
-                const osc1 = ctx.createOscillator();
-                const gain1 = ctx.createGain();
-                osc1.type = 'triangle';
-                osc1.frequency.setValueAtTime(100, now);
-                osc1.frequency.exponentialRampToValueAtTime(800, now + 0.3);
-                osc1.frequency.exponentialRampToValueAtTime(150, now + 0.6);
-                gain1.gain.setValueAtTime(0.3, now);
-                gain1.gain.exponentialRampToValueAtTime(0.01, now + 0.7);
-                osc1.connect(gain1);
-                gain1.connect(ctx.destination);
-                osc1.start(now);
-                osc1.stop(now + 0.7);
-                
-                // 2. Rire retro robot (0.8s - 2.8s)
-                const notes = [440, 554, 659, 880, 659, 554, 440, 330];
-                let noteTime = now + 0.8;
-                notes.forEach((freq) => {
-                    const osc = ctx.createOscillator();
-                    const gain = ctx.createGain();
-                    osc.type = 'sawtooth';
-                    osc.frequency.setValueAtTime(freq, noteTime);
-                    osc.frequency.linearRampToValueAtTime(freq + 40, noteTime + 0.15);
-                    osc.frequency.linearRampToValueAtTime(freq - 40, noteTime + 0.25);
-                    gain.gain.setValueAtTime(0.15, noteTime);
-                    gain.gain.exponentialRampToValueAtTime(0.01, noteTime + 0.28);
-                    osc.connect(gain);
-                    gain.connect(ctx.destination);
-                    osc.start(noteTime);
-                    osc.stop(noteTime + 0.3);
-                    noteTime += 0.25;
-                });
-                
-                // 3. Chute/dégonflement comique (3.0s - 4.5s)
-                const osc3 = ctx.createOscillator();
-                const gain3 = ctx.createGain();
-                osc3.type = 'sine';
-                osc3.frequency.setValueAtTime(400, now + 3.0);
-                osc3.frequency.linearRampToValueAtTime(80, now + 4.5);
-                gain3.gain.setValueAtTime(0.2, now + 3.0);
-                gain3.gain.linearRampToValueAtTime(0.01, now + 4.5);
-                osc3.connect(gain3);
-                gain3.connect(ctx.destination);
-                osc3.start(now + 3.0);
-                osc3.stop(now + 4.6);
-            } catch (e) {
-                console.log("Synthesizer failed", e);
-            }
-        }
+        // (playFunnySound / playSynthSound supprimés — son caché retiré le 10/9/2026)
     </script>
 
     <!-- Confirmation source audio (musique vs audio de la source vidéo) — v1.0.166 -->

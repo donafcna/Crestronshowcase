@@ -43,9 +43,9 @@
   --ch-radius: 16px;
   --ch-radius-lg: 22px;
   --ch-fs-title: 1.35rem;
-  --ch-fs-section: 0.95rem;
-  --ch-fs-body: 0.9rem;
-  --ch-fs-small: 0.72rem;
+  --ch-fs-section: 1rem;
+  --ch-fs-body: 1rem;
+  --ch-fs-small: 0.8rem;
   --ch-tap: 34px;
   --ch-cols: 2;
 
@@ -79,7 +79,10 @@
 .ch-home * {
   box-sizing: border-box;
 }
-.ch-home button {
+/* Remise à zéro des boutons : :where() garde une spécificité nulle pour que
+   les paddings définis par classe (.ch-scene, .ch-tile, .ch-svc, .ch-chip…)
+   s'appliquent — sans cela, textes et icônes collaient au bord gauche. */
+.ch-home :where(button) {
   font: inherit;
   color: inherit;
   border: none;
@@ -96,9 +99,9 @@
   --ch-radius: 20px;
   --ch-radius-lg: 26px;
   --ch-fs-title: 1.6rem;
-  --ch-fs-section: 1.1rem;
-  --ch-fs-body: 0.98rem;
-  --ch-fs-small: 0.78rem;
+  --ch-fs-section: 1.25rem;
+  --ch-fs-body: 1.18rem;
+  --ch-fs-small: 0.9rem;
   --ch-tap: 44px;
   --ch-cols: 6;
 }
@@ -115,9 +118,9 @@
   --ch-radius: 18px;
   --ch-radius-lg: 22px;
   --ch-fs-title: 1.5rem;
-  --ch-fs-section: 1.02rem;
-  --ch-fs-body: 0.95rem;
-  --ch-fs-small: 0.76rem;
+  --ch-fs-section: 1.2rem;
+  --ch-fs-body: 1.15rem;
+  --ch-fs-small: 0.88rem;
   --ch-tap: 48px;
   --ch-cols: 6;
 }

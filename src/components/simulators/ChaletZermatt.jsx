@@ -152,21 +152,7 @@ export const ChaletZermatt = ({ deviceType }) => {
 
   return (
     <div className={`gemini-ui-root chalet-zermatt-ui mode-${deviceMode}`}>
-      {/* Top Floating Device Preview Switcher (Pill Dropdown Overlay) */}
-      <div className="device-controls-bar">
-        <i className="fa-solid fa-globe" style={{ fontSize: "0.95rem", color: "#1e293b" }}></i>
-        <select
-          value={deviceMode}
-          onChange={(e) => setDeviceMode(e.target.value)}
-          className="device-mode-select"
-        >
-          <option value="xpanel">XPanel (Desktop)</option>
-          <option value="ipad">iPad (Tablette)</option>
-          <option value="ts1070">Crestron TS-1070</option>
-          <option value="mobile">Smartphone</option>
-        </select>
-        <i className="fa-solid fa-chevron-down" style={{ fontSize: "0.75rem", color: "#475569", pointerEvents: "none" }}></i>
-      </div>
+      {/* Le sélecteur de support flottant a été retiré : le support est choisi dans la vitrine. */}
 
       {/* Application Top Bar */}
       <header className="top-header">
@@ -255,7 +241,7 @@ export const ChaletZermatt = ({ deviceType }) => {
             className={`nav-item ${activeView === "shades" ? "active" : ""}`}
             onClick={() => setActiveView("shades")}
           >
-            <i className="fa-solid fa-blinds"></i>
+            <i className="fa-solid fa-bars-staggered"></i>
             <span>Volets & Ombrage</span>
           </div>
           <div
