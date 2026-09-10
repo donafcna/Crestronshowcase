@@ -46,6 +46,40 @@ const SimulatorFallback = () => (
   </div>
 );
 
+// Bandeau des projets sur UNE seule ligne : défilement horizontal masqué + flèches
+// gauche / droite affichées seulement quand la liste dépasse la largeur disponible.
+const useProjectsStrip = () => {
+  const ref = useRef(null);
+  const [state, setState] = useState({ canLeft: false, canRight: false });
+  const update = useCallback(() => {
+    const el = ref.current;
+    if (!el) return;
+    const canLeft = el.scrollLeft > 2;
+    const canRight = el.scrollLeft + el.clientWidth < el.scrollWidth - 2;
+    setState((s) => (s.canLeft === canLeft && s.canRight === canRight ? s : { canLeft, canRight }));
+  }, []);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    update();
+    const ro = new ResizeObserver(update);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [update]);
+  // Amener le projet sélectionné dans la zone visible (au montage seulement : ne pas
+  // ramener la liste en arrière quand l'utilisateur fait défiler avec les flèches)
+  useEffect(() => {
+    const sel = ref.current?.querySelector(".selected");
+    if (sel) sel.scrollIntoView({ block: "nearest", inline: "nearest" });
+  }, []);
+  const scrollBy = useCallback((dir) => {
+    const el = ref.current;
+    if (!el) return;
+    el.scrollBy({ left: dir * Math.max(200, el.clientWidth * 0.6), behavior: "smooth" });
+  }, []);
+  return { ref, update, scrollBy, ...state };
+};
+
 // Le châssis (DeviceFrame) publie ses mesures dans FrameInfoContext ; la page
 // les affiche au-dessus de la barre des projets (mesures Dev) et sur la ligne
 // des outils de démo (légende d'échelle).
@@ -58,6 +92,7 @@ export const Showcase = (props) => (
 const ShowcaseInner = ({ sectorId, projectId, device }) => {
   const { devMode } = useDevMode();
   const frameInfo = useFrameInfo()?.info;
+  const strip = useProjectsStrip();
   const { t, lang } = useTranslation();
   const { navigate } = useRouter();
   const { clientName, kiosk } = useDemoSettings();
@@ -348,7 +383,13 @@ const ShowcaseInner = ({ sectorId, projectId, device }) => {
                 </div>
               </div>
             ) : (
-              <div className="projects-horizontal-scroll-wrapper compact-cards-row">
+              <div className={`projects-strip ${strip.canLeft ? "can-left" : ""} ${strip.canRight ? "can-right" : ""}`}>
+                {strip.canLeft && (
+                  <button type="button" className="projects-strip-arrow left" onClick={() => strip.scrollBy(-1)} aria-label="Précédents">
+                    {renderIcon("ChevronLeft", 16)}
+                  </button>
+                )}
+              <div className="projects-horizontal-scroll-wrapper compact-cards-row" ref={strip.ref} onScroll={strip.update}>
                 {filteredProjects.map((proj) => (
                   <a
                     key={proj.id}
@@ -378,6 +419,12 @@ const ShowcaseInner = ({ sectorId, projectId, device }) => {
                     </div>
                   </a>
                 ))}
+              </div>
+                {strip.canRight && (
+                  <button type="button" className="projects-strip-arrow right" onClick={() => strip.scrollBy(1)} aria-label="Suivants">
+                    {renderIcon("ChevronRight", 16)}
+                  </button>
+                )}
               </div>
             )}
           </section>

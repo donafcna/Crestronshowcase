@@ -4685,11 +4685,42 @@ html, body, #root {
 
 /* Les cartes passent à la ligne au lieu de disparaître dans un défilement
    horizontal sans barre visible (6e projet invisible). */
-.projects-horizontal-scroll-wrapper.compact-cards-row {
-  flex-wrap: wrap !important;
-  overflow: visible !important;
-  gap: 6px !important;
+/* Une seule ligne : défilement horizontal sans barre visible, flèches si dépassement */
+.projects-strip {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-width: 0;
 }
+.projects-horizontal-scroll-wrapper.compact-cards-row {
+  flex-wrap: nowrap !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  gap: 6px !important;
+  scrollbar-width: none;
+  scroll-behavior: smooth;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.projects-horizontal-scroll-wrapper.compact-cards-row::-webkit-scrollbar { display: none; }
+.projects-strip-arrow {
+  flex: 0 0 auto;
+  width: 28px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 8px;
+  background: #fff;
+  color: #1f2937;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+.projects-strip-arrow.left { margin-right: 6px; }
+.projects-strip-arrow.right { margin-left: 6px; }
+.projects-strip-arrow:hover { background: #f1f5f9; }
 
 .projects-horizontal-list-bar.compact-header .project-list-card.horizontal-card.compact-row-card {
   width: auto !important;
