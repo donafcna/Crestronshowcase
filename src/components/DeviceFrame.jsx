@@ -8,6 +8,7 @@ import { useDemoSettings } from "../hooks/useDemoSettings";
 import { SCALE_RULES, realSizeScale } from "../data/scaleRules";
 import { useFrameInfo } from "../context/FrameInfoContext";
 import { useScreenCalibration } from "../hooks/useScreenCalibration";
+import { useTranslation } from "../context/LanguageContext";
 
 // Barre d'état iOS (heure réelle, réseau, batterie) dessinée dans la zone
 // "safe area" du haut de l'écran, comme sur un vrai iPhone / iPad. La GUI est
@@ -121,11 +122,18 @@ export const DeviceFrame = ({
   useEffect(() => () => setFrameInfo?.(null), [setFrameInfo]);
   const inlineBanners = !frameInfo;
 
+  // VOCABULAIRE (à respecter partout) :
+  //  - « Mode Scène » = ce bouton d'angle : le châssis seul occupe la fenêtre du site, avec la
+  //    colonne de droite (logo, supports, légende Taille réelle / Responsive). isFullscreen = mode Scène.
+  //  - « Interface seule » = bouton de la barre d'outils : la GUI brute dans un nouvel onglet, sans châssis.
+  //  - « Plein écran du navigateur » = F11, indépendant du site.
+  const { t } = useTranslation();
   const cornerButton = (
     <button
       className="btn-exit-fullscreen-device-corner"
       onClick={isFullscreen ? onExitFullscreen : onEnterFullscreen}
-      title={isFullscreen ? "Exit Fullscreen" : "Fullscreen Preview"}
+      title={isFullscreen ? t("stage_mode_exit") : t("stage_mode_enter")}
+      aria-label={isFullscreen ? t("stage_mode_exit") : t("stage_mode_enter")}
     >
       {isFullscreen ? (
         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
