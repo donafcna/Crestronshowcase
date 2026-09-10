@@ -3245,48 +3245,11 @@
             applyLanguage(currentLang);
             applyTheme(currentTheme);
 
-            // G. Son caché sur le widget météo (triple clic/tap)
-            let weatherClicks = 0;
-            const weather = document.getElementById('weather-widget');
-            if (weather) {
-                const handleWeather = (e) => {
-                    weatherClicks++;
-                    if (weatherClicks >= 3) {
-                        weatherClicks = 0;
-                        window.playFunnySound();
-                    }
-                    setTimeout(() => { weatherClicks = 0; }, 1500);
-                };
-                weather.addEventListener('click', handleWeather);
-                weather.addEventListener('touchstart', handleWeather);
-            }
+            // G. Son caché retiré le 10.09.2026 (demande de Donatien) : plus aucun son dans le GUI.
         });
 
-        window.playFunnySound = function() {
-            try {
-                console.log("Playing funny sound...");
-                const audioObj = new Audio('funny.mp3');
-                audioObj.volume = 1.0;
-                audioObj.play().then(() => {
-                    console.log("Audio playing successfully via Audio constructor.");
-                }).catch(err => {
-                    console.log("Audio constructor failed, trying fallback DOM element.", err);
-                    const audioDom = document.getElementById('funny-audio');
-                    if (audioDom) {
-                        audioDom.volume = 1.0;
-                        audioDom.play().catch(domErr => {
-                            console.log("DOM Audio element failed, playing synth fallback.", domErr);
-                            playSynthSound();
-                        });
-                    } else {
-                        playSynthSound();
-                    }
-                });
-            } catch (e) {
-                console.log("Audio play failed, falling back to synth.", e);
-                playSynthSound();
-            }
-        };
+        // Son caché « funny.mp3 » désactivé le 10.09.2026 : fonction conservée mais silencieuse.
+        window.playFunnySound = function() { /* silencieux */ };
 
         function playSynthSound() {
             try {
@@ -3345,7 +3308,6 @@
             }
         }
     </script>
-    <audio id="funny-audio" src="funny.mp3" preload="auto"></audio>
 
     <!-- Confirmation source audio (musique vs audio de la source vidéo) — v1.0.166 -->
     <div id="audio-confirm-backdrop" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.55); z-index: 1000000;"></div>

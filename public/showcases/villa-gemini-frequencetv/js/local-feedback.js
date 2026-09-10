@@ -558,7 +558,7 @@
 /* 100 % front-end : définies ici pour éviter les erreurs console.       */
 /* ------------------------------------------------------------------ */
 window.playAudioDemo = function () {
-  if (typeof window.playFunnySound === "function") window.playFunnySound();
+  /* Son caché retiré le 10.09.2026 : la vitrine ne joue aucun son. */
 };
 window.openWeatherWebsite = function () {
   // Ouvre MétéoSuisse uniquement sur un vrai clic — jamais pendant la démo

@@ -283,9 +283,7 @@
             lastWeatherTapTime = now;
             
             console.log("Weather widget clicked via inline handler!");
-            if (typeof window.playFunnySound === 'function') {
-                window.playFunnySound();
-            }
+            // Son caché retiré le 10.09.2026 (demande de Donatien) : plus aucun son dans le GUI.
             if (typeof CrComLib !== 'undefined') {
                 CrComLib.publishEvent('b', '56', true);
                 setTimeout(function() { CrComLib.publishEvent('b', '56', false); }, 100);
@@ -3097,6 +3095,30 @@
         body.theme-glass .consigne-val, body.theme-glass .consigne-temp-val { color: #fbbf24 !important; }
         body.theme-glass .hvac-mode-val, body.theme-glass #hvac-mode-val { color: #ffffff !important; }
     </style>
+    <style id="motors-presets-xl">
+        /* Boutons « Tout ouvrir / Demi-ouverture / Tout fermer » de la fenêtre Stores
+           (10.09.2026) : textes agrandis et en majuscules, dans tous les thèmes. */
+        body#app-body ch5-button[customClass~="preset-text-btn"],
+        body#app-body ch5-button[customClass~="preset-text-btn"] .ch5-button,
+        body#app-body ch5-button[customClass~="preset-text-btn"] .cb-btn,
+        body#app-body ch5-button[customClass~="preset-text-btn"] .ch5-button--label,
+        body#app-body .preset-text-btn,
+        body#app-body .preset-text-btn * {
+            font-size: 1rem !important;
+            font-weight: 700 !important;
+            text-transform: uppercase !important;
+            letter-spacing: 0.02em !important;
+        }
+        body#app-body ch5-button[customClass~="preset-text-btn"] { min-height: 40px !important; }
+        @media (max-height: 700px) {
+            body#app-body ch5-button[customClass~="preset-text-btn"],
+            body#app-body ch5-button[customClass~="preset-text-btn"] .ch5-button,
+            body#app-body ch5-button[customClass~="preset-text-btn"] .cb-btn,
+            body#app-body ch5-button[customClass~="preset-text-btn"] .ch5-button--label,
+            body#app-body .preset-text-btn,
+            body#app-body .preset-text-btn * { font-size: 0.85rem !important; }
+        }
+    </style>
     <style id="settings-xl">
         /* Fenêtre Réglages (10.09.2026) : agrandie et proportionnée sur tous les
            supports et dans tous les thèmes. Sélecteurs en body#app-body pour
@@ -4104,7 +4126,7 @@ body#app-body.theme-light ch5-button[customClass~="scene-btn"]:not([selected="tr
                 <h2 id="av-section-title" style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; padding-bottom: 6px;">
                     <div style="display: flex; align-items: center; gap: 8px;">
                         <svg viewBox="0 0 576 512" style="width: 22px; height: 22px; fill: #8b5cf6;"><path d="M528 0H48C21.5 0 0 21.5 0 48v320c0 26.5 21.5 48 48 48h192l-16 48h-72c-13.3 0-24 10.7-24 24s10.7 24 24 24h272c13.3 0 24-10.7 24-24s-10.7-24-24-24h-72l-16-48h192c26.5 0 48-21.5 48-48V48c0-26.5-21.5-48-48-48zm-16 352H64V64h448v288z"/></svg>
-                        <span onclick="window.playAudioDemo()" style="cursor: pointer; user-select: none;" data-i18n="source_title">Sélection de la source audio et vidéo</span>
+                        <span style="user-select: none;" data-i18n="source_title">Sélection de la source audio et vidéo</span>
                     </div>
                 </h2>
 
@@ -9534,31 +9556,9 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
 
         // G. Le son caché est géré par l'attribut inline onclick="weatherWidgetClicked(event)" dans le HTML.
     
-    window.playFunnySound = function() {
-        try {
-            console.log("Playing funny sound...");
-            const audioObj = new Audio('funny.mp3');
-            audioObj.volume = 1.0;
-            audioObj.play().then(() => {
-                console.log("Audio playing successfully via Audio constructor.");
-            }).catch(err => {
-                console.log("Audio constructor failed, trying fallback DOM element.", err);
-                const audioDom = document.getElementById('funny-audio');
-                if (audioDom) {
-                    audioDom.volume = 1.0;
-                    audioDom.play().catch(domErr => {
-                        console.log("DOM Audio element failed, playing synth fallback.", domErr);
-                        playSynthSound();
-                    });
-                } else {
-                    playSynthSound();
-                }
-            });
-        } catch (e) {
-            console.log("Audio play failed, falling back to synth.", e);
-            playSynthSound();
-        }
-    };
+    // Son caché « funny.mp3 » désactivé le 10.09.2026 : la fonction reste définie
+    // (des onclick historiques peuvent l'appeler) mais ne joue plus rien.
+    window.playFunnySound = function() { /* silencieux */ };
 
     window.sendConsoleCommand = function() {
         if (typeof CrComLib !== 'undefined') {
@@ -10237,7 +10237,6 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
     }
 })();
 </script>
-<audio id="funny-audio" src="funny.mp3" preload="auto"></audio>
 
     <!-- Confirmation source audio (musique vs audio de la source vidéo) — v1.0.166 -->
     <div id="audio-confirm-backdrop" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.55); z-index: 1000000;"></div>
