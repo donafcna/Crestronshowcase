@@ -5060,3 +5060,86 @@ html, body, #root {
 .fullscreen-side-info .present-hint { width: 100%; box-sizing: border-box; white-space: normal; }
 /* Page normale : le châssis à taille réelle qui dépasse est rogné, jamais superposé aux barres */
 .device-stage { overflow: hidden; }
+
+/* ===== Calibrage de l'écran (carte bancaire) ===== */
+.calib-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 100005;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(2, 6, 23, 0.82);
+  backdrop-filter: blur(6px);
+}
+.calib-panel {
+  width: min(92vw, 720px);
+  max-height: 94vh;
+  overflow: auto;
+  background: #0f172a;
+  color: #e2e8f0;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 18px;
+  padding: 22px 26px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  font-family: var(--font-sans);
+}
+.calib-panel h2 { margin: 0; font-size: 1.15rem; color: #fff; }
+.calib-panel p { margin: 0; font-size: 0.9rem; line-height: 1.5; color: #cbd5e1; }
+.calib-stage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 260px;
+  padding: 12px;
+  background: repeating-linear-gradient(45deg, rgba(255,255,255,0.03) 0 8px, transparent 8px 16px);
+  border-radius: 12px;
+  overflow: auto;
+}
+.calib-card {
+  box-sizing: border-box;
+  border: 3px solid #fbbf24;
+  border-radius: 3.18mm; /* rayon ISO 7810 ≈ 3,18 mm, ici en unités CSS : purement décoratif */
+  background: rgba(251, 191, 36, 0.08);
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  padding: 6px 8px;
+  font-size: 0.72rem;
+  color: #fde68a;
+  flex-shrink: 0;
+}
+.calib-controls { display: flex; align-items: center; gap: 10px; }
+.calib-controls input[type="range"] { flex: 1; accent-color: #fbbf24; }
+.calib-step {
+  width: 36px; height: 36px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.2);
+  background: rgba(255,255,255,0.08); color: #fff; font-size: 1.2rem; cursor: pointer;
+}
+.calib-value { min-width: 96px; text-align: right; font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 0.85rem; color: #fde68a; }
+.calib-actions { display: flex; gap: 10px; flex-wrap: wrap; justify-content: flex-end; }
+.chassis-calib-link {
+  margin-left: 6px;
+  padding: 4px 10px;
+  border: 1px dashed rgba(255, 255, 255, 0.35);
+  border-radius: 999px;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.85);
+  font: inherit;
+  font-size: 0.72rem;
+  cursor: pointer;
+}
+.chassis-calib-link:hover { border-style: solid; color: #fff; }
+.fullscreen-side-info .chassis-scale-toggle { flex-wrap: wrap; row-gap: 6px; }
+.dev-metrics-btn {
+  margin-left: 8px;
+  padding: 1px 8px;
+  border: 1px solid rgba(251, 191, 36, 0.7);
+  border-radius: 4px;
+  background: rgba(251, 191, 36, 0.15);
+  color: #fde68a;
+  font: inherit;
+  cursor: pointer;
+  pointer-events: auto;
+}

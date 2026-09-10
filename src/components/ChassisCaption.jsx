@@ -18,6 +18,7 @@ export const ChassisCaption = ({
   realSizeAvailable,
   tooSmall,
   onChangeMode,
+  onCalibrate,
   fullscreen = false,
 }) => {
   const { t, lang } = useTranslation();
@@ -77,6 +78,11 @@ export const ChassisCaption = ({
           >
             {t("scale_auto")}
           </button>
+          {onCalibrate && (
+            <button type="button" className="chassis-calib-link" onClick={onCalibrate} title={t("calib_hint")}>
+              {t("calib_link")}
+            </button>
+          )}
         </div>
       ) : (
         <span className="chassis-scale-toggle" aria-label={t("scale_real")}>

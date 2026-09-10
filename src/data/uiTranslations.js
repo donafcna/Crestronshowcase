@@ -8,6 +8,13 @@
 // des projets vivent dans projects.js.
 export const uiTranslations = {
   fr: {
+    calib_link: "Calibrer l'écran",
+    calib_title: "Calibrer la taille réelle",
+    calib_hint: "Posez une carte bancaire sur l'écran et ajustez le curseur jusqu'à ce que le cadre coïncide exactement avec la carte. Le réglage est mémorisé dans ce navigateur : les châssis « Taille réelle » auront ensuite leurs vraies dimensions.",
+    calib_apply: "Valider",
+    calib_reset: "Standard (96 dpi)",
+    calib_reset_hint: "Revenir à la convention CSS : 96 pixels par pouce",
+    close: "Fermer",
     scale_real_overflow: "dépasse la fenêtre : passez le navigateur en plein écran (F11)",
     scale_caption_zoom: "agrandi ×{k} par rapport à la page",
     scale_caption_real_mm: "taille réelle ({w} × {h} mm)",
@@ -72,6 +79,13 @@ export const uiTranslations = {
     demo_resume_now: "Reprendre la démo maintenant",
   },
   en: {
+    calib_link: "Calibrate screen",
+    calib_title: "Calibrate actual size",
+    calib_hint: "Hold a bank card against the screen and move the slider until the frame matches the card exactly. The setting is stored in this browser: “Actual size” chassis will then have their true dimensions.",
+    calib_apply: "Apply",
+    calib_reset: "Standard (96 dpi)",
+    calib_reset_hint: "Back to the CSS convention: 96 pixels per inch",
+    close: "Close",
     scale_real_overflow: "larger than the window: switch the browser to full screen (F11)",
     scale_caption_zoom: "enlarged ×{k} compared with the page",
     scale_caption_real_mm: "actual size ({w} × {h} mm)",
@@ -136,6 +150,13 @@ export const uiTranslations = {
     demo_resume_now: "Resume the demo now",
   },
   de: {
+    calib_link: "Bildschirm kalibrieren",
+    calib_title: "Originalgrösse kalibrieren",
+    calib_hint: "Halten Sie eine Bankkarte an den Bildschirm und verschieben Sie den Regler, bis der Rahmen genau mit der Karte übereinstimmt. Die Einstellung wird in diesem Browser gespeichert: Gehäuse in „Originalgrösse“ haben dann ihre echten Abmessungen.",
+    calib_apply: "Übernehmen",
+    calib_reset: "Standard (96 dpi)",
+    calib_reset_hint: "Zurück zur CSS-Konvention: 96 Pixel pro Zoll",
+    close: "Schliessen",
     scale_real_overflow: "größer als das Fenster: Browser in den Vollbildmodus schalten (F11)",
     scale_caption_zoom: "×{k} gegenüber der Seite vergrößert",
     scale_caption_real_mm: "Originalgröße ({w} × {h} mm)",

@@ -8,6 +8,7 @@ import { DevMetrics } from "./DevMetrics";
 import { ChassisCaption } from "./ChassisCaption";
 import { useDevMode } from "../hooks/useDevMode";
 import { FrameInfoProvider, useFrameInfo } from "../context/FrameInfoContext";
+import { CalibrateCard } from "./CalibrateCard";
 import { DemoToolbar } from "./DemoToolbar";
 import { useRouter, buildShowcasePath } from "../router";
 import { useDemoSettings } from "../hooks/useDemoSettings";
@@ -93,6 +94,8 @@ const ShowcaseInner = ({ sectorId, projectId, device }) => {
   const { devMode } = useDevMode();
   const frameInfo = useFrameInfo()?.info;
   const strip = useProjectsStrip();
+  const [calibOpen, setCalibOpen] = useState(false);
+  const openCalib = useCallback(() => setCalibOpen(true), []);
   const { t, lang } = useTranslation();
   const { navigate } = useRouter();
   const { clientName, kiosk } = useDemoSettings();
@@ -343,6 +346,7 @@ const ShowcaseInner = ({ sectorId, projectId, device }) => {
                 fitScale={frameInfo.fitScale}
                 mode={frameInfo.mode}
                 realSizeAvailable={frameInfo.realSizeAvailable}
+                onCalibrate={openCalib}
               />
             )}
             {filteredProjects.length === 0 ? (
@@ -469,6 +473,7 @@ const ShowcaseInner = ({ sectorId, projectId, device }) => {
             fitScale={frameInfo.fitScale}
             mode={frameInfo.mode}
             realSizeAvailable={frameInfo.realSizeAvailable}
+            onCalibrate={openCalib}
           />
         )}
 
@@ -534,6 +539,7 @@ const ShowcaseInner = ({ sectorId, projectId, device }) => {
                     realSizeAvailable={frameInfo.realSizeAvailable}
                     tooSmall={frameInfo.tooSmall}
                     onChangeMode={frameInfo.onChangeMode}
+                    onCalibrate={openCalib}
                   />
                 )}
                 {demoEnabled && demoRunning && (
@@ -549,6 +555,7 @@ const ShowcaseInner = ({ sectorId, projectId, device }) => {
           </aside>
         </div>
       </div>
+      {calibOpen && <CalibrateCard onClose={() => setCalibOpen(false)} />}
       {demoEnabled && <DemoCursor cursor={cursor} />}
       {demoEnabled && !demoRunning && resumeAt && (
         <DemoCountdown resumeAt={resumeAt} total={IDLE_RESUME_MS} onResumeNow={resumeDemo} />

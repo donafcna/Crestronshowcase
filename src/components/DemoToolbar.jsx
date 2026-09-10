@@ -16,7 +16,6 @@ export const DemoToolbar = ({
   center = null, // légende du châssis (support · taille · échelle), sur la même ligne
 }) => {
   const { t } = useTranslation();
-  const [copied, setCopied] = useState(false);
   const [qrOpen, setQrOpen] = useState(false);
 
   const absoluteShareUrl = shareUrl.startsWith("http") ? shareUrl : `${SITE_URL}${shareUrl}`;
@@ -25,16 +24,6 @@ export const DemoToolbar = ({
   // détectée automatiquement), pas la page du site avec le châssis simulé.
   const demoUrl = project?.id ? `${SITE_URL}/#demo/${project.id}` : absoluteShareUrl;
 
-  const copyLink = async () => {
-    try {
-      await navigator.clipboard.writeText(absoluteShareUrl);
-    } catch {
-      // Repli : sélection manuelle via prompt (navigateurs sans clipboard API)
-      window.prompt(t("tool_share"), absoluteShareUrl);
-    }
-    setCopied(true);
-    setTimeout(() => setCopied(false), 1800);
-  };
 
   const Btn = ({ icon, label, onClick, active, href, title }) => {
     const IconComp = Icons[icon] || Icons.Circle;
@@ -61,7 +50,7 @@ export const DemoToolbar = ({
   return (
     <div className="demo-toolbar">
       <div className="demo-toolbar-group">
-        <Btn icon={copied ? "Check" : "Link"} label={copied ? t("tool_share_done") : t("tool_share")} onClick={copyLink} active={copied} />
+        {/* « Copier le lien » retiré le 10.09.2026 (demande de Donatien) — le QR code et la fiche portent le lien */}
         <Btn icon="QrCode" label={t("tool_qr")} onClick={() => setQrOpen(true)} />
         <Btn
           icon={presenting ? "Square" : "Presentation"}
