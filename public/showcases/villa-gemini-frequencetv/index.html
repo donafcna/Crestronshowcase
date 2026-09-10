@@ -2474,6 +2474,14 @@
             font-size: 0.85rem !important;
             font-weight: bold !important;
         }
+        /* Clavier Alarme (10.09.2026) : touches parfaitement rondes (64 × 64), CLR et OK réduits pour tenir dans le rond */
+        #alarm-keypad-screen .alarm-key {
+            width: 64px !important; height: 64px !important; min-width: 64px !important; min-height: 64px !important;
+            padding: 0 !important; border-radius: 50% !important; aspect-ratio: 1 / 1;
+            font-size: 1.9rem !important; line-height: 1 !important; letter-spacing: 0 !important;
+        }
+        #alarm-keypad-screen .alarm-key-clr { font-size: 0.78rem !important; }
+        #alarm-keypad-screen .alarm-key-ok { font-size: 1.05rem !important; }
 
 
         /* STORE POPUP PRESET TEXT SIZE REDUCTION (-30% to -40%) (1.05rem bold) (v1.0.149) */
@@ -4251,22 +4259,22 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
             <div id="alarm-error-msg" style="color: #ef4444; font-weight: bold; min-height: 20px; font-size: 0.9rem;"></div>
             
             <!-- Clavier 3x4 -->
-            <div style="display: grid; grid-template-columns: repeat(3, 70px); gap: 10px;">
-                <button onclick="pressAlarmKey('1')" class="temp-adjust-btn" style="width: 70px !important; height: 60px !important;">1</button>
-                <button onclick="pressAlarmKey('2')" class="temp-adjust-btn" style="width: 70px !important; height: 60px !important;">2</button>
-                <button onclick="pressAlarmKey('3')" class="temp-adjust-btn" style="width: 70px !important; height: 60px !important;">3</button>
+            <div style="display: grid; grid-template-columns: repeat(3, 64px); gap: 10px;">
+                <button onclick="pressAlarmKey('1')" class="temp-adjust-btn alarm-key" style="width: 64px !important; height: 64px !important;">1</button>
+                <button onclick="pressAlarmKey('2')" class="temp-adjust-btn alarm-key" style="width: 64px !important; height: 64px !important;">2</button>
+                <button onclick="pressAlarmKey('3')" class="temp-adjust-btn alarm-key" style="width: 64px !important; height: 64px !important;">3</button>
                 
-                <button onclick="pressAlarmKey('4')" class="temp-adjust-btn" style="width: 70px !important; height: 60px !important;">4</button>
-                <button onclick="pressAlarmKey('5')" class="temp-adjust-btn" style="width: 70px !important; height: 60px !important;">5</button>
-                <button onclick="pressAlarmKey('6')" class="temp-adjust-btn" style="width: 70px !important; height: 60px !important;">6</button>
+                <button onclick="pressAlarmKey('4')" class="temp-adjust-btn alarm-key" style="width: 64px !important; height: 64px !important;">4</button>
+                <button onclick="pressAlarmKey('5')" class="temp-adjust-btn alarm-key" style="width: 64px !important; height: 64px !important;">5</button>
+                <button onclick="pressAlarmKey('6')" class="temp-adjust-btn alarm-key" style="width: 64px !important; height: 64px !important;">6</button>
                 
-                <button onclick="pressAlarmKey('7')" class="temp-adjust-btn" style="width: 70px !important; height: 60px !important;">7</button>
-                <button onclick="pressAlarmKey('8')" class="temp-adjust-btn" style="width: 70px !important; height: 60px !important;">8</button>
-                <button onclick="pressAlarmKey('9')" class="temp-adjust-btn" style="width: 70px !important; height: 60px !important;">9</button>
+                <button onclick="pressAlarmKey('7')" class="temp-adjust-btn alarm-key" style="width: 64px !important; height: 64px !important;">7</button>
+                <button onclick="pressAlarmKey('8')" class="temp-adjust-btn alarm-key" style="width: 64px !important; height: 64px !important;">8</button>
+                <button onclick="pressAlarmKey('9')" class="temp-adjust-btn alarm-key" style="width: 64px !important; height: 64px !important;">9</button>
                 
-                <button onclick="pressAlarmKey('C')" class="temp-adjust-btn" style="width: 70px !important; height: 60px !important; color: #ef4444; font-size: 0.85rem;">CLR</button>
-                <button onclick="pressAlarmKey('0')" class="temp-adjust-btn" style="width: 70px !important; height: 60px !important;">0</button>
-                <button onclick="pressAlarmKey('E')" class="temp-adjust-btn" style="width: 70px !important; height: 60px !important; color: #10b981; font-size: 0.85rem;">OK</button>
+                <button onclick="pressAlarmKey('C')" class="temp-adjust-btn alarm-key alarm-key-clr" style="width: 64px !important; height: 64px !important; color: #ef4444;">CLR</button>
+                <button onclick="pressAlarmKey('0')" class="temp-adjust-btn alarm-key" style="width: 64px !important; height: 64px !important;">0</button>
+                <button onclick="pressAlarmKey('E')" class="temp-adjust-btn alarm-key alarm-key-ok" style="width: 64px !important; height: 64px !important; color: #10b981;">OK</button>
             </div>
         </div>
         
