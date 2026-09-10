@@ -877,3 +877,40 @@ a.sector-card-interactive {
     right: 12px;
   }
 }
+
+/* ---- Bandeau d'accueil : hauteur réduite --------------------------------- */
+/* Les marges intérieures haut/bas du hero étaient trop généreuses (40px) :
+   le bandeau mangeait une part inutile du premier écran. Compacté au maximum
+   sans perdre la hiérarchie (sur-titre / titre / accroche). */
+.dashboard-hero {
+  padding-top: 14px;
+  padding-bottom: 14px;
+}
+.dashboard-hero .hero-tagline {
+  margin-bottom: 4px;
+  font-size: 0.72rem;
+  letter-spacing: 2px;
+}
+.dashboard-hero h1 {
+  margin-bottom: 6px;
+  font-size: 2rem;
+  line-height: 1.08;
+}
+.dashboard-hero p {
+  font-size: 0.92rem;
+  line-height: 1.45;
+}
+/* Titre et accroche sur une seule ligne autant que possible sur grand écran :
+   le bandeau gagne encore une ligne de hauteur sans rien perdre en lisibilité. */
+.dashboard-hero .hero-text-block {
+  max-width: 1000px;
+}
+@media (max-width: 768px) {
+  .dashboard-hero {
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+  .dashboard-hero h1 {
+    font-size: 1.5rem;
+  }
+}

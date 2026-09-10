@@ -73,7 +73,7 @@ const ROOMS = [
     id: "dining",
     key: "room_dining",
     floor: "ground",
-    img: PHOTO("photo-1617806118233-18e1db207f62", 640),
+    img: PHOTO("photo-1616486886892-ff366aa67ba4", 640),
     lights: [
       { id: "pendant", label: "Suspension", dim: true },
       { id: "wall", label: "Appliques", dim: true },
