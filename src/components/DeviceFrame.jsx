@@ -75,12 +75,10 @@ export const DeviceFrame = ({
   // appliquée (le châssis dépasse) et la légende le signale — F11 donne plus de place.
   const realSizeAvailable = fitScale >= realScale * SCALE_RULES.realSizeTolerance;
   // RÈGLE GÉNÉRALE (tous les projets, tous les supports) — voir scaleRules.js :
-  //  - « Taille réelle » : le châssis est affiché à ses dimensions physiques calibrées, à
-  //    l'identique sur la page et en plein écran (s'il dépasse, il est rogné et la légende
-  //    invite à passer en plein écran F11) ;
-  //  - « Responsive » : le châssis remplit l'espace disponible (page : plafonné à maxUpscale ;
-  //    plein écran : sans plafond).
-  const effectiveMode = scaleMode === "real" ? "real" : "auto";
+  //  - Mode normal : châssis ajusté à la page, badge « Taille réelle » seul (pas de sélecteur) ;
+  //  - Mode Scène : « Taille réelle » = dimensions physiques calibrées (rognées si trop grandes,
+  //    légende → F11) ; « Responsive » = remplit l'espace sans plafond.
+  const effectiveMode = isFullscreen && scaleMode === "real" ? "real" : "auto";
   // Plein écran : le châssis occupe tout l'espace disponible (proportions
   // conservées), sans le plafond maxUpscale de la page normale.
   const upscaleCap = isFullscreen ? Infinity : SCALE_RULES.maxUpscale;
