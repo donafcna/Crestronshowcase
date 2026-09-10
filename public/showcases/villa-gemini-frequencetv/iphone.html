@@ -761,9 +761,7 @@
             <select id="room-select" class="room-dropdown" onchange="changeRoomIphone(this.value)">
                 <!-- Rempli dynamiquement -->
             </select>
-            <button onclick="openSettingsModal()" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: var(--text-primary); padding: 8px; border-radius: 8px; cursor: pointer; font-size: 1.1rem; display: flex; align-items: center; justify-content: center; width: 38px; height: 38px; box-sizing: border-box;">
-                ⚙️
-            </button>
+            <button onclick="openSettingsModal()" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: var(--text-primary); padding: 8px; border-radius: 8px; cursor: pointer; font-size: 1.1rem; display: flex; align-items: center; justify-content: center; width: 38px; height: 38px; box-sizing: border-box;"><svg class="gear-icon" viewBox="0 0 512 512" aria-hidden="true"><path d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6l-43.3 75c-3.2 8.7-12.2 13.9-21.4 11.7l-56.4-13.6c-15.6 12-33 21.6-51.7 28.5l-11.9 57.3c-2 9.7-10.5 16.7-20.5 16.7H220.4c-10 0-18.5-7-20.5-16.7l-11.9-57.3c-18.7-6.9-36.1-16.4-51.7-28.5l-56.4 13.6c-9.2 2.2-18.2-3-21.4-11.7l-43.3-75c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4c-1.1-8.3-1.7-16.8-1.7-25.4s.6-17.1 1.7-25.4L21.6 191.2c-6.9-6.2-9.6-15.9-6.4-24.6l43.3-75c3.2-8.7 12.2-13.9 21.4-11.7l56.4 13.6c15.6-12 33-21.6 51.7-28.5l11.9-57.3c2-9.7 10.5-16.7 20.5-16.7h72.8c10 0 18.5 7 20.5 16.7l11.9 57.3c18.7 6.9 36.1 16.4 51.7 28.5l56.4-13.6c9.2-2.2 18.2 3 21.4 11.7l43.3 75zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"/></svg></button>
         </div>
         <div class="alarm-row" style="display: flex; gap: 8px; justify-content: space-between; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 10px; margin-top: 8px;">
             <button onclick="window.openAlarmModal()" style="flex: 1; height: 36px; background: rgba(239, 68, 68, 0.15); border: 1px solid #ef4444; color: #fca5a5; border-radius: 8px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px; font-size: 0.8rem; outline: none;">
@@ -791,9 +789,7 @@
             <div id="iphone-lights-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
                 <span style="font-weight: bold; font-size: 0.9rem; color: var(--text-secondary);" data-i18n="circuits_title">Circuits :</span>
                 <!-- Bouton Réglages Lumières -->
-                <button class="popup-trigger-btn" onclick="openCircuitsModal()" style="width: auto; height: 32px; padding: 0 10px; margin: 0; font-size: 1rem; display: flex; align-items: center; justify-content: center; border-radius: 8px;">
-                    ⚙️
-                </button>
+                <button class="popup-trigger-btn" onclick="openCircuitsModal()" style="width: auto; height: 32px; padding: 0 10px; margin: 0; font-size: 1rem; display: flex; align-items: center; justify-content: center; border-radius: 8px;"><svg class="gear-icon" viewBox="0 0 512 512" aria-hidden="true"><path d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6l-43.3 75c-3.2 8.7-12.2 13.9-21.4 11.7l-56.4-13.6c-15.6 12-33 21.6-51.7 28.5l-11.9 57.3c-2 9.7-10.5 16.7-20.5 16.7H220.4c-10 0-18.5-7-20.5-16.7l-11.9-57.3c-18.7-6.9-36.1-16.4-51.7-28.5l-56.4 13.6c-9.2 2.2-18.2-3-21.4-11.7l-43.3-75c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4c-1.1-8.3-1.7-16.8-1.7-25.4s.6-17.1 1.7-25.4L21.6 191.2c-6.9-6.2-9.6-15.9-6.4-24.6l43.3-75c3.2-8.7 12.2-13.9 21.4-11.7l56.4 13.6c15.6-12 33-21.6 51.7-28.5l11.9-57.3c2-9.7 10.5-16.7 20.5-16.7h72.8c10 0 18.5 7 20.5 16.7l11.9 57.3c18.7 6.9 36.1 16.4 51.7 28.5l56.4-13.6c9.2-2.2 18.2 3 21.4 11.7l43.3 75zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"/></svg></button>
             </div>
             
             <!-- Choix Scènes -->
@@ -814,9 +810,7 @@
                     <span style="font-family: inherit; font-size: 1.1rem; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-primary);" data-i18n="motors_title_section">Moteurs</span>
                 </div>
                 <!-- Bouton Réglages Moteurs -->
-                <button class="popup-trigger-btn" onclick="openMotorsModal()" style="width: auto; height: 32px; padding: 0 10px; margin: 0; font-size: 1rem; display: flex; align-items: center; justify-content: center; border-radius: 8px;">
-                    ⚙️
-                </button>
+                <button class="popup-trigger-btn" onclick="openMotorsModal()" style="width: auto; height: 32px; padding: 0 10px; margin: 0; font-size: 1rem; display: flex; align-items: center; justify-content: center; border-radius: 8px;"><svg class="gear-icon" viewBox="0 0 512 512" aria-hidden="true"><path d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6l-43.3 75c-3.2 8.7-12.2 13.9-21.4 11.7l-56.4-13.6c-15.6 12-33 21.6-51.7 28.5l-11.9 57.3c-2 9.7-10.5 16.7-20.5 16.7H220.4c-10 0-18.5-7-20.5-16.7l-11.9-57.3c-18.7-6.9-36.1-16.4-51.7-28.5l-56.4 13.6c-9.2 2.2-18.2-3-21.4-11.7l-43.3-75c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4c-1.1-8.3-1.7-16.8-1.7-25.4s.6-17.1 1.7-25.4L21.6 191.2c-6.9-6.2-9.6-15.9-6.4-24.6l43.3-75c3.2-8.7 12.2-13.9 21.4-11.7l56.4 13.6c15.6-12 33-21.6 51.7-28.5l11.9-57.3c2-9.7 10.5-16.7 20.5-16.7h72.8c10 0 18.5 7 20.5 16.7l11.9 57.3c18.7 6.9 36.1 16.4 51.7 28.5l56.4-13.6c9.2-2.2 18.2 3 21.4 11.7l43.3 75zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"/></svg></button>
             </div>
 
             <!-- Stores Rapides -->
@@ -974,6 +968,12 @@
     </div>
 
     <!-- POPUP REGLAGE DES PARAMÈTRES (Mobile Settings Panel) -->
+    <style id="gear-icons">
+        /* Engrenages : SVG net commun (plus d'emoji flou), couleur par thème (10.09.2026) */
+        .gear-icon { width: 16px; height: 16px; flex-shrink: 0; fill: #cbd5e1; pointer-events: none; }
+        body#app-body.theme-light .gear-icon { fill: #334155; }
+        body#app-body.theme-glass .gear-icon { fill: #e2e8f0; }
+    </style>
     <style id="theme-overlays">
         /* Cohérence des thèmes sur les fenêtres du GUI smartphone (10.09.2026) :
            mêmes règles que la version dalle/tablette. */
@@ -1063,15 +1063,15 @@
         /* Boutons CH5 sans style dédié : le bleu par défaut (#0099ff) ne porte pas
            le texte blanc (3:1). Bleu plus profond dans les thèmes sombres, carte
            claire en thème Clair. */
-        body#app-body:not(.theme-light) .ch5-button--default,
-        body#app-body:not(.theme-light) .custom-overlay-panel .ch5-button--default { background-color: #0369a1 !important; }
-        body#app-body:not(.theme-light) .ch5-button--default .ch5-button--label { color: #ffffff !important; }
+        body#app-body:not(.theme-light) .ch5-button--default:not(.source-btn):not(.my-source-btn):not(.src-appletv):not(.src-skyq):not(.src-swisscom):not(.src-iptv):not(.src-musique),
+        body#app-body:not(.theme-light) .custom-overlay-panel .ch5-button--default:not(.source-btn):not(.my-source-btn):not(.src-appletv):not(.src-skyq):not(.src-swisscom):not(.src-iptv):not(.src-musique) { background-color: #0369a1 !important; }
+        body#app-body:not(.theme-light) ch5-button:not([selected="true"]):not(.ch5-button--selected) .ch5-button--default:not(.source-btn):not(.my-source-btn):not(.src-appletv):not(.src-skyq):not(.src-swisscom):not(.src-iptv):not(.src-musique) .ch5-button--label { color: #ffffff !important; }
         body#app-body.theme-light .custom-overlay-panel ch5-button:not([selected="true"]):not(.ch5-button--selected) > .ch5-button:not([style*="gradient"]),
-        body#app-body.theme-light .ch5-button--default {
+        body#app-body.theme-light ch5-button:not([selected="true"]):not(.ch5-button--selected) .ch5-button--default:not(.source-btn):not(.my-source-btn):not(.src-appletv):not(.src-skyq):not(.src-swisscom):not(.src-iptv):not(.src-musique) {
             background-color: rgba(15, 23, 42, 0.08) !important;
             border-color: rgba(15, 23, 42, 0.18) !important;
         }
-        body#app-body.theme-light .ch5-button--default .ch5-button--label { color: #0f172a !important; }
+        body#app-body.theme-light ch5-button:not([selected="true"]):not(.ch5-button--selected) .ch5-button--default:not(.source-btn):not(.my-source-btn):not(.src-appletv):not(.src-skyq):not(.src-swisscom):not(.src-iptv):not(.src-musique) .ch5-button--label { color: #0f172a !important; }
         /* Accents restants relevés au contrôle de contraste */
         body#app-body:not(.theme-light) .custom-overlay-panel [style*="rgba(255,255,255,0.4)"],
         body#app-body:not(.theme-light) .custom-overlay-panel [style*="rgba(255, 255, 255, 0.4)"] { color: rgba(255, 255, 255, 0.75) !important; }
@@ -1103,6 +1103,11 @@
         body#app-body.theme-light [style*="color: #fca5a5"] { color: #b91c1c !important; }
         body#app-body.theme-light [style*="color: #93c5fd"] { color: #1d4ed8 !important; }
         body#app-body.theme-light [style*="color: #a7f3d0"] { color: #047857 !important; }
+        /* Bouton sélectionné (fond bleu CH5) en thème Clair : libellé blanc, pas foncé */
+        body#app-body.theme-light ch5-button[selected="true"] .ch5-button--label,
+        body#app-body.theme-light ch5-button.ch5-button--selected .ch5-button--label,
+        body#app-body.theme-light ch5-button[selected="true"] .cb-btn { color: #ffffff !important; }
+
         /* Verre dépoli : fenêtres translucides mais backdrop assombri (lisibilité) */
         body#app-body.theme-glass .custom-overlay-panel {
             background-color: rgba(11, 17, 30, 0.55) !important;
@@ -1499,7 +1504,7 @@
             <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 8px; padding: 10px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                     <h4 style="margin: 0; font-size: 0.85rem; color: #eab308;">💡 Éclairage global</h4>
-                    <button onclick="window.openGlobalPresetCustomizer('lighting')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; cursor: pointer; outline: none; font-size: 0.75rem;">⚙️</button>
+                    <button onclick="window.openGlobalPresetCustomizer('lighting')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; cursor: pointer; outline: none; font-size: 0.75rem;"><svg class="gear-icon" viewBox="0 0 512 512" aria-hidden="true"><path d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6l-43.3 75c-3.2 8.7-12.2 13.9-21.4 11.7l-56.4-13.6c-15.6 12-33 21.6-51.7 28.5l-11.9 57.3c-2 9.7-10.5 16.7-20.5 16.7H220.4c-10 0-18.5-7-20.5-16.7l-11.9-57.3c-18.7-6.9-36.1-16.4-51.7-28.5l-56.4 13.6c-9.2 2.2-18.2-3-21.4-11.7l-43.3-75c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4c-1.1-8.3-1.7-16.8-1.7-25.4s.6-17.1 1.7-25.4L21.6 191.2c-6.9-6.2-9.6-15.9-6.4-24.6l43.3-75c3.2-8.7 12.2-13.9 21.4-11.7l56.4 13.6c15.6-12 33-21.6 51.7-28.5l11.9-57.3c2-9.7 10.5-16.7 20.5-16.7h72.8c10 0 18.5 7 20.5 16.7l11.9 57.3c18.7 6.9 36.1 16.4 51.7 28.5l56.4-13.6c9.2-2.2 18.2 3 21.4 11.7l43.3 75zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"/></svg></button>
                 </div>
                 <div style="display: flex; gap: 4px;">
                     <ch5-button label="ON" customClass="scene-btn" style="height: 32px; flex: 1;" sendEventOnClick="401"></ch5-button>
@@ -1511,7 +1516,7 @@
             <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 8px; padding: 10px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                     <h4 style="margin: 0; font-size: 0.85rem; color: #00b4c5;">↕️ Stores globaux</h4>
-                    <button onclick="window.openGlobalPresetCustomizer('shades')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; cursor: pointer; outline: none; font-size: 0.75rem;">⚙️</button>
+                    <button onclick="window.openGlobalPresetCustomizer('shades')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; cursor: pointer; outline: none; font-size: 0.75rem;"><svg class="gear-icon" viewBox="0 0 512 512" aria-hidden="true"><path d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6l-43.3 75c-3.2 8.7-12.2 13.9-21.4 11.7l-56.4-13.6c-15.6 12-33 21.6-51.7 28.5l-11.9 57.3c-2 9.7-10.5 16.7-20.5 16.7H220.4c-10 0-18.5-7-20.5-16.7l-11.9-57.3c-18.7-6.9-36.1-16.4-51.7-28.5l-56.4 13.6c-9.2 2.2-18.2-3-21.4-11.7l-43.3-75c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4c-1.1-8.3-1.7-16.8-1.7-25.4s.6-17.1 1.7-25.4L21.6 191.2c-6.9-6.2-9.6-15.9-6.4-24.6l43.3-75c3.2-8.7 12.2-13.9 21.4-11.7l56.4 13.6c15.6-12 33-21.6 51.7-28.5l11.9-57.3c2-9.7 10.5-16.7 20.5-16.7h72.8c10 0 18.5 7 20.5 16.7l11.9 57.3c18.7 6.9 36.1 16.4 51.7 28.5l56.4-13.6c9.2-2.2 18.2 3 21.4 11.7l43.3 75zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"/></svg></button>
                 </div>
                 <div style="display: flex; gap: 4px;">
                     <ch5-button label="OUVRIR" customClass="scene-btn" style="height: 32px; flex: 1;" sendEventOnClick="404"></ch5-button>
@@ -1523,7 +1528,7 @@
             <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 8px; padding: 10px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                     <h4 style="margin: 0; font-size: 0.85rem; color: #10b981;">❄️ Climatisation globale</h4>
-                    <button onclick="window.openGlobalPresetCustomizer('hvac')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; cursor: pointer; outline: none; font-size: 0.75rem;">⚙️</button>
+                    <button onclick="window.openGlobalPresetCustomizer('hvac')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; cursor: pointer; outline: none; font-size: 0.75rem;"><svg class="gear-icon" viewBox="0 0 512 512" aria-hidden="true"><path d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6l-43.3 75c-3.2 8.7-12.2 13.9-21.4 11.7l-56.4-13.6c-15.6 12-33 21.6-51.7 28.5l-11.9 57.3c-2 9.7-10.5 16.7-20.5 16.7H220.4c-10 0-18.5-7-20.5-16.7l-11.9-57.3c-18.7-6.9-36.1-16.4-51.7-28.5l-56.4 13.6c-9.2 2.2-18.2-3-21.4-11.7l-43.3-75c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4c-1.1-8.3-1.7-16.8-1.7-25.4s.6-17.1 1.7-25.4L21.6 191.2c-6.9-6.2-9.6-15.9-6.4-24.6l43.3-75c3.2-8.7 12.2-13.9 21.4-11.7l56.4 13.6c15.6-12 33-21.6 51.7-28.5l11.9-57.3c2-9.7 10.5-16.7 20.5-16.7h72.8c10 0 18.5 7 20.5 16.7l11.9 57.3c18.7 6.9 36.1 16.4 51.7 28.5l56.4-13.6c9.2-2.2 18.2 3 21.4 11.7l43.3 75zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"/></svg></button>
                 </div>
                 <div style="display: flex; gap: 4px;">
                     <ch5-button label="CONFORT" customClass="scene-btn" style="height: 32px; flex: 1;" sendEventOnClick="407"></ch5-button>
@@ -1535,7 +1540,7 @@
             <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 8px; padding: 10px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
                     <h4 style="margin: 0; font-size: 0.85rem; color: #fb7185;">✈️ Mode vacances</h4>
-                    <button onclick="window.openGlobalPresetCustomizer('vacation')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; cursor: pointer; outline: none; font-size: 0.75rem;">⚙️</button>
+                    <button onclick="window.openGlobalPresetCustomizer('vacation')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; cursor: pointer; outline: none; font-size: 0.75rem;"><svg class="gear-icon" viewBox="0 0 512 512" aria-hidden="true"><path d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6l-43.3 75c-3.2 8.7-12.2 13.9-21.4 11.7l-56.4-13.6c-15.6 12-33 21.6-51.7 28.5l-11.9 57.3c-2 9.7-10.5 16.7-20.5 16.7H220.4c-10 0-18.5-7-20.5-16.7l-11.9-57.3c-18.7-6.9-36.1-16.4-51.7-28.5l-56.4 13.6c-9.2 2.2-18.2-3-21.4-11.7l-43.3-75c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4c-1.1-8.3-1.7-16.8-1.7-25.4s.6-17.1 1.7-25.4L21.6 191.2c-6.9-6.2-9.6-15.9-6.4-24.6l43.3-75c3.2-8.7 12.2-13.9 21.4-11.7l56.4 13.6c15.6-12 33-21.6 51.7-28.5l11.9-57.3c2-9.7 10.5-16.7 20.5-16.7h72.8c10 0 18.5 7 20.5 16.7l11.9 57.3c18.7 6.9 36.1 16.4 51.7 28.5l56.4-13.6c9.2-2.2 18.2 3 21.4 11.7l43.3 75zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"/></svg></button>
                 </div>
                 <div style="display: flex; gap: 4px;">
                     <ch5-button label="ACTIVER" customClass="scene-btn" style="height: 32px; flex: 1;" sendEventOnClick="410" receiveStateSelected="410"></ch5-button>
@@ -1552,7 +1557,7 @@
                 ⚙️ Configuration Preset
             </h3>
             <div style="display: flex; gap: 6px;">
-                <button onclick="window.saveGlobalPresetConfig()" style="height: 28px; background: #10b981; border: none; color: white; border-radius: 6px; cursor: pointer; font-weight: bold; padding: 0 10px; font-size: 0.75rem;">SAUVER</button>
+                <button onclick="window.saveGlobalPresetConfig()" style="height: 28px; background: #047857; border: none; color: white; border-radius: 6px; cursor: pointer; font-weight: bold; padding: 0 10px; font-size: 0.75rem;">SAUVER</button>
                 <button onclick="window.closeGlobalPresetCustomizer()" style="height: 28px; background: rgba(255,255,255,0.08); border: none; color: white; border-radius: 6px; cursor: pointer; font-weight: bold; padding: 0 10px; font-size: 0.75rem;">RETOUR</button>
             </div>
         </div>
@@ -2834,7 +2839,7 @@
                         cog.className = "shades-config-cog";
                         cog.style = "cursor: pointer; display: flex; align-items: center; justify-content: center; width: 100%; height: 26px; border-radius: 6px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); padding: 0; outline: none;";
                         cog.onclick = () => openSourceControlModal(cogKey);
-                        cog.innerHTML = `<svg viewBox="0 0 512 512" style="width: 12px; height: 12px; fill: #cbd5e1;"><path d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6l-43.3 75c-3.2 8.7-12.2 13.9-21.4 11.7l-56.4-13.6c-15.6 12-33 21.6-51.7 28.5l-11.9 57.3c-2 9.7-10.5 16.7-20.5 16.7H220.4c-10 0-18.5-7-20.5-16.7l-11.9-57.3c-18.7-6.9-36.1-16.4-51.7-28.5l-56.4 13.6c-9.2 2.2-18.2-3-21.4-11.7l-43.3-75c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4c-1.1-8.3-1.7-16.8-1.7-25.4s.6-17.1 1.7-25.4L21.6 191.2c-6.9-6.2-9.6-15.9-6.4-24.6l43.3-75c3.2-8.7 12.2-13.9 21.4-11.7l56.4 13.6c15.6-12 33-21.6 51.7-28.5l11.9-57.3c2-9.7 10.5-16.7 20.5-16.7h72.8c10 0 18.5 7 20.5 16.7l11.9 57.3c18.7 6.9 36.1 16.4 51.7 28.5l56.4-13.6c9.2-2.2 18.2 3 21.4 11.7l43.3 75zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"/></svg>`;
+                        cog.innerHTML = `<svg class="gear-icon" viewBox="0 0 512 512"><path d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6l-43.3 75c-3.2 8.7-12.2 13.9-21.4 11.7l-56.4-13.6c-15.6 12-33 21.6-51.7 28.5l-11.9 57.3c-2 9.7-10.5 16.7-20.5 16.7H220.4c-10 0-18.5-7-20.5-16.7l-11.9-57.3c-18.7-6.9-36.1-16.4-51.7-28.5l-56.4 13.6c-9.2 2.2-18.2-3-21.4-11.7l-43.3-75c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4c-1.1-8.3-1.7-16.8-1.7-25.4s.6-17.1 1.7-25.4L21.6 191.2c-6.9-6.2-9.6-15.9-6.4-24.6l43.3-75c3.2-8.7 12.2-13.9 21.4-11.7l56.4 13.6c15.6-12 33-21.6 51.7-28.5l11.9-57.3c2-9.7 10.5-16.7 20.5-16.7h72.8c10 0 18.5 7 20.5 16.7l11.9 57.3c18.7 6.9 36.1 16.4 51.7 28.5l56.4-13.6c9.2-2.2 18.2 3 21.4 11.7l43.3 75zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"/></svg>`;
                         
                         wrapper.appendChild(btn);
                         wrapper.appendChild(cog);

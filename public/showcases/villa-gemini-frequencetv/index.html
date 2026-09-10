@@ -2067,6 +2067,32 @@
             outline: none !important;
         }
 
+        /* Logo Apple TV, bouton NON sélectionné (10.09.2026) : même logo que l'état
+           sélectionné, agrandi de 32 à 44 px (il paraissait petit et flou), et en
+           version sombre sur le thème Clair où le blanc disparaissait. */
+        body#app-body ch5-button:not([selected="true"]):not(.ch5-button--selected) .src-appletv {
+            background-size: 44px 44px !important;
+            background-position: center 14px !important;
+        }
+        body#app-body.theme-light ch5-button:not([selected="true"]):not(.ch5-button--selected) .src-appletv {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" fill="%230f172a"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zM255.9 86.6c17.5-21.2 29.5-50.7 25.5-80.6-24.8 1.5-55.7 17-73.3 37.7-15.6 18-29.4 47.9-24.5 77.2 27.5 2.1 55.4-13.8 72.3-34.3z"/></svg>') !important;
+        }
+
+        /* Engrenages : un seul SVG net (plus d'emoji flou), couleur par thème (10.09.2026) */
+        .gear-icon {
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
+            fill: #cbd5e1;
+            pointer-events: none;
+        }
+        button:hover .gear-icon { fill: #ffffff; }
+        body#app-body.theme-light .gear-icon { fill: #334155; }
+        body#app-body.theme-light button:hover .gear-icon { fill: #0f172a; }
+        body#app-body.theme-glass .gear-icon { fill: #e2e8f0; }
+        /* Les engrenages de la ligne des sources sont plus petits (bandeau de 26 px) */
+        .shades-config-cog .gear-icon { width: 16px; height: 16px; }
+
         .shades-config-cog {
             height: 26px !important;
             min-height: 26px !important;
@@ -2501,6 +2527,39 @@
         }
         #alarm-keypad-screen .alarm-key-clr { font-size: 1.02rem !important; color: #ef4444 !important; }
         #alarm-keypad-screen .alarm-key-ok { font-size: 1.38rem !important; color: #10b981 !important; }
+
+        /* Boutons sélectionnés peints en vert (#10b981) dans Contrôle global :
+           libellé sombre, jamais blanc (2,5:1). Les autres états sélectionnés
+           (fonds sombres) gardent leur libellé clair. */
+        body#app-body #global-control-overlay ch5-button[selected="true"] .ch5-button--label,
+        body#app-body #global-control-overlay ch5-button.ch5-button--selected .ch5-button--label,
+        body#app-body #global-control-overlay ch5-button[selected="true"] .cb-btn,
+        body#app-body #global-control-overlay ch5-button[selected="true"] button { color: #052e16 !important; }
+
+        /* Boutons CH5 sans style dédié (partitions d'alarme) : le bleu CH5 par défaut
+           (#0099ff) ne porte pas le texte blanc (3:1) -> bleu profond, ou carte claire
+           en thème Clair (10.09.2026). */
+        body#app-body:not(.theme-light) #alarm-partitions-screen ch5-button:not([selected="true"]):not(.ch5-button--selected) .ch5-button--default { background-color: #0369a1 !important; }
+        body#app-body:not(.theme-light) #alarm-partitions-screen ch5-button:not([selected="true"]):not(.ch5-button--selected) .ch5-button--default .ch5-button--label { color: #ffffff !important; }
+        body#app-body.theme-light #alarm-partitions-screen ch5-button:not([selected="true"]):not(.ch5-button--selected) .ch5-button--default { background-color: rgba(15, 23, 42, 0.08) !important; border-color: rgba(15, 23, 42, 0.18) !important; }
+        body#app-body.theme-light #alarm-partitions-screen ch5-button:not([selected="true"]):not(.ch5-button--selected) .ch5-button--default .ch5-button--label { color: #0f172a !important; }
+
+        /* Badges d'état des partitions : mêmes formes, couleurs adaptées au thème
+           (contraste ≥ 4,5:1 sur le fond de la fenêtre dans les trois thèmes). */
+        .alarm-badge {
+            font-size: 0.95rem !important;
+            font-weight: bold !important;
+            padding: 4px 12px !important;
+            border-radius: 6px !important;
+            border: 1px solid transparent !important;
+            white-space: nowrap;
+        }
+        .alarm-badge--off { background: rgba(16, 185, 129, 0.14) !important; color: #6ee7b7 !important; border-color: rgba(16, 185, 129, 0.5) !important; }
+        .alarm-badge--partial { background: rgba(245, 158, 11, 0.18) !important; color: #fcd34d !important; border-color: #f59e0b !important; }
+        .alarm-badge--active { background: rgba(239, 68, 68, 0.2) !important; color: #fca5a5 !important; border-color: #ef4444 !important; }
+        body#app-body.theme-light .alarm-badge--off { background: rgba(4, 120, 87, 0.12) !important; color: #065f46 !important; border-color: rgba(4, 120, 87, 0.55) !important; }
+        body#app-body.theme-light .alarm-badge--partial { background: rgba(180, 83, 9, 0.12) !important; color: #8a3f07 !important; border-color: #b45309 !important; }
+        body#app-body.theme-light .alarm-badge--active { background: rgba(185, 28, 28, 0.10) !important; color: #991b1b !important; border-color: #b91c1c !important; }
 
         /* Écran 2 : partitions */
         #alarm-partitions-screen { height: calc(100% - 110px) !important; gap: 26px !important; }
@@ -3075,7 +3134,13 @@
         body.theme-light .villa-status-item.ok { color: #047857 !important; }
         body.theme-light .villa-status-item.warn { color: #b45309 !important; }
         body.theme-light .villa-status-item, body.theme-light .villa-status-icon { color: #334155; }
-        body.theme-light ch5-button[customClass~="temp-adjust-btn"] .cb-btn, body.theme-light ch5-button[customClass~="temp-adjust-btn"] .ch5-button--label { color: #1e293b !important; background: rgba(15, 23, 42, 0.08) !important; }
+        /* Boutons + / − (HVAC) en thème Clair : le fond clair est porté par le rond
+           lui-même ; le libellé reste transparent (10.09.2026 : un fond sur le libellé
+           dessinait un rectangle gris derrière le + et le −). */
+        body.theme-light ch5-button[customClass~="temp-adjust-btn"] .cb-btn,
+        body.theme-light ch5-button[customClass~="temp-adjust-btn"] .ch5-button--label { color: #1e293b !important; background: transparent !important; }
+        body.theme-light ch5-button[customClass~="temp-adjust-btn"] > .ch5-button,
+        body.theme-light .temp-adjust-btn { background-color: rgba(15, 23, 42, 0.08) !important; }
 
         /* --- Thème Verre dépoli : la photo de fond est claire → panneaux teintés + ombre portée sur le texte --- */
         body.theme-glass {
@@ -3867,7 +3932,7 @@ body#app-body.theme-light ch5-button[customClass~="scene-btn"]:not([selected="tr
         <div id="sidebar-header" style="margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; gap: 8px;">
             <div style="display: flex; align-items: center; gap: 8px;">
                 <button onclick="openSettingsModal()" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: var(--text-primary); border-radius: 6px; cursor: pointer; font-size: 0.95rem; display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; padding: 0; outline: none; transition: all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'">
-                    ⚙️
+                    <svg class="gear-icon" viewBox="0 0 512 512" aria-hidden="true"><path d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6l-43.3 75c-3.2 8.7-12.2 13.9-21.4 11.7l-56.4-13.6c-15.6 12-33 21.6-51.7 28.5l-11.9 57.3c-2 9.7-10.5 16.7-20.5 16.7H220.4c-10 0-18.5-7-20.5-16.7l-11.9-57.3c-18.7-6.9-36.1-16.4-51.7-28.5l-56.4 13.6c-9.2 2.2-18.2-3-21.4-11.7l-43.3-75c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4c-1.1-8.3-1.7-16.8-1.7-25.4s.6-17.1 1.7-25.4L21.6 191.2c-6.9-6.2-9.6-15.9-6.4-24.6l43.3-75c3.2-8.7 12.2-13.9 21.4-11.7l56.4 13.6c15.6-12 33-21.6 51.7-28.5l11.9-57.3c2-9.7 10.5-16.7 20.5-16.7h72.8c10 0 18.5 7 20.5 16.7l11.9 57.3c18.7 6.9 36.1 16.4 51.7 28.5l56.4-13.6c9.2-2.2 18.2 3 21.4 11.7l43.3 75zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"/></svg>
                 </button>
                 <div id="connection-status" style="font-size: 0.75rem; font-weight: 500; transition: color 0.3s; display: flex; align-items: center; gap: 5px; color: #ef4444; cursor: pointer; user-select: none; -webkit-user-select: none;">
                     <span class="status-dot" style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background-color: #ef4444; transition: background-color 0.3s; box-shadow: 0 0 8px rgba(239, 68, 68, 0.4);"></span>
@@ -3991,7 +4056,7 @@ body#app-body.theme-light ch5-button[customClass~="scene-btn"]:not([selected="tr
                     <div style="display: flex; justify-content: flex-end; align-items: center; margin-bottom: 8px; width: 100%;">
                         <!-- Roue crantée cliquable pour ouvrir la popup des éclairages -->
                         <button class="shades-config-cog" onclick="window.openCircuitsModal()" style="cursor: pointer; display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 6px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); transition: all 0.2s ease; padding: 0; outline: none;">
-                            <svg viewBox="0 0 512 512" style="width: 16px; height: 16px; fill: #cbd5e1;"><path d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6l-43.3 75c-3.2 8.7-12.2 13.9-21.4 11.7l-56.4-13.6c-15.6 12-33 21.6-51.7 28.5l-11.9 57.3c-2 9.7-10.5 16.7-20.5 16.7H220.4c-10 0-18.5-7-20.5-16.7l-11.9-57.3c-18.7-6.9-36.1-16.4-51.7-28.5l-56.4 13.6c-9.2 2.2-18.2-3-21.4-11.7l-43.3-75c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4c-1.1-8.3-1.7-16.8-1.7-25.4s.6-17.1 1.7-25.4L21.6 191.2c-6.9-6.2-9.6-15.9-6.4-24.6l43.3-75c3.2-8.7 12.2-13.9 21.4-11.7l56.4 13.6c15.6-12 33-21.6 51.7-28.5l11.9-57.3c2-9.7 10.5-16.7 20.5-16.7h72.8c10 0 18.5 7 20.5 16.7l11.9 57.3c18.7 6.9 36.1 16.4 51.7 28.5l56.4-13.6c9.2-2.2 18.2 3 21.4 11.7l43.3 75zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"/></svg>
+                            <svg class="gear-icon" viewBox="0 0 512 512" aria-hidden="true"><path d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6l-43.3 75c-3.2 8.7-12.2 13.9-21.4 11.7l-56.4-13.6c-15.6 12-33 21.6-51.7 28.5l-11.9 57.3c-2 9.7-10.5 16.7-20.5 16.7H220.4c-10 0-18.5-7-20.5-16.7l-11.9-57.3c-18.7-6.9-36.1-16.4-51.7-28.5l-56.4 13.6c-9.2 2.2-18.2-3-21.4-11.7l-43.3-75c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4c-1.1-8.3-1.7-16.8-1.7-25.4s.6-17.1 1.7-25.4L21.6 191.2c-6.9-6.2-9.6-15.9-6.4-24.6l43.3-75c3.2-8.7 12.2-13.9 21.4-11.7l56.4 13.6c15.6-12 33-21.6 51.7-28.5l11.9-57.3c2-9.7 10.5-16.7 20.5-16.7h72.8c10 0 18.5 7 20.5 16.7l11.9 57.3c18.7 6.9 36.1 16.4 51.7 28.5l56.4-13.6c9.2-2.2 18.2 3 21.4 11.7l43.3 75zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"/></svg>
                         </button>
                     </div>
                     <div style="display: flex; flex-wrap: wrap; gap: 10px;">
@@ -4008,7 +4073,7 @@ body#app-body.theme-light ch5-button[customClass~="scene-btn"]:not([selected="tr
                     <div style="display: flex; justify-content: flex-end; align-items: center; margin-bottom: 2px; width: 100%;">
                         <!-- Roue crantée cliquable pour ouvrir la popup des moteurs -->
                         <button class="shades-config-cog" onclick="window.openMotorsModal()" style="cursor: pointer; display: flex; align-items: center; justify-content: center; width: 30px; height: 30px; border-radius: 6px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); transition: all 0.2s ease; padding: 0; outline: none;">
-                            <svg viewBox="0 0 512 512" style="width: 15px; height: 15px; fill: #cbd5e1;"><path d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6l-43.3 75c-3.2 8.7-12.2 13.9-21.4 11.7l-56.4-13.6c-15.6 12-33 21.6-51.7 28.5l-11.9 57.3c-2 9.7-10.5 16.7-20.5 16.7H220.4c-10 0-18.5-7-20.5-16.7l-11.9-57.3c-18.7-6.9-36.1-16.4-51.7-28.5l-56.4 13.6c-9.2 2.2-18.2-3-21.4-11.7l-43.3-75c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4c-1.1-8.3-1.7-16.8-1.7-25.4s.6-17.1 1.7-25.4L21.6 191.2c-6.9-6.2-9.6-15.9-6.4-24.6l43.3-75c3.2-8.7 12.2-13.9 21.4-11.7l56.4 13.6c15.6-12 33-21.6 51.7-28.5l11.9-57.3c2-9.7 10.5-16.7 20.5-16.7h72.8c10 0 18.5 7 20.5 16.7l11.9 57.3c18.7 6.9 36.1 16.4 51.7 28.5l56.4-13.6c9.2-2.2 18.2 3 21.4 11.7l43.3 75zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"/></svg>
+                            <svg class="gear-icon" viewBox="0 0 512 512"><path d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6l-43.3 75c-3.2 8.7-12.2 13.9-21.4 11.7l-56.4-13.6c-15.6 12-33 21.6-51.7 28.5l-11.9 57.3c-2 9.7-10.5 16.7-20.5 16.7H220.4c-10 0-18.5-7-20.5-16.7l-11.9-57.3c-18.7-6.9-36.1-16.4-51.7-28.5l-56.4 13.6c-9.2 2.2-18.2-3-21.4-11.7l-43.3-75c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4c-1.1-8.3-1.7-16.8-1.7-25.4s.6-17.1 1.7-25.4L21.6 191.2c-6.9-6.2-9.6-15.9-6.4-24.6l43.3-75c3.2-8.7 12.2-13.9 21.4-11.7l56.4 13.6c15.6-12 33-21.6 51.7-28.5l11.9-57.3c2-9.7 10.5-16.7 20.5-16.7h72.8c10 0 18.5 7 20.5 16.7l11.9 57.3c18.7 6.9 36.1 16.4 51.7 28.5l56.4-13.6c9.2-2.2 18.2 3 21.4 11.7l43.3 75zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"/></svg>
                         </button>
                     </div>
                     
@@ -4149,7 +4214,7 @@ body#app-body.theme-light ch5-button[customClass~="scene-btn"]:not([selected="tr
                             
                         <div style="height: 14px; min-height: 14px; max-height: 14px; flex-shrink: 0;"></div>
                         <button class="shades-config-cog" onclick="window.openSourceControlModal('appletv')" style="cursor: pointer; display: flex; align-items: center; justify-content: center; width: 100%; height: 26px; border-radius: 6px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); transition: all 0.2s ease; padding: 0; outline: none; z-index: 100; position: relative;">
-                            <svg viewBox="0 0 512 512" style="width: 13px; height: 13px; fill: #cbd5e1; pointer-events: none;"><path d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6l-43.3 75c-3.2 8.7-12.2 13.9-21.4 11.7l-56.4-13.6c-15.6 12-33 21.6-51.7 28.5l-11.9 57.3c-2 9.7-10.5 16.7-20.5 16.7H220.4c-10 0-18.5-7-20.5-16.7l-11.9-57.3c-18.7-6.9-36.1-16.4-51.7-28.5l-56.4 13.6c-9.2 2.2-18.2-3-21.4-11.7l-43.3-75c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4c-1.1-8.3-1.7-16.8-1.7-25.4s.6-17.1 1.7-25.4L21.6 191.2c-6.9-6.2-9.6-15.9-6.4-24.6l43.3-75c3.2-8.7 12.2-13.9 21.4-11.7l56.4 13.6c15.6-12 33-21.6 51.7-28.5l11.9-57.3c2-9.7 10.5-16.7 20.5-16.7h72.8c10 0 18.5 7 20.5 16.7l11.9 57.3c18.7 6.9 36.1 16.4 51.7-28.5l56.4-13.6c9.2-2.2 8.2 3 21.4 11.7l43.3 75zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"/></svg>
+                            <svg class="gear-icon" viewBox="0 0 512 512"><path d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6l-43.3 75c-3.2 8.7-12.2 13.9-21.4 11.7l-56.4-13.6c-15.6 12-33 21.6-51.7 28.5l-11.9 57.3c-2 9.7-10.5 16.7-20.5 16.7H220.4c-10 0-18.5-7-20.5-16.7l-11.9-57.3c-18.7-6.9-36.1-16.4-51.7-28.5l-56.4 13.6c-9.2 2.2-18.2-3-21.4-11.7l-43.3-75c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4c-1.1-8.3-1.7-16.8-1.7-25.4s.6-17.1 1.7-25.4L21.6 191.2c-6.9-6.2-9.6-15.9-6.4-24.6l43.3-75c3.2-8.7 12.2-13.9 21.4-11.7l56.4 13.6c15.6-12 33-21.6 51.7-28.5l11.9-57.3c2-9.7 10.5-16.7 20.5-16.7h72.8c10 0 18.5 7 20.5 16.7l11.9 57.3c18.7 6.9 36.1 16.4 51.7-28.5l56.4-13.6c9.2-2.2 8.2 3 21.4 11.7l43.3 75zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"/></svg>
                         </button>
                     </div>
                     <!-- SKY Q -->
@@ -4160,7 +4225,7 @@ body#app-body.theme-light ch5-button[customClass~="scene-btn"]:not([selected="tr
                             
                         <div style="height: 14px; min-height: 14px; max-height: 14px; flex-shrink: 0;"></div>
                         <button class="shades-config-cog" onclick="window.openSourceControlModal('skyq')" style="cursor: pointer; display: flex; align-items: center; justify-content: center; width: 100%; height: 26px; border-radius: 6px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); transition: all 0.2s ease; padding: 0; outline: none; z-index: 100; position: relative;">
-                            <svg viewBox="0 0 512 512" style="width: 13px; height: 13px; fill: #cbd5e1; pointer-events: none;"><path d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6l-43.3 75c-3.2 8.7-12.2 13.9-21.4 11.7l-56.4-13.6c-15.6 12-33 21.6-51.7 28.5l-11.9 57.3c-2 9.7-10.5 16.7-20.5 16.7H220.4c-10 0-18.5-7-20.5-16.7l-11.9-57.3c-18.7-6.9-36.1-16.4-51.7-28.5l-56.4 13.6c-9.2 2.2-18.2-3-21.4-11.7l-43.3-75c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4c-1.1-8.3-1.7-16.8-1.7-25.4s.6-17.1 1.7-25.4L21.6 191.2c-6.9-6.2-9.6-15.9-6.4-24.6l43.3-75c3.2-8.7 12.2-13.9 21.4-11.7l56.4 13.6c15.6-12 33-21.6 51.7-28.5l11.9-57.3c2-9.7 10.5-16.7 20.5-16.7h72.8c10 0 18.5 7 20.5 16.7l11.9 57.3c18.7 6.9 36.1 16.4 51.7-28.5l56.4-13.6c9.2-2.2 8.2 3 21.4 11.7l43.3 75zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"/></svg>
+                            <svg class="gear-icon" viewBox="0 0 512 512"><path d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6l-43.3 75c-3.2 8.7-12.2 13.9-21.4 11.7l-56.4-13.6c-15.6 12-33 21.6-51.7 28.5l-11.9 57.3c-2 9.7-10.5 16.7-20.5 16.7H220.4c-10 0-18.5-7-20.5-16.7l-11.9-57.3c-18.7-6.9-36.1-16.4-51.7-28.5l-56.4 13.6c-9.2 2.2-18.2-3-21.4-11.7l-43.3-75c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4c-1.1-8.3-1.7-16.8-1.7-25.4s.6-17.1 1.7-25.4L21.6 191.2c-6.9-6.2-9.6-15.9-6.4-24.6l43.3-75c3.2-8.7 12.2-13.9 21.4-11.7l56.4 13.6c15.6-12 33-21.6 51.7-28.5l11.9-57.3c2-9.7 10.5-16.7 20.5-16.7h72.8c10 0 18.5 7 20.5 16.7l11.9 57.3c18.7 6.9 36.1 16.4 51.7-28.5l56.4-13.6c9.2-2.2 8.2 3 21.4 11.7l43.3 75zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"/></svg>
                         </button>
                     </div>
                     <!-- SWISSCOM -->
@@ -4171,7 +4236,7 @@ body#app-body.theme-light ch5-button[customClass~="scene-btn"]:not([selected="tr
                             
                         <div style="height: 14px; min-height: 14px; max-height: 14px; flex-shrink: 0;"></div>
                         <button class="shades-config-cog" onclick="window.openSourceControlModal('swisscom')" style="cursor: pointer; display: flex; align-items: center; justify-content: center; width: 100%; height: 26px; border-radius: 6px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); transition: all 0.2s ease; padding: 0; outline: none; z-index: 100; position: relative;">
-                            <svg viewBox="0 0 512 512" style="width: 13px; height: 13px; fill: #cbd5e1; pointer-events: none;"><path d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6l-43.3 75c-3.2 8.7-12.2 13.9-21.4 11.7l-56.4-13.6c-15.6 12-33 21.6-51.7 28.5l-11.9 57.3c-2 9.7-10.5 16.7-20.5 16.7H220.4c-10 0-18.5-7-20.5-16.7l-11.9-57.3c-18.7-6.9-36.1-16.4-51.7-28.5l-56.4 13.6c-9.2 2.2-18.2-3-21.4-11.7l-43.3-75c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4c-1.1-8.3-1.7-16.8-1.7-25.4s.6-17.1 1.7-25.4L21.6 191.2c-6.9-6.2-9.6-15.9-6.4-24.6l43.3-75c3.2-8.7 12.2-13.9 21.4-11.7l56.4 13.6c15.6-12 33-21.6 51.7-28.5l11.9-57.3c2-9.7 10.5-16.7 20.5-16.7h72.8c10 0 18.5 7 20.5 16.7l11.9 57.3c18.7 6.9 36.1 16.4 51.7-28.5l56.4-13.6c9.2-2.2 8.2 3 21.4 11.7l43.3 75zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"/></svg>
+                            <svg class="gear-icon" viewBox="0 0 512 512"><path d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6l-43.3 75c-3.2 8.7-12.2 13.9-21.4 11.7l-56.4-13.6c-15.6 12-33 21.6-51.7 28.5l-11.9 57.3c-2 9.7-10.5 16.7-20.5 16.7H220.4c-10 0-18.5-7-20.5-16.7l-11.9-57.3c-18.7-6.9-36.1-16.4-51.7-28.5l-56.4 13.6c-9.2 2.2-18.2-3-21.4-11.7l-43.3-75c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4c-1.1-8.3-1.7-16.8-1.7-25.4s.6-17.1 1.7-25.4L21.6 191.2c-6.9-6.2-9.6-15.9-6.4-24.6l43.3-75c3.2-8.7 12.2-13.9 21.4-11.7l56.4 13.6c15.6-12 33-21.6 51.7-28.5l11.9-57.3c2-9.7 10.5-16.7 20.5-16.7h72.8c10 0 18.5 7 20.5 16.7l11.9 57.3c18.7 6.9 36.1 16.4 51.7-28.5l56.4-13.6c9.2-2.2 8.2 3 21.4 11.7l43.3 75zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"/></svg>
                         </button>
                     </div>
                     <!-- IPTV -->
@@ -4182,7 +4247,7 @@ body#app-body.theme-light ch5-button[customClass~="scene-btn"]:not([selected="tr
                             
                         <div style="height: 14px; min-height: 14px; max-height: 14px; flex-shrink: 0;"></div>
                         <button class="shades-config-cog" onclick="window.openSourceControlModal('iptv')" style="cursor: pointer; display: flex; align-items: center; justify-content: center; width: 100%; height: 26px; border-radius: 6px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); transition: all 0.2s ease; padding: 0; outline: none; z-index: 100; position: relative;">
-                            <svg viewBox="0 0 512 512" style="width: 13px; height: 13px; fill: #cbd5e1; pointer-events: none;"><path d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6l-43.3 75c-3.2 8.7-12.2 13.9-21.4 11.7l-56.4-13.6c-15.6 12-33 21.6-51.7 28.5l-11.9 57.3c-2 9.7-10.5 16.7-20.5 16.7H220.4c-10 0-18.5-7-20.5-16.7l-11.9-57.3c-18.7-6.9-36.1-16.4-51.7-28.5l-56.4 13.6c-9.2 2.2-18.2-3-21.4-11.7l-43.3-75c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4c-1.1-8.3-1.7-16.8-1.7-25.4s.6-17.1 1.7-25.4L21.6 191.2c-6.9-6.2-9.6-15.9-6.4-24.6l43.3-75c3.2-8.7 12.2-13.9 21.4-11.7l56.4 13.6c15.6-12 33-21.6 51.7-28.5l11.9-57.3c2-9.7 10.5-16.7 20.5-16.7h72.8c10 0 18.5 7 20.5 16.7l11.9 57.3c18.7 6.9 36.1 16.4 51.7-28.5l56.4-13.6c9.2-2.2 8.2 3 21.4 11.7l43.3 75zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"/></svg>
+                            <svg class="gear-icon" viewBox="0 0 512 512"><path d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6l-43.3 75c-3.2 8.7-12.2 13.9-21.4 11.7l-56.4-13.6c-15.6 12-33 21.6-51.7 28.5l-11.9 57.3c-2 9.7-10.5 16.7-20.5 16.7H220.4c-10 0-18.5-7-20.5-16.7l-11.9-57.3c-18.7-6.9-36.1-16.4-51.7-28.5l-56.4 13.6c-9.2 2.2-18.2-3-21.4-11.7l-43.3-75c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4c-1.1-8.3-1.7-16.8-1.7-25.4s.6-17.1 1.7-25.4L21.6 191.2c-6.9-6.2-9.6-15.9-6.4-24.6l43.3-75c3.2-8.7 12.2-13.9 21.4-11.7l56.4 13.6c15.6-12 33-21.6 51.7-28.5l11.9-57.3c2-9.7 10.5-16.7 20.5-16.7h72.8c10 0 18.5 7 20.5 16.7l11.9 57.3c18.7 6.9 36.1 16.4 51.7-28.5l56.4-13.6c9.2-2.2 8.2 3 21.4 11.7l43.3 75zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"/></svg>
                         </button>
                     </div>
                     <!-- MUSIQUE -->
@@ -4192,7 +4257,7 @@ body#app-body.theme-light ch5-button[customClass~="scene-btn"]:not([selected="tr
                         <img id="src-img-155" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiBmaWxsPSIjZWFiMzA4Ij48cGF0aCBkPSJNNDk5LjEgNi4zYzguMSA2IDEyLjkgMTUuNiAxMi45IDI1Ljd2NzJjMCAxMy42LTguNiAyNS42LTIxLjQgMzAuMWwtMTYwIDU2QzMyNC43IDE5Mi4yIDMyMCAxOTguOCAzMjAgMjA2LjNWMzg0YzAgMzUuMy0zNS44IDY0LTgwIDY0cy04MC0yOC43LTgwLTY0IDM1LjgtNjQgODAtNjRjMTIuNyAwIDI0LjcgMi45IDM1LjIgOC4xVjEyOGMwLTEzLjYgOC42LTI1LjYgMjEuNC0zMC4xbDE2MC01NmM0LjctMS42IDkuNy0yLjQgMTQuNy0yLjQgOS4xIDAgMTcuOSAzLjIgMjQuOSA4LjV6Ii8+PC9zdmc+" class="src-overlay-img" style="position: absolute; top: 16px; left: 50%; transform: translateX(-50%); width: 34px; height: 34px; pointer-events: none; z-index: 999999; transition: all 0.2s ease; filter: none;">
                         <div style="height: 14px; min-height: 14px; max-height: 14px; flex-shrink: 0;"></div>
                         <button class="shades-config-cog" onclick="window.openSourceControlModal('musique')" style="cursor: pointer; display: flex; align-items: center; justify-content: center; width: 100%; height: 26px; border-radius: 6px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); transition: all 0.2s ease; padding: 0; outline: none; z-index: 100; position: relative;">
-                            <svg viewBox="0 0 512 512" style="width: 13px; height: 13px; fill: #cbd5e1; pointer-events: none;"><path d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6l-43.3 75c-3.2 8.7-12.2 13.9-21.4 11.7l-56.4-13.6c-15.6 12-33 21.6-51.7 28.5l-11.9 57.3c-2 9.7-10.5 16.7-20.5 16.7H220.4c-10 0-18.5-7-20.5-16.7l-11.9-57.3c-18.7-6.9-36.1-16.4-51.7-28.5l-56.4 13.6c-9.2 2.2-18.2-3-21.4-11.7l-43.3-75c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4c-1.1-8.3-1.7-16.8-1.7-25.4s.6-17.1 1.7-25.4L21.6 191.2c-6.9-6.2-9.6-15.9-6.4-24.6l43.3-75c3.2-8.7 12.2-13.9 21.4-11.7l56.4 13.6c15.6-12 33-21.6 51.7-28.5l11.9-57.3c2-9.7 10.5-16.7 20.5-16.7h72.8c10 0 18.5 7 20.5 16.7l11.9 57.3c18.7 6.9 36.1 16.4 51.7-28.5l56.4-13.6c9.2 8.2 3 21.4 11.7l43.3 75zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"/></svg>
+                            <svg class="gear-icon" viewBox="0 0 512 512"><path d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6l-43.3 75c-3.2 8.7-12.2 13.9-21.4 11.7l-56.4-13.6c-15.6 12-33 21.6-51.7 28.5l-11.9 57.3c-2 9.7-10.5 16.7-20.5 16.7H220.4c-10 0-18.5-7-20.5-16.7l-11.9-57.3c-18.7-6.9-36.1-16.4-51.7-28.5l-56.4 13.6c-9.2 2.2-18.2-3-21.4-11.7l-43.3-75c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4c-1.1-8.3-1.7-16.8-1.7-25.4s.6-17.1 1.7-25.4L21.6 191.2c-6.9-6.2-9.6-15.9-6.4-24.6l43.3-75c3.2-8.7 12.2-13.9 21.4-11.7l56.4 13.6c15.6-12 33-21.6 51.7-28.5l11.9-57.3c2-9.7 10.5-16.7 20.5-16.7h72.8c10 0 18.5 7 20.5 16.7l11.9 57.3c18.7 6.9 36.1 16.4 51.7-28.5l56.4-13.6c9.2 8.2 3 21.4 11.7l43.3 75zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"/></svg>
                         </button>
                     </div>
                 </div>
@@ -4678,7 +4743,7 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
                     <div>
                         <h4 style="margin: 0; font-size: 1.1rem; color: white; display: flex; align-items: center; gap: 10px;">
                             Partition 1 : Rez-de-chaussée
-                            <span id="alarm-part-1-status" style="font-size: 0.75rem; font-weight: bold; padding: 2px 8px; border-radius: 4px; background: rgba(16,185,129,0.1); color: #10b981;">DÉSACTIVÉE</span>
+                            <span id="alarm-part-1-status" class="alarm-badge alarm-badge--off">DÉSACTIVÉE</span>
                         </h4>
                         <p style="margin: 3px 0 0 0; color: #94a3b8; font-size: 0.85rem;">Détecteurs volumétriques, entrées principales et véranda.</p>
                     </div>
@@ -4693,7 +4758,7 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
                     <div>
                         <h4 style="margin: 0; font-size: 1.1rem; color: white; display: flex; align-items: center; gap: 10px;">
                             Partition 2 : Étage & chambres
-                            <span id="alarm-part-2-status" style="font-size: 0.75rem; font-weight: bold; padding: 2px 8px; border-radius: 4px; background: rgba(16,185,129,0.1); color: #10b981; border: 1px solid rgba(16,185,129,0.3);">DÉSACTIVÉE</span>
+                            <span id="alarm-part-2-status" class="alarm-badge alarm-badge--off">DÉSACTIVÉE</span>
                         </h4>
                         <p style="margin: 3px 0 0 0; color: #94a3b8; font-size: 0.85rem;">Suite parentale, chambres enfants et couloir nuit.</p>
                     </div>
@@ -4708,7 +4773,7 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
                     <div>
                         <h4 style="margin: 0; font-size: 1.1rem; color: white; display: flex; align-items: center; gap: 10px;">
                             Partition 3 : Dépendances & garage
-                            <span id="alarm-part-3-status" style="font-size: 0.75rem; font-weight: bold; padding: 2px 8px; border-radius: 4px; background: rgba(16,185,129,0.1); color: #10b981; border: 1px solid rgba(16,185,129,0.3);">DÉSACTIVÉE</span>
+                            <span id="alarm-part-3-status" class="alarm-badge alarm-badge--off">DÉSACTIVÉE</span>
                         </h4>
                         <p style="margin: 3px 0 0 0; color: #94a3b8; font-size: 0.85rem;">Poolhouse, atelier technique et garage principal.</p>
                     </div>
@@ -4723,7 +4788,7 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
                     <div>
                         <h4 style="margin: 0; font-size: 1.1rem; color: white; display: flex; align-items: center; gap: 10px;">
                             Partition 4 : Périmètre extérieur
-                            <span id="alarm-part-4-status" style="font-size: 0.75rem; font-weight: bold; padding: 2px 8px; border-radius: 4px; background: rgba(16,185,129,0.1); color: #10b981; border: 1px solid rgba(16,185,129,0.3);">DÉSACTIVÉE</span>
+                            <span id="alarm-part-4-status" class="alarm-badge alarm-badge--off">DÉSACTIVÉE</span>
                         </h4>
                         <p style="margin: 3px 0 0 0; color: #94a3b8; font-size: 0.85rem;">Barrière infrarouge, éclairages extérieurs et détecteurs jardin.</p>
                     </div>
@@ -4769,7 +4834,7 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
                 <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 10px; padding: 15px;">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
                         <h3 style="margin: 0; font-size: 1.1rem; color: #eab308; text-transform: uppercase;"><span data-i18n="global_lights">💡 Éclairage global</span></h3>
-                        <button onclick="window.openGlobalPresetCustomizer('lighting')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 50%; width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; cursor: pointer; outline: none; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'">⚙️</button>
+                        <button onclick="window.openGlobalPresetCustomizer('lighting')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 50%; width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; cursor: pointer; outline: none; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'"><svg class="gear-icon" viewBox="0 0 512 512" aria-hidden="true"><path d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6l-43.3 75c-3.2 8.7-12.2 13.9-21.4 11.7l-56.4-13.6c-15.6 12-33 21.6-51.7 28.5l-11.9 57.3c-2 9.7-10.5 16.7-20.5 16.7H220.4c-10 0-18.5-7-20.5-16.7l-11.9-57.3c-18.7-6.9-36.1-16.4-51.7-28.5l-56.4 13.6c-9.2 2.2-18.2-3-21.4-11.7l-43.3-75c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4c-1.1-8.3-1.7-16.8-1.7-25.4s.6-17.1 1.7-25.4L21.6 191.2c-6.9-6.2-9.6-15.9-6.4-24.6l43.3-75c3.2-8.7 12.2-13.9 21.4-11.7l56.4 13.6c15.6-12 33-21.6 51.7-28.5l11.9-57.3c2-9.7 10.5-16.7 20.5-16.7h72.8c10 0 18.5 7 20.5 16.7l11.9 57.3c18.7 6.9 36.1 16.4 51.7 28.5l56.4-13.6c9.2-2.2 18.2 3 21.4 11.7l43.3 75zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"/></svg></button>
                     </div>
                     <p style="margin: 0 0 15px 0; color: #94a3b8; font-size: 0.85rem;">Commande groupée de tous les circuits d'éclairage de la villa.</p>
                     <div style="display: flex; gap: 10px;">
@@ -4782,7 +4847,7 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
                 <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 10px; padding: 15px;">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
                         <h3 style="margin: 0; font-size: 1.1rem; color: #00b4c5; text-transform: uppercase;"><span data-i18n="global_shades">↕️ Stores globaux</span></h3>
-                        <button onclick="window.openGlobalPresetCustomizer('shades')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 50%; width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; cursor: pointer; outline: none; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'">⚙️</button>
+                        <button onclick="window.openGlobalPresetCustomizer('shades')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 50%; width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; cursor: pointer; outline: none; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'"><svg class="gear-icon" viewBox="0 0 512 512" aria-hidden="true"><path d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6l-43.3 75c-3.2 8.7-12.2 13.9-21.4 11.7l-56.4-13.6c-15.6 12-33 21.6-51.7 28.5l-11.9 57.3c-2 9.7-10.5 16.7-20.5 16.7H220.4c-10 0-18.5-7-20.5-16.7l-11.9-57.3c-18.7-6.9-36.1-16.4-51.7-28.5l-56.4 13.6c-9.2 2.2-18.2-3-21.4-11.7l-43.3-75c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4c-1.1-8.3-1.7-16.8-1.7-25.4s.6-17.1 1.7-25.4L21.6 191.2c-6.9-6.2-9.6-15.9-6.4-24.6l43.3-75c3.2-8.7 12.2-13.9 21.4-11.7l56.4 13.6c15.6-12 33-21.6 51.7-28.5l11.9-57.3c2-9.7 10.5-16.7 20.5-16.7h72.8c10 0 18.5 7 20.5 16.7l11.9 57.3c18.7 6.9 36.1 16.4 51.7 28.5l56.4-13.6c9.2-2.2 18.2 3 21.4 11.7l43.3 75zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"/></svg></button>
                     </div>
                     <p style="margin: 0 0 15px 0; color: #94a3b8; font-size: 0.85rem;">Commande centralisée de toutes les motorisations et volets.</p>
                     <div style="display: flex; gap: 10px;">
@@ -4799,7 +4864,7 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
                 <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 10px; padding: 15px;">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
                         <h3 style="margin: 0; font-size: 1.1rem; color: #10b981; text-transform: uppercase;"><span data-i18n="global_hvac">❄️ Climatisation globale</span></h3>
-                        <button onclick="window.openGlobalPresetCustomizer('hvac')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 50%; width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; cursor: pointer; outline: none; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'">⚙️</button>
+                        <button onclick="window.openGlobalPresetCustomizer('hvac')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 50%; width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; cursor: pointer; outline: none; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'"><svg class="gear-icon" viewBox="0 0 512 512" aria-hidden="true"><path d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6l-43.3 75c-3.2 8.7-12.2 13.9-21.4 11.7l-56.4-13.6c-15.6 12-33 21.6-51.7 28.5l-11.9 57.3c-2 9.7-10.5 16.7-20.5 16.7H220.4c-10 0-18.5-7-20.5-16.7l-11.9-57.3c-18.7-6.9-36.1-16.4-51.7-28.5l-56.4 13.6c-9.2 2.2-18.2-3-21.4-11.7l-43.3-75c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4c-1.1-8.3-1.7-16.8-1.7-25.4s.6-17.1 1.7-25.4L21.6 191.2c-6.9-6.2-9.6-15.9-6.4-24.6l43.3-75c3.2-8.7 12.2-13.9 21.4-11.7l56.4 13.6c15.6-12 33-21.6 51.7-28.5l11.9-57.3c2-9.7 10.5-16.7 20.5-16.7h72.8c10 0 18.5 7 20.5 16.7l11.9 57.3c18.7 6.9 36.1 16.4 51.7 28.5l56.4-13.6c9.2-2.2 18.2 3 21.4 11.7l43.3 75zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"/></svg></button>
                     </div>
                     <p style="margin: 0 0 15px 0; color: #94a3b8; font-size: 0.85rem;">Mode de chauffage / climatisation central de la villa.</p>
                     <div style="display: flex; gap: 10px;">
@@ -4812,7 +4877,7 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
                 <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 10px; padding: 15px;">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
                         <h3 style="margin: 0; font-size: 1.1rem; color: #fb7185; text-transform: uppercase;"><span data-i18n="global_holiday">✈️ Mode vacances</span></h3>
-                        <button onclick="window.openGlobalPresetCustomizer('vacation')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 50%; width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; cursor: pointer; outline: none; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'">⚙️</button>
+                        <button onclick="window.openGlobalPresetCustomizer('vacation')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 50%; width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; cursor: pointer; outline: none; transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'"><svg class="gear-icon" viewBox="0 0 512 512" aria-hidden="true"><path d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6l-43.3 75c-3.2 8.7-12.2 13.9-21.4 11.7l-56.4-13.6c-15.6 12-33 21.6-51.7 28.5l-11.9 57.3c-2 9.7-10.5 16.7-20.5 16.7H220.4c-10 0-18.5-7-20.5-16.7l-11.9-57.3c-18.7-6.9-36.1-16.4-51.7-28.5l-56.4 13.6c-9.2 2.2-18.2-3-21.4-11.7l-43.3-75c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4c-1.1-8.3-1.7-16.8-1.7-25.4s.6-17.1 1.7-25.4L21.6 191.2c-6.9-6.2-9.6-15.9-6.4-24.6l43.3-75c3.2-8.7 12.2-13.9 21.4-11.7l56.4 13.6c15.6-12 33-21.6 51.7-28.5l11.9-57.3c2-9.7 10.5-16.7 20.5-16.7h72.8c10 0 18.5 7 20.5 16.7l11.9 57.3c18.7 6.9 36.1 16.4 51.7 28.5l56.4-13.6c9.2-2.2 18.2 3 21.4 11.7l43.3 75zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"/></svg></button>
                     </div>
                     <p style="margin: 0 0 15px 0; color: #94a3b8; font-size: 0.85rem;">Met la maison en veille prolongée (sécurité max, énergie min).</p>
                     <div style="display: flex; gap: 10px;">
@@ -6225,15 +6290,18 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
         window.updateAlarmPartitionBadge = function(partNum, state) {
             const badge = document.getElementById(`alarm-part-${partNum}-status`);
             if (!badge) return;
+            // Les couleurs ne sont plus écrites en dur ici : elles viennent des classes
+            // .alarm-badge--* (10.09.2026), ce qui permet à chaque thème d'assurer le contraste.
+            badge.style.cssText = '';
             if (state === 'active') {
                 badge.innerText = 'ACTIF TOTAL';
-                badge.style.cssText = "font-size: 0.75rem; font-weight: bold; padding: 2px 8px; border-radius: 4px; background: rgba(239,68,68,0.2); color: #fca5a5; border: 1px solid #ef4444;";
+                badge.className = 'alarm-badge alarm-badge--active';
             } else if (state === 'partial') {
                 badge.innerText = 'ACTIF PARTIEL';
-                badge.style.cssText = "font-size: 0.75rem; font-weight: bold; padding: 2px 8px; border-radius: 4px; background: rgba(245,158,11,0.2); color: #fcd34d; border: 1px solid #f59e0b;";
+                badge.className = 'alarm-badge alarm-badge--partial';
             } else {
                 badge.innerText = 'DÉSACTIVÉE';
-                badge.style.cssText = "font-size: 0.75rem; font-weight: bold; padding: 2px 8px; border-radius: 4px; background: rgba(16,185,129,0.1); color: #10b981; border: 1px solid rgba(16,185,129,0.3);";
+                badge.className = 'alarm-badge alarm-badge--off';
             }
         };
 
