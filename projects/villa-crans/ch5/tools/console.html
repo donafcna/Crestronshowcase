@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Console Villa Crans — Fréquence TV</title>
+<script src="js/webxpanel.js"></script>
+<script defer src="/journal.js"></script>
+<style>
+  :root { --bg:#0f1218; --panel:#161920; --border:rgba(255,255,255,.09); --txt:#e2e8f0; --muted:#94a3b8; --accent:#10b981; --blue:#38bdf8; --gold:#c49a45; --red:#ef4444; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--txt); font-family:'Segoe UI',system-ui,sans-serif; height:100vh; display:flex; flex-direction:column; }
+  header { display:flex; align-items:center; gap:14px; padding:12px 20px; border-bottom:1px solid var(--border); background:var(--panel); }
+  header h1 { font-size:1.05rem; margin:0; color:var(--accent); }
+  header .sub { color:var(--muted); font-size:.8rem; }
+  nav { display:flex; gap:8px; margin-left:auto; }
+  nav button { background:transparent; border:1px solid var(--border); color:var(--muted); padding:7px 16px; border-radius:8px; cursor:pointer; font-weight:600; font-size:.85rem; }
+  nav button.active { background:rgba(16,185,129,.15); border-color:var(--accent); color:var(--accent); }
+  main { flex:1; overflow:hidden; display:flex; }
+  section { flex:1; display:none; flex-direction:column; padding:16px 20px; gap:12px; overflow:hidden; }
+  section.active { display:flex; }
+  .row { display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+  .btn { background:rgba(255,255,255,.05); border:1px solid var(--border); color:var(--txt); padding:9px 16px; border-radius:8px; cursor:pointer; font-weight:600; font-size:.85rem; }
+  .btn:hover { background:rgba(255,255,255,.1); }
+  .btn.primary { background:rgba(16,185,129,.15); border-color:var(--accent); color:var(--accent); }
+  .btn.warn { background:rgba(196,154,69,.15); border-color:var(--gold); color:var(--gold); }
+  .btn.danger { background:rgba(239,68,68,.12); border-color:var(--red); color:#fca5a5; }
+  .btn:disabled { opacity:.4; cursor:not-allowed; }
+  .type-filter-btn { opacity:.35; }
+  .type-filter-btn.on { opacity:1; background:rgba(56,189,248,.12); border-color:var(--blue); color:var(--blue); }
+  th.sorted { color:var(--accent); }
+  .term { flex:1; background:#0a0d12; border:1px solid var(--border); border-radius:10px; padding:12px 14px; font-family:'Cascadia Mono','Consolas',monospace; font-size:.8rem; line-height:1.45; overflow-y:auto; white-space:pre-wrap; word-break:break-all; color:#c9d4e3; }
+  .term .cmd { color:var(--accent); font-weight:700; }
+  .term .err { color:#fca5a5; }
+  input, select { background:#0a0d12; border:1px solid var(--border); color:var(--txt); padding:9px 12px; border-radius:8px; font-size:.85rem; outline:none; }
+  input:focus { border-color:var(--blue); }
+  #term-input { flex:1; font-family:'Cascadia Mono','Consolas',monospace; }
+  .chip { background:rgba(56,189,248,.1); border:1px solid rgba(56,189,248,.35); color:var(--blue); padding:5px 10px; border-radius:6px; cursor:pointer; font-size:.75rem; font-weight:600; }
+  table { width:100%; border-collapse:collapse; font-size:.82rem; }
+  th { text-align:left; color:var(--muted); font-weight:600; padding:6px 8px; border-bottom:1px solid var(--border); font-size:.75rem; text-transform:uppercase; }
+  td { padding:5px 8px; border-bottom:1px solid rgba(255,255,255,.04); }
+  td .val { font-family:'Cascadia Mono','Consolas',monospace; color:var(--accent); font-weight:700; }
+  td .val.d-on { color:var(--accent); } td .val.d-off { color:var(--muted); }
+  .mini { padding:4px 9px; font-size:.72rem; border-radius:6px; }
+  .status-dot { width:9px; height:9px; border-radius:50%; display:inline-block; background:var(--red); margin-right:6px; }
+  .status-dot.on { background:var(--accent); box-shadow:0 0 8px rgba(16,185,129,.6); }
+  .hint { color:var(--muted); font-size:.75rem; }
+  #dbg-wrap { flex:1; overflow-y:auto; border:1px solid var(--border); border-radius:10px; background:var(--panel); }
+  /* Journal de chantier : à faire / à tester, rapports de test, spécifications */
+  textarea { background:#0a0d12; border:1px solid var(--border); color:var(--txt); padding:9px 12px; border-radius:8px; font-family:inherit; font-size:.85rem; outline:none; resize:vertical; }
+  textarea:focus { border-color:var(--blue); }
+  .jr-form { align-items:flex-end; }
+  .jr-form label { display:flex; flex-direction:column; gap:4px; }
+  .jr-liste { flex:1; overflow-y:auto; border:1px solid var(--border); border-radius:10px; background:var(--panel); }
+  .jr-liste table { table-layout:fixed; }
+  .jr-liste td { vertical-align:top; }
+  .jr-prio, .jr-res { font-size:.72rem; font-weight:700; padding:2px 8px; border-radius:999px; white-space:nowrap; }
+  .jr-prio-haute, .jr-res-ko { background:rgba(239,68,68,.14); color:#fca5a5; }
+  .jr-prio-moyenne, .jr-res-partiel { background:rgba(196,154,69,.14); color:var(--gold); }
+  .jr-prio-basse { background:rgba(148,163,184,.14); color:var(--muted); }
+  .jr-res-ok { background:rgba(16,185,129,.14); color:var(--accent); }
+  .jr-init { font-family:'Cascadia Mono','Consolas',monospace; font-weight:700; color:var(--blue); }
+  .jr-spec { padding:12px 14px; border-bottom:1px solid rgba(255,255,255,.05); }
+  .jr-spec:last-child { border-bottom:none; }
+  .jr-spec-tete { display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:6px; }
+  .jr-spec-tete .hint { margin-right:auto; }
+  .jr-spec-corps { white-space:pre-wrap; font-size:.85rem; color:#cbd5e1; }
+  .jr-zone { width:100%; }
+</style>
+</head>
+<body>
+<header>
+  <h1>⚙️ Console Villa Crans</h1>
+  <span class="sub">CP4 <span id="cp4-host">…</span> · TSW <span id="tsw-host">…</span></span>
+  <nav>
+    <button id="tab-dbg" class="active" onclick="showTab('dbg')">🔍 Debugger</button>
+    <button id="tab-term" onclick="showTab('term')">💻 Terminal</button>
+    <button id="tab-deploy" onclick="showTab('deploy')">🚀 Déploiement</button>
+    <button id="tab-todo" onclick="showTab('todo')">📋 À faire / À tester</button>
+    <button id="tab-tests" onclick="showTab('tests')">🧪 Rapport de test</button>
+    <button id="tab-specs" onclick="showTab('specs')">📐 Spécification</button>
+    <button onclick="window.open('/objectifs.html', '_blank')">🎯 Objectifs</button>
+  </nav>
+</header>
+<main>
+
+
+  <!-- ONGLET À FAIRE / À TESTER -->
+  <section id="sec-todo">
+    <div class="row jr-form">
+      <input id="jr-todo-titre" placeholder="Point à faire ou à tester" style="flex:1; min-width:240px">
+      <input id="jr-todo-categorie" placeholder="Catégorie (Éclairage, Stores…)" style="width:210px">
+      <select id="jr-todo-priorite"><option value="haute">Priorité haute</option><option value="moyenne">Priorité moyenne</option><option value="basse">Priorité basse</option></select>
+      <select id="jr-todo-statut"><option value="a-faire">À faire</option><option value="a-tester">À tester</option><option value="teste">Testé</option><option value="bloque">Bloqué</option></select>
+      <input id="jr-todo-auteur" placeholder="Init." maxlength="12" style="width:80px" title="Vos initiales">
+      <button class="btn primary" id="jr-todo-ajouter">+ Ajouter</button>
+    </div>
+    <div class="row"><textarea id="jr-todo-detail" rows="2" placeholder="Détail, condition de test, référence de plan… (facultatif)" style="flex:1"></textarea></div>
+    <div class="row" id="jr-filtres-todo"></div>
+    <div id="jr-liste-todo" class="jr-liste"></div>
+    <span class="hint" id="jr-msg-todo"></span>
+  </section>
+
+  <!-- ONGLET RAPPORT DE TEST -->
+  <section id="sec-tests">
+    <div class="row jr-form">
+      <label class="hint">Date du test<input type="date" id="jr-tests-date"></label>
+      <label class="hint">Initiales du testeur<input id="jr-tests-initiales" maxlength="12" placeholder="DP" style="width:100px"></label>
+      <input id="jr-tests-perimetre" placeholder="Ce qui a été testé (pièce, module, scénario)" style="flex:1; min-width:260px">
+      <select id="jr-tests-resultat"><option value="ok">Conforme</option><option value="partiel">Réserve</option><option value="ko">Non conforme</option></select>
+      <button class="btn primary" id="jr-tests-ajouter">+ Consigner</button>
+    </div>
+    <div class="row"><textarea id="jr-tests-observations" rows="2" placeholder="Observations, réserves, numéro de version testée… (facultatif)" style="flex:1"></textarea></div>
+    <div id="jr-liste-tests" class="jr-liste"></div>
+    <span class="hint" id="jr-msg-tests">La date et les initiales signent la ligne : elles ne sont plus modifiables ensuite.</span>
+  </section>
+
+  <!-- ONGLET SPÉCIFICATION -->
+  <section id="sec-specs">
+    <div class="row jr-form">
+      <input id="jr-specs-titre" placeholder="Titre de la spécification" style="flex:1; min-width:260px">
+      <input id="jr-specs-auteur" maxlength="12" placeholder="Auteur" style="width:110px">
+      <button class="btn primary" id="jr-specs-ajouter">+ Enregistrer</button>
+    </div>
+    <div class="row"><textarea id="jr-specs-corps" rows="4" placeholder="Texte de la spécification…" style="flex:1"></textarea></div>
+    <div id="jr-liste-specs" class="jr-liste"></div>
+    <span class="hint" id="jr-msg-specs">Chaque entrée est horodatée et signée ; une révision conserve l'horodatage d'origine.</span>
+  </section>
+
+  <!-- ONGLET DÉPLOIEMENT -->
+  <section id="sec-deploy">
+    <div class="row">
+      <button class="btn primary" onclick="deploy('all')">🚀 Tout déployer (build + TSW + CP4)</button>
+      <button class="btn warn" onclick="deploy('tsw')">📺 TSW seule (build + ch5z)</button>
+      <button class="btn warn" onclick="deploy('cp4')">🧠 CP4 seul (config + cpz)</button>
+      <button class="btn" onclick="deploy('config')">📄 Config seule (villa_config → CP4)</button>
+      <button class="btn" onclick="deploy('tsw', true)">TSW sans rebuild</button>
+      <span class="hint" id="deploy-status"></span>
+    </div>
+    <div id="deploy-out" class="term">Prêt. Choisissez une action de déploiement ci-dessus.</div>
+  </section>
+
+  <!-- ONGLET TERMINAL -->
+  <section id="sec-term">
+    <div class="row">
+      <select id="term-device">
+        <option value="cp4">CP4 — 192.168.1.200</option>
+        <option value="tsw">TSW — 192.168.1.48</option>
+      </select>
+      <span class="hint">Commandes rapides :</span>
+      <span class="chip" onclick="quickCmd('ver')">ver</span>
+      <span class="chip" onclick="quickCmd('proguptime:1')">proguptime</span>
+      <span class="chip" onclick="quickCmd('progcomments:1')">progcomments</span>
+      <span class="chip" onclick="quickCmd('ipt -p:01')">ipt -p:01</span>
+      <span class="chip" onclick="quickCmd('iptable')">iptable</span>
+      <span class="chip" onclick="quickCmd('err')">err</span>
+      <span class="chip" onclick="quickCmd('showhw')">showhw</span>
+      <button class="btn mini" style="margin-left:auto" onclick="document.getElementById('term-out').innerHTML=''">Effacer</button>
+    </div>
+    <div id="term-out" class="term"></div>
+    <div class="row">
+      <span style="color:var(--accent); font-family:monospace; font-weight:700;" id="term-prompt">CP4&gt;</span>
+      <input id="term-input" placeholder="Commande console (Entrée pour envoyer, ↑↓ pour l'historique)" autocomplete="off">
+      <button class="btn primary" onclick="sendTerm()">Envoyer</button>
+    </div>
+  </section>
+
+  <!-- ONGLET DEBUGGER (affiché par défaut) -->
+  <section id="sec-dbg" class="active">
+    <div class="row">
+      <span><span id="dbg-dot" class="status-dot"></span><b id="dbg-status">Déconnecté</b></span>
+      <span class="hint">Connexion WebXPanel au CP4 (IPID <span id="dbg-ipid">04</span>) — accepter d'abord le certificat sur <a href="https://192.168.1.200" target="_blank" style="color:var(--blue)">https://192.168.1.200</a></span>
+      <label style="margin-left:auto; display:flex; align-items:center; gap:6px; font-size:.8rem; cursor:pointer;">
+        <input type="checkbox" id="follow-tsw" checked> 🔗 Suivre la dalle (TSW)
+      </label>
+      <button class="btn mini" id="layout-table-btn" onclick="toggleDbgLayout('table')">⛶ Table plein écran</button>
+      <button class="btn mini" onclick="loadContractSignals()">Charger les signaux du contrat</button>
+      <button class="btn mini danger" onclick="clearWatch()">Vider</button>
+    </div>
+    <div class="row" id="dbg-addrow">
+      <span class="hint" title="Ajouter un signal à la table : choisir son type, son join, puis + Surveiller">Ajouter :</span>
+      <select id="dbg-type" title="Type du signal à ajouter (un même numéro de join existe en Digital, Analog et Serial)"><option value="b">Digital</option><option value="n">Analog</option><option value="s">Serial</option></select>
+      <input id="dbg-join" type="number" placeholder="Join" style="width:110px">
+      <input id="dbg-label" placeholder="Libellé (optionnel)" style="width:240px">
+      <button class="btn primary mini" onclick="addWatchFromForm()">+ Surveiller</button>
+      <div style="position:relative;">
+        <button class="btn mini" id="filter-btn" onclick="toggleFilterPanel()">🏠 Filtrer par pièce ▾</button>
+        <div id="filter-panel" style="display:none; position:absolute; top:115%; left:0; z-index:60; background:var(--panel); border:1px solid var(--border); border-radius:10px; padding:12px 16px; min-width:240px; box-shadow:0 10px 30px rgba(0,0,0,.6);"></div>
+      </div>
+      <span class="hint" title="Filtre l'affichage de la table (ne supprime rien)">Afficher :</span>
+      <button class="btn mini type-filter-btn" id="tf-b" onclick="toggleTypeFilter('b')" title="Afficher/masquer les signaux digitaux">Digital</button>
+      <button class="btn mini type-filter-btn" id="tf-n" onclick="toggleTypeFilter('n')" title="Afficher/masquer les signaux analogiques">Analog</button>
+      <button class="btn mini type-filter-btn" id="tf-s" onclick="toggleTypeFilter('s')" title="Afficher/masquer les signaux série">Serial</button>
+      <span class="hint">Blocs pièces : base = 1000 + (id−1)×100 (ex : 1021 = scène 1 pièce 1) — chargés automatiquement pour les pièces en intersystem</span>
+    </div>
+    <div id="dbg-wrap">
+      <table>
+        <thead><tr>
+          <th style="width:70px; cursor:pointer;" id="th-type" onclick="setSort('type')" title="Trier par type">Type</th>
+          <th style="width:80px; cursor:pointer;" id="th-join" onclick="setSort('join')" title="Trier par join">Join</th>
+          <th style="cursor:pointer;" id="th-label" onclick="setSort('label')" title="Trier par libellé">Libellé</th>
+          <th style="width:140px">Valeur live</th><th style="width:260px">Forcer</th><th style="width:40px"></th>
+        </tr></thead>
+        <tbody id="dbg-rows"></tbody>
+      </table>
+    </div>
+    <!-- Trace chronologique des changements de signaux, façon debugger Toolbox -->
+    <div class="row" id="trace-row" style="margin-top:2px;">
+      <b style="font-size:.85rem;">📜 Trace des signaux</b>
+      <span class="hint" id="trace-count">0 événement</span>
+      <span class="hint" id="trace-status" style="color:var(--red);"></span>
+      <button class="btn mini" id="layout-trace-btn" style="margin-left:auto" onclick="toggleDbgLayout('trace')">⛶ Trace plein écran</button>
+      <button class="btn mini" id="trace-pause-btn" onclick="toggleTracePause()">⏸ Pause défilement</button>
+      <button class="btn mini" onclick="clearTrace()">Vider la trace</button>
+    </div>
+    <div id="trace-wrap" class="term" style="flex:0 0 32%; min-height:120px;"></div>
+  </section>
+</main>
+
+<script>
+function showTab(name) {
+  ['deploy','term','dbg','todo','tests','specs'].forEach(t => {
+    document.getElementById('tab-' + t).classList.toggle('active', t === name);
+    document.getElementById('sec-' + t).classList.toggle('active', t === name);
+  });
+  if (name === 'term') document.getElementById('term-input').focus();
+  // Relecture du fichier à chaque ouverture : un collègue a pu écrire entre-temps.
+  if (['todo','tests','specs'].indexOf(name) >= 0 && window.Journal) Journal.ouvrir(name);
+}
+
+fetch('/api/devices').then(r => r.json()).then(d => {
+  if (d.cp4) document.getElementById('cp4-host').textContent = d.cp4.host;
+  if (d.tsw) document.getElementById('tsw-host').textContent = d.tsw.host;
+}).catch(() => {});
+
+// ---------- DÉPLOIEMENT ----------
+let deploying = false;
+async function deploy(target, skipBuild) {
+  if (deploying) return;
+  deploying = true;
+  const out = document.getElementById('deploy-out');
+  const status = document.getElementById('deploy-status');
+  out.textContent = '';
+  status.textContent = '⏳ En cours…';
+  document.querySelectorAll('#sec-deploy .btn').forEach(b => b.disabled = true);
+  try {
+    const resp = await fetch('/api/deploy', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ target, skipBuild: !!skipBuild }) });
+    const reader = resp.body.getReader();
+    const dec = new TextDecoder();
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      out.textContent += dec.decode(value, { stream: true });
+      out.scrollTop = out.scrollHeight;
+    }
+    status.textContent = '✅ Terminé';
+  } catch (e) {
+    out.textContent += '\nERREUR: ' + e.message;
+    status.textContent = '❌ Échec';
+  }
+  document.querySelectorAll('#sec-deploy .btn').forEach(b => b.disabled = false);
+  deploying = false;
+}
+
+// ---------- TERMINAL ----------
+const history = [];
+let histIdx = -1;
+const termInput = document.getElementById('term-input');
+const termOut = document.getElementById('term-out');
+document.getElementById('term-device').addEventListener('change', function() {
+  document.getElementById('term-prompt').textContent = (this.value === 'cp4' ? 'CP4' : 'TS-1070') + '>';
+});
+termInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter') sendTerm();
+  else if (e.key === 'ArrowUp') { if (histIdx < history.length - 1) { histIdx++; termInput.value = history[history.length - 1 - histIdx] || ''; } e.preventDefault(); }
+  else if (e.key === 'ArrowDown') { if (histIdx > 0) { histIdx--; termInput.value = history[history.length - 1 - histIdx] || ''; } else { histIdx = -1; termInput.value = ''; } e.preventDefault(); }
+});
+function quickCmd(c) { termInput.value = c; sendTerm(); }
+async function sendTerm() {
+  const command = termInput.value.trim();
+  if (!command) return;
+  const device = document.getElementById('term-device').value;
+  history.push(command); histIdx = -1;
+  termInput.value = '';
+  const prompt = (device === 'cp4' ? 'CP4' : 'TS-1070') + '> ';
+  termOut.innerHTML += '<span class="cmd">' + prompt + escapeHtml(command) + '</span>\n';
+  termOut.scrollTop = termOut.scrollHeight;
+  try {
+    const resp = await fetch('/api/console', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ device, command }) });
+    const text = await resp.text();
+    termOut.innerHTML += (resp.ok ? escapeHtml(text) : '<span class="err">' + escapeHtml(text) + '</span>') + '\n\n';
+  } catch (e) {
+    termOut.innerHTML += '<span class="err">ERREUR: ' + escapeHtml(e.message) + '</span>\n\n';
+  }
+  termOut.scrollTop = termOut.scrollHeight;
+}
+function escapeHtml(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+// ---------- DEBUGGER (WebXPanel + CrComLib) ----------
+const CP4_HOST = '192.168.1.200';
+const DBG_IPID = '0x04';
+let crReady = false;
+const watches = []; // {type, join, label, subId}
+
+let dbgConnected = false;
+let dbgWasConnected = false;
+let reconnectTimer = null;
+let reconnectCountdown = null;
+function setDbgStatus(connected, label) {
+  dbgConnected = connected;
+  document.getElementById('dbg-dot').classList.toggle('on', connected);
+  document.getElementById('dbg-status').textContent = label;
+  updateTraceStatus();
+
+  // Reconnexion automatique : si on a déjà été connecté dans cette session et que la
+  // liaison reste coupée 15 s (redémarrage du CP4, onglet gelé...), la page se recharge.
+  if (connected) {
+    dbgWasConnected = true;
+    clearTimeout(reconnectTimer); reconnectTimer = null;
+    clearInterval(reconnectCountdown); reconnectCountdown = null;
+  } else if (dbgWasConnected && !reconnectTimer) {
+    let restant = 15;
+    const statusEl = document.getElementById('dbg-status');
+    reconnectCountdown = setInterval(() => {
+      restant--;
+      if (restant > 0 && !dbgConnected) statusEl.textContent = 'Déconnecté — reconnexion auto dans ' + restant + ' s';
+    }, 1000);
+    reconnectTimer = setTimeout(() => {
+      if (!dbgConnected) location.reload();
+    }, 15000);
+  }
+}
+function updateTraceStatus() {
+  const el = document.getElementById('trace-status');
+  if (!el) return;
+  if (!dbgConnected) { el.textContent = '⚠ déconnecté du CP4 : aucun événement ne peut arriver'; el.style.color = 'var(--red)'; }
+  else if (roomFilter) { el.textContent = '🏠 filtre actif : seules les pièces cochées sont tracées'; el.style.color = 'var(--gold)'; }
+  else { el.textContent = ''; }
+}
+window.addEventListener('CONNECT_WS', () => setDbgStatus(true, 'WebSocket connecté'));
+window.addEventListener('CONNECT_CIP', () => setDbgStatus(true, 'CIP connecté (live)'));
+window.addEventListener('DISCONNECT_WS', () => setDbgStatus(false, 'Déconnecté'));
+window.addEventListener('DISCONNECT_CIP', () => setDbgStatus(false, 'CIP déconnecté'));
+
+// --- Filtre des signaux par pièce (0 = signaux globaux, join >= 1000 = bloc pièce) ---
+let roomFilter = null; // null = tout afficher ; sinon Set des pièces cochées
+try {
+  const saved = localStorage.getItem('dbg_room_filter');
+  if (saved) roomFilter = new Set(JSON.parse(saved));
+} catch (e) {}
+function joinRoom(join) {
+  join = parseInt(join, 10);
+  return join >= 1000 ? Math.floor((join - 1000) / 100) + 1 : 0;
+}
+function roomAllowed(room) { return !roomFilter || roomFilter.has(room); }
+
+// --- Filtre par type de signal (Digital / Analog / Serial) ---
+let typeFilter = { b: true, n: true, s: true };
+try {
+  const savedTf = localStorage.getItem('dbg_type_filter');
+  if (savedTf) typeFilter = JSON.parse(savedTf);
+} catch (e) {}
+function typeAllowed(t) { return typeFilter[t] !== false; }
+function toggleTypeFilter(t) {
+  typeFilter[t] = !typeAllowed(t);
+  try { localStorage.setItem('dbg_type_filter', JSON.stringify(typeFilter)); } catch (e) {}
+  updateTypeFilterButtons();
+  refreshRowVisibility();
+}
+function updateTypeFilterButtons() {
+  ['b', 'n', 's'].forEach(t => {
+    const btn = document.getElementById('tf-' + t);
+    if (btn) btn.classList.toggle('on', typeAllowed(t));
+  });
+}
+
+// --- Tri de la table (type / join / libellé, ascendant puis descendant) ---
+let sortState = { key: 'join', dir: 1 };
+try {
+  const savedSort = localStorage.getItem('dbg_sort');
+  if (savedSort) sortState = JSON.parse(savedSort);
+} catch (e) {}
+function setSort(key) {
+  if (sortState.key === key) sortState.dir = -sortState.dir;
+  else sortState = { key: key, dir: 1 };
+  try { localStorage.setItem('dbg_sort', JSON.stringify(sortState)); } catch (e) {}
+  applySort();
+}
+function applySort() {
+  const tbody = document.getElementById('dbg-rows');
+  const rows = [...tbody.querySelectorAll('tr')].filter(tr => tr.id !== 'dbg-empty-hint');
+  const typeOrder = { b: 1, n: 2, s: 3 };
+  rows.sort((a, b) => {
+    let va, vb;
+    if (sortState.key === 'join') {
+      va = parseInt(a.dataset.join, 10); vb = parseInt(b.dataset.join, 10);
+      if (va === vb) { va = typeOrder[a.dataset.stype]; vb = typeOrder[b.dataset.stype]; }
+      return (va - vb) * sortState.dir;
+    }
+    if (sortState.key === 'type') {
+      va = typeOrder[a.dataset.stype]; vb = typeOrder[b.dataset.stype];
+      if (va === vb) return (parseInt(a.dataset.join, 10) - parseInt(b.dataset.join, 10)) * sortState.dir;
+      return (va - vb) * sortState.dir;
+    }
+    return (a.dataset.label || '').localeCompare(b.dataset.label || '', 'fr') * sortState.dir;
+  });
+  rows.forEach(tr => tbody.appendChild(tr));
+  const hint = document.getElementById('dbg-empty-hint');
+  if (hint) tbody.appendChild(hint);
+  // Indicateurs visuels sur les entêtes
+  [['th-type', 'type'], ['th-join', 'join'], ['th-label', 'label']].forEach(([id, key]) => {
+    const th = document.getElementById(id);
+    if (!th) return;
+    const base = { 'th-type': 'Type', 'th-join': 'Join', 'th-label': 'Libellé' }[id];
+    th.classList.toggle('sorted', sortState.key === key);
+    th.textContent = base + (sortState.key === key ? (sortState.dir === 1 ? ' ▲' : ' ▼') : '');
+  });
+}
+function toggleFilterPanel() {
+  const p = document.getElementById('filter-panel');
+  if (p.style.display === 'none') { buildFilterPanel(); p.style.display = 'block'; }
+  else p.style.display = 'none';
+}
+function buildFilterPanel() {
+  const p = document.getElementById('filter-panel');
+  const vc = window.__villaCfg;
+  const entries = [{ id: 0, nom: 'Signaux globaux' }];
+  if (vc) (vc.pieces || []).forEach(pc => entries.push({ id: pc.id, nom: pc.id + ' — ' + pc.nom + (pc.intersystem === false ? '' : ' 🔗') }));
+  let html = '<div style="display:flex; gap:8px; margin-bottom:8px;">' +
+             '<button class="btn mini" onclick="setAllRoomFilter(true)">Tout</button>' +
+             '<button class="btn mini" onclick="setAllRoomFilter(false)">Aucun</button></div>';
+  entries.forEach(e => {
+    html += '<label style="display:flex; align-items:center; gap:8px; padding:3px 0; cursor:pointer; font-size:.85rem;">' +
+            '<input type="checkbox" class="room-filter-cb" data-room="' + e.id + '"' + (roomAllowed(e.id) ? ' checked' : '') + ' onchange="applyRoomFilter()"> ' +
+            escapeHtml(e.nom) + '</label>';
+  });
+  p.innerHTML = html;
+}
+function setAllRoomFilter(on) {
+  document.querySelectorAll('.room-filter-cb').forEach(cb => cb.checked = on);
+  applyRoomFilter();
+}
+function saveRoomFilter() {
+  try {
+    if (roomFilter) localStorage.setItem('dbg_room_filter', JSON.stringify([...roomFilter]));
+    else localStorage.removeItem('dbg_room_filter');
+  } catch (e) {}
+}
+function refreshRowVisibility() {
+  const rows = [...document.querySelectorAll('#dbg-rows tr')].filter(tr => tr.id !== 'dbg-empty-hint');
+  rows.forEach(tr => {
+    const ok = roomAllowed(parseInt(tr.dataset.room || '0', 10)) && typeAllowed(tr.dataset.stype || 'b');
+    tr.style.display = ok ? '' : 'none';
+  });
+  const btn = document.getElementById('filter-btn');
+  if (btn) btn.textContent = roomFilter ? '🏠 Filtre actif (' + roomFilter.size + ') ▾' : '🏠 Filtrer par pièce ▾';
+  updateTraceStatus();
+  // Message explicatif quand le filtre masque tout
+  const visibles = rows.filter(tr => tr.style.display !== 'none').length;
+  let hint = document.getElementById('dbg-empty-hint');
+  if (rows.length && !visibles) {
+    if (!hint) {
+      hint = document.createElement('tr');
+      hint.id = 'dbg-empty-hint';
+      hint.innerHTML = '<td colspan="6" class="hint" style="padding:18px; text-align:center;">Tous les signaux sont masqués par le filtre 🏠 — cochez des pièces (ou « Tout ») pour les afficher.</td>';
+      document.getElementById('dbg-rows').appendChild(hint);
+    }
+  } else if (hint) hint.remove();
+}
+function applyRoomFilter() {
+  const cbs = [...document.querySelectorAll('.room-filter-cb')];
+  if (cbs.length) {
+    const checked = cbs.filter(cb => cb.checked).map(cb => parseInt(cb.dataset.room, 10));
+    roomFilter = (checked.length === cbs.length) ? null : new Set(checked);
+    saveRoomFilter();
+  }
+  refreshRowVisibility();
+}
+
+// --- Bascule d'affichage : partagé / table plein écran / trace plein écran ---
+let dbgLayout = 'split';
+function toggleDbgLayout(mode) {
+  dbgLayout = (dbgLayout === mode) ? 'split' : mode;
+  const show = (id, on, disp) => { const el = document.getElementById(id); if (el) el.style.display = on ? (disp || '') : 'none'; };
+  show('dbg-addrow', dbgLayout !== 'trace', 'flex');
+  show('dbg-wrap', dbgLayout !== 'trace');
+  show('trace-row', dbgLayout !== 'table', 'flex');
+  show('trace-wrap', dbgLayout !== 'table');
+  const traceWrap = document.getElementById('trace-wrap');
+  if (traceWrap) traceWrap.style.flex = (dbgLayout === 'trace') ? '1 1 auto' : '0 0 32%';
+  document.getElementById('layout-table-btn').textContent = (dbgLayout === 'table') ? '⿻ Vue partagée' : '⛶ Table plein écran';
+  document.getElementById('layout-trace-btn').textContent = (dbgLayout === 'trace') ? '⿻ Vue partagée' : '⛶ Trace plein écran';
+  if (dbgLayout !== 'table' && traceWrap && !tracePaused) traceWrap.scrollTop = traceWrap.scrollHeight;
+}
+
+// --- Trace chronologique façon Toolbox ---
+const TRACE_MAX = 500;
+let tracePaused = false;
+let traceCount = 0;
+function traceEvent(type, join, label, value) {
+  const wrap = document.getElementById('trace-wrap');
+  if (!wrap) return;
+  // Le transport de configuration (Serial 105, chunks VCFG) polluerait la trace : ignoré
+  if (type === 's' && String(join) === '105') return;
+  // Le filtre par pièce s'applique aussi à la trace
+  if (!roomAllowed(joinRoom(join))) return;
+  if (type === 's' && typeof value === 'string' && value.length > 150) value = value.slice(0, 150) + '… [tronqué]';
+  const now = new Date();
+  const ts = now.toTimeString().slice(0, 8) + '.' + String(now.getMilliseconds()).padStart(3, '0');
+  let icon, valTxt;
+  if (type === 'b') {
+    icon = value ? '<span style="color:#10b981;">⬆</span>' : '<span style="color:#64748b;">⬇</span>';
+    valTxt = value ? '1' : '0';
+  } else {
+    icon = '<span style="color:#ef4444;">∿</span>';
+    valTxt = String(value);
+  }
+  const typeName = { b: 'd', n: 'a', s: 's' }[type];
+  const line = document.createElement('div');
+  line.innerHTML = '<span style="color:#64748b;">' + ts + '</span>  ' + icon + '  ' +
+                   escapeHtml(label || '(sans libellé)') + ' <span style="color:#64748b;">(' + typeName + join + ')</span> = <b style="color:#e2e8f0;">' + escapeHtml(valTxt) + '</b>';
+  wrap.appendChild(line);
+  traceCount++;
+  while (wrap.childNodes.length > TRACE_MAX) wrap.removeChild(wrap.firstChild);
+  if (!tracePaused) wrap.scrollTop = wrap.scrollHeight;
+  const cnt = document.getElementById('trace-count');
+  if (cnt) cnt.textContent = traceCount + ' événement' + (traceCount > 1 ? 's' : '');
+}
+function toggleTracePause() {
+  tracePaused = !tracePaused;
+  document.getElementById('trace-pause-btn').textContent = tracePaused ? '▶ Reprendre défilement' : '⏸ Pause défilement';
+  if (!tracePaused) { const w = document.getElementById('trace-wrap'); w.scrollTop = w.scrollHeight; }
+}
+function clearTrace() {
+  document.getElementById('trace-wrap').innerHTML = '';
+  traceCount = 0;
+  document.getElementById('trace-count').textContent = '0 événement';
+}
+
+function initXPanel() {
+  try {
+    // Mode test : ?noconnect empêche la connexion XPanel (une seule connexion possible par IP-ID)
+    if (new URLSearchParams(location.search).has('noconnect')) { setDbgStatus(false, 'Mode hors connexion (?noconnect)'); return; }
+    if (typeof WebXPanel === 'undefined') { setDbgStatus(false, 'webxpanel.js absent'); return; }
+    let inst = WebXPanel;
+    if (typeof WebXPanel.getWebXPanel === 'function') inst = WebXPanel.getWebXPanel(true);
+    const cfg = { host: CP4_HOST, ipId: DBG_IPID };
+    if (inst && inst.WebXPanel && typeof inst.WebXPanel.initialize === 'function') inst.WebXPanel.initialize(cfg);
+    else if (inst && typeof inst.initialize === 'function') inst.initialize(cfg);
+    else if (inst && inst.default && typeof inst.default.initialize === 'function') inst.default.initialize(cfg);
+    document.getElementById('dbg-ipid').textContent = parseInt(DBG_IPID, 16).toString().padStart(2, '0');
+  } catch (e) { setDbgStatus(false, 'Erreur init: ' + e.message); }
+}
+
+function addWatch(type, join, label) {
+  join = String(join);
+  if (watches.some(w => w.type === type && w.join === join)) return;
+  const w = { type, join, label: label || '' };
+  watches.push(w);
+  const tr = document.createElement('tr');
+  const typeName = { b: 'Digital', n: 'Analog', s: 'Serial' }[type];
+  let forceHtml = '';
+  if (type === 'b') {
+    forceHtml = '<button class="btn mini" onclick="forceVal(\'b\',' + join + ',\'pulse\')">Pulse</button> ' +
+                '<button class="btn mini" onclick="forceVal(\'b\',' + join + ',true)">ON</button> ' +
+                '<button class="btn mini" onclick="forceVal(\'b\',' + join + ',false)">OFF</button>';
+  } else if (type === 'n') {
+    forceHtml = '<input type="number" id="force-n-' + join + '" style="width:90px" class="mini"> <button class="btn mini" onclick="forceVal(\'n\',' + join + ')">Envoyer</button>';
+  } else {
+    forceHtml = '<input id="force-s-' + join + '" style="width:150px" class="mini"> <button class="btn mini" onclick="forceVal(\'s\',' + join + ')">Envoyer</button>';
+  }
+  tr.dataset.room = joinRoom(join);
+  tr.dataset.join = join;
+  tr.dataset.stype = type;
+  tr.dataset.label = w.label || '';
+  if (!roomAllowed(joinRoom(join)) || !typeAllowed(type)) tr.style.display = 'none';
+  tr.innerHTML = '<td>' + typeName + '</td><td><b>' + join + '</b></td><td class="hint">' + escapeHtml(w.label) + '</td>' +
+                 '<td><span class="val" id="val-' + type + '-' + join + '">—</span></td>' +
+                 '<td>' + forceHtml + '</td>' +
+                 '<td><button class="btn mini danger" onclick="removeWatch(\'' + type + '\',\'' + join + '\', this)">✕</button></td>';
+  document.getElementById('dbg-rows').appendChild(tr);
+  if (typeof CrComLib !== 'undefined') {
+    let initialValue = true; // le premier callback est l'état courant à l'abonnement, pas un événement
+    w.subId = CrComLib.subscribeState(type, join, v => {
+      const el = document.getElementById('val-' + type + '-' + join);
+      if (el) {
+        if (type === 'b') { el.textContent = v ? '1 (ON)' : '0 (OFF)'; el.className = 'val ' + (v ? 'd-on' : 'd-off'); }
+        else el.textContent = String(v);
+      }
+      if (initialValue) { initialValue = false; return; }
+      traceEvent(type, join, w.label, v);
+    });
+  }
+}
+function addWatchFromForm() {
+  const type = document.getElementById('dbg-type').value;
+  const join = document.getElementById('dbg-join').value;
+  if (!join) return;
+  addWatch(type, join, document.getElementById('dbg-label').value);
+  document.getElementById('dbg-join').value = ''; document.getElementById('dbg-label').value = '';
+
+  // Si la pièce du signal est masquée par le filtre, on la ré-active pour que la ligne soit visible
+  const room = joinRoom(join);
+  if (roomFilter && !roomFilter.has(room)) {
+    roomFilter.add(room);
+    saveRoomFilter();
+    const cb = document.querySelector('.room-filter-cb[data-room="' + room + '"]');
+    if (cb) cb.checked = true;
+    refreshRowVisibility();
+  }
+  // Mettre la ligne (nouvelle ou déjà existante) en évidence
+  const valEl = document.getElementById('val-' + type + '-' + join);
+  const tr = valEl ? valEl.closest('tr') : null;
+  if (tr) {
+    tr.scrollIntoView({ block: 'center' });
+    tr.style.transition = 'background 1.5s';
+    tr.style.background = 'rgba(16,185,129,.25)';
+    setTimeout(() => { tr.style.background = ''; }, 1600);
+  }
+}
+function removeWatch(type, join, btn) {
+  const i = watches.findIndex(w => w.type === type && w.join === join);
+  if (i >= 0) {
+    if (watches[i].subId && typeof CrComLib !== 'undefined') CrComLib.unsubscribeState(type, join, watches[i].subId);
+    watches.splice(i, 1);
+  }
+  btn.closest('tr').remove();
+}
+function clearWatch() {
+  [...watches].forEach(w => {
+    if (w.subId && typeof CrComLib !== 'undefined') CrComLib.unsubscribeState(w.type, w.join, w.subId);
+  });
+  watches.length = 0;
+  document.getElementById('dbg-rows').innerHTML = '';
+}
+function forceVal(type, join, val) {
+  if (typeof CrComLib === 'undefined') return;
+  join = String(join);
+  if (type === 'b') {
+    if (val === 'pulse') { CrComLib.publishEvent('b', join, true); CrComLib.publishEvent('b', join, false); }
+    else CrComLib.publishEvent('b', join, val);
+  } else if (type === 'n') {
+    const v = parseInt(document.getElementById('force-n-' + join).value, 10);
+    if (!isNaN(v)) CrComLib.publishEvent('n', join, v);
+  } else {
+    CrComLib.publishEvent('s', join, document.getElementById('force-s-' + join).value);
+  }
+}
+
+// Pré-remplissage depuis le contrat de villa_config.json
+async function loadContractSignals() {
+  try {
+    const vc = await (await fetch('/villa_config.json')).json();
+    window.__villaCfg = vc; // utilisé par le filtre par pièce
+    const typeMap = { digital: 'b', analog: 'n', serial: 's' };
+    (vc.contrat.signauxGlobaux || []).forEach(sig => {
+      const t = typeMap[sig.type];
+      if (!t) return;
+      if (sig.join !== undefined) addWatch(t, sig.join, sig.contractName);
+      else if (sig.joinDebut !== undefined) {
+        const n = Math.min(sig.nombre || 1, 20);
+        for (let i = 0; i < n; i++) addWatch(t, sig.joinDebut + i, sig.contractName + '.' + (i + 1));
+      }
+    });
+    // Blocs pièces : signaux de TOUTES les pièces du fichier de configuration
+    // (le flag intersystem ne restreint que l'exposition vers le SIMPL du slot 2)
+    const pieces = vc.pieces || [];
+    const offsets = (vc.contrat.blocsPieces && vc.contrat.blocsPieces.offsets) || [];
+    pieces.forEach(p => {
+      const base = 1000 + (p.id - 1) * 100;
+      offsets.forEach(off => {
+        const t = typeMap[off.type];
+        if (!t) return;
+        const label = off.contractName.replace('<id>', p.id) + ' [' + p.nom + ']';
+        if (off.offset !== undefined) addWatch(t, base + off.offset, label);
+        else if (off.offsetDebut !== undefined) {
+          const n = Math.min(off.nombre || 1, 20);
+          for (let i = 0; i < n; i++) addWatch(t, base + off.offsetDebut + i, label + '.' + (i + 1));
+        }
+      });
+    });
+    refreshRowVisibility(); // applique les filtres mémorisés (texte du bouton + message éventuel)
+    updateTypeFilterButtons();
+    applySort();
+  } catch (e) { alert('villa_config.json illisible : ' + e.message); }
+}
+
+// Suivi de la dalle : le CP4 diffuse la pièce affichée par la TSW sur l'Analog 240 ;
+// si la case est cochée, le debugger aligne son propre contexte dessus.
+function initFollowTsw() {
+  if (typeof CrComLib === 'undefined') return;
+  CrComLib.subscribeState('n', '240', v => {
+    const cb = document.getElementById('follow-tsw');
+    if (v >= 1 && cb && cb.checked) {
+      CrComLib.publishEvent('n', '10', v);
+    }
+  });
+}
+
+// Chargement de CrComLib (bundle du projet) puis init du WebXPanel
+// et chargement automatique des signaux du contrat à chaque ouverture de la page
+const s = document.createElement('script');
+s.src = 'js/ch5-components.js';
+s.onload = () => { crReady = true; initXPanel(); initFollowTsw(); loadContractSignals(); };
+s.onerror = () => setDbgStatus(false, 'ch5-components.js introuvable');
+document.body.appendChild(s);
+</script>
+</body>
+</html>
