@@ -17,7 +17,8 @@ namespace VillaFrequenceTvAutomation
         public ushort LightLevel1 { get; set; }
         public ushort TargetTemperature { get; set; }
         public ushort CurrentTemperature { get; set; }
-        public ushort ActiveVideoSource { get; set; }
+        public ushort ActiveVideoSource { get; set; }   // 0 = off, 1..4 = source vidéo (interlock)
+        public bool MusicAudio { get; set; }             // true = la musique joue sur les haut-parleurs, la vidéo reste à l'écran (v1.0.166)
         public ushort AudioVolume { get; set; }
         public bool IsAudioMuted { get; set; }
         public ushort[] CircuitLevels { get; set; }
@@ -33,6 +34,7 @@ namespace VillaFrequenceTvAutomation
             TargetTemperature = 210;
             CurrentTemperature = 224;
             ActiveVideoSource = 0;
+            MusicAudio = false;
             AudioVolume = 25000;
             IsAudioMuted = false;
             CircuitLevels = new ushort[10] { 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768 };
@@ -70,6 +72,29 @@ namespace VillaFrequenceTvAutomation
         private const uint TswRoomBroadcastJoin = 240;
         private const uint MainPanelIpId = 0x03;
         private ushort _tswActiveRoom = 1;
+
+        // Web XPanel "QR code" : un IP-ID par pièce (0x10 + id de pièce, soit 0x11..0x2E pour 30 pièces).
+        // Le QR code d'une pièce ouvre https://<CP4>/villaftv/index.html?ipId=0x1N&room=N dans le
+        // navigateur du téléphone (voir tools/gen_qr.js). Chaque connexion sur un IP-ID QR est forcée
+        // sur sa pièce, de sorte qu'un nouveau scan revient toujours sur la bonne pièce.
+        private const uint QrXpanelBaseIpId = 0x10;
+        private const int QrXpanelMaxRooms = 30;
+
+        private bool IsQrXpanel(uint ipId)
+        {
+            return ipId > QrXpanelBaseIpId && ipId <= QrXpanelBaseIpId + QrXpanelMaxRooms;
+        }
+
+        /// <summary>Pièce affichée par défaut pour un périphérique : sa pièce dédiée pour un XPanel QR, sinon la 1.</summary>
+        private int DefaultRoomForPanel(uint ipId)
+        {
+            if (IsQrXpanel(ipId))
+            {
+                int roomId = (int)(ipId - QrXpanelBaseIpId);
+                if (_roomsRegistry != null && _roomsRegistry.ContainsKey(roomId)) return roomId;
+            }
+            return 1;
+        }
 
         // Volume audio matériel de la dalle TSW (page Vidéo) : Analog 260 = volume 0-100
         // (extender AllAudioVolume, échelle 0-65535), Digital 261 = bascule mute.
@@ -276,6 +301,18 @@ namespace VillaFrequenceTvAutomation
                 // 3. Déclaration et instanciation du Web XPanel HTML5 sur l'IP ID 0x04
                 RegisterUserInterface(new XpanelForHtml5(0x04, this));
 
+                // 3b. Web XPanel "QR code" : un XpanelForHtml5 par pièce de villa_config.json (IP-ID 0x10 + id).
+                //     Le CP4 n'accepte qu'un client par IP-ID : un téléphone actif par pièce, le nouveau scan remplace l'ancien.
+                //     Les IP-ID doivent aussi exister dans la table IP du CP4 (créés automatiquement par Register()).
+                var qrRoomIds = new List<int>(_roomsRegistry.Keys);
+                qrRoomIds.Sort();
+                foreach (int roomKey in qrRoomIds)
+                {
+                    if (roomKey < 1 || roomKey > QrXpanelMaxRooms) continue;
+                    uint qrIpId = QrXpanelBaseIpId + (uint)roomKey;
+                    RegisterUserInterface(new XpanelForHtml5(qrIpId, this));
+                }
+
                 // 4. Déclaration et instanciation de l'iPad sur l'IP ID 0x05 (Crestron Go / Crestron App)
                 var ipad = new CrestronApp(0x05, this);
                 ipad.ParameterProjectName.Value = "villaftv";
@@ -293,8 +330,9 @@ namespace VillaFrequenceTvAutomation
                 // Force un premier rafraîchissement des textes de l'écran à l'allumage pour toutes les dalles
                 foreach(var panel in _touchPanels)
                 {
-                    _activeRoomPerDevice[panel.ID] = 1;
-                    UpdateScreenStateForPanel(panel, 1);
+                    int defaultRoom = DefaultRoomForPanel(panel.ID);
+                    _activeRoomPerDevice[panel.ID] = defaultRoom;
+                    UpdateScreenStateForPanel(panel, defaultRoom);
                 }
             }
             catch (Exception ex)
@@ -498,6 +536,14 @@ namespace VillaFrequenceTvAutomation
                 {
                     CrestronConsole.PrintLine("DEVICE ONLINE: Périphérique tactile IP-ID {0:X2} est en ligne.", panel.ID);
                     int roomId = _activeRoomPerDevice.ContainsKey(panel.ID) ? _activeRoomPerDevice[panel.ID] : 1;
+                    if (IsQrXpanel(panel.ID))
+                    {
+                        // Connexion par QR code : toujours repartir sur la pièce dédiée à cet IP-ID,
+                        // même si l'utilisateur précédent avait navigué ailleurs.
+                        roomId = DefaultRoomForPanel(panel.ID);
+                        _activeRoomPerDevice[panel.ID] = roomId;
+                        CrestronConsole.PrintLine("QR-XPANEL: IP-ID {0:X2} forcé sur la pièce {1}.", panel.ID, roomId);
+                    }
                     UpdateScreenStateForPanel(panel, roomId);
 
                     // Publie l'empreinte de la configuration : le panel demandera le transfert
@@ -640,8 +686,10 @@ namespace VillaFrequenceTvAutomation
                     for (uint s = 0; s < 4; s++)
                         dev.BooleanInput[b + 41 + s].BoolValue = (room.ActiveStoreScene == 201 + s);
                     dev.BooleanInput[b + 50].BoolValue = room.IsAudioMuted;
-                    for (uint s = 0; s < 6; s++)
+                    for (uint s = 0; s < 5; s++)
                         dev.BooleanInput[b + 51 + s].BoolValue = (room.ActiveVideoSource == s);
+                    dev.BooleanInput[b + 56].BoolValue = room.MusicAudio;    // musique sur les haut-parleurs
+                    dev.BooleanInput[b + 57].BoolValue = !room.MusicAudio;   // audio = source vidéo
                     // Partitions d'alarme (+81..92 : triplets Armé / Partiel / Désarmé)
                     for (uint p = 0; p < 4; p++)
                     {
@@ -656,6 +704,7 @@ namespace VillaFrequenceTvAutomation
                     dev.UShortInput[b + 31].UShortValue = room.TargetTemperature;
                     dev.UShortInput[b + 51].UShortValue = room.ActiveVideoSource;
                     dev.UShortInput[b + 52].UShortValue = room.AudioVolume;
+                    dev.UShortInput[b + 53].UShortValue = room.MusicAudio ? (ushort)5 : room.ActiveVideoSource; // source audio
                     for (uint i = 0; i < 10; i++)
                         dev.UShortInput[b + 71 + i].UShortValue = room.CircuitLevels[i];
 
@@ -711,11 +760,16 @@ namespace VillaFrequenceTvAutomation
                     room.ActiveStoreScene = (ushort)(201 + (offset - 41));
                 else if (offset == 50)                      // Mute toggle
                     room.IsAudioMuted = !room.IsAudioMuted;
-                else if (offset >= 51 && offset <= 56)      // Sélection de source
+                else if (offset >= 51 && offset <= 55)      // Sélection de source vidéo (+51 = OFF)
                 {
                     room.ActiveVideoSource = (ushort)(offset - 51);
+                    if (room.ActiveVideoSource == 0) room.MusicAudio = false;
                     DispatchIpCommandToSonyTv(roomId, room.ActiveVideoSource);
                 }
+                else if (offset == 56)                      // Musique sur les haut-parleurs (la vidéo reste)
+                    room.MusicAudio = true;
+                else if (offset == 57)                      // L'audio revient à la source vidéo
+                    room.MusicAudio = false;
                 else if (offset >= 81 && offset <= 92)      // Partitions d'alarme
                 {
                     uint partIdx = (offset - 81) / 3;
@@ -757,7 +811,7 @@ namespace VillaFrequenceTvAutomation
             }
 
             if (!_activeRoomPerDevice.ContainsKey(currentDevice.ID))
-                _activeRoomPerDevice[currentDevice.ID] = 1;
+                _activeRoomPerDevice[currentDevice.ID] = DefaultRoomForPanel(currentDevice.ID);
 
             // Miroir intersystem : chaque signal global brut (< 1000) est répliqué 1:1 vers le slot 2
             MirrorSignalToEisc(currentDevice, args);
@@ -860,26 +914,50 @@ namespace VillaFrequenceTvAutomation
                 return;
             }
 
-            // Sources Selection (Digital 150 to 155)
-            if (joinNumber >= 150 && joinNumber <= 155)
+            // Extinction A/V de la pièce (Digital 200, bouton Power OFF du GUI) : vidéo off + audio off.
+            // (Le GUI émet aussi 50 et 151-155=false : 50 est CVC.ConsigneMoins en v2 — à retirer du GUI, voir 06_TODO.)
+            if (joinNumber == 200)
             {
-                ushort sourceId = (ushort)(joinNumber - 150);
-                selectedRoom.ActiveVideoSource = sourceId;
-                SendFeedbackUShortToRoom(activeRoomId, 51, sourceId); // Still send analog feedback for compatibility
-                
-                // Send digital feedback to all panels in this room
+                selectedRoom.ActiveVideoSource = 0;
+                selectedRoom.MusicAudio = false;
+                DispatchIpCommandToSonyTv(activeRoomId, 0);
+                DispatchAudioRouting(activeRoomId);
+                BroadcastFeedbackToRoom(activeRoomId);
+                MirrorRoomStateToEisc(activeRoomId);
+                return;
+            }
+
+            // Sources (Digital 150-156, v1.0.166) : 150-154 = vidéo en interlock (150 = OFF),
+            // 155 = la musique passe sur les haut-parleurs (la vidéo reste à l'écran),
+            // 156 = l'audio revient à la source vidéo. Feedback : 150-154 vidéo, 155 = musique, 156 = !musique.
+            if (joinNumber >= 150 && joinNumber <= 156)
+            {
+                if (joinNumber <= 154)
+                {
+                    ushort sourceId = (ushort)(joinNumber - 150);
+                    selectedRoom.ActiveVideoSource = sourceId;
+                    if (sourceId == 0) selectedRoom.MusicAudio = false;
+                    DispatchIpCommandToSonyTv(activeRoomId, sourceId);
+                }
+                else if (joinNumber == 155) selectedRoom.MusicAudio = true;
+                else selectedRoom.MusicAudio = false;
+
+                SendFeedbackUShortToRoom(activeRoomId, 51, selectedRoom.ActiveVideoSource);
+                SendFeedbackUShortToRoom(activeRoomId, 53, selectedRoom.MusicAudio ? (ushort)5 : selectedRoom.ActiveVideoSource);
+                DispatchAudioRouting(activeRoomId);
+
+                // Feedback digital vers tous les panels de la pièce
                 foreach (var panel in _touchPanels)
                 {
                     if (_activeRoomPerDevice.ContainsKey(panel.ID) && _activeRoomPerDevice[panel.ID] == activeRoomId)
                     {
-                        for (uint i = 150; i <= 155; i++)
-                        {
-                            panel.BooleanInput[i].BoolValue = (joinNumber == i);
-                        }
+                        for (uint i = 150; i <= 154; i++)
+                            panel.BooleanInput[i].BoolValue = (selectedRoom.ActiveVideoSource == (i - 150));
+                        panel.BooleanInput[155].BoolValue = selectedRoom.MusicAudio;
+                        panel.BooleanInput[156].BoolValue = !selectedRoom.MusicAudio;
                     }
                 }
-                
-                DispatchIpCommandToSonyTv(activeRoomId, sourceId);
+                MirrorRoomStateToEisc(activeRoomId);
                 return;
             }
 
@@ -1249,11 +1327,13 @@ namespace VillaFrequenceTvAutomation
                 panel.BooleanInput[i].BoolValue = (roomId == (i - 10));
             }
 
-            // Native Source Selection Feedback (Digital 150-155)
-            for (uint i = 150; i <= 155; i++)
+            // Native Source Selection Feedback (Digital 150-154 vidéo, 155 musique en audio, 156 audio = vidéo)
+            for (uint i = 150; i <= 154; i++)
             {
                 panel.BooleanInput[i].BoolValue = (room.ActiveVideoSource == (i - 150));
             }
+            panel.BooleanInput[155].BoolValue = room.MusicAudio;
+            panel.BooleanInput[156].BoolValue = !room.MusicAudio;
 
             // Feedback des scènes d'éclairage (Digital 51-54, ActiveScene = index 1..4 - contrat v2)
             for (uint s = 1; s <= 4; s++)
@@ -1299,10 +1379,20 @@ namespace VillaFrequenceTvAutomation
 
             panel.UShortInput[51].UShortValue = room.ActiveVideoSource;
             panel.UShortInput[52].UShortValue = room.AudioVolume;
+            panel.UShortInput[53].UShortValue = room.MusicAudio ? (ushort)5 : room.ActiveVideoSource; // source audio (5 = musique)
             panel.BooleanInput[55].BoolValue = room.IsAudioMuted;
 
             panel.BooleanInput[41].BoolValue = _globalAlarmArmedState;
             panel.BooleanInput[42].BoolValue = !_globalAlarmArmedState;
+        }
+
+        // Routage audio des haut-parleurs de la pièce : musique (5) ou audio de la source vidéo.
+        // Point d'accroche pour le driver ampli / matrice audio ; pour l'instant journalisé.
+        private void DispatchAudioRouting(int roomId)
+        {
+            var room = _roomsRegistry[roomId];
+            string label = room.MusicAudio ? "Musique" : (room.ActiveVideoSource == 0 ? "Off" : "Audio de la source vidéo " + room.ActiveVideoSource);
+            CrestronConsole.PrintLine("AUDIO-ROUTING: [Zone: {0}] -> haut-parleurs = [{1}].", room.RoomName, label);
         }
 
         private void DispatchIpCommandToSonyTv(int roomId, ushort sourceId)

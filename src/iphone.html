@@ -24,16 +24,23 @@
                 panelInstance = WebXPanel.getWebXPanel(true);
             }
             
+            // IP-ID via URL (?ipId=0x1N depuis un QR code, ou ?ipid= historique) ou localStorage, 0x06 par défaut.
             var urlParams = new URLSearchParams(window.location.search);
+            var urlIpId = urlParams.get('ipId') || urlParams.get('ipid');
             var ipId = '0x06';
             try {
-                ipId = urlParams.get('ipid') || localStorage.getItem('crestron_ipid_iphone') || '0x06'; // 0x06 par défaut pour l'iPhone
-                if (urlParams.has('ipid')) {
-                    localStorage.setItem('crestron_ipid_iphone', urlParams.get('ipid'));
+                ipId = urlIpId || localStorage.getItem('crestron_ipid_iphone') || '0x06'; // 0x06 par défaut pour l'iPhone
+                if (urlIpId) {
+                    localStorage.setItem('crestron_ipid_iphone', urlIpId);
                 }
             } catch (e) {
                 console.warn("Storage not available on iPhone context:", e);
+                if (urlIpId) ipId = urlIpId;
             }
+            // Pièce demandée par le QR code (?room=N) et jeton d'authentification CP4 (?authtoken=...)
+            var urlRoomId = parseInt(urlParams.get('room'), 10);
+            window.crestronUrlRoomId = (urlRoomId >= 1 && urlRoomId <= 30) ? urlRoomId : 0;
+            var urlAuthToken = urlParams.get('authtoken') || urlParams.get('token') || '';
             
             console.log("CH5: IP-ID configuré pour WebXPanel iPhone : " + ipId);
             
@@ -129,6 +136,15 @@
             window.addEventListener('CONNECT_CIP', function() {
                 console.log('WebXPanel CIP Connected');
                 window.updateConnectionStatusUI(true);
+                // QR code : ouvrir directement la pièce demandée (?room=N). Le CP4 force déjà la pièce
+                // pour les IP-ID QR (0x11+) ; ceci aligne l'affichage local (sélecteur de pièce).
+                if (window.crestronUrlRoomId) {
+                    setTimeout(function() {
+                        try {
+                            if (typeof window.changeRoomIphone === 'function') window.changeRoomIphone(window.crestronUrlRoomId);
+                        } catch (e) { console.warn('CH5 iPhone: sélection pièce URL impossible', e); }
+                    }, 1500);
+                }
             });
 
             window.addEventListener('DOMContentLoaded', function() {
@@ -168,6 +184,7 @@
             var webxpanelConfig = {
                 ipId: ipId
             };
+            if (urlAuthToken) { webxpanelConfig.authToken = urlAuthToken; }
 
             if (panelInstance) {
                 panelInstance.initialize(webxpanelConfig);
@@ -201,24 +218,16 @@
         body.theme-glass {
             --bg-color: transparent;
             --bg-gradient: linear-gradient(rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.05));
-            --container-bg: rgba(255, 255, 255, 0.1);
-            --border-color: rgba(255, 255, 255, 0.15);
+            /* 10.09.2026 : panneaux translucides (la photo reste visible) mais le
+               backdrop est assombri, donc les textes blancs restent lisibles. */
+            --container-bg: rgba(15, 23, 42, 0.42);
+            --border-color: rgba(255, 255, 255, 0.18);
             --text-primary: #ffffff;
-            --text-secondary: rgba(255, 255, 255, 0.7);
+            --text-secondary: rgba(255, 255, 255, 0.9);
             --card-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
-            --blur-val: blur(25px);
+            --blur-val: blur(20px) saturate(1.2) brightness(0.3);
         }
 
-        body.theme-cyber {
-            --bg-color: #070913;
-            --bg-gradient: linear-gradient(rgba(7, 9, 19, 0.8), rgba(15, 12, 30, 0.85));
-            --container-bg: rgba(13, 17, 33, 0.7);
-            --border-color: rgba(6, 182, 212, 0.25);
-            --text-primary: #e0e7ff;
-            --text-secondary: #818cf8;
-            --card-shadow: 0 8px 32px rgba(6, 182, 212, 0.15);
-            --blur-val: blur(15px);
-        }
 
         /* Classes de styles unifiées pour les paramètres HVAC */
         .measured-temp-val {
@@ -721,8 +730,16 @@
             align-items: center;
         }
     </style>
+
+    <style>
+        /* v1.0.166 : indicateur de la source AUDIO (haut-parleurs) */
+        .source-btn-mobile { position: relative; }
+        .source-btn-mobile.audio-active::after { content: '♪'; position: absolute; top: 4px; right: 6px; font-size: 0.75rem; color: #10b981; }
+        .source-btn-mobile.audio-music { border: 2px solid #ffffff !important; box-shadow: 0 0 12px rgba(255,255,255,0.6) !important; }
+        .source-btn-mobile.audio-music::after { color: #ffffff; }
+    </style>
 </head>
-<body>
+<body id="app-body">
     <!-- Fond grisé pour modales (Backdrop) -->
     <div id="modal-backdrop" class="modal-backdrop" onclick="closeAllModals()"></div>
 
@@ -741,9 +758,7 @@
             <select id="room-select" class="room-dropdown" onchange="changeRoomIphone(this.value)">
                 <!-- Rempli dynamiquement -->
             </select>
-            <button onclick="openSettingsModal()" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: var(--text-primary); padding: 8px; border-radius: 8px; cursor: pointer; font-size: 1.1rem; display: flex; align-items: center; justify-content: center; width: 38px; height: 38px; box-sizing: border-box;">
-                ⚙️
-            </button>
+            <button onclick="openSettingsModal()" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: var(--text-primary); padding: 8px; border-radius: 8px; cursor: pointer; font-size: 1.1rem; display: flex; align-items: center; justify-content: center; width: 38px; height: 38px; box-sizing: border-box;"><svg class="gear-icon" viewBox="0 0 512 512" aria-hidden="true"><path d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6l-43.3 75c-3.2 8.7-12.2 13.9-21.4 11.7l-56.4-13.6c-15.6 12-33 21.6-51.7 28.5l-11.9 57.3c-2 9.7-10.5 16.7-20.5 16.7H220.4c-10 0-18.5-7-20.5-16.7l-11.9-57.3c-18.7-6.9-36.1-16.4-51.7-28.5l-56.4 13.6c-9.2 2.2-18.2-3-21.4-11.7l-43.3-75c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4c-1.1-8.3-1.7-16.8-1.7-25.4s.6-17.1 1.7-25.4L21.6 191.2c-6.9-6.2-9.6-15.9-6.4-24.6l43.3-75c3.2-8.7 12.2-13.9 21.4-11.7l56.4 13.6c15.6-12 33-21.6 51.7-28.5l11.9-57.3c2-9.7 10.5-16.7 20.5-16.7h72.8c10 0 18.5 7 20.5 16.7l11.9 57.3c18.7 6.9 36.1 16.4 51.7 28.5l56.4-13.6c9.2-2.2 18.2 3 21.4 11.7l43.3 75zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"/></svg></button>
         </div>
         <div class="alarm-row" style="display: flex; gap: 8px; justify-content: space-between; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 10px; margin-top: 8px;">
             <button onclick="window.openAlarmModal()" style="flex: 1; height: 36px; background: rgba(239, 68, 68, 0.15); border: 1px solid #ef4444; color: #fca5a5; border-radius: 8px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px; font-size: 0.8rem; outline: none;">
@@ -771,9 +786,7 @@
             <div id="iphone-lights-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
                 <span style="font-weight: bold; font-size: 0.9rem; color: var(--text-secondary);" data-i18n="circuits_title">Circuits :</span>
                 <!-- Bouton Réglages Lumières -->
-                <button class="popup-trigger-btn" onclick="openCircuitsModal()" style="width: auto; height: 32px; padding: 0 10px; margin: 0; font-size: 1rem; display: flex; align-items: center; justify-content: center; border-radius: 8px;">
-                    ⚙️
-                </button>
+                <button class="popup-trigger-btn" onclick="openCircuitsModal()" style="width: auto; height: 32px; padding: 0 10px; margin: 0; font-size: 1rem; display: flex; align-items: center; justify-content: center; border-radius: 8px;"><svg class="gear-icon" viewBox="0 0 512 512" aria-hidden="true"><path d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6l-43.3 75c-3.2 8.7-12.2 13.9-21.4 11.7l-56.4-13.6c-15.6 12-33 21.6-51.7 28.5l-11.9 57.3c-2 9.7-10.5 16.7-20.5 16.7H220.4c-10 0-18.5-7-20.5-16.7l-11.9-57.3c-18.7-6.9-36.1-16.4-51.7-28.5l-56.4 13.6c-9.2 2.2-18.2-3-21.4-11.7l-43.3-75c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4c-1.1-8.3-1.7-16.8-1.7-25.4s.6-17.1 1.7-25.4L21.6 191.2c-6.9-6.2-9.6-15.9-6.4-24.6l43.3-75c3.2-8.7 12.2-13.9 21.4-11.7l56.4 13.6c15.6-12 33-21.6 51.7-28.5l11.9-57.3c2-9.7 10.5-16.7 20.5-16.7h72.8c10 0 18.5 7 20.5 16.7l11.9 57.3c18.7 6.9 36.1 16.4 51.7 28.5l56.4-13.6c9.2-2.2 18.2 3 21.4 11.7l43.3 75zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"/></svg></button>
             </div>
             
             <!-- Choix Scènes -->
@@ -794,9 +807,7 @@
                     <span style="font-family: inherit; font-size: 1.1rem; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-primary);" data-i18n="motors_title_section">Moteurs</span>
                 </div>
                 <!-- Bouton Réglages Moteurs -->
-                <button class="popup-trigger-btn" onclick="openMotorsModal()" style="width: auto; height: 32px; padding: 0 10px; margin: 0; font-size: 1rem; display: flex; align-items: center; justify-content: center; border-radius: 8px;">
-                    ⚙️
-                </button>
+                <button class="popup-trigger-btn" onclick="openMotorsModal()" style="width: auto; height: 32px; padding: 0 10px; margin: 0; font-size: 1rem; display: flex; align-items: center; justify-content: center; border-radius: 8px;"><svg class="gear-icon" viewBox="0 0 512 512" aria-hidden="true"><path d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6l-43.3 75c-3.2 8.7-12.2 13.9-21.4 11.7l-56.4-13.6c-15.6 12-33 21.6-51.7 28.5l-11.9 57.3c-2 9.7-10.5 16.7-20.5 16.7H220.4c-10 0-18.5-7-20.5-16.7l-11.9-57.3c-18.7-6.9-36.1-16.4-51.7-28.5l-56.4 13.6c-9.2 2.2-18.2-3-21.4-11.7l-43.3-75c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4c-1.1-8.3-1.7-16.8-1.7-25.4s.6-17.1 1.7-25.4L21.6 191.2c-6.9-6.2-9.6-15.9-6.4-24.6l43.3-75c3.2-8.7 12.2-13.9 21.4-11.7l56.4 13.6c15.6-12 33-21.6 51.7-28.5l11.9-57.3c2-9.7 10.5-16.7 20.5-16.7h72.8c10 0 18.5 7 20.5 16.7l11.9 57.3c18.7 6.9 36.1 16.4 51.7 28.5l56.4-13.6c9.2-2.2 18.2 3 21.4 11.7l43.3 75zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"/></svg></button>
             </div>
 
             <!-- Stores Rapides -->
@@ -861,7 +872,7 @@
         <div id="panel-audio" class="tab-panel">
             <h2 style="display: flex; align-items: center; gap: 8px;">
                 <svg viewBox="0 0 576 512" style="width: 20px; height: 20px; fill: #8b5cf6;"><path d="M528 0H48C21.5 0 0 21.5 0 48v320c0 26.5 21.5 48 48 48h192l-16 48h-72c-13.3 0-24 10.7-24 24s10.7 24 24 24h272c13.3 0 24-10.7 24-24s-10.7-24-24-24h-72l-16-48h192c26.5 0 48-21.5 48-48V48c0-26.5-21.5-48-48-48zm-16 352H64V64h448v288z"/></svg>
-                <span data-i18n="source_title">Sélection Source Audio et Vidéo</span>
+                <span data-i18n="source_title">Sélection de la source audio et vidéo</span>
             </h2>
             <div style="display: flex; flex-direction: column; justify-content: space-between; flex: 1;">
                 <div>
@@ -872,7 +883,7 @@
                     <!-- Bouton Musique s'étendant sur toute la largeur (iPhone) -->
                     <div style="margin-top: 10px; width: 100%;">
                         <button onclick="openMediaPlayerModal()" style="width: 100%; height: 36px; background: rgba(139, 92, 246, 0.15); border: 1px solid #8b5cf6; color: #c084fc; border-radius: 8px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.85rem; transition: all 0.2s; outline: none;">
-                            🎵 Musique / Lecteur Média
+                            🎵 Musique / lecteur média
                         </button>
                     </div>
                 </div>
@@ -954,6 +965,169 @@
     </div>
 
     <!-- POPUP REGLAGE DES PARAMÈTRES (Mobile Settings Panel) -->
+    <style id="gear-icons">
+        /* Engrenages : SVG net commun (plus d'emoji flou), couleur par thème (10.09.2026) */
+        .gear-icon { width: 16px; height: 16px; flex-shrink: 0; fill: #cbd5e1; pointer-events: none; }
+        body#app-body.theme-light .gear-icon { fill: #334155; }
+        body#app-body.theme-glass .gear-icon { fill: #e2e8f0; }
+    </style>
+    <style id="theme-overlays">
+        /* Cohérence des thèmes sur les fenêtres du GUI smartphone (10.09.2026) :
+           mêmes règles que la version dalle/tablette. */
+        body#app-body.theme-light .modal-backdrop { background-color: rgba(203, 213, 225, 0.92) !important; }
+        body#app-body.theme-light .custom-overlay-panel {
+            background: #f8fafc !important; background-color: #f8fafc !important;
+            border-color: rgba(15, 23, 42, 0.14) !important; color: #0f172a !important;
+        }
+        body#app-body.theme-light .custom-overlay-panel [style*="rgba(255,255,255,0.02)"]:not([style*="gradient"]),
+        body#app-body.theme-light .custom-overlay-panel [style*="rgba(255,255,255,0.03)"]:not([style*="gradient"]),
+        body#app-body.theme-light .custom-overlay-panel [style*="rgba(255,255,255,0.05)"]:not([style*="gradient"]),
+        body#app-body.theme-light .custom-overlay-panel [style*="rgba(255,255,255,0.06)"]:not([style*="gradient"]),
+        body#app-body.theme-light .custom-overlay-panel [style*="rgba(255,255,255,0.07)"]:not([style*="gradient"]),
+        body#app-body.theme-light .custom-overlay-panel [style*="rgba(255,255,255,0.08)"]:not([style*="gradient"]),
+        body#app-body.theme-light .custom-overlay-panel [style*="rgba(255, 255, 255, 0.05)"]:not([style*="gradient"]),
+        body#app-body.theme-light .custom-overlay-panel [style*="rgba(255, 255, 255, 0.08)"]:not([style*="gradient"]) {
+            background: rgba(15, 23, 42, 0.06) !important; background-color: rgba(15, 23, 42, 0.06) !important; border-color: rgba(15, 23, 42, 0.12) !important;
+        }
+        body#app-body.theme-light .custom-overlay-panel [style*="rgba(0,0,0,0.2)"]:not([style*="gradient"]),
+        body#app-body.theme-light .custom-overlay-panel [style*="rgba(0,0,0,0.4)"]:not([style*="gradient"]),
+        body#app-body.theme-light .custom-overlay-panel [style*="rgba(0,0,0,0.5)"]:not([style*="gradient"]),
+        body#app-body.theme-light .custom-overlay-panel [style*="rgba(0,0,0,0.6)"]:not([style*="gradient"]) {
+            background: rgba(15, 23, 42, 0.10) !important; background-color: rgba(15, 23, 42, 0.10) !important; color: #0f172a !important;
+        }
+        body#app-body.theme-light .custom-overlay-panel,
+        body#app-body.theme-light .custom-overlay-panel p,
+        body#app-body.theme-light .custom-overlay-panel span,
+        body#app-body.theme-light .custom-overlay-panel div,
+        body#app-body.theme-light .custom-overlay-panel h3,
+        body#app-body.theme-light .custom-overlay-panel h4,
+        body#app-body.theme-light .custom-overlay-panel label,
+        body#app-body.theme-light .custom-overlay-panel strong {
+            color: #0f172a;
+        }
+        body#app-body.theme-light .custom-overlay-panel [style*="color: white"]:not([style*="background:#"]):not([style*="background: #"]):not([style*="background-color:#"]):not([style*="background-color: #"]),
+        body#app-body.theme-light .custom-overlay-panel [style*="color: #fff"]:not([style*="background:#"]):not([style*="background: #"]):not([style*="background-color:#"]):not([style*="background-color: #"]),
+        body#app-body.theme-light .custom-overlay-panel [style*="color: #ffffff"]:not([style*="background:#"]):not([style*="background: #"]):not([style*="background-color:#"]):not([style*="background-color: #"]),
+        body#app-body.theme-light .custom-overlay-panel [style*="color:#fff"]:not([style*="background:#"]):not([style*="background: #"]):not([style*="background-color:#"]):not([style*="background-color: #"]) {
+            color: #0f172a !important;
+        }
+        body#app-body.theme-light .custom-overlay-panel [style*="color: #94a3b8"],
+        body#app-body.theme-light .custom-overlay-panel [style*="rgba(255,255,255,0.7)"],
+        body#app-body.theme-light .custom-overlay-panel [style*="rgba(255, 255, 255, 0.7)"],
+        body#app-body.theme-light .custom-overlay-panel [style*="rgba(255,255,255,0.4)"] {
+            color: #475569 !important;
+        }
+        body#app-body.theme-light .custom-overlay-panel [style*="color: #10b981"],
+        body#app-body.theme-light .custom-overlay-panel [style*="color: #a7f3d0"] {
+            color: #047857 !important;
+        }
+        body#app-body.theme-light .custom-overlay-panel [style*="color: #38bdf8"],
+        body#app-body.theme-light .custom-overlay-panel [style*="color: #3b82f6"] {
+            color: #1d4ed8 !important;
+        }
+        body#app-body.theme-light .custom-overlay-panel [style*="color: #eab308"],
+        body#app-body.theme-light .custom-overlay-panel [style*="color: #f18a00"],
+        body#app-body.theme-light .custom-overlay-panel [style*="color: #fbbf24"] {
+            color: #a16207 !important;
+        }
+        body#app-body.theme-light .custom-overlay-panel [style*="color: #8b5cf6"],
+        body#app-body.theme-light .custom-overlay-panel [style*="color: #c084fc"] {
+            color: #6d28d9 !important;
+        }
+        body#app-body.theme-light .custom-overlay-panel [style*="color: #ef4444"],
+        body#app-body.theme-light .custom-overlay-panel [style*="color: #f87171"] {
+            color: #b91c1c !important;
+        }
+        body#app-body.theme-light .custom-overlay-panel [style*="fill: #eab308"] svg,
+        body#app-body.theme-light .custom-overlay-panel svg[style*="fill: #eab308"] {
+            fill: #a16207 !important;
+        }
+        body#app-body.theme-light .custom-overlay-panel button:not([style*="background:#"]):not([style*="background: #"]):not([style*="background-color:#"]):not([style*="background-color: #"]):not([style*="gradient"]) {
+            background: rgba(15, 23, 42, 0.06) !important; border-color: rgba(15, 23, 42, 0.20) !important; color: #0f172a !important;
+        }
+        body#app-body.theme-light .custom-overlay-panel select,
+        body#app-body.theme-light .custom-overlay-panel input[type="text"],
+        body#app-body.theme-light .custom-overlay-panel input[type="number"] {
+            background: #ffffff !important; color: #0f172a !important; border-color: rgba(15, 23, 42, 0.25) !important;
+        }
+        body#app-body.theme-light .custom-overlay-panel ch5-button:not([selected="true"]):not(.ch5-button--selected) .ch5-button--label,
+        body#app-body.theme-light .custom-overlay-panel ch5-button:not([selected="true"]):not(.ch5-button--selected) .cb-btn {
+            color: #0f172a !important;
+        }
+        body#app-body.theme-light .noUi-target, body#app-body.theme-light .noUi-connects { background: rgba(15, 23, 42, 0.16) !important; }
+        body#app-body.theme-light .noUi-connect { background: #0284c7 !important; }
+        body#app-body.theme-light .noUi-handle { background: #ffffff !important; border: 2px solid #334155 !important; }
+        /* Boutons CH5 sans style dédié : le bleu par défaut (#0099ff) ne porte pas
+           le texte blanc (3:1). Bleu plus profond dans les thèmes sombres, carte
+           claire en thème Clair. */
+        body#app-body:not(.theme-light) .ch5-button--default:not(.source-btn):not(.my-source-btn):not(.src-appletv):not(.src-skyq):not(.src-swisscom):not(.src-iptv):not(.src-musique),
+        body#app-body:not(.theme-light) .custom-overlay-panel .ch5-button--default:not(.source-btn):not(.my-source-btn):not(.src-appletv):not(.src-skyq):not(.src-swisscom):not(.src-iptv):not(.src-musique) { background-color: #0369a1 !important; }
+        body#app-body:not(.theme-light) ch5-button:not([selected="true"]):not(.ch5-button--selected) .ch5-button--default:not(.source-btn):not(.my-source-btn):not(.src-appletv):not(.src-skyq):not(.src-swisscom):not(.src-iptv):not(.src-musique) .ch5-button--label { color: #ffffff !important; }
+        body#app-body.theme-light .custom-overlay-panel ch5-button:not([selected="true"]):not(.ch5-button--selected) > .ch5-button:not([style*="gradient"]),
+        body#app-body.theme-light ch5-button:not([selected="true"]):not(.ch5-button--selected) .ch5-button--default:not(.source-btn):not(.my-source-btn):not(.src-appletv):not(.src-skyq):not(.src-swisscom):not(.src-iptv):not(.src-musique) {
+            background-color: rgba(15, 23, 42, 0.08) !important;
+            border-color: rgba(15, 23, 42, 0.18) !important;
+        }
+        body#app-body.theme-light ch5-button:not([selected="true"]):not(.ch5-button--selected) .ch5-button--default:not(.source-btn):not(.my-source-btn):not(.src-appletv):not(.src-skyq):not(.src-swisscom):not(.src-iptv):not(.src-musique) .ch5-button--label { color: #0f172a !important; }
+        /* Accents restants relevés au contrôle de contraste */
+        body#app-body:not(.theme-light) .custom-overlay-panel [style*="rgba(255,255,255,0.4)"],
+        body#app-body:not(.theme-light) .custom-overlay-panel [style*="rgba(255, 255, 255, 0.4)"] { color: rgba(255, 255, 255, 0.75) !important; }
+        body#app-body:not(.theme-light) .custom-overlay-panel [style*="color: #ef4444"],
+        body#app-body:not(.theme-light) .custom-overlay-panel [style*="fill: #ef4444"] { color: #fca5a5 !important; }
+        body#app-body:not(.theme-light) .custom-overlay-panel [style*="color: #8b5cf6"] { color: #a78bfa !important; }
+        body#app-body:not(.theme-light) .custom-overlay-panel [style*="color: #3b82f6"] { color: #60a5fa !important; }
+        body#app-body.theme-light .custom-overlay-panel [style*="color: #00b4c5"] { color: #0e7490 !important; }
+        body#app-body.theme-light .custom-overlay-panel [style*="color: #fb7185"] { color: #be123c !important; }
+        body#app-body.theme-light .custom-overlay-panel [style*="color: #eab308"] { color: #92400e !important; }
+        /* Page principale du GUI smartphone en thème Clair : les boutons et libellés
+           gardaient des couleurs pensées pour un fond sombre (illisibles). */
+        body#app-body #version-label { color: rgba(255, 255, 255, 0.72) !important; }
+        body#app-body.theme-light #version-label { color: rgba(15, 23, 42, 0.72) !important; }
+        body#app-body.theme-light .scene-btn-mobile,
+        body#app-body.theme-light .shade-btn-mobile,
+        body#app-body.theme-light .popup-trigger-btn,
+        body#app-body.theme-light .shade-label,
+        body#app-body.theme-light .source-btn-mobile { color: #0f172a !important; }
+        body#app-body.theme-light .scene-btn-mobile:not(.selected),
+        body#app-body.theme-light .shade-btn-mobile,
+        body#app-body.theme-light .source-btn-mobile:not(.selected) {
+            background: rgba(15, 23, 42, 0.06) !important;
+            border-color: rgba(15, 23, 42, 0.18) !important;
+        }
+        body#app-body.theme-light .scene-btn-mobile.selected { color: #1f2937 !important; }
+        body#app-body.theme-light #mobile-header-buttons button,
+        body#app-body.theme-light .header-action-btn { color: #0f172a !important; }
+        body#app-body.theme-light [style*="color: #fca5a5"] { color: #b91c1c !important; }
+        body#app-body.theme-light [style*="color: #93c5fd"] { color: #1d4ed8 !important; }
+        body#app-body.theme-light [style*="color: #a7f3d0"] { color: #047857 !important; }
+        /* Bouton sélectionné (fond bleu CH5) en thème Clair : libellé blanc, pas foncé */
+        body#app-body.theme-light ch5-button[selected="true"] .ch5-button--label,
+        body#app-body.theme-light ch5-button.ch5-button--selected .ch5-button--label,
+        body#app-body.theme-light ch5-button[selected="true"] .cb-btn { color: #ffffff !important; }
+
+        /* Verre dépoli : fenêtres translucides mais backdrop assombri (lisibilité) */
+        body#app-body.theme-glass .custom-overlay-panel {
+            background-color: rgba(11, 17, 30, 0.55) !important;
+            -webkit-backdrop-filter: blur(22px) saturate(1.2) brightness(0.32) !important;
+            backdrop-filter: blur(22px) saturate(1.2) brightness(0.32) !important;
+            border-color: rgba(255, 255, 255, 0.18) !important;
+        }
+    </style>
+    <style id="settings-xl">
+        /* Fenêtre Réglages agrandie (10.09.2026), tous thèmes */
+        body #settings-overlay { max-width: 440px !important; padding: 20px !important; }
+        body #settings-overlay h3 { font-size: 1.3rem !important; }
+        body #settings-overlay .overlay-header button { height: 40px !important; font-size: 0.95rem !important; padding: 0 16px !important; }
+        body #settings-overlay label { font-size: 1.05rem !important; margin-bottom: 10px !important; }
+        body #settings-overlay .overlay-content { gap: 20px !important; }
+        body #settings-overlay select { height: 50px !important; font-size: 1.1rem !important; border-radius: 10px !important; }
+        @media (max-height: 560px) {
+            body #settings-overlay { padding: 14px !important; }
+            body #settings-overlay h3 { font-size: 1.05rem !important; }
+            body #settings-overlay select { height: 40px !important; font-size: 0.95rem !important; }
+            body #settings-overlay label { font-size: 0.9rem !important; margin-bottom: 6px !important; }
+        }
+    </style>
     <div id="settings-overlay" class="custom-overlay-panel" style="width: 90% !important; max-width: 380px !important; height: auto !important; max-height: 80% !important;">
         <div class="overlay-header">
             <h3 style="display: flex; align-items: center; gap: 8px; color: #10b981; margin: 0; font-size: 1.1rem; text-transform: uppercase;" data-i18n="settings">
@@ -978,7 +1152,6 @@
                     <option value="dark" data-i18n="theme_dark">Sombre Premium 🌙</option>
                     <option value="light" data-i18n="theme_light">Clair Élégant ☀️</option>
                     <option value="glass" data-i18n="theme_glass">Verre Dépoli ❄️</option>
-                    <option value="cyber" data-i18n="theme_cyber">Bleu Cyberpunk 🌌</option>
                 </select>
             </div>
         </div>
@@ -1046,55 +1219,119 @@
             </h3>
             <button onclick="closeSourceControlModal()" style="height: 30px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 6px; cursor: pointer; font-weight: bold; padding: 0 10px; font-size: 0.8rem;">FERMER</button>
         </div>
-        
-        <!-- Télécommande Virtuelle Standard -->
-        <div id="remote-standard-layout" style="display: flex; flex-direction: column; gap: 20px; align-items: center; justify-content: center; width: 100%; box-sizing: border-box;">
-            <!-- D-PAD Navigation -->
-            <div style="position: relative; width: 180px; height: 180px; background: rgba(255,255,255,0.03); border-radius: 50%; border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center;">
-                <ch5-button id="src-btn-ok" label="OK" customClass="scene-btn" style="position: absolute; width: 50px; height: 50px; border-radius: 50%; z-index: 10;" sendEventOnClick="215"></ch5-button>
-                <ch5-button id="src-btn-up" label="▲" customClass="scene-btn" style="position: absolute; top: 10px; width: 45px; height: 35px;" sendEventOnClick="211"></ch5-button>
-                <ch5-button id="src-btn-down" label="▼" customClass="scene-btn" style="position: absolute; bottom: 10px; width: 45px; height: 35px;" sendEventOnClick="212"></ch5-button>
-                <ch5-button id="src-btn-left" label="◀" customClass="scene-btn" style="position: absolute; left: 10px; width: 35px; height: 45px;" sendEventOnClick="213"></ch5-button>
-                <ch5-button id="src-btn-right" label="▶" customClass="scene-btn" style="position: absolute; right: 10px; width: 35px; height: 45px;" sendEventOnClick="214"></ch5-button>
-            </div>
-            
-            <!-- Commandes -->
-            <div style="display: flex; flex-direction: column; gap: 10px; width: 100%;">
-                <div style="display: flex; gap: 8px;">
-                    <ch5-button id="src-btn-back" label="RETOUR" customClass="scene-btn" style="flex: 1; height: 38px;" sendEventOnClick="216"></ch5-button>
-                    <ch5-button id="src-btn-home" label="HOME" customClass="scene-btn" style="flex: 1; height: 38px;" sendEventOnClick="217"></ch5-button>
+        <!-- Télécommande décodeur (Sky Q / Swisscom TV / IPTV) : LIVE·DVR·GUIDE·INFO·LAST, BACK·MENU·EXIT, D-pad, PG±, CH±, transport, couleurs -->
+        <div id="remote-standard-layout" style="display: flex; flex-direction: column; gap: 16px; align-items: center; justify-content: center; width: 100%; max-height: 70vh; overflow-y: auto;">
+            <div style="display: flex; flex-direction: column; gap: 12px; align-items: center;">
+                <div style="display: flex; gap: 8px; width: 100%;">
+                <ch5-button id="src-btn-back" label="BACK" customStyle="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.18); color: #fff; border-radius: 10px; font-weight: bold; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; width: 64px; height: 34px;"></ch5-button>
+                <ch5-button id="src-btn-menu" label="MENU" customStyle="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.18); color: #fff; border-radius: 10px; font-weight: bold; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; width: 64px; height: 34px;"></ch5-button>
+                <ch5-button id="src-btn-exit" label="EXIT" customStyle="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.18); color: #fff; border-radius: 10px; font-weight: bold; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; width: 64px; height: 34px;"></ch5-button>
                 </div>
-                <div style="display: flex; gap: 6px;">
-                    <ch5-button id="src-btn-rew" label="⏪" customClass="scene-btn" style="flex: 1; height: 38px;" sendEventOnClick="219"></ch5-button>
-                    <ch5-button id="src-btn-play" label="⏯️" customClass="scene-btn" style="flex: 1; height: 38px;" sendEventOnClick="218"></ch5-button>
-                    <ch5-button id="src-btn-fwd" label="⏩" customClass="scene-btn" style="flex: 1; height: 38px;" sendEventOnClick="220"></ch5-button>
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                    <ch5-button id="src-btn-pgup" label="PG+" customStyle="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.18); color: #fff; border-radius: 50%; font-weight: bold; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; width: 46px; height: 46px;"></ch5-button>
+                    <ch5-button id="src-btn-pgdn" label="PG−" customStyle="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.18); color: #fff; border-radius: 50%; font-weight: bold; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; width: 46px; height: 46px;"></ch5-button>
+                    </div>
+                    <div style="position: relative; width: 170px; height: 170px; border-radius: 50%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.15);">
+                    <ch5-button id="src-btn-up" label="⌃" customStyle="background: transparent; border: none; color: #d0d0d0; font-weight: bold; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; position: absolute; top: 6px; left: 50%; transform: translateX(-50%); width: 51px; height: 34px; font-size: 1.2rem;"></ch5-button>
+                    <ch5-button id="src-btn-down" label="⌄" customStyle="background: transparent; border: none; color: #d0d0d0; font-weight: bold; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; position: absolute; bottom: 6px; left: 50%; transform: translateX(-50%); width: 51px; height: 34px; font-size: 1.2rem;"></ch5-button>
+                    <ch5-button id="src-btn-left" label="‹" customStyle="background: transparent; border: none; color: #d0d0d0; font-weight: bold; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; position: absolute; left: 6px; top: 50%; transform: translateY(-50%); width: 34px; height: 51px; font-size: 1.2rem;"></ch5-button>
+                    <ch5-button id="src-btn-right" label="›" customStyle="background: transparent; border: none; color: #d0d0d0; font-weight: bold; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; position: absolute; right: 6px; top: 50%; transform: translateY(-50%); width: 34px; height: 51px; font-size: 1.2rem;"></ch5-button>
+                    <ch5-button id="src-btn-ok" label="OK" customStyle="background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.3); color: #fff; border-radius: 50%; font-weight: bold; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 61px; height: 61px;"></ch5-button>
+                </div>
+                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                    <ch5-button id="src-btn-chup" label="CH+" customStyle="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.18); color: #fff; border-radius: 50%; font-weight: bold; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; width: 46px; height: 46px;"></ch5-button>
+                    <ch5-button id="src-btn-chdn" label="CH−" customStyle="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.18); color: #fff; border-radius: 50%; font-weight: bold; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; width: 46px; height: 46px;"></ch5-button>
+                    </div>
+                </div>
+            </div>
+            <div style="display: flex; gap: 6px; flex-wrap: wrap; justify-content: center;">
+                <ch5-button id="src-btn-live" label="LIVE" customStyle="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.18); color: #fff; border-radius: 10px; font-weight: bold; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; width: 84px; height: 34px;"></ch5-button>
+                <ch5-button id="src-btn-dvr" label="DVR" customStyle="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.18); color: #fff; border-radius: 10px; font-weight: bold; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; width: 84px; height: 34px;"></ch5-button>
+                <ch5-button id="src-btn-guide" label="GUIDE" customStyle="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.18); color: #fff; border-radius: 10px; font-weight: bold; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; width: 84px; height: 34px;"></ch5-button>
+                <ch5-button id="src-btn-info" label="INFO" customStyle="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.18); color: #fff; border-radius: 10px; font-weight: bold; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; width: 84px; height: 34px;"></ch5-button>
+                <ch5-button id="src-btn-last" label="LAST" customStyle="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.18); color: #fff; border-radius: 10px; font-weight: bold; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; width: 84px; height: 34px;"></ch5-button>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 10px; width: 286px;">
+                <div style="display: flex; gap: 8px;">
+                <ch5-button id="src-btn-rew" label="⏪" customStyle="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.18); color: #fff; border-radius: 10px; font-weight: bold; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; width: 72px; height: 34px;"></ch5-button>
+                <ch5-button id="src-btn-play" label="▶" customStyle="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.18); color: #fff; border-radius: 10px; font-weight: bold; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; width: 72px; height: 34px;"></ch5-button>
+                <ch5-button id="src-btn-fwd" label="⏩" customStyle="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.18); color: #fff; border-radius: 10px; font-weight: bold; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; width: 72px; height: 34px;"></ch5-button>
+                </div>
+                <ch5-button id="src-btn-pause" label="⏸" customStyle="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.18); color: #fff; border-radius: 10px; font-weight: bold; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; width: 100%; height: 34px;"></ch5-button>
+                <div style="display: flex; gap: 8px;">
+                <ch5-button id="src-btn-stop" label="■" customStyle="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.18); color: #fff; border-radius: 10px; font-weight: bold; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; width: 72px; height: 34px;"></ch5-button>
+                <ch5-button id="src-btn-replay" label="↻" customStyle="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.18); color: #fff; border-radius: 10px; font-weight: bold; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; width: 72px; height: 34px;"></ch5-button>
+                <ch5-button id="src-btn-rec" label="●" customStyle="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.18); color: #fff; border-radius: 10px; font-weight: bold; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; width: 72px; height: 34px;"></ch5-button>
+                </div>
+                <div style="display: flex; justify-content: space-around; padding-top: 4px;">
+                <ch5-button id="src-btn-yellow" label="" customStyle="border: none; border-radius: 50%; background: #f5c518; font-size: 0.75rem; width: 36px; height: 36px;"></ch5-button>
+                <ch5-button id="src-btn-blue" label="" customStyle="border: none; border-radius: 50%; background: #2f80ed; font-size: 0.75rem; width: 36px; height: 36px;"></ch5-button>
+                <ch5-button id="src-btn-red" label="" customStyle="border: none; border-radius: 50%; background: #d9435b; font-size: 0.75rem; width: 36px; height: 36px;"></ch5-button>
+                <ch5-button id="src-btn-green" label="" customStyle="border: none; border-radius: 50%; background: #27ae60; font-size: 0.75rem; width: 36px; height: 36px;"></ch5-button>
                 </div>
             </div>
         </div>
-
-        <!-- Télécommande Apple TV Style iOS -->
-        <div id="remote-appletv-layout" style="display: none; flex-direction: column; align-items: center; justify-content: center; width: 100%; position: relative; padding-top: 10px;">
-            <!-- Bouton MENU en haut à gauche -->
-            <div style="width: 100%; display: flex; justify-content: flex-start; margin-bottom: 20px; padding-left: 10px;">
-                <ch5-button id="src-btn-apple-menu" label="MENU" customStyle="background-color: #2c2c2e; border: 1px solid rgba(255,255,255,0.15); color: #fff; font-weight: bold; border-radius: 12px; width: 85px; height: 40px; font-size: 0.85rem;" sendEventOnClick="216"></ch5-button>
+        <!-- Télécommande Apple TV (disposition Siri Remote iOS : surface tactile + 6 boutons ronds) -->
+        <div id="remote-appletv-layout" style="display: none; flex-direction: column; align-items: center; justify-content: center; width: 100%; position: relative; padding-top: 9px; gap: 12px;">
+            <!-- Surface tactile : flèches sur le pourtour, Select au centre -->
+            <div style="position: relative; width: 198px; height: 198px; border-radius: 50%; background: #2c2c2e; border: 1px solid rgba(255,255,255,0.15); box-shadow: 0 6px 18px rgba(0,0,0,0.45);">
+                <ch5-button id="src-btn-apple-up" label="⌃" customStyle="background: transparent; border: none; color: #d0d0d0; display: flex; align-items: center; justify-content: center; font-weight: bold; position: absolute; top: 9px; left: 50%; transform: translateX(-50%); width: 55px; height: 39px; font-size: 1.12rem;" sendEventOnClick="211"></ch5-button>
+                <ch5-button id="src-btn-apple-down" label="⌄" customStyle="background: transparent; border: none; color: #d0d0d0; display: flex; align-items: center; justify-content: center; font-weight: bold; position: absolute; bottom: 9px; left: 50%; transform: translateX(-50%); width: 55px; height: 39px; font-size: 1.12rem;" sendEventOnClick="212"></ch5-button>
+                <ch5-button id="src-btn-apple-left" label="‹" customStyle="background: transparent; border: none; color: #d0d0d0; display: flex; align-items: center; justify-content: center; font-weight: bold; position: absolute; left: 9px; top: 50%; transform: translateY(-50%); width: 39px; height: 55px; font-size: 1.12rem;" sendEventOnClick="213"></ch5-button>
+                <ch5-button id="src-btn-apple-right" label="›" customStyle="background: transparent; border: none; color: #d0d0d0; display: flex; align-items: center; justify-content: center; font-weight: bold; position: absolute; right: 9px; top: 50%; transform: translateY(-50%); width: 39px; height: 55px; font-size: 1.12rem;" sendEventOnClick="214"></ch5-button>
+                <ch5-button id="src-btn-apple-ok" label="Select" customStyle="background-color: #4a4a4c; border: 1px solid rgba(255,255,255,0.25); color: #fff; border-radius: 50%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 81px; height: 81px; font-size: 0.85rem; display: flex; align-items: center; justify-content: center; font-weight: bold;" sendEventOnClick="215"></ch5-button>
             </div>
-            
-            <!-- D-PAD en croix style iOS Apple TV Remote -->
-            <div style="display: grid; grid-template-columns: repeat(3, 70px); grid-template-rows: repeat(3, 70px); gap: 12px;">
-                <!-- Row 1 -->
-                <div></div>
-                <ch5-button id="src-btn-apple-up" label="o" customStyle="background-color: #2c2c2e; border: 1px solid rgba(255,255,255,0.15); color: #aaa; border-radius: 50%; width: 70px; height: 70px; font-size: 1.3rem; display: flex; align-items: center; justify-content: center; font-weight: bold;" sendEventOnClick="211"></ch5-button>
-                <div></div>
-                
-                <!-- Row 2 -->
-                <ch5-button id="src-btn-apple-left" label="o" customStyle="background-color: #2c2c2e; border: 1px solid rgba(255,255,255,0.15); color: #aaa; border-radius: 50%; width: 70px; height: 70px; font-size: 1.3rem; display: flex; align-items: center; justify-content: center; font-weight: bold;" sendEventOnClick="213"></ch5-button>
-                <ch5-button id="src-btn-apple-ok" label="OK" customStyle="background-color: #3a3a3c; border: 1px solid rgba(255,255,255,0.25); color: #fff; border-radius: 50%; width: 70px; height: 70px; font-size: 1.1rem; display: flex; align-items: center; justify-content: center; font-weight: bold;" sendEventOnClick="215"></ch5-button>
-                <ch5-button id="src-btn-apple-right" label="o" customStyle="background-color: #2c2c2e; border: 1px solid rgba(255,255,255,0.15); color: #aaa; border-radius: 50%; width: 70px; height: 70px; font-size: 1.3rem; display: flex; align-items: center; justify-content: center; font-weight: bold;" sendEventOnClick="214"></ch5-button>
-                
-                <!-- Row 3 -->
-                <div></div>
-                <ch5-button id="src-btn-apple-down" label="o" customStyle="background-color: #2c2c2e; border: 1px solid rgba(255,255,255,0.15); color: #aaa; border-radius: 50%; width: 70px; height: 70px; font-size: 1.3rem; display: flex; align-items: center; justify-content: center; font-weight: bold;" sendEventOnClick="212"></ch5-button>
-                <div></div>
+            <!-- Retour / Accueil -->
+            <div style="display: flex; justify-content: space-between; width: 198px;">
+                <ch5-button id="src-btn-apple-menu" label="‹" customStyle="background-color: #2c2c2e; border: 1px solid rgba(255,255,255,0.15); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; width: 50px; height: 50px; font-size: 0.99rem; font-size: 1.12rem;" sendEventOnClick="216"></ch5-button>
+                <ch5-button id="src-btn-apple-home" label="⌂" customStyle="background-color: #2c2c2e; border: 1px solid rgba(255,255,255,0.15); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; width: 50px; height: 50px; font-size: 0.99rem;" sendEventOnClick="217"></ch5-button>
+            </div>
+            <!-- Lecture-pause / Volume + -->
+            <div style="display: flex; justify-content: space-between; width: 198px;">
+                <ch5-button id="src-btn-apple-play" label="⏯" customStyle="background-color: #2c2c2e; border: 1px solid rgba(255,255,255,0.15); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; width: 50px; height: 50px; font-size: 0.99rem;" sendEventOnClick="218"></ch5-button>
+                <ch5-button id="src-btn-apple-volup" label="🔊+" customStyle="background-color: #2c2c2e; border: 1px solid rgba(255,255,255,0.15); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; width: 50px; height: 50px; font-size: 0.99rem;" onclick="window.remoteVolume(1)"></ch5-button>
+            </div>
+            <!-- Sourdine / Volume − -->
+            <div style="display: flex; justify-content: space-between; width: 198px;">
+                <ch5-button id="src-btn-apple-mute" label="🔇" customStyle="background-color: #2c2c2e; border: 1px solid rgba(255,255,255,0.15); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; width: 50px; height: 50px; font-size: 0.99rem;" sendEventOnClick="55" onclick="window.toggleMute()"></ch5-button>
+                <ch5-button id="src-btn-apple-voldown" label="🔉−" customStyle="background-color: #2c2c2e; border: 1px solid rgba(255,255,255,0.15); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; width: 50px; height: 50px; font-size: 0.99rem;" onclick="window.remoteVolume(-1)"></ch5-button>
+            </div>
+        </div>
+        <!-- Télécommande Swisscom TV (box UHD) : toutes les touches de la télécommande physique -->
+        <div id="remote-swisscom-layout" style="display: none; flex-direction: column; gap: 16px; align-items: center; width: 100%; max-height: 70vh; overflow-y: auto;">
+            <div style="display: flex; flex-direction: column; gap: 12px; align-items: center;">
+                <div style="display: flex; gap: 10px; justify-content: center;"><ch5-button id="src-btn-sw-power" label="⏻" customStyle="background: #2c2c2e; border: 1px solid rgba(255,255,255,0.18); color: #fff; border-radius: 50%; font-weight: bold; display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; font-size: 0.8rem; "></ch5-button><ch5-button id="src-btn-sw-assistant" label="✦" customStyle="background: #2c2c2e; border: 1px solid rgba(255,255,255,0.18); color: #6fa8ff; border-radius: 50%; font-weight: bold; display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; font-size: 0.8rem; color: #1a73e8;"></ch5-button><ch5-button id="src-btn-sw-input" label="⇥" customStyle="background: #2c2c2e; border: 1px solid rgba(255,255,255,0.18); color: #fff; border-radius: 50%; font-weight: bold; display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; font-size: 0.8rem; "></ch5-button><ch5-button id="src-btn-sw-mute" label="🔇" customStyle="background: #2c2c2e; border: 1px solid rgba(255,255,255,0.18); color: #fff; border-radius: 50%; font-weight: bold; display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; font-size: 0.8rem; " onclick="window.toggleMute()"></ch5-button></div>
+                <div style="display: flex; gap: 10px; justify-content: center;"><ch5-button id="src-btn-sw-rew" label="⏪" customStyle="background: #2c2c2e; border: 1px solid rgba(255,255,255,0.18); color: #fff; border-radius: 50%; font-weight: bold; display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; font-size: 0.8rem; "></ch5-button><ch5-button id="src-btn-sw-rec" label="●" customStyle="background: #2c2c2e; border: 1px solid rgba(255,255,255,0.18); color: #fff; border-radius: 50%; font-weight: bold; display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; font-size: 0.8rem; color: #e0202a; font-size: 1.3rem;"></ch5-button><ch5-button id="src-btn-sw-fwd" label="⏩" customStyle="background: #2c2c2e; border: 1px solid rgba(255,255,255,0.18); color: #fff; border-radius: 50%; font-weight: bold; display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; font-size: 0.8rem; "></ch5-button></div>
+                <div style="display: flex; gap: 10px; justify-content: center;"><ch5-button id="src-btn-sw-replay" label="↶" customStyle="background: #2c2c2e; border: 1px solid rgba(255,255,255,0.18); color: #fff; border-radius: 50%; font-weight: bold; display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; font-size: 0.8rem; "></ch5-button><ch5-button id="src-btn-sw-play" label="⏯" customStyle="background: #2c2c2e; border: 1px solid rgba(255,255,255,0.18); color: #fff; border-radius: 50%; font-weight: bold; display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; font-size: 0.8rem; "></ch5-button><ch5-button id="src-btn-sw-skip" label="↷" customStyle="background: #2c2c2e; border: 1px solid rgba(255,255,255,0.18); color: #fff; border-radius: 50%; font-weight: bold; display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; font-size: 0.8rem; "></ch5-button></div>
+                <div style="position: relative; width: 190px; height: 190px; border-radius: 18px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.18);">
+                <ch5-button id="src-btn-sw-back" label="back" customStyle="background: transparent; border: none; color: #e0e0e0; font-weight: bold; display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; font-size: 0.8rem; position: absolute; top: 4px; left: 4px; width: 54px; height: 26px; font-size: 0.72rem;"></ch5-button>
+                <ch5-button id="src-btn-sw-home" label="home" customStyle="background: transparent; border: none; color: #e0e0e0; font-weight: bold; display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; font-size: 0.8rem; position: absolute; top: 4px; right: 4px; width: 54px; height: 26px; font-size: 0.72rem;"></ch5-button>
+                <ch5-button id="src-btn-sw-guide" label="guide" customStyle="background: transparent; border: none; color: #e0e0e0; font-weight: bold; display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; font-size: 0.8rem; position: absolute; bottom: 4px; left: 4px; width: 54px; height: 26px; font-size: 0.72rem;"></ch5-button>
+                <ch5-button id="src-btn-sw-option" label="option" customStyle="background: transparent; border: none; color: #e0e0e0; font-weight: bold; display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; font-size: 0.8rem; position: absolute; bottom: 4px; right: 4px; width: 54px; height: 26px; font-size: 0.72rem;"></ch5-button>
+                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 125px; height: 125px; border-radius: 50%; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.15);">
+                    <ch5-button id="src-btn-sw-up" label="⌃" customStyle="background: transparent; border: none; color: #e0e0e0; font-weight: bold; display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; font-size: 0.8rem; position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 45px; height: 30px;"></ch5-button>
+                    <ch5-button id="src-btn-sw-down" label="⌄" customStyle="background: transparent; border: none; color: #e0e0e0; font-weight: bold; display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; font-size: 0.8rem; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 45px; height: 30px;"></ch5-button>
+                    <ch5-button id="src-btn-sw-left" label="‹" customStyle="background: transparent; border: none; color: #e0e0e0; font-weight: bold; display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; font-size: 0.8rem; position: absolute; left: 0; top: 50%; transform: translateY(-50%); width: 30px; height: 45px;"></ch5-button>
+                    <ch5-button id="src-btn-sw-right" label="›" customStyle="background: transparent; border: none; color: #e0e0e0; font-weight: bold; display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; font-size: 0.8rem; position: absolute; right: 0; top: 50%; transform: translateY(-50%); width: 30px; height: 45px;"></ch5-button>
+                    <ch5-button id="src-btn-sw-ok" label="ok" customStyle="background: #4a4a4c; border: 1px solid rgba(255,255,255,0.3); color: #fff; border-radius: 50%; font-weight: bold; display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; font-size: 0.8rem; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 57px; height: 57px;"></ch5-button>
+                </div>
+            </div>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 12px; align-items: center;">
+                <div style="display: flex; gap: 14px; justify-content: center; align-items: center;">
+                <div style="display: flex; flex-direction: column; gap: 4px; align-items: center;">
+                    <ch5-button id="src-btn-sw-volup" label="+" customStyle="background: #2c2c2e; border: 1px solid rgba(255,255,255,0.18); color: #fff; border-radius: 50%; font-weight: bold; display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; font-size: 0.8rem; " onclick="window.remoteVolume(1)"></ch5-button><span style="font-size: 0.65rem; color: #ccc;">vol</span><ch5-button id="src-btn-sw-voldn" label="−" customStyle="background: #2c2c2e; border: 1px solid rgba(255,255,255,0.18); color: #fff; border-radius: 50%; font-weight: bold; display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; font-size: 0.8rem; " onclick="window.remoteVolume(-1)"></ch5-button>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 10px; align-items: center;">
+                    <ch5-button id="src-btn-sw-mic" label="🎤" customStyle="background: #2c2c2e; border: 1px solid rgba(255,255,255,0.18); color: #fff; border-radius: 50%; font-weight: bold; display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; font-size: 0.8rem; "></ch5-button><ch5-button id="src-btn-sw-pip" label="▣" customStyle="background: #2c2c2e; border: 1px solid rgba(255,255,255,0.18); color: #fff; border-radius: 50%; font-weight: bold; display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; font-size: 0.8rem; "></ch5-button>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 4px; align-items: center;">
+                    <ch5-button id="src-btn-sw-pup" label="▲" customStyle="background: #2c2c2e; border: 1px solid rgba(255,255,255,0.18); color: #fff; border-radius: 50%; font-weight: bold; display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; font-size: 0.8rem; "></ch5-button><span style="font-size: 0.65rem; color: #ccc;">P</span><ch5-button id="src-btn-sw-pdn" label="▼" customStyle="background: #2c2c2e; border: 1px solid rgba(255,255,255,0.18); color: #fff; border-radius: 50%; font-weight: bold; display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; font-size: 0.8rem; "></ch5-button>
+                </div>
+            </div>
+                <div style="display: grid; grid-template-columns: repeat(3, 44px); gap: 8px; justify-content: center;"><ch5-button id="src-btn-sw-d1" label="1" customStyle="background: #2c2c2e; border: 1px solid rgba(255,255,255,0.18); color: #fff; border-radius: 50%; font-weight: bold; display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; font-size: 0.8rem; "></ch5-button><ch5-button id="src-btn-sw-d2" label="2" customStyle="background: #2c2c2e; border: 1px solid rgba(255,255,255,0.18); color: #fff; border-radius: 50%; font-weight: bold; display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; font-size: 0.8rem; "></ch5-button><ch5-button id="src-btn-sw-d3" label="3" customStyle="background: #2c2c2e; border: 1px solid rgba(255,255,255,0.18); color: #fff; border-radius: 50%; font-weight: bold; display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; font-size: 0.8rem; "></ch5-button><ch5-button id="src-btn-sw-d4" label="4" customStyle="background: #2c2c2e; border: 1px solid rgba(255,255,255,0.18); color: #fff; border-radius: 50%; font-weight: bold; display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; font-size: 0.8rem; "></ch5-button><ch5-button id="src-btn-sw-d5" label="5" customStyle="background: #2c2c2e; border: 1px solid rgba(255,255,255,0.18); color: #fff; border-radius: 50%; font-weight: bold; display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; font-size: 0.8rem; "></ch5-button><ch5-button id="src-btn-sw-d6" label="6" customStyle="background: #2c2c2e; border: 1px solid rgba(255,255,255,0.18); color: #fff; border-radius: 50%; font-weight: bold; display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; font-size: 0.8rem; "></ch5-button><ch5-button id="src-btn-sw-d7" label="7" customStyle="background: #2c2c2e; border: 1px solid rgba(255,255,255,0.18); color: #fff; border-radius: 50%; font-weight: bold; display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; font-size: 0.8rem; "></ch5-button><ch5-button id="src-btn-sw-d8" label="8" customStyle="background: #2c2c2e; border: 1px solid rgba(255,255,255,0.18); color: #fff; border-radius: 50%; font-weight: bold; display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; font-size: 0.8rem; "></ch5-button><ch5-button id="src-btn-sw-d9" label="9" customStyle="background: #2c2c2e; border: 1px solid rgba(255,255,255,0.18); color: #fff; border-radius: 50%; font-weight: bold; display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; font-size: 0.8rem; "></ch5-button><ch5-button id="src-btn-sw-txt" label="txt" customStyle="background: #2c2c2e; border: 1px solid rgba(255,255,255,0.18); color: #fff; border-radius: 50%; font-weight: bold; display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; font-size: 0.8rem; font-size: 0.75rem;"></ch5-button><ch5-button id="src-btn-sw-d0" label="0" customStyle="background: #2c2c2e; border: 1px solid rgba(255,255,255,0.18); color: #fff; border-radius: 50%; font-weight: bold; display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; font-size: 0.8rem; "></ch5-button><ch5-button id="src-btn-sw-radio" label="radio" customStyle="background: #2c2c2e; border: 1px solid rgba(255,255,255,0.18); color: #fff; border-radius: 50%; font-weight: bold; display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; font-size: 0.8rem; font-size: 0.75rem;"></ch5-button></div>
+                <div style="display: flex; gap: 10px; justify-content: center;"><ch5-button id="src-btn-sw-red" label="" customStyle="border: 3px solid #2c2c2e; border-radius: 50%; background: #e0202a; width: 44px; height: 44px; font-size: 0.8rem; width: 26px; height: 26px;"></ch5-button><ch5-button id="src-btn-sw-green" label="" customStyle="border: 3px solid #2c2c2e; border-radius: 50%; background: #27ae60; width: 44px; height: 44px; font-size: 0.8rem; width: 26px; height: 26px;"></ch5-button><ch5-button id="src-btn-sw-yellow" label="" customStyle="border: 3px solid #2c2c2e; border-radius: 50%; background: #f5c518; width: 44px; height: 44px; font-size: 0.8rem; width: 26px; height: 26px;"></ch5-button><ch5-button id="src-btn-sw-blue" label="" customStyle="border: 3px solid #2c2c2e; border-radius: 50%; background: #2f80ed; width: 44px; height: 44px; font-size: 0.8rem; width: 26px; height: 26px;"></ch5-button></div>
             </div>
         </div>
     </div>
@@ -1263,8 +1500,8 @@
             <!-- Éclairage Global -->
             <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 8px; padding: 10px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-                    <h4 style="margin: 0; font-size: 0.85rem; color: #eab308;">💡 Éclairage Global</h4>
-                    <button onclick="window.openGlobalPresetCustomizer('lighting')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; cursor: pointer; outline: none; font-size: 0.75rem;">⚙️</button>
+                    <h4 style="margin: 0; font-size: 0.85rem; color: #eab308;">💡 Éclairage global</h4>
+                    <button onclick="window.openGlobalPresetCustomizer('lighting')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; cursor: pointer; outline: none; font-size: 0.75rem;"><svg class="gear-icon" viewBox="0 0 512 512" aria-hidden="true"><path d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6l-43.3 75c-3.2 8.7-12.2 13.9-21.4 11.7l-56.4-13.6c-15.6 12-33 21.6-51.7 28.5l-11.9 57.3c-2 9.7-10.5 16.7-20.5 16.7H220.4c-10 0-18.5-7-20.5-16.7l-11.9-57.3c-18.7-6.9-36.1-16.4-51.7-28.5l-56.4 13.6c-9.2 2.2-18.2-3-21.4-11.7l-43.3-75c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4c-1.1-8.3-1.7-16.8-1.7-25.4s.6-17.1 1.7-25.4L21.6 191.2c-6.9-6.2-9.6-15.9-6.4-24.6l43.3-75c3.2-8.7 12.2-13.9 21.4-11.7l56.4 13.6c15.6-12 33-21.6 51.7-28.5l11.9-57.3c2-9.7 10.5-16.7 20.5-16.7h72.8c10 0 18.5 7 20.5 16.7l11.9 57.3c18.7 6.9 36.1 16.4 51.7 28.5l56.4-13.6c9.2-2.2 18.2 3 21.4 11.7l43.3 75zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"/></svg></button>
                 </div>
                 <div style="display: flex; gap: 4px;">
                     <ch5-button label="ON" customClass="scene-btn" style="height: 32px; flex: 1;" sendEventOnClick="401"></ch5-button>
@@ -1275,8 +1512,8 @@
             <!-- Stores Globaux -->
             <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 8px; padding: 10px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-                    <h4 style="margin: 0; font-size: 0.85rem; color: #00b4c5;">↕️ Stores Globaux</h4>
-                    <button onclick="window.openGlobalPresetCustomizer('shades')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; cursor: pointer; outline: none; font-size: 0.75rem;">⚙️</button>
+                    <h4 style="margin: 0; font-size: 0.85rem; color: #00b4c5;">↕️ Stores globaux</h4>
+                    <button onclick="window.openGlobalPresetCustomizer('shades')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; cursor: pointer; outline: none; font-size: 0.75rem;"><svg class="gear-icon" viewBox="0 0 512 512" aria-hidden="true"><path d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6l-43.3 75c-3.2 8.7-12.2 13.9-21.4 11.7l-56.4-13.6c-15.6 12-33 21.6-51.7 28.5l-11.9 57.3c-2 9.7-10.5 16.7-20.5 16.7H220.4c-10 0-18.5-7-20.5-16.7l-11.9-57.3c-18.7-6.9-36.1-16.4-51.7-28.5l-56.4 13.6c-9.2 2.2-18.2-3-21.4-11.7l-43.3-75c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4c-1.1-8.3-1.7-16.8-1.7-25.4s.6-17.1 1.7-25.4L21.6 191.2c-6.9-6.2-9.6-15.9-6.4-24.6l43.3-75c3.2-8.7 12.2-13.9 21.4-11.7l56.4 13.6c15.6-12 33-21.6 51.7-28.5l11.9-57.3c2-9.7 10.5-16.7 20.5-16.7h72.8c10 0 18.5 7 20.5 16.7l11.9 57.3c18.7 6.9 36.1 16.4 51.7 28.5l56.4-13.6c9.2-2.2 18.2 3 21.4 11.7l43.3 75zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"/></svg></button>
                 </div>
                 <div style="display: flex; gap: 4px;">
                     <ch5-button label="OUVRIR" customClass="scene-btn" style="height: 32px; flex: 1;" sendEventOnClick="404"></ch5-button>
@@ -1287,8 +1524,8 @@
             <!-- CVC Global -->
             <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 8px; padding: 10px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-                    <h4 style="margin: 0; font-size: 0.85rem; color: #10b981;">❄️ Climatisation Globale</h4>
-                    <button onclick="window.openGlobalPresetCustomizer('hvac')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; cursor: pointer; outline: none; font-size: 0.75rem;">⚙️</button>
+                    <h4 style="margin: 0; font-size: 0.85rem; color: #10b981;">❄️ Climatisation globale</h4>
+                    <button onclick="window.openGlobalPresetCustomizer('hvac')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; cursor: pointer; outline: none; font-size: 0.75rem;"><svg class="gear-icon" viewBox="0 0 512 512" aria-hidden="true"><path d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6l-43.3 75c-3.2 8.7-12.2 13.9-21.4 11.7l-56.4-13.6c-15.6 12-33 21.6-51.7 28.5l-11.9 57.3c-2 9.7-10.5 16.7-20.5 16.7H220.4c-10 0-18.5-7-20.5-16.7l-11.9-57.3c-18.7-6.9-36.1-16.4-51.7-28.5l-56.4 13.6c-9.2 2.2-18.2-3-21.4-11.7l-43.3-75c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4c-1.1-8.3-1.7-16.8-1.7-25.4s.6-17.1 1.7-25.4L21.6 191.2c-6.9-6.2-9.6-15.9-6.4-24.6l43.3-75c3.2-8.7 12.2-13.9 21.4-11.7l56.4 13.6c15.6-12 33-21.6 51.7-28.5l11.9-57.3c2-9.7 10.5-16.7 20.5-16.7h72.8c10 0 18.5 7 20.5 16.7l11.9 57.3c18.7 6.9 36.1 16.4 51.7 28.5l56.4-13.6c9.2-2.2 18.2 3 21.4 11.7l43.3 75zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"/></svg></button>
                 </div>
                 <div style="display: flex; gap: 4px;">
                     <ch5-button label="CONFORT" customClass="scene-btn" style="height: 32px; flex: 1;" sendEventOnClick="407"></ch5-button>
@@ -1299,8 +1536,8 @@
             <!-- Vacances -->
             <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 8px; padding: 10px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-                    <h4 style="margin: 0; font-size: 0.85rem; color: #fb7185;">✈️ Mode Vacances</h4>
-                    <button onclick="window.openGlobalPresetCustomizer('vacation')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; cursor: pointer; outline: none; font-size: 0.75rem;">⚙️</button>
+                    <h4 style="margin: 0; font-size: 0.85rem; color: #fb7185;">✈️ Mode vacances</h4>
+                    <button onclick="window.openGlobalPresetCustomizer('vacation')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; cursor: pointer; outline: none; font-size: 0.75rem;"><svg class="gear-icon" viewBox="0 0 512 512" aria-hidden="true"><path d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6l-43.3 75c-3.2 8.7-12.2 13.9-21.4 11.7l-56.4-13.6c-15.6 12-33 21.6-51.7 28.5l-11.9 57.3c-2 9.7-10.5 16.7-20.5 16.7H220.4c-10 0-18.5-7-20.5-16.7l-11.9-57.3c-18.7-6.9-36.1-16.4-51.7-28.5l-56.4 13.6c-9.2 2.2-18.2-3-21.4-11.7l-43.3-75c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4c-1.1-8.3-1.7-16.8-1.7-25.4s.6-17.1 1.7-25.4L21.6 191.2c-6.9-6.2-9.6-15.9-6.4-24.6l43.3-75c3.2-8.7 12.2-13.9 21.4-11.7l56.4 13.6c15.6-12 33-21.6 51.7-28.5l11.9-57.3c2-9.7 10.5-16.7 20.5-16.7h72.8c10 0 18.5 7 20.5 16.7l11.9 57.3c18.7 6.9 36.1 16.4 51.7 28.5l56.4-13.6c9.2-2.2 18.2 3 21.4 11.7l43.3 75zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"/></svg></button>
                 </div>
                 <div style="display: flex; gap: 4px;">
                     <ch5-button label="ACTIVER" customClass="scene-btn" style="height: 32px; flex: 1;" sendEventOnClick="410" receiveStateSelected="410"></ch5-button>
@@ -1317,7 +1554,7 @@
                 ⚙️ Configuration Preset
             </h3>
             <div style="display: flex; gap: 6px;">
-                <button onclick="window.saveGlobalPresetConfig()" style="height: 28px; background: #10b981; border: none; color: white; border-radius: 6px; cursor: pointer; font-weight: bold; padding: 0 10px; font-size: 0.75rem;">SAUVER</button>
+                <button onclick="window.saveGlobalPresetConfig()" style="height: 28px; background: #047857; border: none; color: white; border-radius: 6px; cursor: pointer; font-weight: bold; padding: 0 10px; font-size: 0.75rem;">SAUVER</button>
                 <button onclick="window.closeGlobalPresetCustomizer()" style="height: 28px; background: rgba(255,255,255,0.08); border: none; color: white; border-radius: 6px; cursor: pointer; font-weight: bold; padding: 0 10px; font-size: 0.75rem;">RETOUR</button>
             </div>
         </div>
@@ -1339,46 +1576,52 @@
             // Dictionnaire de traductions
             const translations = {
                 fr: {
+                    audio_confirm_title: "Source audio",
+                    audio_confirm_text: "La musique joue sur les haut-parleurs. Que voulez-vous écouter ?",
+                    audio_keep_music: "Garder la musique",
+                    audio_use_video: "Audio de la source vidéo",
                     settings: "Réglages",
                     close: "Fermer",
-                    select_language: "Sélectionner la Langue :",
-                    select_theme: "Sélectionner le Thème :",
-                    theme_dark: "Sombre Premium 🌙",
-                    theme_light: "Clair Élégant ☀️",
-                    theme_glass: "Verre Dépoli ❄️",
-                    theme_cyber: "Bleu Cyberpunk 🌌",
-                    active_piece: "Pièce Active",
-                    alarm_title: "Alarme Globale :",
+                    select_language: "Sélectionner la langue :",
+                    select_theme: "Sélectionner le thème :",
+                    theme_dark: "Sombre premium 🌙",
+                    theme_light: "Clair élégant ☀️",
+                    theme_glass: "Verre dépoli ❄️",
+                    active_piece: "Pièce active",
+                    alarm_title: "Alarme globale :",
                     alarm_arm: "ARMER",
                     alarm_disarm: "DÉSARMER",
                     temp_title: "HVAC",
                     temp_actual: "Actuelle",
                     temp_requested: "Consigne",
-                    source_title: "Sélection Source Audio et Vidéo",
-                    source_video: "Source Active :",
+                    source_title: "Sélection de la source audio et vidéo",
+                    source_video: "Source active :",
                     circuits_title: "Circuits :",
                     motors_title: "Moteurs :",
                     tab_lights: "ÉCLAIRAGES",
                     tab_shades: "STORES",
                     motors_title_section: "MOTEURS",
                     widgets_title: "Widgets",
-                    weather_title: "Météo Locale",
+                    weather_title: "Météo locale",
                     weather_wind: "Vent",
                     weather_humidity: "Humidité",
                     news_title: "Actualités",
-                    video_title: "Vidéo Domotique"
+                    video_title: "Vidéo domotique"
                 },
                 en: {
+                    audio_confirm_title: "Audio source",
+                    audio_confirm_text: "Music is playing on the speakers. What do you want to listen to?",
+                    audio_keep_music: "Keep the music",
+                    audio_use_video: "Audio of the video source",
                     settings: "Settings",
                     close: "Close",
-                    select_language: "Select Language:",
-                    select_theme: "Select Theme:",
-                    theme_dark: "Dark Premium 🌙",
-                    theme_light: "Elegant Light ☀️",
-                    theme_glass: "Frosted Glass ❄️",
-                    theme_cyber: "Cyberpunk Blue 🌌",
-                    active_piece: "Active Room",
-                    alarm_title: "Global Alarm:",
+                    select_language: "Select language:",
+                    select_theme: "Select theme:",
+                    theme_dark: "Dark premium 🌙",
+                    theme_light: "Elegant light ☀️",
+                    theme_glass: "Frosted glass ❄️",
+                    active_piece: "Active room",
+                    alarm_title: "Global alarm:",
                     alarm_arm: "ARM",
                     alarm_disarm: "DISARM",
                     temp_title: "HVAC",
@@ -1399,6 +1642,10 @@
                     video_title: "Automation Video"
                 },
                 es: {
+                    audio_confirm_title: "Fuente de audio",
+                    audio_confirm_text: "La música suena en los altavoces. ¿Qué desea escuchar?",
+                    audio_keep_music: "Mantener la música",
+                    audio_use_video: "Audio de la fuente de vídeo",
                     settings: "Ajustes",
                     close: "Cerrar",
                     select_language: "Seleccionar Idioma:",
@@ -1406,7 +1653,6 @@
                     theme_dark: "Oscuro Premium 🌙",
                     theme_light: "Claro Elegante ☀️",
                     theme_glass: "Cristal Esmerilado ❄️",
-                    theme_cyber: "Azul Cyberpunk 🌌",
                     active_piece: "Habitación Activa",
                     alarm_title: "Alarma Global:",
                     alarm_arm: "ARMAR",
@@ -1429,6 +1675,10 @@
                     video_title: "Video Domótico"
                 },
                 de: {
+                    audio_confirm_title: "Audioquelle",
+                    audio_confirm_text: "Die Musik läuft über die Lautsprecher. Was möchten Sie hören?",
+                    audio_keep_music: "Musik behalten",
+                    audio_use_video: "Ton der Videoquelle",
                     settings: "Einstellungen",
                     close: "Schließen",
                     select_language: "Sprache Auswählen:",
@@ -1436,7 +1686,6 @@
                     theme_dark: "Dunkel Premium 🌙",
                     theme_light: "Elegant Hell ☀️",
                     theme_glass: "Milchglas ❄️",
-                    theme_cyber: "Cyberpunk Blau 🌌",
                     active_piece: "Aktiver Raum",
                     alarm_title: "Globaler Alarm:",
                     alarm_arm: "SCHARF",
@@ -1459,6 +1708,10 @@
                     video_title: "Smart Home Video"
                 },
                 ru: {
+                    audio_confirm_title: "Источник звука",
+                    audio_confirm_text: "Музыка играет в колонках. Что вы хотите слушать?",
+                    audio_keep_music: "Оставить музыку",
+                    audio_use_video: "Звук видеоисточника",
                     settings: "Настройки",
                     close: "Закрыть",
                     select_language: "Выберите язык:",
@@ -1466,7 +1719,6 @@
                     theme_dark: "Темная Премиум 🌙",
                     theme_light: "Светлая Элегантная ☀️",
                     theme_glass: "Матовое Стекло ❄️",
-                    theme_cyber: "Киберпанк Синий 🌌",
                     active_piece: "Активная Комната",
                     alarm_title: "Общая Сигнализация:",
                     alarm_arm: "ОХРАНА",
@@ -1475,24 +1727,39 @@
                     temp_actual: "Текущая",
                     temp_requested: "Уставка",
                     source_title: "Выбор Источника Аудио и Видео",
-                    source_video: "А            // Configuration de secours
+                    source_video: "Активный источник :",
+                    circuits_title: "Свет :",
+                    motors_title: "Моторы :",
+                    tab_lights: "СВЕТ",
+                    tab_shades: "ШТОРЫ",
+                    motors_title_section: "МОТОРЫ",
+                    widgets_title: "Виджеты",
+                    weather_title: "Местная погода",
+                    weather_wind: "Ветер",
+                    weather_humidity: "Влажность",
+                    news_title: "Новости",
+                    video_title: "Видеонаблюдение"
+                }
+            };
+
+            // Configuration de secours
             const fallbackConfig = {
                 rooms: [
                     { id: 1, name: "Salon" },
                     { id: 2, name: "Cuisine" },
-                    { id: 3, name: "Salle à Manger" },
-                    { id: 4, name: "Suite Parentale" },
+                    { id: 3, name: "Salle à manger" },
+                    { id: 4, name: "Suite parentale" },
                     { id: 5, name: "Chambre 1" },
                     { id: 6, name: "Chambre 2" },
                     { id: 7, name: "Bureau" },
-                    { id: 8, name: "Home Cinéma" },
+                    { id: 8, name: "Home cinéma" },
                     { id: 9, name: "Chambre 3" },
-                    { id: 10, name: "Suite Invités" },
-                    { id: 11, name: "Terrasse & Jardin" },
-                    { id: 12, name: "Piscine & Spa" },
-                    { id: 13, name: "Sauna & Hammam" },
-                    { id: 14, name: "Pool House" },
-                    { id: 15, name: "Garage & Ateliers" }
+                    { id: 10, name: "Suite invités" },
+                    { id: 11, name: "Terrasse & jardin" },
+                    { id: 12, name: "Piscine & spa" },
+                    { id: 13, name: "Sauna & hammam" },
+                    { id: 14, name: "Pool house" },
+                    { id: 15, name: "Garage & ateliers" }
                 ],
                 sources: [
                     { id: 1, name: "APPLE TV" },
@@ -1503,7 +1770,7 @@
                 roomMotors: {
                     "1": ["Volet Baie Est", "Volet Baie Sud", "Rideau Écran Proj.", "Store Banne Terrasse", "Brise-Soleil Orientable", "Volet Fenêtre Ouest"],
                     "2": ["Volet Évier Cuisine", "Store Fenêtre Nord", "Volet Porte Cuisine", "Store Plafond Verrière", "Rideau Passe-Plat", "Brise-Soleil Cuisine"],
-                    "3": ["Volet Salle à Manger 1", "Volet Salle à Manger 2", "Store Banne Sud", "Rideau Ouest", "Brise-Soleil Est", "Volet Porte-Fenêtre"],
+                    "3": ["Volet Salle à manger 1", "Volet Salle à manger 2", "Store Banne Sud", "Rideau Ouest", "Brise-Soleil Est", "Volet Porte-Fenêtre"],
                     "4": ["Volet Baie Suite", "Rideau Lit", "Store Dressing", "Volet Salle de Bain", "Brise-Soleil Suite", "Volet Fenêtre Nord"],
                     "5": ["Volet Chambre 1 Est", "Rideau Chambre 1", "Store Fenêtre 1", "Volet Dressing 1", "Volet Principal 1", "Store Occultant 1"],
                     "6": ["Volet Chambre 2 Ouest", "Rideau Chambre 2", "Store Fenêtre 2", "Volet Dressing 2", "Volet Principal 2", "Store Occultant 2"],
@@ -1514,12 +1781,12 @@
                     "11": ["Pergola Bioclimatique Lames", "Pergola Store Zip Est", "Pergola Store Zip Sud", "Store Banne Jardin", "Volet Véranda", "Store Occultant Patio"],
                     "12": ["Couverture Bassin", "Volet Baie Spa", "Rideau Transat Spa", "Store Verrière Spa", "Volet Vestiaire", "Brise-Soleil Spa"],
                     "13": ["Volet Fenêtre Sauna", "Store Intimité Hammam", "Rideau Relaxation", "Volet Vestiaire Sauna", "Brise-Soleil Entrée", "Store Occultant Rest"],
-                    "14": ["Volet Baie Bar", "Store Banne Pool House", "Rideau Cuisine Été", "Volet Baie Repas", "Store Zip Sud PH", "Volet Réserve"],
+                    "14": ["Volet Baie Bar", "Store Banne Pool house", "Rideau Cuisine Été", "Volet Baie Repas", "Store Zip Sud PH", "Volet Réserve"],
                     "15": ["Porte Sectionnelle Main", "Porte Sectionnelle 2", "Volet Atelier", "Store Fenêtre Garage", "Rideau Zone Lavage", "Volet Local Tech"]
                 },
                 roomCircuits: {
                     "1": [
-                        { id: 71, name: "Spots Plafond Ouest" },
+                        { id: 71, name: "Spots plafond Ouest" },
                         { id: 72, name: "Lustre Principal" },
                         { id: 73, name: "Ruban LED Corniche" },
                         { id: 74, name: "Applique Murale Nord" },
@@ -1540,7 +1807,7 @@
                     ],
                     "3": [
                         { id: 71, name: "Lustre Table Repas" },
-                        { id: 72, name: "Spots Plafond" },
+                        { id: 72, name: "Spots plafond" },
                         { id: 73, name: "Appliques Buffet Est" },
                         { id: 74, name: "Ruban LED Vaisselier" },
                         { id: 75, name: "Lumière Vitrine" },
@@ -1577,7 +1844,7 @@
                         { id: 76, name: "Veilleuse Bureau 2" }
                     ],
                     "7": [
-                        { id: 71, name: "Spots Plafond Bureau" },
+                        { id: 71, name: "Spots plafond Bureau" },
                         { id: 72, name: "Lampe Bureau Design" },
                         { id: 73, name: "Ruban LED Bibliothèque" },
                         { id: 74, name: "Applique Zone Accueil" },
@@ -1588,8 +1855,8 @@
                     ],
                     "8": [
                         { id: 71, name: "Nez de Marche Gradué" },
-                        { id: 72, name: "Appliques Murales Gauche" },
-                        { id: 73, name: "Appliques Murales Droite" },
+                        { id: 72, name: "Appliques murales Gauche" },
+                        { id: 73, name: "Appliques murales Droite" },
                         { id: 74, name: "Ruban LED Écran" },
                         { id: 75, name: "Plafonnier Ciel Étoilé" },
                         { id: 76, name: "Spots Encastrés Escaliers" },
@@ -1606,7 +1873,7 @@
                         { id: 76, name: "Veilleuse Bureau 3" }
                     ],
                     "10": [
-                        { id: 71, name: "Lustre Suite Invités" },
+                        { id: 71, name: "Lustre Suite invités" },
                         { id: 72, name: "Liseuse Gauche Invités" },
                         { id: 73, name: "Liseuse Droite Invités" },
                         { id: 74, name: "LED Tête de Lit Invités" },
@@ -1624,7 +1891,7 @@
                     ],
                     "12": [
                         { id: 71, name: "Projecteurs Subaquatiques" },
-                        { id: 72, name: "Spots Plafond Spa" },
+                        { id: 72, name: "Spots plafond Spa" },
                         { id: 73, name: "Ruban LED Margelle" },
                         { id: 74, name: "Appliques Ambiance Plage" },
                         { id: 75, name: "Projecteur Cascade" },
@@ -1639,10 +1906,10 @@
                         { id: 76, name: "LED Vestiaire Rest" }
                     ],
                     "14": [
-                        { id: 71, name: "Suspensions Bar Pool House" },
-                        { id: 72, name: "Spots Plafond Salon d'Été" },
+                        { id: 71, name: "Suspensions Bar Pool house" },
+                        { id: 72, name: "Spots plafond Salon d'Été" },
                         { id: 73, name: "Ruban LED Comptoir" },
-                        { id: 74, name: "Appliques Terrasse Pool House" },
+                        { id: 74, name: "Appliques Terrasse Pool house" },
                         { id: 75, name: "Projecteur Barbecue PH" }
                     ],
                     "15": [
@@ -1654,9 +1921,9 @@
                     ]
                 },
                 circuits: [
-                    { id: 71, name: "Spots Plafond" },
-                    { id: 72, name: "Lustre Central" },
-                    { id: 73, name: "Appliques Murales" },
+                    { id: 71, name: "Spots plafond" },
+                    { id: 72, name: "Lustre central" },
+                    { id: 73, name: "Appliques murales" },
                     { id: 74, name: "Ruban LED" },
                     { id: 75, name: "Liseuse" },
                     { id: 76, name: "Éclairage Table" },
@@ -1752,6 +2019,7 @@
 
             // --- MODULE DE THÈME ---
             function applyTheme(theme) {
+            if (theme === 'cyber') theme = 'dark'; // thème Bleu Cyberpunk retiré le 09.09.2026
                 currentTheme = theme;
                 try {
                     localStorage.setItem('crestron_theme_iphone', theme);
@@ -1809,16 +2077,29 @@
                 }
                 
                 // Mapper les événements CH5 en fonction de la source active
-                const buttonsMapping = {
-                    appletv:  { up: 211, down: 212, left: 213, right: 214, ok: 215, back: 216, home: 217, play: 218, rew: 219, fwd: 220 },
-                    skyq:     { up: 221, down: 222, left: 223, right: 224, ok: 225, back: 226, home: 227, play: 228, rew: 229, fwd: 230 },
-                    swisscom: { up: 231, down: 232, left: 233, right: 234, ok: 235, back: 236, home: 237, play: 238, rew: 239, fwd: 240 },
-                    iptv:     { up: 241, down: 242, left: 243, right: 244, ok: 245, back: 246, home: 247, play: 248, rew: 249, fwd: 250 }
-                };
+                const stbMapping = (base) => {
+                // Télécommande décodeur : bloc de 30 joins digitaux par source (contrat : AV.Telecommande.*)
+                const keys = ["up", "down", "left", "right", "ok", "back", "menu", "exit", "live", "dvr", "guide", "info", "last", "pgup", "pgdn", "chup", "chdn", "rew", "play", "fwd", "pause", "stop", "replay", "rec", "yellow", "blue", "red", "green"];
+                const m = {}; keys.forEach((k, i) => { m[k] = base + i; }); return m;
+            };
+            const buttonsMapping = {
+                appletv:  { up: 211, down: 212, left: 213, right: 214, ok: 215, back: 216, home: 217, play: 218, rew: 219, fwd: 220 },
+                skyq:     stbMapping(500),
+                iptv:     stbMapping(530),
+                swisscom: (function () { const keys = ["power", "assistant", "input", "mute", "rew", "rec", "fwd", "replay", "play", "skip", "back", "home", "guide", "option", "up", "down", "left", "right", "ok", "volup", "voldn", "mic", "pup", "pdn", "pip", "d0", "d1", "d2", "d3", "d4", "d5", "d6", "d7", "d8", "d9", "txt", "radio", "red", "green", "yellow", "blue"]; const m = {}; keys.forEach((k, i) => { m[k] = 560 + i; }); return m; })()
+            };
                 
                 const mapping = buttonsMapping[sourceId] || buttonsMapping.appletv;
 
-                if (sourceId === 'appletv') {
+                                const sw = document.getElementById('remote-swisscom-layout');
+                if (sw) sw.style.display = (sourceId === 'swisscom') ? 'flex' : 'none';
+                if (sourceId === 'swisscom') {
+                    document.getElementById('remote-standard-layout').style.display = 'none';
+                    document.getElementById('remote-appletv-layout').style.display = 'none';
+                    Object.keys(mapping).forEach(function(k) { const el = document.getElementById('src-btn-sw-' + k); if (el) el.setAttribute('sendEventOnClick', String(mapping[k])); });
+                    document.getElementById('src-btn-sw-mute').setAttribute('sendEventOnClick', '55');
+                    document.getElementById('src-btn-sw-mute').setAttribute('receiveStateSelected', '55');
+                } else if (sourceId === 'appletv') {
                     document.getElementById('remote-standard-layout').style.display = 'none';
                     document.getElementById('remote-appletv-layout').style.display = 'flex';
                     
@@ -1828,25 +2109,29 @@
                     document.getElementById('src-btn-apple-right').setAttribute('sendEventOnClick', mapping.right.toString());
                     document.getElementById('src-btn-apple-ok').setAttribute('sendEventOnClick', mapping.ok.toString());
                     document.getElementById('src-btn-apple-menu').setAttribute('sendEventOnClick', mapping.back.toString());
+                    document.getElementById('src-btn-apple-home').setAttribute('sendEventOnClick', mapping.home.toString());
+                    document.getElementById('src-btn-apple-play').setAttribute('sendEventOnClick', mapping.play.toString());
+                    document.getElementById('src-btn-apple-mute').setAttribute('receiveStateSelected', '55');
                 } else {
                     document.getElementById('remote-standard-layout').style.display = 'flex';
                     document.getElementById('remote-appletv-layout').style.display = 'none';
                     
-                    document.getElementById('src-btn-up').setAttribute('sendEventOnClick', mapping.up.toString());
-                    document.getElementById('src-btn-down').setAttribute('sendEventOnClick', mapping.down.toString());
-                    document.getElementById('src-btn-left').setAttribute('sendEventOnClick', mapping.left.toString());
-                    document.getElementById('src-btn-right').setAttribute('sendEventOnClick', mapping.right.toString());
-                    document.getElementById('src-btn-ok').setAttribute('sendEventOnClick', mapping.ok.toString());
-                    document.getElementById('src-btn-back').setAttribute('sendEventOnClick', mapping.back.toString());
-                    document.getElementById('src-btn-home').setAttribute('sendEventOnClick', mapping.home.toString());
-                    document.getElementById('src-btn-play').setAttribute('sendEventOnClick', mapping.play.toString());
-                    document.getElementById('src-btn-rew').setAttribute('sendEventOnClick', mapping.rew.toString());
-                    document.getElementById('src-btn-fwd').setAttribute('sendEventOnClick', mapping.fwd.toString());
+                    Object.keys(mapping).forEach(function(k) { const el = document.getElementById('src-btn-' + k); if (el) el.setAttribute('sendEventOnClick', String(mapping[k])); });
                 }
 
                 document.getElementById('source-control-overlay').style.display = 'block';
                 if (backdrop) backdrop.style.display = 'block';
             };
+                        // Télécommandes (Apple TV, Swisscom TV) : volume +/− par pas de 5 % sur le volume A/V de la pièce (analogique 52).
+            // Le feedback revient par le join 52 (CP4 en déploiement, moteur local en vitrine) et recale le curseur.
+            window.remoteVolume = function(dir) {
+                const slider = document.querySelector('ch5-slider[sendEventOnChange="52"]');
+                let v = parseInt(slider ? slider.getAttribute('value') : '0', 10) || 0;
+                v = Math.max(0, Math.min(65535, v + dir * 3277));
+                if (typeof CrComLib !== 'undefined') CrComLib.publishEvent('n', '52', v);
+                if (slider) slider.setAttribute('value', String(v));
+            };
+
             window.closeSourceControlModal = function() {
                 document.getElementById('source-control-overlay').style.display = 'none';
                 if (backdrop) backdrop.style.display = 'none';
@@ -1908,7 +2193,7 @@
                         { name: "Cam 2 : Entrée Nord", img: "https://images.unsplash.com/photo-1513694203232-719a280e022f?w=400&auto=format&fit=crop&q=60" },
                         { name: "Cam 3 : Allée Voitures", img: "https://images.unsplash.com/photo-1507089947368-19c1da9775ae?w=400&auto=format&fit=crop&q=60" },
                         { name: "Cam 4 : Terrasse Piscine", img: "https://images.unsplash.com/photo-1576013551627-0cc20b96c2a7?w=400&auto=format&fit=crop&q=60" },
-                        { name: "Cam 5 : Pool House", img: "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=400&auto=format&fit=crop&q=60" },
+                        { name: "Cam 5 : Pool house", img: "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=400&auto=format&fit=crop&q=60" },
                         { name: "Cam 6 : Garage Intérieur", img: "https://images.unsplash.com/photo-1616422285623-13ff0162193c?w=400&auto=format&fit=crop&q=60" },
                         { name: "Cam 7 : Jardin Est", img: "https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?w=400&auto=format&fit=crop&q=60" },
                         { name: "Cam 8 : Salon Baie Vitrée", img: "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=400&auto=format&fit=crop&q=60" },
@@ -2019,8 +2304,8 @@
                     ];
                 } else if (type === 'shades') {
                     options = [
-                        { value: "shade_open", text: "Stores : Tout Ouvrir (404)" },
-                        { value: "shade_close", text: "Stores : Tout Fermer (405)" }
+                        { value: "shade_open", text: "Stores : Tout ouvrir (404)" },
+                        { value: "shade_close", text: "Stores : Tout fermer (405)" }
                     ];
                 } else if (type === 'hvac') {
                     options = [
@@ -2030,7 +2315,7 @@
                     ];
                 } else if (type === 'vacation') {
                     options = [
-                        { value: "vacation", text: "Mode Vacances (410)" }
+                        { value: "vacation", text: "Mode vacances (410)" }
                     ];
                 }
                 
@@ -2076,12 +2361,12 @@
                     const roomsList = [
                         { id: 1, name: "Salon" },
                         { id: 2, name: "Cuisine" },
-                        { id: 3, name: "Salle à Manger" },
-                        { id: 4, name: "Suite Parentale" },
+                        { id: 3, name: "Salle à manger" },
+                        { id: 4, name: "Suite parentale" },
                         { id: 5, name: "Chambre 1" },
                         { id: 6, name: "Chambre 2" },
                         { id: 7, name: "Bureau" },
-                        { id: 8, name: "Home Cinéma" }
+                        { id: 8, name: "Home cinéma" }
                     ];
                     
                     roomsList.forEach(room => {
@@ -2096,9 +2381,9 @@
                         const circuits = config.roomCircuits && config.roomCircuits[room.id] ? config.roomCircuits[room.id] : [];
                         if (circuits.length === 0) {
                             const fallbackList = [
-                                { id: 71, name: "Spots Plafond" },
-                                { id: 72, name: "Lustre Central" },
-                                { id: 73, name: "Appliques Murales" },
+                                { id: 71, name: "Spots plafond" },
+                                { id: 72, name: "Lustre central" },
+                                { id: 73, name: "Appliques murales" },
                                 { id: 74, name: "Ruban LED" }
                             ];
                             circuits.push(...fallbackList);
@@ -2152,12 +2437,12 @@
                     const roomsList = [
                         { id: 1, name: "Salon" },
                         { id: 2, name: "Cuisine" },
-                        { id: 3, name: "Salle à Manger" },
-                        { id: 4, name: "Suite Parentale" },
+                        { id: 3, name: "Salle à manger" },
+                        { id: 4, name: "Suite parentale" },
                         { id: 5, name: "Chambre 1" },
                         { id: 6, name: "Chambre 2" },
                         { id: 7, name: "Bureau" },
-                        { id: 8, name: "Home Cinéma" }
+                        { id: 8, name: "Home cinéma" }
                     ];
                     
                     roomsList.forEach(room => {
@@ -2205,12 +2490,12 @@
                     const roomsList = [
                         { id: 1, name: "Salon" },
                         { id: 2, name: "Cuisine" },
-                        { id: 3, name: "Salle à Manger" },
-                        { id: 4, name: "Suite Parentale" },
+                        { id: 3, name: "Salle à manger" },
+                        { id: 4, name: "Suite parentale" },
                         { id: 5, name: "Chambre 1" },
                         { id: 6, name: "Chambre 2" },
                         { id: 7, name: "Bureau" },
-                        { id: 8, name: "Home Cinéma" }
+                        { id: 8, name: "Home cinéma" }
                     ];
                     
                     roomsList.forEach(room => {
@@ -2258,8 +2543,8 @@
                     });
                 } else if (activePresetType === 'vacation') {
                     const categories = [
-                        { key: "light", text: "Éclairage Global (Éteindre)" },
-                        { key: "shade", text: "Stores Globaux (Fermer)" },
+                        { key: "light", text: "Éclairage global (Éteindre)" },
+                        { key: "shade", text: "Stores globaux (Fermer)" },
                         { key: "hvac", text: "Climatisation (Hors Gel)" }
                     ];
                     
@@ -2540,14 +2825,18 @@
                         btn.className = "source-btn-mobile";
                         btn.innerText = src.name;
                         btn.style = "width: 100%; margin: 0;";
-                        btn.onclick = () => selectSource(src.id);
+                        btn.onclick = () => {
+                            selectSource(src.id);
+                            // Premier appui = activation + ouverture immédiate de la télécommande (retour direction 09.09.2026)
+                            if (srcKeyMap[src.id] && typeof openSourceControlModal === 'function') openSourceControlModal(srcKeyMap[src.id]);
+                        };
                         
                         const cogKey = srcKeyMap[src.id] || 'appletv';
                         const cog = document.createElement('button');
                         cog.className = "shades-config-cog";
                         cog.style = "cursor: pointer; display: flex; align-items: center; justify-content: center; width: 100%; height: 26px; border-radius: 6px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); padding: 0; outline: none;";
                         cog.onclick = () => openSourceControlModal(cogKey);
-                        cog.innerHTML = `<svg viewBox="0 0 512 512" style="width: 12px; height: 12px; fill: #cbd5e1;"><path d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6l-43.3 75c-3.2 8.7-12.2 13.9-21.4 11.7l-56.4-13.6c-15.6 12-33 21.6-51.7 28.5l-11.9 57.3c-2 9.7-10.5 16.7-20.5 16.7H220.4c-10 0-18.5-7-20.5-16.7l-11.9-57.3c-18.7-6.9-36.1-16.4-51.7-28.5l-56.4 13.6c-9.2 2.2-18.2-3-21.4-11.7l-43.3-75c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4c-1.1-8.3-1.7-16.8-1.7-25.4s.6-17.1 1.7-25.4L21.6 191.2c-6.9-6.2-9.6-15.9-6.4-24.6l43.3-75c3.2-8.7 12.2-13.9 21.4-11.7l56.4 13.6c15.6-12 33-21.6 51.7-28.5l11.9-57.3c2-9.7 10.5-16.7 20.5-16.7h72.8c10 0 18.5 7 20.5 16.7l11.9 57.3c18.7 6.9 36.1 16.4 51.7 28.5l56.4-13.6c9.2-2.2 18.2 3 21.4 11.7l43.3 75zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"/></svg>`;
+                        cog.innerHTML = `<svg class="gear-icon" viewBox="0 0 512 512"><path d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6l-43.3 75c-3.2 8.7-12.2 13.9-21.4 11.7l-56.4-13.6c-15.6 12-33 21.6-51.7 28.5l-11.9 57.3c-2 9.7-10.5 16.7-20.5 16.7H220.4c-10 0-18.5-7-20.5-16.7l-11.9-57.3c-18.7-6.9-36.1-16.4-51.7-28.5l-56.4 13.6c-9.2 2.2-18.2-3-21.4-11.7l-43.3-75c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4c-1.1-8.3-1.7-16.8-1.7-25.4s.6-17.1 1.7-25.4L21.6 191.2c-6.9-6.2-9.6-15.9-6.4-24.6l43.3-75c3.2-8.7 12.2-13.9 21.4-11.7l56.4 13.6c15.6-12 33-21.6 51.7-28.5l11.9-57.3c2-9.7 10.5-16.7 20.5-16.7h72.8c10 0 18.5 7 20.5 16.7l11.9 57.3c18.7 6.9 36.1 16.4 51.7 28.5l56.4-13.6c9.2-2.2 18.2 3 21.4 11.7l43.3 75zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"/></svg>`;
                         
                         wrapper.appendChild(btn);
                         wrapper.appendChild(cog);
@@ -2670,7 +2959,7 @@
                         }
                         legacy.roomMotors[String(p.id)] = motors;
                     });
-                    legacy.circuits = (defs.circuits || ["Spots Plafond", "Lustre Central", "Appliques Murales", "Ruban LED"])
+                    legacy.circuits = (defs.circuits || ["Spots plafond", "Lustre central", "Appliques murales", "Ruban LED"])
                         .map((n, i) => ({ id: 71 + i, name: villaTName(n) }));
                     console.log('CH5 iPhone: villa_config appliquée - ' + legacy.rooms.length + ' pièces (langue: ' + currentLang + ').');
                     generateDynamicUI(legacy);
@@ -2958,48 +3247,11 @@
             applyLanguage(currentLang);
             applyTheme(currentTheme);
 
-            // G. Son caché sur le widget météo (triple clic/tap)
-            let weatherClicks = 0;
-            const weather = document.getElementById('weather-widget');
-            if (weather) {
-                const handleWeather = (e) => {
-                    weatherClicks++;
-                    if (weatherClicks >= 3) {
-                        weatherClicks = 0;
-                        window.playFunnySound();
-                    }
-                    setTimeout(() => { weatherClicks = 0; }, 1500);
-                };
-                weather.addEventListener('click', handleWeather);
-                weather.addEventListener('touchstart', handleWeather);
-            }
+            // G. Son caché retiré le 10.09.2026 (demande de Donatien) : plus aucun son dans le GUI.
         });
 
-        window.playFunnySound = function() {
-            try {
-                console.log("Playing funny sound...");
-                const audioObj = new Audio('funny.mp3');
-                audioObj.volume = 1.0;
-                audioObj.play().then(() => {
-                    console.log("Audio playing successfully via Audio constructor.");
-                }).catch(err => {
-                    console.log("Audio constructor failed, trying fallback DOM element.", err);
-                    const audioDom = document.getElementById('funny-audio');
-                    if (audioDom) {
-                        audioDom.volume = 1.0;
-                        audioDom.play().catch(domErr => {
-                            console.log("DOM Audio element failed, playing synth fallback.", domErr);
-                            playSynthSound();
-                        });
-                    } else {
-                        playSynthSound();
-                    }
-                });
-            } catch (e) {
-                console.log("Audio play failed, falling back to synth.", e);
-                playSynthSound();
-            }
-        };
+        // Son caché « funny.mp3 » désactivé le 10.09.2026 : fonction conservée mais silencieuse.
+        window.playFunnySound = function() { /* silencieux */ };
 
         function playSynthSound() {
             try {
@@ -3058,6 +3310,108 @@
             }
         }
     </script>
-    <audio id="funny-audio" src="funny.mp3" preload="auto"></audio>
+
+    <!-- Confirmation source audio (musique vs audio de la source vidéo) — v1.0.166 -->
+    <div id="audio-confirm-backdrop" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.55); z-index: 1000000;"></div>
+    <div id="audio-confirm-overlay" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 420px; max-width: 92%; background: rgba(22, 25, 32, 0.98); border: 1px solid rgba(255,255,255,0.12); border-radius: 16px; padding: 22px; box-sizing: border-box; color: #fff; z-index: 1000001; box-shadow: 0 20px 60px rgba(0,0,0,0.6);">
+        <h2 style="margin: 0 0 10px 0; font-size: 0.8rem; text-transform: uppercase; color: #c084fc; letter-spacing: 0.08em;" data-i18n="audio_confirm_title">Source audio</h2>
+        <p style="margin: 0 0 18px 0; font-size: 0.95rem; line-height: 1.4; color: #e5e7eb;" data-i18n="audio_confirm_text">La musique joue sur les haut-parleurs. Que voulez-vous écouter ?</p>
+        <div style="display: flex; gap: 10px;">
+            <button id="audio-confirm-music" style="flex: 1; height: 46px; border-radius: 10px; border: 2px solid #eab308; background: rgba(234,179,8,0.15); color: #fff; font-weight: bold; cursor: pointer; font-size: 0.9rem;" data-i18n="audio_keep_music">Garder la musique</button>
+            <button id="audio-confirm-video" style="flex: 1; height: 46px; border-radius: 10px; border: 2px solid #8b5cf6; background: rgba(139,92,246,0.15); color: #fff; font-weight: bold; cursor: pointer; font-size: 0.9rem;" data-i18n="audio_use_video">Audio de la source vidéo</button>
+        </div>
+    </div>
+<script>
+(function () {
+    'use strict';
+
+    /* ---------- Logique audio / vidéo (v1.0.166) ----------
+       Vidéo : Apple TV, Sky Q, Swisscom TV, IPTV en interlock (joins 151-154, 150 = tout éteint).
+       Audio : par défaut l'audio de la source vidéo ; appui « Musique » (155) = la musique passe
+       sur les haut-parleurs, la vidéo reste à l'écran (feedback 155 = musique en audio) ;
+       join 156 = l'audio revient à la source vidéo. Nouvel appui sur Musique, sur la source vidéo
+       active ou sur une autre source vidéo pendant que la musique joue → confirmation.
+       Le feedback vient du CP4 (déploiement) ou du moteur local (vitrine) ; rien n'est présumé ici. */
+    var AV = { video: null, music: false, pending: null };
+    var VIDEO_JOINS = ['151', '152', '153', '154'];
+    function avSend(j) {
+        if (typeof CrComLib === 'undefined') return;
+        CrComLib.publishEvent('b', String(j), true);
+        setTimeout(function () { CrComLib.publishEvent('b', String(j), false); }, 80);
+    }
+    function avConfirmShow(videoJoin) {
+        AV.pending = videoJoin;
+        var b = document.getElementById('audio-confirm-backdrop'), o = document.getElementById('audio-confirm-overlay');
+        if (b) b.style.display = 'block';
+        if (o) o.style.display = 'block';
+    }
+    function avConfirmHide() {
+        var b = document.getElementById('audio-confirm-backdrop'), o = document.getElementById('audio-confirm-overlay');
+        if (b) b.style.display = 'none';
+        if (o) o.style.display = 'none';
+    }
+    document.getElementById('audio-confirm-music').addEventListener('click', function () {
+        var j = AV.pending; avConfirmHide();
+        if (j) { avSend(j); avOpenRemote(j); }          // la vidéo change, la musique reste en audio
+    });
+    document.getElementById('audio-confirm-video').addEventListener('click', function () {
+        var j = AV.pending; avConfirmHide();
+        if (j) { avSend(j); setTimeout(function () { avSend('156'); }, 150); avOpenRemote(j); }
+        else avSend('156');                              // même vidéo : l'audio revient à la source vidéo
+    });
+    document.getElementById('audio-confirm-backdrop').addEventListener('click', avConfirmHide);
+    var avLast = { join: null, ts: 0 };
+    window.avSelect = function (join) {                  // point d'entrée unique des appuis sources
+        join = String(join);
+        var now = Date.now();
+        if (avLast.join === join && now - avLast.ts < 600) return;   // un appui sur <ch5-button> déclenche plusieurs clics
+        avLast = { join: join, ts: now };
+        if (join === '150') { avSend('150'); return; }
+        if (join === '155') {
+            if (!AV.music) { avSend('155'); avOpenRemote('155'); } else avConfirmShow(null);
+            return;
+        }
+        if (VIDEO_JOINS.indexOf(join) < 0) return;
+        if (AV.music) avConfirmShow(join); else { avSend(join); avOpenRemote(join); }
+    };
+    if (typeof CrComLib !== 'undefined') {
+        VIDEO_JOINS.forEach(function (j) {
+            CrComLib.subscribeState('b', j, function (v) {
+                if (v) AV.video = j; else if (AV.video === j) AV.video = null;
+                avRender();
+            });
+        });
+        CrComLib.subscribeState('b', '150', function (v) { if (v) { AV.video = null; AV.music = false; avRender(); } });
+        CrComLib.subscribeState('b', '155', function (v) { AV.music = !!v; avRender(); });
+        CrComLib.subscribeState('b', '200', function (v) { if (v) { AV.video = null; AV.music = false; avRender(); } });
+    }
+
+    var SRC_KEY = { '151': 'appletv', '152': 'skyq', '153': 'swisscom', '154': 'iptv' };
+    function avOpenRemote(join) {
+        var ev = window.event; if (ev && ev.isTrusted === false) return;
+        var kind = SRC_KEY[String(join)];
+        if (kind && typeof window.openSourceControlModal === 'function') window.openSourceControlModal(kind);
+        else if (String(join) === '155' && typeof window.openMediaPlayerModal === 'function') window.openMediaPlayerModal();
+    }
+    // selectSource(id) est appelé par les boutons générés (0 = extinction, 1..4 vidéo, 5 musique)
+    window.selectSource = function (sourceId) { window.avSelect(String(150 + Number(sourceId))); };
+    function avRender() {
+        var audioJoin = AV.music ? '155' : AV.video;
+        [1, 2, 3, 4, 5].forEach(function (id) {
+            var b = document.getElementById('source-btn-' + id); if (!b) return;
+            var j = String(150 + id);
+            var sel = (id === 5) ? (AV.music && !AV.video) : (AV.video === j);
+            b.classList.toggle('selected', sel);
+            b.classList.toggle('audio-active', j === audioJoin);
+            b.classList.toggle('audio-music', j === audioJoin && id === 5);
+        });
+        var off = document.getElementById('power-off-btn-mobile');
+        if (off) off.classList.toggle('selected', !AV.video && !AV.music);
+    }
+    window.avRender = avRender;
+    setInterval(function () { if (AV.video !== null || AV.music) avRender(); }, 700);
+    setTimeout(avRender, 600);
+})();
+</script>
 </body>
 </html>

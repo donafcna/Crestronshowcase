@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <title>Console Villa Crans — Fréquence TV</title>
 <script src="js/webxpanel.js"></script>
+<script defer src="/journal.js"></script>
 <style>
   :root { --bg:#0f1218; --panel:#161920; --border:rgba(255,255,255,.09); --txt:#e2e8f0; --muted:#94a3b8; --accent:#10b981; --blue:#38bdf8; --gold:#c49a45; --red:#ef4444; }
   * { box-sizing: border-box; }
@@ -44,6 +45,26 @@
   .status-dot.on { background:var(--accent); box-shadow:0 0 8px rgba(16,185,129,.6); }
   .hint { color:var(--muted); font-size:.75rem; }
   #dbg-wrap { flex:1; overflow-y:auto; border:1px solid var(--border); border-radius:10px; background:var(--panel); }
+  /* Journal de chantier : à faire / à tester, rapports de test, spécifications */
+  textarea { background:#0a0d12; border:1px solid var(--border); color:var(--txt); padding:9px 12px; border-radius:8px; font-family:inherit; font-size:.85rem; outline:none; resize:vertical; }
+  textarea:focus { border-color:var(--blue); }
+  .jr-form { align-items:flex-end; }
+  .jr-form label { display:flex; flex-direction:column; gap:4px; }
+  .jr-liste { flex:1; overflow-y:auto; border:1px solid var(--border); border-radius:10px; background:var(--panel); }
+  .jr-liste table { table-layout:fixed; }
+  .jr-liste td { vertical-align:top; }
+  .jr-prio, .jr-res { font-size:.72rem; font-weight:700; padding:2px 8px; border-radius:999px; white-space:nowrap; }
+  .jr-prio-haute, .jr-res-ko { background:rgba(239,68,68,.14); color:#fca5a5; }
+  .jr-prio-moyenne, .jr-res-partiel { background:rgba(196,154,69,.14); color:var(--gold); }
+  .jr-prio-basse { background:rgba(148,163,184,.14); color:var(--muted); }
+  .jr-res-ok { background:rgba(16,185,129,.14); color:var(--accent); }
+  .jr-init { font-family:'Cascadia Mono','Consolas',monospace; font-weight:700; color:var(--blue); }
+  .jr-spec { padding:12px 14px; border-bottom:1px solid rgba(255,255,255,.05); }
+  .jr-spec:last-child { border-bottom:none; }
+  .jr-spec-tete { display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:6px; }
+  .jr-spec-tete .hint { margin-right:auto; }
+  .jr-spec-corps { white-space:pre-wrap; font-size:.85rem; color:#cbd5e1; }
+  .jr-zone { width:100%; }
 </style>
 </head>
 <body>
@@ -54,10 +75,56 @@
     <button id="tab-dbg" class="active" onclick="showTab('dbg')">🔍 Debugger</button>
     <button id="tab-term" onclick="showTab('term')">💻 Terminal</button>
     <button id="tab-deploy" onclick="showTab('deploy')">🚀 Déploiement</button>
+    <button id="tab-todo" onclick="showTab('todo')">📋 À faire / À tester</button>
+    <button id="tab-tests" onclick="showTab('tests')">🧪 Rapport de test</button>
+    <button id="tab-specs" onclick="showTab('specs')">📐 Spécification</button>
     <button onclick="window.open('/objectifs.html', '_blank')">🎯 Objectifs</button>
   </nav>
 </header>
 <main>
+
+
+  <!-- ONGLET À FAIRE / À TESTER -->
+  <section id="sec-todo">
+    <div class="row jr-form">
+      <input id="jr-todo-titre" placeholder="Point à faire ou à tester" style="flex:1; min-width:240px">
+      <input id="jr-todo-categorie" placeholder="Catégorie (Éclairage, Stores…)" style="width:210px">
+      <select id="jr-todo-priorite"><option value="haute">Priorité haute</option><option value="moyenne">Priorité moyenne</option><option value="basse">Priorité basse</option></select>
+      <select id="jr-todo-statut"><option value="a-faire">À faire</option><option value="a-tester">À tester</option><option value="teste">Testé</option><option value="bloque">Bloqué</option></select>
+      <input id="jr-todo-auteur" placeholder="Init." maxlength="12" style="width:80px" title="Vos initiales">
+      <button class="btn primary" id="jr-todo-ajouter">+ Ajouter</button>
+    </div>
+    <div class="row"><textarea id="jr-todo-detail" rows="2" placeholder="Détail, condition de test, référence de plan… (facultatif)" style="flex:1"></textarea></div>
+    <div class="row" id="jr-filtres-todo"></div>
+    <div id="jr-liste-todo" class="jr-liste"></div>
+    <span class="hint" id="jr-msg-todo"></span>
+  </section>
+
+  <!-- ONGLET RAPPORT DE TEST -->
+  <section id="sec-tests">
+    <div class="row jr-form">
+      <label class="hint">Date du test<input type="date" id="jr-tests-date"></label>
+      <label class="hint">Initiales du testeur<input id="jr-tests-initiales" maxlength="12" placeholder="DP" style="width:100px"></label>
+      <input id="jr-tests-perimetre" placeholder="Ce qui a été testé (pièce, module, scénario)" style="flex:1; min-width:260px">
+      <select id="jr-tests-resultat"><option value="ok">Conforme</option><option value="partiel">Réserve</option><option value="ko">Non conforme</option></select>
+      <button class="btn primary" id="jr-tests-ajouter">+ Consigner</button>
+    </div>
+    <div class="row"><textarea id="jr-tests-observations" rows="2" placeholder="Observations, réserves, numéro de version testée… (facultatif)" style="flex:1"></textarea></div>
+    <div id="jr-liste-tests" class="jr-liste"></div>
+    <span class="hint" id="jr-msg-tests">La date et les initiales signent la ligne : elles ne sont plus modifiables ensuite.</span>
+  </section>
+
+  <!-- ONGLET SPÉCIFICATION -->
+  <section id="sec-specs">
+    <div class="row jr-form">
+      <input id="jr-specs-titre" placeholder="Titre de la spécification" style="flex:1; min-width:260px">
+      <input id="jr-specs-auteur" maxlength="12" placeholder="Auteur" style="width:110px">
+      <button class="btn primary" id="jr-specs-ajouter">+ Enregistrer</button>
+    </div>
+    <div class="row"><textarea id="jr-specs-corps" rows="4" placeholder="Texte de la spécification…" style="flex:1"></textarea></div>
+    <div id="jr-liste-specs" class="jr-liste"></div>
+    <span class="hint" id="jr-msg-specs">Chaque entrée est horodatée et signée ; une révision conserve l'horodatage d'origine.</span>
+  </section>
 
   <!-- ONGLET DÉPLOIEMENT -->
   <section id="sec-deploy">
@@ -151,11 +218,13 @@
 
 <script>
 function showTab(name) {
-  ['deploy','term','dbg'].forEach(t => {
+  ['deploy','term','dbg','todo','tests','specs'].forEach(t => {
     document.getElementById('tab-' + t).classList.toggle('active', t === name);
     document.getElementById('sec-' + t).classList.toggle('active', t === name);
   });
   if (name === 'term') document.getElementById('term-input').focus();
+  // Relecture du fichier à chaque ouverture : un collègue a pu écrire entre-temps.
+  if (['todo','tests','specs'].indexOf(name) >= 0 && window.Journal) Journal.ouvrir(name);
 }
 
 fetch('/api/devices').then(r => r.json()).then(d => {

@@ -13,6 +13,102 @@ const ROOT = path.join(__dirname, '..');
 const SECRETS_FILE = path.join(ROOT, 'deploy.secrets.psd1');
 const PORT = 8090;
 
+// --- Journal de chantier : à faire / à tester, rapports de test, spécifications ---
+// Un fichier JSON par espace, versionné avec le code. Le dépôt plutôt que le
+// navigateur, délibérément : un rapport signé doit suivre le projet, et Git en
+// garde l'historique sans qu'on ait à s'en occuper.
+const JOURNAL_DIR = path.join(ROOT, 'journal');
+const JOURNAL_TYPES = ['todo', 'tests', 'specs'];
+
+function journalFile(type) { return path.join(JOURNAL_DIR, type + '.json'); }
+
+function lireJournal(type) {
+  try {
+    const o = JSON.parse(fs.readFileSync(journalFile(type), 'utf8'));
+    return Array.isArray(o.items) ? o.items : [];
+  } catch (e) {
+    return [];   // fichier absent au premier passage : liste vide, pas une erreur
+  }
+}
+
+function ecrireJournal(type, items) {
+  fs.mkdirSync(JOURNAL_DIR, { recursive: true });
+  // Écriture en deux temps : fichier temporaire puis renommage. Une coupure au
+  // milieu laisse alors l'ancien fichier intact, plutôt qu'un JSON tronqué que
+  // plus personne ne saurait relire.
+  const cible = journalFile(type);
+  const tmp = cible + '.tmp';
+  fs.writeFileSync(tmp, JSON.stringify({ items }, null, 2) + '\n', 'utf8');
+  fs.renameSync(tmp, cible);
+}
+
+const texte = (v, max) => String(v == null ? '' : v).trim().slice(0, max || 500);
+const nouvelId = () => Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 8);
+
+// Ce que chaque espace accepte. Le serveur ne recopie que ces champs : la page
+// est modifiable par qui l'ouvre, la forme des données se décide ici.
+const CHAMPS = {
+  todo: it => ({
+    titre: texte(it.titre, 300),
+    detail: texte(it.detail, 4000),
+    categorie: texte(it.categorie, 60),
+    priorite: ['haute', 'moyenne', 'basse'].indexOf(it.priorite) >= 0 ? it.priorite : 'moyenne',
+    statut: ['a-faire', 'a-tester', 'teste', 'bloque'].indexOf(it.statut) >= 0 ? it.statut : 'a-faire',
+    auteur: texte(it.auteur, 12).toUpperCase()
+  }),
+  tests: it => ({
+    date: /^\d{4}-\d{2}-\d{2}$/.test(it.date) ? it.date : new Date().toISOString().slice(0, 10),
+    initiales: texte(it.initiales, 12).toUpperCase(),
+    perimetre: texte(it.perimetre, 300),
+    resultat: ['ok', 'partiel', 'ko'].indexOf(it.resultat) >= 0 ? it.resultat : 'ok',
+    observations: texte(it.observations, 4000)
+  }),
+  specs: it => ({
+    titre: texte(it.titre, 300),
+    corps: texte(it.corps, 20000),
+    auteur: texte(it.auteur, 12).toUpperCase()
+  })
+};
+
+// Champs qu'une modification a le droit de toucher. L'auteur et la date de
+// création n'en font pas partie : une signature qu'on peut réécrire ne signe rien.
+const MODIFIABLES = {
+  todo: ['titre', 'detail', 'categorie', 'priorite', 'statut'],
+  tests: ['date', 'perimetre', 'resultat', 'observations'],
+  specs: ['titre', 'corps']
+};
+
+function appliquerAction(type, action, item) {
+  const items = lireJournal(type);
+  const maintenant = new Date().toISOString();
+  item = item || {};
+
+  if (action === 'add') {
+    const entree = CHAMPS[type](item);
+    if (!entree.titre && !entree.perimetre) throw new Error('Entrée vide');
+    entree.id = nouvelId();
+    entree.cree_le = maintenant;
+    entree.maj_le = maintenant;
+    items.push(entree);
+  } else if (action === 'update') {
+    const i = items.findIndex(x => x.id === item.id);
+    if (i < 0) throw new Error('Entrée introuvable');
+    const propre = CHAMPS[type](Object.assign({}, items[i], item));
+    MODIFIABLES[type].forEach(c => { if (item[c] !== undefined) items[i][c] = propre[c]; });
+    items[i].maj_le = maintenant;
+    if (item.maj_par !== undefined) items[i].maj_par = texte(item.maj_par, 12).toUpperCase();
+  } else if (action === 'delete') {
+    const i = items.findIndex(x => x.id === item.id);
+    if (i < 0) throw new Error('Entrée introuvable');
+    items.splice(i, 1);
+  } else {
+    throw new Error('Action inconnue');
+  }
+
+  ecrireJournal(type, items);
+  return items;
+}
+
 // --- Lecture des identifiants (deploy.secrets.psd1) ---
 // Les mots de passe restent côté serveur : jamais envoyés au navigateur.
 function parseSecrets() {
@@ -132,6 +228,13 @@ const server = http.createServer((req, res) => {
 
   if (req.method === 'GET') {
     if (url === '/' || url === '/console.html') return serveFile(res, path.join(__dirname, 'console.html'));
+    if (url === '/journal.js') return serveFile(res, path.join(__dirname, 'journal.js'));
+    if (url.startsWith('/api/journal/')) {
+      const type = url.slice('/api/journal/'.length);
+      if (JOURNAL_TYPES.indexOf(type) < 0) { res.writeHead(404); return res.end('Espace inconnu'); }
+      res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' });
+      return res.end(JSON.stringify({ items: lireJournal(type) }));
+    }
     if (url === '/objectifs.html' || url === '/objectifs') return serveFile(res, path.join(__dirname, 'objectifs.html'));
     if (url === '/js/webxpanel.js') return serveFile(res, path.join(ROOT, 'src', 'js', 'webxpanel.js'));
     if (url === '/js/ch5-components.js') return serveFile(res, path.join(ROOT, 'src', 'js', 'ch5-components.js'));
@@ -163,6 +266,21 @@ const server = http.createServer((req, res) => {
         res.writeHead(200, { 'Content-Type': 'text/plain; charset=utf-8' });
         res.end(body.raw ? out : cleanConsoleOutput(out, command));
       });
+    });
+  }
+
+  if (req.method === 'POST' && url.startsWith('/api/journal/')) {
+    const type = url.slice('/api/journal/'.length);
+    if (JOURNAL_TYPES.indexOf(type) < 0) { res.writeHead(404); return res.end('Espace inconnu'); }
+    return readBody(req, body => {
+      try {
+        const items = appliquerAction(type, body.action, body.item);
+        res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+        res.end(JSON.stringify({ items }));
+      } catch (e) {
+        res.writeHead(400, { 'Content-Type': 'text/plain; charset=utf-8' });
+        res.end(e.message);
+      }
     });
   }
 

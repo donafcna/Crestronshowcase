@@ -1,0 +1,142 @@
+{
+  "genere": "2026-09-06T15:54:04.298Z",
+  "base": "https://192.168.1.200/villaftv/index.html",
+  "ipidBase": "0x10",
+  "pieces": [
+    {
+      "id": 1,
+      "nom": "Salle de Jeux",
+      "icone": "🎮",
+      "ipId": "0x11",
+      "url": "https://192.168.1.200/villaftv/index.html?ipId=0x11&room=1",
+      "png": "01_salle_de_jeux.png",
+      "svg": "01_salle_de_jeux.svg"
+    },
+    {
+      "id": 2,
+      "nom": "Chambre Maman",
+      "icone": "🛏️",
+      "ipId": "0x12",
+      "url": "https://192.168.1.200/villaftv/index.html?ipId=0x12&room=2",
+      "png": "02_chambre_maman.png",
+      "svg": "02_chambre_maman.svg"
+    },
+    {
+      "id": 3,
+      "nom": "Chambre Papa",
+      "icone": "🛏️",
+      "ipId": "0x13",
+      "url": "https://192.168.1.200/villaftv/index.html?ipId=0x13&room=3",
+      "png": "03_chambre_papa.png",
+      "svg": "03_chambre_papa.svg"
+    },
+    {
+      "id": 4,
+      "nom": "Suite amis",
+      "icone": "🚪",
+      "ipId": "0x14",
+      "url": "https://192.168.1.200/villaftv/index.html?ipId=0x14&room=4",
+      "png": "04_suite_amis.png",
+      "svg": "04_suite_amis.svg"
+    },
+    {
+      "id": 5,
+      "nom": "Chambre Amis",
+      "icone": "🛏️",
+      "ipId": "0x15",
+      "url": "https://192.168.1.200/villaftv/index.html?ipId=0x15&room=5",
+      "png": "05_chambre_amis.png",
+      "svg": "05_chambre_amis.svg"
+    },
+    {
+      "id": 6,
+      "nom": "Chambre 2",
+      "icone": "🛏️",
+      "ipId": "0x16",
+      "url": "https://192.168.1.200/villaftv/index.html?ipId=0x16&room=6",
+      "png": "06_chambre_2.png",
+      "svg": "06_chambre_2.svg"
+    },
+    {
+      "id": 7,
+      "nom": "Bureau",
+      "icone": "💼",
+      "ipId": "0x17",
+      "url": "https://192.168.1.200/villaftv/index.html?ipId=0x17&room=7",
+      "png": "07_bureau.png",
+      "svg": "07_bureau.svg"
+    },
+    {
+      "id": 8,
+      "nom": "Home Cinéma",
+      "icone": "🎬",
+      "ipId": "0x18",
+      "url": "https://192.168.1.200/villaftv/index.html?ipId=0x18&room=8",
+      "png": "08_home_cinema.png",
+      "svg": "08_home_cinema.svg"
+    },
+    {
+      "id": 9,
+      "nom": "Chambre 3",
+      "icone": "🛏️",
+      "ipId": "0x19",
+      "url": "https://192.168.1.200/villaftv/index.html?ipId=0x19&room=9",
+      "png": "09_chambre_3.png",
+      "svg": "09_chambre_3.svg"
+    },
+    {
+      "id": 10,
+      "nom": "Suite Invités",
+      "icone": "🚪",
+      "ipId": "0x1A",
+      "url": "https://192.168.1.200/villaftv/index.html?ipId=0x1A&room=10",
+      "png": "10_suite_invites.png",
+      "svg": "10_suite_invites.svg"
+    },
+    {
+      "id": 11,
+      "nom": "Terrasse & Jardin",
+      "icone": "🌿",
+      "ipId": "0x1B",
+      "url": "https://192.168.1.200/villaftv/index.html?ipId=0x1B&room=11",
+      "png": "11_terrasse_et_jardin.png",
+      "svg": "11_terrasse_et_jardin.svg"
+    },
+    {
+      "id": 12,
+      "nom": "Piscine & Spa",
+      "icone": "🏊",
+      "ipId": "0x1C",
+      "url": "https://192.168.1.200/villaftv/index.html?ipId=0x1C&room=12",
+      "png": "12_piscine_et_spa.png",
+      "svg": "12_piscine_et_spa.svg"
+    },
+    {
+      "id": 13,
+      "nom": "Sauna & Hammam",
+      "icone": "🧖",
+      "ipId": "0x1D",
+      "url": "https://192.168.1.200/villaftv/index.html?ipId=0x1D&room=13",
+      "png": "13_sauna_et_hammam.png",
+      "svg": "13_sauna_et_hammam.svg"
+    },
+    {
+      "id": 14,
+      "nom": "Pool House",
+      "icone": "🏖️",
+      "ipId": "0x1E",
+      "url": "https://192.168.1.200/villaftv/index.html?ipId=0x1E&room=14",
+      "png": "14_pool_house.png",
+      "svg": "14_pool_house.svg"
+    },
+    {
+      "id": 15,
+      "nom": "Garage & Ateliers",
+      "icone": "🚗",
+      "ipId": "0x1F",
+      "url": "https://192.168.1.200/villaftv/index.html?ipId=0x1F&room=15",
+      "png": "15_garage_et_ateliers.png",
+      "svg": "15_garage_et_ateliers.svg"
+    }
+  ]
+}

@@ -5,6 +5,7 @@
     "@crestron/ch5-webxpanel": "^2.8.0"
   },
   "devDependencies": {
-    "@crestron/ch5-utilities-cli": "^99.0.506"
+    "@crestron/ch5-utilities-cli": "^99.0.506",
+    "qrcode": "^1.5.4"
   }
 }
