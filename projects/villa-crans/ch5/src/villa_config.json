@@ -2,10 +2,10 @@
   "meta": {
     "projet": "Villa Crans",
     "integrateur": "Fréquence TV",
-    "version": "1.0.0",
+    "version": "1.0.168",
     "mode": "deploiement",
     "modeDescription": "'deploiement' = GUI livré chez le client : les feedbacks viennent du CP4 (C# slot 1 + SIMPL slot 2) via js/webxpanel.js / CrComLib, aucune simulation. 'showcase' = copie pour le site crestrongui.vercel.app : posé UNIQUEMENT par scripts/sync-villa-crans.py du dépôt Crestronshowcase, feedbacks simulés dans le navigateur (js/local-feedback.js), curseur de démo géré par le site (jamais par le GUI). Ne jamais mettre 'showcase' ici. Voir docs/08_WORKFLOW_SHOWCASE.md.",
-    "dateModification": "2026-09-09",
+    "dateModification": "2026-09-11",
     "langueReference": "fr",
     "languesDisponibles": [
       "fr",
@@ -1746,7 +1746,13 @@
     }
   },
   "contrat": {
-    "version": 2,
+    "version": 3,
+    "alarme": {
+      "description": "Centrale d'alarme de la villa. Le code de reference n'est plus code en dur ni dans le JavaScript du panel ni dans le C# : le GUI envoie la saisie sur le serial 43, le C# la relaie telle quelle a l'EISC du slot 2 (serial 43) et attend le verdict de la vraie centrale (digital 44 = accepte, 45 = refuse). Si le slot 2 ne repond pas dans le delai ci-dessous, le C# tranche localement avec codeParDefaut.",
+      "codeParDefaut": "1234",
+      "delaiReponseCentraleMs": 1200,
+      "note": "codeParDefaut n'est qu'un repli de mise en service : a changer sur site, ou a vider (\"\") pour refuser toute validation locale et n'accepter que le verdict de la centrale du slot 2."
+    },
     "notes": [
       "CONTRAT v2 (22.08.2026) : Piece.Select etendu a 30 pieces (digitaux 11-40). Decalages : Eclairage.Scene 21-24 -> 51-54, AV.Mute 53 -> 55, CVC.ConsignePlus 35 -> 49, CVC.ConsigneMoins 36 -> 50, Meteo.EasterEgg 37 -> 56.",
       "Contrat de joins unifié Villa Crans, structuré en deux familles :",
@@ -1759,7 +1765,10 @@
       "CONFLIT HISTORIQUE RÉSOLU : les joins 201/202 étaient partagés entre lecteur média (mute/volume) et scènes de stores.",
       "Le lecteur média utilise désormais 55 (mute) et 52 (volume) ; 201-204 restent les scènes de stores.",
       "TÉLÉCOMMANDES SOURCES (09.09.2026) : blocs digitaux momentanés AV.Telecommande.* — Apple TV 211-220 (inchangé), Sky Q 500-527, IPTV 530-557, Swisscom TV 560-600. À router côté C# vers les drivers IR/IP ; les joins historiques 221-250 des télécommandes ne sont plus émis (250 = Config.Resync).",
-      "AUDIO / VIDÉO (09.09.2026, v1.0.166) : les 4 sources vidéo 151-154 sont en interlock (150 = OFF) ; 155 = musique sur les haut-parleurs (la vidéo reste) ; 156 = l'audio revient à la vidéo ; analogique 53 = source audio. Blocs pièces : +51..+55 vidéo, +56 musique, +57 audio=vidéo, analogique +53 source audio. Le GUI n'émet plus 50 (Power OFF) ni 201 (mute) ; le C# traite le 200 (extinction A/V)."
+      "AUDIO / VIDÉO (09.09.2026, v1.0.166) : les 4 sources vidéo 151-154 sont en interlock (150 = OFF) ; 155 = musique sur les haut-parleurs (la vidéo reste) ; 156 = l'audio revient à la vidéo ; analogique 53 = source audio. Blocs pièces : +51..+55 vidéo, +56 musique, +57 audio=vidéo, analogique +53 source audio. Le GUI n'émet plus 50 (Power OFF) ni 201 (mute) ; le C# traite le 200 (extinction A/V).",
+      "CONTRAT v3 (11.09.2026) : les joins de PILOTAGE ne sont plus partages entre pieces. Chaque piece dispose cote GUI du meme bloc de 100 joins que cote EISC (base = 1000 + (pieceId-1)*100). Les joins logiques du HTML sont traduits a l'execution par la couche VillaJoins (bloc <script id=\"villa-joins\">). Restent globaux : selection de piece, alarme (partitions 301-312 et centrale 41-48), presets globaux 401-411/420, telecommandes de sources, signaux systeme et transport de configuration, materiel de la dalle. Voir contrat.blocsPiecesGui.",
+      "CONTRAT v3 : joins GUI ajoutes au contrat car utilises par l'interface sans etre declares en v2 : digital 200 (extinction A/V), digital 251-253 (transport du lecteur media), analog 254 (volume du lecteur media), serial 100 (console navigateur), serial 43 + digital 44-46 (pave de code d'alarme, qui n'envoyait rien en v2).",
+      "CONTRAT v3 : le transport du lecteur media suit le cablage reel des boutons (251 lecture/pause, 252 suivant, 253 precedent) et non l'ordre suppose en v2."
     ],
     "eisc": {
       "actif": true,
@@ -2212,6 +2221,74 @@
         "direction": "sortie",
         "eiscJoin": 53,
         "description": "Source audio des haut-parleurs : 0 = off, 1..4 = audio de la source vidéo, 5 = musique (v1.0.166)."
+      },
+      {
+        "contractName": "AV.Extinction",
+        "type": "digital",
+        "join": 200,
+        "direction": "bidirectionnel",
+        "description": "Extinction complete de l'A/V de la piece active (ex-join 50 Power OFF). Join logique, traduit en base+45 par piece.",
+        "portee": "par piece",
+        "note": "Join LOGIQUE : ne transite jamais tel quel sur l EISC, il est traduit en base+offset (voir blocsPieces)."
+      },
+      {
+        "contractName": "Media.Transport",
+        "type": "digital",
+        "joinDebut": 251,
+        "nombre": 3,
+        "direction": "entree",
+        "description": "Lecteur media : 251 lecture/pause, 252 suivant, 253 precedent (ordre reel des boutons du GUI). Joins logiques, traduits en base+58/+59/+60 par piece.",
+        "portee": "par piece",
+        "note": "Join LOGIQUE : ne transite jamais tel quel sur l EISC, il est traduit en base+offset (voir blocsPieces)."
+      },
+      {
+        "contractName": "Media.Volume",
+        "type": "analog",
+        "join": 254,
+        "direction": "bidirectionnel",
+        "description": "Volume du lecteur media (0..65535). Join logique, traduit en base+54 par piece.",
+        "portee": "par piece",
+        "note": "Join LOGIQUE : ne transite jamais tel quel sur l EISC, il est traduit en base+offset (voir blocsPieces)."
+      },
+      {
+        "contractName": "Systeme.ConsoleNavigateur",
+        "type": "serial",
+        "join": 100,
+        "direction": "sortie",
+        "eiscJoin": 100,
+        "description": "Redirection des messages console du navigateur CH5 vers le CP4 (250 caracteres max)."
+      },
+      {
+        "contractName": "Alarme.CodeSaisi",
+        "type": "serial",
+        "join": 43,
+        "direction": "entree",
+        "eiscJoin": 43,
+        "description": "Code saisi sur le pave numerique du GUI, envoye a la centrale pour validation. Le GUI ne valide plus le code lui-meme."
+      },
+      {
+        "contractName": "Alarme.CodeValide",
+        "type": "digital",
+        "join": 44,
+        "direction": "sortie",
+        "eiscJoin": 44,
+        "description": "Feedback centrale : code accepte (impulsion)."
+      },
+      {
+        "contractName": "Alarme.CodeRefuse",
+        "type": "digital",
+        "join": 45,
+        "direction": "sortie",
+        "eiscJoin": 45,
+        "description": "Feedback centrale : code refuse (impulsion)."
+      },
+      {
+        "contractName": "Alarme.CodeEfface",
+        "type": "digital",
+        "join": 46,
+        "direction": "entree",
+        "eiscJoin": 46,
+        "description": "Appui sur la touche C du pave : efface la saisie en cours."
       }
     ],
     "blocsPieces": {
@@ -2224,8 +2301,8 @@
           "type": "digital",
           "offsetDebut": 1,
           "nombre": 9,
-          "direction": "sortie",
-          "description": "Echo par piece des commandes groupees de la dalle : Volets Up/Stop/Down (+1/+2/+3), Rideaux (+4/+5/+6), Stores (+7/+8/+9)"
+          "direction": "bidirectionnel",
+          "description": "Commandes groupees (v3 : ecrites directement par le GUI de la piece) : Volets Up/Stop/Down (+1/+2/+3), Rideaux (+4/+5/+6), Stores (+7/+8/+9)"
         },
         {
           "contractName": "Piece.<id>.Eclairage.Scene",
@@ -2270,15 +2347,15 @@
           "offsetDebut": 51,
           "nombre": 6,
           "direction": "bidirectionnel",
-          "description": "Sélection source 0..5 (51 = OFF, équiv. joins GUI 150-155)"
+          "description": "Selection source 0..5 (+51 = OFF, +52..+55 = sources video 1..4, +56 = musique sur les haut-parleurs). Joins logiques GUI 150-155."
         },
         {
           "contractName": "Piece.<id>.Moteur.Commande",
           "type": "digital",
           "offsetDebut": 61,
           "nombre": 18,
-          "direction": "sortie",
-          "description": "Moteurs 1..6, triplets Monter/Stop/Descendre (écho des appuis GUI, équiv. joins 81-98)"
+          "direction": "bidirectionnel",
+          "description": "Moteurs 1..6, triplets Monter/Stop/Descendre (v3 : ecrits directement par le GUI de la piece, joins logiques 81-98)"
         },
         {
           "contractName": "Piece.<id>.Alarme.Partition",
@@ -2351,8 +2428,180 @@
           "offset": 10,
           "direction": "sortie",
           "description": "Nom de la pièce (langue de référence)"
+        },
+        {
+          "contractName": "Piece.<id>.AV.Audio.SuivreVideo",
+          "type": "digital",
+          "offset": 57,
+          "direction": "bidirectionnel",
+          "description": "L'audio des haut-parleurs revient a la source video (join logique GUI 156)."
+        },
+        {
+          "contractName": "Piece.<id>.AV.Extinction",
+          "type": "digital",
+          "offset": 45,
+          "direction": "bidirectionnel",
+          "description": "Extinction complete de l'A/V de la piece (join logique GUI 200)."
+        },
+        {
+          "contractName": "Piece.<id>.Media.Transport",
+          "type": "digital",
+          "offsetDebut": 58,
+          "nombre": 3,
+          "direction": "entree",
+          "description": "Lecteur media : +58 lecture/pause (join logique 251), +59 suivant (252), +60 precedent (253). Ordre aligne sur le cablage reel des boutons du GUI."
+        },
+        {
+          "contractName": "Piece.<id>.AV.SourceAudio",
+          "type": "analog",
+          "offset": 53,
+          "direction": "bidirectionnel",
+          "description": "Source audio des haut-parleurs : 0 = off, 1..4 = audio de la source video, 5 = musique (join logique GUI 53)."
+        },
+        {
+          "contractName": "Piece.<id>.Media.Volume",
+          "type": "analog",
+          "offset": 54,
+          "direction": "bidirectionnel",
+          "description": "Volume du lecteur media 0..65535 (join logique GUI 254)."
         }
       ]
+    },
+    "blocsPiecesGui": {
+      "actif": true,
+      "description": "Depuis le contrat v3 (11.09.2026) chaque piece expose son PROPRE bloc de joins cote GUI, identique au bloc EISC : base = 1000 + (pieceId - 1) * 100. Aucun join de pilotage n'est partage d'une piece a l'autre. Les numeros ci-dessous (cles du mapping) sont les joins LOGIQUES historiques utilises dans le HTML ; la couche VillaJoins les traduit a l'execution en joins PHYSIQUES base + offset selon la piece affichee par CE panel.",
+      "baseFormule": "1000 + (pieceId - 1) * 100",
+      "tailleBloc": 100,
+      "pieceMax": 30,
+      "joinMaxTheorique": 3998,
+      "appliqueEn": [
+        "deploiement"
+      ],
+      "note": "En mode showcase le mapping est inactif : le site vitrine n'a qu'un seul panel virtuel, les joins logiques sont utilises tels quels par js/local-feedback.js.",
+      "exceptionsGlobales": [
+        {
+          "plage": "digital 11-40",
+          "nom": "Piece.Select",
+          "raison": "selection de la piece : par nature globale"
+        },
+        {
+          "plage": "analog 10",
+          "nom": "Piece.Active",
+          "raison": "piece affichee par le panel : par nature globale. ATTENTION : le seriel 10 (Piece.Nom) n'est PAS une exception, il est traduit en base+10 et chaque panel lit le nom de SA piece."
+        },
+        {
+          "plage": "digital 301-312",
+          "nom": "Alarme.Partition",
+          "raison": "EXCEPTION DEMANDEE : les etats des partitions d'alarme 1..4 sont communs a toute la villa"
+        },
+        {
+          "plage": "digital 401-411 + serial 420",
+          "nom": "Global.* / Presets.Sauvegarde",
+          "raison": "EXCEPTION DEMANDEE : les presets globaux sont communs a toute la villa"
+        },
+        {
+          "plage": "digital 41-48",
+          "nom": "Alarme.General / Alarme.Code",
+          "raison": "la centrale d'alarme est unique pour la villa"
+        },
+        {
+          "plage": "digital 211-220 / 500-527 / 530-557 / 560-600",
+          "nom": "AV.Telecommande.*",
+          "raison": "une commande de telecommande vise l'APPAREIL SOURCE (Apple TV, Sky Q, box IPTV, Swisscom), pas la piece : dupliquer par piece n'aurait pas de sens et couterait 15 x 130 joins"
+        },
+        {
+          "plage": "serial 99-106, digital/analog 250",
+          "nom": "Systeme.* / Config.*",
+          "raison": "signaux systeme et transport de configuration"
+        },
+        {
+          "plage": "analog 240 / analog 260 / digital 261",
+          "nom": "Systeme.*Dalle",
+          "raison": "materiel propre a la dalle TSW principale"
+        },
+        {
+          "plage": "digital 56",
+          "nom": "Meteo.EasterEgg",
+          "raison": "widget global"
+        }
+      ],
+      "mapping": {
+        "digital": {
+          "61": 1,
+          "62": 2,
+          "63": 3,
+          "64": 4,
+          "65": 5,
+          "66": 6,
+          "67": 7,
+          "68": 8,
+          "69": 9,
+          "51": 21,
+          "52": 22,
+          "53": 23,
+          "54": 24,
+          "49": 35,
+          "50": 36,
+          "201": 41,
+          "202": 42,
+          "203": 43,
+          "204": 44,
+          "200": 45,
+          "55": 50,
+          "150": 51,
+          "151": 52,
+          "152": 53,
+          "153": 54,
+          "154": 55,
+          "155": 56,
+          "156": 57,
+          "251": 58,
+          "252": 59,
+          "253": 60,
+          "81": 61,
+          "82": 62,
+          "83": 63,
+          "84": 64,
+          "85": 65,
+          "86": 66,
+          "87": 67,
+          "88": 68,
+          "89": 69,
+          "90": 70,
+          "91": 71,
+          "92": 72,
+          "93": 73,
+          "94": 74,
+          "95": 75,
+          "96": 76,
+          "97": 77,
+          "98": 78
+        },
+        "analog": {
+          "21": 21,
+          "31": 31,
+          "51": 51,
+          "52": 52,
+          "53": 53,
+          "254": 54,
+          "71": 71,
+          "72": 72,
+          "73": 73,
+          "74": 74,
+          "75": 75,
+          "76": 76,
+          "77": 77,
+          "78": 78,
+          "79": 79,
+          "80": 80
+        },
+        "serial": {
+          "10": 10,
+          "32": 32,
+          "33": 33,
+          "34": 34
+        }
+      }
     }
   },
   "pagesSpeciales": {

@@ -1,1 +1,0 @@
-window.appVersion = 'v1.0.165';

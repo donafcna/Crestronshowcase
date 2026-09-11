@@ -145,6 +145,12 @@ def main() -> None:
     for name in ("version.js", "build_date.json"):
         if (src / name).exists():
             shutil.copy(src / name, DEST / name)
+    # Contrat de joins v3 : la couche de traduction des joins doit suivre les HTML.
+    # En mode showcase elle est inerte (meta.mode != "deploiement") mais le fichier
+    # doit exister, sinon le <script src="js/villa-joins.js"> tombe en 404.
+    if (src / "js" / "villa-joins.js").exists():
+        (DEST / "js").mkdir(parents=True, exist_ok=True)
+        shutil.copy(src / "js" / "villa-joins.js", DEST / "js" / "villa-joins.js")
     strip_admin_monitors_js(src / "config.js", DEST / "config.js")
     cfg_json = json.loads((src / "config.json").read_text(encoding="utf-8"))
     cfg_json.pop("admin_monitors", None)

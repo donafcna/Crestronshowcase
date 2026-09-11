@@ -2020,3 +2020,40 @@ index 6aa0429..ac1c9c8 100644
 +   rester dans l'écran (10/9/2026). */
 +.hotel-geneva-dashboard{zoom:1.35}
 +.desktop-browser-frame .hotel-geneva-dashboard{zoom:1.5}
+diff --git a/src/marketing.css b/src/marketing.css
+index 541bdf4..6f6ac55 100644
+--- a/src/marketing.css
++++ b/src/marketing.css
+@@ -877,3 +877,32 @@ a.sector-card-interactive {
+     right: 12px;
+   }
+ }
++
++/* ---- Bandeau d'accueil : hauteur réduite --------------------------------- */
++/* Les marges intérieures haut/bas du hero étaient trop généreuses (40px) :
++   le bandeau occupait une part inutile du premier écran. */
++.dashboard-hero {
++  padding-top: 22px;
++  padding-bottom: 22px;
++}
++.dashboard-hero .hero-tagline {
++  margin-bottom: 6px;
++}
++.dashboard-hero h1 {
++  margin-bottom: 8px;
++  line-height: 1.1;
++}
++.dashboard-hero p {
++  line-height: 1.5;
++}
++/* Titre sur une seule ligne sur les grands ecrans : le bandeau gagne encore
++   une ligne de hauteur sans rien perdre en lisibilite. */
++.dashboard-hero .hero-text-block {
++  max-width: 900px;
++}
++@media (max-width: 768px) {
++  .dashboard-hero {
++    padding-top: 16px;
++    padding-bottom: 16px;
++  }
++}

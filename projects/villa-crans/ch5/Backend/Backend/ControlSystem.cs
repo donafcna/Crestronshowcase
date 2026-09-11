@@ -20,6 +20,7 @@ namespace VillaFrequenceTvAutomation
         public ushort ActiveVideoSource { get; set; }   // 0 = off, 1..4 = source vidéo (interlock)
         public bool MusicAudio { get; set; }             // true = la musique joue sur les haut-parleurs, la vidéo reste à l'écran (v1.0.166)
         public ushort AudioVolume { get; set; }
+        public ushort MediaVolume { get; set; }         // v3 : volume propre au lecteur média (analogique logique 254 = offset +54)
         public bool IsAudioMuted { get; set; }
         public ushort[] CircuitLevels { get; set; }
         public ushort ActiveStoreScene { get; set; }
@@ -36,6 +37,7 @@ namespace VillaFrequenceTvAutomation
             ActiveVideoSource = 0;
             MusicAudio = false;
             AudioVolume = 25000;
+            MediaVolume = 25000;                        // v3 : lecteur média indépendant du volume A/V
             IsAudioMuted = false;
             CircuitLevels = new ushort[10] { 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768 };
             ActiveStoreScene = 204;
@@ -204,7 +206,34 @@ namespace VillaFrequenceTvAutomation
         private EthernetIntersystemCommunications _eisc = null;
         private const uint RoomBlockBase = 1000;
         private const uint RoomBlockSize = 100;
+        private const int RoomBlockMaxRoom = 30;   // v3 : contrat.blocsPiecesGui.pieceMax (joins 1000..3998)
         private Dictionary<int, bool> _roomEiscEnabled = new Dictionary<int, bool>();
+
+        // v3 : liste blanche du miroir 1:1 vers l'EISC, construite depuis contrat.signauxGlobaux.
+        // Raison : depuis le contrat v3 les panels n'émettent plus les joins de pièce en dessous de
+        // 1000 ; recopier aveuglément tout join < 1000 vers le slot 2 enverrait des signaux qui n'ont
+        // aucun sens global. Si la configuration est absente, on retombe sur le comportement v2
+        // (tout < 1000 est recopié) pour ne jamais couper le pont par accident.
+        private Dictionary<uint, bool> _mirrorDigital = new Dictionary<uint, bool>();
+        private Dictionary<uint, bool> _mirrorAnalog = new Dictionary<uint, bool>();
+        private Dictionary<uint, bool> _mirrorSerial = new Dictionary<uint, bool>();
+        private bool _mirrorWhitelistLoaded = false;
+
+        // v3 : validation du code d'alarme (serial 43 / digitaux 44-46).
+        // Le code de référence n'est codé en dur NI dans le JavaScript du panel NI ici : il est lu
+        // dans contrat.alarme.codeParDefaut. La saisie est d'abord relayée à la vraie centrale via
+        // l'EISC (serial 43) ; le C# ne tranche localement que si le slot 2 n'a pas répondu dans le
+        // délai contrat.alarme.delaiReponseCentraleMs (le GUI, lui, abandonne à 2500 ms).
+        private const uint AlarmCodeEntryJoin = 43;   // serial, entrée
+        private const uint AlarmCodeOkJoin = 44;      // digital, sortie (impulsion)
+        private const uint AlarmCodeKoJoin = 45;      // digital, sortie (impulsion)
+        private const uint AlarmCodeClearJoin = 46;   // digital, entrée
+        private string _alarmReferenceCode = "";
+        private int _alarmPanelReplyMs = 1200;
+        private string _alarmPendingCode = "";
+        private bool _alarmVerdictPending = false;
+        private CTimer _alarmCodeTimer = null;
+        private BasicTriList _alarmCodeRequester = null;   // v3 : panel qui a saisi le code (le verdict ne va qu'à lui)
 
         public ControlSystem() : base()
         {
@@ -256,7 +285,21 @@ namespace VillaFrequenceTvAutomation
                 LoadVillaConfiguration();
 
                 // 1. Initialisation de la base de données des pièces de la Villa
-                BuildVillaRoomsDatabase();
+                // v3 / P1-1 : sous try/catch. Un villa_config.json mal typé (id ou intersystem non
+                // numérique / non booléen) levait ici et remontait au catch global : aucun panel
+                // n'était alors enregistré et le système devenait inutilisable. Le repli historique
+                // garantit désormais un registre exploitable quoi qu'il arrive.
+                try
+                {
+                    BuildVillaRoomsDatabase();
+                }
+                catch (Exception exRooms)
+                {
+                    ErrorLog.Error("CONFIG: Échec de construction du registre des pièces ({0}) - repli sur la liste historique.", exRooms.Message);
+                    _roomsRegistry = null;
+                }
+                if (_roomsRegistry == null || _roomsRegistry.Count == 0)
+                    BuildFallbackRoomsDatabase();
 
                 _touchPanels = new List<BasicTriList>();
 
@@ -334,6 +377,10 @@ namespace VillaFrequenceTvAutomation
                     _activeRoomPerDevice[panel.ID] = defaultRoom;
                     UpdateScreenStateForPanel(panel, defaultRoom);
                 }
+
+                // v3 : premier remplissage des blocs de joins de toutes les pièces (1000 + (id-1)*100),
+                // sur lesquels les panels et le slot 2 s'abonnent désormais pour tout l'état de pièce.
+                PushAllRoomsFeedback();
             }
             catch (Exception ex)
             {
@@ -371,12 +418,111 @@ namespace VillaFrequenceTvAutomation
                 }
                 _configHash = ComputeConfigHash(minified) + "-" + total;
                 CrestronConsole.PrintLine("CONFIG: villa_config.json chargé ({0} caractères, {1} chunks, empreinte {2}).", minified.Length, total, _configHash);
+
+                // v3 : liste blanche du miroir EISC + code d'alarme de référence, tous deux lus
+                // dans le contrat et jamais codés en dur dans le programme.
+                BuildGlobalMirrorWhitelist();
+                LoadAlarmReferenceCode();
             }
             catch (Exception ex)
             {
                 _villaConfig = null;
                 _configChunks.Clear();
                 ErrorLog.Error("CONFIG: Échec de lecture de villa_config.json : {0}", ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// v3 : construit la liste blanche des joins réellement globaux à partir de
+        /// contrat.signauxGlobaux. Seuls ces joins (< 1000) sont encore recopiés 1:1 vers l'EISC ;
+        /// tout le pilotage de pièce passe désormais par les blocs >= 1000.
+        /// </summary>
+        private void BuildGlobalMirrorWhitelist()
+        {
+            _mirrorDigital.Clear();
+            _mirrorAnalog.Clear();
+            _mirrorSerial.Clear();
+            _mirrorWhitelistLoaded = false;
+            try
+            {
+                if (_villaConfig == null || _villaConfig["contrat"] == null) return;
+                var liste = _villaConfig["contrat"]["signauxGlobaux"] as Newtonsoft.Json.Linq.JArray;
+                if (liste == null) return;
+
+                foreach (var sig in liste)
+                {
+                    try
+                    {
+                        string type = sig["type"] != null ? (string)sig["type"] : "";
+                        Dictionary<uint, bool> cible = null;
+                        if (type == "digital") cible = _mirrorDigital;
+                        else if (type == "analog") cible = _mirrorAnalog;
+                        else if (type == "serial") cible = _mirrorSerial;
+                        if (cible == null) continue;
+
+                        uint debut;
+                        int nombre = 1;
+                        if (sig["joinDebut"] != null)
+                        {
+                            debut = (uint)(int)sig["joinDebut"];
+                            if (sig["nombre"] != null) nombre = (int)sig["nombre"];
+                        }
+                        else if (sig["join"] != null)
+                        {
+                            debut = (uint)(int)sig["join"];
+                        }
+                        else continue;
+
+                        for (int i = 0; i < nombre; i++)
+                        {
+                            uint j = debut + (uint)i;
+                            if (j < RoomBlockBase) cible[j] = true;
+                        }
+                    }
+                    catch { /* une entrée mal typée ne doit pas invalider toute la liste */ }
+                }
+
+                _mirrorWhitelistLoaded = (_mirrorDigital.Count + _mirrorAnalog.Count + _mirrorSerial.Count) > 0;
+                CrestronConsole.PrintLine("EISC: Liste blanche du miroir global chargée ({0} digitaux, {1} analogiques, {2} sériels).",
+                    _mirrorDigital.Count, _mirrorAnalog.Count, _mirrorSerial.Count);
+            }
+            catch (Exception ex)
+            {
+                _mirrorWhitelistLoaded = false;
+                ErrorLog.Notice("Notice: EISC: liste blanche du miroir illisible ({0}) - miroir v2 conservé.", ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// v3 : lit le code d'alarme de référence dans contrat.alarme. Choix documenté : la validation
+        /// appartient à la vraie centrale (slot 2), le C# ne garde ce code que comme repli hors ligne.
+        /// Si le champ est absent ou vide, aucune validation locale n'est possible (tout est refusé) :
+        /// mieux vaut un pavé inopérant qu'un code en dur dans le programme.
+        /// </summary>
+        private void LoadAlarmReferenceCode()
+        {
+            try
+            {
+                if (_villaConfig == null || _villaConfig["contrat"] == null) return;
+                var alarme = _villaConfig["contrat"]["alarme"];
+                if (alarme == null)
+                {
+                    ErrorLog.Notice("Notice: ALARME: contrat.alarme absent de villa_config.json - aucune validation locale possible.");
+                    return;
+                }
+                if (alarme["codeParDefaut"] != null) _alarmReferenceCode = ((string)alarme["codeParDefaut"]).Trim();
+                if (alarme["delaiReponseCentraleMs"] != null)
+                {
+                    int delai = (int)alarme["delaiReponseCentraleMs"];
+                    // Le GUI abandonne à 2500 ms : le repli local doit trancher avant.
+                    if (delai >= 200 && delai <= 2200) _alarmPanelReplyMs = delai;
+                }
+                CrestronConsole.PrintLine("ALARME: code de référence {0} (repli local après {1} ms sans réponse du slot 2).",
+                    string.IsNullOrEmpty(_alarmReferenceCode) ? "non configuré" : "chargé depuis la configuration", _alarmPanelReplyMs);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Notice("Notice: ALARME: lecture de contrat.alarme impossible : {0}", ex.Message);
             }
         }
 
@@ -483,15 +629,39 @@ namespace VillaFrequenceTvAutomation
         }
 
         /// <summary>
-        /// Réplique un signal brut d'un panel vers l'EISC du slot 2 (miroir 1:1 du contrat).
+        /// Réplique un signal brut d'un panel vers l'EISC du slot 2.
+        /// v3 : passe-plat intégral au-dessus de 1000 (les blocs GUI par pièce portent les mêmes
+        /// numéros que les blocs EISC), liste blanche contrat.signauxGlobaux en dessous.
         /// </summary>
         private void MirrorSignalToEisc(BasicTriList sourceDevice, SigEventArgs args)
         {
             if (_eisc == null || sourceDevice == _eisc) return;
-            if (args.Sig.Number >= RoomBlockBase) return; // la plage >= 1000 est réservée aux blocs pièces
+            uint joinRaw = args.Sig.Number;
+
+            if (joinRaw >= RoomBlockBase)
+            {
+                // v3 : les blocs GUI par pièce portent exactement les mêmes numéros que les blocs
+                // EISC. Le pont est donc un simple passe-plat : aucun recalcul, aucune corrélation
+                // avec la pièce active. Seul le flag 'intersystem' de la pièce filtre encore.
+                int roomOfJoin = (int)((joinRaw - RoomBlockBase) / RoomBlockSize) + 1;
+                if (roomOfJoin < 1 || roomOfJoin > RoomBlockMaxRoom) return;
+                if (!_roomEiscEnabled.ContainsKey(roomOfJoin) || !_roomEiscEnabled[roomOfJoin]) return;
+            }
+            else if (args.Sig.Type == eSigType.String && joinRaw == AlarmCodeEntryJoin)
+            {
+                // v3 : le code d'alarme est relayé explicitement par ProcessAlarmCodeEntry
+                // (purge du sériel avant écriture), pas par le miroir générique.
+                return;
+            }
+            else if (!IsGlobalMirrorSignal(args.Sig.Type, joinRaw))
+            {
+                // v3 : join < 1000 hors contrat.signauxGlobaux -> plus recopié aveuglément.
+                return;
+            }
+
             try
             {
-                uint join = args.Sig.Number;
+                uint join = joinRaw;
                 switch (args.Sig.Type)
                 {
                     case eSigType.Bool:
@@ -506,6 +676,20 @@ namespace VillaFrequenceTvAutomation
                 }
             }
             catch { /* miroir best-effort : ne doit jamais bloquer le traitement principal */ }
+        }
+
+        /// <summary>
+        /// v3 : vrai si le join (< 1000) figure dans contrat.signauxGlobaux pour ce type de signal.
+        /// Tant que la liste blanche n'a pas pu être chargée, on conserve le comportement v2
+        /// (tout est recopié) : le pont ne doit jamais tomber à cause d'une configuration manquante.
+        /// </summary>
+        private bool IsGlobalMirrorSignal(eSigType type, uint join)
+        {
+            if (!_mirrorWhitelistLoaded) return true;
+            if (type == eSigType.Bool) return _mirrorDigital.ContainsKey(join);
+            if (type == eSigType.UShort) return _mirrorAnalog.ContainsKey(join);
+            if (type == eSigType.String) return _mirrorSerial.ContainsKey(join);
+            return false;
         }
 
         /// <summary>
@@ -546,12 +730,15 @@ namespace VillaFrequenceTvAutomation
                     }
                     UpdateScreenStateForPanel(panel, roomId);
 
+                    // v3 : un panel ne s'abonne qu'aux joins de sa pièce, mais il peut naviguer :
+                    // on republie l'état de TOUTES les pièces sur leurs blocs respectifs à chaque
+                    // arrivée (panel ou slot 2). Opération rare, coût négligeable.
+                    PushAllRoomsFeedback();
+
                     // Publie l'empreinte de la configuration : le panel demandera le transfert
                     // complet (Digital 250) uniquement si son cache diffère.
                     if (panel != _eisc)
                         panel.StringInput[ConfigHashJoin].StringValue = _configHash;
-                    else
-                        MirrorAllRoomsToEisc(); // slot 2 en ligne : pousser l'état de toutes les pièces exposées
 
                     // Informe le nouvel arrivant de la pièce affichée par la dalle principale
                     panel.UShortInput[TswRoomBroadcastJoin].UShortValue = _tswActiveRoom;
@@ -565,54 +752,66 @@ namespace VillaFrequenceTvAutomation
 
         // --- MÉTHODES DE RETOUR D'ÉTATS (FEEDBACK) PAR PIÈCE ---
 
-        private void SendFeedbackBoolToRoom(int roomId, uint joinNumber, bool value)
-        {
-            foreach (var panel in _touchPanels)
-            {
-                if (_activeRoomPerDevice.ContainsKey(panel.ID) && _activeRoomPerDevice[panel.ID] == roomId)
-                    panel.BooleanInput[joinNumber].BoolValue = value;
-            }
-            MirrorRoomStateToEisc(roomId);
-        }
+        // v3 : les feedbacks de pièce ne dépendent plus du panel qui regarde. Toute l'information
+        // d'une pièce est écrite sur SON bloc (RoomBlockStart(roomId) + offset) pour tous les
+        // périphériques : un panel ne s'abonne qu'aux joins de la pièce qu'il affiche.
+        // Les anciennes méthodes SendFeedbackBool/UShort/StringToRoom, qui ciblaient les panels
+        // « dont la pièce active correspond », ont disparu : elles étaient la cause du bug de
+        // conception (deux supports sur deux pièces écrasaient les mêmes joins).
 
-        private void SendFeedbackUShortToRoom(int roomId, uint joinNumber, ushort value)
-        {
-            foreach (var panel in _touchPanels)
-            {
-                if (_activeRoomPerDevice.ContainsKey(panel.ID) && _activeRoomPerDevice[panel.ID] == roomId)
-                    panel.UShortInput[joinNumber].UShortValue = value;
-            }
-            MirrorRoomStateToEisc(roomId);
-        }
-
-        private void SendFeedbackStringToRoom(int roomId, uint joinNumber, string value)
-        {
-            foreach (var panel in _touchPanels)
-            {
-                if (_activeRoomPerDevice.ContainsKey(panel.ID) && _activeRoomPerDevice[panel.ID] == roomId)
-                    panel.StringInput[joinNumber].StringValue = value;
-            }
-            MirrorRoomStateToEisc(roomId);
-        }
-
-        private void BroadcastFeedbackToRoom(int roomId)
-        {
-            foreach (var panel in _touchPanels)
-            {
-                if (_activeRoomPerDevice.ContainsKey(panel.ID) && _activeRoomPerDevice[panel.ID] == roomId)
-                    UpdateScreenStateForPanel(panel, roomId);
-            }
-            MirrorRoomStateToEisc(roomId);
-        }
+        // v3 : BroadcastFeedbackToRoom a disparu, remplacée par PushRoomFeedback (même rôle, mais
+        // écriture sur le bloc de la pièce pour tous les périphériques).
 
         private void BroadcastFeedbackToAll()
         {
+            // Partie globale de l'écran (nom de pièce, sélection, alarme centrale, vacances...)
             foreach (var panel in _touchPanels)
             {
                 if (_activeRoomPerDevice.ContainsKey(panel.ID))
                     UpdateScreenStateForPanel(panel, _activeRoomPerDevice[panel.ID]);
             }
-            MirrorAllRoomsToEisc();
+            PushAllRoomsFeedback();
+        }
+
+        /// <summary>
+        /// v3 : impulsion d'un digital global. Si un panel est précisé, lui seul la reçoit (cas du
+        /// verdict de code d'alarme : les autres écrans ne doivent pas changer de page) ; sinon
+        /// tous les panels la reçoivent. L'EISC est exclu, il est servi par le miroir.
+        /// </summary>
+        private void PulseGlobalDigitalToPanels(uint joinNumber, BasicTriList target)
+        {
+            if (target != null && target != _eisc)
+            {
+                target.BooleanInput[joinNumber].BoolValue = true;
+                target.BooleanInput[joinNumber].BoolValue = false;
+                return;
+            }
+            if (_touchPanels == null) return;
+            foreach (var panel in _touchPanels)
+            {
+                if (panel == _eisc) continue;
+                panel.BooleanInput[joinNumber].BoolValue = true;
+                panel.BooleanInput[joinNumber].BoolValue = false;
+            }
+        }
+
+        /// <summary>
+        /// v3 / P1-2 : impulsion sur un join du bloc d'une pièce (stores groupés +1..+9,
+        /// moteurs +61..+78). Le join est systématiquement remis à false : une impulsion qui
+        /// restait haute bloquait le moteur côté SIMPL.
+        /// </summary>
+        private void PulseRoomDigital(int roomId, uint offset)
+        {
+            if (_touchPanels == null) return;
+            if (_roomsRegistry == null || !_roomsRegistry.ContainsKey(roomId)) return;
+            bool eiscEnabled = _roomEiscEnabled.ContainsKey(roomId) && _roomEiscEnabled[roomId];
+            uint join = RoomBlockStart(roomId) + offset;
+            foreach (var dev in _touchPanels)
+            {
+                if (dev == _eisc && !eiscEnabled) continue;
+                dev.BooleanInput[join].BoolValue = true;
+                dev.BooleanInput[join].BoolValue = false;
+            }
         }
 
         private void BuildVillaRoomsDatabase()
@@ -625,22 +824,50 @@ namespace VillaFrequenceTvAutomation
                 int eiscExposed = 0;
                 foreach (var piece in (Newtonsoft.Json.Linq.JArray)_villaConfig["pieces"])
                 {
-                    int id = piece["id"] != null ? (int)piece["id"] : (_roomsRegistry.Count + 1);
-                    string nom = piece["nom"] != null ? (string)piece["nom"] : ("Pièce " + id);
-                    if (!_roomsRegistry.ContainsKey(id))
-                        _roomsRegistry.Add(id, new RoomState(id, nom));
+                    // v3 / P1-1 : chaque pièce est lue isolément. Une entrée mal typée est signalée
+                    // et ignorée, elle ne fait plus tomber la construction complète du registre.
+                    try
+                    {
+                        int id = piece["id"] != null ? (int)piece["id"] : (_roomsRegistry.Count + 1);
+                        if (id < 1 || id > RoomBlockMaxRoom)
+                        {
+                            ErrorLog.Notice("CONFIG: Pièce d'id {0} hors plage 1..{1} - ignorée.", id, RoomBlockMaxRoom);
+                            continue;
+                        }
+                        string nom = piece["nom"] != null ? (string)piece["nom"] : ("Pièce " + id);
+                        if (!_roomsRegistry.ContainsKey(id))
+                            _roomsRegistry.Add(id, new RoomState(id, nom));
 
-                    // Flag 'intersystem' : expose (ou non) le bloc EISC de cette pièce vers le slot 2
-                    bool eiscOn = piece["intersystem"] == null || (bool)piece["intersystem"];
-                    _roomEiscEnabled[id] = eiscOn;
-                    if (eiscOn) eiscExposed++;
+                        // Flag 'intersystem' : expose (ou non) le bloc EISC de cette pièce vers le slot 2
+                        bool eiscOn = piece["intersystem"] == null || (bool)piece["intersystem"];
+                        _roomEiscEnabled[id] = eiscOn;
+                        if (eiscOn) eiscExposed++;
+                    }
+                    catch (Exception exPiece)
+                    {
+                        ErrorLog.Notice("CONFIG: Pièce ignorée (JSON mal typé) : {0}", exPiece.Message);
+                    }
                 }
-                CrestronConsole.PrintLine("CONFIG: Registre construit depuis villa_config.json : {0} pièces ({1} exposées en intersystem).",
-                    _roomsRegistry.Count, eiscExposed);
-                return;
+                if (_roomsRegistry.Count > 0)
+                {
+                    CrestronConsole.PrintLine("CONFIG: Registre construit depuis villa_config.json : {0} pièces ({1} exposées en intersystem).",
+                        _roomsRegistry.Count, eiscExposed);
+                    return;
+                }
+                ErrorLog.Error("CONFIG: Aucune pièce exploitable dans villa_config.json - repli sur la liste historique.");
             }
 
-            // Repli historique si aucune configuration n'est chargée
+            BuildFallbackRoomsDatabase();
+        }
+
+        /// <summary>
+        /// v3 / P1-1 : repli historique, utilisable aussi bien quand aucune configuration n'est
+        /// chargée que lorsque la lecture de villa_config.json a échoué.
+        /// </summary>
+        private void BuildFallbackRoomsDatabase()
+        {
+            if (_roomsRegistry == null) _roomsRegistry = new Dictionary<int, RoomState>();
+
             string[] roomNames = {
                 "Salon", "Cuisine", "Salle à Manger", "Suite Parentale", "Chambre 1",
                 "Chambre 2", "Bureau", "Home Cinéma", "Terrasse extrieure", "Espace SPA / Piscine"
@@ -648,7 +875,8 @@ namespace VillaFrequenceTvAutomation
 
             for (int i = 1; i <= 10; i++)
             {
-                _roomsRegistry.Add(i, new RoomState(i, roomNames[i - 1]));
+                if (!_roomsRegistry.ContainsKey(i))
+                    _roomsRegistry.Add(i, new RoomState(i, roomNames[i - 1]));
                 _roomEiscEnabled[i] = true;
             }
         }
@@ -661,13 +889,31 @@ namespace VillaFrequenceTvAutomation
         }
 
         /// <summary>
-        /// Pousse l'état complet d'une pièce vers son bloc EISC (base = 1000 + (id-1)*100),
-        /// uniquement si la pièce est exposée en intersystem ('intersystem': true dans villa_config.json).
+        /// v3 / P1-2 : commande globale des 6 moteurs de toutes les pièces (Monter = offset +61+3n,
+        /// Descendre = offset +63+3n). Remplace les anciennes boucles qui écrivaient sur la plage
+        /// d'ENTRÉE panel 81-98 sans jamais repasser à false.
         /// </summary>
-        private void MirrorRoomStateToEisc(int roomId)
+        private void PulseAllMotorsInAllRooms(bool opening)
+        {
+            if (_roomsRegistry == null) return;
+            foreach (var id in _roomsRegistry.Keys)
+            {
+                for (uint m = 0; m < 6; m++)
+                    PulseRoomDigital(id, (opening ? (uint)61 : (uint)63) + m * 3);
+            }
+        }
+
+        /// <summary>
+        /// v3 : pousse l'état complet d'une pièce sur SON bloc de joins (base = 1000 + (id-1)*100),
+        /// vers TOUS les périphériques : panels (dalle, iPad, iPhone, XPanel) et EISC du slot 2.
+        /// Les panels ne s'abonnent qu'aux joins de la pièce qu'ils affichent, il n'y a donc plus
+        /// aucune logique « quel panel regarde quoi » dans le feedback. Le flag 'intersystem' ne
+        /// filtre que le slot 2 (limitation du nombre de signaux à monitorer dans le debugger SIMPL).
+        /// </summary>
+        private void PushRoomFeedback(int roomId)
         {
             if (_touchPanels == null) return;
-            if (!_roomsRegistry.ContainsKey(roomId)) return;
+            if (_roomsRegistry == null || !_roomsRegistry.ContainsKey(roomId)) return;
             bool eiscEnabled = _roomEiscEnabled.ContainsKey(roomId) && _roomEiscEnabled[roomId];
 
             try
@@ -685,6 +931,7 @@ namespace VillaFrequenceTvAutomation
                         dev.BooleanInput[b + 21 + s].BoolValue = (room.ActiveScene == s + 1);
                     for (uint s = 0; s < 4; s++)
                         dev.BooleanInput[b + 41 + s].BoolValue = (room.ActiveStoreScene == 201 + s);
+                    dev.BooleanInput[b + 45].BoolValue = (room.ActiveVideoSource == 0 && !room.MusicAudio); // v3 : AV.Extinction (join logique 200)
                     dev.BooleanInput[b + 50].BoolValue = room.IsAudioMuted;
                     for (uint s = 0; s < 5; s++)
                         dev.BooleanInput[b + 51 + s].BoolValue = (room.ActiveVideoSource == s);
@@ -705,6 +952,7 @@ namespace VillaFrequenceTvAutomation
                     dev.UShortInput[b + 51].UShortValue = room.ActiveVideoSource;
                     dev.UShortInput[b + 52].UShortValue = room.AudioVolume;
                     dev.UShortInput[b + 53].UShortValue = room.MusicAudio ? (ushort)5 : room.ActiveVideoSource; // source audio
+                    dev.UShortInput[b + 54].UShortValue = room.MediaVolume; // v3 : Media.Volume (join logique 254)
                     for (uint i = 0; i < 10; i++)
                         dev.UShortInput[b + 71 + i].UShortValue = room.CircuitLevels[i];
 
@@ -718,103 +966,252 @@ namespace VillaFrequenceTvAutomation
             catch { /* miroir best-effort */ }
         }
 
-        private void MirrorAllRoomsToEisc()
+        private void PushAllRoomsFeedback()
         {
+            if (_roomsRegistry == null) return;
             foreach (var id in _roomsRegistry.Keys)
-                MirrorRoomStateToEisc(id);
+                PushRoomFeedback(id);
         }
 
         /// <summary>
-        /// Traite une commande reçue du programme SIMPL du slot 2 sur un bloc pièce de l'EISC.
+        /// v3 : point d'entrée UNIQUE des joins >= 1000, qu'ils viennent du programme SIMPL du
+        /// slot 2 ou d'un panel (depuis le contrat v3 la GUI émet elle aussi sur le bloc de la
+        /// pièce affichée : joinPhysique = 1000 + (pieceId - 1) * 100 + offset). La pièce est donc
+        /// portée par le join lui-même, plus jamais par _activeRoomPerDevice.
         /// </summary>
-        private void ProcessEiscRoomSignal(BasicTriList sourceDevice, SigEventArgs args)
+        private void ProcessRoomBlockSignal(BasicTriList sourceDevice, SigEventArgs args)
         {
             uint join = args.Sig.Number;
-            int roomId = (int)((join - RoomBlockBase) / RoomBlockSize) + 1;
-            uint offset = (join - RoomBlockBase) % RoomBlockSize;
-            if (!_roomsRegistry.ContainsKey(roomId)) return;
-            // Le flag 'intersystem' ne restreint que le slot 2 ; les panels (debugger) pilotent toutes les pièces
+            int roomId = (int)((join - RoomBlockBase) / RoomBlockSize) + 1;   // v3 : décodage de la pièce
+            uint offset = (join - RoomBlockBase) % RoomBlockSize;             // v3 : décodage de l'offset
+            // P1-6 : borne de routage cohérente avec le décodage. Au-delà de la dernière pièce
+            // possible (contrat.blocsPiecesGui.pieceMax) on est dans les joins réservés firmware.
+            if (roomId < 1 || roomId > RoomBlockMaxRoom) return;
+            if (_roomsRegistry == null || !_roomsRegistry.ContainsKey(roomId)) return;
+            // Le flag 'intersystem' ne restreint que le slot 2 ; les panels pilotent toutes les pièces
             if (sourceDevice == _eisc && (!_roomEiscEnabled.ContainsKey(roomId) || !_roomEiscEnabled[roomId])) return;
-
-            RoomState room = _roomsRegistry[roomId];
 
             if (args.Sig.Type == eSigType.Bool)
             {
                 if (!args.Sig.BoolValue) return; // front montant uniquement
-                CrestronConsole.PrintLine("EISC: Slot 2 -> Pièce {0}, commande digitale offset {1}", roomId, offset);
-
-                if (offset >= 21 && offset <= 24)          // Scènes d'éclairage (index 1..4)
-                {
-                    uint sceneIdx = offset - 20;
-                    room.ActiveScene = (ushort)sceneIdx;
-                    if (sceneIdx == 1) room.LightLevel1 = 0;
-                    if (sceneIdx == 2) room.LightLevel1 = 19660;
-                    if (sceneIdx == 3) room.LightLevel1 = 45875;
-                    if (sceneIdx == 4) room.LightLevel1 = 65535;
-                }
-                else if (offset == 35)                      // Consigne +
-                    room.TargetTemperature = (ushort)Math.Min(280, room.TargetTemperature + 5);
-                else if (offset == 36)                      // Consigne -
-                    room.TargetTemperature = (ushort)Math.Max(160, room.TargetTemperature - 5);
-                else if (offset >= 41 && offset <= 44)      // Scènes de stores
-                    room.ActiveStoreScene = (ushort)(201 + (offset - 41));
-                else if (offset == 50)                      // Mute toggle
-                    room.IsAudioMuted = !room.IsAudioMuted;
-                else if (offset >= 51 && offset <= 55)      // Sélection de source vidéo (+51 = OFF)
-                {
-                    room.ActiveVideoSource = (ushort)(offset - 51);
-                    if (room.ActiveVideoSource == 0) room.MusicAudio = false;
-                    DispatchIpCommandToSonyTv(roomId, room.ActiveVideoSource);
-                }
-                else if (offset == 56)                      // Musique sur les haut-parleurs (la vidéo reste)
-                    room.MusicAudio = true;
-                else if (offset == 57)                      // L'audio revient à la source vidéo
-                    room.MusicAudio = false;
-                else if (offset >= 81 && offset <= 92)      // Partitions d'alarme
-                {
-                    uint partIdx = (offset - 81) / 3;
-                    uint actionType = (offset - 81) % 3;
-                    room.PartitionStates[partIdx] = (ushort)(actionType == 0 ? 1 : (actionType == 1 ? 2 : 0));
-                }
-                else return;
-
-                BroadcastFeedbackToRoom(roomId);
-                MirrorRoomStateToEisc(roomId);
+                ApplyRoomDigitalCommand(roomId, offset, sourceDevice);
             }
             else if (args.Sig.Type == eSigType.UShort)
             {
-                ushort val = args.Sig.UShortValue;
-                if (offset == 21) room.LightLevel1 = val;
-                else if (offset == 31) room.TargetTemperature = val;
-                else if (offset == 51) { room.ActiveVideoSource = val; DispatchIpCommandToSonyTv(roomId, val); }
-                else if (offset == 52) room.AudioVolume = val;
-                else if (offset >= 71 && offset <= 80) room.CircuitLevels[offset - 71] = val;
-                else return;
-
-                CrestronConsole.PrintLine("EISC: Slot 2 -> Pièce {0}, valeur analogique offset {1} = {2}", roomId, offset, val);
-                BroadcastFeedbackToRoom(roomId);
-                MirrorRoomStateToEisc(roomId);
+                ApplyRoomAnalogCommand(roomId, offset, args.Sig.UShortValue);
             }
+        }
+
+        /// <summary>
+        /// v3 : logique métier digitale d'une pièce, exprimée en offsets de bloc
+        /// (table contrat.blocsPiecesGui.mapping). Appelée pour les commandes du slot 2 comme pour
+        /// celles des panels : une seule implémentation, plus de duplication join logique / offset.
+        /// </summary>
+        private void ApplyRoomDigitalCommand(int roomId, uint offset, BasicTriList sourceDevice)
+        {
+            RoomState room = _roomsRegistry[roomId];
+            CrestronConsole.PrintLine("[BLOC PIECE] IP-ID {0:X2} -> Pièce {1}, commande digitale offset {2}",
+                sourceDevice != null ? sourceDevice.ID : (uint)0, roomId, offset);
+
+            // v3 : impulsions sans état côté C# (stores groupés +1..+9 = joins logiques 61-69,
+            // transport média +58..+60 = joins logiques 251-253, moteurs +61..+78 = joins 81-98).
+            // Le relais vers le slot 2 est déjà assuré par le passe-plat de MirrorSignalToEisc :
+            // il n'y a plus d'écho à fabriquer ici (c'est lui qui laissait les joins moteurs hauts).
+            if ((offset >= 1 && offset <= 9) || (offset >= 58 && offset <= 78))
+            {
+                CrestronConsole.PrintLine("MOTEURS/MEDIA: impulsion offset {0} pièce {1} relayée au slot 2.", offset, roomId);
+                return;
+            }
+
+            if (offset >= 21 && offset <= 24)          // Scènes d'éclairage 1..4 (joins logiques 51-54)
+            {
+                uint sceneIdx = offset - 20;
+                room.ActiveScene = (ushort)sceneIdx;
+                if (sceneIdx == 1) room.LightLevel1 = 0;
+                if (sceneIdx == 2) room.LightLevel1 = 19660;
+                if (sceneIdx == 3) room.LightLevel1 = 45875;
+                if (sceneIdx == 4) room.LightLevel1 = 65535;
+            }
+            else if (offset == 35)                      // Consigne + (join logique 49)
+                room.TargetTemperature = (ushort)Math.Min(280, room.TargetTemperature + 5);
+            else if (offset == 36)                      // Consigne - (join logique 50)
+                room.TargetTemperature = (ushort)Math.Max(160, room.TargetTemperature - 5);
+            else if (offset >= 41 && offset <= 44)      // Scènes de stores (joins logiques 201-204)
+                room.ActiveStoreScene = (ushort)(201 + (offset - 41));
+            else if (offset == 45)                      // v3 : extinction A/V complète (join logique 200)
+            {
+                room.ActiveVideoSource = 0;
+                room.MusicAudio = false;
+                DispatchIpCommandToSonyTv(roomId, 0);
+                DispatchAudioRouting(roomId);
+            }
+            else if (offset == 50)                      // Mute toggle (join logique 55)
+                room.IsAudioMuted = !room.IsAudioMuted;
+            else if (offset >= 51 && offset <= 55)      // Source vidéo en interlock (+51 = OFF, joins logiques 150-154)
+            {
+                room.ActiveVideoSource = (ushort)(offset - 51);
+                if (room.ActiveVideoSource == 0) room.MusicAudio = false;
+                DispatchIpCommandToSonyTv(roomId, room.ActiveVideoSource);
+                DispatchAudioRouting(roomId);
+            }
+            else if (offset == 56)                      // Musique sur les haut-parleurs (join logique 155)
+            {
+                room.MusicAudio = true;
+                DispatchAudioRouting(roomId);
+            }
+            else if (offset == 57)                      // L'audio revient à la source vidéo (join logique 156)
+            {
+                room.MusicAudio = false;
+                DispatchAudioRouting(roomId);
+            }
+            else if (offset >= 81 && offset <= 92)      // Partitions d'alarme (joins logiques 301-312)
+            {
+                uint partIdx = (offset - 81) / 3;
+                uint actionType = (offset - 81) % 3;
+                ApplyAlarmPartition(partIdx, actionType);
+                BroadcastFeedbackToAll();               // les partitions sont communes à toute la villa
+                return;
+            }
+            else return;
+
+            PushRoomFeedback(roomId);
+        }
+
+        /// <summary>
+        /// v3 : logique métier analogique d'une pièce, exprimée en offsets de bloc.
+        /// </summary>
+        private void ApplyRoomAnalogCommand(int roomId, uint offset, ushort val)
+        {
+            RoomState room = _roomsRegistry[roomId];
+
+            if (offset == 21) room.LightLevel1 = val;                        // join logique 21
+            else if (offset == 31) room.TargetTemperature = val;             // join logique 31
+            else if (offset == 51) { room.ActiveVideoSource = val; DispatchIpCommandToSonyTv(roomId, val); } // join logique 51
+            else if (offset == 52) room.AudioVolume = val;                   // join logique 52
+            else if (offset == 53)
+            {
+                // v3 : AV.SourceAudio (join logique 53) n'avait aucune entrée : impossible de choisir
+                // la source audio depuis le GUI. 5 = musique, 0..4 = l'audio suit la source vidéo.
+                room.MusicAudio = (val == 5);
+                DispatchAudioRouting(roomId);
+            }
+            else if (offset == 54) room.MediaVolume = val;                   // v3 : Media.Volume (join logique 254)
+            else if (offset >= 71 && offset <= 80) room.CircuitLevels[offset - 71] = val; // joins logiques 71-80
+            else return;
+
+            CrestronConsole.PrintLine("[BLOC PIECE] Pièce {0} - valeur analogique offset {1} = {2}", roomId, offset, val);
+            PushRoomFeedback(roomId);
+        }
+
+        /// <summary>
+        /// v3 : les partitions d'alarme 1..4 sont communes à toute la villa
+        /// (contrat.blocsPiecesGui.exceptionsGlobales) : l'état est appliqué à toutes les pièces,
+        /// de sorte que chaque bloc EISC et chaque panel affichent la même chose.
+        /// </summary>
+        private void ApplyAlarmPartition(uint partIdx, uint actionType)
+        {
+            if (partIdx > 3 || _roomsRegistry == null) return;
+            ushort newState = (ushort)(actionType == 0 ? 1 : (actionType == 1 ? 2 : 0));
+            foreach (var rm in _roomsRegistry.Values)
+                rm.PartitionStates[partIdx] = newState;
+            CrestronConsole.PrintLine("SÉCURITÉ: Partition {0} de la villa passée à l'état {1}", partIdx + 1, newState);
+        }
+
+        // --- v3 : VALIDATION DU CODE D'ALARME (sériel 43, digitaux 44 / 45 / 46) ---
+        // Choix documenté : le code de référence n'est codé en dur nulle part. La saisie part
+        // d'abord à la vraie centrale, via l'EISC du slot 2 (sériel 43) ; c'est elle qui répond par
+        // une impulsion sur le digital 44 (accepté) ou 45 (refusé). Le C# ne tranche en local
+        // (contrat.alarme.codeParDefaut) que si le slot 2 n'a pas répondu dans le délai imparti,
+        // afin que le pavé reste utilisable quand le programme SIMPL est arrêté ou non chargé.
+        // Le GUI abandonne de son côté à 2500 ms : le repli local tranche donc toujours avant.
+
+        private void StopAlarmCodeTimer()
+        {
+            if (_alarmCodeTimer != null)
+            {
+                try { _alarmCodeTimer.Stop(); }
+                catch { /* arrêt best-effort */ }
+                _alarmCodeTimer = null;
+            }
+        }
+
+        private void ProcessAlarmCodeEntry(BasicTriList sourceDevice, string code)
+        {
+            if (sourceDevice == _eisc) return;      // la centrale ne se valide pas elle-même
+            StopAlarmCodeTimer();
+            _alarmPendingCode = code == null ? "" : code.Trim();
+            _alarmVerdictPending = true;
+            _alarmCodeRequester = sourceDevice;
+
+            if (_eisc != null)
+            {
+                // Purge puis écriture : un sériel réécrit à la même valeur n'émet pas d'événement,
+                // deux saisies identiques successives resteraient sans verdict côté slot 2.
+                try
+                {
+                    _eisc.StringInput[AlarmCodeEntryJoin].StringValue = "";
+                    _eisc.StringInput[AlarmCodeEntryJoin].StringValue = _alarmPendingCode;
+                }
+                catch { /* relais best-effort */ }
+            }
+            CrestronConsole.PrintLine("ALARME: code reçu de l'IP-ID {0:X2}, relayé à la centrale (attente {1} ms).",
+                sourceDevice != null ? sourceDevice.ID : (uint)0, _alarmPanelReplyMs);
+            _alarmCodeTimer = new CTimer(OnAlarmCodeTimeout, (long)_alarmPanelReplyMs);
+        }
+
+        private void OnAlarmCodeTimeout(object userSpecific)
+        {
+            try
+            {
+                if (!_alarmVerdictPending) return;
+                _alarmVerdictPending = false;
+                bool accepte = !string.IsNullOrEmpty(_alarmReferenceCode) && _alarmPendingCode == _alarmReferenceCode;
+                _alarmPendingCode = "";
+                CrestronConsole.PrintLine("ALARME: aucun verdict du slot 2 - validation locale : {0}.", accepte ? "ACCEPTÉ" : "REFUSÉ");
+                PulseGlobalDigitalToPanels(accepte ? AlarmCodeOkJoin : AlarmCodeKoJoin, _alarmCodeRequester);
+                _alarmCodeRequester = null;
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Notice("Notice: ALARME: échec du repli local de validation : {0}", ex.Message);
+            }
+            finally
+            {
+                _alarmCodeTimer = null;
+            }
+        }
+
+        /// <summary>v3 : verdict reçu de la centrale (slot 2) sur le digital 44 ou 45.</summary>
+        private void OnAlarmCodeVerdictFromPanelSystem(bool accepte)
+        {
+            StopAlarmCodeTimer();
+            _alarmVerdictPending = false;
+            _alarmPendingCode = "";
+            CrestronConsole.PrintLine("ALARME: verdict de la centrale (slot 2) : {0}.", accepte ? "ACCEPTÉ" : "REFUSÉ");
+            PulseGlobalDigitalToPanels(accepte ? AlarmCodeOkJoin : AlarmCodeKoJoin, _alarmCodeRequester);
+            _alarmCodeRequester = null;
         }
 
         private void OnTouchPanelSignalReceived(BasicTriList currentDevice, SigEventArgs args)
         {
             ushort joinNumber = (ushort)args.Sig.Number;
 
-            // Commandes sur les blocs pièces (joins >= 1000) : acceptées de l'EISC (slot 2)
-            // ET des panels (le debugger virtuel XPanel peut ainsi piloter n'importe quelle pièce).
-            // Les joins réservés firmware (ex : 29731) tombent hors registre et sont ignorés.
-            if (args.Sig.Number >= RoomBlockBase)
-            {
-                ProcessEiscRoomSignal(currentDevice, args);
-                return;
-            }
-
             if (!_activeRoomPerDevice.ContainsKey(currentDevice.ID))
                 _activeRoomPerDevice[currentDevice.ID] = DefaultRoomForPanel(currentDevice.ID);
 
-            // Miroir intersystem : chaque signal global brut (< 1000) est répliqué 1:1 vers le slot 2
+            // Miroir intersystem : passe-plat pour les blocs pièces (>= 1000, mêmes numéros de join
+            // des deux côtés depuis le contrat v3), liste blanche contrat.signauxGlobaux en dessous.
             MirrorSignalToEisc(currentDevice, args);
+
+            // v3 : commandes sur les blocs pièces (joins >= 1000). Elles viennent désormais aussi
+            // bien du slot 2 que des panels : depuis le contrat v3 la GUI émet sur le bloc de la
+            // pièce qu'elle affiche, la pièce est donc portée par le join et non plus par
+            // _activeRoomPerDevice. Les joins réservés firmware (ex : 29731) tombent hors plage.
+            if (args.Sig.Number >= RoomBlockBase)
+            {
+                ProcessRoomBlockSignal(currentDevice, args);
+                return;
+            }
 
             switch (args.Sig.Type)
             {
@@ -830,7 +1227,11 @@ namespace VillaFrequenceTvAutomation
                     break;
 
                 case eSigType.String:
-                    CrestronConsole.PrintLine("[JS CONSOLE] IP-ID {0:X2} (Join {1}): {2}", currentDevice.ID, joinNumber, args.Sig.StringValue);
+                    // v3 : le sériel 43 transporte un code d'alarme, il ne doit jamais apparaître en clair dans le journal.
+                    if (joinNumber == AlarmCodeEntryJoin)
+                        CrestronConsole.PrintLine("[JS CONSOLE] IP-ID {0:X2} (Join {1}): [code masqué]", currentDevice.ID, joinNumber);
+                    else
+                        CrestronConsole.PrintLine("[JS CONSOLE] IP-ID {0:X2} (Join {1}): {2}", currentDevice.ID, joinNumber, args.Sig.StringValue);
                     if (joinNumber == 103)
                     {
                         string command = args.Sig.StringValue;
@@ -877,6 +1278,12 @@ namespace VillaFrequenceTvAutomation
                             currentDevice.StringInput[104].StringValue = newDate;
                         }
                     }
+                    else if (joinNumber == AlarmCodeEntryJoin)
+                    {
+                        // v3 : code d'alarme saisi sur le pavé du GUI (sériel 43). Il n'est plus
+                        // comparé dans le JavaScript du panel : c'est la centrale du slot 2 qui tranche.
+                        ProcessAlarmCodeEntry(currentDevice, args.Sig.StringValue);
+                    }
                     else if (joinNumber == 420)
                     {
                         SavePresetConfig(args.Sig.StringValue);
@@ -885,10 +1292,20 @@ namespace VillaFrequenceTvAutomation
             }
         }
 
+        /// <summary>
+        /// v3 : ne traite plus QUE les joins réellement globaux (< 1000, contrat.signauxGlobaux).
+        /// Tout le pilotage de pièce (éclairage, CVC, stores, moteurs, A/V, média) est arrivé sur le
+        /// bloc de la pièce concernée et a été traité par ApplyRoomDigitalCommand : aucun de ces
+        /// joins ne dépend plus de _activeRoomPerDevice, deux supports sur deux pièces différentes
+        /// ne peuvent plus s'écraser mutuellement.
+        /// </summary>
         private void ProcessDigitalSignal(BasicTriList currentDevice, ushort joinNumber)
         {
-            int activeRoomId = _activeRoomPerDevice[currentDevice.ID];
-            RoomState selectedRoom = _roomsRegistry[activeRoomId];
+            // P1-4 : plus d'indexation nue de _activeRoomPerDevice / _roomsRegistry ici. La pièce
+            // n'est utilisée que pour le journal et pour le suivi de la dalle (analogique 240).
+            int activeRoomId = _activeRoomPerDevice.ContainsKey(currentDevice.ID)
+                ? _activeRoomPerDevice[currentDevice.ID]
+                : DefaultRoomForPanel(currentDevice.ID);
 
             // Filtre de journal : au-delà de 3000 il n'y a que des joins réservés firmware (capteurs,
             // extenders de la dalle) - ils sont ignorés par le programme, inutile de les tracer.
@@ -899,7 +1316,7 @@ namespace VillaFrequenceTvAutomation
             if (joinNumber >= 11 && joinNumber <= 40)
             {
                 int roomSelected = joinNumber - 10;
-                if (!_roomsRegistry.ContainsKey(roomSelected)) return;
+                if (_roomsRegistry == null || !_roomsRegistry.ContainsKey(roomSelected)) return; // P1-4
                 _activeRoomPerDevice[currentDevice.ID] = roomSelected;
                 CrestronConsole.PrintLine("[DECOUPLE] IP-ID {0:X2} navigated to Room {1} (via Digital)", currentDevice.ID, roomSelected);
                 UpdateScreenStateForPanel(currentDevice, roomSelected);
@@ -914,84 +1331,13 @@ namespace VillaFrequenceTvAutomation
                 return;
             }
 
-            // Extinction A/V de la pièce (Digital 200, bouton Power OFF du GUI) : vidéo off + audio off.
-            // (Le GUI émet aussi 50 et 151-155=false : 50 est CVC.ConsigneMoins en v2 — à retirer du GUI, voir 06_TODO.)
-            if (joinNumber == 200)
-            {
-                selectedRoom.ActiveVideoSource = 0;
-                selectedRoom.MusicAudio = false;
-                DispatchIpCommandToSonyTv(activeRoomId, 0);
-                DispatchAudioRouting(activeRoomId);
-                BroadcastFeedbackToRoom(activeRoomId);
-                MirrorRoomStateToEisc(activeRoomId);
-                return;
-            }
-
-            // Sources (Digital 150-156, v1.0.166) : 150-154 = vidéo en interlock (150 = OFF),
-            // 155 = la musique passe sur les haut-parleurs (la vidéo reste à l'écran),
-            // 156 = l'audio revient à la source vidéo. Feedback : 150-154 vidéo, 155 = musique, 156 = !musique.
-            if (joinNumber >= 150 && joinNumber <= 156)
-            {
-                if (joinNumber <= 154)
-                {
-                    ushort sourceId = (ushort)(joinNumber - 150);
-                    selectedRoom.ActiveVideoSource = sourceId;
-                    if (sourceId == 0) selectedRoom.MusicAudio = false;
-                    DispatchIpCommandToSonyTv(activeRoomId, sourceId);
-                }
-                else if (joinNumber == 155) selectedRoom.MusicAudio = true;
-                else selectedRoom.MusicAudio = false;
-
-                SendFeedbackUShortToRoom(activeRoomId, 51, selectedRoom.ActiveVideoSource);
-                SendFeedbackUShortToRoom(activeRoomId, 53, selectedRoom.MusicAudio ? (ushort)5 : selectedRoom.ActiveVideoSource);
-                DispatchAudioRouting(activeRoomId);
-
-                // Feedback digital vers tous les panels de la pièce
-                foreach (var panel in _touchPanels)
-                {
-                    if (_activeRoomPerDevice.ContainsKey(panel.ID) && _activeRoomPerDevice[panel.ID] == activeRoomId)
-                    {
-                        for (uint i = 150; i <= 154; i++)
-                            panel.BooleanInput[i].BoolValue = (selectedRoom.ActiveVideoSource == (i - 150));
-                        panel.BooleanInput[155].BoolValue = selectedRoom.MusicAudio;
-                        panel.BooleanInput[156].BoolValue = !selectedRoom.MusicAudio;
-                    }
-                }
-                MirrorRoomStateToEisc(activeRoomId);
-                return;
-            }
-
-            // Scènes d'éclairage 1..4 (Digital 51-54, contrat v2)
-            if (joinNumber >= 51 && joinNumber <= 54)
-            {
-                int sceneIdx = joinNumber - 50;
-                selectedRoom.ActiveScene = (ushort)sceneIdx;
-
-                if (sceneIdx == 1) selectedRoom.LightLevel1 = 0;
-                if (sceneIdx == 2) selectedRoom.LightLevel1 = 19660;
-                if (sceneIdx == 3) selectedRoom.LightLevel1 = 45875;
-                if (sceneIdx == 4) selectedRoom.LightLevel1 = 65535;
-
-                BroadcastFeedbackToRoom(activeRoomId);
-                return;
-            }
+            // v3 : les joins de pilotage de pièce (200 extinction A/V, 150-156 sources, 51-54 scènes
+            // d'éclairage, 49/50 consigne, 55 mute, 61-69 stores groupés, 81-98 moteurs, 201-204
+            // scènes de stores, 251-253 transport média) ne transitent plus par ici : la GUI les
+            // émet sur le bloc de la pièce affichée (>= 1000) et ApplyRoomDigitalCommand les traite.
 
             switch (joinNumber)
             {
-                case 49: // Target Temp Up (+0.5°C => +5 raw) - contrat v2 (ex-35)
-                    selectedRoom.TargetTemperature = (ushort)Math.Min(280, selectedRoom.TargetTemperature + 5);
-                    SendFeedbackUShortToRoom(activeRoomId, 31, selectedRoom.TargetTemperature);
-                    SendFeedbackStringToRoom(activeRoomId, 33, selectedRoom.TargetTemperature > selectedRoom.CurrentTemperature ? "CHAUFFAGE" : "CLIMATISATION");
-                    SendFeedbackStringToRoom(activeRoomId, 34, ((double)selectedRoom.TargetTemperature / 10.0).ToString("F1"));
-                    break;
-
-                case 50: // Target Temp Down (-0.5°C => -5 raw) - contrat v2 (ex-36)
-                    selectedRoom.TargetTemperature = (ushort)Math.Max(160, selectedRoom.TargetTemperature - 5);
-                    SendFeedbackUShortToRoom(activeRoomId, 31, selectedRoom.TargetTemperature);
-                    SendFeedbackStringToRoom(activeRoomId, 33, selectedRoom.TargetTemperature > selectedRoom.CurrentTemperature ? "CHAUFFAGE" : "CLIMATISATION");
-                    SendFeedbackStringToRoom(activeRoomId, 34, ((double)selectedRoom.TargetTemperature / 10.0).ToString("F1"));
-                    break;
-
                 case 56: // Easter Egg - Widget Météo triple-tap - contrat v2 (ex-37)
                     CrestronConsole.PrintLine("EASTER EGG: Triple-clic sur le widget météo détecté. Lecture de funny.mp3 demandée.");
                     break;
@@ -1008,9 +1354,20 @@ namespace VillaFrequenceTvAutomation
                     BroadcastFeedbackToAll();
                     break;
 
-                case 55: // Mute audio - contrat v2 (ex-53, libéré pour les scènes 51-54)
-                    selectedRoom.IsAudioMuted = !selectedRoom.IsAudioMuted;
-                    SendFeedbackBoolToRoom(activeRoomId, 55, selectedRoom.IsAudioMuted);
+                case (ushort)AlarmCodeOkJoin: // v3 : verdict « code accepté » émis par la centrale du slot 2
+                    if (currentDevice == _eisc) OnAlarmCodeVerdictFromPanelSystem(true);
+                    break;
+
+                case (ushort)AlarmCodeKoJoin: // v3 : verdict « code refusé » émis par la centrale du slot 2
+                    if (currentDevice == _eisc) OnAlarmCodeVerdictFromPanelSystem(false);
+                    break;
+
+                case (ushort)AlarmCodeClearJoin: // v3 : touche C du pavé - abandon de la saisie en cours
+                    StopAlarmCodeTimer();
+                    _alarmVerdictPending = false;
+                    _alarmPendingCode = "";
+                    _alarmCodeRequester = null;
+                    CrestronConsole.PrintLine("ALARME: saisie effacée par l'IP-ID {0:X2}.", currentDevice.ID);
                     break;
 
                 case (ushort)TswMuteJoin: // Bascule mute du volume matériel de la dalle TSW (page Vidéo)
@@ -1018,68 +1375,14 @@ namespace VillaFrequenceTvAutomation
                     ToggleTswMute();
                     break;
 
-                // Stores groupés Volets/Rideaux/Stores (61-69) - écho différencié vers le bloc pièce EISC (+1..+9)
-                case 61:
-                case 62:
-                case 63:
-                case 64:
-                case 65:
-                case 66:
-                case 67:
-                case 68:
-                case 69:
-                    CrestronConsole.PrintLine("STORE CONTROL - Event on digital join {0} received (pièce {1}).", joinNumber, activeRoomId);
-                    if (_touchPanels != null)
-                    {
-                        bool grpEisc = _roomEiscEnabled.ContainsKey(activeRoomId) && _roomEiscEnabled[activeRoomId];
-                        uint groupJoin = RoomBlockStart(activeRoomId) + 1 + (uint)(joinNumber - 61);
-                        foreach (var dev in _touchPanels)
-                        {
-                            if (dev == _eisc && !grpEisc) continue;
-                            dev.BooleanInput[groupJoin].BoolValue = true;
-                            dev.BooleanInput[groupJoin].BoolValue = false;
-                        }
-                    }
-                    break;
-
-                // Moteurs 1..6 (joins 81-98 : triplets Monter/Stop/Descendre) - écho vers le bloc pièce EISC (+61..78)
-                case 81: case 82: case 83: case 84: case 85: case 86:
-                case 87: case 88: case 89: case 90: case 91: case 92:
-                case 93: case 94: case 95: case 96: case 97: case 98:
-                    CrestronConsole.PrintLine("MOTEURS: Commande join {0} (pièce {1}).", joinNumber, activeRoomId);
-                    if (_touchPanels != null)
-                    {
-                        bool motEisc = _roomEiscEnabled.ContainsKey(activeRoomId) && _roomEiscEnabled[activeRoomId];
-                        uint motorJoin = RoomBlockStart(activeRoomId) + 61 + (uint)(joinNumber - 81);
-                        foreach (var dev in _touchPanels)
-                        {
-                            if (dev == _eisc && !motEisc) continue;
-                            dev.BooleanInput[motorJoin].BoolValue = true;
-                            dev.BooleanInput[motorJoin].BoolValue = false;
-                        }
-                    }
-                    break;
-
-                // Scénarios de Stores (joins 201 à 204)
-                case 201:
-                case 202:
-                case 203:
-                case 204:
-                    selectedRoom.ActiveStoreScene = joinNumber;
-                    CrestronConsole.PrintLine("STORES: Scénario {0} activé dans la pièce {1}", joinNumber, activeRoomId);
-                    BroadcastFeedbackToRoom(activeRoomId);
-                    break;
-
-                // Partitions d'alarme (joins 301 à 312)
+                // Partitions d'alarme (joins 301 à 312) - v3 : exception globale assumée du contrat,
+                // les 4 partitions sont communes à toute la villa (et non plus à la pièce affichée).
                 case 301: case 302: case 303:
                 case 304: case 305: case 306:
                 case 307: case 308: case 309:
                 case 310: case 311: case 312:
-                    uint partIdx = (uint)((joinNumber - 301) / 3);
-                    uint actionType = (uint)((joinNumber - 301) % 3);
-                    selectedRoom.PartitionStates[partIdx] = (ushort)(actionType == 0 ? 1 : (actionType == 1 ? 2 : 0));
-                    CrestronConsole.PrintLine("SÉCURITÉ: Partition {0} de la pièce {1} passée à l'état {2}", partIdx + 1, activeRoomId, selectedRoom.PartitionStates[partIdx]);
-                    BroadcastFeedbackToRoom(activeRoomId);
+                    ApplyAlarmPartition((uint)((joinNumber - 301) / 3), (uint)((joinNumber - 301) % 3));
+                    BroadcastFeedbackToAll();
                     break;
 
                 // Commandes globales de la maison (joins 401 à 411)
@@ -1090,7 +1393,7 @@ namespace VillaFrequenceTvAutomation
                         foreach (var rm in _roomsRegistry.Values)
                         {
                             rm.LightLevel1 = 65535;
-                            for (int i = 0; i < 6; i++) rm.CircuitLevels[i] = 65535;
+                            for (int i = 0; i < 10; i++) rm.CircuitLevels[i] = 65535; // P1-3 : 10 circuits, pas 6
                         }
                         BroadcastFeedbackToAll();
                     }
@@ -1103,7 +1406,7 @@ namespace VillaFrequenceTvAutomation
                         foreach (var rm in _roomsRegistry.Values)
                         {
                             rm.LightLevel1 = 0;
-                            for (int i = 0; i < 6; i++) rm.CircuitLevels[i] = 0;
+                            for (int i = 0; i < 10; i++) rm.CircuitLevels[i] = 0; // P1-3 : 10 circuits, pas 6
                         }
                         BroadcastFeedbackToAll();
                     }
@@ -1125,29 +1428,13 @@ namespace VillaFrequenceTvAutomation
                 case 404:
                     CrestronConsole.PrintLine("GLOBAL: Stores Globaux - Tout Ouvrir demandé.");
                     if (!ApplyPreset("shade_open"))
-                    {
-                        foreach (var rm in _touchPanels)
-                        {
-                            for (uint i = 1; i <= 6; i++)
-                            {
-                                rm.BooleanInput[80 + i * 3 - 2].BoolValue = true;
-                            }
-                        }
-                    }
+                        PulseAllMotorsInAllRooms(true);   // v3 / P1-2 : impulsion propre sur le bloc de CHAQUE pièce
                     break;
 
                 case 405:
                     CrestronConsole.PrintLine("GLOBAL: Stores Globaux - Tout Fermer demandé.");
                     if (!ApplyPreset("shade_close"))
-                    {
-                        foreach (var rm in _touchPanels)
-                        {
-                            for (uint i = 1; i <= 6; i++)
-                            {
-                                rm.BooleanInput[80 + i * 3].BoolValue = true;
-                            }
-                        }
-                    }
+                        PulseAllMotorsInAllRooms(false);  // v3 / P1-2 : idem, et remise à false garantie
                     break;
 
                 case 406:
@@ -1186,19 +1473,13 @@ namespace VillaFrequenceTvAutomation
                     _vacationModeActive = true;
                     if (!ApplyPreset("vacation"))
                     {
-                        foreach (var rm in _roomsRegistry.Values) rm.TargetTemperature = 120;
                         foreach (var rm in _roomsRegistry.Values)
                         {
+                            rm.TargetTemperature = 120;
                             rm.LightLevel1 = 0;
-                            for (int i = 0; i < 6; i++) rm.CircuitLevels[i] = 0;
+                            for (int i = 0; i < 10; i++) rm.CircuitLevels[i] = 0; // P1-3 : 10 circuits, pas 6
                         }
-                        foreach (var rm in _touchPanels)
-                        {
-                            for (uint i = 1; i <= 6; i++)
-                            {
-                                rm.BooleanInput[80 + i * 3].BoolValue = true;
-                            }
-                        }
+                        PulseAllMotorsInAllRooms(false);  // v3 / P1-2 : fermeture propre, joins remis à false
                     }
                     BroadcastFeedbackToAll();
                     break;
@@ -1232,10 +1513,19 @@ namespace VillaFrequenceTvAutomation
             }
         }
 
+        /// <summary>
+        /// v3 : ne traite plus QUE les analogiques globaux (10 pièce affichée, 250 ack de config,
+        /// 260 volume matériel de la dalle). Les analogiques de pièce (21, 31, 51, 52, 53, 71-80,
+        /// 254) arrivent sur le bloc de leur pièce et sont traités par ApplyRoomAnalogCommand.
+        /// </summary>
         private void ProcessAnalogSignal(BasicTriList currentDevice, ushort joinNumber, ushort rawValue)
         {
-            int activeRoomId = _activeRoomPerDevice[currentDevice.ID];
-            
+            // P1-4 : accès protégé (le dictionnaire peut ne pas encore contenir ce périphérique)
+            int activeRoomId = _activeRoomPerDevice.ContainsKey(currentDevice.ID)
+                ? _activeRoomPerDevice[currentDevice.ID]
+                : DefaultRoomForPanel(currentDevice.ID);
+
+
             // Filtre de journal : join 10 (trop bavard) et joins réservés firmware (> 3000) non tracés
             if (joinNumber != 10 && joinNumber <= 3000)
                 CrestronConsole.PrintLine("[DECOUPLE] IP-ID {0:X2} (Room {1}) triggered Analog Join {2} = {3}", currentDevice.ID, activeRoomId, joinNumber, rawValue);
@@ -1243,7 +1533,7 @@ namespace VillaFrequenceTvAutomation
             switch (joinNumber)
             {
                 case 10:
-                    if (rawValue >= 1 && _roomsRegistry.ContainsKey(rawValue))
+                    if (rawValue >= 1 && _roomsRegistry != null && _roomsRegistry.ContainsKey(rawValue)) // P1-4
                     {
                         CrestronConsole.PrintLine("[DECOUPLE] IP-ID {0:X2} navigated to Room {1}", currentDevice.ID, rawValue);
                         _activeRoomPerDevice[currentDevice.ID] = rawValue;
@@ -1261,51 +1551,24 @@ namespace VillaFrequenceTvAutomation
                     CrestronConsole.PrintLine("VOLUME DALLE: {0}% demandé par IP-ID {1:X2}.", rawValue, currentDevice.ID);
                     SetTswVolume(rawValue);
                     break;
-
-                case 21:
-                    _roomsRegistry[activeRoomId].LightLevel1 = rawValue;
-                    SendFeedbackUShortToRoom(activeRoomId, 21, rawValue);
-                    break;
-
-                case 31:
-                    _roomsRegistry[activeRoomId].TargetTemperature = rawValue;
-                    SendFeedbackUShortToRoom(activeRoomId, 31, rawValue);
-                    SendFeedbackStringToRoom(activeRoomId, 33, rawValue > _roomsRegistry[activeRoomId].CurrentTemperature ? "CHAUFFAGE" : "CLIMATISATION");
-                    
-                    // Send formatted target temperature string on String Join 34
-                    double targetTempDouble = (double)rawValue / 10.0;
-                    SendFeedbackStringToRoom(activeRoomId, 34, targetTempDouble.ToString("F1"));
-                    break;
-
-                case 51:
-                    _roomsRegistry[activeRoomId].ActiveVideoSource = rawValue;
-                    SendFeedbackUShortToRoom(activeRoomId, 51, rawValue);
-                    DispatchIpCommandToSonyTv(activeRoomId, rawValue);
-                    break;
-
-                case 52:
-                    _roomsRegistry[activeRoomId].AudioVolume = rawValue;
-                    SendFeedbackUShortToRoom(activeRoomId, 52, rawValue);
-                    break;
-
-                case 71:
-                case 72:
-                case 73:
-                case 74:
-                case 75:
-                case 76:
-                case 77:
-                case 78:
-                case 79:
-                case 80:
-                    _roomsRegistry[activeRoomId].CircuitLevels[joinNumber - 71] = rawValue;
-                    SendFeedbackUShortToRoom(activeRoomId, joinNumber, rawValue);
-                    break;
             }
         }
 
+        /// <summary>
+        /// Partie GLOBALE de l'écran d'un panel : identité de la pièce affichée, sélection de pièce,
+        /// alarme centrale, partitions, mode vacances, informations système. v3 : les états de pièce
+        /// sont poussés en parallèle sur le bloc de chaque pièce par PushRoomFeedback ; ce qui reste
+        /// ici est soit global, soit l'instantané de la pièce affichée au moment de la navigation.
+        /// </summary>
         private void UpdateScreenStateForPanel(BasicTriList panel, int roomId)
         {
+            // P1-4 : garde sur le registre (un id de pièce absent de villa_config.json provoquait
+            // une KeyNotFoundException dès la première mise à jour d'écran).
+            if (_roomsRegistry == null || !_roomsRegistry.ContainsKey(roomId))
+            {
+                ErrorLog.Notice("Notice: Pièce {0} inconnue du registre - écran du IP-ID {1:X2} non rafraîchi.", roomId, panel.ID);
+                return;
+            }
             RoomState room = _roomsRegistry[roomId];
 
             // Envoi des informations textuelles et numériques à la dalle spécifique
@@ -1373,6 +1636,10 @@ namespace VillaFrequenceTvAutomation
             double convertedTemp = (double)room.CurrentTemperature / 10.0;
             panel.StringInput[32].StringValue = convertedTemp.ToString("F1");
 
+            // v3 : le sériel 33 (mode CVC) manquait ici : le libellé CHAUFFAGE / CLIMATISATION
+            // restait vide à la connexion et au changement de pièce, jusqu'au premier appui consigne.
+            panel.StringInput[33].StringValue = room.TargetTemperature > room.CurrentTemperature ? "CHAUFFAGE" : "CLIMATISATION";
+
             // Formatted target temperature for String Join 34
             double convertedTargetTemp = (double)room.TargetTemperature / 10.0;
             panel.StringInput[34].StringValue = convertedTargetTemp.ToString("F1");
@@ -1390,6 +1657,7 @@ namespace VillaFrequenceTvAutomation
         // Point d'accroche pour le driver ampli / matrice audio ; pour l'instant journalisé.
         private void DispatchAudioRouting(int roomId)
         {
+            if (_roomsRegistry == null || !_roomsRegistry.ContainsKey(roomId)) return; // P1-4
             var room = _roomsRegistry[roomId];
             string label = room.MusicAudio ? "Musique" : (room.ActiveVideoSource == 0 ? "Off" : "Audio de la source vidéo " + room.ActiveVideoSource);
             CrestronConsole.PrintLine("AUDIO-ROUTING: [Zone: {0}] -> haut-parleurs = [{1}].", room.RoomName, label);
@@ -1397,6 +1665,7 @@ namespace VillaFrequenceTvAutomation
 
         private void DispatchIpCommandToSonyTv(int roomId, ushort sourceId)
         {
+            if (_roomsRegistry == null || !_roomsRegistry.ContainsKey(roomId)) return; // P1-4
             string labelSource = "Power Off";
             if (sourceId == 1) labelSource = "Apple TV";
             if (sourceId == 2) labelSource = "Sky Q";
@@ -1512,7 +1781,17 @@ namespace VillaFrequenceTvAutomation
                     CrestronConsole.PrintLine("PRESETS ERROR: Preset name is empty in payload.");
                     return;
                 }
-                
+
+                // P1-5 : le nom vient du panel et servait tel quel à composer un chemin de fichier
+                // (traversée '../' possible, écriture n'importe où sur le CP4). Il est désormais
+                // assaini : seuls [a-z A-Z 0-9 _ -] sont acceptés, 40 caractères au plus.
+                presetName = SanitizePresetName(presetName);
+                if (string.IsNullOrEmpty(presetName))
+                {
+                    ErrorLog.Error("PRESETS ERROR: Nom de preset refusé (caractères non autorisés).");
+                    return;
+                }
+
                 // Save JSON payload to persistent file in /user/ directory
                 string path = string.Format("/user/preset_cfg_{0}.json", presetName);
                 System.IO.File.WriteAllText(path, jsonPayload);
@@ -1524,10 +1803,31 @@ namespace VillaFrequenceTvAutomation
             }
         }
 
+        /// <summary>
+        /// P1-5 : liste blanche stricte des caractères d'un nom de preset. Retourne "" si le nom
+        /// contient autre chose que des lettres, chiffres, '_' ou '-' : aucune traversée de
+        /// répertoire n'est possible, le fichier reste dans /user/.
+        /// </summary>
+        private static string SanitizePresetName(string rawName)
+        {
+            if (string.IsNullOrEmpty(rawName)) return "";
+            string name = rawName.Trim();
+            if (name.Length > 40) return "";
+            foreach (char c in name)
+            {
+                bool ok = (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9') || c == '_' || c == '-';
+                if (!ok) return "";
+            }
+            return name;
+        }
+
         private bool ApplyPreset(string presetName)
         {
             try
             {
+                // P1-5 : même assainissement à la lecture (les noms internes du C# y sont insensibles).
+                presetName = SanitizePresetName(presetName);
+                if (string.IsNullOrEmpty(presetName)) return false;
                 string path = string.Format("/user/preset_cfg_{0}.json", presetName);
                 if (!System.IO.File.Exists(path))
                 {
@@ -1594,11 +1894,12 @@ namespace VillaFrequenceTvAutomation
                                     int motorId = (int)item;
                                     if (motorId >= 1 && motorId <= 6)
                                     {
-                                        uint actionJoin = (uint)(80 + motorId * 3 - (isOpening ? 2 : 0));
-                                        foreach (var panel in _touchPanels)
-                                        {
-                                            panel.BooleanInput[actionJoin].BoolValue = true;
-                                        }
+                                        // v3 / P1-2 : impulsion sur le bloc de LA pièce concernée
+                                        // (+61 Monter / +63 Descendre pour le moteur 1, +3 par moteur),
+                                        // au lieu d'une écriture permanente sur la plage d'entrée 81-98
+                                        // de tous les panels.
+                                        uint offset = (uint)((isOpening ? 61 : 63) + (motorId - 1) * 3);
+                                        PulseRoomDigital(roomId, offset);
                                     }
                                 }
                             }
@@ -1641,7 +1942,7 @@ namespace VillaFrequenceTvAutomation
                             foreach (var rm in _roomsRegistry.Values)
                             {
                                 rm.LightLevel1 = 0;
-                                for (int i = 0; i < 6; i++) rm.CircuitLevels[i] = 0;
+                                for (int i = 0; i < 10; i++) rm.CircuitLevels[i] = 0; // P1-3 : 10 circuits, pas 6
                             }
                         }
                     }
@@ -1649,16 +1950,7 @@ namespace VillaFrequenceTvAutomation
                     if (shadeOpt)
                     {
                         if (!ApplyPreset("shade_close"))
-                        {
-                            // Fallback to default
-                            foreach (var rm in _touchPanels)
-                            {
-                                for (uint i = 1; i <= 6; i++)
-                                {
-                                    rm.BooleanInput[80 + i * 3].BoolValue = true;
-                                }
-                            }
-                        }
+                            PulseAllMotorsInAllRooms(false); // v3 / P1-2 : impulsions par pièce, remises à false
                     }
                     
                     if (hvacOpt)

@@ -108,8 +108,10 @@ rien tant que le C# n'a pas été adapté.
 
 ## 5. `pieces` — le cœur du fichier
 
-Un objet par pièce. **Aucune limite pratique en nombre côté GUI** (l'analogique 10 porte
-l'ID), mais **30 maximum** si l'on veut la sélection directe par digital (joins 11-40).
+Un objet par pièce. **30 pièces maximum** depuis le contrat v3 : chaque pièce consomme son
+propre bloc de 100 joins côté GUI (`1000 + (id−1)×100`), et la pièce 30 atteint le join
+3998, juste sous le plafond CH5 de 4000. La même limite vient de `Piece.Select`
+(digitaux 11-40). Au-delà, `VillaJoins.setRoom()` refuse l'identifiant.
 
 ```json
 {
@@ -146,7 +148,7 @@ l'ID), mais **30 maximum** si l'on veut la sélection directe par digital (joins
 | `id` | entier | **Séquentiel à partir de 1, sans trou.** Détermine le join de sélection (`10 + id`) et la base du bloc EISC (`1000 + (id−1)×100`) |
 | `nom` | chaîne | Nom français de référence. Sert de clé dans `traductions` |
 | `icone` | emoji | Icône affichée à gauche du nom dans le menu. Absente ⇒ déduite du nom, sinon 🏠 |
-| `intersystem` | booléen | `true` = le bloc EISC de la pièce est actif. `false` = **aucun signal de cette pièce n'apparaît côté SIMPL**. Absent ⇒ `true` |
+| `intersystem` | booléen | `true` = le bloc **EISC** de la pièce est actif. `false` = **aucun signal de cette pièce n'apparaît côté SIMPL**. Absent ⇒ `true`. ⚠️ Sans effet sur le GUI : depuis la v3, toute pièce écrit sur son propre bloc 1000+ |
 | `widgets` | objet | *(optionnel)* surcharge d'affichage quand cette pièce est affichée |
 
 ⚠️ **`id` doit commencer à 1.** Le C# initialise la pièce active de chaque périphérique à
@@ -323,17 +325,122 @@ main dans `iphone.html`.
 ## 11. `contrat` — à ne pas modifier à la légère
 
 Section de référence, décrite en détail dans [03 — Contrat de joins](03_CONTRAT_JOINS.md).
-Deux familles :
+Version **3** depuis le 11.09.2026. Cinq clés :
 
-- `contrat.signauxGlobaux[]` — 47 entrées, tous les joins < 1000, miroir 1:1 vers l'EISC.
-- `contrat.blocsPieces` — offsets du bloc de 100 joins de chaque pièce
-  (base = `1000 + (id − 1) × 100`).
-- `contrat.eisc` — `actif`, `ipid` (`"0xF0"`), `adresseIp` (`"127.0.0.2"`), `slotCible`.
-  Ce sont les **seuls** champs du contrat réellement relus par le C# au démarrage ; le
-  reste est documentaire et sert de référence commune au GUI, au C# et au SIMPL.
+| Clé | Rôle | Relue par du code ? |
+|---|---|---|
+| `version` | numéro de contrat (3) | non |
+| `notes[]` | historique des renumérotations | non |
+| `eisc` | `actif`, `ipid` (`"0xF0"`), `adresseIp` (`"127.0.0.2"`), `slotCible` | **oui** — C# au démarrage |
+| `signauxGlobaux[]` | joins < 1000, miroir 1:1 vers l'EISC | non |
+| `blocsPieces` | offsets du bloc de 100 joins **EISC** de chaque pièce | non |
+| `blocsPiecesGui` | table de traduction des joins **du GUI** | **oui** — `js/villa-joins.js` |
 
-Modifier un numéro de join ici **ne change rien au comportement** : il faut modifier le C#
-et le GUI en même temps. Le contrat est la documentation de ce qui est codé, pas sa source.
+Modifier un numéro dans `signauxGlobaux` ou `blocsPieces` **ne change rien au
+comportement** : il faut modifier le C# et le GUI en même temps. Ces deux sections sont la
+documentation de ce qui est codé, pas sa source.
+
+`blocsPiecesGui` est l'exception : c'est une section **exécutable**, lue au démarrage du
+GUI. La modifier change immédiatement le comportement des panels.
+
+### 11.1 `contrat.blocsPiecesGui` — la seule section exécutable
+
+Depuis le contrat v3, chaque pièce dispose côté GUI de son propre bloc de 100 joins,
+identique au bloc EISC. Le HTML conserve ses joins « logiques » historiques ;
+`js/villa-joins.js` les traduit à l'exécution en joins « physiques » :
+
+```
+joinPhysique = 1000 + (pieceId − 1) × 100 + offset
+```
+
+```json
+"blocsPiecesGui": {
+  "actif": true,
+  "baseFormule": "1000 + (pieceId - 1) * 100",
+  "tailleBloc": 100,
+  "pieceMax": 30,
+  "joinMaxTheorique": 3998,
+  "appliqueEn": ["deploiement"],
+  "exceptionsGlobales": [ { "plage": "digital 11-40", "nom": "Piece.Select", "raison": "…" } ],
+  "mapping": {
+    "digital": { "51": 21, "55": 50, "150": 51 },
+    "analog":  { "21": 21, "52": 52 },
+    "serial":  { "10": 10, "32": 32 }
+  }
+}
+```
+
+| Clé | Type | Rôle |
+|---|---|---|
+| `actif` | booléen | `false` ⇒ la couche `VillaJoins` est inerte, les joins logiques sont utilisés tels quels (comportement v2) |
+| `description` | chaîne | documentaire |
+| `baseFormule` | chaîne | documentaire — la formule est en dur dans `villa-joins.js` |
+| `tailleBloc` | entier | pas entre deux bases (**100**). Lu par le JS |
+| `pieceMax` | entier | identifiant de pièce maximum accepté par `setRoom()` (**30**) |
+| `joinMaxTheorique` | entier | documentaire : `1000 + (pieceMax−1)×tailleBloc + 98` = 3998 |
+| `appliqueEn` | tableau | modes (`meta.mode`) où la traduction s'applique. Vaut `["deploiement"]` : en **showcase**, un seul panel virtuel, aucune traduction |
+| `note` | chaîne | documentaire |
+| `exceptionsGlobales[]` | tableau | **documentaire uniquement** : liste des plages volontairement laissées globales, avec leur justification. Le code ne la lit pas — ce qui fait foi est l'absence de la clé dans `mapping` |
+| `mapping` | objet | **le cœur exécutable** : trois tables `digital` / `analog` / `serial` |
+
+#### `mapping` — lecture
+
+Chaque table est un dictionnaire `"<join logique du HTML>": <offset dans le bloc>`.
+
+| Écriture | Signification |
+|---|---|
+| `"digital": { "55": 50 }` | le digital **55** du HTML (`AV.Mute`) part sur **base + 50** |
+| `"analog": { "52": 52 }` | l'analogique **52** (`AV.Volume`) part sur **base + 52** |
+| `"serial": { "10": 10 }` | le sériel **10** (`Piece.Nom`) est reçu sur **base + 10** |
+
+Un join **absent** de sa table n'est jamais traduit : il reste global. C'est ainsi que
+`Piece.Select` (digitaux 11-40), l'alarme (41-48, 301-312), les presets globaux
+(401-411, sériel 420), les télécommandes et les signaux système restent communs à toute la
+villa.
+
+Le type est déduit de l'attribut CH5 : `sendEventOnClick`/`OnTouch`/`OnUp`/`OnDown`,
+`receiveStateSelected`/`Visible`/`Enabled` ⇒ digital ; `receiveStateValue`/`Brightness`
+⇒ analogique ; `receiveStateLabel` ⇒ sériel. `sendEventOnChange` est analogique sur un
+`ch5-slider`, digital ailleurs.
+
+#### Ajouter un bouton et son join
+
+1. **Choisir un offset libre** dans le bloc de 100. Consulter les offsets déjà pris dans
+   [03 — Contrat de joins](03_CONTRAT_JOINS.md) § 3 ; rester sous **+98**.
+2. **Choisir un join logique libre** (< 1000) pour le HTML — il ne doit collisionner avec
+   aucun signal global de `signauxGlobaux`.
+3. **Déclarer le couple** dans `blocsPiecesGui.mapping` :
+
+   ```json
+   "digital": { "…": …, "260": 47 }
+   ```
+
+4. **Déclarer le signal** dans `contrat.signauxGlobaux[]` (nom de contrat, type, direction)
+   *et* dans `contrat.blocsPieces.offsets[]` (offset EISC) — sans quoi le slot 2 ne saura
+   pas quoi câbler.
+5. **Écrire le bouton** dans `index.html` **et** `iphone.html` avec le join **logique** :
+
+   ```html
+   <ch5-button label="…" sendEventOnClick="260"></ch5-button>
+   ```
+
+   Ne jamais écrire un join ≥ 1000 dans le HTML : la traduction s'en charge.
+6. **Vérifier** dans la console du panel : `VillaJoins.phys('b', '260')` doit renvoyer
+   `base + 47` pour la pièce affichée, et `VillaJoins.table()` doit lister le nouveau join.
+
+⚠️ Un composant créé **dynamiquement** après le chargement est pris en charge
+automatiquement (`setAttribute` est intercepté) ; en cas de sous-arbre injecté en
+`innerHTML`, appeler `VillaJoins.rescan(element)`.
+
+⚠️ Le join logique reste visible dans le DOM via les attributs miroir `data-join`,
+`data-rjoin`, `data-cjoin`, `data-vjoin` : les règles CSS et les `querySelector` doivent
+cibler **ceux-là**, jamais l'attribut `sendEventOnClick` dont la valeur change avec la
+pièce.
+
+⚠️ `exceptionsGlobales` n'étant pas lue par le code, elle peut diverger de `mapping`.
+C'est le cas aujourd'hui pour le **sériel 10** : listé comme exception globale
+(`Piece.Nom`) alors qu'il figure bien dans `mapping.serial` et est donc traduit en
+`base + 10`. Le comportement réel est celui de `mapping`.
 
 ---
 
@@ -346,7 +453,10 @@ et le GUI en même temps. Le contrat est la documentation de ce qui est codé, p
 | `"intersystem": "true"` (chaîne) | même effet : cast `(bool)` qui lève | Booléen JSON, sans guillemets |
 | Pas de pièce d'`id` 1 | plantage à l'initialisation | Numéroter à partir de 1 |
 | 5ᵉ scène d'éclairage | join digital 55 = **mute audio** — la scène 5 coupe le son | Respecter la limite de 4 |
-| 31ᵉ pièce | join digital 41 = **armement alarme** — sélectionner la pièce 31 arme l'alarme | Respecter la limite de 30 |
+| 31ᵉ pièce | join digital 41 = **armement alarme** — sélectionner la pièce 31 arme l'alarme ; son bloc GUI tomberait à 4000, hors plage CH5 | Respecter la limite de 30 |
+| `blocsPiecesGui.mapping` modifié sans toucher au HTML | le bouton part sur un autre offset du bloc, silencieusement | Toujours modifier mapping + HTML + `blocsPieces` ensemble (voir § 11.1) |
+| Join ≥ 1000 écrit en dur dans le HTML | double traduction impossible : le join est laissé tel quel et vise une **autre pièce** | N'écrire que des joins logiques dans le HTML |
+| `js/villa-joins.js` absent du `.ch5z` | repli inerte : retour au comportement v2, joins partagés entre pièces | Vérifier la présence du fichier, et la console (`[VillaJoins] couche absente`) |
 | 11ᵉ circuit | analogique 81, dans la zone moteurs, silencieusement ignoré | Respecter la limite de 10 |
 | 7ᵉ moteur | joins 99/100/101, hors contrat, ignorés | Respecter la limite de 6 |
 | Fichier qui grossit | ~279 chunks aujourd'hui, chacun acquitté ; le temps de resynchronisation croît linéairement | Éviter les descriptions verbeuses dans le fichier |
@@ -372,3 +482,7 @@ ci-dessus sont totalement silencieuses.
 - **Les 4 boutons de scène, les 5 sources, les 4 partitions et les caméras** sont statiques
   dans le HTML : ils ne sont pas générés à partir de la config.
 - **Le type de moteur** et **`audioVideo.sources[]`** sont ignorés (voir § 5).
+
+Exception notable dans l'autre sens : **`contrat.blocsPiecesGui` est réellement exécuté**
+par le GUI (§ 11.1). C'est aujourd'hui la seule partie du fichier qui change le
+comportement des joins sans recompiler quoi que ce soit.

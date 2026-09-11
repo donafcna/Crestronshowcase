@@ -1,12 +1,19 @@
-# Dépendances et build — générés, ne jamais committer
+# ---- Dependances et build (generes, jamais committes) ----
 node_modules/
 dist/
-# Visual Studio / divers
+
+# ---- Visual Studio / MSBuild ----
 .vs/
 bin/
 obj/
 *.user
-*.zip
-*.vtp
+
+# ---- Artefacts Crestron compiles ----
+*.ch5z
+*.cpz
+*.lpz
+*.clz
+
+# ---- Divers ----
 .vercel
 .DS_Store

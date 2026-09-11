@@ -13,6 +13,27 @@
     <!-- Configuration de dimensionnement embarquée (générée depuis villa_config.json par deploy.ps1) -->
     <script src="villa_config.js"></script>
     <script src="version.js"></script>
+    <!-- Contrat de joins v3 : traduction des joins logiques en joins physiques par piece -->
+    <script src="js/villa-joins.js"></script>
+    <script>
+        /* Filet de sécurité : si js/villa-joins.js n'a pas pu être chargé (fichier absent
+           d'un paquet de déploiement), la GUI continue de fonctionner sur les joins logiques
+           au lieu de planter sur window.VillaJoins. */
+        if (!window.VillaJoins) {
+            window.VillaJoins = {
+                whenReady: function (fn) {
+                    var t = setInterval(function () {
+                        if (typeof CrComLib !== 'undefined') { clearInterval(t); try { fn(CrComLib); } catch (e) { console.error(e); } }
+                    }, 100);
+                },
+                phys: function (t, j) { return String(j); },
+                setRoom: function () {}, rescan: function () {},
+                room: 1, base: 0, actif: false,
+                table: function () { return { actif: false }; }
+            };
+            console.warn('[VillaJoins] couche absente : joins logiques utilisés tels quels.');
+        }
+    </script>
     <!-- Le script ch5-components.js est injecté automatiquement par le module de build de la tablette -->
     <script src="js/webxpanel.js"></script>
     <script src="js/ch5-components.js"></script>
@@ -218,15 +239,23 @@
         body.theme-glass {
             --bg-color: transparent;
             --bg-gradient: linear-gradient(rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.05));
-            /* 10.09.2026 : panneaux translucides (la photo reste visible) mais le
-               backdrop est assombri, donc les textes blancs restent lisibles. */
-            --container-bg: rgba(15, 23, 42, 0.42);
-            --border-color: rgba(255, 255, 255, 0.18);
+            /* Verre dépoli — réglage v1.0.167, identique à la dalle : flou réduit et
+               saturation relevée (photo nette et colorée), voile ardoise allégé à 0.34,
+               backdrop assombri à 40 %. Le voile blanc 0.10 du site vitrine faisait
+               tomber 11 textes sous 4:1 sur l'écran du smartphone. */
+            --container-bg: rgba(15, 23, 42, 0.34);
+            --border-color: rgba(255, 255, 255, 0.30);
             --text-primary: #ffffff;
-            --text-secondary: rgba(255, 255, 255, 0.9);
-            --card-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
-            --blur-val: blur(20px) saturate(1.2) brightness(0.3);
+            --text-secondary: rgba(255, 255, 255, 0.92);
+            --card-shadow: 0 8px 32px rgba(0, 0, 0, 0.30);
+            --blur-val: blur(18px) saturate(1.8) brightness(0.40);
         }
+
+        /* v1.0.167 — défaut préexistant : le vert « Online » du bandeau d'état tombait à
+           2,5:1 sur fond clair et 3,4:1 en Verre dépoli. Accent foncé en Clair, menthe
+           claire en Verre dépoli et en Sombre. */
+        body.theme-light .status-text, body.theme-light .villa-status-item.ok { color: #047857 !important; }
+        body.theme-glass .status-text, body.theme-glass .villa-status-item.ok { color: #a7f3d0 !important; }
 
 
         /* Classes de styles unifiées pour les paramètres HVAC */
@@ -748,7 +777,7 @@
         <div class="room-row">
             <div style="white-space: nowrap; display: flex; align-items: center; gap: 5px;">
                 <span id="admin-trigger-label" style="font-weight: bold; font-size: 0.95rem; color: var(--text-secondary); cursor: pointer; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none;"><span data-i18n="active_piece">Pièce Active</span></span>
-                <span id="version-label" style="font-size: 0.75rem; color: rgba(255,255,255,0.3); font-weight: normal;">v1.0.149</span>
+                <span id="version-label" style="font-size: 0.75rem; color: rgba(255,255,255,0.3); font-weight: normal;">v1.0.167</span>
                 <span id="connection-status" style="font-size: 0.7rem; font-weight: normal; transition: color 0.3s; display: inline-flex; align-items: center; gap: 3px; color: #ef4444; cursor: pointer; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none;">
                     <span class="status-dot" style="display: inline-block; width: 6px; height: 6px; border-radius: 50%; background-color: #ef4444; transition: background-color 0.3s;"></span>
                     <span class="status-text" style="color: inherit;">Déconnecté</span>
@@ -852,12 +881,12 @@
                 <div style="text-align: center;">
                     <span style="color: var(--text-secondary); font-size: 0.95rem; font-weight: bold; text-transform: uppercase; display: block; margin-bottom: 5px;" data-i18n="temp_requested">Consigne</span>
                     <div style="display: flex; align-items: center; justify-content: center; gap: 25px; margin: 5px 0;">
-                        <ch5-button label="-" customClass="temp-btn-mobile" sendEventOnClick="50"></ch5-button>
+                        <ch5-button label="-" customClass="temp-btn-mobile" sendEventOnClick="50" data-join="50"></ch5-button>
                         <div style="font-size: 2.8rem; font-weight: bold; display: flex; align-items: center; gap: 2px; min-width: 100px; justify-content: center;">
                             <span id="consigne-val" class="consigne-temp-val" data-ch5-textcontent="34">--.-</span>
                             <span class="consigne-temp-val" style="font-size: 1.8rem; font-weight: bold;">°C</span>
                         </div>
-                        <ch5-button label="+" customClass="temp-btn-mobile" sendEventOnClick="49"></ch5-button>
+                        <ch5-button label="+" customClass="temp-btn-mobile" sendEventOnClick="49" data-join="49"></ch5-button>
                     </div>
                 </div>
 
@@ -893,7 +922,7 @@
                     <div style="display: flex; align-items: center; justify-content: space-between; width: 100%; box-sizing: border-box; padding: 0 5px;">
                         <button id="mute-btn-mobile" class="mute-btn-mobile" onclick="pressDigital(55)"></button>
                         <div style="flex: 1; max-width: 220px; min-width: 110px; display: flex; align-items: center; justify-content: center; margin: 0 10px; overflow: visible; position: relative; box-sizing: border-box;">
-                            <ch5-slider id="volume-slider-mobile-element" class="volume-slider-mobile" min="0" max="65535" sendEventOnChange="52" receiveStateValue="52" style="width: 100% !important; margin: 0; padding: 0; position: relative;"></ch5-slider>
+                            <ch5-slider id="volume-slider-mobile-element" class="volume-slider-mobile" min="0" max="65535" sendEventOnChange="52" receiveStateValue="52" style="width: 100% !important; margin: 0; padding: 0; position: relative;" data-cjoin="52" data-vjoin="52"></ch5-slider>
                         </div>
                         <button id="power-off-btn-mobile" class="power-off-btn-mobile" onclick="selectSource(0)"></button>
                     </div>
@@ -933,10 +962,10 @@
         <div style="padding: 10px 15px; border-top: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.2);">
             <p style="margin: 0 0 8px 0; font-weight: bold; color: #eab308; font-size: 0.85rem; text-transform: uppercase;">Scénarios Éclairage :</p>
             <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px;">
-                <ch5-button label="TOTAL" customClass="scene-btn" style="height: 36px;" sendEventOnClick="54" receiveStateSelected="54"></ch5-button>
-                <ch5-button label="REPAS" customClass="scene-btn" style="height: 36px;" sendEventOnClick="53" receiveStateSelected="53"></ch5-button>
-                <ch5-button label="CINÉMA" customClass="scene-btn" style="height: 36px;" sendEventOnClick="52" receiveStateSelected="52"></ch5-button>
-                <ch5-button label="OFF" customClass="scene-btn" style="height: 36px; --ch5-button-selected-background-color: #dc2626;" sendEventOnClick="51" receiveStateSelected="51"></ch5-button>
+                <ch5-button label="TOTAL" customClass="scene-btn" style="height: 36px;" sendEventOnClick="54" receiveStateSelected="54" data-join="54" data-rjoin="54"></ch5-button>
+                <ch5-button label="REPAS" customClass="scene-btn" style="height: 36px;" sendEventOnClick="53" receiveStateSelected="53" data-join="53" data-rjoin="53"></ch5-button>
+                <ch5-button label="CINÉMA" customClass="scene-btn" style="height: 36px;" sendEventOnClick="52" receiveStateSelected="52" data-join="52" data-rjoin="52"></ch5-button>
+                <ch5-button label="OFF" customClass="scene-btn" style="height: 36px; --ch5-button-selected-background-color: #dc2626;" sendEventOnClick="51" receiveStateSelected="51" data-join="51" data-rjoin="51"></ch5-button>
             </div>
         </div>
     </div>
@@ -956,10 +985,10 @@
         <div style="padding: 10px 15px; border-top: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.2);">
             <p style="margin: 0 0 8px 0; font-weight: bold; color: #00b4c5; font-size: 0.85rem; text-transform: uppercase;">Scénarios Stores :</p>
             <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px;">
-                <ch5-button label="OUVRIR" customClass="scene-btn" style="height: 36px;" sendEventOnClick="201" receiveStateSelected="201"></ch5-button>
-                <ch5-button label="DEMI" customClass="scene-btn" style="height: 36px;" sendEventOnClick="202" receiveStateSelected="202"></ch5-button>
-                <ch5-button label="INTIME" customClass="scene-btn" style="height: 36px;" sendEventOnClick="203" receiveStateSelected="203"></ch5-button>
-                <ch5-button label="OFF" customClass="scene-btn" style="height: 36px; --ch5-button-selected-background-color: #dc2626;" sendEventOnClick="204" receiveStateSelected="204"></ch5-button>
+                <ch5-button label="OUVRIR" customClass="scene-btn" style="height: 36px;" sendEventOnClick="201" receiveStateSelected="201" data-join="201" data-rjoin="201"></ch5-button>
+                <ch5-button label="DEMI" customClass="scene-btn" style="height: 36px;" sendEventOnClick="202" receiveStateSelected="202" data-join="202" data-rjoin="202"></ch5-button>
+                <ch5-button label="INTIME" customClass="scene-btn" style="height: 36px;" sendEventOnClick="203" receiveStateSelected="203" data-join="203" data-rjoin="203"></ch5-button>
+                <ch5-button label="OFF" customClass="scene-btn" style="height: 36px; --ch5-button-selected-background-color: #dc2626;" sendEventOnClick="204" receiveStateSelected="204" data-join="204" data-rjoin="204"></ch5-button>
             </div>
         </div>
     </div>
@@ -1276,32 +1305,32 @@
         <div id="remote-appletv-layout" style="display: none; flex-direction: column; align-items: center; justify-content: center; width: 100%; position: relative; padding-top: 9px; gap: 12px;">
             <!-- Surface tactile : flèches sur le pourtour, Select au centre -->
             <div style="position: relative; width: 198px; height: 198px; border-radius: 50%; background: #2c2c2e; border: 1px solid rgba(255,255,255,0.15); box-shadow: 0 6px 18px rgba(0,0,0,0.45);">
-                <ch5-button id="src-btn-apple-up" label="⌃" customStyle="background: transparent; border: none; color: #d0d0d0; display: flex; align-items: center; justify-content: center; font-weight: bold; position: absolute; top: 9px; left: 50%; transform: translateX(-50%); width: 55px; height: 39px; font-size: 1.12rem;" sendEventOnClick="211"></ch5-button>
-                <ch5-button id="src-btn-apple-down" label="⌄" customStyle="background: transparent; border: none; color: #d0d0d0; display: flex; align-items: center; justify-content: center; font-weight: bold; position: absolute; bottom: 9px; left: 50%; transform: translateX(-50%); width: 55px; height: 39px; font-size: 1.12rem;" sendEventOnClick="212"></ch5-button>
-                <ch5-button id="src-btn-apple-left" label="‹" customStyle="background: transparent; border: none; color: #d0d0d0; display: flex; align-items: center; justify-content: center; font-weight: bold; position: absolute; left: 9px; top: 50%; transform: translateY(-50%); width: 39px; height: 55px; font-size: 1.12rem;" sendEventOnClick="213"></ch5-button>
-                <ch5-button id="src-btn-apple-right" label="›" customStyle="background: transparent; border: none; color: #d0d0d0; display: flex; align-items: center; justify-content: center; font-weight: bold; position: absolute; right: 9px; top: 50%; transform: translateY(-50%); width: 39px; height: 55px; font-size: 1.12rem;" sendEventOnClick="214"></ch5-button>
-                <ch5-button id="src-btn-apple-ok" label="Select" customStyle="background-color: #4a4a4c; border: 1px solid rgba(255,255,255,0.25); color: #fff; border-radius: 50%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 81px; height: 81px; font-size: 0.85rem; display: flex; align-items: center; justify-content: center; font-weight: bold;" sendEventOnClick="215"></ch5-button>
+                <ch5-button id="src-btn-apple-up" label="⌃" customStyle="background: transparent; border: none; color: #d0d0d0; display: flex; align-items: center; justify-content: center; font-weight: bold; position: absolute; top: 9px; left: 50%; transform: translateX(-50%); width: 55px; height: 39px; font-size: 1.12rem;" sendEventOnClick="211" data-join="211"></ch5-button>
+                <ch5-button id="src-btn-apple-down" label="⌄" customStyle="background: transparent; border: none; color: #d0d0d0; display: flex; align-items: center; justify-content: center; font-weight: bold; position: absolute; bottom: 9px; left: 50%; transform: translateX(-50%); width: 55px; height: 39px; font-size: 1.12rem;" sendEventOnClick="212" data-join="212"></ch5-button>
+                <ch5-button id="src-btn-apple-left" label="‹" customStyle="background: transparent; border: none; color: #d0d0d0; display: flex; align-items: center; justify-content: center; font-weight: bold; position: absolute; left: 9px; top: 50%; transform: translateY(-50%); width: 39px; height: 55px; font-size: 1.12rem;" sendEventOnClick="213" data-join="213"></ch5-button>
+                <ch5-button id="src-btn-apple-right" label="›" customStyle="background: transparent; border: none; color: #d0d0d0; display: flex; align-items: center; justify-content: center; font-weight: bold; position: absolute; right: 9px; top: 50%; transform: translateY(-50%); width: 39px; height: 55px; font-size: 1.12rem;" sendEventOnClick="214" data-join="214"></ch5-button>
+                <ch5-button id="src-btn-apple-ok" label="Select" customStyle="background-color: #4a4a4c; border: 1px solid rgba(255,255,255,0.25); color: #fff; border-radius: 50%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 81px; height: 81px; font-size: 0.85rem; display: flex; align-items: center; justify-content: center; font-weight: bold;" sendEventOnClick="215" data-join="215"></ch5-button>
             </div>
             <!-- Retour / Accueil -->
             <div style="display: flex; justify-content: space-between; width: 198px;">
-                <ch5-button id="src-btn-apple-menu" label="‹" customStyle="background-color: #2c2c2e; border: 1px solid rgba(255,255,255,0.15); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; width: 50px; height: 50px; font-size: 0.99rem; font-size: 1.12rem;" sendEventOnClick="216"></ch5-button>
-                <ch5-button id="src-btn-apple-home" label="⌂" customStyle="background-color: #2c2c2e; border: 1px solid rgba(255,255,255,0.15); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; width: 50px; height: 50px; font-size: 0.99rem;" sendEventOnClick="217"></ch5-button>
+                <ch5-button id="src-btn-apple-menu" label="‹" customStyle="background-color: #2c2c2e; border: 1px solid rgba(255,255,255,0.15); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; width: 50px; height: 50px; font-size: 0.99rem; font-size: 1.12rem;" sendEventOnClick="216" data-join="216"></ch5-button>
+                <ch5-button id="src-btn-apple-home" label="⌂" customStyle="background-color: #2c2c2e; border: 1px solid rgba(255,255,255,0.15); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; width: 50px; height: 50px; font-size: 0.99rem;" sendEventOnClick="217" data-join="217"></ch5-button>
             </div>
             <!-- Lecture-pause / Volume + -->
             <div style="display: flex; justify-content: space-between; width: 198px;">
-                <ch5-button id="src-btn-apple-play" label="⏯" customStyle="background-color: #2c2c2e; border: 1px solid rgba(255,255,255,0.15); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; width: 50px; height: 50px; font-size: 0.99rem;" sendEventOnClick="218"></ch5-button>
+                <ch5-button id="src-btn-apple-play" label="⏯" customStyle="background-color: #2c2c2e; border: 1px solid rgba(255,255,255,0.15); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; width: 50px; height: 50px; font-size: 0.99rem;" sendEventOnClick="218" data-join="218"></ch5-button>
                 <ch5-button id="src-btn-apple-volup" label="🔊+" customStyle="background-color: #2c2c2e; border: 1px solid rgba(255,255,255,0.15); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; width: 50px; height: 50px; font-size: 0.99rem;" onclick="window.remoteVolume(1)"></ch5-button>
             </div>
             <!-- Sourdine / Volume − -->
             <div style="display: flex; justify-content: space-between; width: 198px;">
-                <ch5-button id="src-btn-apple-mute" label="🔇" customStyle="background-color: #2c2c2e; border: 1px solid rgba(255,255,255,0.15); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; width: 50px; height: 50px; font-size: 0.99rem;" sendEventOnClick="55" onclick="window.toggleMute()"></ch5-button>
+                <ch5-button id="src-btn-apple-mute" label="🔇" customStyle="background-color: #2c2c2e; border: 1px solid rgba(255,255,255,0.15); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; width: 50px; height: 50px; font-size: 0.99rem;" sendEventOnClick="55" onclick="window.toggleMute()" data-join="55"></ch5-button>
                 <ch5-button id="src-btn-apple-voldown" label="🔉−" customStyle="background-color: #2c2c2e; border: 1px solid rgba(255,255,255,0.15); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; width: 50px; height: 50px; font-size: 0.99rem;" onclick="window.remoteVolume(-1)"></ch5-button>
             </div>
         </div>
         <!-- Télécommande Swisscom TV (box UHD) : toutes les touches de la télécommande physique -->
         <div id="remote-swisscom-layout" style="display: none; flex-direction: column; gap: 16px; align-items: center; width: 100%; max-height: 70vh; overflow-y: auto;">
             <div style="display: flex; flex-direction: column; gap: 12px; align-items: center;">
-                <div style="display: flex; gap: 10px; justify-content: center;"><ch5-button id="src-btn-sw-power" label="⏻" customStyle="background: #2c2c2e; border: 1px solid rgba(255,255,255,0.18); color: #fff; border-radius: 50%; font-weight: bold; display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; font-size: 0.8rem; "></ch5-button><ch5-button id="src-btn-sw-assistant" label="✦" customStyle="background: #2c2c2e; border: 1px solid rgba(255,255,255,0.18); color: #6fa8ff; border-radius: 50%; font-weight: bold; display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; font-size: 0.8rem; color: #1a73e8;"></ch5-button><ch5-button id="src-btn-sw-input" label="⇥" customStyle="background: #2c2c2e; border: 1px solid rgba(255,255,255,0.18); color: #fff; border-radius: 50%; font-weight: bold; display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; font-size: 0.8rem; "></ch5-button><ch5-button id="src-btn-sw-mute" label="🔇" customStyle="background: #2c2c2e; border: 1px solid rgba(255,255,255,0.18); color: #fff; border-radius: 50%; font-weight: bold; display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; font-size: 0.8rem; " onclick="window.toggleMute()"></ch5-button></div>
+                <div style="display: flex; gap: 10px; justify-content: center;"><ch5-button id="src-btn-sw-power" label="⏻" customStyle="background: #2c2c2e; border: 1px solid rgba(255,255,255,0.18); color: #fff; border-radius: 50%; font-weight: bold; display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; font-size: 0.8rem; "></ch5-button><ch5-button id="src-btn-sw-assistant" label="✦" customStyle="background: #2c2c2e; border: 1px solid rgba(255,255,255,0.18); color: #6fa8ff; border-radius: 50%; font-weight: bold; display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; font-size: 0.8rem; color: #1a73e8;"></ch5-button><ch5-button id="src-btn-sw-input" label="⇥" customStyle="background: #2c2c2e; border: 1px solid rgba(255,255,255,0.18); color: #fff; border-radius: 50%; font-weight: bold; display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; font-size: 0.8rem; "></ch5-button><ch5-button id="src-btn-sw-mute" label="🔇" customStyle="background: #2c2c2e; border: 1px solid rgba(255,255,255,0.18); color: #fff; border-radius: 50%; font-weight: bold; display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; font-size: 0.8rem; "></ch5-button></div>
                 <div style="display: flex; gap: 10px; justify-content: center;"><ch5-button id="src-btn-sw-rew" label="⏪" customStyle="background: #2c2c2e; border: 1px solid rgba(255,255,255,0.18); color: #fff; border-radius: 50%; font-weight: bold; display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; font-size: 0.8rem; "></ch5-button><ch5-button id="src-btn-sw-rec" label="●" customStyle="background: #2c2c2e; border: 1px solid rgba(255,255,255,0.18); color: #fff; border-radius: 50%; font-weight: bold; display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; font-size: 0.8rem; color: #e0202a; font-size: 1.3rem;"></ch5-button><ch5-button id="src-btn-sw-fwd" label="⏩" customStyle="background: #2c2c2e; border: 1px solid rgba(255,255,255,0.18); color: #fff; border-radius: 50%; font-weight: bold; display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; font-size: 0.8rem; "></ch5-button></div>
                 <div style="display: flex; gap: 10px; justify-content: center;"><ch5-button id="src-btn-sw-replay" label="↶" customStyle="background: #2c2c2e; border: 1px solid rgba(255,255,255,0.18); color: #fff; border-radius: 50%; font-weight: bold; display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; font-size: 0.8rem; "></ch5-button><ch5-button id="src-btn-sw-play" label="⏯" customStyle="background: #2c2c2e; border: 1px solid rgba(255,255,255,0.18); color: #fff; border-radius: 50%; font-weight: bold; display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; font-size: 0.8rem; "></ch5-button><ch5-button id="src-btn-sw-skip" label="↷" customStyle="background: #2c2c2e; border: 1px solid rgba(255,255,255,0.18); color: #fff; border-radius: 50%; font-weight: bold; display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; font-size: 0.8rem; "></ch5-button></div>
                 <div style="position: relative; width: 190px; height: 190px; border-radius: 18px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.18);">
@@ -1370,15 +1399,15 @@
             
             <!-- Contrôles -->
             <div style="display: flex; gap: 12px; align-items: center; justify-content: center; width: 100%;">
-                <ch5-button label="⏮️" customClass="scene-btn" style="width: 48px; height: 38px;" sendEventOnClick="253"></ch5-button>
-                <ch5-button label="⏯️" customClass="scene-btn" style="width: 60px; height: 42px;" sendEventOnClick="251"></ch5-button>
-                <ch5-button label="⏭️" customClass="scene-btn" style="width: 48px; height: 38px;" sendEventOnClick="252"></ch5-button>
+                <ch5-button label="⏮️" customClass="scene-btn" style="width: 48px; height: 38px;" sendEventOnClick="253" data-join="253"></ch5-button>
+                <ch5-button label="⏯️" customClass="scene-btn" style="width: 60px; height: 42px;" sendEventOnClick="251" data-join="251"></ch5-button>
+                <ch5-button label="⏭️" customClass="scene-btn" style="width: 48px; height: 38px;" sendEventOnClick="252" data-join="252"></ch5-button>
             </div>
             
             <!-- Volume Slider -->
             <div style="width: 100%; display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.02); padding: 8px 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); box-sizing: border-box;">
                 <span style="font-weight: bold; font-size: 0.8rem; color: var(--text-secondary); white-space: nowrap;">Vol :</span>
-                <ch5-slider class="volume-slider-mobile" min="0" max="65535" sendEventOnChange="254" receiveStateValue="254" style="flex: 1; margin: 0; padding: 0; height: 20px;"></ch5-slider>
+                <ch5-slider class="volume-slider-mobile" min="0" max="65535" sendEventOnChange="254" receiveStateValue="254" style="flex: 1; margin: 0; padding: 0; height: 20px;" data-cjoin="254" data-vjoin="254"></ch5-slider>
             </div>
         </div>
     </div>
@@ -1430,9 +1459,9 @@
                         <span id="alarm-part-1-status" style="font-size: 0.7rem; font-weight: bold; padding: 1px 6px; border-radius: 3px; background: rgba(16,185,129,0.1); color: #10b981;">DESACTIVÉE</span>
                     </div>
                     <div style="display: flex; gap: 4px;">
-                        <ch5-button label="ACTIVER" customClass="alarm-btn" sendEventOnClick="301" receiveStateSelected="301" style="height: 32px; flex: 1;"></ch5-button>
-                        <ch5-button label="PARTIEL" customClass="alarm-btn" sendEventOnClick="302" receiveStateSelected="302" style="height: 32px; flex: 1;"></ch5-button>
-                        <ch5-button label="OFF" customClass="alarm-btn" sendEventOnClick="303" receiveStateSelected="303" style="height: 32px; flex: 1.2;"></ch5-button>
+                        <ch5-button label="ACTIVER" customClass="alarm-btn" sendEventOnClick="301" receiveStateSelected="301" style="height: 32px; flex: 1;" data-join="301" data-rjoin="301"></ch5-button>
+                        <ch5-button label="PARTIEL" customClass="alarm-btn" sendEventOnClick="302" receiveStateSelected="302" style="height: 32px; flex: 1;" data-join="302" data-rjoin="302"></ch5-button>
+                        <ch5-button label="OFF" customClass="alarm-btn" sendEventOnClick="303" receiveStateSelected="303" style="height: 32px; flex: 1.2;" data-join="303" data-rjoin="303"></ch5-button>
                     </div>
                 </div>
                 <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 6px; padding: 8px; display: flex; flex-direction: column; gap: 6px;">
@@ -1441,9 +1470,9 @@
                         <span id="alarm-part-2-status" style="font-size: 0.7rem; font-weight: bold; padding: 1px 6px; border-radius: 3px; background: rgba(16,185,129,0.1); color: #10b981;">DESACTIVÉE</span>
                     </div>
                     <div style="display: flex; gap: 4px;">
-                        <ch5-button label="ACTIVER" customClass="alarm-btn" sendEventOnClick="304" receiveStateSelected="304" style="height: 32px; flex: 1;"></ch5-button>
-                        <ch5-button label="PARTIEL" customClass="alarm-btn" sendEventOnClick="305" receiveStateSelected="305" style="height: 32px; flex: 1;"></ch5-button>
-                        <ch5-button label="OFF" customClass="alarm-btn" sendEventOnClick="306" receiveStateSelected="306" style="height: 32px; flex: 1.2;"></ch5-button>
+                        <ch5-button label="ACTIVER" customClass="alarm-btn" sendEventOnClick="304" receiveStateSelected="304" style="height: 32px; flex: 1;" data-join="304" data-rjoin="304"></ch5-button>
+                        <ch5-button label="PARTIEL" customClass="alarm-btn" sendEventOnClick="305" receiveStateSelected="305" style="height: 32px; flex: 1;" data-join="305" data-rjoin="305"></ch5-button>
+                        <ch5-button label="OFF" customClass="alarm-btn" sendEventOnClick="306" receiveStateSelected="306" style="height: 32px; flex: 1.2;" data-join="306" data-rjoin="306"></ch5-button>
                     </div>
                 </div>
                 <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 6px; padding: 8px; display: flex; flex-direction: column; gap: 6px;">
@@ -1452,9 +1481,9 @@
                         <span id="alarm-part-3-status" style="font-size: 0.7rem; font-weight: bold; padding: 1px 6px; border-radius: 3px; background: rgba(16,185,129,0.1); color: #10b981;">DESACTIVÉE</span>
                     </div>
                     <div style="display: flex; gap: 4px;">
-                        <ch5-button label="ACTIVER" customClass="alarm-btn" sendEventOnClick="307" receiveStateSelected="307" style="height: 32px; flex: 1;"></ch5-button>
-                        <ch5-button label="PARTIEL" customClass="alarm-btn" sendEventOnClick="308" receiveStateSelected="308" style="height: 32px; flex: 1;"></ch5-button>
-                        <ch5-button label="OFF" customClass="alarm-btn" sendEventOnClick="309" receiveStateSelected="309" style="height: 32px; flex: 1.2;"></ch5-button>
+                        <ch5-button label="ACTIVER" customClass="alarm-btn" sendEventOnClick="307" receiveStateSelected="307" style="height: 32px; flex: 1;" data-join="307" data-rjoin="307"></ch5-button>
+                        <ch5-button label="PARTIEL" customClass="alarm-btn" sendEventOnClick="308" receiveStateSelected="308" style="height: 32px; flex: 1;" data-join="308" data-rjoin="308"></ch5-button>
+                        <ch5-button label="OFF" customClass="alarm-btn" sendEventOnClick="309" receiveStateSelected="309" style="height: 32px; flex: 1.2;" data-join="309" data-rjoin="309"></ch5-button>
                     </div>
                 </div>
                 <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 6px; padding: 8px; display: flex; flex-direction: column; gap: 6px;">
@@ -1463,9 +1492,9 @@
                         <span id="alarm-part-4-status" style="font-size: 0.7rem; font-weight: bold; padding: 1px 6px; border-radius: 3px; background: rgba(16,185,129,0.1); color: #10b981;">DESACTIVÉE</span>
                     </div>
                     <div style="display: flex; gap: 4px;">
-                        <ch5-button label="ACTIVER" customClass="alarm-btn" sendEventOnClick="310" receiveStateSelected="310" style="height: 32px; flex: 1;"></ch5-button>
-                        <ch5-button label="PARTIEL" customClass="alarm-btn" sendEventOnClick="311" receiveStateSelected="311" style="height: 32px; flex: 1;"></ch5-button>
-                        <ch5-button label="OFF" customClass="alarm-btn" sendEventOnClick="312" receiveStateSelected="312" style="height: 32px; flex: 1.2;"></ch5-button>
+                        <ch5-button label="ACTIVER" customClass="alarm-btn" sendEventOnClick="310" receiveStateSelected="310" style="height: 32px; flex: 1;" data-join="310" data-rjoin="310"></ch5-button>
+                        <ch5-button label="PARTIEL" customClass="alarm-btn" sendEventOnClick="311" receiveStateSelected="311" style="height: 32px; flex: 1;" data-join="311" data-rjoin="311"></ch5-button>
+                        <ch5-button label="OFF" customClass="alarm-btn" sendEventOnClick="312" receiveStateSelected="312" style="height: 32px; flex: 1.2;" data-join="312" data-rjoin="312"></ch5-button>
                     </div>
                 </div>
             </div>
@@ -1504,9 +1533,9 @@
                     <button onclick="window.openGlobalPresetCustomizer('lighting')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; cursor: pointer; outline: none; font-size: 0.75rem;"><svg class="gear-icon" viewBox="0 0 512 512" aria-hidden="true"><path d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6l-43.3 75c-3.2 8.7-12.2 13.9-21.4 11.7l-56.4-13.6c-15.6 12-33 21.6-51.7 28.5l-11.9 57.3c-2 9.7-10.5 16.7-20.5 16.7H220.4c-10 0-18.5-7-20.5-16.7l-11.9-57.3c-18.7-6.9-36.1-16.4-51.7-28.5l-56.4 13.6c-9.2 2.2-18.2-3-21.4-11.7l-43.3-75c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4c-1.1-8.3-1.7-16.8-1.7-25.4s.6-17.1 1.7-25.4L21.6 191.2c-6.9-6.2-9.6-15.9-6.4-24.6l43.3-75c3.2-8.7 12.2-13.9 21.4-11.7l56.4 13.6c15.6-12 33-21.6 51.7-28.5l11.9-57.3c2-9.7 10.5-16.7 20.5-16.7h72.8c10 0 18.5 7 20.5 16.7l11.9 57.3c18.7 6.9 36.1 16.4 51.7 28.5l56.4-13.6c9.2-2.2 18.2 3 21.4 11.7l43.3 75zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"/></svg></button>
                 </div>
                 <div style="display: flex; gap: 4px;">
-                    <ch5-button label="ON" customClass="scene-btn" style="height: 32px; flex: 1;" sendEventOnClick="401"></ch5-button>
-                    <ch5-button label="ÉCO" customClass="scene-btn" style="height: 32px; flex: 1;" sendEventOnClick="403"></ch5-button>
-                    <ch5-button label="OFF" customClass="scene-btn" style="height: 32px; flex: 1.2; --ch5-button-selected-background-color: #dc2626;" sendEventOnClick="402"></ch5-button>
+                    <ch5-button label="ON" customClass="scene-btn" style="height: 32px; flex: 1;" sendEventOnClick="401" data-join="401"></ch5-button>
+                    <ch5-button label="ÉCO" customClass="scene-btn" style="height: 32px; flex: 1;" sendEventOnClick="403" data-join="403"></ch5-button>
+                    <ch5-button label="OFF" customClass="scene-btn" style="height: 32px; flex: 1.2; --ch5-button-selected-background-color: #dc2626;" sendEventOnClick="402" data-join="402"></ch5-button>
                 </div>
             </div>
             <!-- Stores Globaux -->
@@ -1516,9 +1545,9 @@
                     <button onclick="window.openGlobalPresetCustomizer('shades')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; cursor: pointer; outline: none; font-size: 0.75rem;"><svg class="gear-icon" viewBox="0 0 512 512" aria-hidden="true"><path d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6l-43.3 75c-3.2 8.7-12.2 13.9-21.4 11.7l-56.4-13.6c-15.6 12-33 21.6-51.7 28.5l-11.9 57.3c-2 9.7-10.5 16.7-20.5 16.7H220.4c-10 0-18.5-7-20.5-16.7l-11.9-57.3c-18.7-6.9-36.1-16.4-51.7-28.5l-56.4 13.6c-9.2 2.2-18.2-3-21.4-11.7l-43.3-75c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4c-1.1-8.3-1.7-16.8-1.7-25.4s.6-17.1 1.7-25.4L21.6 191.2c-6.9-6.2-9.6-15.9-6.4-24.6l43.3-75c3.2-8.7 12.2-13.9 21.4-11.7l56.4 13.6c15.6-12 33-21.6 51.7-28.5l11.9-57.3c2-9.7 10.5-16.7 20.5-16.7h72.8c10 0 18.5 7 20.5 16.7l11.9 57.3c18.7 6.9 36.1 16.4 51.7 28.5l56.4-13.6c9.2-2.2 18.2 3 21.4 11.7l43.3 75zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"/></svg></button>
                 </div>
                 <div style="display: flex; gap: 4px;">
-                    <ch5-button label="OUVRIR" customClass="scene-btn" style="height: 32px; flex: 1;" sendEventOnClick="404"></ch5-button>
-                    <ch5-button label="INT." customClass="scene-btn" style="height: 32px; flex: 1;" sendEventOnClick="406"></ch5-button>
-                    <ch5-button label="FERMER" customClass="scene-btn" style="height: 32px; flex: 1.2; --ch5-button-selected-background-color: #dc2626;" sendEventOnClick="405"></ch5-button>
+                    <ch5-button label="OUVRIR" customClass="scene-btn" style="height: 32px; flex: 1;" sendEventOnClick="404" data-join="404"></ch5-button>
+                    <ch5-button label="INT." customClass="scene-btn" style="height: 32px; flex: 1;" sendEventOnClick="406" data-join="406"></ch5-button>
+                    <ch5-button label="FERMER" customClass="scene-btn" style="height: 32px; flex: 1.2; --ch5-button-selected-background-color: #dc2626;" sendEventOnClick="405" data-join="405"></ch5-button>
                 </div>
             </div>
             <!-- CVC Global -->
@@ -1528,9 +1557,9 @@
                     <button onclick="window.openGlobalPresetCustomizer('hvac')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; cursor: pointer; outline: none; font-size: 0.75rem;"><svg class="gear-icon" viewBox="0 0 512 512" aria-hidden="true"><path d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6l-43.3 75c-3.2 8.7-12.2 13.9-21.4 11.7l-56.4-13.6c-15.6 12-33 21.6-51.7 28.5l-11.9 57.3c-2 9.7-10.5 16.7-20.5 16.7H220.4c-10 0-18.5-7-20.5-16.7l-11.9-57.3c-18.7-6.9-36.1-16.4-51.7-28.5l-56.4 13.6c-9.2 2.2-18.2-3-21.4-11.7l-43.3-75c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4c-1.1-8.3-1.7-16.8-1.7-25.4s.6-17.1 1.7-25.4L21.6 191.2c-6.9-6.2-9.6-15.9-6.4-24.6l43.3-75c3.2-8.7 12.2-13.9 21.4-11.7l56.4 13.6c15.6-12 33-21.6 51.7-28.5l11.9-57.3c2-9.7 10.5-16.7 20.5-16.7h72.8c10 0 18.5 7 20.5 16.7l11.9 57.3c18.7 6.9 36.1 16.4 51.7 28.5l56.4-13.6c9.2-2.2 18.2 3 21.4 11.7l43.3 75zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"/></svg></button>
                 </div>
                 <div style="display: flex; gap: 4px;">
-                    <ch5-button label="CONFORT" customClass="scene-btn" style="height: 32px; flex: 1;" sendEventOnClick="407"></ch5-button>
-                    <ch5-button label="NUIT" customClass="scene-btn" style="height: 32px; flex: 1;" sendEventOnClick="408"></ch5-button>
-                    <ch5-button label="GEL" customClass="scene-btn" style="height: 32px; flex: 1;" sendEventOnClick="409"></ch5-button>
+                    <ch5-button label="CONFORT" customClass="scene-btn" style="height: 32px; flex: 1;" sendEventOnClick="407" data-join="407"></ch5-button>
+                    <ch5-button label="NUIT" customClass="scene-btn" style="height: 32px; flex: 1;" sendEventOnClick="408" data-join="408"></ch5-button>
+                    <ch5-button label="GEL" customClass="scene-btn" style="height: 32px; flex: 1;" sendEventOnClick="409" data-join="409"></ch5-button>
                 </div>
             </div>
             <!-- Vacances -->
@@ -1540,8 +1569,8 @@
                     <button onclick="window.openGlobalPresetCustomizer('vacation')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; cursor: pointer; outline: none; font-size: 0.75rem;"><svg class="gear-icon" viewBox="0 0 512 512" aria-hidden="true"><path d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6l-43.3 75c-3.2 8.7-12.2 13.9-21.4 11.7l-56.4-13.6c-15.6 12-33 21.6-51.7 28.5l-11.9 57.3c-2 9.7-10.5 16.7-20.5 16.7H220.4c-10 0-18.5-7-20.5-16.7l-11.9-57.3c-18.7-6.9-36.1-16.4-51.7-28.5l-56.4 13.6c-9.2 2.2-18.2-3-21.4-11.7l-43.3-75c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4c-1.1-8.3-1.7-16.8-1.7-25.4s.6-17.1 1.7-25.4L21.6 191.2c-6.9-6.2-9.6-15.9-6.4-24.6l43.3-75c3.2-8.7 12.2-13.9 21.4-11.7l56.4 13.6c15.6-12 33-21.6 51.7-28.5l11.9-57.3c2-9.7 10.5-16.7 20.5-16.7h72.8c10 0 18.5 7 20.5 16.7l11.9 57.3c18.7 6.9 36.1 16.4 51.7 28.5l56.4-13.6c9.2-2.2 18.2 3 21.4 11.7l43.3 75zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"/></svg></button>
                 </div>
                 <div style="display: flex; gap: 4px;">
-                    <ch5-button label="ACTIVER" customClass="scene-btn" style="height: 32px; flex: 1;" sendEventOnClick="410" receiveStateSelected="410"></ch5-button>
-                    <ch5-button label="DÉSACTIVER" customClass="scene-btn" style="height: 32px; flex: 1.5; --ch5-button-selected-background-color: #dc2626;" sendEventOnClick="411" receiveStateSelected="411"></ch5-button>
+                    <ch5-button label="ACTIVER" customClass="scene-btn" style="height: 32px; flex: 1;" sendEventOnClick="410" receiveStateSelected="410" data-join="410" data-rjoin="410"></ch5-button>
+                    <ch5-button label="DÉSACTIVER" customClass="scene-btn" style="height: 32px; flex: 1.5; --ch5-button-selected-background-color: #dc2626;" sendEventOnClick="411" receiveStateSelected="411" data-join="411" data-rjoin="411"></ch5-button>
                 </div>
             </div>
         </div>
@@ -2097,7 +2126,10 @@
                     document.getElementById('remote-standard-layout').style.display = 'none';
                     document.getElementById('remote-appletv-layout').style.display = 'none';
                     Object.keys(mapping).forEach(function(k) { const el = document.getElementById('src-btn-sw-' + k); if (el) el.setAttribute('sendEventOnClick', String(mapping[k])); });
-                    document.getElementById('src-btn-sw-mute').setAttribute('sendEventOnClick', '55');
+                    // v1.0.167 : le join 563 (mute de la telecommande Swisscom) etait ecrase par le 55,
+                    // donc jamais emis. Le bouton garde le 563 (telecommande) ; le feedback de mute de
+                    // la piece reste affiche via receiveStateSelected 55 et window.toggleMute() n'est
+                    // plus appele sur ce bouton (voir l'attribut onclick retire dans le HTML).
                     document.getElementById('src-btn-sw-mute').setAttribute('receiveStateSelected', '55');
                 } else if (sourceId === 'appletv') {
                     document.getElementById('remote-standard-layout').style.display = 'none';
@@ -2111,6 +2143,11 @@
                     document.getElementById('src-btn-apple-menu').setAttribute('sendEventOnClick', mapping.back.toString());
                     document.getElementById('src-btn-apple-home').setAttribute('sendEventOnClick', mapping.home.toString());
                     document.getElementById('src-btn-apple-play').setAttribute('sendEventOnClick', mapping.play.toString());
+                    // v1.0.167 : rew (219) et fwd (220) etaient declares au contrat mais jamais cables.
+                    ['rew', 'fwd'].forEach(function (k) {
+                        const el = document.getElementById('src-btn-apple-' + k);
+                        if (el && mapping[k]) { el.setAttribute('sendEventOnClick', String(mapping[k])); }
+                    });
                     document.getElementById('src-btn-apple-mute').setAttribute('receiveStateSelected', '55');
                 } else {
                     document.getElementById('remote-standard-layout').style.display = 'flex';
@@ -2125,7 +2162,7 @@
                         // Télécommandes (Apple TV, Swisscom TV) : volume +/− par pas de 5 % sur le volume A/V de la pièce (analogique 52).
             // Le feedback revient par le join 52 (CP4 en déploiement, moteur local en vitrine) et recale le curseur.
             window.remoteVolume = function(dir) {
-                const slider = document.querySelector('ch5-slider[sendEventOnChange="52"]');
+                const slider = document.querySelector('ch5-slider[data-cjoin="52"]');
                 let v = parseInt(slider ? slider.getAttribute('value') : '0', 10) || 0;
                 v = Math.max(0, Math.min(65535, v + dir * 3277));
                 if (typeof CrComLib !== 'undefined') CrComLib.publishEvent('n', '52', v);
@@ -2162,18 +2199,70 @@
                 document.getElementById('alarm-overlay').style.display = 'none';
                 if (backdrop) backdrop.style.display = 'none';
             };
+            // v1.0.167 : window.toggleMute() etait appele par src-btn-apple-mute et src-btn-sw-mute
+            // sans avoir jamais ete defini -> clic sans effet. Le mute passe par le join 55 (AV.Mute),
+            // traduit par VillaJoins en <base piece>+50.
+            window.toggleMute = function () {
+                if (typeof CrComLib === 'undefined') { return; }
+                const el = document.getElementById('src-btn-apple-mute') || document.getElementById('src-btn-sw-mute');
+                const on = !(el && el.getAttribute('selected') === 'true');
+                CrComLib.publishEvent('b', '55', on);
+            };
+
+            // v1.0.167 : le code etait compare a '1234' EN DUR dans le JavaScript du panel.
+            // En deploiement la saisie part a la centrale (seriel 43), qui repond par une impulsion
+            // sur le digital 44 (accepte) ou 45 (refuse) ; la touche C envoie le 46.
+            var alarmCodeTimer = null;
+            function alarmModeDeploiement() {
+                var vc = window.villaConfig || window.villaConfigEmbedded;
+                return !!(vc && vc.meta && vc.meta.mode === 'deploiement');
+            }
+            window.showAlarmPartitions = function () {
+                if (alarmCodeTimer) { clearTimeout(alarmCodeTimer); alarmCodeTimer = null; }
+                var kp = document.getElementById('alarm-keypad-screen');
+                var pt = document.getElementById('alarm-partitions-screen');
+                if (kp) kp.style.display = 'none';
+                if (pt) pt.style.display = 'flex';
+            };
+            window.rejectAlarmCode = function (msg) {
+                if (alarmCodeTimer) { clearTimeout(alarmCodeTimer); alarmCodeTimer = null; }
+                var e = document.getElementById('alarm-error-msg');
+                if (e) e.innerText = msg || "❌ CODE INCORRECT !";
+                alarmInputCode = "";
+                var d = document.getElementById('alarm-code-display');
+                if (d) d.innerText = "";
+            };
+            window.VillaJoins.whenReady(function (CrComLib) {
+                CrComLib.subscribeState('b', '44', function (v) { if (v) window.showAlarmPartitions(); });
+                CrComLib.subscribeState('b', '45', function (v) { if (v) window.rejectAlarmCode(); });
+            });
+
             window.pressAlarmKey = function(key) {
                 const errorMsg = document.getElementById('alarm-error-msg');
                 errorMsg.innerText = "";
                 if (key === 'C') {
                     alarmInputCode = "";
+                    if (typeof CrComLib !== 'undefined') {
+                        CrComLib.publishEvent('b', '46', true);
+                        setTimeout(function () { CrComLib.publishEvent('b', '46', false); }, 100);
+                    }
                 } else if (key === 'E') {
-                    if (alarmInputCode === '1234') {
-                        document.getElementById('alarm-keypad-screen').style.display = 'none';
-                        document.getElementById('alarm-partitions-screen').style.display = 'flex';
-                    } else {
-                        errorMsg.innerText = "❌ CODE INCORRECT !";
+                    if (alarmModeDeploiement()) {
+                        if (typeof CrComLib === 'undefined') { window.rejectAlarmCode("⚠ CENTRALE INJOIGNABLE"); return; }
+                        CrComLib.publishEvent('s', '43', alarmInputCode);
+                        errorMsg.innerText = "Vérification…";
+                        if (alarmCodeTimer) clearTimeout(alarmCodeTimer);
+                        alarmCodeTimer = setTimeout(function () {
+                            window.rejectAlarmCode("⚠ CENTRALE INJOIGNABLE (joins 43/44/45)");
+                        }, 2500);
                         alarmInputCode = "";
+                        document.getElementById('alarm-code-display').innerText = "";
+                        return;
+                    }
+                    if (alarmInputCode === '1234') {
+                        window.showAlarmPartitions();
+                    } else {
+                        window.rejectAlarmCode();
                     }
                 } else {
                     if (alarmInputCode.length < 4) {
@@ -3117,8 +3206,10 @@
                     updateActiveRoomUI(roomVal);
                 };
 
-                // Room active feedback (Digital Joins 11-18)
-                for (let i = 11; i <= 18; i++) {
+                // Feedback de selection de piece (digitaux 11..10+N).
+                // v1.0.167 : la boucle s'arretait a 18, les pieces 9 a 15 n'avaient aucun retour d'etat.
+                const nbPiecesFb = ((window.villaConfig || window.villaConfigEmbedded || {}).pieces || []).length || 15;
+                for (let i = 11; i <= 10 + nbPiecesFb; i++) {
                     CrComLib.subscribeState('b', i.toString(), (value) => {
                         if (value) {
                             const roomId = i - 10;
@@ -3251,64 +3342,8 @@
         });
 
         // Son caché « funny.mp3 » désactivé le 10.09.2026 : fonction conservée mais silencieuse.
-        window.playFunnySound = function() { /* silencieux */ };
+        window.playFunnySound = function() { /* supprimé — aucun son dans la GUI */ };
 
-        function playSynthSound() {
-            try {
-                const AudioContext = window.AudioContext || window.webkitAudioContext;
-                if (!AudioContext) return;
-                const ctx = new AudioContext();
-                let now = ctx.currentTime;
-                
-                // 1. Boing cartoon (0s - 0.7s)
-                const osc1 = ctx.createOscillator();
-                const gain1 = ctx.createGain();
-                osc1.type = 'triangle';
-                osc1.frequency.setValueAtTime(100, now);
-                osc1.frequency.exponentialRampToValueAtTime(800, now + 0.3);
-                osc1.frequency.exponentialRampToValueAtTime(150, now + 0.6);
-                gain1.gain.setValueAtTime(0.3, now);
-                gain1.gain.exponentialRampToValueAtTime(0.01, now + 0.7);
-                osc1.connect(gain1);
-                gain1.connect(ctx.destination);
-                osc1.start(now);
-                osc1.stop(now + 0.7);
-                
-                // 2. Rire retro robot (0.8s - 2.8s)
-                const notes = [440, 554, 659, 880, 659, 554, 440, 330];
-                let noteTime = now + 0.8;
-                notes.forEach((freq) => {
-                    const osc = ctx.createOscillator();
-                    const gain = ctx.createGain();
-                    osc.type = 'sawtooth';
-                    osc.frequency.setValueAtTime(freq, noteTime);
-                    osc.frequency.linearRampToValueAtTime(freq + 40, noteTime + 0.15);
-                    osc.frequency.linearRampToValueAtTime(freq - 40, noteTime + 0.25);
-                    gain.gain.setValueAtTime(0.15, noteTime);
-                    gain.gain.exponentialRampToValueAtTime(0.01, noteTime + 0.28);
-                    osc.connect(gain);
-                    gain.connect(ctx.destination);
-                    osc.start(noteTime);
-                    osc.stop(noteTime + 0.3);
-                    noteTime += 0.25;
-                });
-                
-                // 3. Chute/dégonflement comique (3.0s - 4.5s)
-                const osc3 = ctx.createOscillator();
-                const gain3 = ctx.createGain();
-                osc3.type = 'sine';
-                osc3.frequency.setValueAtTime(400, now + 3.0);
-                osc3.frequency.linearRampToValueAtTime(80, now + 4.5);
-                gain3.gain.setValueAtTime(0.2, now + 3.0);
-                gain3.gain.linearRampToValueAtTime(0.01, now + 4.5);
-                osc3.connect(gain3);
-                gain3.connect(ctx.destination);
-                osc3.start(now + 3.0);
-                osc3.stop(now + 4.6);
-            } catch (e) {
-                console.log("Synthesizer failed", e);
-            }
-        }
     </script>
 
     <!-- Confirmation source audio (musique vs audio de la source vidéo) — v1.0.166 -->
