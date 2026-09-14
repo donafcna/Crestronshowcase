@@ -97,6 +97,8 @@ de la démo dans N secondes », désormais en bas à gauche dans tous les modes,
 de la démo) et « Plein écran » caché derrière `showEmbedTool` : doublon avec le bouton Scène. Le
 plein écran se demande par l'adresse — **`/3` GUI seule plein écran, `/4` retour au Mode normal**,
 sur le modèle de `/1` et `/0` du Mode Dev (`hooks/useGuiFullscreen.js`, Échap en échappatoire).
+La démo automatique démarre désormais sur **tous les supports** (elle était réservée au PC via
+`isDesktopPointer`) : sans bouton, elle n'était plus démarrable à la main sur mobile et tablette.
 
 ## Reste à faire
 1. `npm install` dans `projects/villa-crans/ch5` — `node_modules` n'a pas suivi le passage en monorepo, `npx ch5-cli` tombe en 404 (le binaire vient de `@crestron/ch5-utilities-cli`).

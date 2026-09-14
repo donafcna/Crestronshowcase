@@ -22,6 +22,10 @@ posée écran par écran.
   automatique se met déjà en pause au premier geste et la bulle « Reprise de la démo dans N
   secondes » la relance : le bouton faisait doublon. Clés `tool_present` / `tool_present_stop`
   supprimées en FR/EN/DE.
+- **Démo automatique active sur tous les supports.** Elle ne démarrait que sur PC
+  (`isDesktopPointer`) ou en mode salon : sans le bouton « Présentation », elle n'était plus
+  démarrable à la main sur mobile et tablette. Le premier geste la met en pause, le visiteur
+  tactile garde donc la main immédiatement.
 - **Bulle de reprise en bas à gauche dans tous les modes** (`marketing.css`). À droite elle
   recouvrait la colonne Dalle / Tablette / Smartphone. La prop `side` de `DemoCountdown` et la
   classe `demo-countdown--left` disparaissent : une seule position, plus de variante.

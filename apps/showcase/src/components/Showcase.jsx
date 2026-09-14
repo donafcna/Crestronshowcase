@@ -12,7 +12,7 @@ import { CalibrateCard } from "./CalibrateCard";
 import { DemoToolbar } from "./DemoToolbar";
 import { useRouter, buildShowcasePath } from "../router";
 import { useDemoSettings } from "../hooks/useDemoSettings";
-import { useAutoDemo, isDesktopPointer } from "../hooks/useAutoDemo";
+import { useAutoDemo } from "../hooks/useAutoDemo";
 import { DemoCursor, DemoCountdown } from "./DemoOverlay";
 import { useGuiFullscreen } from "../hooks/useGuiFullscreen";
 
@@ -183,10 +183,13 @@ const ShowcaseInner = ({ sectorId, projectId, device }) => {
   // les boutons du GUI, change de pièce, etc. Toute action de l'utilisateur la
   // met en pause ; elle reprend après IDLE_RESUME_MS sans activité, la bulle
   // « Reprise de la démo dans N secondes » (bas à gauche) servant de commande
-  // unique — le bouton « Présentation » a été retiré le 14.09.2026. Sur mobile
-  // et tablette la démo reste inactive.
-  const [demoEnabled, setDemoEnabled] = useState(() => kiosk || isDesktopPointer());
-  const [demoRunning, setDemoRunning] = useState(() => kiosk || isDesktopPointer());
+  // unique — le bouton « Présentation » a été retiré le 14.09.2026.
+  // Active sur TOUS les supports depuis le 14.09.2026 : sans bouton, la démo
+  // n'était plus démarrable à la main sur mobile et tablette, où elle était
+  // inactive par défaut (`isDesktopPointer`). Le premier geste la met en pause,
+  // donc un visiteur tactile garde la main immédiatement.
+  const [demoEnabled, setDemoEnabled] = useState(true);
+  const [demoRunning, setDemoRunning] = useState(true);
   const [resumeAt, setResumeAt] = useState(null);
   const resumeTimer = useRef(null);
 
