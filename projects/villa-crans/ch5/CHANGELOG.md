@@ -1,5 +1,73 @@
 # Villa Crans CH5 — journal des versions
 
+## v1.0.174 — 14.09.2026 — GUI smartphone : entête allégée, plus aucun défilement, scènes et moteurs au niveau de la dalle
+
+Deuxième lot de retours sur le châssis iPhone. Deux consignes générales en sortent, consignées
+dans CONTEXTE-CLAUDE.md : **aucun défilement dans les GUI** et **occuper la place au mieux,
+jamais de bouton trop petit**.
+
+### État des 4 artefacts
+
+| Artefact | Version | Compilation |
+|---|---|---|
+| CH5 `.ch5z` (TSW + XPanel) | 1.0.173 | `iphone.html` modifié — `.\deploy.ps1` à relancer |
+| CPZ slot 1 | recompilé le 14.09 | `-Target cp4` à relancer si le chargement précédent portait l'ancien |
+| LPZ slot 2 | — | inchangé |
+| Showcase Vercel | lot du 14.09 | `iphone.html` régénéré |
+
+### Entête et fenêtre Réglages
+
+- **« Pièce active v1.0.x : » retiré.** Le libellé, la version et l'état de connexion occupaient une
+  ligne entière et poussaient l'engrenage hors du cadre. La ligne se réduit à la liste des pièces
+  (52 px) et à l'engrenage (52 px) : ~46 px rendus au contenu.
+- **Version et état de connexion dans la fenêtre Réglages**, entre le titre et le bouton Fermer.
+  L'appui long de 3 s qui ouvre la console d'administration suit la version (il était sur
+  « Pièce active »). `active_piece` n'existe que sur smartphone : la dalle n'affichait pas ce texte.
+
+### Aucun défilement
+
+`html`, `body` et les panneaux d'onglet passent en `overflow: hidden`, toutes les barres de
+défilement sont masquées (`::-webkit-scrollbar`, `scrollbar-width`). Les trois pages et les fenêtres
+Sécurité, Centralisation, Réglages, Moteurs et télécommandes tiennent désormais à l'écran sur
+iPhone 16 Pro **et** iPhone SE. La page Source a été recompactée pour le petit écran
+(sources 42 px, engrenages 40 px, marges resserrées).
+**Exception assumée** : Caméras (10 flux), Circuits et Configuration preset gardent un défilement —
+ces listes sont par nature illimitées ; la barre est masquée, rien ne bouge en dehors d'elles.
+
+### Télécommandes — toutes les sources
+
+- **Mise à l'échelle automatique** (`fitRemoteLayout`, repris de la dalle mais autorisé à agrandir,
+  plafond 2,4) : la disposition est dessinée à taille fixe puis étirée pour remplir la fenêtre, qui
+  passe elle-même à 92 % de la hauteur d'écran. Apple TV gagne **×1,68**. Sky Q et Swisscom étaient
+  déjà à la largeur maximale : elles gagnent la hauteur et perdent leur défilement.
+- **Défaut corrigé au passage : les trois télécommandes sortaient entièrement en bleu.** Le fond
+  générique des boutons CH5 (`#0369a1 !important`) écrasait leur `customStyle`, alors que la dalle
+  les rend en gris anthracite. Les 80 `customStyle` de la fenêtre sont désormais marqués
+  `!important` : le style en ligne repasse devant, Siri Remote redevient grise et les touches de
+  couleur retrouvent leurs couleurs.
+
+### Scènes mémorisées sur iPhone
+
+Appui long (0,9 s) sur OFF / CINÉMA / REPAS / TOTAL : les niveaux des circuits de la pièce sont
+enregistrés sous **la même clé que la dalle** (`villa_scene_<pièce>_<n>`, même structure JSON).
+Pastille dorée sur le bouton mémorisé, message fugitif, rappel des niveaux à l'appui court.
+Les niveaux sont suivis par abonnement aux analogiques, avec repli sur la valeur des curseurs.
+
+### Icônes de moteurs animées
+
+Les lamelles descendent à la fermeture et remontent à l'ouverture en 1,5 s, comme sur la dalle ;
+l'icône pulse tant que le moteur bouge et ▪ la fige à sa position réelle en cours de course.
+Posées devant chaque libellé, page et fenêtre Moteurs, y compris sur les lignes régénérées à chaque
+changement de pièce (MutationObserver).
+
+### Contrôles
+
+Playwright headless : 2 châssis (iPhone 16 Pro, iPhone SE) × 3 thèmes × 13 écrans. Aucun
+débordement, aucune erreur console, aucun élément hors cadre hors des deux listes ci-dessus.
+Limite connue : les touches des télécommandes Sky Q (21) et Swisscom (73) restent sous 40 px — ce
+sont des télécommandes physiques à 40+ touches, il faudrait les paginer pour aller plus loin.
+Garde-fou posé sur `closeAllModals`, qui plantait en vitrine (`closeAdminModal` y est retiré).
+
 ## v1.0.173 — 14.09.2026 — GUI smartphone agrandie, barre d'outils de la vitrine allégée
 
 Lot de retours de Donatien sur le châssis iPhone de la vitrine. Tout passe par des blocs de style

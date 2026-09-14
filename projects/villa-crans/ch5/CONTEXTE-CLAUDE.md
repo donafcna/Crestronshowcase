@@ -43,6 +43,13 @@ Personne ne l'écrivait, il n'était lu que par une grille de diagnostic, et les
 En mode `showcase` la couche est inerte : la vitrine tourne sur les joins logiques avec `js/local-feedback.js`.
 
 ## Règles GUI validées par Donatien
+- **Aucun défilement dans les GUI (consigne générale, 14.09.2026).** Rien ne bouge au doigt, aucune
+  barre visible : le contenu tient à l'écran, quitte à redimensionner les boutons. Seules exceptions
+  admises sur smartphone, listes par nature illimitées : Caméras, Circuits, Configuration preset.
+- **Occuper la place au mieux (consigne générale, 14.09.2026).** Sur smartphone surtout : pas
+  d'espace perdu, pas de bouton trop petit. Les fenêtres prennent 92 % de la hauteur et les
+  télécommandes sont mises à l'échelle pour remplir le cadre (`fitRemoteLayout`, agrandissement
+  autorisé, contrairement à la dalle qui ne fait que réduire).
 - **Cohérence entre châssis (consigne générale, 14.09.2026).** Les textes et les couleurs doivent
   être identiques d'un support à l'autre : dalle TSW, iPad, XPanel et smartphone. Un libellé ou une
   couleur modifié sur un châssis se répercute sur les autres dans le même lot. Seules les
@@ -93,6 +100,15 @@ réintroduire :
 - les **éléments de grille** ne rétrécissent pas sous leur contenu : `min-width: 0` sur les
   `ch5-button` des grilles de scénarios.
 Caméras : plus de filtre vision nocturne verte sur smartphone, même rendu que la dalle et l'iPad.
+Second bloc `<style id="mobile-ux">` + script (14.09.2026) : icônes de moteurs animées et scènes
+mémorisées par appui long, aux mêmes clés `villa_scene_<pièce>_<n>` que la dalle. Il ne dépend
+d'aucune fonction interne du fichier (tout passe par le DOM, CrComLib et deux MutationObserver sur
+`#motors-container` et `#circuits-container`, régénérés à chaque changement de pièce).
+**Piège CH5 supplémentaire** : le fond générique `#0369a1 !important` des boutons CH5 écrase les
+`customStyle` — c'est ce qui rendait les trois télécommandes entièrement bleues. Les `customStyle`
+de `#source-control-overlay` sont donc marqués `!important` un par un ; ne pas les « nettoyer ».
+L'entête ne porte plus que la liste des pièces et l'engrenage : version, état de connexion et
+appui long d'administration sont dans la fenêtre Réglages.
 
 ## Vitrine (apps/showcase, crestrongui.vercel.app)
 Copie régénérée par `python apps/showcase/scripts/sync-villa-crans.py <chemin>/projects/villa-crans/ch5/src` (jamais éditée à la main) ; `meta.mode = "showcase"`, feedback simulé par `js/local-feedback.js`, curseur de démo. Le script copie aussi `js/villa-joins.js` depuis la v3.
