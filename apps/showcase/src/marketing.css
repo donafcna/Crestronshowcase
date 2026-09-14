@@ -820,9 +820,12 @@ a.sector-card-interactive {
     opacity: 0;
   }
 }
+/* Bulle « Reprise de la démo » : toujours en bas à GAUCHE (14.09.2026) — à droite
+   elle recouvrait la colonne de sélection du châssis (Dalle / Tablette / Smartphone). */
 .demo-countdown {
   position: fixed;
-  right: 24px;
+  left: 24px;
+  right: auto;
   bottom: 24px;
   z-index: 100001;
   display: flex;
@@ -874,7 +877,8 @@ a.sector-card-interactive {
 @media (max-width: 768px) {
   .demo-countdown {
     bottom: calc(var(--navbar-height) + 16px);
-    right: 12px;
+    left: 12px;
+    right: auto;
   }
 }
 

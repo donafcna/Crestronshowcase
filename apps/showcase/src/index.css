@@ -5187,8 +5187,13 @@ html, body, #root {
   .dev-metrics--fs { left: 104px; max-width: calc(100vw - 104px - var(--scene-col) - 16px); flex-wrap: wrap; }
   .dev-ruler { height: 10px; line-height: 10px; font-size: 0.55rem; }
 }
-/* En mode Scène, la bulle « Reprise de la démo » va en bas à GAUCHE : la colonne de droite (légende) reste libre */
-.demo-countdown.demo-countdown--left { right: auto; left: 16px; bottom: 16px; }
+/* La bulle « Reprise de la démo » est en bas à gauche dans tous les modes (base dans marketing.css).
+   En Mode Scène on la resserre un peu sur le bord, la fenêtre étant occupée jusqu'aux marges. */
+body.workspace-maximized .demo-countdown { left: 16px; bottom: 16px; }
+
+/* Plein écran de la GUI (/3) : la GUI seule occupe toute la fenêtre, /4 ou Échap pour revenir */
+.gui-fullscreen-stage { position: fixed; inset: 0; width: 100vw; height: 100vh; background: #080b11; z-index: 99999; }
+.gui-fullscreen-stage > * { width: 100%; height: 100%; border: none; }
 
 /* Palace Genève (tableau de bord Connect) : boutons et textes agrandis — tout le
    tableau de bord est rendu à 1,35x (zoom) et sa racine réduite d'autant pour

@@ -3,17 +3,23 @@ import { Icons } from "../icons";
 import { useTranslation } from "../context/LanguageContext";
 import { SITE_URL } from "../data/company";
 
-// Outils "démo" : QR code, mode présentation, fiche PDF, plein écran. En Mode normal
+// Outils "démo" : QR code, fiche PDF. En Mode normal
 // ils sont empilés dans la colonne de droite au-dessus des boutons de support
 // (demande du 10.09.2026 : laisser toute la hauteur au châssis sur petit écran). Tout est piloté par l'URL, donc
 // reproductible. (Le nom du client reste pilotable via ?client= dans l'URL.)
+// « Présentation » retiré le 14.09.2026 (demande de Donatien) : la démo automatique
+// se met en pause d'elle-même dès qu'on touche l'interface et la bulle « Reprise de
+// la démo dans N secondes » suffit à la relancer — le bouton faisait doublon.
 export const DemoToolbar = ({
   project,
   shareUrl,
-  onTogglePresentation,
-  presenting,
   sheetUrl,
   embedUrl,
+  // « Plein écran » caché le 14.09.2026 (demande de Donatien) : il faisait doublon avec le
+  // bouton Scène du châssis. Le code reste en place — passer showEmbedTool à true le
+  // rétablit. Le plein écran se demande maintenant par l'URL : /3 l'active, /4 revient
+  // au Mode normal (voir hooks/useGuiFullscreen.js).
+  showEmbedTool = false,
   center = null, // légende du châssis (support · taille · échelle), sur la même ligne
   vertical = false, // Mode normal : boutons empilés dans la colonne de droite, au-dessus des supports
 }) => {
@@ -54,18 +60,11 @@ export const DemoToolbar = ({
       <div className="demo-toolbar-group">
         {/* « Copier le lien » retiré le 10.09.2026 (demande de Donatien) — le QR code et la fiche portent le lien */}
         <Btn icon="QrCode" label={t("tool_qr")} onClick={() => setQrOpen(true)} />
-        <Btn
-          icon={presenting ? "Square" : "Presentation"}
-          label={t("tool_present")}
-          title={presenting ? t("tool_present_stop") : t("tool_present")}
-          onClick={onTogglePresentation}
-          active={presenting}
-        />
       </div>
       {center && <div className="demo-toolbar-center">{center}</div>}
       <div className="demo-toolbar-group">
         <Btn icon="FileText" label={t("tool_sheet")} href={sheetUrl} />
-        {embedUrl && <Btn icon="ExternalLink" label={t("tool_open_tab")} href={embedUrl} />}
+        {showEmbedTool && embedUrl && <Btn icon="ExternalLink" label={t("tool_open_tab")} href={embedUrl} />}
       </div>
 
 

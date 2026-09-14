@@ -14,6 +14,7 @@ import { useRouter, buildShowcasePath } from "../router";
 import { useDemoSettings } from "../hooks/useDemoSettings";
 import { useAutoDemo, isDesktopPointer } from "../hooks/useAutoDemo";
 import { DemoCursor, DemoCountdown } from "./DemoOverlay";
+import { useGuiFullscreen } from "../hooks/useGuiFullscreen";
 
 // Simulateurs chargés à la demande : seul celui du projet affiché est
 // téléchargé (≈ 20–35 ko chacun), ce qui rend la première visite rapide en 4G.
@@ -177,12 +178,13 @@ const ShowcaseInner = ({ sectorId, projectId, device }) => {
     goTo(next, nextDev, { replace: true });
   }, [projectViewports, viewportDevice, activeProject, filteredProjects, goTo]);
 
-  // ---- Démo automatique ("Présentation") -----------------------------------
+  // ---- Démo automatique -----------------------------------------------------
   // Sur PC (et en mode salon), la démo tourne d'elle-même : le curseur presse
-  // les boutons du GUI, change de pièce, etc. Toute action de l'utilisateur
-  // (ou un appui sur « Présentation ») la met en pause ; elle reprend après
-  // IDLE_RESUME_MS sans activité. Sur mobile / tablette elle est inactive par
-  // défaut et s'active avec le bouton.
+  // les boutons du GUI, change de pièce, etc. Toute action de l'utilisateur la
+  // met en pause ; elle reprend après IDLE_RESUME_MS sans activité, la bulle
+  // « Reprise de la démo dans N secondes » (bas à gauche) servant de commande
+  // unique — le bouton « Présentation » a été retiré le 14.09.2026. Sur mobile
+  // et tablette la démo reste inactive.
   const [demoEnabled, setDemoEnabled] = useState(() => kiosk || isDesktopPointer());
   const [demoRunning, setDemoRunning] = useState(() => kiosk || isDesktopPointer());
   const [resumeAt, setResumeAt] = useState(null);
@@ -235,13 +237,13 @@ const ShowcaseInner = ({ sectorId, projectId, device }) => {
     onUserActivity: pauseDemo,
   });
 
-  const handleTogglePresentation = useCallback(() => {
-    if (demoEnabled && demoRunning) pauseDemo();
-    else resumeDemo();
-  }, [demoEnabled, demoRunning, pauseDemo, resumeDemo]);
+  // Plein écran de la GUI demandé par l'adresse : /3 active, /4 revient au Mode normal.
+  const { guiFullscreen, setGuiFullscreen } = useGuiFullscreen();
 
   useEffect(() => {
     const onKey = (e) => {
+      // Échappatoire clavier : aucun bouton visible ne sort du plein écran GUI.
+      if (e.key === "Escape" && guiFullscreen) setGuiFullscreen(false);
       if (e.key === "Escape" && isFullscreen) setIsFullscreen(false);
     };
     window.addEventListener("keydown", onKey);
@@ -334,6 +336,26 @@ const ShowcaseInner = ({ sectorId, projectId, device }) => {
   const displayTitle = clientName || getProjectName(activeProject, lang);
   const Simulator = SIMULATORS[activeProject.id] || SIMULATORS["villa-gemini"];
   const simulatorType = viewportDevice === "wallpanel_hd" ? "wallpanel" : viewportDevice;
+
+  // Contenu de l'écran : simulateur React ou GUI embarquée. Servi à l'identique
+  // dans le châssis et en plein écran GUI (/3), pour n'avoir qu'une source.
+  const guiContent = activeProject.isInteractive ? (
+    <Suspense fallback={<SimulatorFallback />}>
+      <Simulator deviceType={simulatorType} clientName={clientName} />
+    </Suspense>
+  ) : embedSrc ? (
+    <iframe
+      src={embedSrc}
+      title={displayTitle}
+      style={{ width: "100%", height: "100%", border: "none", backgroundColor: "#080b11" }}
+      sandbox="allow-scripts allow-same-origin"
+    />
+  ) : null;
+
+  // /3 : la GUI seule occupe toute la fenêtre (ni châssis, ni colonnes). /4 ou Échap pour sortir.
+  if (guiFullscreen) {
+    return <div className="gui-fullscreen-stage">{guiContent}</div>;
+  }
 
   return (
     <div
@@ -472,18 +494,7 @@ const ShowcaseInner = ({ sectorId, projectId, device }) => {
                 onExitFullscreen={() => setIsFullscreen(false)}
                 onEnterFullscreen={() => setIsFullscreen(true)}
               >
-                {activeProject.isInteractive ? (
-                  <Suspense fallback={<SimulatorFallback />}>
-                    <Simulator deviceType={simulatorType} clientName={clientName} />
-                  </Suspense>
-                ) : embedSrc ? (
-                  <iframe
-                    src={embedSrc}
-                    title={displayTitle}
-                    style={{ width: "100%", height: "100%", border: "none", backgroundColor: "#080b11" }}
-                    sandbox="allow-scripts allow-same-origin"
-                  />
-                ) : null}
+                {guiContent}
               </DeviceFrame>
             </div>
           </main>
@@ -503,9 +514,7 @@ const ShowcaseInner = ({ sectorId, projectId, device }) => {
                   project={activeProject}
                   shareUrl={shareUrl}
                   sheetUrl={sheetUrl}
-                  embedUrl={viewportDevice === "phone" ? null : embedSrc} // « Plein écran » (GUI seule dans un nouvel onglet) : dalle et tablette seulement
-                  presenting={demoEnabled && demoRunning}
-                  onTogglePresentation={handleTogglePresentation}
+                  embedUrl={viewportDevice === "phone" ? null : embedSrc} // « Plein écran » : caché depuis le 14.09.2026, voir showEmbedTool
                   onCapture={handleCapture}
                   capturing={capturing}
                 />
@@ -571,7 +580,7 @@ const ShowcaseInner = ({ sectorId, projectId, device }) => {
       {calibOpen && <CalibrateCard onClose={() => setCalibOpen(false)} />}
       {demoEnabled && <DemoCursor cursor={cursor} />}
       {demoEnabled && !demoRunning && resumeAt && (
-        <DemoCountdown resumeAt={resumeAt} total={IDLE_RESUME_MS} onResumeNow={resumeDemo} side={isFullscreen ? "left" : "right"} />
+        <DemoCountdown resumeAt={resumeAt} total={IDLE_RESUME_MS} onResumeNow={resumeDemo} />
       )}
     </div>
   );

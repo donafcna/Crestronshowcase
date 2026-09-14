@@ -901,7 +901,7 @@
         <div id="panel-audio" class="tab-panel">
             <h2 style="display: flex; align-items: center; gap: 8px;">
                 <svg viewBox="0 0 576 512" style="width: 20px; height: 20px; fill: #8b5cf6;"><path d="M528 0H48C21.5 0 0 21.5 0 48v320c0 26.5 21.5 48 48 48h192l-16 48h-72c-13.3 0-24 10.7-24 24s10.7 24 24 24h272c13.3 0 24-10.7 24-24s-10.7-24-24-24h-72l-16-48h192c26.5 0 48-21.5 48-48V48c0-26.5-21.5-48-48-48zm-16 352H64V64h448v288z"/></svg>
-                <span data-i18n="source_title">Sélection de la source audio et vidéo</span>
+                <span data-i18n="source_title">Source audio et vidéo</span>
             </h2>
             <div style="display: flex; flex-direction: column; justify-content: space-between; flex: 1;">
                 <div>
@@ -1157,7 +1157,7 @@
             body #settings-overlay label { font-size: 0.9rem !important; margin-bottom: 6px !important; }
         }
     </style>
-    <div id="settings-overlay" class="custom-overlay-panel" style="width: 90% !important; max-width: 380px !important; height: auto !important; max-height: 80% !important;">
+    <div id="settings-overlay" class="custom-overlay-panel" style="width: 96% !important; max-width: 440px !important; height: auto !important; max-height: 92% !important;">
         <div class="overlay-header">
             <h3 style="display: flex; align-items: center; gap: 8px; color: #10b981; margin: 0; font-size: 1.1rem; text-transform: uppercase;" data-i18n="settings">
                 ⚙️ Réglages
@@ -1187,7 +1187,7 @@
     </div>
 
     <!-- POPUP ADMIN SIMPLIFIE (iPhone) -->
-    <div id="admin-overlay" class="custom-overlay-panel" style="width: 90% !important; max-width: 380px !important; height: auto !important; max-height: 80% !important;">
+    <div id="admin-overlay" class="custom-overlay-panel" style="width: 96% !important; max-width: 440px !important; height: auto !important; max-height: 92% !important;">
         <div class="overlay-header">
             <h3 style="display: flex; align-items: center; gap: 8px; color: #f43f5e; margin: 0; font-size: 1.1rem; text-transform: uppercase;">
                 🔒 Admin Simplifié
@@ -1241,7 +1241,7 @@
     </div>
 
     <!-- POPUP CONTRÔLE DES SOURCES VIDEO (Mobile Optimized) -->
-    <div id="source-control-overlay" class="custom-overlay-panel" style="width: 90% !important; max-width: 380px !important; height: auto !important; max-height: 85% !important; padding: 15px; box-sizing: border-box;">
+    <div id="source-control-overlay" class="custom-overlay-panel" style="width: 96% !important; max-width: 440px !important; height: auto !important; max-height: 92% !important; padding: 15px; box-sizing: border-box;">
         <div class="overlay-header" style="margin-bottom: 15px;">
             <h3 style="display: flex; align-items: center; gap: 8px; color: #8b5cf6; margin: 0; font-size: 1.1rem; text-transform: uppercase;">
                 ⚙️ <span id="source-control-title" style="color: inherit;">Source</span>
@@ -1366,7 +1366,7 @@
     </div>
 
     <!-- POPUP LECTEUR DE MUSIQUE / MEDIA PLAYER (Mobile Optimized) -->
-    <div id="media-player-overlay" class="custom-overlay-panel" style="width: 90% !important; max-width: 380px !important; height: auto !important; max-height: 85% !important; padding: 15px; box-sizing: border-box;">
+    <div id="media-player-overlay" class="custom-overlay-panel" style="width: 96% !important; max-width: 440px !important; height: auto !important; max-height: 92% !important; padding: 15px; box-sizing: border-box;">
         <div class="overlay-header" style="margin-bottom: 15px;">
             <h3 style="display: flex; align-items: center; gap: 8px; color: #c084fc; margin: 0; font-size: 1.1rem; text-transform: uppercase;">
                 🎵 Musique
@@ -1413,7 +1413,7 @@
     </div>
 
     <!-- POPUP CLAVIER & PARTITIONS D'ALARME (Mobile Optimized) -->
-    <div id="alarm-overlay" class="custom-overlay-panel" style="width: 90% !important; max-width: 380px !important; height: auto !important; max-height: 85% !important; padding: 15px; box-sizing: border-box;">
+    <div id="alarm-overlay" class="custom-overlay-panel" style="width: 96% !important; max-width: 440px !important; height: auto !important; max-height: 92% !important; padding: 15px; box-sizing: border-box;">
         <div class="overlay-header" style="margin-bottom: 12px;">
             <h3 style="display: flex; align-items: center; gap: 8px; color: #ef4444; margin: 0; font-size: 1.1rem; text-transform: uppercase;">
                 🚨 Sécurité
@@ -1424,28 +1424,28 @@
         <!-- ÉCRAN 1: Clavier -->
         <div id="alarm-keypad-screen" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; width: 100%;">
             <p style="margin: 0; font-size: 0.85rem; color: #94a3b8; font-weight: bold; text-align: center;">Entrez le code d'administration :</p>
-            <div style="background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.15); border-radius: 6px; width: 180px; height: 42px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-family: monospace; letter-spacing: 5px; color: white;">
+            <div id="alarm-code-box" style="background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; width: 240px; height: 62px; display: flex; align-items: center; justify-content: center; font-size: 2rem; font-family: monospace; letter-spacing: 6px; color: white;">
                 <span id="alarm-code-display"></span>
             </div>
             <div id="alarm-error-msg" style="color: #ef4444; font-weight: bold; min-height: 18px; font-size: 0.8rem; text-align: center;"></div>
             
             <!-- Clavier 3x4 -->
-            <div style="display: grid; grid-template-columns: repeat(3, 60px); gap: 8px;">
-                <button onclick="pressAlarmKey('1')" class="shade-btn-mobile" style="width: 60px !important; height: 48px !important; font-size: 1.1rem;">1</button>
-                <button onclick="pressAlarmKey('2')" class="shade-btn-mobile" style="width: 60px !important; height: 48px !important; font-size: 1.1rem;">2</button>
-                <button onclick="pressAlarmKey('3')" class="shade-btn-mobile" style="width: 60px !important; height: 48px !important; font-size: 1.1rem;">3</button>
+            <div id="alarm-keypad-grid" style="display: grid; grid-template-columns: repeat(3, 96px); gap: 12px;">
+                <button onclick="pressAlarmKey('1')" class="shade-btn-mobile" style=" font-size: 1.1rem;">1</button>
+                <button onclick="pressAlarmKey('2')" class="shade-btn-mobile" style=" font-size: 1.1rem;">2</button>
+                <button onclick="pressAlarmKey('3')" class="shade-btn-mobile" style=" font-size: 1.1rem;">3</button>
                 
-                <button onclick="pressAlarmKey('4')" class="shade-btn-mobile" style="width: 60px !important; height: 48px !important; font-size: 1.1rem;">4</button>
-                <button onclick="pressAlarmKey('5')" class="shade-btn-mobile" style="width: 60px !important; height: 48px !important; font-size: 1.1rem;">5</button>
-                <button onclick="pressAlarmKey('6')" class="shade-btn-mobile" style="width: 60px !important; height: 48px !important; font-size: 1.1rem;">6</button>
+                <button onclick="pressAlarmKey('4')" class="shade-btn-mobile" style=" font-size: 1.1rem;">4</button>
+                <button onclick="pressAlarmKey('5')" class="shade-btn-mobile" style=" font-size: 1.1rem;">5</button>
+                <button onclick="pressAlarmKey('6')" class="shade-btn-mobile" style=" font-size: 1.1rem;">6</button>
                 
-                <button onclick="pressAlarmKey('7')" class="shade-btn-mobile" style="width: 60px !important; height: 48px !important; font-size: 1.1rem;">7</button>
-                <button onclick="pressAlarmKey('8')" class="shade-btn-mobile" style="width: 60px !important; height: 48px !important; font-size: 1.1rem;">8</button>
-                <button onclick="pressAlarmKey('9')" class="shade-btn-mobile" style="width: 60px !important; height: 48px !important; font-size: 1.1rem;">9</button>
+                <button onclick="pressAlarmKey('7')" class="shade-btn-mobile" style=" font-size: 1.1rem;">7</button>
+                <button onclick="pressAlarmKey('8')" class="shade-btn-mobile" style=" font-size: 1.1rem;">8</button>
+                <button onclick="pressAlarmKey('9')" class="shade-btn-mobile" style=" font-size: 1.1rem;">9</button>
                 
-                <button onclick="pressAlarmKey('C')" class="shade-btn-mobile" style="width: 60px !important; height: 48px !important; color: #ef4444; font-size: 1rem; font-weight: bold;">CLR</button>
-                <button onclick="pressAlarmKey('0')" class="shade-btn-mobile" style="width: 60px !important; height: 48px !important; font-size: 1.1rem;">0</button>
-                <button onclick="pressAlarmKey('E')" class="shade-btn-mobile" style="width: 60px !important; height: 48px !important; color: #10b981; font-size: 1.1rem; font-weight: bold;">OK</button>
+                <button onclick="pressAlarmKey('C')" class="shade-btn-mobile" style=" color: #ef4444; font-size: 1rem; font-weight: bold;">CLR</button>
+                <button onclick="pressAlarmKey('0')" class="shade-btn-mobile" style=" font-size: 1.1rem;">0</button>
+                <button onclick="pressAlarmKey('E')" class="shade-btn-mobile" style=" color: #10b981; font-size: 1.1rem; font-weight: bold;">OK</button>
             </div>
         </div>
         
@@ -1502,7 +1502,7 @@
     </div>
 
     <!-- POPUP MOSAÏQUE CAMÉRAS (Mobile Optimized) -->
-    <div id="cameras-overlay" class="custom-overlay-panel" style="width: 90% !important; max-width: 380px !important; height: auto !important; max-height: 85% !important; padding: 15px; box-sizing: border-box; display: flex; flex-direction: column;">
+    <div id="cameras-overlay" class="custom-overlay-panel" style="width: 96% !important; max-width: 440px !important; height: auto !important; max-height: 92% !important; padding: 15px; box-sizing: border-box; display: flex; flex-direction: column;">
         <div class="overlay-header" style="margin-bottom: 12px;">
             <h3 style="display: flex; align-items: center; gap: 8px; color: #3b82f6; margin: 0; font-size: 1.1rem; text-transform: uppercase;">
                 📷 Caméras
@@ -1517,7 +1517,7 @@
     </div>
 
     <!-- POPUP CONTRÔLE GLOBAL (Mobile Optimized) -->
-    <div id="global-control-overlay" class="custom-overlay-panel" style="width: 90% !important; max-width: 380px !important; height: auto !important; max-height: 85% !important; padding: 15px; box-sizing: border-box; display: flex; flex-direction: column;">
+    <div id="global-control-overlay" class="custom-overlay-panel" style="width: 96% !important; max-width: 440px !important; height: auto !important; max-height: 92% !important; padding: 15px; box-sizing: border-box; display: flex; flex-direction: column;">
         <div class="overlay-header" style="margin-bottom: 12px;">
             <h3 style="display: flex; align-items: center; gap: 8px; color: #10b981; margin: 0; font-size: 1.1rem; text-transform: uppercase;">
                 🌐 Centralisation
@@ -1577,7 +1577,7 @@
     </div>
 
     <!-- POPUP PERSONNALISATION DES PRESETS GLOBAUX (Mobile Optimized) -->
-    <div id="global-preset-custom-overlay" class="custom-overlay-panel" style="width: 90% !important; max-width: 380px !important; height: auto !important; max-height: 85% !important; padding: 15px; box-sizing: border-box; display: none; flex-direction: column; z-index: 1100;">
+    <div id="global-preset-custom-overlay" class="custom-overlay-panel" style="width: 96% !important; max-width: 440px !important; height: auto !important; max-height: 92% !important; padding: 15px; box-sizing: border-box; display: none; flex-direction: column; z-index: 1100;">
         <div class="overlay-header" style="margin-bottom: 12px;">
             <h3 style="display: flex; align-items: center; gap: 6px; color: #10b981; margin: 0; font-size: 1.05rem; text-transform: uppercase;">
                 ⚙️ Configuration Preset
@@ -1623,7 +1623,7 @@
                     temp_title: "HVAC",
                     temp_actual: "Actuelle",
                     temp_requested: "Consigne",
-                    source_title: "Sélection de la source audio et vidéo",
+                    source_title: "Source audio et vidéo",
                     source_video: "Source active :",
                     circuits_title: "Circuits :",
                     motors_title: "Moteurs :",
@@ -1656,7 +1656,7 @@
                     temp_title: "HVAC",
                     temp_actual: "Current",
                     temp_requested: "Set Temp",
-                    source_title: "Audio & Video Source Selection",
+                    source_title: "Audio & video source",
                     source_video: "Active Source:",
                     circuits_title: "Circuits:",
                     motors_title: "Motors:",
@@ -1689,7 +1689,7 @@
                     temp_title: "HVAC",
                     temp_actual: "Actual",
                     temp_requested: "Consigna",
-                    source_title: "Selección de Fuentes de Audio y Video",
+                    source_title: "Fuente de audio y vídeo",
                     source_video: "Fuente Activa:",
                     circuits_title: "Circuitos:",
                     motors_title: "Motores:",
@@ -1722,7 +1722,7 @@
                     temp_title: "HVAC",
                     temp_actual: "Aktuell",
                     temp_requested: "Sollwert",
-                    source_title: "Audio- & Videoquellen-Auswahl",
+                    source_title: "Audio- & Videoquelle",
                     source_video: "Aktive Quelle:",
                     circuits_title: "Schaltkreise:",
                     motors_title: "Motoren:",
@@ -1755,7 +1755,7 @@
                     temp_title: "HVAC",
                     temp_actual: "Текущая",
                     temp_requested: "Уставка",
-                    source_title: "Выбор Источника Аудио и Видео",
+                    source_title: "Источник аудио и видео",
                     source_video: "Активный источник :",
                     circuits_title: "Свет :",
                     motors_title: "Моторы :",
@@ -2294,14 +2294,14 @@
                         const box = document.createElement('div');
                         box.style = "position: relative; aspect-ratio: 16/9; background: #000; border-radius: 8px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); width: 100%; margin-bottom: 5px;";
                         
-                        // Fond vidéo avec image réelle et filtre vision nocturne verte
+                        // Fond vidéo : image réelle sans filtre vert, identique à la dalle et à la tablette (14.09.2026)
                         const screen = document.createElement('div');
-                        screen.style = "width: 100%; height: 100%; background-image: url('" + cam.img + "'); background-size: cover; background-position: center; filter: sepia(100%) hue-rotate(90deg) saturate(180%) contrast(120%) brightness(80%);";
+                        screen.style = "width: 100%; height: 100%; background-image: url('" + cam.img + "'); background-size: cover; background-position: center; filter: contrast(108%) brightness(98%);";
                         
                         // Overlay scanlines
                         const scanlines = document.createElement('div');
                         scanlines.className = "cctv-scanlines";
-                        scanlines.style = "position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%); background-size: 100% 4px; pointer-events: none; opacity: 0.4; z-index: 2;";
+                        scanlines.style = "position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.15) 50%); background-size: 100% 4px; pointer-events: none; opacity: 0.25; z-index: 2;";
                         
                         // Point REC clignotant
                         const rec = document.createElement('div');
@@ -2310,7 +2310,7 @@
                         
                         // Nom de la caméra
                         const label = document.createElement('div');
-                        label.style = "position: absolute; bottom: 6px; left: 8px; font-size: 0.7rem; font-weight: 500; text-shadow: 1px 1px 2px rgba(0,0,0,0.9); color: #22c55e; background: rgba(0,0,0,0.6); padding: 1px 5px; border-radius: 3px; z-index: 3;";
+                        label.style = "position: absolute; bottom: 8px; left: 10px; font-size: 0.8rem; font-weight: bold; text-shadow: 1px 1px 3px rgba(0,0,0,0.9); color: #ffffff; background: rgba(15, 23, 42, 0.85); padding: 3px 8px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.1); z-index: 3;";
                         label.innerText = cam.name;
                         
                         // Horodatage dynamique
@@ -3448,5 +3448,165 @@
     setTimeout(avRender, 600);
 })();
 </script>
+
+    <style id="mobile-xl">
+        /* ================= AGRANDISSEMENT GÉNÉRAL DE LA GUI SMARTPHONE (14.09.2026) =================
+           Demande de Donatien : conteneurs plus hauts, textes et cibles tactiles au maximum sur
+           iPhone. Correction au niveau du système : un seul bloc, aucune valeur en dur ajoutée
+           écran par écran. Toutes les cibles visent >= 44 px (recommandation Apple, > 40 px de la
+           batterie de contrôle). Un repli est prévu plus bas pour les petits écrans (<= 700 px de
+           haut) afin que rien ne déborde sur un iPhone SE.
+           Ne concerne que iphone.html : la dalle et l'iPad gardent leurs dimensions. */
+
+        /* ---- Entête : pièce active, version, engrenage ---- */
+        .header-section { padding: 12px 14px !important; gap: 10px !important; }
+        /* L'engrenage sortait du cadre à droite : le bloc de gauche ne pouvait pas rétrécir
+           (white-space: nowrap sans min-width) et poussait la liste et le bouton hors du conteneur. */
+        /* Deux lignes : le libellé (« Pièce active v1.0.x : ») ne peut pas rétrécir sans être
+           tronqué, la liste et l'engrenage prennent donc toute la largeur en dessous. */
+        .room-row { gap: 8px !important; min-width: 0 !important; flex-wrap: wrap !important; }
+        .room-row > div:first-child { flex: 1 1 100% !important; min-width: 0 !important; }
+        .room-row > button { flex: 0 0 46px !important; width: 46px !important; height: 46px !important; padding: 0 !important; }
+        .room-row > button .gear-icon { width: 22px !important; height: 22px !important; }
+        #admin-trigger-label, .room-row span { font-size: 1.05rem !important; }
+        #version-label { font-size: 0.8rem !important; }
+        .room-dropdown { height: 46px !important; font-size: 1.05rem !important; flex: 1 1 auto !important; min-width: 0 !important; }
+        .alarm-row { gap: 10px !important; }
+        .alarm-row button { height: 46px !important; font-size: 0.95rem !important; gap: 6px !important; }
+
+        /* ---- Panneaux d'onglet ---- */
+        .tab-panel { padding: 16px !important; overflow-y: auto !important; }
+        .tab-panel h2 { font-size: 1.25rem !important; }
+        .tab-panel h2 svg { width: 24px !important; height: 24px !important; }
+
+        /* ---- Éclairages / stores ---- */
+        .scene-btn-mobile, .source-btn-mobile { height: 60px !important; font-size: 1.05rem !important; }
+        .shade-control-row { padding: 10px 12px !important; }
+        .shade-label { font-size: 1rem !important; }
+        .shade-btn-mobile { width: 56px !important; height: 46px !important; font-size: 1.2rem !important; }
+        /* Engrenages de section (Circuits, Moteurs) : cible tactile carrée */
+        .popup-trigger-btn { height: 46px !important; font-size: 1.05rem !important; }
+        #iphone-lights-header .popup-trigger-btn,
+        #iphone-shades-header .popup-trigger-btn { width: 46px !important; min-width: 46px !important; padding: 0 !important; }
+        .popup-trigger-btn .gear-icon { width: 22px !important; height: 22px !important; }
+        #iphone-lights-header span, #iphone-shades-header span { font-size: 1.05rem !important; }
+
+        /* ---- HVAC ---- */
+        ch5-button[customClass~="temp-btn-mobile"] {
+            width: 72px !important; height: 72px !important;
+            min-width: 72px !important; min-height: 72px !important;
+            max-width: 72px !important; max-height: 72px !important;
+            flex: 0 0 72px !important;
+        }
+        /* La division interne de CH5 s'intercale entre l'hôte et .cb-btn : sans hauteur elle
+           laissait le bouton à 44 px alors que l'hôte en fait 72. */
+        ch5-button[customClass~="temp-btn-mobile"] > div { height: 100% !important; width: 100% !important; }
+        ch5-button[customClass~="temp-btn-mobile"] button,
+        ch5-button[customClass~="temp-btn-mobile"] .cb-btn { font-size: 2.6rem !important; }
+        #hvac-status { padding: 12px 26px !important; font-size: 1.1rem !important; }
+
+        /* ---- Multimédia ---- */
+        /* Boutons de source au maximum : deux colonnes, libellé sur une ligne, engrenage
+           dessous porté à une vraie cible tactile (26 px à l'origine). */
+        #sources-container .source-btn-mobile { height: 66px !important; font-size: 1.1rem !important; }
+        #sources-container .shades-config-cog { height: 44px !important; }
+        #sources-container .shades-config-cog .gear-icon { width: 20px !important; height: 20px !important; }
+        #panel-audio p { font-size: 1.05rem !important; }
+        #panel-audio button[onclick*="openMediaPlayerModal"] { height: 52px !important; font-size: 1rem !important; }
+        .mute-btn-mobile, .power-off-btn-mobile { width: 72px !important; height: 72px !important; }
+        .mute-btn-mobile { background-size: 30px 30px; }
+
+        /* ---- Barre de navigation basse ---- */
+        .bottom-nav { padding: 8px !important; gap: 8px !important; }
+        .nav-btn { padding: 12px 6px !important; font-size: 0.82rem !important; }
+        .nav-btn svg { width: 24px !important; height: 24px !important; }
+
+        /* ================= MODALES ================= */
+        /* Les panneaux portent leurs dimensions en style en ligne : elles ont été portées à
+           440 px / 92 % directement dans le HTML, le reste est réglé ici. */
+        .custom-overlay-panel { padding: 18px !important; }
+        .custom-overlay-panel .overlay-header { padding-bottom: 12px !important; margin-bottom: 14px !important; }
+        .custom-overlay-panel .overlay-header h3 { font-size: 1.3rem !important; }
+        .custom-overlay-panel .overlay-header button { height: 44px !important; font-size: 0.95rem !important; padding: 0 16px !important; }
+        .custom-overlay-panel h4 { font-size: 1.05rem !important; }
+        .custom-overlay-panel p, .custom-overlay-panel label, .custom-overlay-panel select { font-size: 1.05rem !important; }
+        .custom-overlay-panel select { min-height: 48px !important; padding: 0 12px !important; }
+        /* Engrenages de personnalisation dans les modales (22 px à l'origine) */
+        .custom-overlay-panel .overlay-header + div button[onclick*="PresetCustomizer"],
+        .custom-overlay-panel button[onclick*="openGlobalPresetCustomizer"] {
+            width: 44px !important; height: 44px !important; border-radius: 12px !important;
+        }
+        .custom-overlay-panel button[onclick*="openGlobalPresetCustomizer"] .gear-icon { width: 20px !important; height: 20px !important; }
+        /* Boutons CH5 des modales (Centralisation, partitions d'alarme, scénarios).
+           La division interne de CH5 ne suit pas la taille de l'hôte : sans ces deux lignes le
+           fond bleu de l'hôte dépasse du bouton et le libellé, à l'étroit, se fait tronquer
+           (« DÉSACTIVER » devenait « DESACT… »). */
+        #global-control-overlay ch5-button, #alarm-overlay ch5-button,
+        #circuits-overlay ch5-button, #motors-overlay ch5-button { min-width: 0 !important; }
+        #global-control-overlay ch5-button > div, #alarm-overlay ch5-button > div,
+        #circuits-overlay ch5-button > div, #motors-overlay ch5-button > div,
+        #global-control-overlay ch5-button .cb-btn, #alarm-overlay ch5-button .cb-btn,
+        #circuits-overlay ch5-button .cb-btn, #motors-overlay ch5-button .cb-btn { width: 100% !important; height: 100% !important; }
+        .custom-overlay-panel ch5-button[customClass~="scene-btn"],
+        .custom-overlay-panel ch5-button[customClass~="alarm-btn"] { height: 50px !important; }
+        .custom-overlay-panel ch5-button[customClass~="scene-btn"] .cb-btn,
+        .custom-overlay-panel ch5-button[customClass~="scene-btn"] button,
+        .custom-overlay-panel ch5-button[customClass~="alarm-btn"] .cb-btn,
+        .custom-overlay-panel ch5-button[customClass~="alarm-btn"] button { font-size: 0.95rem !important; }
+        /* « DÉSACTIVER » était tronqué en « DESACT… » : le libellé est ramené à une taille qui tient
+           dans la colonne (ne jamais laisser déborder le bouton, il sortirait de la modale). */
+        #global-control-overlay ch5-button[customClass~="scene-btn"] .cb-btn,
+        #global-control-overlay ch5-button[customClass~="scene-btn"] button { font-size: 0.85rem !important; letter-spacing: 0 !important; }
+
+        /* Grilles de scénarios des modales Éclairages / Stores : 4 colonnes 1fr, les éléments
+           de grille ne rétrécissent pas sous leur contenu par défaut et sortaient du panneau. */
+        #circuits-overlay ch5-button, #motors-overlay ch5-button { min-width: 0 !important; height: 46px !important; }
+        #circuits-overlay ch5-button .cb-btn, #circuits-overlay ch5-button button,
+        #motors-overlay ch5-button .cb-btn, #motors-overlay ch5-button button { font-size: 0.8rem !important; }
+
+        /* ---- Clavier du code de sécurité ---- */
+        #alarm-keypad-screen { gap: 14px !important; }
+        #alarm-keypad-screen p { font-size: 1.1rem !important; }
+        #alarm-code-box { width: 240px !important; height: 62px !important; font-size: 2rem !important; }
+        #alarm-error-msg { font-size: 0.95rem !important; min-height: 22px !important; }
+        #alarm-keypad-grid { grid-template-columns: repeat(3, 96px) !important; gap: 12px !important; }
+        #alarm-keypad-grid .shade-btn-mobile { width: 96px !important; height: 66px !important; font-size: 1.7rem !important; }
+
+        /* ---- Configuration des presets ---- */
+        #global-preset-custom-overlay .overlay-header { flex-wrap: wrap !important; gap: 10px !important; }
+        #global-preset-custom-overlay .overlay-header h3 { flex: 1 1 100% !important; font-size: 1.2rem !important; }
+        #global-preset-custom-overlay .overlay-header > div { flex: 1 1 100% !important; }
+        #global-preset-custom-overlay .overlay-header > div button { flex: 1 1 0 !important; }
+        #global-preset-custom-overlay .overlay-header button { height: 44px !important; font-size: 0.9rem !important; padding: 0 14px !important; }
+        #customizer-form-content { max-height: 46vh !important; }
+        #customizer-form-content input[type="checkbox"] { width: 24px !important; height: 24px !important; }
+        #customizer-form-content input[type="text"], #customizer-form-content input[type="number"] { height: 40px !important; font-size: 1rem !important; }
+        #customizer-form-content label, #customizer-form-content span, #customizer-form-content div { font-size: 1rem !important; }
+
+        /* ---- Réglages (remplace et prolonge settings-xl du 10.09.2026) ---- */
+        body #settings-overlay h3 { font-size: 1.45rem !important; }
+        body #settings-overlay label { font-size: 1.15rem !important; margin-bottom: 12px !important; }
+        body #settings-overlay .overlay-content { gap: 24px !important; }
+        body #settings-overlay select { height: 58px !important; font-size: 1.15rem !important; }
+
+        /* ---- Repli : petits iPhone (SE) et paysage. Rien ne doit déborder. ---- */
+        @media (max-height: 700px) {
+            .scene-btn-mobile, .source-btn-mobile { height: 50px !important; font-size: 0.95rem !important; }
+            .shade-btn-mobile { height: 42px !important; }
+            .alarm-row button, .room-dropdown, .room-row > button { height: 42px !important; }
+            ch5-button[customClass~="temp-btn-mobile"] {
+                width: 60px !important; height: 60px !important;
+                min-width: 60px !important; min-height: 60px !important;
+                max-width: 60px !important; max-height: 60px !important; flex: 0 0 60px !important;
+            }
+            .mute-btn-mobile, .power-off-btn-mobile { width: 62px !important; height: 62px !important; }
+            #sources-container .source-btn-mobile { height: 54px !important; font-size: 1rem !important; }
+            #sources-container .shades-config-cog { height: 40px !important; }
+            #alarm-keypad-grid { grid-template-columns: repeat(3, 84px) !important; }
+            #alarm-keypad-grid .shade-btn-mobile { width: 84px !important; height: 54px !important; font-size: 1.4rem !important; }
+            #alarm-code-box { height: 50px !important; font-size: 1.6rem !important; }
+            body #settings-overlay select { height: 48px !important; }
+        }
+    </style>
 </body>
 </html>
