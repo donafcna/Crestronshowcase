@@ -7,10 +7,14 @@ passée ce qui tournait réellement sur la dalle, les deux slots et Vercel.
 
 | Artefact | Version | Compilation |
 |---|---|---|
-| CH5 `.ch5z` (TSW + XPanel) | 1.0.170 | `.\deploy.ps1` — **à produire** (`iphone.html` modifié le 14.09) |
+| CH5 `.ch5z` (TSW + XPanel) | **1.0.173** | `.\deploy.ps1` — produite et chargée sur la TSW le 14.09 |
 | CPZ slot 1 (C#) | — | SIMPL# Pro — **à recompiler** (`ControlSystem.cs` modifié le 13.09) |
 | LPZ slot 2 (SIMPL) | — | `node contract/generate_slot2.js` puis F12 — **à refaire** |
-| Showcase Vercel | 1.0.168-showcase | `sync-villa-crans.py` + `deployer-v2.bat` — **non poussé** (lot du 14.09 écrit dans les sources) |
+| Showcase Vercel | lot du 14.09 | poussé sur `main` — Vercel déploie automatiquement ; `deployer-v2.bat` est obsolète (il attend un `.patch` supprimé depuis) |
+
+**PowerShell bloque les scripts sur ce PC** (`PSSecurityException` sur `npm.ps1` et `deploy.ps1`) :
+lancer `npm.cmd install` et `powershell -ExecutionPolicy Bypass -File .\deploy.ps1`, ou poser
+`Set-ExecutionPolicy -Scope CurrentUser RemoteSigned` une bonne fois.
 
 `deploy.ps1` incrémente `version.json` à chaque build, y compris quand le build échoue ensuite :
 un numéro sauté ne veut pas dire qu'une version a existé. `meta.version` du `villa_config.json`,

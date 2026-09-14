@@ -1,6 +1,6 @@
 # Villa Crans CH5 — journal des versions
 
-## v1.0.171 — 14.09.2026 — GUI smartphone agrandie, barre d'outils de la vitrine allégée
+## v1.0.173 — 14.09.2026 — GUI smartphone agrandie, barre d'outils de la vitrine allégée
 
 Lot de retours de Donatien sur le châssis iPhone de la vitrine. Tout passe par des blocs de style
 partagés : un seul `<style id="mobile-xl">` dans `iphone.html` pour l'agrandissement, aucune valeur
@@ -10,10 +10,13 @@ posée écran par écran.
 
 | Artefact | Version | Compilation |
 |---|---|---|
-| CH5 `.ch5z` (TSW + XPanel) | 1.0.170 | inchangé — `iphone.html` modifié, `.\deploy.ps1` à relancer |
-| CPZ slot 1 | — | inchangé |
+| CH5 `.ch5z` (TSW + XPanel) | **1.0.173** | `.\deploy.ps1` — chargé sur la TSW 192.168.1.16 (PROJECTLOAD OK), XPanel déposé sur le CP4 |
+| CPZ slot 1 | — | `Villaftv.cpz` transféré et `progload -p:01` lancé — **l'archive vient de `dist/`, à recompiler dans SIMPL# Pro si `ControlSystem.cs` du 13.09 n'y est pas encore** |
 | LPZ slot 2 | — | inchangé |
-| Showcase Vercel | 1.0.168-showcase | `iphone.html` régénéré, build et push à faire |
+| Showcase Vercel | poussé sur `main` | déploiement Vercel automatique au push |
+
+Les 1.0.171 et 1.0.172 ont été consommées par deux `deploy.ps1` interrompus (la TSW ne répondait
+pas : `Network error: Connection timed out`). Numéros sautés, pas de version livrée.
 
 ### Vitrine (apps/showcase)
 
