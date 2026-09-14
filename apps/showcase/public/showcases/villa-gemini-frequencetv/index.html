@@ -4262,7 +4262,7 @@ body#app-body.theme-light ch5-button[customClass~="scene-btn"]:not([selected="tr
                 <h2 id="av-section-title" style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; padding-bottom: 6px;">
                     <div style="display: flex; align-items: center; gap: 8px;">
                         <svg viewBox="0 0 576 512" style="width: 22px; height: 22px; fill: #8b5cf6;"><path d="M528 0H48C21.5 0 0 21.5 0 48v320c0 26.5 21.5 48 48 48h192l-16 48h-72c-13.3 0-24 10.7-24 24s10.7 24 24 24h272c13.3 0 24-10.7 24-24s-10.7-24-24-24h-72l-16-48h192c26.5 0 48-21.5 48-48V48c0-26.5-21.5-48-48-48zm-16 352H64V64h448v288z"/></svg>
-                        <span style="user-select: none;" data-i18n="source_title">Sélection de la source audio et vidéo</span>
+                        <span style="user-select: none;" data-i18n="source_title">Source audio et vidéo</span>
                     </div>
                 </h2>
 
@@ -4610,7 +4610,6 @@ body#app-body.theme-light ch5-button[customClass~="scene-btn"]:not([selected="tr
                             <th style="padding: 8px; color: #8b5cf6;">Source (J51)</th>
                             <th style="padding: 8px; color: #8b5cf6;">Volume (J52)</th>
                             <th style="padding: 8px; color: #8b5cf6;">Mute (J53)</th>
-                            <th style="padding: 8px; color: #eab308;">Dimmer (J21)</th>
                             <th style="padding: 8px; color: #eab308;">Spots (J71)</th>
                             <th style="padding: 8px; color: #eab308;">Lustre (J72)</th>
                             <th style="padding: 8px; color: #eab308;">Appliques (J73)</th>
@@ -4977,7 +4976,19 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
     <script>
         // Logger console vers Crestron String Join 100 pour débogage
         (function() {
+            // Recopie des console.log de la GUI sur le sériel 100 : coupée par défaut depuis le
+            // 13.09.2026, elle noyait le debugger SIMPL sous des lignes [JS CONSOLE] à chaque
+            // action. meta.tracesConsole du villa_config.json la rétablit sans recompiler. Les
+            // messages restent toujours visibles dans la console du navigateur et dans Console Web.
+            function tracesConsoleActives() {
+                try {
+                    const vc = window.villaConfig || window.villaConfigEmbedded;
+                    return !!(vc && vc.meta && vc.meta.tracesConsole);
+                } catch (e) { return false; }
+            }
+
             function sendToCrestron(type, args) {
+                if (!tracesConsoleActives()) return;
                 if (typeof CrComLib !== 'undefined') {
                     try {
                         const argsArr = Array.prototype.slice.call(args);
@@ -5040,7 +5051,7 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
                 temp_actual: "Actuelle :",
                 temp_mode: "Mode actif :",
                 temp_requested: "Consigne demandée :",
-                source_title: "Sélection de la source audio et vidéo",
+                source_title: "Source audio et vidéo",
                 source_video: "Source vidéo active :",
                 volume_title: "Volume :",
                 circuits_title: "Circuits :",
@@ -5111,7 +5122,7 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
                 temp_actual: "Current:",
                 temp_mode: "Active mode:",
                 temp_requested: "Setpoint:",
-                source_title: "Audio & video source selection",
+                source_title: "Audio & video source",
                 source_video: "Active video source:",
                 volume_title: "Volume:",
                 circuits_title: "Circuits:",
@@ -5182,7 +5193,7 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
                 temp_actual: "Actual:",
                 temp_mode: "Modo activo:",
                 temp_requested: "Consigna:",
-                source_title: "Selección de fuente de audio y vídeo",
+                source_title: "Fuente de audio y vídeo",
                 source_video: "Fuente de vídeo activa:",
                 volume_title: "Volumen:",
                 circuits_title: "Circuitos:",
@@ -5253,7 +5264,7 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
                 temp_actual: "Aktuell:",
                 temp_mode: "Aktiver Modus:",
                 temp_requested: "Soll-Temperatur:",
-                source_title: "Audio- & Videoquellen-Auswahl",
+                source_title: "Audio- & Videoquelle",
                 source_video: "Aktive Videoquelle:",
                 volume_title: "Lautstärke:",
                 circuits_title: "Schaltkreise:",
@@ -5324,7 +5335,7 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
                 temp_actual: "Текущая :",
                 temp_mode: "Активный режим :",
                 temp_requested: "Уставка :",
-                source_title: "Выбор источника аудио и видео",
+                source_title: "Источник аудио и видео",
                 source_video: "Активный источник :",
                 volume_title: "Громкость :",
                 circuits_title: "Свет :",
@@ -7172,7 +7183,6 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
                     <td style="padding: 8px; color: #c084fc;" id="room-grid-${r.id}-source">--</td>
                     <td style="padding: 8px; color: #fb923c;" id="room-grid-${r.id}-volume">--</td>
                     <td style="padding: 8px; color: #94a3b8;" id="room-grid-${r.id}-mute">--</td>
-                    <td style="padding: 8px; color: #facc15;" id="room-grid-${r.id}-dimmer">--</td>
                     <td style="padding: 8px; color: #facc15;" id="room-grid-${r.id}-spots">--</td>
                     <td style="padding: 8px; color: #facc15;" id="room-grid-${r.id}-lustre">--</td>
                     <td style="padding: 8px; color: #facc15;" id="room-grid-${r.id}-appliques">--</td>
@@ -9609,12 +9619,6 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
                 // Volume (Analog Join 52)
                 CrComLib.subscribeState('n', '52', (value) => {
                     const gridEl = document.getElementById(`room-grid-${activeRoomId}-volume`);
-                    if (gridEl) gridEl.innerText = value;
-                });
-
-                // Dimmer Général (Analog Join 21)
-                CrComLib.subscribeState('n', '21', (value) => {
-                    const gridEl = document.getElementById(`room-grid-${activeRoomId}-dimmer`);
                     if (gridEl) gridEl.innerText = value;
                 });
 

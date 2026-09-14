@@ -39,6 +39,10 @@ Personne ne l'écrivait, il n'était lu que par une grille de diagnostic, et les
 En mode `showcase` la couche est inerte : la vitrine tourne sur les joins logiques avec `js/local-feedback.js`.
 
 ## Règles GUI validées par Donatien
+- **Cohérence entre châssis (consigne générale, 14.09.2026).** Les textes et les couleurs doivent
+  être identiques d'un support à l'autre : dalle TSW, iPad, XPanel et smartphone. Un libellé ou une
+  couleur modifié sur un châssis se répercute sur les autres dans le même lot. Seules les
+  **dimensions** (tailles de police, hauteurs de bouton, nombre de colonnes) se règlent par support.
 - Télécommandes : Apple TV = Menu + croix (211-220) ; Sky Q / IPTV (500 / 530 + index) et Swisscom (560 + index) en 3 zones rectangulaires ; `fitRemoteLayout` (jamais hors cadre) ; pas de bordure bleue CH5 sur `#source-control-overlay`.
 - Sources : vidéo 151-154 en interlock, Musique 155 indépendante (badge audio), 156 = retour audio vidéo ; premier appui = activation + télécommande ; scènes mémorisées (appui long, `localStorage villa_scene_<pièce>_<n>`) ; bandeau « État de la villa ».
 - Modales Contrôle global / presets / caméras / sécurité : 94 % du GUI, fond quasi opaque, textes ≥ 1,1 rem. Réglages : 640 px dalle/tablette, 440 px smartphone.
