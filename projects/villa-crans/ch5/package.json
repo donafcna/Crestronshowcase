@@ -6,6 +6,8 @@
   },
   "devDependencies": {
     "@crestron/ch5-utilities-cli": "^99.0.506",
+    "playwright": "^1.63.0",
+    "pngjs": "^7.0.0",
     "qrcode": "^1.5.4"
   }
 }
