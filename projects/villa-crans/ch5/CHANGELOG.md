@@ -10,10 +10,18 @@ jamais de bouton trop petit**.
 
 | Artefact | Version | Compilation |
 |---|---|---|
-| CH5 `.ch5z` (TSW + XPanel) | 1.0.173 | `iphone.html` modifié — `.\deploy.ps1` à relancer |
-| CPZ slot 1 | recompilé le 14.09 | `-Target cp4` à relancer si le chargement précédent portait l'ancien |
-| LPZ slot 2 | — | inchangé |
-| Showcase Vercel | lot du 14.09 | `iphone.html` régénéré |
+| CH5 `.ch5z` (TSW + XPanel) | **1.0.174** | `.\deploy.ps1` — chargée sur la TSW 192.168.1.16 le 14.09 (PROJECTLOAD OK) |
+| CPZ slot 1 | recompilé le 14.09 | SIMPL# Pro puis `-Target cp4` — chargé sur le CP4, slot 01 rechargé |
+| LPZ slot 2 | régénéré le 15.09 | `generate_slot2.js` + F12 — **chargé sur le slot 2 du CP4** |
+| Showcase Vercel | lot du 14.09 | poussé sur `main`, déploiement automatique |
+
+**Les quatre artefacts sont alignés pour la première fois** (15.09.2026, 05:44) : archive CH5 sur la
+TSW et le XPanel, CPZ sur le slot 1, LPZ sur le slot 2, vitrine en ligne.
+
+Réserve sur le slot 2 : `generate_slot2.js` **ajoute** des signaux, il n'en retire pas. Les 15
+`R<nn>_Lighting_Master` (+ `_CMD`) de l'analogique +21, sorti du contrat le 13.09, sont toujours
+câblés sur le symbole EISC. Plus personne ne les écrit : ils resteront à 0 dans le debugger.
+Sans effet sur le fonctionnement, mais trompeur pendant la recette.
 
 ### Entête et fenêtre Réglages
 

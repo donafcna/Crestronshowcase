@@ -7,9 +7,9 @@ passée ce qui tournait réellement sur la dalle, les deux slots et Vercel.
 
 | Artefact | Version | Compilation |
 |---|---|---|
-| CH5 `.ch5z` (TSW + XPanel) | **1.0.173** | `.\deploy.ps1` — produite et chargée sur la TSW le 14.09 |
-| CPZ slot 1 (C#) | — | SIMPL# Pro — **à recompiler** (`ControlSystem.cs` modifié le 13.09) |
-| LPZ slot 2 (SIMPL) | — | `node contract/generate_slot2.js` puis F12 — **à refaire** |
+| CH5 `.ch5z` (TSW + XPanel) | **1.0.174** | `.\deploy.ps1` — produite et chargée sur la TSW le 14.09 (lot smartphone inclus) |
+| CPZ slot 1 (C#) | recompilé le 14.09 | SIMPL# Pro + `.\deploy.ps1 -Target cp4` — chargé, slot 01 rechargé |
+| LPZ slot 2 (SIMPL) | **15.09.2026** | `generate_slot2.js` + F12 — chargé sur le slot 2 du CP4 |
 | Showcase Vercel | lot du 14.09 | poussé sur `main` — Vercel déploie automatiquement ; `deployer-v2.bat` est obsolète (il attend un `.patch` supprimé depuis) |
 
 **PowerShell bloque les scripts sur ce PC** (`PSSecurityException` sur `npm.ps1` et `deploy.ps1`) :
@@ -129,6 +129,22 @@ La démo automatique démarre désormais sur **tous les supports** (elle était 
 6. Lot de défauts d'ergonomie préexistants non traités (liste dans le rapport du 11.09) : scroll horizontal sur iPhone, 5-6 cibles tactiles < 40 px, libellés de pièces tronqués sur iPad, un `<path>` SVG malformé en console (le tracé Sky Q des anciennes règles CSS, `0 18-4 22-8`).
 7. **Avant toute visite client : `villa_config.json` contient encore des noms de test inappropriés** — dont `valeursParDefaut.scenesEclairage`, qui porte des libellés franchement déplacés.
 8. Playwright absent du PC : la batterie de contraste est sautée par `deploy.ps1` (`npm i -D playwright pngjs ; npx playwright install chromium`).
+
+## État au 15.09.2026 (les 4 artefacts alignés)
+Le LPZ du slot 2 a été régénéré (`generate_slot2.js`), compilé et chargé sur le CP4 : archive CH5
+1.0.174 sur la TSW et le XPanel, CPZ sur le slot 1, LPZ sur le slot 2, vitrine en ligne.
+À savoir avant la recette : `generate_slot2.js` ajoute des signaux mais n'en retire jamais — les 15
+`R<nn>_Lighting_Master` de l'analogique +21, sorti du contrat le 13.09, sont encore câblés sur
+l'EISC et resteront à 0. Reste : la logique SIMPL derrière les blocs de pièce et la chaîne d'alarme,
+et les noms de test de `villa_config.json` avant toute visite client.
+
+## État au 14.09.2026 (lot smartphone livré)
+Deux lots traités et poussés : vitrine (bouton « Présentation » retiré, bulle de reprise à gauche,
+plein écran par `/3` et `/4`) et GUI smartphone (agrandissement général, caméras sans filtre vert,
+entête allégée, aucun défilement, télécommandes mises à l'échelle, scènes mémorisées, moteurs
+animés). **1.0.174 chargée sur la TSW, CPZ recompilé et chargé sur le CP4, vitrine poussée.**
+Reste : le LPZ du slot 2, et les noms de test de `villa_config.json` avant toute visite client
+(les QR codes régénérés le 14.09 les portent encore).
 
 ## État au 13.09.2026 (recette sur dalle en cours)
 Donatien teste sur la TSW-1070 avec le SIMPL Debugger ouvert sur le slot 2. Premier lot de retours
