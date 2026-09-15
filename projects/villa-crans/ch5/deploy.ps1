@@ -1,4 +1,4 @@
-# Deploiement Villa Crans : CH5 -> TSW (192.168.1.48) et programme C# -> CP4 (192.168.1.200)
+﻿# Deploiement Villa Crans : CH5 -> TSW (192.168.1.48) et programme C# -> CP4 (192.168.1.200)
 # Usage :
 #   .\deploy.ps1                 -> build CH5 + deploiement TSW + CP4
 #   .\deploy.ps1 -Target tsw     -> uniquement la TSW
@@ -104,7 +104,7 @@ function Test-InlineScripts {
         $ErrorActionPreference = $prevEap
         if ($LASTEXITCODE -ne 0) {
             $detail = ($out | Where-Object { $_ -match 'SyntaxError|^\s*\^|^[^:]*:\d+' } | Select-Object -First 4) -join ' | '
-            $errors += "$name : bloc <script> n°$n (debute ligne $offset du HTML, ajouter $offset aux lignes ci-dessous) -> $detail"
+            $errors += "$name : bloc <script> no $n (debute ligne $offset du HTML, ajouter $offset aux lignes ci-dessous) -> $detail"
         }
     }
     Remove-Item $tmp -ErrorAction SilentlyContinue
@@ -140,7 +140,7 @@ if (-not $SkipBuild -and $Target -notin @('cp4', 'config')) {
                 @{ Fichier = 'iphone.html'; Gabarit = '393x852';  Nom = 'smartphone' })) {
                 $guiPath = Join-Path $root ('src\' + $gui.Fichier)
                 if (-not (Test-Path $guiPath)) { continue }
-                Write-Host "    $($gui.Fichier) — $($gui.Nom) ($($gui.Gabarit))"
+                Write-Host "    $($gui.Fichier) - $($gui.Nom) ($($gui.Gabarit))"
                 & node (Join-Path $root 'tools\check_contrast.mjs') "http://localhost:4179/$($gui.Fichier)" 3 $gui.Gabarit
                 if ($LASTEXITCODE -ne 0) { throw "Textes illisibles dans au moins un theme sur $($gui.Fichier) (voir ci-dessus), deploiement annule" }
             }

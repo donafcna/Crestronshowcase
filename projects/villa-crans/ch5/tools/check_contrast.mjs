@@ -4,9 +4,9 @@
  * de chaque texte visible par rapport au fond RÉELLEMENT affiché derrière lui
  * (capture d'écran : photos et verre dépoli compris).
  *
- * Usage : node tools/check_contrast.mjs <url> [seuil=3] [LxH=1340x890]
- *   ex.  : node tools/check_contrast.mjs http://localhost:4179/index.html 3 1340x890
- *          node tools/check_contrast.mjs http://localhost:4179/iphone.html 3 393x852
+ * Usage : node tools/check_contrast.mjs <url index.html> [seuil=3] [gabarit=1340x890]
+ *   ex.  : node tools/check_contrast.mjs http://localhost:4173/showcases/villa-gemini-frequencetv/index.html
+ *   ex.  : node tools/check_contrast.mjs http://localhost:4179/iphone.html 3 393x852
  * Sortie : liste des textes sous le seuil (WCAG : 3:1 minimum pour du texte large, 4.5:1 pour du texte courant),
  *          code de sortie 1 s'il y en a → à lancer avant chaque livraison.
  */
@@ -15,10 +15,10 @@ import { PNG } from "pngjs";
 
 const url = process.argv[2];
 const THRESHOLD = Number(process.argv[3] || 3);
-// Gabarit d'écran : la dalle par défaut, à passer en 393x852 pour le GUI smartphone —
-// un texte peut être lisible sur 1340 px et passer sous le seuil une fois la mise en page mobile appliquée.
+if (!url) { console.error("usage: node tools/check_contrast.mjs <url> [seuil] [gabarit]"); process.exit(2); }
+// Gabarit du chassis teste : sans lui le smartphone etait mesure en 1340x890 (mise en page de la dalle).
 const [VW, VH] = (process.argv[4] || "1340x890").split("x").map(Number);
-if (!url) { console.error("usage: node tools/check_contrast.mjs <url> [seuil]"); process.exit(2); }
+if (!VW || !VH) { console.error(`gabarit invalide : « ${process.argv[4]} » (attendu LARGEURxHAUTEUR, ex. 393x852)`); process.exit(2); }
 const THEMES = ["dark", "light", "glass"];
 const exe = process.env.CHROMIUM_PATH || undefined;
 
@@ -31,7 +31,7 @@ const page = await browser.newPage({ viewport: { width: VW, height: VH } });
 await page.goto(url); await page.waitForTimeout(4500);
 let failures = 0;
 for (const theme of THEMES) {
-  await page.evaluate((t) => { if (typeof window.applyTheme === "function") window.applyTheme(t); else if (typeof window.changeTheme === "function") window.changeTheme(t); else { document.body.className = document.body.className.replace(/theme-\w+/g, "") + " theme-" + t; } }, theme);
+  await page.evaluate((t) => { if (typeof window.applyTheme === "function") window.applyTheme(t); else { document.body.className = document.body.className.replace(/theme-\w+/g, "") + " theme-" + t; } }, theme);
   await page.waitForTimeout(600);
   const png = PNG.sync.read(await page.screenshot({ type: "png" }));
   const items = await page.evaluate(() => {
@@ -64,7 +64,7 @@ for (const theme of THEMES) {
     const c = ratio(col, bg);
     if (c < THRESHOLD) bad.push({ ...it, contrast: c.toFixed(2), bg: bg.join(",") });
   }
-  console.log(`\n=== Thème ${theme} : ${items.length} textes visibles, ${bad.length} sous ${THRESHOLD}:1 ===`);
+  console.log(`\n=== Thème ${theme} (${VW}x${VH}) : ${items.length} textes visibles, ${bad.length} sous ${THRESHOLD}:1 ===`);
   for (const b of bad) console.log(`  ${b.contrast}:1  « ${b.text} »  (${b.color} sur rgb(${b.bg}))  [${b.id}]`);
   failures += bad.length;
 }
