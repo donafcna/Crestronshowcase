@@ -3046,7 +3046,7 @@
                     const defs = vc.valeursParDefaut || {};
                     const legacy = { rooms: [], sources: [], roomMotors: {}, roomCircuits: {}, circuits: [] };
                     (vc.sourcesAudioVideo || []).forEach(s => legacy.sources.push({ id: s.id, name: villaTName(s.nom) }));
-                    (vc.pieces || []).forEach(p => {
+                    (window.villaPiecesActives ? window.villaPiecesActives(vc) : (vc.pieces || [])).forEach(p => {
                         legacy.rooms.push({ id: p.id, name: villaTName(p.nom) });
                         const pil = p.pilotages || {};
                         const ecl = pil.eclairages || {};

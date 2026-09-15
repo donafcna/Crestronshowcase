@@ -64,7 +64,8 @@ try {
     console.error('Impossible de lire ' + configPath + ' : ' + e.message);
     process.exit(1);
 }
-const pieces = (cfg.pieces || []).filter(p => p && typeof p.id === 'number');
+// « actif: false » sort la piece des menus (cf. villa-joins.js) : inutile d'imprimer son QR.
+const pieces = (cfg.pieces || []).filter(p => p && typeof p.id === 'number' && p.actif !== false);
 if (!pieces.length) { console.error('Aucune pièce dans ' + configPath); process.exit(1); }
 
 const slugify = s => s.normalize('NFD').replace(/[̀-ͯ]/g, '')

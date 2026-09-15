@@ -7640,7 +7640,7 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
 
                 (vc.sourcesAudioVideo || []).forEach(s => legacy.sources.push({ id: s.id, name: villaTName(s.nom) }));
 
-                (vc.pieces || []).forEach(p => {
+                (window.villaPiecesActives ? window.villaPiecesActives(vc) : (vc.pieces || [])).forEach(p => {
                     legacy.rooms.push({ id: p.id, name: villaTName(p.nom) });
                     const pil = p.pilotages || {};
 
@@ -9247,7 +9247,7 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
                 // Figé par défaut ; zone gauche/droite = rotation, tuile de face = ouvrir la pièce.
                 let carIndex = 0;
                 function carPieces() {
-                    return (window.villaConfig && window.villaConfig.pieces) ? window.villaConfig.pieces : [];
+                    return window.villaPiecesActives ? window.villaPiecesActives() : ((window.villaConfig && window.villaConfig.pieces) || []);
                 }
                 function carApply() {
                     const car = document.getElementById('carousel-3d');
