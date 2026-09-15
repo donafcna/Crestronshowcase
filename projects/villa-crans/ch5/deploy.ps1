@@ -6,6 +6,8 @@
 #   .\deploy.ps1 -Target web     -> Web XPanel sur le serveur web du CP4 (QR codes par piece) + regeneration des QR
 #   .\deploy.ps1 -SkipBuild      -> sans recompiler l'archive CH5
 #   .\deploy.ps1 -SkipContrast   -> sans la garde de contraste (a n'utiliser que sur faux positif avere)
+#   .\deploy.ps1 -Target web -CP4Host 192.168.3.109  -> vise un autre processeur (banc de test du bureau)
+#                                   sans toucher au fichier d'identifiants
 # Les identifiants sont lus dans deploy.secrets.psd1 (jamais commite).
 # Cle optionnelle dans deploy.secrets.psd1 -> CP4.WebAuthToken : jeton d'authentification passe dans les QR (?authtoken=).
 
@@ -13,11 +15,24 @@ param(
     [ValidateSet('all', 'tsw', 'cp4', 'config', 'web')]
     [string]$Target = 'all',
     [switch]$SkipBuild,
-    [switch]$SkipContrast
+    [switch]$SkipContrast,
+    [string]$CP4Host
 )
 
 $ErrorActionPreference = 'Stop'
 $root = Split-Path -Parent $MyInvocation.MyCommand.Path
+
+# ch5-cli lance a travers tools\ch5-compat.js : Node 23+ a retire les helpers util.is*
+# que ssh2-streams (dependance du CLI) utilise encore. Sans ce prealable, l'envoi SFTP
+# reussit puis le CLI s'arrete sur "isDate is not a function. No success executing command."
+$ch5Cli = Join-Path $root 'node_modules\@crestron\ch5-utilities-cli\build\index.js'
+$ch5Compat = Join-Path $root 'tools\ch5-compat.js'
+function Invoke-Ch5Cli {
+    param([string[]]$Arguments)
+    if (-not (Test-Path $ch5Cli)) { throw "ch5-cli introuvable : $ch5Cli (npm install dans $root)" }
+    if (Test-Path $ch5Compat) { & node '--require' $ch5Compat $ch5Cli @Arguments }
+    else { & node $ch5Cli @Arguments }
+}
 
 # Node.js systeme en tete de PATH (necessaire pour npx ch5-cli dans les contextes a PATH obsolete)
 if (Test-Path 'C:\Program Files\nodejs\node.exe') {
@@ -193,7 +208,7 @@ if (-not $SkipBuild -and $Target -notin @('cp4', 'config')) {
     }
     Push-Location $root
     try {
-        npx ch5-cli archive -p villaftv -d src -o dist | Out-Null
+        Invoke-Ch5Cli @('archive', '-p', 'villaftv', '-d', 'src', '-o', 'dist') | Out-Null
         if ($LASTEXITCODE -ne 0) { throw "Echec de ch5-cli archive" }
     } finally { Pop-Location }
     Write-Host "  Archive OK : dist\villaftv.ch5z"
@@ -212,24 +227,38 @@ if ($Target -in @('all', 'tsw')) {
 
 # --- WEB XPANEL : le meme .ch5z sur le serveur web du CP4 -> https://<CP4>/villaftv/index.html (QR codes) ---
 if ($Target -in @('all', 'web')) {
-    Write-Host "[web] Deploiement du Web XPanel sur le CP4 $($S.CP4.Host)..." -ForegroundColor Cyan
+    # -CP4Host permet de viser un autre processeur (banc de test) sans modifier deploy.secrets.psd1
+    $cibleWeb = if ($CP4Host) { $CP4Host } else { $S.CP4.Host }
+    Write-Host "[web] Deploiement du Web XPanel sur le CP4 $cibleWeb..." -ForegroundColor Cyan
     $ch5z = Join-Path $root 'dist\villaftv.ch5z'
     if (-not (Test-Path $ch5z)) { throw "Archive introuvable : $ch5z" }
-    # ch5-cli deploy lit les identifiants dans ces variables d'environnement (evite l'invite interactive)
-    $env:CH5CLI_DEPLOY_USER = $S.CP4.User
-    $env:CH5CLI_DEPLOY_PW = $S.CP4.Password
+    # -p : le CLI demande l'utilisateur et le mot de passe SFTP. Il n'existe aucune option de mot de passe
+    # et il ne lit aucune variable d'environnement (les anciennes CH5CLI_DEPLOY_* etaient sans effet,
+    # d'ou des deploiements web qui echouaient en silence). Seule une cle SSH (-i) eviterait l'invite.
+    Write-Host "  Identifiants SFTP du processeur demandes ci-dessous." -ForegroundColor Yellow
     Push-Location $root
     try {
-        npx ch5-cli deploy -H $S.CP4.Host -t web $ch5z
-        if ($LASTEXITCODE -ne 0) { throw "Echec de ch5-cli deploy -t web" }
-    } finally {
-        Pop-Location
-        Remove-Item Env:CH5CLI_DEPLOY_USER, Env:CH5CLI_DEPLOY_PW -ErrorAction SilentlyContinue
-    }
-    Write-Host "  Web XPanel OK : https://$($S.CP4.Host)/villaftv/index.html" -ForegroundColor Green
+        # Sortie laissee a l'ecran : la capturer casserait l'invite de saisie du mot de passe.
+        Invoke-Ch5Cli @('deploy', '-H', $cibleWeb, '-t', 'web', '-p', $ch5z)
+    } finally { Pop-Location }
+    # ch5-cli sort en code 0 meme quand le deploiement echoue (l'ancien script annoncait donc
+    # "Web XPanel OK" a tort). On verifie ce qui compte vraiment : la page repond-elle ?
+    $urlWeb = "https://$cibleWeb/villaftv/index.html"
+    $rappel = [System.Net.ServicePointManager]::ServerCertificateValidationCallback
+    try {
+        # Certificat auto-signe du processeur : validation desactivee le temps du controle.
+        [System.Net.ServicePointManager]::ServerCertificateValidationCallback = { $true }
+        [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.SecurityProtocolType]::Tls12
+        $code = (Invoke-WebRequest -Uri $urlWeb -UseBasicParsing -TimeoutSec 20).StatusCode
+        if ($code -ne 200) { throw "la page repond $code" }
+    } catch {
+        throw "Deploiement web non confirme sur $cibleWeb : $urlWeb ne repond pas ($($_.Exception.Message))"
+    } finally { [System.Net.ServicePointManager]::ServerCertificateValidationCallback = $rappel }
+    Write-Host "  Web XPanel OK : https://$cibleWeb/villaftv/index.html" -ForegroundColor Green
+    Write-Host "  GUI smartphone : https://$cibleWeb/villaftv/iphone.html" -ForegroundColor Green
 
     # QR codes par piece (tools/gen_qr.js -> qr\)
-    $qrArgs = @((Join-Path $root 'tools\gen_qr.js'), '--base', "https://$($S.CP4.Host)/villaftv/index.html")
+    $qrArgs = @((Join-Path $root 'tools\gen_qr.js'), '--base', "https://$cibleWeb/villaftv/index.html")
     if ($S.CP4.WebAuthToken) { $qrArgs += @('--token', $S.CP4.WebAuthToken) }
     if ($S.CP4.WifiName) { $qrArgs += @('--wifi', $S.CP4.WifiName) }
     & node @qrArgs

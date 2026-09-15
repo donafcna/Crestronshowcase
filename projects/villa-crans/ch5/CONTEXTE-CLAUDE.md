@@ -120,6 +120,35 @@ sur le modèle de `/1` et `/0` du Mode Dev (`hooks/useGuiFullscreen.js`, Échap 
 La démo automatique démarre désormais sur **tous les supports** (elle était réservée au PC via
 `isDesktopPointer`) : sans bouton, elle n'était plus démarrable à la main sur mobile et tablette.
 
+## Pièges de la chaîne de déploiement (15.09.2026, tous rencontrés en conditions réelles)
+1. **`deploy.ps1` reste en ASCII pur.** Le fichier est en UTF-8 **avec BOM** ; sans BOM, Windows
+   PowerShell 5.1 le décode en cp1252 et un tiret cadratin devient `â€"` — dont le dernier caractère
+   est un guillemet typographique que PowerShell accepte comme délimiteur de chaîne. La parité des
+   guillemets bascule et tout le reste du script est lu comme du code
+   (`MissingEndParenthesisInExpression`). Contrôle : parser le fichier **dans les deux décodages**.
+2. **Jamais de `node -e "..."` dans `Start-Process`.** PowerShell 5.1 joint `-ArgumentList` par des
+   espaces sans les protéger : le script est coupé au premier espace et node meurt aussitôt. Le
+   serveur du contrôle de contraste vit donc dans `tools/serve_src.mjs` (un seul argument), avec
+   Content-Type explicite — sans lui Chromium télécharge le HTML au lieu de l'afficher — et le
+   script attend que le port 4179 réponde au lieu de parier sur un `Start-Sleep`.
+3. **`ch5-cli deploy` exige `-p`.** Sans lui il tente le SFTP sans identifiants et sort sur
+   `No SFTP connection available`. Il n'existe **aucune** option de mot de passe et il ne lit
+   **aucune** variable d'environnement : les anciennes `CH5CLI_DEPLOY_USER` / `_PW` étaient sans
+   effet, d'où des déploiements web qui échouaient en silence. Seule une clé SSH (`-i`) éviterait
+   l'invite.
+4. **Node 23+ casse `ch5-cli`.** Node 23 a retiré les 14 helpers `util.is*` ; `ssh2-streams`
+   (dépendance du CLI) fait encore `var isDate = util.isDate` et l'appelle au `setstat`, juste après
+   l'envoi : sous Node 24 l'archive arrive sur l'appareil puis le CLI s'arrête sur
+   `isDate is not a function. No success executing command.` D'où `tools/ch5-compat.js`, chargé par
+   `node --require` avant le CLI. Hors script :
+   `node --require .\tools\ch5-compat.js .\node_modules\@crestron\ch5-utilities-cli\build\index.js deploy -H <ip> -t web -p dist\villaftv.ch5z`
+5. **`ch5-cli` sort en code 0 même en échec** — l'ancien script annonçait « Web XPanel OK » à tort.
+   Le succès se vérifie sur la page elle-même (`https://<cp4>/villaftv/index.html`, certificat
+   auto-signé donc validation désactivée le temps du contrôle).
+6. **Banc de test du bureau** : CP4 en `192.168.3.109`, compte SFTP `FTV`. `-CP4Host <ip>` vise un
+   autre processeur sans toucher à `deploy.secrets.psd1`. Un `ping` qui répond ne dit rien du
+   port 22 : `Test-NetConnection <ip> -Port 22`.
+
 ## Reste à faire
 1. `npm install` dans `projects/villa-crans/ch5` — `node_modules` n'a pas suivi le passage en monorepo, `npx ch5-cli` tombe en 404 (le binaire vient de `@crestron/ch5-utilities-cli`).
 2. `.\deploy.ps1` → 1.0.170 (dalle + XPanel + CP4), puis SIMPL# Pro pour le CPZ et `generate_slot2.js` + F12 pour le LPZ.
@@ -128,7 +157,7 @@ La démo automatique démarre désormais sur **tous les supports** (elle était 
 5. Régénérer et pousser le showcase après validation du lot du 13.09.
 6. Lot de défauts d'ergonomie préexistants non traités (liste dans le rapport du 11.09) : scroll horizontal sur iPhone, 5-6 cibles tactiles < 40 px, libellés de pièces tronqués sur iPad, un `<path>` SVG malformé en console (le tracé Sky Q des anciennes règles CSS, `0 18-4 22-8`).
 7. **Avant toute visite client : `villa_config.json` contient encore des noms de test inappropriés** — dont `valeursParDefaut.scenesEclairage`, qui porte des libellés franchement déplacés.
-8. Playwright absent du PC : la batterie de contraste est sautée par `deploy.ps1` (`npm i -D playwright pngjs ; npx playwright install chromium`).
+8. ~~Playwright absent du PC~~ — installé le 15.09 : la batterie de contraste tourne à chaque build (dalle 1340x890 et smartphone 393x852, 3 thèmes). `-SkipContrast` la saute sur faux positif avéré.
 
 ## État au 15.09.2026 (les 4 artefacts alignés)
 Le LPZ du slot 2 a été régénéré (`generate_slot2.js`), compilé et chargé sur le CP4 : archive CH5
