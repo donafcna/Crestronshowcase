@@ -5,13 +5,15 @@
 #   .\deploy.ps1 -Target cp4     -> uniquement le CP4
 #   .\deploy.ps1 -Target web     -> Web XPanel sur le serveur web du CP4 (QR codes par piece) + regeneration des QR
 #   .\deploy.ps1 -SkipBuild      -> sans recompiler l'archive CH5
+#   .\deploy.ps1 -SkipContrast   -> sans la garde de contraste (a n'utiliser que sur faux positif avere)
 # Les identifiants sont lus dans deploy.secrets.psd1 (jamais commite).
 # Cle optionnelle dans deploy.secrets.psd1 -> CP4.WebAuthToken : jeton d'authentification passe dans les QR (?authtoken=).
 
 param(
     [ValidateSet('all', 'tsw', 'cp4', 'config', 'web')]
     [string]$Target = 'all',
-    [switch]$SkipBuild
+    [switch]$SkipBuild,
+    [switch]$SkipContrast
 )
 
 $ErrorActionPreference = 'Stop'
@@ -127,12 +129,24 @@ if (-not $SkipBuild -and $Target -notin @('cp4', 'config')) {
     # Lisibilite : contraste de chaque texte dans chaque theme (tools/check_contrast.mjs, Playwright).
     # Sert la source src/ en local et ouvre chaque GUI dans un navigateur sans fenetre. Si Playwright
     # n'est pas installe (npm i -D playwright pngjs ; npx playwright install chromium), on avertit seulement.
-    if (Test-Path (Join-Path $root 'node_modules\playwright')) {
+    if ($SkipContrast) {
+        Write-Host "  Contraste : garde desactivee (-SkipContrast)" -ForegroundColor Yellow
+    } elseif (Test-Path (Join-Path $root 'node_modules\playwright')) {
         Write-Host "  Verification du contraste des textes (3 themes)..."
-        $srcDir = (Join-Path $root 'src').Replace('\', '/')
-        $srv = Start-Process -FilePath node -ArgumentList @('-e', "require('http').createServer((q,r)=>{const f=require('path').join('$srcDir',decodeURIComponent(q.url.split('?')[0]));require('fs').readFile(f,(e,d)=>{r.writeHead(e?404:200);r.end(d||'')})}).listen(4179)") -PassThru -WindowStyle Hidden
+        # Serveur dans un fichier a part : Start-Process joint -ArgumentList par des espaces
+        # sans les proteger, un script node -e en ligne y serait coupe au premier espace.
+        $srv = Start-Process -FilePath node -ArgumentList @(
+            (Join-Path $root 'tools\serve_src.mjs'), (Join-Path $root 'src'), '4179') -PassThru -WindowStyle Hidden
         try {
-            Start-Sleep -Seconds 1
+            # Attendre que le port reponde vraiment plutot que de parier sur une seconde.
+            $pret = $false
+            foreach ($essai in 1..40) {
+                try {
+                    $c = New-Object System.Net.Sockets.TcpClient
+                    $c.Connect('127.0.0.1', 4179); $c.Close(); $pret = $true; break
+                } catch { Start-Sleep -Milliseconds 250 }
+            }
+            if (-not $pret) { throw "Le serveur local (tools\serve_src.mjs, port 4179) n'a pas demarre, controle de contraste impossible" }
             # Les deux GUI, chacune sur son gabarit : la dalle (index.html, aussi iPad et XPanel)
             # et le smartphone (iphone.html), dont la mise en page n'etait pas couverte jusqu'ici.
             foreach ($gui in @(
@@ -142,7 +156,7 @@ if (-not $SkipBuild -and $Target -notin @('cp4', 'config')) {
                 if (-not (Test-Path $guiPath)) { continue }
                 Write-Host "    $($gui.Fichier) - $($gui.Nom) ($($gui.Gabarit))"
                 & node (Join-Path $root 'tools\check_contrast.mjs') "http://localhost:4179/$($gui.Fichier)" 3 $gui.Gabarit
-                if ($LASTEXITCODE -ne 0) { throw "Textes illisibles dans au moins un theme sur $($gui.Fichier) (voir ci-dessus), deploiement annule" }
+                if ($LASTEXITCODE -ne 0) { throw "Textes illisibles dans au moins un theme sur $($gui.Fichier) (voir ci-dessus), deploiement annule. Si le releve est un faux positif (texte sur photo), relancer avec -SkipContrast" }
             }
         } finally { Stop-Process -Id $srv.Id -ErrorAction SilentlyContinue }
     } else {
