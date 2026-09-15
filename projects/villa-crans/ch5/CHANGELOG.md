@@ -34,11 +34,18 @@
   déclencher. Elle épouse désormais le bouton — plus petite cible réelle : 70 px sur Apple TV,
   41 px sur Sky Q. **Le même défaut existe sur la dalle** (`index.html`), non corrigé ici.
 
-### Limite connue
+### Swisscom TV
 
-La télécommande Swisscom TV reproduit une télécommande physique de plus de 40 touches : 40 de ses
-41 cibles restent sous 40 px, la plus petite à 18 px. L'agrandir demande de la découper en deux
-pages — non fait, à décider.
+Reprise au même niveau que les autres. Les touches étaient à 33 px et 40 des 41 cibles passaient
+sous 40 px. Deux corrections :
+
+- **Toutes les touches rondes le sont vraiment.** L'étirement en hauteur avait transformé PG±, CH±
+  et les pastilles de couleur en ovales — largeur et hauteur sont de nouveau égales partout.
+- **Volume / P et pavé numérique côte à côte** au lieu d'empilés. Empilés, la disposition faisait
+  1082 px de haut : l'échelle tombait à 0,61 et annulait tout agrandissement. Côte à côte, elle fait
+  905 × 478 — largeur et hauteur arrivent à saturation en même temps, c'est l'optimum de cette
+  structure. Échelle 0,695, **touches à 47 px** (33 avant), plus petite cible 38 px (18 avant),
+  8 cibles sous 40 px au lieu de 40. « radio » n'est plus tronqué en « ra… ».
 
 ### Contrôles
 
