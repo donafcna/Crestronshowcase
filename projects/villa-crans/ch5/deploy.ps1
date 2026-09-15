@@ -125,7 +125,7 @@ if (-not $SkipBuild -and $Target -notin @('cp4', 'config')) {
         if (Test-Path $p) { Test-InlineScripts $p }
     }
     # Lisibilite : contraste de chaque texte dans chaque theme (tools/check_contrast.mjs, Playwright).
-    # Sert la source src/ en local et ouvre index.html dans un navigateur sans fenetre. Si Playwright
+    # Sert la source src/ en local et ouvre chaque GUI dans un navigateur sans fenetre. Si Playwright
     # n'est pas installe (npm i -D playwright pngjs ; npx playwright install chromium), on avertit seulement.
     if (Test-Path (Join-Path $root 'node_modules\playwright')) {
         Write-Host "  Verification du contraste des textes (3 themes)..."
@@ -133,8 +133,17 @@ if (-not $SkipBuild -and $Target -notin @('cp4', 'config')) {
         $srv = Start-Process -FilePath node -ArgumentList @('-e', "require('http').createServer((q,r)=>{const f=require('path').join('$srcDir',decodeURIComponent(q.url.split('?')[0]));require('fs').readFile(f,(e,d)=>{r.writeHead(e?404:200);r.end(d||'')})}).listen(4179)") -PassThru -WindowStyle Hidden
         try {
             Start-Sleep -Seconds 1
-            & node (Join-Path $root 'tools\check_contrast.mjs') 'http://localhost:4179/index.html'
-            if ($LASTEXITCODE -ne 0) { throw "Textes illisibles dans au moins un theme (voir ci-dessus), deploiement annule" }
+            # Les deux GUI, chacune sur son gabarit : la dalle (index.html, aussi iPad et XPanel)
+            # et le smartphone (iphone.html), dont la mise en page n'etait pas couverte jusqu'ici.
+            foreach ($gui in @(
+                @{ Fichier = 'index.html';  Gabarit = '1340x890'; Nom = 'dalle / iPad / XPanel' },
+                @{ Fichier = 'iphone.html'; Gabarit = '393x852';  Nom = 'smartphone' })) {
+                $guiPath = Join-Path $root ('src\' + $gui.Fichier)
+                if (-not (Test-Path $guiPath)) { continue }
+                Write-Host "    $($gui.Fichier) — $($gui.Nom) ($($gui.Gabarit))"
+                & node (Join-Path $root 'tools\check_contrast.mjs') "http://localhost:4179/$($gui.Fichier)" 3 $gui.Gabarit
+                if ($LASTEXITCODE -ne 0) { throw "Textes illisibles dans au moins un theme sur $($gui.Fichier) (voir ci-dessus), deploiement annule" }
+            }
         } finally { Stop-Process -Id $srv.Id -ErrorAction SilentlyContinue }
     } else {
         Write-Host "  Attention : Playwright absent, contraste des textes non verifie (npm i -D playwright pngjs ; npx playwright install chromium)" -ForegroundColor Yellow

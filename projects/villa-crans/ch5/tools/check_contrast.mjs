@@ -4,8 +4,9 @@
  * de chaque texte visible par rapport au fond RÉELLEMENT affiché derrière lui
  * (capture d'écran : photos et verre dépoli compris).
  *
- * Usage : node tools/check_contrast.mjs <url index.html> [seuil=3]
- *   ex.  : node tools/check_contrast.mjs http://localhost:4173/showcases/villa-gemini-frequencetv/index.html
+ * Usage : node tools/check_contrast.mjs <url> [seuil=3] [LxH=1340x890]
+ *   ex.  : node tools/check_contrast.mjs http://localhost:4179/index.html 3 1340x890
+ *          node tools/check_contrast.mjs http://localhost:4179/iphone.html 3 393x852
  * Sortie : liste des textes sous le seuil (WCAG : 3:1 minimum pour du texte large, 4.5:1 pour du texte courant),
  *          code de sortie 1 s'il y en a → à lancer avant chaque livraison.
  */
@@ -14,6 +15,9 @@ import { PNG } from "pngjs";
 
 const url = process.argv[2];
 const THRESHOLD = Number(process.argv[3] || 3);
+// Gabarit d'écran : la dalle par défaut, à passer en 393x852 pour le GUI smartphone —
+// un texte peut être lisible sur 1340 px et passer sous le seuil une fois la mise en page mobile appliquée.
+const [VW, VH] = (process.argv[4] || "1340x890").split("x").map(Number);
 if (!url) { console.error("usage: node tools/check_contrast.mjs <url> [seuil]"); process.exit(2); }
 const THEMES = ["dark", "light", "glass"];
 const exe = process.env.CHROMIUM_PATH || undefined;
@@ -23,11 +27,11 @@ const ratio = (a, b) => { const la = lum(a), lb = lum(b); return (Math.max(la, l
 const parseRgb = (s) => { const m = s.match(/rgba?\(([^)]+)\)/); if (!m) return null; const p = m[1].split(",").map(Number); return p[3] === 0 ? null : p.slice(0, 3); };
 
 const browser = await chromium.launch(exe ? { executablePath: exe } : {});
-const page = await browser.newPage({ viewport: { width: 1340, height: 890 } });
+const page = await browser.newPage({ viewport: { width: VW, height: VH } });
 await page.goto(url); await page.waitForTimeout(4500);
 let failures = 0;
 for (const theme of THEMES) {
-  await page.evaluate((t) => { if (typeof window.applyTheme === "function") window.applyTheme(t); else { document.body.className = document.body.className.replace(/theme-\w+/g, "") + " theme-" + t; } }, theme);
+  await page.evaluate((t) => { if (typeof window.applyTheme === "function") window.applyTheme(t); else if (typeof window.changeTheme === "function") window.changeTheme(t); else { document.body.className = document.body.className.replace(/theme-\w+/g, "") + " theme-" + t; } }, theme);
   await page.waitForTimeout(600);
   const png = PNG.sync.read(await page.screenshot({ type: "png" }));
   const items = await page.evaluate(() => {
