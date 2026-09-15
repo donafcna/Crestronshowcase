@@ -11,6 +11,7 @@
  * Prérequis : npm run build && npx vite preview --port 4173
  */
 import { chromium } from "playwright";
+import { existsSync } from "node:fs";
 
 const arg = (n, d) => { const i = process.argv.indexOf(n); return i > 0 ? process.argv[i + 1] : d; };
 const BASE = arg("--base", "http://localhost:4173");
@@ -51,12 +52,21 @@ window.__audit = function (root) {
       sel: el.tagName + (el.id ? '#'+el.id : '') + (typeof el.className === 'string' && el.className ? '.'+el.className.trim().split(/\\s+/).join('.') : '') });
   });
   return out;
+};
+window.__setTheme = function (t) {
+  if (typeof window.applyTheme === 'function') return window.applyTheme(t);
+  if (typeof window.changeTheme === 'function') return window.changeTheme(t);
+  document.body.className = document.body.className.replace(/theme-\\w+/g, '').trim() + ' theme-' + t;
 };`;
 
 const problems = [];
 const report = (ctx, list) => list.forEach(r => problems.push({ ctx, ...r }));
 
-const b = await chromium.launch({ executablePath: process.env.PW_CHROMIUM || "/opt/pw-browsers/chromium" });
+// Navigateur : celui installé par « npx playwright install chromium » par défaut. PW_CHROMIUM
+// force un binaire précis ; le chemin du conteneur Linux n'est utilisé que s'il existe vraiment
+// (il était codé en dur, ce qui rendait le script inutilisable sous Windows).
+const exe = process.env.PW_CHROMIUM || (existsSync("/opt/pw-browsers/chromium") ? "/opt/pw-browsers/chromium" : undefined);
+const b = await chromium.launch(exe ? { executablePath: exe } : {});
 
 // --- GUI dalle / tablette -----------------------------------------------
 {
@@ -65,16 +75,17 @@ const b = await chromium.launch({ executablePath: process.env.PW_CHROMIUM || "/o
   await p.waitForTimeout(1500);
   await p.addScriptTag({ content: AUDIT });
   for (const th of THEMES) {
-    await p.evaluate(t => window.changeTheme(t), th);
+    await p.evaluate(t => window.__setTheme(t), th);
     // Les panneaux ont une transition CSS : attendre qu'elle soit terminée, sinon
     // on mesure des couleurs et des backdrop-filter intermédiaires.
     await p.waitForTimeout(900);
-    report(`dalle/${th}/page`, await p.evaluate(() => window.__audit(document.querySelector('.app-container'))));
+    report(`dalle/${th}/page`, await p.evaluate(() => window.__audit(document.querySelector('.app-container') || document.body)));
     for (const id of OVERLAYS) {
       const res = await p.evaluate(async id => {
         window.closeAllModals && window.closeAllModals();
         const el = document.getElementById(id); if (!el) return [];
-        if (id === 'audio-confirm-overlay') el.style.display = 'block'; else window.showModalOverlay(id);
+        if (id === 'audio-confirm-overlay' || typeof window.showModalOverlay !== 'function') el.style.display = 'block';
+        else window.showModalOverlay(id);
         await new Promise(r => setTimeout(r, 250));
         return window.__audit(el);
       }, id);
@@ -84,10 +95,12 @@ const b = await chromium.launch({ executablePath: process.env.PW_CHROMIUM || "/o
     for (const state of ["active", "partial", "off"]) {
       const res = await p.evaluate(async state => {
         window.closeAllModals && window.closeAllModals();
-        window.showModalOverlay('alarm-overlay');
-        document.getElementById('alarm-keypad-screen').style.display = 'none';
-        const scr = document.getElementById('alarm-partitions-screen'); scr.style.display = 'flex';
-        for (let i = 1; i <= 4; i++) window.updateAlarmPartitionBadge(i, state);
+        const ov = document.getElementById('alarm-overlay'); if (!ov) return [];
+        if (typeof window.showModalOverlay === 'function') window.showModalOverlay('alarm-overlay'); else ov.style.display = 'block';
+        const kp = document.getElementById('alarm-keypad-screen'); if (kp) kp.style.display = 'none';
+        const scr = document.getElementById('alarm-partitions-screen'); if (!scr) return [];
+        scr.style.display = 'flex';
+        if (typeof window.updateAlarmPartitionBadge === 'function') { for (let i = 1; i <= 4; i++) window.updateAlarmPartitionBadge(i, state); }
         await new Promise(r => setTimeout(r, 200));
         return window.__audit(scr);
       }, state);
@@ -105,7 +118,7 @@ const b = await chromium.launch({ executablePath: process.env.PW_CHROMIUM || "/o
   await p.waitForTimeout(1800);
   await p.addScriptTag({ content: AUDIT });
   for (const th of THEMES) {
-    await p.evaluate(t => window.changeTheme(t), th);
+    await p.evaluate(t => window.__setTheme(t), th);
     // Les panneaux ont une transition CSS : attendre qu'elle soit terminée, sinon
     // on mesure des couleurs et des backdrop-filter intermédiaires.
     await p.waitForTimeout(900);
