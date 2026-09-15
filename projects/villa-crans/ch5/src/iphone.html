@@ -849,6 +849,15 @@
                         <button class="shade-btn-mobile" onclick="pressDigital(66)">▼</button>
                     </div>
                 </div>
+                <!-- Stores groupés (joins 67-69) : la ligne manquait sur smartphone, elle existe sur la dalle -->
+                <div class="shade-control-row">
+                    <span class="shade-label">Stores</span>
+                    <div style="display: flex; gap: 6px;">
+                        <button class="shade-btn-mobile" onclick="pressDigital(67)">▲</button>
+                        <button class="shade-btn-mobile" onclick="pressDigital(68)">■</button>
+                        <button class="shade-btn-mobile" onclick="pressDigital(69)">▼</button>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -1249,86 +1258,76 @@
             <button onclick="closeSourceControlModal()" style="height: 30px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 6px; cursor: pointer; font-weight: bold; padding: 0 10px; font-size: 0.8rem;">FERMER</button>
         </div>
         <!-- Télécommande décodeur (Sky Q / Swisscom TV / IPTV) : LIVE·DVR·GUIDE·INFO·LAST, BACK·MENU·EXIT, D-pad, PG±, CH±, transport, couleurs -->
-        <div id="remote-standard-layout" class="rc-layout" style="display: flex; align-items: center; justify-content: center; width: 100%; flex: 1; min-height: 0;"><div class="rc-inner" style="display: flex; flex-direction: column; gap: 16px; align-items: center;">
-            <div style="display: flex; flex-direction: column; gap: 12px; align-items: center;">
-                <div style="display: flex; gap: 8px; width: 100%;">
-                <ch5-button id="src-btn-back" label="BACK" customStyle="background: rgba(255,255,255,0.06) !important; border: 1px solid rgba(255,255,255,0.18) !important; color: #fff !important; border-radius: 10px !important; font-weight: bold !important; display: flex !important; align-items: center !important; justify-content: center !important; font-size: 0.75rem !important; width: 64px !important; height: 34px !important;"></ch5-button>
-                <ch5-button id="src-btn-menu" label="MENU" customStyle="background: rgba(255,255,255,0.06) !important; border: 1px solid rgba(255,255,255,0.18) !important; color: #fff !important; border-radius: 10px !important; font-weight: bold !important; display: flex !important; align-items: center !important; justify-content: center !important; font-size: 0.75rem !important; width: 64px !important; height: 34px !important;"></ch5-button>
-                <ch5-button id="src-btn-exit" label="EXIT" customStyle="background: rgba(255,255,255,0.06) !important; border: 1px solid rgba(255,255,255,0.18) !important; color: #fff !important; border-radius: 10px !important; font-weight: bold !important; display: flex !important; align-items: center !important; justify-content: center !important; font-size: 0.75rem !important; width: 64px !important; height: 34px !important;"></ch5-button>
+        <div id="remote-standard-layout" class="rc-layout" style="display: flex; align-items: center; justify-content: center; width: 100%; flex: 1; min-height: 0px;"><div class="rc-inner" style="display: flex; flex-direction: column; gap:21px; align-items: center;">
+            <div style="display: flex; flex-direction: column; gap:16px; align-items: center;">
+                <div style="display: flex; gap:10px; width: 100%;">
+                <ch5-button id="src-btn-back" label="BACK" customStyle="background: rgba(255,255,255,0.06) !important; border: 1px solid rgba(255,255,255,0.18) !important; color: #fff !important; border-radius: 10px !important; font-weight: bold !important; display: flex !important; align-items: center !important; justify-content: center !important; font-size: 1.03rem !important; width: 64px !important; height: 52px !important;"></ch5-button>
+                <ch5-button id="src-btn-menu" label="MENU" customStyle="background: rgba(255,255,255,0.06) !important; border: 1px solid rgba(255,255,255,0.18) !important; color: #fff !important; border-radius: 10px !important; font-weight: bold !important; display: flex !important; align-items: center !important; justify-content: center !important; font-size: 1.03rem !important; width: 64px !important; height: 52px !important;"></ch5-button>
+                <ch5-button id="src-btn-exit" label="EXIT" customStyle="background: rgba(255,255,255,0.06) !important; border: 1px solid rgba(255,255,255,0.18) !important; color: #fff !important; border-radius: 10px !important; font-weight: bold !important; display: flex !important; align-items: center !important; justify-content: center !important; font-size: 1.03rem !important; width: 64px !important; height: 52px !important;"></ch5-button>
                 </div>
-                <div style="display: flex; align-items: center; gap: 12px;">
-                    <div style="display: flex; flex-direction: column; gap: 12px;">
-                    <ch5-button id="src-btn-pgup" label="PG+" customStyle="background: rgba(255,255,255,0.06) !important; border: 1px solid rgba(255,255,255,0.18) !important; color: #fff !important; border-radius: 50% !important; font-weight: bold !important; display: flex !important; align-items: center !important; justify-content: center !important; font-size: 0.75rem !important; width: 46px !important; height: 46px !important;"></ch5-button>
-                    <ch5-button id="src-btn-pgdn" label="PG−" customStyle="background: rgba(255,255,255,0.06) !important; border: 1px solid rgba(255,255,255,0.18) !important; color: #fff !important; border-radius: 50% !important; font-weight: bold !important; display: flex !important; align-items: center !important; justify-content: center !important; font-size: 0.75rem !important; width: 46px !important; height: 46px !important;"></ch5-button>
+                <div style="display: flex; align-items: center; gap:16px;">
+                    <div style="display: flex; flex-direction: column; gap:16px;">
+                    <ch5-button id="src-btn-pgup" label="PG+" customStyle="background: rgba(255,255,255,0.06) !important; border: 1px solid rgba(255,255,255,0.18) !important; color: #fff !important; border-radius: 50% !important; font-weight: bold !important; display: flex !important; align-items: center !important; justify-content: center !important; font-size: 1.03rem !important; width: 46px !important; height: 69px !important;"></ch5-button>
+                    <ch5-button id="src-btn-pgdn" label="PG−" customStyle="background: rgba(255,255,255,0.06) !important; border: 1px solid rgba(255,255,255,0.18) !important; color: #fff !important; border-radius: 50% !important; font-weight: bold !important; display: flex !important; align-items: center !important; justify-content: center !important; font-size: 1.03rem !important; width: 46px !important; height: 69px !important;"></ch5-button>
                     </div>
                     <div style="position: relative; width: 170px; height: 170px; border-radius: 50%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.15);">
-                    <ch5-button id="src-btn-up" label="⌃" customStyle="background: transparent !important; border: none !important; color: #d0d0d0 !important; font-weight: bold !important; display: flex !important; align-items: center !important; justify-content: center !important; font-size: 0.75rem !important; position: absolute !important; top: 6px !important; left: 50% !important; transform: translateX(-50%) !important; width: 51px !important; height: 34px !important; font-size: 1.2rem !important;"></ch5-button>
-                    <ch5-button id="src-btn-down" label="⌄" customStyle="background: transparent !important; border: none !important; color: #d0d0d0 !important; font-weight: bold !important; display: flex !important; align-items: center !important; justify-content: center !important; font-size: 0.75rem !important; position: absolute !important; bottom: 6px !important; left: 50% !important; transform: translateX(-50%) !important; width: 51px !important; height: 34px !important; font-size: 1.2rem !important;"></ch5-button>
-                    <ch5-button id="src-btn-left" label="‹" customStyle="background: transparent !important; border: none !important; color: #d0d0d0 !important; font-weight: bold !important; display: flex !important; align-items: center !important; justify-content: center !important; font-size: 0.75rem !important; position: absolute !important; left: 6px !important; top: 50% !important; transform: translateY(-50%) !important; width: 34px !important; height: 51px !important; font-size: 1.2rem !important;"></ch5-button>
-                    <ch5-button id="src-btn-right" label="›" customStyle="background: transparent !important; border: none !important; color: #d0d0d0 !important; font-weight: bold !important; display: flex !important; align-items: center !important; justify-content: center !important; font-size: 0.75rem !important; position: absolute !important; right: 6px !important; top: 50% !important; transform: translateY(-50%) !important; width: 34px !important; height: 51px !important; font-size: 1.2rem !important;"></ch5-button>
-                    <ch5-button id="src-btn-ok" label="OK" customStyle="background: rgba(255,255,255,0.12) !important; border: 1px solid rgba(255,255,255,0.3) !important; color: #fff !important; border-radius: 50% !important; font-weight: bold !important; display: flex !important; align-items: center !important; justify-content: center !important; font-size: 0.75rem !important; position: absolute !important; top: 50% !important; left: 50% !important; transform: translate(-50%, -50%) !important; width: 61px !important; height: 61px !important;"></ch5-button>
+                    <ch5-button id="src-btn-up" label="⌃" customStyle="background: transparent !important; border: none !important; color: #d0d0d0 !important; font-weight: bold !important; display: flex !important; align-items: center !important; justify-content: center !important; font-size: 1.06rem !important; position: absolute !important; top: 6px !important; left: 50% !important; transform: translateX(-50%) !important; width: 64px !important; height: 42px !important; font-size: 1.70rem !important;"></ch5-button>
+                    <ch5-button id="src-btn-down" label="⌄" customStyle="background: transparent !important; border: none !important; color: #d0d0d0 !important; font-weight: bold !important; display: flex !important; align-items: center !important; justify-content: center !important; font-size: 1.06rem !important; position: absolute !important; bottom: 6px !important; left: 50% !important; transform: translateX(-50%) !important; width: 64px !important; height: 42px !important; font-size: 1.70rem !important;"></ch5-button>
+                    <ch5-button id="src-btn-left" label="‹" customStyle="background: transparent !important; border: none !important; color: #d0d0d0 !important; font-weight: bold !important; display: flex !important; align-items: center !important; justify-content: center !important; font-size: 1.06rem !important; position: absolute !important; left: 6px !important; top: 50% !important; transform: translateY(-50%) !important; width: 42px !important; height: 64px !important; font-size: 1.70rem !important;"></ch5-button>
+                    <ch5-button id="src-btn-right" label="›" customStyle="background: transparent !important; border: none !important; color: #d0d0d0 !important; font-weight: bold !important; display: flex !important; align-items: center !important; justify-content: center !important; font-size: 1.06rem !important; position: absolute !important; right: 6px !important; top: 50% !important; transform: translateY(-50%) !important; width: 42px !important; height: 64px !important; font-size: 1.70rem !important;"></ch5-button>
+                    <ch5-button id="src-btn-ok" label="OK" customStyle="background: rgba(255,255,255,0.12) !important; border: 1px solid rgba(255,255,255,0.3) !important; color: #fff !important; border-radius: 50% !important; font-weight: bold !important; display: flex !important; align-items: center !important; justify-content: center !important; font-size: 1.06rem !important; position: absolute !important; top: 50% !important; left: 50% !important; transform: translate(-50%, -50%) !important; width: 77px !important; height: 77px !important;"></ch5-button>
                 </div>
-                    <div style="display: flex; flex-direction: column; gap: 12px;">
-                    <ch5-button id="src-btn-chup" label="CH+" customStyle="background: rgba(255,255,255,0.06) !important; border: 1px solid rgba(255,255,255,0.18) !important; color: #fff !important; border-radius: 50% !important; font-weight: bold !important; display: flex !important; align-items: center !important; justify-content: center !important; font-size: 0.75rem !important; width: 46px !important; height: 46px !important;"></ch5-button>
-                    <ch5-button id="src-btn-chdn" label="CH−" customStyle="background: rgba(255,255,255,0.06) !important; border: 1px solid rgba(255,255,255,0.18) !important; color: #fff !important; border-radius: 50% !important; font-weight: bold !important; display: flex !important; align-items: center !important; justify-content: center !important; font-size: 0.75rem !important; width: 46px !important; height: 46px !important;"></ch5-button>
+                    <div style="display: flex; flex-direction: column; gap:16px;">
+                    <ch5-button id="src-btn-chup" label="CH+" customStyle="background: rgba(255,255,255,0.06) !important; border: 1px solid rgba(255,255,255,0.18) !important; color: #fff !important; border-radius: 50% !important; font-weight: bold !important; display: flex !important; align-items: center !important; justify-content: center !important; font-size: 1.03rem !important; width: 46px !important; height: 69px !important;"></ch5-button>
+                    <ch5-button id="src-btn-chdn" label="CH−" customStyle="background: rgba(255,255,255,0.06) !important; border: 1px solid rgba(255,255,255,0.18) !important; color: #fff !important; border-radius: 50% !important; font-weight: bold !important; display: flex !important; align-items: center !important; justify-content: center !important; font-size: 1.03rem !important; width: 46px !important; height: 69px !important;"></ch5-button>
                     </div>
                 </div>
             </div>
-            <div style="display: flex; gap: 6px; flex-wrap: wrap; justify-content: center;">
-                <ch5-button id="src-btn-live" label="LIVE" customStyle="background: rgba(255,255,255,0.06) !important; border: 1px solid rgba(255,255,255,0.18) !important; color: #fff !important; border-radius: 10px !important; font-weight: bold !important; display: flex !important; align-items: center !important; justify-content: center !important; font-size: 0.75rem !important; width: 84px !important; height: 34px !important;"></ch5-button>
-                <ch5-button id="src-btn-dvr" label="DVR" customStyle="background: rgba(255,255,255,0.06) !important; border: 1px solid rgba(255,255,255,0.18) !important; color: #fff !important; border-radius: 10px !important; font-weight: bold !important; display: flex !important; align-items: center !important; justify-content: center !important; font-size: 0.75rem !important; width: 84px !important; height: 34px !important;"></ch5-button>
-                <ch5-button id="src-btn-guide" label="GUIDE" customStyle="background: rgba(255,255,255,0.06) !important; border: 1px solid rgba(255,255,255,0.18) !important; color: #fff !important; border-radius: 10px !important; font-weight: bold !important; display: flex !important; align-items: center !important; justify-content: center !important; font-size: 0.75rem !important; width: 84px !important; height: 34px !important;"></ch5-button>
-                <ch5-button id="src-btn-info" label="INFO" customStyle="background: rgba(255,255,255,0.06) !important; border: 1px solid rgba(255,255,255,0.18) !important; color: #fff !important; border-radius: 10px !important; font-weight: bold !important; display: flex !important; align-items: center !important; justify-content: center !important; font-size: 0.75rem !important; width: 84px !important; height: 34px !important;"></ch5-button>
-                <ch5-button id="src-btn-last" label="LAST" customStyle="background: rgba(255,255,255,0.06) !important; border: 1px solid rgba(255,255,255,0.18) !important; color: #fff !important; border-radius: 10px !important; font-weight: bold !important; display: flex !important; align-items: center !important; justify-content: center !important; font-size: 0.75rem !important; width: 84px !important; height: 34px !important;"></ch5-button>
+            <div style="display: flex; gap:8px; flex-wrap: wrap; justify-content: center;">
+                <ch5-button id="src-btn-live" label="LIVE" customStyle="background: rgba(255,255,255,0.06) !important; border: 1px solid rgba(255,255,255,0.18) !important; color: #fff !important; border-radius: 10px !important; font-weight: bold !important; display: flex !important; align-items: center !important; justify-content: center !important; font-size: 1.03rem !important; width: 84px !important; height: 52px !important;"></ch5-button>
+                <ch5-button id="src-btn-dvr" label="DVR" customStyle="background: rgba(255,255,255,0.06) !important; border: 1px solid rgba(255,255,255,0.18) !important; color: #fff !important; border-radius: 10px !important; font-weight: bold !important; display: flex !important; align-items: center !important; justify-content: center !important; font-size: 1.03rem !important; width: 84px !important; height: 52px !important;"></ch5-button>
+                <ch5-button id="src-btn-guide" label="GUIDE" customStyle="background: rgba(255,255,255,0.06) !important; border: 1px solid rgba(255,255,255,0.18) !important; color: #fff !important; border-radius: 10px !important; font-weight: bold !important; display: flex !important; align-items: center !important; justify-content: center !important; font-size: 1.03rem !important; width: 84px !important; height: 52px !important;"></ch5-button>
+                <ch5-button id="src-btn-info" label="INFO" customStyle="background: rgba(255,255,255,0.06) !important; border: 1px solid rgba(255,255,255,0.18) !important; color: #fff !important; border-radius: 10px !important; font-weight: bold !important; display: flex !important; align-items: center !important; justify-content: center !important; font-size: 1.03rem !important; width: 84px !important; height: 52px !important;"></ch5-button>
+                <ch5-button id="src-btn-last" label="LAST" customStyle="background: rgba(255,255,255,0.06) !important; border: 1px solid rgba(255,255,255,0.18) !important; color: #fff !important; border-radius: 10px !important; font-weight: bold !important; display: flex !important; align-items: center !important; justify-content: center !important; font-size: 1.03rem !important; width: 84px !important; height: 52px !important;"></ch5-button>
             </div>
-            <div style="display: flex; flex-direction: column; gap: 10px; width: 286px;">
-                <div style="display: flex; gap: 8px;">
-                <ch5-button id="src-btn-rew" label="⏪" customStyle="background: rgba(255,255,255,0.06) !important; border: 1px solid rgba(255,255,255,0.18) !important; color: #fff !important; border-radius: 10px !important; font-weight: bold !important; display: flex !important; align-items: center !important; justify-content: center !important; font-size: 0.75rem !important; width: 72px !important; height: 34px !important;"></ch5-button>
-                <ch5-button id="src-btn-play" label="▶" customStyle="background: rgba(255,255,255,0.06) !important; border: 1px solid rgba(255,255,255,0.18) !important; color: #fff !important; border-radius: 10px !important; font-weight: bold !important; display: flex !important; align-items: center !important; justify-content: center !important; font-size: 0.75rem !important; width: 72px !important; height: 34px !important;"></ch5-button>
-                <ch5-button id="src-btn-fwd" label="⏩" customStyle="background: rgba(255,255,255,0.06) !important; border: 1px solid rgba(255,255,255,0.18) !important; color: #fff !important; border-radius: 10px !important; font-weight: bold !important; display: flex !important; align-items: center !important; justify-content: center !important; font-size: 0.75rem !important; width: 72px !important; height: 34px !important;"></ch5-button>
+            <div style="display: flex; flex-direction: column; gap:13px; width: 286px;">
+                <div style="display: flex; gap:10px;">
+                <ch5-button id="src-btn-rew" label="⏪" customStyle="background: rgba(255,255,255,0.06) !important; border: 1px solid rgba(255,255,255,0.18) !important; color: #fff !important; border-radius: 10px !important; font-weight: bold !important; display: flex !important; align-items: center !important; justify-content: center !important; font-size: 1.03rem !important; width: 72px !important; height: 52px !important;"></ch5-button>
+                <ch5-button id="src-btn-play" label="▶" customStyle="background: rgba(255,255,255,0.06) !important; border: 1px solid rgba(255,255,255,0.18) !important; color: #fff !important; border-radius: 10px !important; font-weight: bold !important; display: flex !important; align-items: center !important; justify-content: center !important; font-size: 1.03rem !important; width: 72px !important; height: 52px !important;"></ch5-button>
+                <ch5-button id="src-btn-fwd" label="⏩" customStyle="background: rgba(255,255,255,0.06) !important; border: 1px solid rgba(255,255,255,0.18) !important; color: #fff !important; border-radius: 10px !important; font-weight: bold !important; display: flex !important; align-items: center !important; justify-content: center !important; font-size: 1.03rem !important; width: 72px !important; height: 52px !important;"></ch5-button>
                 </div>
-                <ch5-button id="src-btn-pause" label="⏸" customStyle="background: rgba(255,255,255,0.06) !important; border: 1px solid rgba(255,255,255,0.18) !important; color: #fff !important; border-radius: 10px !important; font-weight: bold !important; display: flex !important; align-items: center !important; justify-content: center !important; font-size: 0.75rem !important; width: 100% !important; height: 34px !important;"></ch5-button>
-                <div style="display: flex; gap: 8px;">
-                <ch5-button id="src-btn-stop" label="■" customStyle="background: rgba(255,255,255,0.06) !important; border: 1px solid rgba(255,255,255,0.18) !important; color: #fff !important; border-radius: 10px !important; font-weight: bold !important; display: flex !important; align-items: center !important; justify-content: center !important; font-size: 0.75rem !important; width: 72px !important; height: 34px !important;"></ch5-button>
-                <ch5-button id="src-btn-replay" label="↻" customStyle="background: rgba(255,255,255,0.06) !important; border: 1px solid rgba(255,255,255,0.18) !important; color: #fff !important; border-radius: 10px !important; font-weight: bold !important; display: flex !important; align-items: center !important; justify-content: center !important; font-size: 0.75rem !important; width: 72px !important; height: 34px !important;"></ch5-button>
-                <ch5-button id="src-btn-rec" label="●" customStyle="background: rgba(255,255,255,0.06) !important; border: 1px solid rgba(255,255,255,0.18) !important; color: #fff !important; border-radius: 10px !important; font-weight: bold !important; display: flex !important; align-items: center !important; justify-content: center !important; font-size: 0.75rem !important; width: 72px !important; height: 34px !important;"></ch5-button>
+                <ch5-button id="src-btn-pause" label="⏸" customStyle="background: rgba(255,255,255,0.06) !important; border: 1px solid rgba(255,255,255,0.18) !important; color: #fff !important; border-radius: 10px !important; font-weight: bold !important; display: flex !important; align-items: center !important; justify-content: center !important; font-size: 1.03rem !important; width: 100% !important; height: 52px !important;"></ch5-button>
+                <div style="display: flex; gap:10px;">
+                <ch5-button id="src-btn-stop" label="■" customStyle="background: rgba(255,255,255,0.06) !important; border: 1px solid rgba(255,255,255,0.18) !important; color: #fff !important; border-radius: 10px !important; font-weight: bold !important; display: flex !important; align-items: center !important; justify-content: center !important; font-size: 1.03rem !important; width: 72px !important; height: 52px !important;"></ch5-button>
+                <ch5-button id="src-btn-replay" label="↻" customStyle="background: rgba(255,255,255,0.06) !important; border: 1px solid rgba(255,255,255,0.18) !important; color: #fff !important; border-radius: 10px !important; font-weight: bold !important; display: flex !important; align-items: center !important; justify-content: center !important; font-size: 1.03rem !important; width: 72px !important; height: 52px !important;"></ch5-button>
+                <ch5-button id="src-btn-rec" label="●" customStyle="background: rgba(255,255,255,0.06) !important; border: 1px solid rgba(255,255,255,0.18) !important; color: #fff !important; border-radius: 10px !important; font-weight: bold !important; display: flex !important; align-items: center !important; justify-content: center !important; font-size: 1.03rem !important; width: 72px !important; height: 52px !important;"></ch5-button>
                 </div>
                 <div style="display: flex; justify-content: space-around; padding-top: 4px;">
-                <ch5-button id="src-btn-yellow" label="" customStyle="border: none !important; border-radius: 50% !important; background: #f5c518 !important; font-size: 0.75rem !important; width: 36px !important; height: 36px !important;"></ch5-button>
-                <ch5-button id="src-btn-blue" label="" customStyle="border: none !important; border-radius: 50% !important; background: #2f80ed !important; font-size: 0.75rem !important; width: 36px !important; height: 36px !important;"></ch5-button>
-                <ch5-button id="src-btn-red" label="" customStyle="border: none !important; border-radius: 50% !important; background: #d9435b !important; font-size: 0.75rem !important; width: 36px !important; height: 36px !important;"></ch5-button>
-                <ch5-button id="src-btn-green" label="" customStyle="border: none !important; border-radius: 50% !important; background: #27ae60 !important; font-size: 0.75rem !important; width: 36px !important; height: 36px !important;"></ch5-button>
+                <ch5-button id="src-btn-yellow" label="" customStyle="border: none !important; border-radius: 50% !important; background: #f5c518 !important; font-size: 1.03rem !important; width: 44px !important; height: 44px !important;"></ch5-button>
+                <ch5-button id="src-btn-blue" label="" customStyle="border: none !important; border-radius: 50% !important; background: #2f80ed !important; font-size: 1.03rem !important; width: 44px !important; height: 44px !important;"></ch5-button>
+                <ch5-button id="src-btn-red" label="" customStyle="border: none !important; border-radius: 50% !important; background: #d9435b !important; font-size: 1.03rem !important; width: 44px !important; height: 44px !important;"></ch5-button>
+                <ch5-button id="src-btn-green" label="" customStyle="border: none !important; border-radius: 50% !important; background: #27ae60 !important; font-size: 1.03rem !important; width: 44px !important; height: 44px !important;"></ch5-button>
                 </div>
             </div>
         </div>
         </div>
         <!-- Télécommande Apple TV (disposition Siri Remote iOS : surface tactile + 6 boutons ronds) -->
-        <div id="remote-appletv-layout" class="rc-layout" style="display: none; align-items: center; justify-content: center; width: 100%; flex: 1; min-height: 0;"><div class="rc-inner" style="display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; gap: 12px;">
-            <!-- Surface tactile : flèches sur le pourtour, Select au centre -->
-            <div style="position: relative; width: 198px; height: 198px; border-radius: 50%; background: #2c2c2e; border: 1px solid rgba(255,255,255,0.15); box-shadow: 0 6px 18px rgba(0,0,0,0.45);">
-                <ch5-button id="src-btn-apple-up" label="⌃" customStyle="background: transparent !important; border: none !important; color: #d0d0d0 !important; display: flex !important; align-items: center !important; justify-content: center !important; font-weight: bold !important; position: absolute !important; top: 9px !important; left: 50% !important; transform: translateX(-50%) !important; width: 55px !important; height: 39px !important; font-size: 1.12rem !important;" sendEventOnClick="211" data-join="211"></ch5-button>
-                <ch5-button id="src-btn-apple-down" label="⌄" customStyle="background: transparent !important; border: none !important; color: #d0d0d0 !important; display: flex !important; align-items: center !important; justify-content: center !important; font-weight: bold !important; position: absolute !important; bottom: 9px !important; left: 50% !important; transform: translateX(-50%) !important; width: 55px !important; height: 39px !important; font-size: 1.12rem !important;" sendEventOnClick="212" data-join="212"></ch5-button>
-                <ch5-button id="src-btn-apple-left" label="‹" customStyle="background: transparent !important; border: none !important; color: #d0d0d0 !important; display: flex !important; align-items: center !important; justify-content: center !important; font-weight: bold !important; position: absolute !important; left: 9px !important; top: 50% !important; transform: translateY(-50%) !important; width: 39px !important; height: 55px !important; font-size: 1.12rem !important;" sendEventOnClick="213" data-join="213"></ch5-button>
-                <ch5-button id="src-btn-apple-right" label="›" customStyle="background: transparent !important; border: none !important; color: #d0d0d0 !important; display: flex !important; align-items: center !important; justify-content: center !important; font-weight: bold !important; position: absolute !important; right: 9px !important; top: 50% !important; transform: translateY(-50%) !important; width: 39px !important; height: 55px !important; font-size: 1.12rem !important;" sendEventOnClick="214" data-join="214"></ch5-button>
-                <ch5-button id="src-btn-apple-ok" label="Select" customStyle="background-color: #4a4a4c !important; border: 1px solid rgba(255,255,255,0.25) !important; color: #fff !important; border-radius: 50% !important; position: absolute !important; top: 50% !important; left: 50% !important; transform: translate(-50%, -50%) !important; width: 81px !important; height: 81px !important; font-size: 0.85rem !important; display: flex !important; align-items: center !important; justify-content: center !important; font-weight: bold !important;" sendEventOnClick="215" data-join="215"></ch5-button>
+        <div id="remote-appletv-layout" class="rc-layout" style="display: none; align-items: center; justify-content: center; width: 100%; flex: 1; min-height: 0;"><div class="rc-inner" style="display: flex; flex-direction: column; align-items: center; gap: 24px;">
+            <!-- Télécommande Apple TV : reprise à l'identique de la dalle (14.09.2026 → 15.09.2026).
+                 Mêmes six boutons — croix directionnelle, OK au centre, Menu — et mêmes proportions ;
+                 seule la disposition passe en colonne, le châssis smartphone étant en portrait. -->
+            <div style="position: relative; width: 420px; height: 420px; flex-shrink: 0;">
+                <div style="position:absolute; left:50%; top:0; width:142px; height:420px; transform:translateX(-50%); background: #2f3136; border: 1px solid rgba(255,255,255,0.18); border-radius: 71px;"></div>
+                <div style="position:absolute; top:50%; left:0; height:142px; width:420px; transform:translateY(-50%); background: #2f3136; border: 1px solid rgba(255,255,255,0.18); border-radius: 71px;"></div>
+                <div style="position:absolute; top:50%; left:50%; width:140px; height:140px; transform:translate(-50%,-50%); background: #2f3136;"></div>
+                <ch5-button id="src-btn-apple-up" label="⌃" customStyle="background: transparent !important; border: none !important; color: #e5e7eb !important; display: flex !important; align-items: center !important; justify-content: center !important; font-weight: bold !important; position: absolute !important; cursor: pointer !important; top: 8px !important; left: 50% !important; transform: translateX(-50%) !important; width: 134px !important; height: 100px !important; font-size: 2rem !important;" sendEventOnClick="211" data-join="211"></ch5-button>
+                <ch5-button id="src-btn-apple-down" label="⌄" customStyle="background: transparent !important; border: none !important; color: #e5e7eb !important; display: flex !important; align-items: center !important; justify-content: center !important; font-weight: bold !important; position: absolute !important; cursor: pointer !important; bottom: 8px !important; left: 50% !important; transform: translateX(-50%) !important; width: 134px !important; height: 100px !important; font-size: 2rem !important;" sendEventOnClick="212" data-join="212"></ch5-button>
+                <ch5-button id="src-btn-apple-left" label="‹" customStyle="background: transparent !important; border: none !important; color: #e5e7eb !important; display: flex !important; align-items: center !important; justify-content: center !important; font-weight: bold !important; position: absolute !important; cursor: pointer !important; left: 8px !important; top: 50% !important; transform: translateY(-50%) !important; width: 100px !important; height: 134px !important; font-size: 2rem !important;" sendEventOnClick="213" data-join="213"></ch5-button>
+                <ch5-button id="src-btn-apple-right" label="›" customStyle="background: transparent !important; border: none !important; color: #e5e7eb !important; display: flex !important; align-items: center !important; justify-content: center !important; font-weight: bold !important; position: absolute !important; cursor: pointer !important; right: 8px !important; top: 50% !important; transform: translateY(-50%) !important; width: 100px !important; height: 134px !important; font-size: 2rem !important;" sendEventOnClick="214" data-join="214"></ch5-button>
+                <ch5-button id="src-btn-apple-ok" label="OK" customStyle="background: rgba(255,255,255,0.07) !important; border: 1px solid rgba(255,255,255,0.2) !important; color: #fff !important; font-weight: bold !important; display: flex !important; align-items: center !important; justify-content: center !important; box-sizing: border-box !important; cursor: pointer !important; user-select: none !important; background: rgba(255,255,255,0.14) !important; border: 1px solid rgba(255,255,255,0.35) !important; border-radius: 50% !important; position: absolute !important; top: 50% !important; left: 50% !important; transform: translate(-50%, -50%) !important; width: 130px !important; height: 130px !important; font-size: 1.05rem !important;" sendEventOnClick="215" data-join="215"></ch5-button>
             </div>
-            <!-- Retour / Accueil -->
-            <div style="display: flex; justify-content: space-between; width: 198px;">
-                <ch5-button id="src-btn-apple-menu" label="‹" customStyle="background-color: #2c2c2e !important; border: 1px solid rgba(255,255,255,0.15) !important; color: #fff !important; border-radius: 50% !important; display: flex !important; align-items: center !important; justify-content: center !important; font-weight: bold !important; width: 50px !important; height: 50px !important; font-size: 0.99rem !important; font-size: 1.12rem !important;" sendEventOnClick="216" data-join="216"></ch5-button>
-                <ch5-button id="src-btn-apple-home" label="⌂" customStyle="background-color: #2c2c2e !important; border: 1px solid rgba(255,255,255,0.15) !important; color: #fff !important; border-radius: 50% !important; display: flex !important; align-items: center !important; justify-content: center !important; font-weight: bold !important; width: 50px !important; height: 50px !important; font-size: 0.99rem !important;" sendEventOnClick="217" data-join="217"></ch5-button>
-            </div>
-            <!-- Lecture-pause / Volume + -->
-            <div style="display: flex; justify-content: space-between; width: 198px;">
-                <ch5-button id="src-btn-apple-play" label="⏯" customStyle="background-color: #2c2c2e !important; border: 1px solid rgba(255,255,255,0.15) !important; color: #fff !important; border-radius: 50% !important; display: flex !important; align-items: center !important; justify-content: center !important; font-weight: bold !important; width: 50px !important; height: 50px !important; font-size: 0.99rem !important;" sendEventOnClick="218" data-join="218"></ch5-button>
-                <ch5-button id="src-btn-apple-volup" label="🔊+" customStyle="background-color: #2c2c2e !important; border: 1px solid rgba(255,255,255,0.15) !important; color: #fff !important; border-radius: 50% !important; display: flex !important; align-items: center !important; justify-content: center !important; font-weight: bold !important; width: 50px !important; height: 50px !important; font-size: 0.99rem !important;" onclick="window.remoteVolume(1)"></ch5-button>
-            </div>
-            <!-- Sourdine / Volume − -->
-            <div style="display: flex; justify-content: space-between; width: 198px;">
-                <ch5-button id="src-btn-apple-mute" label="🔇" customStyle="background-color: #2c2c2e !important; border: 1px solid rgba(255,255,255,0.15) !important; color: #fff !important; border-radius: 50% !important; display: flex !important; align-items: center !important; justify-content: center !important; font-weight: bold !important; width: 50px !important; height: 50px !important; font-size: 0.99rem !important;" sendEventOnClick="55" onclick="window.toggleMute()" data-join="55"></ch5-button>
-                <ch5-button id="src-btn-apple-voldown" label="🔉−" customStyle="background-color: #2c2c2e !important; border: 1px solid rgba(255,255,255,0.15) !important; color: #fff !important; border-radius: 50% !important; display: flex !important; align-items: center !important; justify-content: center !important; font-weight: bold !important; width: 50px !important; height: 50px !important; font-size: 0.99rem !important;" onclick="window.remoteVolume(-1)"></ch5-button>
-            </div>
-        </div>
-        </div>
+            <ch5-button id="src-btn-apple-menu" label="Menu" customStyle="background: rgba(255,255,255,0.07) !important; border: 1px solid rgba(255,255,255,0.2) !important; color: #fff !important; font-weight: bold !important; display: flex !important; align-items: center !important; justify-content: center !important; box-sizing: border-box !important; cursor: pointer !important; user-select: none !important; width: 200px !important; height: 90px !important; font-size: 1.15rem !important; border-radius: 16px !important;" sendEventOnClick="216" data-join="216"></ch5-button>
+        </div></div>
         <!-- Télécommande Swisscom TV (box UHD) : toutes les touches de la télécommande physique -->
         <div id="remote-swisscom-layout" class="rc-layout" style="display: none; align-items: center; justify-content: center; width: 100%; flex: 1; min-height: 0;"><div class="rc-inner" style="display: flex; flex-direction: column; gap: 16px; align-items: center;">
             <div style="display: flex; flex-direction: column; gap: 12px; align-items: center;">
@@ -2138,20 +2137,13 @@
                     document.getElementById('remote-standard-layout').style.display = 'none';
                     document.getElementById('remote-appletv-layout').style.display = 'flex';
                     
-                    document.getElementById('src-btn-apple-up').setAttribute('sendEventOnClick', mapping.up.toString());
-                    document.getElementById('src-btn-apple-down').setAttribute('sendEventOnClick', mapping.down.toString());
-                    document.getElementById('src-btn-apple-left').setAttribute('sendEventOnClick', mapping.left.toString());
-                    document.getElementById('src-btn-apple-right').setAttribute('sendEventOnClick', mapping.right.toString());
-                    document.getElementById('src-btn-apple-ok').setAttribute('sendEventOnClick', mapping.ok.toString());
-                    document.getElementById('src-btn-apple-menu').setAttribute('sendEventOnClick', mapping.back.toString());
-                    document.getElementById('src-btn-apple-home').setAttribute('sendEventOnClick', mapping.home.toString());
-                    document.getElementById('src-btn-apple-play').setAttribute('sendEventOnClick', mapping.play.toString());
-                    // v1.0.167 : rew (219) et fwd (220) etaient declares au contrat mais jamais cables.
-                    ['rew', 'fwd'].forEach(function (k) {
-                        const el = document.getElementById('src-btn-apple-' + k);
-                        if (el && mapping[k]) { el.setAttribute('sendEventOnClick', String(mapping[k])); }
+                    // Six boutons, comme sur la dalle : croix, OK, Menu. Accueil, lecture, volume et
+                    // sourdine ont été retirés le 15.09.2026 pour s'aligner sur le châssis de référence.
+                    [['up', 'up'], ['down', 'down'], ['left', 'left'], ['right', 'right'], ['ok', 'ok'], ['menu', 'back']].forEach(function (pair) {
+                        const el = document.getElementById('src-btn-apple-' + pair[0]);
+                        if (el && mapping[pair[1]]) el.setAttribute('sendEventOnClick', String(mapping[pair[1]]));
                     });
-                    document.getElementById('src-btn-apple-mute').setAttribute('receiveStateSelected', '55');
+
                 } else {
                     document.getElementById('remote-standard-layout').style.display = 'flex';
                     document.getElementById('remote-appletv-layout').style.display = 'none';
@@ -3607,7 +3599,14 @@
            ne peint rien, tout vient du customStyle. */
         /* Le bouton interne CH5 ne peint rien : tout vient du customStyle, marqué !important
            directement dans le HTML (voir plus bas), pour passer devant le fond bleu générique. */
-        #source-control-overlay ch5-button .cb-btn { background: transparent !important; border: none !important; }
+        /* La zone cliquable (.cb-btn) gardait sa taille par défaut (66 x 33) au lieu de suivre le
+           bouton dessiné : on pouvait viser une flèche de la croix et ne rien déclencher. */
+        #source-control-overlay ch5-button .cb-btn {
+            background: transparent !important; border: none !important;
+            width: 100% !important; height: 100% !important; padding: 0 !important; margin: 0 !important;
+        }
+        #source-control-overlay ch5-button .ch5-button--label,
+        #source-control-overlay ch5-button .cb-btn span { width: 100% !important; height: 100% !important; display: flex !important; align-items: center !important; justify-content: center !important; }
         #source-control-overlay ch5-button .cb-btn:active,
         #source-control-overlay ch5-button .ch5-button--pressed .cb-btn { background: rgba(255,255,255,0.16) !important; }
 
@@ -3654,6 +3653,13 @@
                 max-width: 60px !important; max-height: 60px !important; flex: 0 0 60px !important;
             }
             .mute-btn-mobile, .power-off-btn-mobile { width: 62px !important; height: 62px !important; }
+            /* Trois lignes de moteurs (volets, rideaux, stores) au lieu de deux : elles doivent
+               tenir sans défilement sur un iPhone SE. */
+            .shade-control-row { padding: 6px 10px !important; margin-bottom: 2px !important; }
+            #iphone-shades-rows { gap: 4px !important; }
+            .shade-label { font-size: 0.92rem !important; gap: 6px !important; }
+            .motor-icon { width: 24px !important; height: 24px !important; flex: 0 0 24px !important; }
+            #iphone-shades-header { margin-bottom: 6px !important; padding-top: 8px !important; margin-top: 8px !important; }
             #sources-container .source-btn-mobile { height: 42px !important; font-size: 0.95rem !important; }
             #sources-container .shades-config-cog { height: 40px !important; }
             #sources-container { gap: 6px !important; }
@@ -3670,13 +3676,15 @@
         }
     </style>
     <style id="mobile-ux">
-        /* Icône de moteur animée (reprise de la dalle) : les lamelles descendent à la fermeture,
-           remontent à l'ouverture, en 1,5 s. La pastille pulse tant que le moteur bouge. */
-        .motor-icon { width: 26px; height: 26px; flex: 0 0 26px; color: #00b4c5; }
-        .motor-icon .motor-slats { transition: height 1.5s ease-in-out, y 1.5s ease-in-out; }
+        /* Icônes de moteur animées : exactement celles de la dalle (index.html) — fenêtre à lamelles
+           pour les volets et les stores, fenêtre à double pan pour les rideaux. 1,5 s de course,
+           l'icône pulse tant que le moteur bouge. */
+        .motor-icon { width: 30px; height: 30px; flex: 0 0 30px; }
+        .motor-icon .motor-slats { transition: height 1.5s ease-in-out; }
+        .motor-icon .motor-curtain-l { transition: width 1.5s ease-in-out; }
+        .motor-icon .motor-curtain-r { transition: width 1.5s ease-in-out, x 1.5s ease-in-out; }
         .motor-icon.motor-moving { animation: motor-pulse 1s ease-in-out infinite; }
         @keyframes motor-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.45; } }
-        body#app-body.theme-light .motor-icon { color: #0e7490; }
         .shade-control-row .shade-label, #motors-container .overlay-item-row > span:first-child { display: inline-flex; align-items: center; gap: 10px; }
 
         /* Scène mémorisée : pastille sur le bouton, même code couleur que la dalle */
@@ -3722,50 +3730,94 @@
         }
 
         /* ---------------- 1. Icônes de moteurs ---------------- */
-        function makeIcon() {
-            var ns = 'http://www.w3.org/2000/svg';
-            var svg = document.createElementNS(ns, 'svg');
-            svg.setAttribute('viewBox', '0 0 20 20');
-            svg.setAttribute('class', 'motor-icon');
-            svg.setAttribute('aria-hidden', 'true');
-            var frame = document.createElementNS(ns, 'rect');
-            frame.setAttribute('x', '1'); frame.setAttribute('y', '1');
-            frame.setAttribute('width', '18'); frame.setAttribute('height', '18');
-            frame.setAttribute('rx', '2.5'); frame.setAttribute('fill', 'none');
-            frame.setAttribute('stroke', 'currentColor'); frame.setAttribute('stroke-width', '1.3');
-            frame.setAttribute('opacity', '0.45');
-            var slats = document.createElementNS(ns, 'rect');
-            slats.setAttribute('class', 'motor-slats');
-            slats.setAttribute('x', '2.5'); slats.setAttribute('y', '2.5');
-            slats.setAttribute('width', '15'); slats.setAttribute('height', '0');
-            slats.setAttribute('rx', '1'); slats.setAttribute('fill', 'currentColor');
-            slats.setAttribute('opacity', '0.9');
-            svg.appendChild(frame); svg.appendChild(slats);
+        // Reprises telles quelles de la dalle (index.html) : même dessin, mêmes couleurs, même
+        // course de 1,5 s. Volets et stores = lamelles qui descendent ; rideaux = deux pans qui
+        // se rejoignent au centre. Le type est déduit du libellé de la ligne.
+        var NS = 'http://www.w3.org/2000/svg';
+        var iconSeq = 0;
+        function el(tag, attrs) {
+            var e = document.createElementNS(NS, tag);
+            for (var k in attrs) e.setAttribute(k, attrs[k]);
+            return e;
+        }
+        // Famille d'icône déduite du libellé, mêmes couleurs que la dalle :
+        // rideaux = bleu ciel et double pan, stores = vert d'eau, volets = cyan, tous deux à lamelles.
+        function iconKind(label) {
+            var t = (label || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+            if (/rideau/.test(t)) return 'curtain';
+            if (/store/.test(t)) return 'awning';
+            return 'slats';
+        }
+        var ICON_COLORS = {
+            slats:   { stroke: '#00b4c5', fill: 'rgba(0, 180, 197, 0.5)' },
+            awning:  { stroke: '#a7f3d0', fill: 'rgba(167, 243, 208, 0.5)' },
+            curtain: { stroke: '#38bdf8', fill: 'rgba(56, 189, 248, 0.6)' }
+        };
+        function makeIcon(kind) {
+            var curtain = kind === 'curtain';
+            var col = ICON_COLORS[kind] || ICON_COLORS.slats;
+            var id = 'motor-clip-' + (++iconSeq);
+            var svg = el('svg', { viewBox: '0 0 24 24', class: 'motor-icon', 'aria-hidden': 'true' });
+            svg.dataset.kind = curtain ? 'curtain' : 'slats';
+            var defs = el('defs'); var clip = el('clipPath', { id: id });
+            clip.appendChild(el('rect', { x: 4, y: 4, width: 16, height: 16, rx: 1 }));
+            defs.appendChild(clip); svg.appendChild(defs);
+            var stroke = col.stroke;
+            svg.appendChild(el('rect', { x: 3, y: 3, width: 18, height: 18, rx: 2, fill: 'none', stroke: stroke, 'stroke-width': 1.5 }));
+            var g = el('g', { 'clip-path': 'url(#' + id + ')' });
+            if (curtain) {
+                svg.appendChild(el('line', { x1: 3, y1: 5, x2: 21, y2: 5, stroke: stroke, 'stroke-width': 1.5 }));   // tringle
+                g.appendChild(el('rect', { class: 'motor-curtain-l', x: 4, y: 5, width: 4, height: 15, fill: col.fill }));
+                g.appendChild(el('line', { x1: 6, y1: 5, x2: 6, y2: 20, stroke: 'rgba(255,255,255,0.3)', 'stroke-width': 0.7 }));
+                g.appendChild(el('rect', { class: 'motor-curtain-r', x: 16, y: 5, width: 4, height: 15, fill: col.fill }));
+                g.appendChild(el('line', { x1: 18, y1: 5, x2: 18, y2: 20, stroke: 'rgba(255,255,255,0.3)', 'stroke-width': 0.7 }));
+            } else {
+                g.appendChild(el('rect', { class: 'motor-slats', x: 4, y: 4, width: 16, height: 0, fill: col.fill }));
+                [7, 10, 13, 16, 19].forEach(function (y) {
+                    g.appendChild(el('line', { x1: 4, y1: y, x2: 20, y2: y, stroke: 'rgba(255,255,255,0.2)', 'stroke-width': 0.7 }));
+                });
+            }
+            svg.appendChild(g);
             return svg;
         }
         // position : 0 = ouvert, 1 = fermé
         function setPosition(svg, f, animate) {
-            var slats = svg.querySelector('.motor-slats');
-            if (!slats) return;
             f = Math.max(0, Math.min(1, Number(f) || 0));
-            slats.style.transition = animate ? ('height ' + MOVE_MS + 'ms ease-in-out') : 'none';
-            slats.setAttribute('height', String(15 * f));
+            var curtain = svg.dataset.kind === 'curtain';
+            var parts = curtain ? [svg.querySelector('.motor-curtain-l'), svg.querySelector('.motor-curtain-r')]
+                                : [svg.querySelector('.motor-slats')];
+            if (!parts[0]) return;
+            parts.forEach(function (r) { r.style.transition = animate ? '' : 'none'; });
+            if (curtain) {
+                var w = Math.max(0.5, 8 * f);                      // 0,5 = pans repliés ; 8 = ils se rejoignent
+                parts[0].setAttribute('width', w);
+                parts[1].setAttribute('width', w);
+                parts[1].setAttribute('x', 20 - w);
+            } else {
+                parts[0].setAttribute('height', 16 * f);
+            }
+            if (!animate) { void svg.getBoundingClientRect(); parts.forEach(function (r) { r.style.transition = ''; }); }
             if (animate) {
                 svg.classList.add('motor-moving');
                 clearTimeout(svg._mv);
                 svg._mv = setTimeout(function () { svg.classList.remove('motor-moving'); }, MOVE_MS);
             }
         }
+        // Position réelle en cours de course, lue sur le rendu (comme VUX.getBlindPosition sur la dalle)
         function currentPosition(svg) {
-            var slats = svg.querySelector('.motor-slats');
-            if (!slats) return 0;
-            var h = slats.getBoundingClientRect().height;   // hauteur réelle pendant la transition
-            var box = svg.getBoundingClientRect().height || 26;
-            return Math.max(0, Math.min(1, (h / box) * (20 / 15)));
+            var box = svg.getBoundingClientRect().width || 30;
+            var u = box / 24;                                       // px par unité du viewBox
+            if (svg.dataset.kind === 'curtain') {
+                var l = svg.querySelector('.motor-curtain-l');
+                if (!l) return 0;
+                return Math.max(0, Math.min(1, ((l.getBoundingClientRect().width / u) - 0.5) / 7.5));
+            }
+            var sl = svg.querySelector('.motor-slats');
+            if (!sl) return 0;
+            return Math.max(0, Math.min(1, (sl.getBoundingClientRect().height / u) / 16));
         }
         function stopAt(svg) {
-            var f = currentPosition(svg);
-            setPosition(svg, f, false);
+            setPosition(svg, currentPosition(svg), false);
             svg.classList.remove('motor-moving');
             clearTimeout(svg._mv);
         }
@@ -3775,7 +3827,7 @@
             var btns = row.querySelectorAll('button.shade-btn-mobile');
             if (btns.length < 3 || !labelEl) return;
             row._motorDone = true;
-            var svg = makeIcon();
+            var svg = makeIcon(iconKind(labelEl.textContent));
             labelEl.insertBefore(svg, labelEl.firstChild);
             btns[0].addEventListener('click', function () { setPosition(svg, 0, true); });   // ▲ ouverture
             btns[1].addEventListener('click', function () { stopAt(svg); });                 // ■ arrêt

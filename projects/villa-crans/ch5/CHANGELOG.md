@@ -1,5 +1,52 @@
 # Villa Crans CH5 — journal des versions
 
+## v1.0.175 — 15.09.2026 — Smartphone : télécommandes alignées sur la dalle, stores et icônes de moteurs
+
+### État des 4 artefacts
+
+| Artefact | Version | Compilation |
+|---|---|---|
+| CH5 `.ch5z` (TSW + XPanel) | 1.0.174 | `iphone.html` modifié — `.\deploy.ps1` à relancer |
+| CPZ slot 1 | 14.09 | inchangé |
+| LPZ slot 2 | 15.09 | inchangé |
+| Showcase Vercel | lot du 15.09 | `iphone.html` régénéré |
+
+### Moteurs
+
+- **Icônes reprises à l'identique de la dalle**, trois familles au lieu d'une seule : volets et
+  moteurs génériques en lamelles cyan, **rideaux à double pan bleu ciel** (`curtain-left/right`),
+  stores en lamelles vert d'eau. La famille est déduite du libellé, donc la fenêtre Moteurs,
+  régénérée à chaque pièce, classe aussi « Rideau ext. 1 » et « Store 2 » correctement.
+- **Ligne « Stores » ajoutée** (joins 67-69) : elle existait sur la dalle, pas sur le smartphone.
+  Les trois lignes tiennent sans défilement, y compris sur iPhone SE (lignes resserrées dans le repli).
+
+### Télécommandes
+
+- **Apple TV alignée sur la dalle, qui fait référence** : mêmes six boutons — croix directionnelle
+  en croix, OK au centre, Menu — et mêmes proportions. Accueil, lecture/pause, volume ± et sourdine
+  ont été retirés du smartphone : ils n'existent pas sur le châssis de référence. La disposition
+  passe en colonne (croix puis Menu), le châssis étant en portrait.
+- **Sky Q et IPTV agrandis** : la disposition n'occupait que 484 px sur les 675 disponibles, elle en
+  prend 633. Croix directionnelle 190 → 268 px, hauteurs et espacements augmentés, pastilles de
+  couleur 26 → 44 px. Plus aucune cible sous 40 px sur iPhone 16 Pro (21 avant).
+- **Défaut corrigé : la zone cliquable ne suivait pas le bouton dessiné.** `.cb-btn` gardait sa
+  taille par défaut (66 × 33 px) : on pouvait viser une flèche de la croix Apple TV et ne rien
+  déclencher. Elle épouse désormais le bouton — plus petite cible réelle : 70 px sur Apple TV,
+  41 px sur Sky Q. **Le même défaut existe sur la dalle** (`index.html`), non corrigé ici.
+
+### Limite connue
+
+La télécommande Swisscom TV reproduit une télécommande physique de plus de 40 touches : 40 de ses
+41 cibles restent sous 40 px, la plus petite à 18 px. L'agrandir demande de la découper en deux
+pages — non fait, à décider.
+
+### Contrôles
+
+Playwright : 2 châssis × 3 thèmes × 13 écrans, aucun débordement hors des deux listes défilantes
+assumées (Caméras, Configuration preset), aucune erreur console. Contraste complet
+(`check_contrast_dom.mjs`, 3 thèmes × page + 10 fenêtres + états d'alarme, dalle et smartphone) :
+aucun texte sous 4:1.
+
 ## v1.0.174 — 14.09.2026 — GUI smartphone : entête allégée, plus aucun défilement, scènes et moteurs au niveau de la dalle
 
 Deuxième lot de retours sur le châssis iPhone. Deux consignes générales en sortent, consignées
