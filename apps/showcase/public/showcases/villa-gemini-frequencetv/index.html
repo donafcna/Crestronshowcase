@@ -6465,19 +6465,13 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
             window.hideModalOverlay('cameras-overlay');
         };
 
-        window.selectGlobalControl = function(btnEl) {
-            if (!btnEl) return;
-            const parentRow = btnEl.parentElement;
-            if (parentRow) {
-                const siblings = parentRow.querySelectorAll('ch5-button');
-                siblings.forEach(b => {
-                    b.removeAttribute('selected');
-                    b.classList.remove('ch5-button--selected', 'selected');
-                });
-            }
-            btnEl.setAttribute('selected', 'true');
-            btnEl.classList.add('selected', 'ch5-button--selected');
-        };
+        // 16.09.2026 — relevé de bug sur la TSW : ACTIVER et DÉSACTIVER (Mode vacances 410/411) verts en
+        // même temps. Cette fonction forçait l'attribut « selected » dans le DOM au clic, pendant que le
+        // bouton voisin restait sélectionné par son receiveStateSelected : deux feedbacks concurrents.
+        // Règle d'or CH5 : l'état vient des joins (receiveStateSelected), jamais du DOM. Le backend
+        // (interlock sur 401-403, 404-405, 407-409, 410-411 côté slot 2) est seul maître du feedback ;
+        // en vitrine, js/local-feedback.js joue déjà ces interlocks. Gardée comme point d'appel neutre.
+        window.selectGlobalControl = function(btnEl) { /* état par joins uniquement */ };
 
         
 
