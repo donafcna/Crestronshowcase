@@ -71,3 +71,10 @@ Recette `estate-1`, 16/09 : 38 contrôles de matrice et 28 de navigation réussi
 Recette `atlas-2`, 16/09 : build et lint réussis, 38 contrôles de matrice + 22 contrôles de navigation/feedback réussis sur le build servi par Vite preview ; aucune erreur JavaScript non interceptée. Le test historique utilisait `frost`, alors que le GUI attend `glass` : corrigé, avec contrôle du sélecteur et attente de 900 ms avant capture dans les deux modes. Mesure locale accélérée ANGLE Direct3D11 en 1280×800, DPR 1,5 : 53,3 images/s sur quatre secondes dans le salon, 68 appels de dessin, 72 412 triangles. Ce relevé est ponctuel, pas une garantie tous appareils. Captures et rapports : `Claude outputs/codex-plan3d-navigation/`, planche `planche-navigation.png`. Les façades n'ajoutent aucune texture téléchargée.
 
 Cette livraison enrichit une visualisation architecturale temps réel. Elle n'est pas présentée comme un rendu photographique ni comme une maquette fidèle au bâtiment réel. Le mobilier reste procédural, les reflets et la lumière indirecte sont approximés ; il n'y a pas de ray tracing ni de calcul de lumière globale coûteux. Le nombre d'images par seconde dépend aussi du navigateur, de l'accélération graphique et du GPU.
+
+
+## 16/09/2026 — estate-3 : cycle jour/nuit de 70 secondes
+
+À la demande de Donatien : jour stable 30 s, transition progressive vers la nuit 5 s, nuit stable 30 s, transition vers le jour 5 s, en boucle. Le ciel, la lumière naturelle et les luminaires extérieurs suivent la même progression douce. Changement limité au rythme du fond 3D ; GUI 1.0.179 et programmes Crestron inchangés.
+
+Validation ciblée : un cycle complet observé au navigateur, neuf contrôles réussis (plateaux, transitions, reprise et éclairage piscine), aucune erreur JavaScript/shader. Build et lint réussis. Matrice GUI inchangée : ce lot ne modifie ni ses écrans, ni ses thèmes, ni ses interactions. Rapport local : Claude outputs/day-night-verification.json.

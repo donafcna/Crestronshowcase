@@ -6,7 +6,7 @@ const base=process.env.BASE_URL||'http://127.0.0.1:4200',out=process.env.TEST_OU
  const shot=async name=>{await p.screenshot({path:path.join(out,name+'.png')});report.captures.push(name);};
  const keep=setInterval(()=>p.locator('.device-stage').click({position:{x:5,y:5},timeout:1000}).catch(()=>{}),4000);
  try{
-  await p.goto(base+'/interfaces/residentiel/villa-gemini-frequencetv/phone');await p.waitForFunction(()=>window.__plan3d?.version==='2026-09-16-estate-2');await p.waitForFunction(()=>window.__plan3d.navigation().phase==='room');await p.evaluate(()=>window.__plan3d.setDay(1));
+  await p.goto(base+'/interfaces/residentiel/villa-gemini-frequencetv/phone');await p.waitForFunction(()=>window.__plan3d?.version==='2026-09-16-estate-3');await p.waitForFunction(()=>window.__plan3d.navigation().phase==='room');await p.evaluate(()=>window.__plan3d.setDay(1));
   const f=p.frames().find(f=>f.url().includes('/showcases/'));const room=async id=>{await f.locator('#room-select').selectOption(String(id));await p.waitForFunction(id=>window.__plan3d.activeRoom()===id,id);await p.evaluate(()=>window.__plan3d.jump());await p.waitForTimeout(300);};
   check('Sixteen rooms selectable',await f.locator('#room-select option').count()===16);
   check('Basement includes cinema, sauna, garage and golf',await p.evaluate(()=>[8,13,15,16].every(id=>window.__plan3d.rooms[id].cfg.niveau===-1)));
@@ -29,7 +29,7 @@ const base=process.env.BASE_URL||'http://127.0.0.1:4200',out=process.env.TEST_OU
   await p.evaluate(()=>{window.__plan3d.overview();window.__plan3d.jump();});await p.waitForTimeout(700);await shot('villa-day');await p.evaluate(()=>window.__plan3d.setDay(0));await p.waitForTimeout(1400);await shot('villa-night');
   await p.evaluate(()=>{const z=window.__plan3d.metrics().zone;window.__plan3d.click(z.x+z.w/2,z.y+z.h/2);window.__plan3d.jump();});await p.waitForTimeout(700);await shot('villa-open-night');await p.evaluate(()=>window.__plan3d.setDay(1));await p.waitForTimeout(500);await shot('villa-open-day');
   check('Basement exposed above ground in exploded view',await p.evaluate(()=>[8,13,15,16].every(id=>window.__plan3d.rooms[id].y0===0)));
-  await p.evaluate(()=>window.__plan3d.setDay(null));const phases=[];for(let i=0;i<21;i++){phases.push(await p.evaluate(()=>window.__plan3d.environment()));await p.waitForTimeout(1000);}check('Twenty-second day/night loop',phases.some(v=>v.day===0)&&phases.some(v=>v.day===1)&&phases.some(v=>v.day>0&&v.day<1));report.cycle=phases;
+  await p.evaluate(()=>window.__plan3d.setDay(null));const phases=[];for(let i=0;i<71;i++){phases.push(await p.evaluate(()=>window.__plan3d.environment()));await p.waitForTimeout(1000);}check('Seventy-second day/night loop',phases.some(v=>v.day===0)&&phases.some(v=>v.day===1)&&phases.some(v=>v.day>0&&v.day<1));report.cycle=phases;
   check('No JavaScript errors',errors.length===0);report.status='passed';
  }finally{clearInterval(keep);report.errors=errors;fs.writeFileSync(path.join(out,'results.json'),JSON.stringify(report,null,2));await b.close();}
 })();

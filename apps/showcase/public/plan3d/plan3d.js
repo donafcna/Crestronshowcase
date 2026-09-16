@@ -77,9 +77,13 @@ export function createPlan3D(opts) {
     var roomLights = [new THREE.PointLight(0xffd9a3, 0, 16, 2), new THREE.PointLight(0xffe6c4, 0, 12, 2)];
     roomLights.forEach(function (l) { sceneR.add(l); });
     var dayCur = 1, environmentDay = 1, fixedDay = null, landscape;
-    // A 20-second showcase cycle: ten seconds per half, gentle two-second dusk/dawn.
+    // 30 seconds of daylight, 5 seconds of dusk, 30 seconds of night, 5 seconds of dawn.
+    var dayDuration = 30, nightDuration = 30, transitionDuration = 5;
+    var nightStart = dayDuration + transitionDuration, dawnStart = nightStart + nightDuration;
+    var environmentCycle = dawnStart + transitionDuration;
     function updateEnvironment(seconds) {
-        var phase=seconds%20, day=phase<8?1:phase<10?1-ease((phase-8)/2):phase<18?0:ease((phase-18)/2);
+        var phase=seconds%environmentCycle;
+        var day=phase<dayDuration?1:phase<nightStart?1-ease((phase-dayDuration)/transitionDuration):phase<dawnStart?0:ease((phase-dawnStart)/transitionDuration);
         environmentDay=fixedDay===null?day:fixedDay;
         hemiE.intensity=.1+environmentDay;sunE.intensity=.035+1.765*environmentDay;fillE.intensity=.035+.465*environmentDay;
         envelope.setNight(1-environmentDay);landscape?.setDay(environmentDay);
@@ -860,7 +864,7 @@ export function createPlan3D(opts) {
     /* ---------- API publique ---------- */
     var API = {
         setRoom: setRoom,
-        version: '2026-09-16-estate-2',
+        version: '2026-09-16-estate-3',
         overview: overview,
         click: clickPlan,
         focusSelected: function () { if (!selectedRoom || activeRoom === selectedRoom) return; focusRoom(selectedRoom); },
@@ -868,7 +872,7 @@ export function createPlan3D(opts) {
         roomPoint: function (id) { var R = ROOMS[id]; if (!R) return null; var v = R.group.localToWorld(new THREE.Vector3(R.cfg.w * .6, .1, R.cfg.d * .8)).project(camera); return { x: (v.x + 1) * canvas.clientWidth / 2, y: (1 - v.y) * canvas.clientHeight / 2 }; },
         selectedRoom: function () { return selectedRoom && selectedRoom.id; },
         metrics: function () { var sorted = frames.slice().sort(function (a,b) { return a-b; }); return { frames: frames.length, medianMs: sorted[Math.floor(sorted.length / 2)] || 0, p95Ms: sorted[Math.floor(sorted.length * .95)] || 0, pixelRatio: renderer.getPixelRatio(), drawCalls: renderer.info.render.calls, triangles: renderer.info.render.triangles, zone: win }; },
-        environment: function(){return {day:environmentDay,seconds:idle,cycleSeconds:20};},
+        environment: function(){return {day:environmentDay,seconds:idle,cycleSeconds:environmentCycle};},
         setDay: function(value){fixedDay=value===null?null:Math.max(0,Math.min(1,value));},
         setCircuit: function (roomId, idx, level) { var R = ROOMS[roomId]; if (!R) return; R.levels[idx] = Math.max(0, Math.min(1, level)); targetLights(R); },
         setVideoSource: function (roomId, n) { var R = ROOMS[roomId]; if (R) setTv(R, n); },
