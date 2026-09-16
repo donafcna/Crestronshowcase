@@ -2178,7 +2178,7 @@
     }
   },
   "contrat": {
-    "version": 3,
+    "version": "v4 (15.09.2026) — joins de pilotage globaux, routage SIMPL par buffers",
     "alarme": {
       "description": "Centrale d'alarme de la villa. Le code de reference n'est plus code en dur ni dans le JavaScript du panel ni dans le C# : le GUI envoie la saisie sur le serial 43, le C# la relaie telle quelle a l'EISC du slot 2 (serial 43) et attend le verdict de la vraie centrale (digital 44 = accepte, 45 = refuse). Si le slot 2 ne repond pas dans le delai ci-dessous, le C# tranche localement avec codeParDefaut.",
       "codeParDefaut": "1234",
@@ -2900,8 +2900,8 @@
       ]
     },
     "blocsPiecesGui": {
-      "actif": true,
-      "description": "Depuis le contrat v3 (11.09.2026) chaque piece expose son PROPRE bloc de joins cote GUI, identique au bloc EISC : base = 1000 + (pieceId - 1) * 100. Aucun join de pilotage n'est partage d'une piece a l'autre. Les numeros ci-dessous (cles du mapping) sont les joins LOGIQUES historiques utilises dans le HTML ; la couche VillaJoins les traduit a l'execution en joins PHYSIQUES base + offset selon la piece affichee par CE panel.",
+      "actif": false,
+      "description": "Contrat v3 (blocs par piece) DESACTIVE le 15.09.2026. Deux raisons : (1) CH5 fige sendEventOnClick a l'initialisation du composant, la reecriture d'attribut faite ici n'avait donc aucun effet sur l'emission — un bouton portant 1052 emettait toujours 151 ; (2) choix d'architecture : tous les pilotages (sources, telecommandes, scenes, stores) utilisent desormais des joins IDENTIQUES quelle que soit la piece, et SIMPL route sur Room_Select# (a10) avec des buffers, ce qui allege aussi le debugger Toolbox. Remettre actif=true restaurerait une traduction qui ne fonctionne pas : ne pas le faire sans avoir d'abord corrige le point (1).",
       "baseFormule": "1000 + (pieceId - 1) * 100",
       "tailleBloc": 100,
       "pieceMax": 30,

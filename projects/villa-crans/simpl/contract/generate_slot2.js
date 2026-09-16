@@ -13,12 +13,16 @@ const path = require('path');
 // Le fichier est modifié EN PLACE (la base VillaCrans.smw d'origine a été supprimée).
 // Une copie de sécurité horodatée est créée à chaque exécution.
 // IMPORTANT : fermer VillaCrans_Slot2.smw dans SIMPL Windows avant de lancer ce script.
-const BASE = path.join(__dirname, 'VillaCrans_Slot2.smw');
+const BASE = path.join(__dirname, '..', 'simpl-windows', 'VillaCrans_Slot2.smw');
 const OUT = BASE;
 
 let raw = fs.readFileSync(BASE, 'latin1');
 const stamp = new Date().toISOString().replace(/[:T]/g, '-').slice(0, 16);
-fs.writeFileSync(path.join(__dirname, 'VillaCrans_Slot2.backup-' + stamp + '.smw'), raw, 'latin1');
+const backupDir = path.dirname(BASE);
+for (const f of fs.readdirSync(backupDir)) {
+  if (/^VillaCrans_Slot2\.backup-.*\.smw$/.test(f)) { try { fs.unlinkSync(path.join(backupDir, f)); } catch (e) { /* verrouille */ } }
+}
+fs.writeFileSync(path.join(backupDir, 'VillaCrans_Slot2.backup-' + stamp + '.smw'), raw, 'latin1');
 const EOL = raw.includes('\r\n') ? '\r\n' : '\n';
 
 // --- 1. Corrections globales (sans effet si déjà appliquées) ---
@@ -52,6 +56,9 @@ function sig(name, sgTp) {
 const dimsM = raw.match(/ObjTp=Sm\r?\nH=\d+\r?\nSmC=1160[\s\S]*?n1I=(\d+)[\s\S]*?n2I=(\d+)[\s\S]*?n1O=(\d+)/);
 if (!dimsM) { console.error('Symbole EISC (SmC=1160) introuvable'); process.exit(1); }
 const N1I = parseInt(dimsM[1], 10), N2I = parseInt(dimsM[2], 10), N1O = parseInt(dimsM[3], 10);
+const capM = raw.match(/ObjTp=Sm\r?\nH=\d+\r?\nSmC=1160[\s\S]*?mI=(\d+)[\s\S]*?mO=(\d+)[\s\S]*?tO=(\d+)/);
+if (!capM) { console.error('Compteurs mI/mO/tO introuvables sur le symbole EISC'); process.exit(1); }
+const mIcap = parseInt(capM[1], 10), mOcap = parseInt(capM[2], 10), tOcap = parseInt(capM[3], 10);
 let IN_A = N1I + 1, OUT_A = N1O, OUT_S = N1O + (N2I - 1);
 // Calibration empirique si les signaux de référence sont déjà câblés
 (function calibrate() {
@@ -113,6 +120,26 @@ for (let mo = 1; mo <= 6; mo++) {
 for (let s = 0; s <= 5; s++) { din(150 + s, 'Source_Select_' + s); dout(150 + s, 'Source_Select_' + s + '_fb'); }
 // Scènes de stores 1..4 (201-204)
 for (let s = 1; s <= 4; s++) { din(200 + s, 'Shades_Scene_' + s); dout(200 + s, 'Shades_Scene_' + s + '_fb'); }
+// --- TELECOMMANDES DES SOURCES (contrat v4, 15.09.2026) ---
+// Appuis emis par la GUI -> le slot 2 les RECOIT, donc en SORTIE du symbole (comme les stores
+// groupes). Joins IDENTIQUES quelle que soit la piece : c'est SIMPL qui route vers le bon
+// decodeur, a partir de Room_Select# (a10) et Source_Active# (a51), avec ses buffers.
+// Ces 107 signaux n'existaient dans AUCUNE generation precedente : c'est la raison pour
+// laquelle aucun appui de telecommande ne remontait dans le debugger.
+const TEL_STB = ['Up', 'Down', 'Left', 'Right', 'Ok', 'Back', 'Menu', 'Exit', 'Live', 'Dvr',
+  'Guide', 'Info', 'Last', 'PgUp', 'PgDn', 'ChUp', 'ChDn', 'Rew', 'Play', 'Fwd', 'Pause',
+  'Stop', 'Replay', 'Rec', 'Yellow', 'Blue', 'Red', 'Green'];
+const TEL_APPLE = ['Up', 'Down', 'Left', 'Right', 'Ok', 'Back', 'Home', 'Play', 'Rew', 'Fwd'];
+const TEL_SW = ['Power', 'Assistant', 'Input', 'Mute', 'Rew', 'Rec', 'Fwd', 'Replay', 'Play',
+  'Skip', 'Back', 'Home', 'Guide', 'Option', 'Up', 'Down', 'Left', 'Right', 'Ok', 'VolUp',
+  'VolDn', 'Mic', 'PUp', 'PDn', 'Pip', 'D0', 'D1', 'D2', 'D3', 'D4', 'D5', 'D6', 'D7', 'D8',
+  'D9', 'Txt', 'Radio', 'Red', 'Green', 'Yellow', 'Blue'];
+TEL_APPLE.forEach((k, i) => dout(211 + i, 'Remote_AppleTV_' + k));
+TEL_STB.forEach((k, i) => dout(500 + i, 'Remote_SkyQ_' + k));
+TEL_STB.forEach((k, i) => dout(530 + i, 'Remote_IPTV_' + k));
+TEL_SW.forEach((k, i) => dout(560 + i, 'Remote_Swisscom_' + k));
+// Le mute de la telecommande Swisscom (offset +3) agit sur AV.Mute global (55), deja cable.
+
 // Analogiques : pièce active (10) en entrée (sortie déjà câblée : Room_Selected#)
 ain(10, 'Room_Select#');
 // Source active (51) et volume (52)
@@ -127,37 +154,108 @@ for (let ci = 1; ci <= 10; ci++) {
 sout(32, 'HVAC_Temperature_fb$');
 sout(33, 'HVAC_Mode_fb$');
 
-// --- 3b. BLOCS PIÈCES : scènes d'éclairage par pièce (nécessite un symbole EISC redimensionné) ---
-// Join digital = 1000 + (pieceId - 1) * 100 + 20 + numéro de scène (offsets +21..24 du contrat).
-// Lighting_Scene<s>_Room<r> = commande depuis le slot 2 ; _fb = retour d'état.
-const DIG_CAPACITY = N1I;
+// Chaîne d'alarme v3 (contrat.alarme) : le pavé de la GUI envoie le code en sériel 43, le slot 2
+// répond OK/KO en digital 44/45, la GUI demande l'effacement en digital 46.
+sout(43, 'Alarm_Code$');        // le slot 2 REÇOIT le code saisi
+din(44, 'Alarm_Code_OK');       // le slot 2 répond : code valide
+din(45, 'Alarm_Code_KO');       // le slot 2 répond : code refusé
+dout(46, 'Alarm_Code_Clear');   // le slot 2 REÇOIT la demande d'effacement
+
+// --- 3b. BLOCS PIÈCES : tous les boutons de toutes les pièces (contrat v3) ---
+// joinPhysique = 1000 + (pieceId - 1) * 100 + offset, offsets = contrat.blocsPiecesGui.mapping.
+// Chaque offset est câblé dans les deux sens : SORTIE (reçue par le slot 2, nom nu) et
+// ENTREE (émise par le slot 2, suffixe _CMD). Les sériels n'existent qu'en sortie.
+const ROOM_BASE = 1000, ROOM_SIZE = 100;
+
+// Nom métier de chaque offset, dérivé du mapping du contrat (join logique -> offset).
+const OFF_D = {};
+['Volets', 'Rideaux', 'Stores'].forEach((g, gi) => {          // joins logiques 61-69
+  OFF_D[1 + gi * 3] = 'Shades_' + g + '_Up';
+  OFF_D[2 + gi * 3] = 'Shades_' + g + '_Stop';
+  OFF_D[3 + gi * 3] = 'Shades_' + g + '_Down';
+});
+for (let n = 1; n <= 4; n++) OFF_D[20 + n] = 'Lighting_Scene' + n;   // 51-54
+OFF_D[35] = 'HVAC_Setpoint_Up';                                     // 49
+OFF_D[36] = 'HVAC_Setpoint_Down';                                   // 50
+for (let n = 1; n <= 4; n++) OFF_D[40 + n] = 'Shades_Scene' + n;    // 201-204
+OFF_D[45] = 'AV_Off';                                               // 200
+OFF_D[50] = 'Audio_Mute';                                           // 55
+OFF_D[51] = 'Source_Off';                                           // 150
+OFF_D[52] = 'Source_AppleTV';                                       // 151
+OFF_D[53] = 'Source_SkyQ';                                          // 152
+OFF_D[54] = 'Source_Swisscom';                                      // 153
+OFF_D[55] = 'Source_IPTV';                                          // 154
+OFF_D[56] = 'Source_Music';                                         // 155
+OFF_D[57] = 'Source_AudioReturn';                                   // 156
+OFF_D[58] = 'Media_PlayPause';                                      // 251
+OFF_D[59] = 'Media_Next';                                           // 252
+OFF_D[60] = 'Media_Prev';                                           // 253
+for (let mo = 1; mo <= 6; mo++) {                                   // 81-98
+  const b0 = 61 + (mo - 1) * 3;
+  OFF_D[b0] = 'Motor_' + mo + '_Up';
+  OFF_D[b0 + 1] = 'Motor_' + mo + '_Stop';
+  OFF_D[b0 + 2] = 'Motor_' + mo + '_Down';
+}
+
+// L'analogique +21 (Lighting_Master) a été retiré du bloc pièce le 13.09.2026 : la GUI ne le
+// lisait pas et il ne portait aucune information que les niveaux de circuits ne donnent déjà.
+// Le signal GLOBAL 'Lighting_Master' (a21) reste en place : il sert au calibrage ci-dessus.
+const OFF_A = { 31: 'HVAC_Setpoint', 51: 'Source_Active',
+                52: 'Audio_Volume', 53: 'Source_Audio', 54: 'Media_Volume' };
+for (let ci = 1; ci <= 10; ci++) OFF_A[70 + ci] = 'Circuit_' + ci;  // 71-80
+
+const OFF_S = { 10: 'Room_Name', 32: 'HVAC_Temperature', 33: 'HVAC_Mode', 34: 'HVAC_Setpoint_Text' };
+
+// Controle du plan par rapport au mapping du contrat : aucun offset ne doit manquer.
 let villaCfg = null;
-try { villaCfg = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'VillaCrans', 'villa_config.json'), 'utf8')); } catch (e) {}
-const pieces = (villaCfg && villaCfg.pieces) ? villaCfg.pieces.filter(p => p.intersystem !== false) : [];
-const roomBase = id => 1000 + (id - 1) * 100;
-let roomScenesWired = 0, roomScenesSkipped = 0;
+for (const rel of [['..', '..', 'ch5', 'villa_config.json'], ['ch5', 'villa_config.json']]) {
+  try { villaCfg = JSON.parse(fs.readFileSync(path.join(__dirname, ...rel), 'utf8')); break; } catch (e) { /* suivant */ }
+}
+if (!villaCfg) { console.error('villa_config.json introuvable (attendu dans ../../ch5/)'); process.exit(1); }
+const mapping = (villaCfg.contrat && villaCfg.contrat.blocsPiecesGui && villaCfg.contrat.blocsPiecesGui.mapping) || {};
+const manquants = [];
+for (const [type, table, plan] of [['digital', mapping.digital, OFF_D], ['analog', mapping.analog, OFF_A], ['serial', mapping.serial, OFF_S]]) {
+  for (const off of Object.values(table || {})) if (plan[off] === undefined) manquants.push(type + ' offset +' + off);
+}
+if (manquants.length) { console.error('Offsets du contrat sans nom dans le plan : ' + manquants.join(', ')); process.exit(1); }
+
+// Capacites reelles du symbole, deduites des dimensions et des offsets calibres.
+const CAP = {
+  dIn: N1I, dOut: N1O,
+  aIn: mIcap - IN_A, aOut: mOcap - OUT_A,
+  sOut: tOcap - OUT_S,
+};
+// Contrat v4 : blocsPiecesGui.actif = false -> plus aucun bloc par piece. Les pilotages
+// utilisent des joins globaux et SIMPL route par buffers ; cela retire ~1035 signaux du
+// debugger Toolbox. Les R01_* .. R15_* deja presents dans le .smw ne sont PAS supprimes
+// par ce script (il ajoute, il n'enleve jamais) : les retirer se fait dans SIMPL Windows.
+const blocsActifs = !!(villaCfg.contrat && villaCfg.contrat.blocsPiecesGui
+  && villaCfg.contrat.blocsPiecesGui.actif === true);
+const pieces = blocsActifs ? (villaCfg.pieces || []).filter(p => p.intersystem !== false) : [];
+if (!blocsActifs) console.log('Blocs pieces desactives (contrat v4) : seuls les signaux globaux sont cables.');
+const roomBase = id => ROOM_BASE + (id - 1) * ROOM_SIZE;
+let wired = 0; const skipped = [];
 for (const p of pieces) {
   const b = roomBase(p.id);
-  if (b + 24 > DIG_CAPACITY) { roomScenesSkipped++; continue; }
-  for (let s = 1; s <= 4; s++) {
-    din(b + 20 + s, 'Lighting_Room' + p.id + '_Scene' + s);
-    dout(b + 20 + s, 'Lighting_Room' + p.id + '_Scene' + s + '_fb');
+  const R = 'R' + String(p.id).padStart(2, '0') + '_';
+  const maxD = b + Math.max(...Object.keys(OFF_D).map(Number));
+  const maxA = b + Math.max(...Object.keys(OFF_A).map(Number));
+  const maxS = b + Math.max(...Object.keys(OFF_S).map(Number));
+  const pb = [];
+  if (maxD > CAP.dIn || maxD > CAP.dOut) pb.push('digital ' + maxD + ' > ' + Math.min(CAP.dIn, CAP.dOut));
+  if (maxA > CAP.aIn || maxA > CAP.aOut) pb.push('analog ' + maxA + ' > ' + Math.min(CAP.aIn, CAP.aOut));
+  if (maxS > CAP.sOut) pb.push('serie ' + maxS + ' > ' + CAP.sOut);
+  if (pb.length) { skipped.push('piece ' + p.id + ' (' + pb.join(', ') + ')'); continue; }
+  for (const [off, nom] of Object.entries(OFF_D)) {
+    dout(b + Number(off), R + nom);            // ce que le slot 2 recoit (appui GUI + etat)
+    din(b + Number(off), R + nom + '_CMD');    // ce que le slot 2 envoie
   }
-  // Écho par pièce des commandes groupées Volets/Rideaux/Stores (offsets +1..+9)
-  grp.forEach((g, gi) => {
-    dout(b + 1 + gi * 3, 'Shades_Room' + p.id + '_' + g + '_Up');
-    dout(b + 2 + gi * 3, 'Shades_Room' + p.id + '_' + g + '_Stop');
-    dout(b + 3 + gi * 3, 'Shades_Room' + p.id + '_' + g + '_Down');
-  });
-  // Circuits d'éclairage par pièce (analogiques, offsets +71..+80) :
-  // commande depuis le slot 2 + retour d'état du niveau réel
-  if (b + 80 <= N2I) {
-    for (let ci = 1; ci <= 10; ci++) {
-      ain(b + 70 + ci, 'Lighting_Room' + p.id + '_Circuit' + ci);
-      aout(b + 70 + ci, 'Lighting_Room' + p.id + '_Circuit' + ci + '_fb');
-    }
+  for (const [off, nom] of Object.entries(OFF_A)) {
+    aout(b + Number(off), R + nom + '#');
+    ain(b + Number(off), R + nom + '_CMD#');
   }
-  roomScenesWired++;
+  for (const [off, nom] of Object.entries(OFF_S)) sout(b + Number(off), R + nom + '$');
+  wired++;
 }
 
 // --- 4. Réécriture du symbole EISC (H=21) ---
@@ -177,6 +275,18 @@ for (const line of smBlock.split(/\r?\n/)) {
 }
 // Purge des entrées obsolètes (Shades_* déplacés en sorties)
 for (const idx of purgeInputs) delete curI[idx];
+// Purge des blocs pièces (>= 1000) : les générations précédentes y avaient posé des noms
+// par famille (Lighting_Room1_Scene1...). On les remplace par le nommage uniforme R01_...,
+// sinon les pièces 1 à 3 gardent un nommage différent des 12 autres dans le debugger.
+const joinOfIn = i => (i <= N1I ? i : i - IN_A);
+const joinOfOut = i => (i <= N1O ? i : (i <= OUT_S ? i - OUT_A : i - OUT_S));
+let purgedRoom = 0;
+for (const k of Object.keys(curI).map(Number)) {
+  if (joinOfIn(k) >= ROOM_BASE) { delete curI[k]; purgedRoom++; }
+}
+for (const k of Object.keys(curO).map(Number)) {
+  if (joinOfOut(k) >= ROOM_BASE) { delete curO[k]; purgedRoom++; }
+}
 // Fusion (les entrées existantes sont prioritaires)
 for (const k of Object.keys(inputs)) if (curI[k] === undefined) curI[k] = inputs[k];
 for (const k of Object.keys(outputs)) if (curO[k] === undefined) curO[k] = outputs[k];
@@ -209,11 +319,17 @@ raw = raw.replace(/\s*$/, EOL) + sgBlocks;
 fs.writeFileSync(OUT, raw, 'latin1');
 console.log('OK : ' + path.basename(OUT));
 console.log('Signaux ajoutés : ' + newSignals.length + ' (handles ' + (maxSgH + 1) + '..' + (nextH - 1) + ')');
-console.log('Entrées EISC : ' + iKeys.length + ' | Sorties EISC : ' + oKeys.length);
-console.log('Capacité digitale du symbole EISC : ' + DIG_CAPACITY + ' joins');
-console.log('Scènes par pièce : ' + roomScenesWired + ' pièces câblées, ' + roomScenesSkipped + ' pièces hors capacité');
-if (roomScenesSkipped > 0) {
-  console.log('>>> Pour câbler les blocs pièces : dans SIMPL Windows, ouvrir VillaCrans.smw,');
-  console.log('>>> double-cliquer le symbole EISC et porter les digitaux à 4001 (et analog/série à 2587),');
+console.log('Entrées EISC : ' + iKeys.length + ' | Sorties EISC : ' + oKeys.length
+  + ' | anciens câblages de pièce remplacés : ' + purgedRoom);
+console.log('Capacités du symbole EISC : digital ' + Math.min(CAP.dIn, CAP.dOut)
+  + ' | analog ' + Math.min(CAP.aIn, CAP.aOut) + ' | série ' + CAP.sOut + ' joins');
+console.log('Blocs pièces : ' + wired + ' pièce(s) câblée(s) sur ' + pieces.length
+  + ' exposée(s) au slot 2, ' + skipped.length + ' hors capacité');
+if (skipped.length) {
+  console.log('>>> Hors capacité : ' + skipped.join(' ; '));
+  console.log('>>> Dans SIMPL Windows, double-cliquer le symbole EISC et augmenter le nombre de joins,');
   console.log('>>> sauvegarder, puis relancer ce script.');
+} else {
+  console.log('Convention : R07_Lighting_Scene2 = reçu par le slot 2 (appui GUI + état) ;');
+  console.log('             R07_Lighting_Scene2_CMD = émis par le slot 2 vers la GUI.');
 }

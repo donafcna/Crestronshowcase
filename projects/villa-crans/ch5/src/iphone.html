@@ -804,7 +804,7 @@
                 <span data-i18n="tab_lights">LUMIÈRES & STORES</span>
             </h2>
             
-            <div id="iphone-lights-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <div id="iphone-lights-header" style="display: flex; justify-content: flex-start; gap: 10px; align-items: center; margin-bottom: 8px;">
                 <span style="font-weight: bold; font-size: 0.9rem; color: var(--text-secondary);" data-i18n="circuits_title">Circuits :</span>
                 <!-- Bouton Réglages Lumières -->
                 <button class="popup-trigger-btn" onclick="openCircuitsModal()" style="width: auto; height: 32px; padding: 0 10px; margin: 0; font-size: 1rem; display: flex; align-items: center; justify-content: center; border-radius: 8px;"><svg class="gear-icon" viewBox="0 0 512 512" aria-hidden="true"><path d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6l-43.3 75c-3.2 8.7-12.2 13.9-21.4 11.7l-56.4-13.6c-15.6 12-33 21.6-51.7 28.5l-11.9 57.3c-2 9.7-10.5 16.7-20.5 16.7H220.4c-10 0-18.5-7-20.5-16.7l-11.9-57.3c-18.7-6.9-36.1-16.4-51.7-28.5l-56.4 13.6c-9.2 2.2-18.2-3-21.4-11.7l-43.3-75c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4c-1.1-8.3-1.7-16.8-1.7-25.4s.6-17.1 1.7-25.4L21.6 191.2c-6.9-6.2-9.6-15.9-6.4-24.6l43.3-75c3.2-8.7 12.2-13.9 21.4-11.7l56.4 13.6c15.6-12 33-21.6 51.7-28.5l11.9-57.3c2-9.7 10.5-16.7 20.5-16.7h72.8c10 0 18.5 7 20.5 16.7l11.9 57.3c18.7 6.9 36.1 16.4 51.7 28.5l56.4-13.6c9.2-2.2 18.2 3 21.4 11.7l43.3 75zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"/></svg></button>
@@ -819,7 +819,7 @@
                 <button id="scene-btn-54" class="scene-btn-mobile" onclick="pressDigital(54)">TOTAL</button>
             </div>
 
-            <div id="iphone-shades-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-top: 1px solid var(--border-color); padding-top: 15px; margin-top: 15px;">
+            <div id="iphone-shades-header" style="display: flex; justify-content: flex-start; gap: 10px; align-items: center; margin-bottom: 12px; border-top: 1px solid var(--border-color); padding-top: 15px; margin-top: 15px;">
                 <div style="display: flex; align-items: center; gap: 8px;">
                     <!-- Icône de Store -->
                     <svg viewBox="0 0 512 512" style="width: 18px; height: 18px; fill: #00b4c5;">
@@ -902,7 +902,7 @@
         <div id="panel-audio" class="tab-panel">
             <h2 style="display: flex; align-items: center; gap: 8px;">
                 <svg viewBox="0 0 576 512" style="width: 20px; height: 20px; fill: #8b5cf6;"><path d="M528 0H48C21.5 0 0 21.5 0 48v320c0 26.5 21.5 48 48 48h192l-16 48h-72c-13.3 0-24 10.7-24 24s10.7 24 24 24h272c13.3 0 24-10.7 24-24s-10.7-24-24-24h-72l-16-48h192c26.5 0 48-21.5 48-48V48c0-26.5-21.5-48-48-48zm-16 352H64V64h448v288z"/></svg>
-                <span data-i18n="source_title">Source audio et vidéo</span>
+                <span data-i18n="source_title">Sources</span>
             </h2>
             <div style="display: flex; flex-direction: column; justify-content: space-between; flex: 1;">
                 <div>
@@ -1627,7 +1627,7 @@
                     temp_title: "HVAC",
                     temp_actual: "Actuelle",
                     temp_requested: "Consigne",
-                    source_title: "Source audio et vidéo",
+                    source_title: "Sources",
                     source_video: "Source active :",
                     circuits_title: "Circuits :",
                     motors_title: "Moteurs :",
@@ -1660,7 +1660,7 @@
                     temp_title: "HVAC",
                     temp_actual: "Current",
                     temp_requested: "Set Temp",
-                    source_title: "Audio & video source",
+                    source_title: "Sources",
                     source_video: "Active Source:",
                     circuits_title: "Circuits:",
                     motors_title: "Motors:",
@@ -1693,7 +1693,7 @@
                     temp_title: "HVAC",
                     temp_actual: "Actual",
                     temp_requested: "Consigna",
-                    source_title: "Fuente de audio y vídeo",
+                    source_title: "Fuentes",
                     source_video: "Fuente Activa:",
                     circuits_title: "Circuitos:",
                     motors_title: "Motores:",
@@ -3951,5 +3951,86 @@
         setTimeout(boot, 1200);
     })();
     </script>
+
+    <!-- ================= LOT 15.09.2026 : ecran etroit ================= -->
+    <style id="mobile-lot-0915">
+        /* Fenetre ouverte : voile noir floute, et plus aucun clic ne passe derriere.
+           pointer-events sur .tab-panel ferme la porte meme si une modale est ouverte
+           sans passer par showModalOverlay (c'etait le cas de plusieurs ecrans). */
+        .modal-backdrop {
+            background-color: rgba(0, 0, 0, 0.74) !important;
+            backdrop-filter: blur(14px) saturate(0.85) !important;
+            -webkit-backdrop-filter: blur(14px) saturate(0.85) !important;
+        }
+        body#app-body.theme-light .modal-backdrop,
+        body#app-body.theme-glass .modal-backdrop {
+            background-color: rgba(0, 0, 0, 0.74) !important;   /* noir dans les 3 themes, demande du 15.09 */
+        }
+        body.modal-ouverte .tab-panel,
+        body.modal-ouverte #iphone-tabbar,
+        body.modal-ouverte .iphone-header { pointer-events: none !important; }
+        body.modal-ouverte .custom-overlay-panel,
+        body.modal-ouverte .modal-backdrop { pointer-events: auto !important; }
+
+        /* Piece sans eclairage : ni titre ni scenes, les moteurs remontent en haut. */
+        body.sans-eclairage #iphone-lights-header,
+        body.sans-eclairage #iphone-scenes-row { display: none !important; }
+        body.sans-eclairage #iphone-shades-header {
+            border-top: none !important;
+            margin-top: 0 !important;
+            padding-top: 0 !important;
+        }
+    </style>
+    <script>
+    (function () {
+        'use strict';
+        // --- Voile : pose une classe sur <body> des qu'une fenetre est visible ---------
+        function fenetreOuverte() {
+            var ouv = document.querySelector('.custom-overlay-panel');
+            var liste = document.querySelectorAll('.custom-overlay-panel');
+            for (var i = 0; i < liste.length; i++) {
+                var st = liste[i].style.display;
+                if (st && st !== 'none') return true;
+            }
+            return false;
+        }
+        function majVoile() {
+            var ouvert = fenetreOuverte();
+            document.body.classList.toggle('modal-ouverte', ouvert);
+            var bd = document.getElementById('modal-backdrop');
+            if (bd) bd.style.display = ouvert ? 'block' : 'none';
+        }
+        // Un observateur suffit : il couvre aussi les ecrans qui ouvrent une fenetre
+        // sans passer par showModalOverlay().
+        if (window.MutationObserver) {
+            var obs = new MutationObserver(majVoile);
+            document.addEventListener('DOMContentLoaded', function () {
+                document.querySelectorAll('.custom-overlay-panel').forEach(function (el) {
+                    obs.observe(el, { attributes: true, attributeFilter: ['style'] });
+                });
+                majVoile();
+            });
+        }
+
+        // --- Piece sans eclairage : titre masque, moteurs remontes -------------------
+        window.majSectionEclairage = function (piece) {
+            var p = piece;
+            if (!p) {
+                var vc = window.villaConfig || window.villaConfigEmbedded || {};
+                var id = (typeof window.currentRoomId === 'function') ? window.currentRoomId() : null;
+                p = (vc.pieces || []).filter(function (x) { return x.id === id; })[0] || null;
+            }
+            var ecl = p && p.pilotages && p.pilotages.eclairages;
+            // "Pas d'eclairage" = section absente/desactivee, ou aucun circuit ET aucune scene.
+            var nbC = (ecl && ecl.circuits && ecl.circuits.nombre) || 0;
+            var nbS = (ecl && ecl.scenes && (ecl.scenes.nombre || (ecl.scenes.niveaux || []).length)) || 0;
+            var sans = !ecl || ecl.actif === false || (nbC === 0 && nbS === 0);
+            document.body.classList.toggle('sans-eclairage', !!sans);
+        };
+        document.addEventListener('DOMContentLoaded', function () { try { window.majSectionEclairage(); } catch (e) {} });
+        window.addEventListener('villa-config-loaded', function () { try { window.majSectionEclairage(); } catch (e) {} });
+    })();
+    </script>
+
 </body>
 </html>
