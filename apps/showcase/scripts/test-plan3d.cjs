@@ -9,7 +9,7 @@ fs.mkdirSync(out, { recursive: true });
 const base = process.env.BASE_URL || 'http://127.0.0.1:4200';
 const route = '/interfaces/residentiel/villa-gemini-frequencetv';
 (async () => {
-  const browser = await chromium.launch({ headless: true, ...(process.env.BROWSER_EXE ? { executablePath: process.env.BROWSER_EXE } : {}) });
+  const browser = await chromium.launch({ headless: true, ...(process.env.BROWSER_EXE ? { executablePath: process.env.BROWSER_EXE } : {}), ...(process.env.GPU === '1' ? {args:['--enable-gpu','--use-angle=d3d11']} : {}) });
   const context = await browser.newContext({ viewport: { width: 1280, height: 609 }, deviceScaleFactor: 1.5 });
   const page = await context.newPage(), errors = [], report = {base, checks: [], screenshots: [], metrics: []};
   // Screenshots can take several seconds on software-rendered CI. Keep the
@@ -22,22 +22,27 @@ const route = '/interfaces/residentiel/villa-gemini-frequencetv';
   const shot = async name => { await pause(); await page.screenshot({path:path.join(out,name+'.png')}); report.screenshots.push(name+'.png'); };
   try {
     await page.goto(base+route+'/phone');
-    await page.waitForFunction(() => window.__plan3d?.version === '2026-09-16-atlas-1');
+    await page.waitForFunction(() => window.__plan3d?.version === '2026-09-16-atlas-2');
     await pause(); await page.waitForTimeout(1700);
     const gui=page.frameLocator('iframe');
     await gui.locator('#room-select').selectOption('1');
+    await gui.locator('#scene-btn-54').click();
     await page.evaluate(()=>{const a=window.__plan3d;a.setRoom(1);a.setCircuit(1,0,1);a.setCircuit(1,1,1);a.setVideoSource(1,1);});
     await settle();
     check('3D version loaded',await page.evaluate(()=>!!window.__plan3d.version));
     for(const theme of ['dark','light','frost']) {
-      await page.locator('iframe').evaluate((f,t)=>f.contentWindow.changeTheme(t),theme);await page.waitForTimeout(150);await shot('normal-'+theme);
+      const key=theme==='frost'?'glass':theme;
+      await page.locator('iframe').evaluate((f,t)=>f.contentWindow.changeTheme(t),key);await page.waitForTimeout(900);
+      check('Normal theme '+key+' selected',await gui.locator('#theme-select').inputValue()===key);await shot('normal-'+theme);
     }
     await page.locator('.btn-exit-fullscreen-device-corner').click();await page.waitForTimeout(700);await settle();
     const bounds=await page.evaluate(()=>({phone:document.querySelector('.phone-device-frame').getBoundingClientRect().toJSON(),side:document.querySelector('.workspace-device-sidebar').getBoundingClientRect().toJSON(),zone:window.__plan3d.metrics().zone}));
     check('Scene phone left edge < 50px', bounds.phone.left<50);
     check('3D zone clears phone and sidebar', bounds.zone.x>bounds.phone.right && bounds.zone.x+bounds.zone.w<bounds.side.left);
     for(const theme of ['dark','light','frost']) {
-      await page.locator('iframe').evaluate((f,t)=>f.contentWindow.changeTheme(t),theme);await shot('scene-'+theme);
+      const key=theme==='frost'?'glass':theme;
+      await page.locator('iframe').evaluate((f,t)=>f.contentWindow.changeTheme(t),key);await page.waitForTimeout(900);
+      check('Scene theme '+key+' selected',await gui.locator('#theme-select').inputValue()===key);await shot('scene-'+theme);
     }
     const x=bounds.zone.x+bounds.zone.w/2,y=bounds.zone.y+bounds.zone.h/2;
     await page.mouse.move(x,y);await page.mouse.wheel(0,350);await page.waitForTimeout(800);await settle();
@@ -56,9 +61,11 @@ const route = '/interfaces/residentiel/villa-gemini-frequencetv';
     check('Sidebar wheel leaves view unchanged',await page.evaluate(()=>window.__plan3d.activeRoom()===1));
     await page.mouse.move(x,y);await page.keyboard.down('Control');await page.mouse.wheel(0,200);await page.keyboard.up('Control');
     check('Ctrl+wheel does not navigate 3D',await page.evaluate(()=>window.__plan3d.activeRoom()===1));
-    await page.evaluate(()=>{const a=window.__plan3d;for(const k of ['volet','rideau','store'])a.shadePos(k,1);a.setCircuit(1,0,0);a.setCircuit(1,1,0);a.setVideoSource(1,0);});
+    await gui.locator('#scene-btn-51').click();
+    await page.evaluate(()=>{const a=window.__plan3d;for(const k of ['volet','rideau','store'])a.shadePos(k,1);a.setVideoSource(1,0);});
     await page.waitForTimeout(1700);check('Closed shutters block daylight',await page.evaluate(()=>window.__plan3d.daylight()===0));await shot('salon-off-closed');
-    await page.evaluate(()=>{const a=window.__plan3d;for(const k of ['volet','rideau','store'])a.shadePos(k,0);a.setCircuit(1,0,1);a.setCircuit(1,1,1);});await page.waitForTimeout(1700);await shot('salon-total-open');
+    await gui.locator('#scene-btn-54').click();
+    await page.evaluate(()=>{const a=window.__plan3d;for(const k of ['volet','rideau','store'])a.shadePos(k,0);});await page.waitForTimeout(1700);await shot('salon-total-open');
     await page.evaluate(()=>{window.__plan3d.shadeScene(4)});await page.waitForTimeout(1600);await pause();
     check('Three motors move',await page.evaluate(()=>Object.values(window.__plan3d.rooms[1].shades).every(s=>s.pos>.1&&s.pos<1)));await shot('salon-motors-moving');
     await page.evaluate(()=>{window.__plan3d.shade('volet','stop')});const stopped=await page.evaluate(()=>window.__plan3d.rooms[1].shades.volet.pos);await page.waitForTimeout(500);
@@ -71,6 +78,7 @@ const route = '/interfaces/residentiel/villa-gemini-frequencetv';
     for(const id of [2,3,4,5,6,7,8,9,10,11,12,13,14]){
       await pause();await gui.locator('#room-select').selectOption(String(id));await page.waitForTimeout(250);await settle();
       check('GUI selects 3D room '+id,await page.evaluate(id=>window.__plan3d.activeRoom()===id,id));
+      await gui.locator('#scene-btn-54').click();
       await page.evaluate(id=>{window.__plan3d.setCircuit(id,0,1);window.__plan3d.setCircuit(id,1,.65);},id);
       if([2,3,4,7,8,11,12,13].includes(id))await shot('room-'+id);
       if(id===11){await page.evaluate(()=>window.__plan3d.shadeScene(4));await page.waitForTimeout(350);check('Terrace shade scene supported',errors.length===0);}

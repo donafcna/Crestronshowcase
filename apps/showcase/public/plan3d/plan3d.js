@@ -13,8 +13,9 @@
  * api.setWindow(rect) cadre la pièce dans la zone libre de la page ; api.dispose() à la fin.
  * =========================================================================== */
 import * as THREE from './vendor/three.module.min.js';
-import { createInteriors } from './interiors.js?v=2026-09-16-atlas-1';
-import { buildLandscape } from './landscape.js?v=2026-09-16-atlas-1';
+import { createInteriors } from './interiors.js?v=2026-09-16-atlas-2';
+import { buildLandscape } from './landscape.js?v=2026-09-16-atlas-2';
+import { createEnvelope } from './envelope.js?v=2026-09-16-atlas-2';
 
 export function createPlan3D(opts) {
     'use strict';
@@ -274,19 +275,25 @@ export function createPlan3D(opts) {
         g.position.set(p.x, y0, p.z);
         var w = p.w, d = p.d, ext = p.type === 'terrasse' || p.type === 'piscine';
         (ext ? scene : sceneR).add(g);
-        var R = { id: p.id, cfg: p, group: g, lamps: [], glow: [], levels: [0.9, 0.6], tv: null, speakers: [], hvac: null, thermo: null, y0: y0, ext: ext };
+        var R = { id: p.id, cfg: p, group: g, lamps: [], glow: [], levels: [0, 0], sceneOff: false, tv: null, speakers: [], hvac: null, thermo: null, y0: y0, ext: ext };
 
         // Sol, dalle et murs du fond (nord = -z, ouest = -x) : écorché ouvert vers la caméra (+x, +z)
         box(w, 0.25, d, M.dalle, w / 2, -0.125, d / 2, g);
         box(w - 0.1, 0.02, d - 0.1, ext ? (p.type === 'terrasse' ? M.gazon : M.solExt) : (p.type === 'chambre' || p.type === 'suite' ? M.solChambre : M.sol), w / 2, 0.01, d / 2, g);
         if (!ext) {
             var wallH = NIVEAU_H, wallMat = p.type === 'cinema' ? M.murSombre : M.mur;
-            box(0.15, wallH, d, wallMat, 0.075, wallH / 2, d / 2, g);                                       // mur ouest
+            var cinema = p.type === 'cinema', roomGroup = g, wallWidth = cinema ? d : w;
+            if (cinema) {
+                // Screen on an uninterrupted north wall; the entire window and
+                // motor assembly lives on the west wall, clear of the screen.
+                box(w, wallH, .15, wallMat, w / 2, wallH / 2, .075, g);
+                g = new THREE.Group(); g.rotation.y = Math.PI / 2; g.position.z = d; roomGroup.add(g);
+            } else box(0.15, wallH, d, wallMat, 0.075, wallH / 2, d / 2, g);
             // Mur nord percé d'une vraie fenêtre (on voit le paysage à travers) à gauche, la TV occupe le
             // centre / la droite ; bureau : fenêtre à droite, TV à gauche.
-            var fw = Math.min(2.2, w * 0.34), fx = p.type === 'bureau' ? w * 0.74 : w * 0.22, fy0 = 0.95, fh = 1.4, fy1 = fy0 + fh;
+            var fw = Math.min(2.2, wallWidth * 0.34), fx = cinema ? d * .5 : p.type === 'bureau' ? w * 0.74 : w * 0.22, fy0 = 0.95, fh = 1.4, fy1 = fy0 + fh;
             box(fx - fw / 2, wallH, 0.15, wallMat, (fx - fw / 2) / 2, wallH / 2, 0.075, g);
-            box(w - fx - fw / 2, wallH, 0.15, wallMat, fx + fw / 2 + (w - fx - fw / 2) / 2, wallH / 2, 0.075, g);
+            box(wallWidth - fx - fw / 2, wallH, 0.15, wallMat, fx + fw / 2 + (wallWidth - fx - fw / 2) / 2, wallH / 2, 0.075, g);
             box(fw, fy0, 0.15, wallMat, fx, fy0 / 2, 0.075, g);                                             // allège
             box(fw, wallH - fy1, 0.15, wallMat, fx, fy1 + (wallH - fy1) / 2, 0.075, g);                     // linteau
             box(fw + 0.1, 0.05, 0.1, M.alu, fx, fy1 + 0.025, 0.075, g); box(fw + 0.1, 0.05, 0.1, M.alu, fx, fy0 - 0.025, 0.075, g);   // cadre
@@ -296,7 +303,7 @@ export function createPlan3D(opts) {
             box(fw + 0.24, 0.03, 0.2, M.blanc, fx, fy0 - 0.015, 0.2, g);                                    // tablette d'appui
             // Rai de lumière du jour qui entre par la fenêtre (opacité = ouverture des motorisations)
             var shaft = new THREE.Mesh(new THREE.PlaneGeometry(fw, 2.8), new THREE.MeshBasicMaterial({ color: 0xfff1d6, transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide }));
-            shaft.position.set(fx, 0.95, 1.25); shaft.rotation.x = -1.12; g.add(shaft); R.shaft = shaft; R.win = { x: fx, y: fy0 + fh / 2, w: fw };
+            shaft.position.set(fx, 0.95, 1.25); shaft.rotation.x = -1.12; g.add(shaft); R.shaft = shaft; R.win = { x: fx, y: fy0 + fh / 2, w: fw, group: g, depth: cinema ? w : d, wall: cinema ? 'west' : 'north' };
 
             // --- Volet roulant : tablier à lames derrière la vitre, caisson intérieur ouvert montrant l'axe,
             //     le tablier enroulé et le moteur tubulaire (tête + voyant)
@@ -334,6 +341,7 @@ export function createPlan3D(opts) {
                 rideau: { meshes: [rg, rd], pos: 0, cible: 0, min: 0.24, led: ledR, update: function () {} }
             };
             Object.keys(R.shades).forEach(function (k) { var o = R.shades[k]; o.update(o, o.min); });
+            g = roomGroup;
         } else {
             box(w, 0.9, 0.12, M.verreExt, w / 2, 0.45, 0.06, g);   // garde-corps vitré
         }
@@ -421,7 +429,8 @@ export function createPlan3D(opts) {
         var lampMat2 = new THREE.MeshStandardMaterial({ color: 0xfff4dc, emissive: 0xffe0b0, emissiveIntensity: 1 });
         var glowMat = new THREE.MeshBasicMaterial({ color: 0xffd9a0, transparent: true, opacity: 0.18, side: THREE.DoubleSide, depthWrite: false });
         if (!ext) {
-            var l1 = sph(0.14, lampMat1, w / 2, NIVEAU_H - 0.2, d / 2, g); cyl(0.05, 0.2, M.metal, w / 2, NIVEAU_H - 0.05, d / 2, g);
+            var l1 = sph(p.type === 'cinema' ? .055 : .14, lampMat1, p.type === 'cinema' ? .23 : w / 2, NIVEAU_H - 0.2, p.type === 'cinema' ? d - .3 : d / 2, g);
+            if (p.type !== 'cinema') cyl(0.05, 0.2, M.metal, w / 2, NIVEAU_H - 0.05, d / 2, g);
             var gl = new THREE.Mesh(new THREE.CircleGeometry(Math.min(w, d) * 0.42, 24), glowMat); gl.rotation.x = -Math.PI / 2; gl.position.set(w / 2, 0.03, d / 2); g.add(gl);
             R.lamps.push({ mesh: l1, mat: lampMat1, pos: new THREE.Vector3(w / 2, NIVEAU_H - 0.5, d / 2) }); R.glow.push(gl);
             var l2a = box(0.3, 0.16, 0.12, lampMat2, w * 0.25, 2.0, 0.2, g), l2b = box(0.3, 0.16, 0.12, lampMat2, w * 0.8, 2.0, 0.2, g);
@@ -445,7 +454,7 @@ export function createPlan3D(opts) {
             var scr = makeScreen();
             var scrMat = new THREE.MeshBasicMaterial({ map: scr.tex });
             var scrMesh = new THREE.Mesh(new THREE.PlaneGeometry(sw, shh), M.ecranOff); scrMesh.position.set(tvPos.x, tvPos.y, tvPos.z + 0.02); g.add(scrMesh);
-            var tvLight = new THREE.PointLight(0x9db8ff, 0, 5, 2); tvLight.position.set(tvPos.x, tvPos.y, tvPos.z + 0.8); g.add(tvLight);
+            var tvLight = new THREE.PointLight(0x9db8ff, 0, 2.2, 2); tvLight.position.set(tvPos.x, tvPos.y, tvPos.z + 0.4); g.add(tvLight);
             R.tv = { mesh: scrMesh, on: scrMat, off: M.ecranOff, screen: scr, light: tvLight, source: 0, veille: veille };
             var spkMat = new THREE.MeshStandardMaterial({ color: 0x1f2937, roughness: 0.7 });
             [-1, 1].forEach(function (side) {
@@ -534,13 +543,14 @@ export function createPlan3D(opts) {
     }
 
     /* ---------- Application des états ---------- */
+    function lightLevel(R, i) { return R.sceneOff ? 0 : (R.levels[i] ?? R.levels[0] ?? 0); }
     function applyLevels(R) {
         R.lamps.forEach(function (l, i) {
-            var v = R.levels[l.sousMarin ? 0 : i] !== undefined ? R.levels[l.sousMarin ? 0 : i] : R.levels[0];
+            var v = lightLevel(R, l.sousMarin ? 0 : i);
             if (l.sousMarin) { l.mat.emissiveIntensity = 0.1 + v * 2.2; return; }   // projecteurs de piscine : circuit 1
             l.mat.emissiveIntensity = v * 1.6; l.mat.color.setHex(v > 0.05 ? 0xfff4dc : 0x9a948c);
         });
-        R.glow.forEach(function (gm, i) { gm.material.opacity = (R.levels[i] ?? R.levels[0]) * 0.12; });
+        R.glow.forEach(function (gm, i) { gm.material.opacity = lightLevel(R, i) * 0.12; });
     }
     function setTv(R, src) {
         if (!R.tv) return;
@@ -550,6 +560,7 @@ export function createPlan3D(opts) {
     }
 
     var activeRoom = null, selectedRoom = null, tween = null, idle = 0, music = false;
+    var envelope = null, shellTween = null, phase = 'overview-closed';
     // Fenêtre de la carte Sources (rect écran) : la caméra y centre la pièce et l'y fait tenir
     var win = null;
     function applyViewOffset() {
@@ -583,17 +594,48 @@ export function createPlan3D(opts) {
         overviewCache = fitBounds(b, c);
         return overviewCache;
     }
-    function goOverview(immediate) { var o = overviewPose(); flyTo(o.pos.clone(), o.tgt.clone(), immediate); }
-    function goRoom(R, immediate) { var o = roomPose(R); flyTo(o.pos, o.tgt, immediate); }
-    var queue = [];
+    function goOverview(immediate, onDone) { var o = overviewPose(); flyTo(o.pos.clone(), o.tgt.clone(), immediate, 1.4, onDone); }
     function flyTo(pos, tgt, immediate, dur, onDone) {
-        if (immediate) { camState.basePos.copy(pos); camState.baseTgt.copy(tgt); camState.pos.copy(pos); camState.tgt.copy(tgt); tween = null; queue = []; return; }
-        if (tween) { queue.push({ pos: pos, tgt: tgt, dur: dur, onDone: onDone }); return; }
-        tween = { p0: camState.pos.clone(), t0: camState.tgt.clone(), p1: pos, t1: tgt, t: 0, dur: dur || 1.1, onDone: onDone };
+        if (immediate) { camState.basePos.copy(pos); camState.baseTgt.copy(tgt); camState.pos.copy(pos); camState.tgt.copy(tgt); tween = null; if (onDone) onDone(); return; }
+        // Retarget from the displayed pose, never replay obsolete selections.
+        tween = { p0: camState.pos.clone(), t0: camState.tgt.clone(), p1: pos, t1: tgt, t: 0, dur: dur || 1.35, onDone: onDone };
         camState.basePos.copy(pos); camState.baseTgt.copy(tgt);
     }
-    function nextTween() {
-        var n = queue.shift(); if (n) flyTo(n.pos, n.tgt, false, n.dur, n.onDone);
+    function fadeEnvelope(to, onDone) {
+        shellTween = { from: envelope.opacity, to: to, t: 0, onDone: onDone };
+        if (Math.abs(shellTween.from - to) < .001) finishEnvelope();
+    }
+    function finishEnvelope() {
+        if (!shellTween) return;
+        var s = shellTween; shellTween = null; envelope.setOpacity(s.to); if (s.onDone) s.onDone();
+    }
+    function beginFocus(R) {
+        phase = 'focusing';
+        // The outgoing room stays visible throughout the camera journey.
+        R.group.visible = true;
+        var o = roomPose(R);
+        flyTo(o.pos, o.tgt, false, 1.35, function () { showOnly(R); phase = 'room'; });
+    }
+    function focusRoom(R) {
+        if (!R) return;
+        activeRoom = R; tween = null; shellTween = null;
+        if (envelope.opacity > .001) {
+            phase = 'opening';
+            fadeEnvelope(0, function () { beginFocus(R); });
+        } else beginFocus(R);
+    }
+    function overview() {
+        if (phase === 'overview-closed' || phase === 'overview-closing' || phase === 'overview-travel') return;
+        activeRoom = null; tween = null; shellTween = null; showOnly(null);
+        phase = 'overview-travel';
+        goOverview(false, function () {
+            phase = 'overview-closing';
+            fadeEnvelope(1, function () { phase = 'overview-closed'; });
+        });
+    }
+    function openOverview() {
+        phase = 'opening'; tween = null;
+        fadeEnvelope(0, function () { phase = 'overview-open'; });
     }
     // Vue pièce : seules la pièce active, les extérieurs et le décor restent visibles (écorché lisible)
     function showOnly(R) {
@@ -607,13 +649,40 @@ export function createPlan3D(opts) {
     function setRoom(id) {
         id = parseInt(id, 10); var R = ROOMS[id]; if (!R) return;
         if (selectedRoom === R) return;
-        var prev = activeRoom; selectedRoom = R; activeRoom = R;
+        var prev = activeRoom; selectedRoom = R;
         if (prev && prev.shaft) prev.shaft.material.opacity = 0;
         Object.keys(ROOMS).forEach(function (k) { ROOMS[k].label.material.opacity = ROOMS[k] === R ? 1 : 0.55; });
-        queue = []; tween = null;
-        showOnly(R); goRoom(R, !prev);
+        focusRoom(R);
     }
-    function roomPose(R) { var p = R.cfg; return fitBounds(new THREE.Box3(new THREE.Vector3(p.x, R.y0 - .25, p.z), new THREE.Vector3(p.x + p.w, R.y0 + 3.85, p.z + p.d)), new THREE.Vector3(p.x + p.w / 2, R.y0 + 1.35, p.z + p.d / 2)); }
+    function roomPose(R) {
+        var p = R.cfg;
+        // Fit the occupied interior instead of the air above its label.
+        var o = fitBounds(new THREE.Box3(new THREE.Vector3(p.x + .25, R.y0, p.z + .15), new THREE.Vector3(p.x + p.w - .25, R.y0 + 3, p.z + p.d - .2)), new THREE.Vector3(p.x + p.w / 2, R.y0 + 1.2, p.z + p.d * .46));
+        o.pos.sub(o.tgt).multiplyScalar(.85).add(o.tgt); return o;
+    }
+    var raycaster = new THREE.Raycaster();
+    function pickRoom(x, y) {
+        raycaster.setFromCamera(new THREE.Vector2(x / canvas.clientWidth * 2 - 1, 1 - y / canvas.clientHeight * 2), camera);
+        var hits = [];
+        Object.values(ROOMS).forEach(function (R) {
+            if (!R.group.visible) return;
+            var candidates = [];
+            R.group.traverse(function (o) { if (o.isMesh && o.visible && !o.material.transparent) candidates.push(o); });
+            var hit = raycaster.intersectObjects(candidates, false)[0]; if (hit) hits.push({ id: R.id, distance: hit.distance });
+        });
+        hits.sort(function (a,b) { return a.distance - b.distance; }); return hits[0] && hits[0].id;
+    }
+    function clickPlan(x, y) {
+        if (!win || x < win.x || x > win.x + win.w || y < win.y || y > win.y + win.h) return false;
+        if (phase === 'overview-closed') { openOverview(); return true; }
+        if (phase !== 'overview-open') return false;
+        var id = pickRoom(x,y); if (!id) return false;
+        // Use the existing GUI handler without editing the generated GUI.
+        if (!boundWin || typeof boundWin.changeRoomIphone !== 'function') return false;
+        boundWin.changeRoomIphone(String(id));
+        if (selectedRoom === ROOMS[id] && activeRoom !== selectedRoom) focusRoom(selectedRoom);
+        return true;
+    }
     /* ---------- Boucle ---------- */
     function resize() {
         var w = canvas.clientWidth || window.innerWidth, h = canvas.clientHeight || window.innerHeight;
@@ -634,10 +703,15 @@ export function createPlan3D(opts) {
         if (slowFrames > 90 && quality > 1) { quality = Math.max(1, quality - .25); renderer.setPixelRatio(Math.min(devicePixelRatio || 1, quality)); slowFrames = 0; }
         var dt = Math.min(0.25, clock.getDelta()); idle += dt;
         resize();
+        if (shellTween) {
+            shellTween.t += dt / .48;
+            envelope.setOpacity(THREE.MathUtils.lerp(shellTween.from, shellTween.to, ease(Math.min(1, shellTween.t))));
+            if (shellTween.t >= 1) finishEnvelope();
+        }
         if (tween) {
             tween.t += dt / tween.dur; var k = ease(Math.min(1, tween.t));
             camState.pos.lerpVectors(tween.p0, tween.p1, k); camState.tgt.lerpVectors(tween.t0, tween.t1, k);
-            if (tween.t >= 1) { var done = tween.onDone; tween = null; if (done) done(); nextTween(); }
+            if (tween.t >= 1) { var done = tween.onDone; tween = null; if (done) done(); }
         }
         // léger mouvement de vie autour de la position de base
         var sway = 0;
@@ -645,21 +719,23 @@ export function createPlan3D(opts) {
         camera.lookAt(camState.tgt); applyViewOffset();
         // Lumière du jour de la scène des pièces : pleine en vue villa, sinon celle qui entre par la fenêtre
         // de la pièce active (volet / store / rideaux) ; les lampes des scènes ajoutent un rebond chaud.
-        var dayT = activeRoom ? daylight(activeRoom) : 1, lampAvg = activeRoom ? ((activeRoom.levels[0] || 0) + (activeRoom.levels[1] || 0)) / 2 : 0;
+        var dayT = activeRoom ? daylight(activeRoom) : 1, lampAvg = activeRoom ? (lightLevel(activeRoom, 0) + lightLevel(activeRoom, 1)) / 2 : 0;
         dayCur += (dayT - dayCur) * Math.min(1, dt * 4);
-        var dayF = 0.001 + 0.999 * dayCur;
+        var dayF = dayCur < .0001 ? 0 : dayCur;
         hemi.intensity = DAY.hemi * dayF + lampAvg * 0.5 * (1 - dayCur); hemi.color.setHex(dayCur > 0.5 ? 0xe6eeff : 0xffe1bd);
         sun.intensity = DAY.sun * dayF; fill.intensity = DAY.fill * dayF;
         if (activeRoom && activeRoom.win && !activeRoom.ext) {
-            var wn = activeRoom.win, gw = activeRoom.group;
+            var wn = activeRoom.win, gw = wn.group;
             winLight.position.copy(gw.localToWorld(new THREE.Vector3(wn.x, wn.y + 1.4, -3.2)));
-            winLight.target.position.copy(gw.localToWorld(new THREE.Vector3(wn.x, 0, activeRoom.cfg.d * 0.55)));
+            winLight.target.position.copy(gw.localToWorld(new THREE.Vector3(wn.x, 0, wn.depth * 0.55)));
             winLight.intensity = 90 * dayCur; activeRoom.shaft.material.opacity = 0.16 * dayCur;
         } else winLight.intensity = 0;
         // lampes réelles sur la pièce active
+        roomLights.forEach(function (l) { l.intensity = 0; });
+        Object.values(ROOMS).forEach(function (R) { if (R.tv) R.tv.light.intensity = 0; });
         if (activeRoom) {
-            activeRoom.lamps.forEach(function (l, i) { if (i < 2) { var wp = l.pos.clone().applyMatrix4(activeRoom.group.matrixWorld); roomLights[i].position.copy(wp); roomLights[i].intensity = (activeRoom.levels[i] || 0) * (i === 0 ? 55 : 30) * (l.sousMarin ? 0.3 : 1); } });
-            if (activeRoom.tv) activeRoom.tv.light.intensity = activeRoom.tv.source > 0 ? 4.5 : 0;
+            activeRoom.lamps.forEach(function (l, i) { if (i < 2) { var wp = l.pos.clone().applyMatrix4(activeRoom.group.matrixWorld); roomLights[i].position.copy(wp); roomLights[i].intensity = lightLevel(activeRoom, i) * (i === 0 ? 55 : 30) * (l.sousMarin ? 0.3 : 1); } });
+            if (activeRoom.tv) activeRoom.tv.light.intensity = activeRoom.tv.source > 0 ? .28 : 0;
             if (activeRoom.tv && activeRoom.tv.source === 1 && activeRoom.tv.screen.st.open !== null) { activeRoom.tv.screen.st.tick++; if (activeRoom.tv.screen.st.tick % 10 === 0) activeRoom.tv.screen.draw(); }
             activeRoom.speakers.forEach(function (s) {
                 var on = music; var pulse = on ? 1 + Math.abs(Math.sin(idle * 6 + s.phase)) * 0.06 : 1;
@@ -667,7 +743,7 @@ export function createPlan3D(opts) {
                 s.ring.scale.setScalar(on ? 1 + Math.abs(Math.sin(idle * 6 + s.phase)) * 0.6 : 1);
             });
             if (activeRoom.eau) { var em = activeRoom.eau.material; em.emissiveIntensity = 0.45 + Math.sin(idle * 1.3) * 0.15 + (activeRoom.levels[0] || 0) * 0.5; activeRoom.eau.position.y = 0.05 + Math.sin(idle * 0.9) * 0.012; em.color.setHex((activeRoom.levels[0] || 0) > 0.3 ? 0x5fc8f0 : 0x3fa7d6); }
-            if (activeRoom.hvac) { activeRoom.hvac.flap.rotation.x = 0.5 + Math.sin(idle * 1.5) * 0.25; activeRoom.hvac.breeze.material.opacity = 0.08 + Math.abs(Math.sin(idle * 1.5)) * 0.1; activeRoom.hvac.breeze.material.color.setHex(activeRoom.hvac.thermo.st.chauffe ? 0xffc27a : 0x9fd8ff); }
+            if (activeRoom.hvac) { activeRoom.hvac.flap.rotation.x = 0.5 + Math.sin(idle * 1.5) * 0.25; activeRoom.hvac.breeze.material.opacity = (0.08 + Math.abs(Math.sin(idle * 1.5)) * 0.1) * Math.max(dayF, lampAvg); activeRoom.hvac.breeze.material.color.setHex(activeRoom.hvac.thermo.st.chauffe ? 0xffc27a : 0x9fd8ff); }
         }
         Object.values(ROOMS).forEach(function (R) { if (R.shades) animateShades(R, dt); });
         renderer.info.autoReset = false; renderer.info.reset();
@@ -692,6 +768,7 @@ export function createPlan3D(opts) {
     /* ---------- Construction ---------- */
     var noms = opts.names || {};
     PIECES.forEach(function (p) { if (!p.nom) p.nom = noms[p.id] || ('Pièce ' + p.id); buildRoom(p); });
+    envelope = createEnvelope(scene, ROOMS, M);
     buildLandscape(scene, villaBounds(), interiors); sceneR.fog = scene.fog;
     goOverview(true);
     resize();
@@ -700,9 +777,12 @@ export function createPlan3D(opts) {
     /* ---------- API publique ---------- */
     var API = {
         setRoom: setRoom,
-        version: '2026-09-16-atlas-1',
-        overview: function () { if (!activeRoom) return; activeRoom = null; queue = []; tween = null; showOnly(null); goOverview(); },
-        focusSelected: function () { if (!selectedRoom || activeRoom === selectedRoom) return; activeRoom = selectedRoom; queue = []; tween = null; showOnly(activeRoom); goRoom(activeRoom); },
+        version: '2026-09-16-atlas-2',
+        overview: overview,
+        click: clickPlan,
+        focusSelected: function () { if (!selectedRoom || activeRoom === selectedRoom) return; focusRoom(selectedRoom); },
+        navigation: function () { return { phase: phase, walls: envelope.opacity, camera: camState.pos.toArray(), target: camState.tgt.toArray(), moving: !!tween, lamps: roomLights.map(function (l) { return l.intensity; }), day: dayCur }; },
+        roomPoint: function (id) { var R = ROOMS[id]; if (!R) return null; var v = R.group.localToWorld(new THREE.Vector3(R.cfg.w * .6, .1, R.cfg.d * .8)).project(camera); return { x: (v.x + 1) * canvas.clientWidth / 2, y: (1 - v.y) * canvas.clientHeight / 2 }; },
         selectedRoom: function () { return selectedRoom && selectedRoom.id; },
         metrics: function () { var sorted = frames.slice().sort(function (a,b) { return a-b; }); return { frames: frames.length, medianMs: sorted[Math.floor(sorted.length / 2)] || 0, p95Ms: sorted[Math.floor(sorted.length * .95)] || 0, pixelRatio: renderer.getPixelRatio(), drawCalls: renderer.info.render.calls, triangles: renderer.info.render.triangles, zone: win }; },
         setCircuit: function (roomId, idx, level) { var R = ROOMS[roomId]; if (!R) return; R.levels[idx] = Math.max(0, Math.min(1, level)); applyLevels(R); },
@@ -743,16 +823,22 @@ export function createPlan3D(opts) {
         setWindow: function (rect) {                   // rect écran {x,y,w,h} ou null : recadre la vue courante
             var same = (!rect && !win) || (rect && win && Math.abs(rect.x - win.x) < 2 && Math.abs(rect.y - win.y) < 2 && Math.abs(rect.w - win.w) < 2 && Math.abs(rect.h - win.h) < 2);
             if (same) return;
-            var had = !!win; win = rect ? { x: rect.x, y: rect.y, w: rect.w, h: rect.h } : null; overviewCache = null;
-            queue = []; tween = null;
-            if (activeRoom) { var o = roomPose(activeRoom); flyTo(o.pos, o.tgt, false, had ? 0.35 : 0.5); }
-            else goOverview();
+            var wasRoom = phase === 'room'; win = rect ? { x: rect.x, y: rect.y, w: rect.w, h: rect.h } : null; overviewCache = null;
+            if (phase === 'opening') return;
+            if (activeRoom) { beginFocus(activeRoom); if (wasRoom) tween.dur = .6; }
+            else {
+                var closing = phase === 'overview-travel';
+                goOverview(false, closing ? function () { phase = 'overview-closing'; fadeEnvelope(1, function () { phase = 'overview-closed'; }); } : undefined);
+            }
         },
         setNames: function (map) {                     // noms des pièces (lus dans le GUI à la liaison)
             Object.keys(ROOMS).forEach(function (k) { var R = ROOMS[k], n = map && map[k]; if (!n || R.cfg.nom === n) return; R.cfg.nom = n; var old = R.label; R.label = makeLabel(n); R.label.position.copy(old.position); R.label.material.opacity = old.material.opacity; R.group.remove(old); old.material.map.dispose(); old.material.dispose(); R.group.add(R.label); });
         },
         jump: function () {                            // tests : termine immédiatement les mouvements de caméra en attente
-            while (tween || queue.length) { if (!tween) nextTween(); if (tween) { camState.pos.copy(tween.p1); camState.tgt.copy(tween.t1); var d = tween.onDone; tween = null; if (d) d(); } }
+            for (var i = 0; i < 8 && (tween || shellTween); i++) {
+                if (shellTween) finishEnvelope();
+                if (tween) { camState.pos.copy(tween.p1); camState.tgt.copy(tween.t1); var d = tween.onDone; tween = null; if (d) d(); }
+            }
         }
     };
     function unbind() { cleanups.splice(0).reverse().forEach(function (f) { try { f(); } catch { /* An iframe can be gone before its subscriptions. */ } }); boundWin = null; boundDocument = null; attaching = null; }
@@ -794,7 +880,19 @@ export function createPlan3D(opts) {
         }
         var names = {}; (vc.pieces || []).forEach(function (p) { if (p && p.id && p.nom) names[p.id] = p.nom; }); API.setNames(names);
         var cur = function () { return selectedRoom ? selectedRoom.id : null; };
-        subscribe('n', '10', function (v) { if (v >= 1) setRoom(v); });
+        function refreshRoomFeedback(id) {
+            // Identical analog values are not re-emitted when changing rooms.
+            // Read the completed showcase snapshot after publishRoom returns.
+            later(function () {
+                var V = win.Villa, R = ROOMS[id];
+                if (!R || cur() !== Number(id) || win !== boundWin || !V || typeof V.get !== 'function') return;
+                R.sceneOff = V.get('b', '51') === true;
+                for (var i = 0; i < 2; i++) { var value = V.get('n', String(71 + i)); if (value !== undefined) R.levels[i] = Math.max(0, Math.min(1, Number(value) / 65535)); }
+                applyLevels(R);
+            }, 0);
+        }
+        subscribe('n', '10', function (v) { if (v >= 1) { setRoom(v); refreshRoomFeedback(v); } });
+        subscribe('b', '51', function (v) { var R = ROOMS[cur()]; if (R) { R.sceneOff = !!v; applyLevels(R); } });
         for (var i = 0; i < 10; i++) (function (i) { subscribe('n', String(71 + i), function (v) { var id = cur(); if (id && i < 2) API.setCircuit(id, i, Number(v) / 65535); }); })(i);
         for (var s = 1; s <= 4; s++) (function (s) { subscribe('b', String(150 + s), function (v) { var id = cur(); if (!id) return; if (v) API.setVideoSource(id, s); else if (ROOMS[id].tv && ROOMS[id].tv.source === s) API.setVideoSource(id, 0); }); })(s);
         subscribe('b', '150', function (v) { var id = cur(); if (v && id) API.setVideoSource(id, 0); });

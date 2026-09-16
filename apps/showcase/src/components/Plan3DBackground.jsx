@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { BackgroundVideo } from "./BackgroundVideo";
 
 // A deployment changes the module URL, including its dependent assets.
-const PLAN3D_VERSION = "2026-09-16-atlas-1";
+const PLAN3D_VERSION = "2026-09-16-atlas-2";
 
 // Fond de page 3D (Three.js) à la place de la vidéo, pour les projets qui ont un plan 3D
 // (public/plan3d/<id>.json). Le GUI tourne dans son iframe et n'est pas modifié : le module
@@ -90,10 +90,18 @@ export const Plan3DBackground = ({ projectId, stageRef, guiFrameRef }) => {
       if (sign > 0) apiRef.current.overview(); else apiRef.current.focusSelected();
     };
     const stage = stageRef?.current;
+    const click = (e) => {
+      if (e.ctrlKey || e.metaKey || e.button !== 0 || e.target.closest("iframe,button,a,input,select,textarea,.workspace-device-sidebar,.phone-device-frame,.projects-strip")) return;
+      const canvas = canvasRef.current;
+      if (!canvas || !apiRef.current) return;
+      const rect = canvas.getBoundingClientRect();
+      apiRef.current.click(e.clientX - rect.left, e.clientY - rect.top);
+    };
     stage?.addEventListener("wheel", wheel, { passive: false });
+    stage?.addEventListener("click", click);
     window.addEventListener("resize", tick);
     window.addEventListener("plan3d-ready", tick);
-    return () => { clearInterval(id); window.removeEventListener("resize", tick); window.removeEventListener("plan3d-ready", tick); stage?.removeEventListener("wheel", wheel); };
+    return () => { clearInterval(id); window.removeEventListener("resize", tick); window.removeEventListener("plan3d-ready", tick); stage?.removeEventListener("wheel", wheel); stage?.removeEventListener("click", click); };
   }, [projectId, stageRef, guiFrameRef]);
 
   if (failed) return <BackgroundVideo />;

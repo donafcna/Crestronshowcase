@@ -219,3 +219,11 @@ Fichiers : `index.html`, `iphone.html`, `config.js`/`config.json`, `js/local-fee
 - Surfaces statiques regroupées, ombre calculée à la demande, résolution adaptée aux performances, imports versionnés et ressources libérées à la sortie. Trois textures WebP CC0 ajoutées : 111 Ko. La 3D reste un fond de showcase réservé à la règle Smartphone existante ; aucune édition des GUI CH5 générées.
 - Suppression de l'enregistrement de `/sw.js`, inexistant. Exclusion des bibliothèques tierces minifiées du lint, maintien de l'analyse du code applicatif.
 - Conception, limites et tests : `docs/plan3d.md`. Point de départ réversible : `571f7c76`. Aucune compilation ni publication matérielle CH5/CP4/TSW dans ce lot.
+
+# maj 16/9/2026 — obscurité, façades et navigation 3D
+
+- OFF coupe réellement les lampes du plan, y compris après changement de pièce ou avec un ancien preset OFF mémorisé. Relecture des niveaux identiques non réémis ; TV à faible halo local, extinction de la lumière ambiante lorsque toutes les occultations sont fermées.
+- Vues des pièces rapprochées ; transitions continues depuis la pose courante, y compris lors de sélections rapides et depuis la vue globale.
+- Façades complètes en vue globale. Premier clic : ouverture du plan ; clic dans une pièce : zoom et sélection de cette pièce dans le Smartphone. Au zoom, disparition des façades avant le mouvement ; au dézoom, retour des façades après le trajet. Les étages éclatés sont conservés.
+- Home cinéma réorganisé : écran sur mur plein, fenêtre/volet/store/rideaux sur mur latéral ; commandes et acoustique déplacées ; éclairage périphérique sans rail masquant l'écran dans la projection.
+- Aucun changement des fichiers GUI, du contrat de joins, ni des règles de supports 3D. Version du moteur `2026-09-16-atlas-2`, référence précédente `5a54237f`. Tests supplémentaires : `scripts/test-plan3d-navigation.cjs`.

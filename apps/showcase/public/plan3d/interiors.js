@@ -105,21 +105,28 @@ export function createInteriors(renderer, palette) {
       box(details,A.oak,w/2,.085,.168,w-.15,.16,.025);
       box(details,A.oak,.16,2.94,d/2,.09,.12,d);
       box(details,A.oak,w/2,2.94,.16,w,.12,.09);
-      picture(details,d*.72);keypad(details,d*.35+.4);
+      if(type!=='cinema')picture(details,d*.72);
+      keypad(details,type==='cinema'?d-.8:d*.35+.4);
       if(type!=='sauna'){
         plant(details,w-.52,d-.55,.85);
         // Recessed wall speaker, distinct from hi-fi columns and the soundbar.
-        box(details,A.white,.17,2.25,d*.3,.05,.42,.28);box(details,A.grill,.2,2.25,d*.3,.01,.37,.23);
+        const wallSpeakerZ=type==='cinema'?.6:d*.3;
+        box(details,A.white,.17,2.25,wallSpeakerZ,.05,.42,.28);box(details,A.grill,.2,2.25,wallSpeakerZ,.01,.37,.23);
         // Track with three adjustable downlights, warm indirect LED cornice.
-        box(details,A.black,w*.6,2.88,d*.6,w*.5,.025,.045);
-        for(let i=0;i<3;i++){const x=w*.4+i*w*.2;cylinder(details,A.black,x,2.79,d*.6,.065,.17);cylinder(details,e0,x,2.697,d*.6,.051,.008);}
+        if(type!=='cinema'){
+          const trackZ=d*.6;
+          box(details,A.black,w*.6,2.88,trackZ,w*.5,.025,.045);
+          for(let i=0;i<3;i++){const x=w*.4+i*w*.2;cylinder(details,A.black,x,2.79,trackZ,.065,.17);cylinder(details,e0,x,2.697,trackZ,.051,.008);}
+        }
         box(details,e1,.215,2.84,d/2,.012,.014,d-.35);
         // Details on the HVAC case and the existing live thermostat.
         if(R.hvac){
           for(let i=0;i<10;i++)box(details,A.charcoal,w-.75-.36+i*.08,2.405,.429,.045,.015,.005);
-          box(details,A.brass,.167,1.45,d*.35,.022,.35,.35);
-          box(details,A.black,.208,1.255,d*.35,.018,.019,.08);
-          for(const dz of [-.055,.055])ball(details,A.white,.219,1.26,d*.35+dz,.006);
+          const thermostatZ=type==='cinema'?d-.4:d*.35;
+          if(type==='cinema')R.hvac.mesh.position.z=thermostatZ;
+          box(details,A.brass,.167,1.45,thermostatZ,.022,.35,.35);
+          box(details,A.black,.208,1.255,thermostatZ,.018,.019,.08);
+          for(const dz of [-.055,.055])ball(details,A.white,.219,1.26,thermostatZ+dz,.006);
         }
         // Upholstered surfaces get soft cushions; no expensive cloth simulation.
         if(type==='salon'||type==='poolhouse'){
@@ -182,8 +189,8 @@ export function createInteriors(renderer, palette) {
             cushion(details,A.charcoal,x,.88+y,z+.35,.67,.63,.19);
             for(const s of [-1,1]){box(details,A.black,x+s*.38,.55+y,z,.1,.31,.83);cylinder(details,A.brass,x+s*.38,.71+y,z-.25,.041,.008);}
           }
-          for(let i=0;i<8;i++)box(details,i%2?A.charcoal:A.moss,.185,1.7,.6+i*.52,.09,1.45,.4);
-          for(const z of [d*.3,d*.8]){box(details,A.black,.24,1.4,z,.16,.48,.27);box(details,A.grill,.329,1.4,z,.01,.42,.21);}
+          for(const x of [.55,1.05,w-1.05,w-.55])box(details,A.charcoal,x,1.55,.185,.38,1.8,.09);
+          for(const z of [.6,d-.5]){box(details,A.black,.24,1.9,z,.16,.4,.27);box(details,A.grill,.329,1.9,z,.01,.35,.21);}
           box(details,e1,w/2,.08,d-.3,w-.8,.028,.03);
         }
       } else {
