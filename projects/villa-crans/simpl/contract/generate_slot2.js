@@ -92,9 +92,12 @@ for (let r = 11; r <= 30; r++) { din(10 + r, 'Room_Select' + r); dout(10 + r, 'R
 // Alarme (41/42)
 din(41, 'Alarm_Arm'); dout(41, 'Alarm_Arm_fb');
 din(42, 'Alarm_Disarm'); dout(42, 'Alarm_Disarm_fb');
-// Consigne CVC (49/50)
-din(49, 'HVAC_Setpoint_Up');
-din(50, 'HVAC_Setpoint_Down');
+// Consigne CVC (49/50) — EN SORTIE : le slot 2 RECOIT les appuis +/- de la GUI (comme les stores
+// groupes). Correctif 16.09.2026 : ils etaient cables en entree (sens slot 2 -> GUI), l'appui
+// arrivait sur l'EISC sans aucun nom cote slot 2 : invisible dans le debugger. Les anciennes
+// entrees I49/I50 sont purgees ci-dessous.
+dout(49, 'HVAC_Setpoint_Up');
+dout(50, 'HVAC_Setpoint_Down');
 // Scènes 51-54 : déjà câblées dans la base (Lighting_Scene1..4 + fb)
 // Mute (55)
 din(55, 'Audio_Mute'); dout(55, 'Audio_Mute_fb');
@@ -108,7 +111,7 @@ grp.forEach((g, gi) => {
   dout(63 + gi * 3, 'Shades_' + g + '_Down');
 });
 // Purge des anciennes entrées I61..I69 issues des générations précédentes
-const purgeInputs = [61, 62, 63, 64, 65, 66, 67, 68, 69];
+const purgeInputs = [49, 50, 61, 62, 63, 64, 65, 66, 67, 68, 69];
 // Moteurs 1..6 (81-98) : commandes + écho des appuis GUI
 for (let mo = 1; mo <= 6; mo++) {
   const b = 81 + (mo - 1) * 3;
@@ -118,6 +121,8 @@ for (let mo = 1; mo <= 6; mo++) {
 }
 // Sources A/V 0..5 (150-155)
 for (let s = 0; s <= 5; s++) { din(150 + s, 'Source_Select_' + s); dout(150 + s, 'Source_Select_' + s + '_fb'); }
+// 156 : l'audio revient a la source video (v1.0.166) — manquait dans toutes les generations.
+din(156, 'Source_AudioReturn'); dout(156, 'Source_AudioReturn_fb');
 // Scènes de stores 1..4 (201-204)
 for (let s = 1; s <= 4; s++) { din(200 + s, 'Shades_Scene_' + s); dout(200 + s, 'Shades_Scene_' + s + '_fb'); }
 // --- TELECOMMANDES DES SOURCES (contrat v4, 15.09.2026) ---

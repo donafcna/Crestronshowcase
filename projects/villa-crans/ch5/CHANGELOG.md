@@ -7,8 +7,8 @@
 | Artefact | Version | Compilation |
 |---|---|---|
 | CH5 `.ch5z` (TSW + XPanel) | 1.0.176 (XPanel sur le CP4 du bureau 192.168.3.109) | **à relancer** : `deploy.ps1 -Target web -CP4Host 192.168.3.109` |
-| CPZ slot 1 | 14.09 | inchangé |
-| LPZ slot 2 | 15.09 (v3) | **à régénérer** : `generate_slot2.js` v4 + F12, buffers sur `Room_Select#` |
+| CPZ slot 1 | 14.09 (v3) | **à recompiler** : routage v4 des joins globaux vers la pièce affichée (voir ci-dessous) |
+| LPZ slot 2 | 15.09 (v3) | **à régénérer** : `generate_slot2.js` v4 + F12 (consigne ± dans le bon sens, join 156), buffers sur `Room_Select#` |
 | Showcase Vercel | lot du 16.09 | `index.html` + `iphone.html` + config régénérés, poussés |
 
 ### Contrat de joins v4 (décision du 15.09)
@@ -20,6 +20,22 @@
   pas — aucun join Apple TV / Sky Q ne remontait dans le debugger. `generate_slot2.js` : 107 signaux
   `Remote_*`, 1980 câblages de blocs pièces retirés (les définitions `R01_..R15_` restent à
   nettoyer dans SIMPL Windows). 75 boutons de télécommande de la dalle portent leur join en dur.
+
+### Slot 1 (C#) et slot 2 — recette TSW du 16.09
+
+- **Aucun feedback sur la dalle (fond violet, badge audio, confirmation musique, consigne)** :
+  depuis le v3 le C# n'appliquait que les blocs >= 1000 ; en v4 la GUI émet sur les joins globaux,
+  que le C# recopiait vers l'EISC sans les traiter. Ajout du routage v4 : join global → pièce
+  affichée par le panel (`V4DigitalOffsets` / `V4AnalogOffsets`, copie de `blocsPiecesGui.mapping`)
+  → même logique métier (`ApplyRoom*Command`) ; `PushRoomFeedback` renvoie aussi l'instantané sur
+  les joins globaux aux panels qui affichent la pièce. Les signaux venant du slot 2 ne sont pas
+  routés (ce sont des feedbacks).
+- **Consigne ± invisible dans le debugger** : `HVAC_Setpoint_Up/Down` (49/50) étaient câblés en
+  entrée du symbole EISC (sens slot 2 → GUI) ; passés en sortie (reçus), anciennes entrées purgées.
+  Join 156 (`Source_AudioReturn`) ajouté, il manquait dans toutes les générations.
+- ACTIVER / DÉSACTIVER verts ensemble : `selectGlobalControl` forçait `selected` dans le DOM ;
+  neutralisée, le C# tient déjà l'interlock 410/411.
+- `README_SLOT2.md` : tableau de la logique à câbler côté slot 2 (interlocks, toggle musique).
 
 ### Chaîne de déploiement
 

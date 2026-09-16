@@ -1100,6 +1100,17 @@ namespace VillaFrequenceTvAutomation
                     SetString(dev, b + 33, room.TargetTemperature > room.CurrentTemperature ? "CHAUFFAGE" : "CLIMATISATION");
                     SetString(dev, b + 34, ((double)room.TargetTemperature / 10.0).ToString("F1"));
                 }
+
+                // v4 (16.09.2026) : la GUI lit ses feedbacks sur les joins GLOBAUX (150-156, 51-54,
+                // 31, 71-80, 201-204, 55, sériels 32-34...). Chaque panel qui affiche cette pièce
+                // reçoit donc aussi l'instantané global, sinon la dalle ne voit ni la source active
+                // (fond violet, badge audio) ni la consigne après un appui +/-.
+                foreach (var dev in _touchPanels)
+                {
+                    if (dev == _eisc) continue;
+                    int shown = _activeRoomPerDevice.ContainsKey(dev.ID) ? _activeRoomPerDevice[dev.ID] : DefaultRoomForPanel(dev.ID);
+                    if (shown == roomId) UpdateScreenStateForPanel(dev, roomId);
+                }
             }
             catch { /* miroir best-effort */ }
         }
@@ -1434,6 +1445,59 @@ namespace VillaFrequenceTvAutomation
             }
         }
 
+        // ================================================================================
+        // v4 (16.09.2026) : joins de pilotage IDENTIQUES quelle que soit la pièce.
+        // Depuis le contrat v4 (contrat.blocsPiecesGui.actif = false), la GUI n'émet plus sur les
+        // blocs >= 1000 mais sur les joins globaux historiques (150-156 sources, 51-54 scènes,
+        // 49/50 consigne, 55 mute, 200 extinction A/V, 201-204 scènes de stores, 61-69 stores
+        // groupés, 81-98 moteurs, 251-253 média ; analogiques 31, 51-53, 254, 71-80). Le slot 1
+        // les recopiait déjà vers l'EISC (liste blanche) mais ne les APPLIQUAIT plus : aucun
+        // feedback ne revenait sur la dalle (fond violet, badge audio, confirmation musique).
+        // Ces deux tables sont la copie de contrat.blocsPiecesGui.mapping (join logique -> offset
+        // de bloc) : la pièce visée est celle que le panel affiche (_activeRoomPerDevice), et la
+        // commande est traitée par la même logique métier que les blocs (ApplyRoom*Command).
+        // Les signaux venant de l'EISC (slot 2) ne passent pas par ici : ce sont des feedbacks.
+        private static readonly Dictionary<ushort, uint> V4DigitalOffsets = new Dictionary<ushort, uint>
+        {
+            { 61, 1 }, { 62, 2 }, { 63, 3 }, { 64, 4 }, { 65, 5 }, { 66, 6 }, { 67, 7 }, { 68, 8 }, { 69, 9 },
+            { 51, 21 }, { 52, 22 }, { 53, 23 }, { 54, 24 },
+            { 49, 35 }, { 50, 36 },
+            { 201, 41 }, { 202, 42 }, { 203, 43 }, { 204, 44 }, { 200, 45 },
+            { 55, 50 },
+            { 150, 51 }, { 151, 52 }, { 152, 53 }, { 153, 54 }, { 154, 55 }, { 155, 56 }, { 156, 57 },
+            { 251, 58 }, { 252, 59 }, { 253, 60 },
+            { 81, 61 }, { 82, 62 }, { 83, 63 }, { 84, 64 }, { 85, 65 }, { 86, 66 }, { 87, 67 }, { 88, 68 }, { 89, 69 },
+            { 90, 70 }, { 91, 71 }, { 92, 72 }, { 93, 73 }, { 94, 74 }, { 95, 75 }, { 96, 76 }, { 97, 77 }, { 98, 78 }
+        };
+        private static readonly Dictionary<ushort, uint> V4AnalogOffsets = new Dictionary<ushort, uint>
+        {
+            { 31, 31 }, { 51, 51 }, { 52, 52 }, { 53, 53 }, { 254, 54 },
+            { 71, 71 }, { 72, 72 }, { 73, 73 }, { 74, 74 }, { 75, 75 }, { 76, 76 }, { 77, 77 }, { 78, 78 }, { 79, 79 }, { 80, 80 }
+        };
+
+        /// <summary>v4 : vrai si le join digital global a été routé vers la pièce affichée par ce panel.</summary>
+        private bool RouteGlobalDigitalToActiveRoom(BasicTriList currentDevice, ushort joinNumber, int activeRoomId)
+        {
+            if (currentDevice == _eisc) return false;
+            uint offset;
+            if (!V4DigitalOffsets.TryGetValue(joinNumber, out offset)) return false;
+            if (_roomsRegistry == null || !_roomsRegistry.ContainsKey(activeRoomId)) return false;
+            Trace("[V4] IP-ID {0:X2} join {1} -> pièce {2}, offset {3}", currentDevice.ID, joinNumber, activeRoomId, offset);
+            ApplyRoomDigitalCommand(activeRoomId, offset, currentDevice);
+            return true;
+        }
+
+        /// <summary>v4 : vrai si le join analogique global a été routé vers la pièce affichée par ce panel.</summary>
+        private bool RouteGlobalAnalogToActiveRoom(BasicTriList currentDevice, ushort joinNumber, ushort rawValue, int activeRoomId)
+        {
+            if (currentDevice == _eisc) return false;
+            uint offset;
+            if (!V4AnalogOffsets.TryGetValue(joinNumber, out offset)) return false;
+            if (_roomsRegistry == null || !_roomsRegistry.ContainsKey(activeRoomId)) return false;
+            ApplyRoomAnalogCommand(activeRoomId, offset, rawValue, currentDevice);
+            return true;
+        }
+
         /// <summary>
         /// v3 : ne traite plus QUE les joins réellement globaux (< 1000, contrat.signauxGlobaux).
         /// Tout le pilotage de pièce (éclairage, CVC, stores, moteurs, A/V, média) est arrivé sur le
@@ -1472,6 +1536,11 @@ namespace VillaFrequenceTvAutomation
                 StartConfigSend(currentDevice);
                 return;
             }
+
+            // v4 (16.09.2026) : la GUI émet de nouveau sur les joins globaux ; ils sont routés vers
+            // la pièce affichée par ce panel (voir V4DigitalOffsets). Le commentaire v3 ci-dessous
+            // ne vaut plus que pour les commandes venant du slot 2 sur les blocs >= 1000.
+            if (RouteGlobalDigitalToActiveRoom(currentDevice, joinNumber, activeRoomId)) return;
 
             // v3 : les joins de pilotage de pièce (200 extinction A/V, 150-156 sources, 51-54 scènes
             // d'éclairage, 49/50 consigne, 55 mute, 61-69 stores groupés, 81-98 moteurs, 201-204
@@ -1671,6 +1740,10 @@ namespace VillaFrequenceTvAutomation
             // Filtre de journal : join 10 (trop bavard) et joins réservés firmware (> 3000) non tracés
             if (joinNumber != 10 && joinNumber <= 3000)
                 Trace("[DECOUPLE] IP-ID {0:X2} (Room {1}) triggered Analog Join {2} = {3}", currentDevice.ID, activeRoomId, joinNumber, rawValue);
+
+            // v4 (16.09.2026) : consigne, volume, source audio, niveaux de circuits émis sur les
+            // joins globaux -> pièce affichée par ce panel.
+            if (RouteGlobalAnalogToActiveRoom(currentDevice, joinNumber, rawValue, activeRoomId)) return;
 
             switch (joinNumber)
             {

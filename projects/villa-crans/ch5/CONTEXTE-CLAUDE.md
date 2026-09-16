@@ -8,7 +8,7 @@ passée ce qui tournait réellement sur la dalle, les deux slots et Vercel.
 | Artefact | Version | Compilation |
 |---|---|---|
 | CH5 `.ch5z` (TSW + XPanel) | **1.0.176** (15.09, XPanel sur le CP4 du bureau) | `.\deploy.ps1 -Target web -CP4Host 192.168.3.109` — **à relancer** : lots des 15-16.09 non compilés |
-| CPZ slot 1 (C#) | recompilé le 14.09 | SIMPL# Pro + `.\deploy.ps1 -Target cp4` |
+| CPZ slot 1 (C#) | 14.09 (v3) | **à recompiler** (routage v4 ajouté le 16.09) : SIMPL# Pro + `.\deploy.ps1 -Target cp4` |
 | LPZ slot 2 (SIMPL) | 15.09 (contrat v3) | **à régénérer** : `generate_slot2.js` (v4, 107 `Remote_*`, blocs pièces retirés) + F12, puis buffers sur `Room_Select#` |
 | Showcase Vercel | lot du 16.09 | poussé sur `main` — Vercel déploie automatiquement ; `deployer-v2.bat` est obsolète |
 
@@ -39,6 +39,13 @@ il reposait sur une réécriture d'attribut qui n'émettait pas (le bouton témo
 Restent globaux par nature : pièces 11-40 / a10, alarme 41-48 + 301-312, presets 401-411 / s420,
 système s99-106, dig/ana 250, dalle a240/a260/d261, météo d56. Mute Swisscom → 55.
 En mode `showcase` tout tourne sur ces joins avec `js/local-feedback.js`.
+**Côté C# (16.09)** : `RouteGlobalDigitalToActiveRoom` / `RouteGlobalAnalogToActiveRoom` (tables
+`V4*Offsets` = `blocsPiecesGui.mapping`) appliquent un join global à la pièce affichée par le panel
+(`_activeRoomPerDevice`) ; `PushRoomFeedback` renvoie l'instantané global aux panels de la pièce.
+**Côté slot 2** : convention `X_fb` = appui REÇU de la GUI (sortie du symbole), `X` = feedback à
+RENVOYER (entrée). Sans logique câblée (interlocks sources / scènes, toggle musique 155 remis à 0
+par 156), la dalle ne voit rien venir du slot 2 — le C# fournit déjà le feedback des sources,
+scènes, consigne, vacances, partitions ; le slot 2 pilote le matériel réel.
 
 ## Règles GUI validées par Donatien
 - **Aucun défilement** (14.09) : le contenu tient à l'écran, quitte à redimensionner ; seules exceptions
@@ -133,7 +140,7 @@ La démo automatique démarre désormais sur **tous les supports** (elle était 
    `-SkipContrast` / `-SkipBuild` existent. PowerShell bloque les scripts : `-ExecutionPolicy Bypass`.
 
 ## Reste à faire
-1. Compiler : `powershell -ExecutionPolicy Bypass -File C:\dev\crestron\repo\projects\villa-crans\ch5\deploy.ps1 -Target web -CP4Host 192.168.3.109` (lots 15-16.09), puis dalle/iPad.
+1. Recompiler le CPZ (SIMPL# Pro, routage v4) puis `powershell -ExecutionPolicy Bypass -File C:\dev\crestron\repo\projects\villa-crans\ch5\deploy.ps1 -Target cp4` ; CH5 : `... deploy.ps1 -Target tsw -TswHost 192.168.1.16` / `-Target web` (CP4 .1.200 encore en v1.0.149 du 21.07).
 2. LPZ : `node C:\dev\crestron\repo\projects\villa-crans\simpl\contract\generate_slot2.js` + F12 ; buffers SIMPL sur `Room_Select#` ; supprimer les 2010 signaux `R*_` ; chaîne d'alarme s43 / d44-46.
 3. Recette : deux supports sur deux pièces en même temps ; joins de télécommande dans le debugger (Apple TV / Sky Q : aucun ne remontait en v3).
 4. `villa_config.json` porte encore des noms de test inappropriés (`valeursParDefaut.scenesEclairage`) — avant toute visite client.
