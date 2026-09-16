@@ -980,16 +980,23 @@
             </h3>
             <button onclick="closeMotorsModal()" style="height: 32px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 6px; cursor: pointer; font-weight: bold; padding: 0 10px; font-size: 0.8rem;" data-i18n="close">FERMER</button>
         </div>
-        <div id="motors-container" class="overlay-content" style="flex: 1; overflow-y: auto; max-height: calc(100% - 150px);">
+        <div id="motors-container" class="overlay-content" style="flex: 1; overflow-y: auto; max-height: calc(100% - 175px);">
             <!-- Rempli dynamiquement -->
         </div>
-        <div style="padding: 10px 15px; border-top: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.2);">
-            <p style="margin: 0 0 8px 0; font-weight: bold; color: #00b4c5; font-size: 0.85rem; text-transform: uppercase;">Scénarios Stores :</p>
-            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px;">
-                <ch5-button label="OUVRIR" customClass="scene-btn" style="height: 36px;" sendEventOnClick="201" receiveStateSelected="201" data-join="201" data-rjoin="201"></ch5-button>
-                <ch5-button label="DEMI" customClass="scene-btn" style="height: 36px;" sendEventOnClick="202" receiveStateSelected="202" data-join="202" data-rjoin="202"></ch5-button>
-                <ch5-button label="INTIME" customClass="scene-btn" style="height: 36px;" sendEventOnClick="203" receiveStateSelected="203" data-join="203" data-rjoin="203"></ch5-button>
-                <ch5-button label="OFF" customClass="scene-btn" style="height: 36px; --ch5-button-selected-background-color: #dc2626;" sendEventOnClick="204" receiveStateSelected="204" data-join="204" data-rjoin="204"></ch5-button>
+        <!-- Presets par famille (16.09.2026) : memes boutons que la dalle et la tablette
+             ("Tout ouvrir / Demi-ouverture / Tout fermer" sur les joins groupes 61-69), avec un
+             selecteur de famille faute de place. Remplace les scenes 201-204 qui n'existaient
+             que sur smartphone. -->
+        <div id="motors-presets" style="padding: 10px 15px; border-top: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.2);">
+            <div class="famille-switch" role="tablist">
+                <button type="button" class="famille-btn actif" data-famille="volets" onclick="window.choisirFamilleMoteurs('volets')">Volet</button>
+                <button type="button" class="famille-btn" data-famille="rideaux" onclick="window.choisirFamilleMoteurs('rideaux')">Rideaux</button>
+                <button type="button" class="famille-btn" data-famille="stores" onclick="window.choisirFamilleMoteurs('stores')">Stores</button>
+            </div>
+            <div class="preset-famille-row">
+                <button type="button" class="preset-famille-btn" onclick="window.presetFamilleMoteurs('open')">Tout ouvrir</button>
+                <button type="button" class="preset-famille-btn" onclick="window.presetFamilleMoteurs('half')">Demi-ouverture</button>
+                <button type="button" class="preset-famille-btn" onclick="window.presetFamilleMoteurs('close')">Tout fermer</button>
             </div>
         </div>
     </div>
@@ -3848,11 +3855,19 @@
             if (btns.length < 3 || !labelEl) return;
             row._motorDone = true;
             var svg = makeIcon(iconKind(labelEl.textContent));
+            row._motorSvg = svg; row._motorKind = iconKind(labelEl.textContent);
             labelEl.insertBefore(svg, labelEl.firstChild);
             btns[0].addEventListener('click', function () { setPosition(svg, 0, true); });   // ▲ ouverture
             btns[1].addEventListener('click', function () { stopAt(svg); });                 // ■ arrêt
             btns[2].addEventListener('click', function () { setPosition(svg, 1, true); });   // ▼ fermeture
         }
+        // Preset par famille (fenetre Moteurs) : anime les lignes de la famille choisie
+        window.animerFamilleMoteurs = function (kind, direction) {
+            var f = direction === 'open' ? 0 : direction === 'close' ? 1 : 0.5;
+            document.querySelectorAll('#motors-container .overlay-item-row').forEach(function (row) {
+                if (row._motorSvg && row._motorKind === kind) setPosition(row._motorSvg, f, true);
+            });
+        };
         function equipAll() {
             document.querySelectorAll('#iphone-shades-rows .shade-control-row').forEach(function (row) {
                 equipRow(row, row.querySelector('.shade-label'));
@@ -4081,6 +4096,25 @@
         }
         .moteurs-pager button:disabled { opacity: 0.3; }
         .moteurs-pager span { font-size: 0.85rem; color: var(--text-secondary, #94a3b8); min-width: 30px; text-align: center; }
+
+        /* Fenetre Moteurs : presets par famille (memes libelles que la dalle) */
+        .famille-switch { display: flex; gap: 6px; margin-bottom: 8px; }
+        .famille-btn {
+            flex: 1; height: 40px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.12);
+            background: rgba(255,255,255,0.05); color: var(--text-secondary, #94a3b8);
+            font-weight: bold; font-size: 0.9rem; cursor: pointer; padding: 0;
+        }
+        .famille-btn.actif { background: rgba(0,180,197,0.18); border-color: #00b4c5; color: #00b4c5; }
+        .preset-famille-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+        .preset-famille-btn {
+            height: 44px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.15);
+            background: rgba(255,255,255,0.08); color: var(--text-primary, #fff);
+            font-weight: bold; font-size: 0.82rem; cursor: pointer; padding: 0 4px; line-height: 1.1;
+        }
+        .preset-famille-btn:active { background: rgba(255,255,255,0.18); }
+        body#app-body.theme-light .famille-btn { background: rgba(15,23,42,0.06); border-color: rgba(15,23,42,0.15); color: #475569; }
+        body#app-body.theme-light .famille-btn.actif { background: rgba(3,105,161,0.12); border-color: #0369a1; color: #0369a1; }
+        body#app-body.theme-light .preset-famille-btn { background: rgba(15,23,42,0.08); border-color: rgba(15,23,42,0.2); color: #0f172a; }
     </style>
     <script>
     (function () {
@@ -4123,6 +4157,23 @@
             head.appendChild(pg);
             rendrePage();
         }
+
+        /* ---- Fenetre Moteurs : presets par famille, memes joins que la dalle ---- */
+        var FAMILLE_JOINS = { volets: { open: 61, half: 62, close: 63 },
+                              rideaux: { open: 64, half: 65, close: 66 },
+                              stores: { open: 67, half: 68, close: 69 } };
+        var FAMILLE_KIND = { volets: 'slats', rideaux: 'curtain', stores: 'awning' };
+        var familleActive = 'volets';
+        window.choisirFamilleMoteurs = function (f) {
+            if (!FAMILLE_JOINS[f]) return;
+            familleActive = f;
+            document.querySelectorAll('.famille-btn').forEach(function (b) { b.classList.toggle('actif', b.getAttribute('data-famille') === f); });
+        };
+        window.presetFamilleMoteurs = function (direction) {
+            var j = FAMILLE_JOINS[familleActive] && FAMILLE_JOINS[familleActive][direction];
+            if (j && typeof window.pressDigital === 'function') window.pressDigital(j);
+            if (typeof window.animerFamilleMoteurs === 'function') window.animerFamilleMoteurs(FAMILLE_KIND[familleActive], direction);
+        };
         window.rendrePageMoteurs = function () { page = 0; rendrePage(); };
         document.addEventListener('DOMContentLoaded', function () {
             placerRaccourciMusique(); installerPager();
