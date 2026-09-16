@@ -3099,6 +3099,8 @@
         #sources-container .tv-live-badge:not(.audio-active) { display: none !important; }
         #sources-container .tv-live-badge.audio-active { display: flex !important; }
         #sources-container .tv-live-badge.audio-music { border: 2px solid #ffffff !important; background: rgba(234, 179, 8, 0.3) !important; box-shadow: 0 0 12px rgba(255, 255, 255, 0.7) !important; }
+        /* 16.09.2026 : theme clair, le lisere blanc « musique » serait invisible sur fond clair (meme regle sur iPhone) */
+        body#app-body.theme-light #sources-container .tv-live-badge.audio-music { border-color: #0f172a !important; box-shadow: 0 0 10px rgba(15, 23, 42, 0.35) !important; }
     </style>
     <!-- ===== Lisibilité par thème =====
          Règle du projet : aucun texte ne doit descendre sous 3:1 de contraste avec le fond réellement

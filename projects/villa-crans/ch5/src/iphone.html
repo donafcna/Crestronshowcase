@@ -761,11 +761,40 @@
     </style>
 
     <style>
-        /* v1.0.166 : indicateur de la source AUDIO (haut-parleurs) */
+        /* v1.0.166 : indicateur de la source AUDIO (haut-parleurs).
+           16.09.2026 : meme badge egaliseur anime que la dalle / tablette (.tv-live-badge + .tv-equalizer-mini,
+           cf. index.html « Top-Right Active Sound Equalizer Badge ») a la place de l'ancien « ♪ » statique.
+           Le badge est injecte dans chaque tuile generee (#source-btn-N) ; avRender() pose audio-active / audio-music. */
         .source-btn-mobile { position: relative; }
-        .source-btn-mobile.audio-active::after { content: '♪'; position: absolute; top: 4px; right: 6px; font-size: 0.75rem; color: #10b981; }
+        .source-btn-mobile .tv-live-badge {
+            position: absolute; top: 5px; right: 5px; left: auto;
+            display: none; align-items: flex-end; justify-content: center;
+            padding: 4px 6px; border-radius: 8px; box-sizing: border-box; pointer-events: none;
+            background: rgba(16, 185, 129, 0.25);
+            border: 1px solid rgba(16, 185, 129, 0.8);
+            box-shadow: 0 0 12px rgba(16, 185, 129, 0.8);
+        }
+        .source-btn-mobile.audio-active .tv-live-badge { display: flex; }
         .source-btn-mobile.audio-music { border: 2px solid #ffffff !important; box-shadow: 0 0 12px rgba(255,255,255,0.6) !important; }
-        .source-btn-mobile.audio-music::after { color: #ffffff; }
+        .source-btn-mobile.audio-music .tv-live-badge {
+            border: 2px solid #ffffff; background: rgba(234, 179, 8, 0.3); box-shadow: 0 0 12px rgba(255, 255, 255, 0.7);
+        }
+        .source-btn-mobile .tv-equalizer-mini { display: flex; align-items: flex-end; gap: 2.5px; height: 12px; }
+        .source-btn-mobile .tv-equalizer-mini span {
+            display: block; width: 2.5px; height: 3px; border-radius: 2px;
+            background: linear-gradient(to top, #10b981, #34d399);
+        }
+        .source-btn-mobile .tv-equalizer-mini span:nth-child(1) { animation: tv-eq 0.7s infinite ease-in-out; }
+        .source-btn-mobile .tv-equalizer-mini span:nth-child(2) { animation: tv-eq 0.5s infinite ease-in-out 0.15s; }
+        .source-btn-mobile .tv-equalizer-mini span:nth-child(3) { animation: tv-eq 0.8s infinite ease-in-out 0.3s; }
+        .source-btn-mobile .tv-equalizer-mini span:nth-child(4) { animation: tv-eq 0.6s infinite ease-in-out 0.1s; }
+        @keyframes tv-eq {
+            0%, 100% { height: 3px; opacity: 0.6; }
+            50% { height: 12px; opacity: 1; }
+        }
+        /* Theme clair : le lisere blanc « musique » serait invisible sur fond clair */
+        body#app-body.theme-light .source-btn-mobile.audio-music { border-color: #0f172a !important; box-shadow: 0 0 10px rgba(15, 23, 42, 0.35) !important; }
+        body#app-body.theme-light .source-btn-mobile.audio-music .tv-live-badge { border-color: #0f172a; box-shadow: 0 0 10px rgba(15, 23, 42, 0.35); }
     </style>
 </head>
 <body id="app-body">
@@ -2955,6 +2984,8 @@
                         btn.id = `source-btn-${src.id}`;
                         btn.className = "source-btn-mobile";
                         btn.innerText = src.name;
+                        // 16.09.2026 : badge egaliseur anime « audio en cours », identique a la dalle (#src-badge-N)
+                        btn.insertAdjacentHTML('beforeend', '<span class="tv-live-badge" aria-hidden="true"><span class="tv-equalizer-mini"><span></span><span></span><span></span><span></span></span></span>');
                         btn.style = "width: 100%; margin: 0;";
                         btn.onclick = () => {
                             // 16.09.2026 : un seul point d'entree, window.avSelect (bloc audio/video) : il gere la

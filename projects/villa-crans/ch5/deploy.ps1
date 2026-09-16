@@ -8,6 +8,7 @@
 #   .\deploy.ps1 -SkipContrast   -> sans la garde de contraste (a n'utiliser que sur faux positif avere)
 #   .\deploy.ps1 -Target web -CP4Host 192.168.3.109  -> vise un autre processeur (banc de test du bureau)
 #                                   sans toucher au fichier d'identifiants
+#   .\deploy.ps1 -Target tsw -TswHost 192.168.1.16   -> vise la tablette a une autre adresse (DHCP, autre reseau)
 # Les identifiants sont lus dans deploy.secrets.psd1 (jamais commite).
 # Cle optionnelle dans deploy.secrets.psd1 -> CP4.WebAuthToken : jeton d'authentification passe dans les QR (?authtoken=).
 
@@ -16,7 +17,8 @@ param(
     [string]$Target = 'all',
     [switch]$SkipBuild,
     [switch]$SkipContrast,
-    [string]$CP4Host
+    [string]$CP4Host,
+    [string]$TswHost
 )
 
 $ErrorActionPreference = 'Stop'
@@ -216,12 +218,15 @@ if (-not $SkipBuild -and $Target -notin @('cp4', 'config')) {
 
 # --- TSW ---
 if ($Target -in @('all', 'tsw')) {
-    Write-Host "[2/3] Deploiement CH5 sur la TSW $($S.TSW.Host)..." -ForegroundColor Cyan
+    # -TswHost permet de viser la tablette a une autre adresse (identifiants et cle d'hote inchanges)
+    $tsw = $S.TSW
+    if ($TswHost) { $tsw = @{}; foreach ($k in $S.TSW.Keys) { $tsw[$k] = $S.TSW[$k] }; $tsw.Host = $TswHost }
+    Write-Host "[2/3] Deploiement CH5 sur la TSW $($tsw.Host)..." -ForegroundColor Cyan
     $ch5z = Join-Path $root 'dist\villaftv.ch5z'
     if (-not (Test-Path $ch5z)) { throw "Archive introuvable : $ch5z" }
-    Copy-ToDevice -Device $S.TSW -LocalFile $ch5z -RemotePath '/display/villaftv.ch5z'
+    Copy-ToDevice -Device $tsw -LocalFile $ch5z -RemotePath '/display/villaftv.ch5z'
     Write-Host "  Chargement du projet (PROJECTLOAD)..."
-    Send-ConsoleCommands -Device $S.TSW -Commands @('PROJECTLOAD') | Out-Null
+    Send-ConsoleCommands -Device $tsw -Commands @('PROJECTLOAD') | Out-Null
     Write-Host "  TSW : projet charge." -ForegroundColor Green
 }
 

@@ -1,5 +1,57 @@
 # Villa Crans CH5 — journal des versions
 
+## v1.0.177 (à compiler) — 15-16.09.2026 — Contrat v4, XPanel du bureau, lot smartphone Sources / Moteurs / Swisscom
+
+### État des 4 artefacts
+
+| Artefact | Version | Compilation |
+|---|---|---|
+| CH5 `.ch5z` (TSW + XPanel) | 1.0.176 (XPanel sur le CP4 du bureau 192.168.3.109) | **à relancer** : `deploy.ps1 -Target web -CP4Host 192.168.3.109` |
+| CPZ slot 1 | 14.09 | inchangé |
+| LPZ slot 2 | 15.09 (v3) | **à régénérer** : `generate_slot2.js` v4 + F12, buffers sur `Room_Select#` |
+| Showcase Vercel | lot du 16.09 | `index.html` + `iphone.html` + config régénérés, poussés |
+
+### Contrat de joins v4 (décision du 15.09)
+
+- **Joins de pilotage identiques dans toutes les pièces** (sources 150-156, télécommandes 211-220 /
+  500-527 / 530-557 / 560-600, scènes stores 201-204, stores groupés 61-69) ; **SIMPL route sur
+  `Room_Select#` avec des buffers** pour ne pas surcharger le debugger Toolbox. Le v3 (bloc par
+  pièce) est désactivé (`contrat.blocsPiecesGui.actif=false`) : sa réécriture d'attribut n'émettait
+  pas — aucun join Apple TV / Sky Q ne remontait dans le debugger. `generate_slot2.js` : 107 signaux
+  `Remote_*`, 1980 câblages de blocs pièces retirés (les définitions `R01_..R15_` restent à
+  nettoyer dans SIMPL Windows). 75 boutons de télécommande de la dalle portent leur join en dur.
+
+### Chaîne de déploiement
+
+- `deploy.ps1` réparé et fiabilisé : ASCII pur + BOM, serveur `tools/serve_src.mjs`, `ch5-cli -p`,
+  `tools/ch5-compat.js` (Node 24), succès vérifié par HTTPS, `-CP4Host`, `-SkipContrast`, `-SkipBuild`.
+  Détail dans `CONTEXTE-CLAUDE.md` § Pièges.
+
+### Tous châssis
+
+- Menu : « Garage & ateliers » (pièce 15 `actif:false`) et « Vidéo » masqués, réversibles dans
+  `villa_config.json` ; QR codes régénérés sans la pièce 15.
+- Tuiles de source : couleurs du projet en activé / désactivé (fonds blancs sur XPanel corrigés)
+  via `ch5-button[customClass~="…"] .cb-btn` — cette version de CH5 ne recopie pas `customClass`
+  sur l'hôte.
+- Thème clair : icônes haut-parleur et Power en noir. Bouton PRESET retiré des stores globaux.
+  Configuration du preset global sans TOTAL / REPAS / CINÉMA / ÉTEINDRE. Mode Vacances : sélecteur
+  de preset et ligne Climatisation retirés, titre « Sélection des pièces : simulation de présence
+  aléatoire ».
+- **Sources : logique audio/vidéo unifiée (`avSelect`)** — confirmation « musique ou audio de la
+  vidéo », télécommande ouverte ensuite, **badge égaliseur animé** sur la source dont l'audio joue
+  (iPhone aligné sur la dalle le 16.09, liseré sombre en thème clair pour la musique).
+
+### Smartphone
+
+- « Sources » (titre) / « Source » (onglet), en-têtes à gauche, pas de titre Éclairage dans une
+  pièce sans éclairage, voile noir flouté qui bloque les clics sous les fenêtres.
+- Moteurs : pagination (Stores atteignable), presets par famille Volet / Rideaux / Stores
+  (Tout ouvrir / Demi-ouverture / Tout fermer).
+- Sources : grille 2 colonnes, MUSIQUE pleine largeur, doublon « Musique / lecteur média » retiré,
+  engrenage MUSIQUE → lecteur média (page vide corrigée), bouton Musique plus rogné.
+- Swisscom : volume ± / ✦ / ⇥ / sourdine retirés, boutons agrandis (grille 5 colonnes).
+
 ## v1.0.175 — 15.09.2026 — Smartphone : télécommandes alignées sur la dalle, stores et icônes de moteurs
 
 ### État des 4 artefacts
