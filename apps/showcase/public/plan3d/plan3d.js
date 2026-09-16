@@ -77,8 +77,8 @@ export function createPlan3D(opts) {
     var roomLights = [new THREE.PointLight(0xffd9a3, 0, 16, 2), new THREE.PointLight(0xffe6c4, 0, 12, 2)];
     roomLights.forEach(function (l) { sceneR.add(l); });
     var dayCur = 1, environmentDay = 1, fixedDay = null, landscape;
-    // 30 seconds of daylight, 5 seconds of dusk, 30 seconds of night, 5 seconds of dawn.
-    var dayDuration = 30, nightDuration = 30, transitionDuration = 5;
+    // 30 seconds of daylight, 10 seconds of dusk, 30 seconds of night, 10 seconds of dawn.
+    var dayDuration = 30, nightDuration = 30, transitionDuration = 10;
     var nightStart = dayDuration + transitionDuration, dawnStart = nightStart + nightDuration;
     var environmentCycle = dawnStart + transitionDuration;
     function updateEnvironment(seconds) {
@@ -864,7 +864,7 @@ export function createPlan3D(opts) {
     /* ---------- API publique ---------- */
     var API = {
         setRoom: setRoom,
-        version: '2026-09-16-estate-3',
+        version: '2026-09-16-estate-4',
         overview: overview,
         click: clickPlan,
         focusSelected: function () { if (!selectedRoom || activeRoom === selectedRoom) return; focusRoom(selectedRoom); },
