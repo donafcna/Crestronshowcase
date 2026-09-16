@@ -4707,7 +4707,31 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
         #source-control-overlay ch5-button .cb-btn:active, #source-control-overlay ch5-button .ch5-button--pressed .cb-btn { background: rgba(255,255,255,0.14) !important; }
         .rc-layout { overflow: hidden; }
         .rc-inner { flex-shrink: 0; transform-origin: center center; }
-        </style>
+        
+        /* ===== Theme clair : icones sombres (16.09.2026) =====
+           Les icones haut-parleur et Power etaient dessinees en teintes claires,
+           illisibles sur le fond blanc du theme Clair. Correction au niveau du
+           theme, pas de l ecran : meme trace SVG, fill sombre. */
+        /* Theme clair : haut-parleur en noir, le gris clair ne ressortait pas sur fond blanc */
+        body#app-body.theme-light .mute-btn,
+        body#app-body.theme-light ch5-button.mute-btn .cb-btn,
+        body#app-body.theme-light ch5-button.mute-btn button,
+        body#app-body.theme-light ch5-button.mute-btn .ch5-button,
+        body#app-body.theme-light ch5-button[customClass~="mute-btn"] .cb-btn,
+        body#app-body.theme-light ch5-button[customClass~="mute-btn"] button { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%230f172a"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>') !important; }
+        /* Theme clair : icone Power en noir */
+        body#app-body.theme-light .power-off-btn,
+        body#app-body.theme-light ch5-button.power-off-btn .cb-btn,
+        body#app-body.theme-light ch5-button.power-off-btn button,
+        body#app-body.theme-light ch5-button.power-off-btn .ch5-button,
+        body#app-body.theme-light ch5-button[customClass~="power-off-btn"] .cb-btn,
+        body#app-body.theme-light ch5-button[customClass~="power-off-btn"] button { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%230f172a"><path d="M13 3h-2v10h2V3zm4.83 2.17l-1.42 1.42C17.99 7.86 19 9.81 19 12c0 3.87-3.13 7-7 7s-7-3.13-7-7c0-2.19 1.01-4.14 2.58-5.42L6.17 5.17C4.23 6.82 3 9.26 3 12c0 4.97 4.03 9 9 9s9-4.03 9-9c0-2.74-1.23-5.18-3.17-6.83z"/></svg>') !important; }
+    
+        /* Theme clair : Power desactive en gris fonce (lisible, et distinct du noir actif) */
+        body#app-body.theme-light ch5-button.power-off-btn[disabled] .cb-btn,
+        body#app-body.theme-light ch5-button[customClass~="power-off-btn"][disabled] .cb-btn,
+        body#app-body.theme-light .power-off-btn.disabled { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23475569"><path d="M13 3h-2v10h2V3zm4.83 2.17l-1.42 1.42C17.99 7.86 19 9.81 19 12c0 3.87-3.13 7-7 7s-7-3.13-7-7c0-2.19 1.01-4.14 2.58-5.42L6.17 5.17C4.23 6.82 3 9.26 3 12c0 4.97 4.03 9 9 9s9-4.03 9-9c0-2.74-1.23-5.18-3.17-6.83z"/></svg>') !important; }
+    </style>
         <script>
         // Télécommandes : la disposition est dessinée à taille fixe puis réduite (transform: scale) si elle
         // dépasse la zone disponible de la modale (tablette, XPanel redimensionné...) — jamais agrandie.
@@ -4961,7 +4985,6 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
                     <p style="margin: 0 0 15px 0; color: #94a3b8; font-size: 0.85rem;">Commande centralisée de toutes les motorisations et volets.</p>
                     <div style="display: flex; gap: 10px;">
                         <ch5-button label="TOUT OUVRIR" customClass="scene-btn" style="flex: 1; height: 42px;" sendEventOnClick="404" receiveStateSelected="404" onclick="window.selectGlobalControl(this)" data-join="404" data-rjoin="404"></ch5-button>
-                        <ch5-button label="PRESET" customClass="scene-btn" style="flex: 1; height: 42px;" sendEventOnClick="406" receiveStateSelected="406" onclick="window.selectGlobalControl(this)" data-join="406" data-rjoin="406"></ch5-button>
                         <ch5-button label="TOUT FERMER" customClass="scene-btn" style="flex: 1; height: 42px; --ch5-button-selected-background-color: #dc2626;" sendEventOnClick="405" receiveStateSelected="405" onclick="window.selectGlobalControl(this)" data-join="405" data-rjoin="405"></ch5-button>
                     </div>
                 </div>
@@ -5010,8 +5033,9 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
             </div>
         </div>
         
-        <!-- Sélection du sous-preset -->
-        <div style="margin-bottom: 20px; display: flex; align-items: center; gap: 15px;">
+        <!-- Sélection du sous-preset (masquée en Mode Vacances : on y arrive par l'engrenage
+             de la carte, le preset est deja choisi — 16.09.2026) -->
+        <div id="customizer-preset-picker" style="margin-bottom: 20px; display: flex; align-items: center; gap: 15px;">
             <span style="font-weight: bold; color: #94a3b8; font-size: 0.95rem;">Sélectionnez le preset à configurer :</span>
             <select id="customizer-preset-select" onchange="window.renderCustomizerFields()" style="background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.15); color: white; border-radius: 6px; padding: 6px 12px; font-size: 0.9rem; outline: none; min-width: 200px;"></select>
         </div>
@@ -6599,12 +6623,11 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
                     const sceneBtnGroup = document.createElement('div');
                     sceneBtnGroup.style = "display: flex; gap: 4px;";
                     
-                    const scenes = [
-                        { label: "TOTAL", join: 24, bg: "rgba(234,179,8,0.2)", border: "#eab308" },
-                        { label: "REPAS", join: 23, bg: "rgba(234,179,8,0.2)", border: "#eab308" },
-                        { label: "CINÉMA", join: 22, bg: "rgba(234,179,8,0.2)", border: "#eab308" },
-                        { label: "ÉTEINDRE", join: 21, bg: "rgba(220,38,38,0.2)", border: "#ef4444" }
-                    ];
+                    // 16.09.2026 : les raccourcis de scene (TOTAL / REPAS / CINEMA / ETEINDRE) sont
+                    // retires de la Configuration du preset global — on y regle des niveaux, pas des
+                    // scenes. Vider cette liste suffit a les faire disparaitre ; applySceneToCustomizer
+                    // reste en place pour un eventuel retour.
+                    const scenes = [];
                     
                     scenes.forEach(s => {
                         const btn = document.createElement('button');
@@ -6787,20 +6810,24 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
                     row.appendChild(controls);
                     container.appendChild(row);
                 });
-            } else if (activePresetType === 'vacation') {
+            }
+            // Le selecteur de preset n'a pas de sens en Mode Vacances : masque la, visible ailleurs.
+            var picker = document.getElementById('customizer-preset-picker');
+            if (picker) picker.style.display = (activePresetType === 'vacation') ? 'none' : 'flex';
+            if (activePresetType === 'vacation') {
+                // 16.09.2026 : la ligne "Activer Climatisation Globale (Hors Gel)" est retiree de
+                // l'ecran. Le reglage reste dans la configuration enregistree et vaut true par
+                // defaut ; la case masquee est recreee hors flux pour ne pas casser la sauvegarde.
                 const hvacRow = document.createElement('div');
-                hvacRow.style = "background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 8px; padding: 15px; margin-bottom: 15px; display: flex; align-items: center; justify-content: space-between;";
-                hvacRow.innerHTML = `
-                    <span style="font-weight: bold; color: #fb7185;">Activer Climatisation Globale (Hors Gel)</span>
-                    <input type="checkbox" id="cfg-vacation-chk-hvac" style="width: 18px; height: 18px;" ${savedConfig.hvac !== false ? 'checked' : ''}>
-                `;
+                hvacRow.style = "display: none;";
+                hvacRow.innerHTML = `<input type="checkbox" id="cfg-vacation-chk-hvac" ${savedConfig.hvac !== false ? 'checked' : ''}>`;
                 container.appendChild(hvacRow);
                 
                 const lightBox = document.createElement('div');
                 lightBox.style = "background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 8px; padding: 15px; margin-bottom: 10px;";
                 lightBox.innerHTML = `
                     <h4 style="margin: 0 0 12px 0; color: #fb7185; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 6px;">
-                        💡 Activer Éclairage Global (Sélection des Pièces à Éteindre)
+                        💡 Sélection des pièces : simulation de présence aléatoire
                     </h4>
                     <div id="vacation-rooms-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;"></div>
                 `;

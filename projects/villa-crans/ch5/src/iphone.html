@@ -1550,8 +1550,7 @@
                 </div>
                 <div style="display: flex; gap: 4px;">
                     <ch5-button label="OUVRIR" customClass="scene-btn" style="height: 32px; flex: 1;" sendEventOnClick="404" data-join="404"></ch5-button>
-                    <ch5-button label="INT." customClass="scene-btn" style="height: 32px; flex: 1;" sendEventOnClick="406" data-join="406"></ch5-button>
-                    <ch5-button label="FERMER" customClass="scene-btn" style="height: 32px; flex: 1.2; --ch5-button-selected-background-color: #dc2626;" sendEventOnClick="405" data-join="405"></ch5-button>
+                    <ch5-button label="FERMER" customClass="scene-btn" style="height: 32px; flex: 1; --ch5-button-selected-background-color: #dc2626;" sendEventOnClick="405" data-join="405"></ch5-button>
                 </div>
             </div>
             <!-- CVC Global -->
@@ -3980,6 +3979,15 @@
             margin-top: 0 !important;
             padding-top: 0 !important;
         }
+    
+        /* ===== Theme clair : icones sombres (16.09.2026) =====
+           Les icones haut-parleur et Power etaient dessinees en teintes claires,
+           illisibles sur le fond blanc du theme Clair. Correction au niveau du
+           theme, pas de l ecran : meme trace SVG, fill sombre. */
+        /* Theme clair : haut-parleur en noir */
+        body#app-body.theme-light .mute-btn-mobile { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" fill="%230f172a"><path d="M224 88V424c0 21.3-25.9 32-41 17L94.1 352H24c-13.3 0-24-10.7-24-24V184c0-13.3 10.7-24 24-24h70.1l88.9-89c15.1-15 41-4.3 41 17zM320 256c0-36.4-24.4-67.3-57.9-76.8c-11.7-3.3-23.7 3.5-27 15.2s3.5 23.7 15.2 27c17.1 4.8 29.8 20.3 29.8 34.6s-12.7 29.7-29.8 34.6c-11.7 3.3-18.5 15.3-15.2 27s15.3 18.5 27 15.2c33.5-9.5 57.9-40.4 57.9-76.8zm71-141.7c-11.7-3.3-23.7 3.5-27 15.2s3.5 23.7 15.2 27c38.4 10.9 68.9 45.4 68.9 93.5s-30.5 82.6-68.9 93.5c-11.7 3.3-18.5 15.3-15.2 27s15.3 18.5 27 15.2c51.9-14.7 93.1-59.5 93.1-135.7s-41.2-121-93.1-135.7z"/></svg>') !important; }
+        /* Theme clair : icone Power en noir */
+        body#app-body.theme-light .power-off-btn-mobile { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="%230f172a"><path d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V256c0 17.7 14.3 32 32 32s32-14.3 32-32V32zM143.5 120.6c13.6-11.3 15.4-31.5 4.1-45.1s-31.5-15.4-45.1-4.1C43.9 120.3 0 183 0 256c0 141.4 114.6 256 256 256s256-114.6 256-256c0-73-43.9-135.7-102.5-179.6c-13.6-10.3-33.8-8.5-45.1 4.1s-8.5 33.8 4.1 45.1C412.1 165.6 448 206.6 448 256c0 106-86 192-192 192S64 362 64 256c0-49.4 35.9-90.4 84.5-125.6h-5z"/></svg>') !important; }
     </style>
     <script>
     (function () {
