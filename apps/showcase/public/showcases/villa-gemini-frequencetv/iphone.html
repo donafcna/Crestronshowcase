@@ -913,12 +913,7 @@
                     <div id="sources-container" style="display: flex; flex-wrap: wrap; gap: 8px; justify-content: space-between; width: 100%;">
                         <!-- Rempli dynamiquement -->
                     </div>
-                    <!-- Bouton Musique s'étendant sur toute la largeur (iPhone) -->
-                    <div style="margin-top: 10px; width: 100%;">
-                        <button onclick="openMediaPlayerModal()" style="width: 100%; height: 36px; background: rgba(139, 92, 246, 0.15); border: 1px solid #8b5cf6; color: #c084fc; border-radius: 8px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.85rem; transition: all 0.2s; outline: none;">
-                            🎵 Musique / lecteur média
-                        </button>
-                    </div>
+                    <!-- 16.09.2026 : raccourci "Musique / lecteur media" retire, doublon de la tuile MUSIQUE -->
                 </div>
 
                 <!-- Réglage du Volume et Extinction -->
@@ -1385,6 +1380,8 @@
         <div style="display:flex;align-items:center;justify-content:center;"><ch5-button id="src-btn-sw-d0" label="0" customStyle="background: #2c2c2e !important; border: 1px solid rgba(255,255,255,0.18) !important; color: #fff !important; border-radius: 50% !important; font-weight: bold !important; display: flex !important; align-items: center !important; justify-content: center !important; width: 68px !important; height: 68px !important; font-size: 1.04rem !important;"></ch5-button></div>
         <div style="display:flex;align-items:center;justify-content:center;"><ch5-button id="src-btn-sw-radio" label="radio" customStyle="background: #2c2c2e !important; border: 1px solid rgba(255,255,255,0.18) !important; color: #fff !important; border-radius: 50% !important; font-weight: bold !important; display: flex !important; align-items: center !important; justify-content: center !important; width: 68px !important; height: 68px !important; font-size: 1.04rem !important; font-size: 0.98rem !important;"></ch5-button></div>
         </div></div>
+    </div><!-- /source-control-overlay -->
+
 <!-- POPUP LECTEUR DE MUSIQUE / MEDIA PLAYER (Mobile Optimized) -->
     <div id="media-player-overlay" class="custom-overlay-panel" style="width: 96% !important; max-width: 440px !important; height: auto !important; max-height: 92% !important; padding: 15px; box-sizing: border-box;">
         <div class="overlay-header" style="margin-bottom: 15px;">
@@ -2006,6 +2003,8 @@
             };
 
             window.selectSource = function(sourceId) {
+                // Delegue au bloc audio/video quand il existe (confirmation musique / audio video).
+                if (typeof window.avSelect === 'function') { window.avSelect(String(150 + Number(sourceId))); return; }
                 if (typeof CrComLib !== 'undefined') {
                     const joinNum = 150 + sourceId;
                     CrComLib.publishEvent('b', joinNum.toString(), true);
@@ -2961,9 +2960,12 @@
                         btn.innerText = src.name;
                         btn.style = "width: 100%; margin: 0;";
                         btn.onclick = () => {
-                            selectSource(src.id);
-                            // Premier appui = activation + ouverture immédiate de la télécommande (retour direction 09.09.2026)
-                            if (srcKeyMap[src.id] && typeof openSourceControlModal === 'function') openSourceControlModal(srcKeyMap[src.id]);
+                            // 16.09.2026 : un seul point d'entree, window.avSelect (bloc audio/video) : il gere la
+                            // confirmation "musique ou audio de la video" ET l'ouverture de la telecommande.
+                            // L'ancien code appelait l'ancien selectSource puis ouvrait la telecommande directement,
+                            // ce qui court-circuitait la confirmation.
+                            if (typeof window.avSelect === 'function') window.avSelect(String(150 + src.id));
+                            else selectSource(src.id);
                         };
                         
                         // 16.09.2026 : la source Musique n'a pas de telecommande, son engrenage ouvre le
@@ -4085,7 +4087,7 @@
         #sources-container > div { width: auto !important; margin: 0 !important; min-height: 0; display: flex; flex-direction: column; gap: 4px; }
         #sources-container .source-btn-mobile { flex: 1; min-height: 44px; height: auto !important; }
         #sources-container .shades-config-cog { flex: 0 0 38px; height: 38px !important; }
-        #media-player-shortcut { margin: 0 !important; width: auto !important; min-height: 0; display: flex; }
+        #sources-container > div:last-child:nth-child(odd) { grid-column: 1 / -1; }   /* MUSIQUE seule : pleine largeur */
         #media-player-shortcut button { height: auto !important; flex: 1; min-height: 44px; }
 
         /* Moteurs : 2 lignes par page, fleches dans l'en-tete. Rien ne defile. */
@@ -4178,12 +4180,8 @@
             if (typeof window.animerFamilleMoteurs === 'function') window.animerFamilleMoteurs(FAMILLE_KIND[familleActive], direction);
         };
         window.rendrePageMoteurs = function () { page = 0; rendrePage(); };
-        document.addEventListener('DOMContentLoaded', function () {
-            placerRaccourciMusique(); installerPager();
-            var cont = document.getElementById('sources-container');
-            if (cont && window.MutationObserver) new MutationObserver(placerRaccourciMusique).observe(cont, { childList: true });
-        });
-        window.addEventListener('villa-config-loaded', function () { placerRaccourciMusique(); rendrePage(); });
+        document.addEventListener('DOMContentLoaded', function () { installerPager(); });
+        window.addEventListener('villa-config-loaded', function () { rendrePage(); });
     })();
     </script>
 
