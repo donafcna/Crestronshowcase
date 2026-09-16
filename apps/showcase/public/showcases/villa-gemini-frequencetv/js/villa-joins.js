@@ -310,6 +310,17 @@
         }
     };
 
+    /* ---------- Pièces visibles ----------
+       Une pièce portant « actif: false » dans villa_config.json sort des menus et du carrousel,
+       sur TOUS les châssis (dalle, iPad, XPanel, smartphone) : même mécanisme que pagesSpeciales.
+       Ses joins, son bloc EISC, son code C# et son QR restent en place — rien à recompiler côté
+       SIMPL, et un seul mot à rebasculer pour la faire revenir.
+       Point de vérité unique : ne plus relire vc.pieces directement pour construire une liste. */
+    window.villaPiecesActives = function (vc) {
+        var c = vc || window.villaConfig || window.villaConfigEmbedded || {};
+        return (c.pieces || []).filter(function (p) { return p && p.actif !== false; });
+    };
+
     /* ---------- Démarrage ---------- */
     loadMapping();
     try {
