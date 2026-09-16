@@ -38,16 +38,29 @@ export function createPlan3D(opts) {
     renderer.toneMappingExposure = 1.05;
     renderer.outputColorSpace = THREE.SRGBColorSpace;
 
+    // Deux scènes rendues l'une après l'autre avec le même tampon de profondeur :
+    //  - `scene`  : extérieurs (sol, pins, montagnes, terrasse, piscine) sous une lumière du jour constante ;
+    //  - `sceneR` : les pièces, dont la lumière du jour suit l'ouverture des motorisations de la pièce
+    //    active (volet fermé = noir, seules les lampes des scènes éclairent) sans assombrir le paysage.
     scene = new THREE.Scene();
     scene.fog = new THREE.Fog(0x0b1020, 90, 260);
+    var sceneR = new THREE.Scene(); sceneR.fog = scene.fog;
     camera = new THREE.PerspectiveCamera(38, 1, 0.1, 300);
+    renderer.autoClear = false;
 
-    var hemi = new THREE.HemisphereLight(0xe6eeff, 0x3a3326, 1.25); scene.add(hemi);
-    var sun = new THREE.DirectionalLight(0xfff1dc, 2.0); sun.position.set(18, 30, 10); scene.add(sun);
-    var fill = new THREE.DirectionalLight(0x9fb8ff, 0.6); fill.position.set(-20, 12, -14); scene.add(fill);
+    var hemiE = new THREE.HemisphereLight(0xe6eeff, 0x3a3326, 1.1); scene.add(hemiE);
+    var sunE = new THREE.DirectionalLight(0xfff1dc, 1.8); sunE.position.set(18, 30, 10); scene.add(sunE);
+    var fillE = new THREE.DirectionalLight(0x9fb8ff, 0.5); fillE.position.set(-20, 12, -14); scene.add(fillE);
+    var DAY = { hemi: 0.9, sun: 1.45, fill: 0.45 };                     // lumière du jour pleine, dans les pièces
+    var hemi = new THREE.HemisphereLight(0xe6eeff, 0x3a3326, DAY.hemi); sceneR.add(hemi);
+    var sun = new THREE.DirectionalLight(0xfff1dc, DAY.sun); sun.position.set(18, 30, 10); sceneR.add(sun);
+    var fill = new THREE.DirectionalLight(0x9fb8ff, DAY.fill); fill.position.set(-20, 12, -14); sceneR.add(fill);
+    // Lumière du jour qui entre par la fenêtre de la pièce active (intensité = ouverture des motorisations)
+    var winLight = new THREE.SpotLight(0xfff6e8, 0, 14, 0.75, 0.6, 1.2); sceneR.add(winLight); sceneR.add(winLight.target);
     // Deux lampes réelles : celles de la pièce zoomée (les autres pièces n'ont que des matériaux émissifs)
-    var roomLights = [new THREE.PointLight(0xffd9a3, 0, 14, 2), new THREE.PointLight(0xffe6c4, 0, 10, 2)];
-    roomLights.forEach(function (l) { scene.add(l); });
+    var roomLights = [new THREE.PointLight(0xffd9a3, 0, 16, 2), new THREE.PointLight(0xffe6c4, 0, 12, 2)];
+    roomLights.forEach(function (l) { sceneR.add(l); });
+    var dayCur = 1;                                                   // facteur jour courant (lissé) de la scène des pièces
 
     /* ---------- Matériaux partagés (deux palettes : 'chaleureux' bois / tissus, 'maquette' blanc et gris) ---------- */
     var STYLE = cfg.style === 'maquette' ? 'maquette' : 'chaleureux';
@@ -75,9 +88,22 @@ export function createPlan3D(opts) {
         pot: new THREE.MeshStandardMaterial({ color: 0xa8a29e, roughness: 1 }),
         dalle: new THREE.MeshStandardMaterial({ color: PAL.dalle, roughness: 1 }),
         tapis: new THREE.MeshStandardMaterial({ color: PAL.tapis, roughness: 1 }),
-        verre: new THREE.MeshStandardMaterial({ color: 0xbfe3ff, transparent: true, opacity: 0.35, roughness: 0.1 }),
-        ecranOff: new THREE.MeshStandardMaterial({ color: 0x0a0c10, roughness: 0.25, metalness: 0.4 })
+        verre: new THREE.MeshStandardMaterial({ color: 0xbfe3ff, transparent: true, opacity: 0.22, roughness: 0.05, metalness: 0.1, side: THREE.DoubleSide, depthWrite: false }),
+        verreExt: new THREE.MeshStandardMaterial({ color: 0xbfe3ff, transparent: true, opacity: 0.35, roughness: 0.1, depthWrite: false }),
+        alu: new THREE.MeshStandardMaterial({ color: 0x4a4f58, roughness: 0.4, metalness: 0.7 }),
+        moteur: new THREE.MeshStandardMaterial({ color: 0x2f3440, roughness: 0.45, metalness: 0.65 }),
+        ecranOff: new THREE.MeshStandardMaterial({ color: 0x05060a, roughness: 0.12, metalness: 0.8 })
     };
+    // Textures dessinées des motorisations : lames du volet, toile du store, plis des rideaux
+    function mkTex(w, h, fn) { var c = document.createElement('canvas'); c.width = w; c.height = h; fn(c.getContext('2d'), w, h); var t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.wrapS = t.wrapT = THREE.RepeatWrapping; return t; }
+    var TEX = {
+        lames: mkTex(64, 64, function (g, w) { for (var i = 0; i < 4; i++) { var y = i * 16, gr = g.createLinearGradient(0, y, 0, y + 16); gr.addColorStop(0, '#a3a8b0'); gr.addColorStop(0.5, '#d2d5da'); gr.addColorStop(0.85, '#8d929b'); gr.addColorStop(1, '#5c6069'); g.fillStyle = gr; g.fillRect(0, y, w, 16); } }),
+        toile: mkTex(64, 64, function (g, w, h) { g.fillStyle = '#e9e0cd'; g.fillRect(0, 0, w, h); g.fillStyle = 'rgba(120,100,70,0.14)'; for (var i = 0; i < h; i += 4) g.fillRect(0, i, w, 1); g.fillStyle = 'rgba(255,255,255,0.16)'; for (var j = 0; j < w; j += 8) g.fillRect(j, 0, 1, h); }),
+        plis: mkTex(128, 64, function (g, w, h) { for (var i = 0; i < 8; i++) { var x = i * 16, gr = g.createLinearGradient(x, 0, x + 16, 0); gr.addColorStop(0, '#8797ae'); gr.addColorStop(0.45, '#d9e2ee'); gr.addColorStop(1, '#75839a'); g.fillStyle = gr; g.fillRect(x, 0, 16, h); } }),
+        banne: mkTex(64, 64, function (g, w, h) { for (var i = 0; i < 4; i++) { g.fillStyle = i % 2 ? '#f3efe6' : '#b9553f'; g.fillRect(i * 16, 0, 16, h); } })
+    };
+    var ledOn = new THREE.MeshStandardMaterial({ color: 0x22c55e, emissive: 0x22c55e, emissiveIntensity: 0.3 });
+    function led(x, y, z, parent) { var m = sph(0.016, ledOn.clone(), x, y, z, parent); m.geometry = new THREE.SphereGeometry(0.016, 8, 6); return m; }
 
     function box(w, h, d, mat, x, y, z, parent) {
         var m = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), mat);
@@ -94,63 +120,123 @@ export function createPlan3D(opts) {
 
     function roundRect(g, x, y, w, h, r) { g.beginPath(); g.moveTo(x + r, y); g.arcTo(x + w, y, x + w, y + h, r); g.arcTo(x + w, y + h, x, y + h, r); g.arcTo(x, y + h, x, y, r); g.arcTo(x, y, x + w, y, r); g.closePath(); }
 
-    /* ---------- Écran de télévision : texture canvas par source ---------- */
+    /* ---------- Écran de télévision : texture canvas 1024×576 par source ---------- */
     var APPS = ['Apple TV+', 'Netflix', 'Musique', 'Photos', 'YouTube', 'Disney+', 'Arte', 'Plans', 'Podcasts', 'Réglages'];
     var APP_COLORS = ['#1c1c1e', '#b0060f', '#fa2d48', '#f5a623', '#e02020', '#0b2a6b', '#e85d04', '#34c759', '#b150e2', '#8e8e93'];
+    var APP_GLYPH = ['tv', 'N', '♪', '❀', '▶', 'D+', 'arte', '⌖', '((●))', '⚙'];
+    var SKY_MENU = ['Accueil', 'Guide TV', 'Enregistrements', 'Catch Up', 'Sky Cinema', 'Sky Sports', 'Apps'];
+    var SKY_TILES = ['Sky Sports F1', 'Sky Cinema', 'Sky Atlantic', 'Sky Nature', 'Sky Arts', 'Sky News'];
+    var SWISS_CH = ['SRF 1', 'RTS 1', 'TF1', 'France 2', 'arte', 'RSI LA1', 'M6', 'Eurosport'];
+    var IPTV_CH = [['101', 'RTS 1', 'Le 19h30'], ['102', 'RTS 2', 'Sport dimanche'], ['103', 'SRF 1', 'Tagesschau'], ['104', 'TF1', 'Journal'], ['105', 'arte', 'Karambolage'], ['106', 'Canal Alpha', 'Météo des neiges']];
+    var HUES = [212, 348, 28, 140, 268, 190, 12, 52];
     function makeScreen() {
-        var c = document.createElement('canvas'); c.width = 640; c.height = 360;
-        var tex = new THREE.CanvasTexture(c); tex.colorSpace = THREE.SRGBColorSpace;
+        var c = document.createElement('canvas'); c.width = 1024; c.height = 576;
+        var tex = new THREE.CanvasTexture(c); tex.colorSpace = THREE.SRGBColorSpace; tex.anisotropy = 4;
         var st = { source: 0, sel: 0, open: null, tick: 0, row: 0 };
+        // Affiche stylisée (dégradé + formes) servant de visuel de programme
+        function poster(g, x, y, w, h, hue, title, sub) {
+            var gr = g.createLinearGradient(x, y, x + w, y + h);
+            gr.addColorStop(0, 'hsl(' + hue + ',60%,42%)'); gr.addColorStop(1, 'hsl(' + ((hue + 40) % 360) + ',70%,18%)');
+            g.save(); roundRect(g, x, y, w, h, 12); g.clip(); g.fillStyle = gr; g.fillRect(x, y, w, h);
+            g.fillStyle = 'rgba(255,255,255,0.12)'; g.beginPath(); g.arc(x + w * 0.78, y + h * 0.3, h * 0.42, 0, Math.PI * 2); g.fill();
+            g.fillStyle = 'rgba(0,0,0,0.22)'; g.beginPath(); g.moveTo(x, y + h * 0.62); g.lineTo(x + w, y + h * 0.42); g.lineTo(x + w, y + h); g.lineTo(x, y + h); g.fill();
+            if (title) { g.fillStyle = '#fff'; g.font = 'bold ' + Math.round(h * 0.16) + 'px Arial'; g.textAlign = 'left'; g.fillText(title, x + 14, y + h - (sub ? 30 : 14)); }
+            if (sub) { g.fillStyle = 'rgba(255,255,255,0.8)'; g.font = Math.round(h * 0.11) + 'px Arial'; g.fillText(sub, x + 14, y + h - 12); }
+            g.restore();
+        }
+        function topBar(g, W, brand, right) {
+            g.fillStyle = '#fff'; g.font = 'bold 30px Arial'; g.textAlign = 'left'; g.fillText(brand, 40, 54);
+            g.font = '20px Arial'; g.fillStyle = 'rgba(255,255,255,0.75)'; g.textAlign = 'right'; g.fillText(right, W - 40, 52);
+        }
         function draw() {
-            var g = c.getContext('2d'), W = c.width, H = c.height;
+            var g = c.getContext('2d'), W = c.width, H = c.height, i, gr;
             g.clearRect(0, 0, W, H);
-            if (st.source === 0) { g.fillStyle = '#06070a'; g.fillRect(0, 0, W, H); tex.needsUpdate = true; return; }
-            if (st.source === 1) {                       // Apple TV : grille d'apps
-                var grd = g.createLinearGradient(0, 0, 0, H); grd.addColorStop(0, '#2b2f3a'); grd.addColorStop(1, '#0d0f14');
-                g.fillStyle = grd; g.fillRect(0, 0, W, H);
-                if (st.open !== null) {
-                    g.fillStyle = APP_COLORS[st.open]; g.fillRect(0, 0, W, H);
-                    g.fillStyle = 'rgba(255,255,255,0.92)'; g.font = 'bold 44px Arial'; g.textAlign = 'center';
-                    g.fillText(APPS[st.open], W / 2, H / 2 - 6);
-                    g.font = '22px Arial'; g.fillText('Lecture en cours', W / 2, H / 2 + 36);
-                    g.fillStyle = 'rgba(255,255,255,0.35)'; g.fillRect(80, H - 40, W - 160, 6);
-                    g.fillStyle = '#fff'; g.fillRect(80, H - 40, ((st.tick * 7) % (W - 160)), 6);
+            if (st.source === 0) {                       // éteinte : verre noir, léger reflet de la pièce
+                g.fillStyle = '#05060a'; g.fillRect(0, 0, W, H);
+                gr = g.createLinearGradient(0, 0, W, H); gr.addColorStop(0, 'rgba(255,255,255,0.06)'); gr.addColorStop(0.5, 'rgba(255,255,255,0)'); gr.addColorStop(1, 'rgba(255,255,255,0.03)');
+                g.fillStyle = gr; g.fillRect(0, 0, W, H); tex.needsUpdate = true; return;
+            }
+            if (st.source === 1) {                       // Apple TV : bandeau à la une, rangée d'apps, « Regarder ensuite »
+                gr = g.createLinearGradient(0, 0, 0, H); gr.addColorStop(0, '#2b2f3a'); gr.addColorStop(1, '#0b0d12');
+                g.fillStyle = gr; g.fillRect(0, 0, W, H);
+                if (st.open !== null) {                  // app ouverte : lecteur plein écran
+                    poster(g, 0, 0, W, H, HUES[st.open % HUES.length], null, null);
+                    g.fillStyle = 'rgba(0,0,0,0.35)'; g.fillRect(0, 0, W, H);
+                    g.fillStyle = APP_COLORS[st.open]; roundRect(g, 48, 40, 96, 96, 22); g.fill();
+                    g.fillStyle = '#fff'; g.font = 'bold 34px Arial'; g.textAlign = 'center'; g.fillText(APP_GLYPH[st.open], 96, 100);
+                    g.textAlign = 'left'; g.font = 'bold 52px Arial'; g.fillText(APPS[st.open], 170, 92);
+                    g.font = '24px Arial'; g.fillStyle = 'rgba(255,255,255,0.8)'; g.fillText('Lecture en cours — Villa Crans-Montana', 170, 128);
+                    var pr = ((st.tick * 3) % 1000) / 1000;
+                    g.fillStyle = 'rgba(255,255,255,0.3)'; roundRect(g, 80, H - 70, W - 160, 8, 4); g.fill();
+                    g.fillStyle = '#fff'; roundRect(g, 80, H - 70, (W - 160) * pr, 8, 4); g.fill();
+                    g.beginPath(); g.arc(80 + (W - 160) * pr, H - 66, 9, 0, Math.PI * 2); g.fill();
+                    g.font = '20px Arial'; g.textAlign = 'left'; g.fillText(Math.floor(pr * 96) + ' min', 80, H - 88); g.textAlign = 'right'; g.fillText('1 h 36', W - 80, H - 88);
+                    g.textAlign = 'center'; g.font = '40px Arial'; g.fillText('❚❚', W / 2, H - 100); g.font = '26px Arial'; g.fillText('◀◀        ▶▶', W / 2, H - 104);
                 } else {
-                    g.fillStyle = 'rgba(255,255,255,0.08)'; g.fillRect(24, 22, W - 48, 118);
-                    g.fillStyle = '#fff'; g.font = 'bold 30px Arial'; g.textAlign = 'left';
-                    g.fillText('Villa Crans-Montana', 44, 70); g.font = '18px Arial'; g.fillStyle = '#cbd5e1';
-                    g.fillText('À la une — Apple TV', 44, 104);
-                    var cols = 5, tw = 104, th = 64, gap = 14, x0 = (W - (cols * tw + (cols - 1) * gap)) / 2, y0 = 168;
-                    for (var i = 0; i < APPS.length; i++) {
+                    poster(g, 40, 30, W - 80, 250, 205, null, null);
+                    g.fillStyle = 'rgba(0,0,0,0.25)'; roundRect(g, 40, 30, W - 80, 250, 12); g.fill();
+                    g.fillStyle = '#fff'; g.font = 'bold 44px Arial'; g.textAlign = 'left'; g.fillText('Villa Crans-Montana', 72, 110);
+                    g.font = '22px Arial'; g.fillStyle = 'rgba(255,255,255,0.85)'; g.fillText('À la une — Apple TV+ · Nouvel épisode disponible', 72, 148);
+                    g.fillStyle = '#fff'; roundRect(g, 72, 190, 190, 48, 10); g.fill(); g.fillStyle = '#111'; g.font = 'bold 22px Arial'; g.fillText('▶  Regarder', 96, 222);
+                    var cols = 5, tw = 168, th = 96, gap = 18, x0 = (W - (cols * tw + (cols - 1) * gap)) / 2, y0 = 316;
+                    for (i = 0; i < APPS.length; i++) {
                         var cx = x0 + (i % cols) * (tw + gap), cy = y0 + Math.floor(i / cols) * (th + gap);
-                        var s = (i === st.sel) ? 1.12 : 1, w = tw * s, h = th * s, ox = cx - (w - tw) / 2, oy = cy - (h - th) / 2;
-                        g.fillStyle = APP_COLORS[i]; roundRect(g, ox, oy, w, h, 10); g.fill();
-                        if (i === st.sel) { g.lineWidth = 4; g.strokeStyle = '#fff'; roundRect(g, ox - 3, oy - 3, w + 6, h + 6, 12); g.stroke(); }
-                        g.fillStyle = '#fff'; g.font = (i === st.sel ? 'bold 16px' : '14px') + ' Arial'; g.textAlign = 'center';
-                        g.fillText(APPS[i], cx + tw / 2, cy + th / 2 + 5);
+                        var s = (i === st.sel) ? 1.1 : 1, w = tw * s, h = th * s, ox = cx - (w - tw) / 2, oy = cy - (h - th) / 2;
+                        g.fillStyle = APP_COLORS[i]; roundRect(g, ox, oy, w, h, 16); g.fill();
+                        gr = g.createLinearGradient(ox, oy, ox, oy + h); gr.addColorStop(0, 'rgba(255,255,255,0.18)'); gr.addColorStop(1, 'rgba(0,0,0,0.15)'); g.fillStyle = gr; roundRect(g, ox, oy, w, h, 16); g.fill();
+                        if (i === st.sel) { g.lineWidth = 5; g.strokeStyle = '#fff'; roundRect(g, ox - 4, oy - 4, w + 8, h + 8, 20); g.stroke(); }
+                        g.fillStyle = 'rgba(255,255,255,0.92)'; g.font = 'bold 34px Arial'; g.textAlign = 'center'; g.fillText(APP_GLYPH[i], cx + tw / 2, cy + th / 2 + 4);
+                        g.font = (i === st.sel ? 'bold 18px' : '17px') + ' Arial'; g.fillStyle = '#fff'; g.fillText(APPS[i], cx + tw / 2, cy + th - 10);
                     }
                 }
-            } else if (st.source === 2) {                // Sky Q
-                g.fillStyle = '#0a1a3a'; g.fillRect(0, 0, W, H);
-                g.fillStyle = '#ffffff'; g.font = 'bold 34px Arial'; g.textAlign = 'left'; g.fillText('sky', 36, 60);
-                g.font = '18px Arial'; g.fillStyle = '#9fb4d8'; g.fillText('Sky Q — Chaîne 101 · Sky Sports', 36, 92);
-                for (var r = 0; r < 4; r++) { g.fillStyle = r === (st.row || 0) ? 'rgba(255,255,255,0.22)' : 'rgba(255,255,255,0.08)'; g.fillRect(36, 122 + r * 52, W - 72, 42); }
-            } else if (st.source === 3) {                // Swisscom TV
-                g.fillStyle = '#0d1f45'; g.fillRect(0, 0, W, H);
-                g.fillStyle = '#ffffff'; g.font = 'bold 26px Arial'; g.textAlign = 'left'; g.fillText('Swisscom blue TV', 36, 56);
-                for (var k = 0; k < 8; k++) { g.fillStyle = k === (st.row || 0) ? '#2f7cf6' : 'rgba(255,255,255,0.12)'; roundRect(g, 36 + (k % 4) * 146, 90 + Math.floor(k / 4) * 120, 130, 100, 8); g.fill(); }
-            } else if (st.source === 4) {                // IPTV
-                g.fillStyle = '#101418'; g.fillRect(0, 0, W, H);
-                g.fillStyle = '#e5e7eb'; g.font = 'bold 26px Arial'; g.textAlign = 'left'; g.fillText('IPTV — Liste des chaînes', 36, 56);
-                for (var q = 0; q < 6; q++) { g.fillStyle = q === (st.row || 0) ? 'rgba(16,185,129,0.35)' : 'rgba(255,255,255,0.07)'; g.fillRect(36, 82 + q * 44, W - 72, 36); }
+            } else if (st.source === 2) {                // Sky Q : rail de menu à gauche, tuiles de programmes, direct en haut à droite
+                gr = g.createLinearGradient(0, 0, W, H); gr.addColorStop(0, '#071a3d'); gr.addColorStop(1, '#0b1226');
+                g.fillStyle = gr; g.fillRect(0, 0, W, H);
+                topBar(g, W, 'sky', '20:30  ·  Chaîne 101 Sky Sports');
+                poster(g, W - 330, 20, 290, 160, 210, 'EN DIRECT', 'Sky Sports F1 · Grand Prix');
+                for (i = 0; i < SKY_MENU.length; i++) {
+                    var on = i === (st.row || 0) % SKY_MENU.length;
+                    g.fillStyle = on ? 'rgba(255,255,255,0.22)' : 'rgba(255,255,255,0.05)'; roundRect(g, 40, 100 + i * 60, 270, 50, 8); g.fill();
+                    g.fillStyle = on ? '#fff' : 'rgba(255,255,255,0.7)'; g.font = (on ? 'bold ' : '') + '24px Arial'; g.textAlign = 'left'; g.fillText(SKY_MENU[i], 62, 133 + i * 60);
+                }
+                for (i = 0; i < 6; i++) poster(g, 350 + (i % 3) * 224, 210 + Math.floor(i / 3) * 168, 206, 150, HUES[(i + 2) % HUES.length], SKY_TILES[i], null);
+            } else if (st.source === 3) {                // Swisscom blue TV : barre de menus, grille de chaînes
+                gr = g.createLinearGradient(0, 0, 0, H); gr.addColorStop(0, '#0c1f4b'); gr.addColorStop(1, '#101a33');
+                g.fillStyle = gr; g.fillRect(0, 0, W, H);
+                topBar(g, W, 'blue TV', 'Swisscom  ·  20:30');
+                var menus = ['TV', 'Replay', 'Vidéothèque', 'Sport', 'Enregistrements'];
+                for (i = 0; i < menus.length; i++) { g.fillStyle = i === 0 ? '#2f7cf6' : 'rgba(255,255,255,0.1)'; roundRect(g, 40 + i * 172, 78, 160, 40, 20); g.fill(); g.fillStyle = '#fff'; g.font = '20px Arial'; g.textAlign = 'center'; g.fillText(menus[i], 120 + i * 172, 105); }
+                for (i = 0; i < 8; i++) {
+                    var sel = i === (st.row || 0) % 8, tx = 40 + (i % 4) * 240, ty = 140 + Math.floor(i / 4) * 200;
+                    poster(g, tx, ty, 222, 150, HUES[i], null, null);
+                    g.fillStyle = 'rgba(0,0,0,0.35)'; roundRect(g, tx, ty, 222, 150, 12); g.fill();
+                    g.fillStyle = '#fff'; g.font = 'bold 30px Arial'; g.textAlign = 'center'; g.fillText(SWISS_CH[i], tx + 111, ty + 84);
+                    if (sel) { g.lineWidth = 5; g.strokeStyle = '#5aa0ff'; roundRect(g, tx - 4, ty - 4, 230, 158, 14); g.stroke(); }
+                    g.fillStyle = sel ? '#fff' : 'rgba(255,255,255,0.7)'; g.font = '18px Arial'; g.textAlign = 'left'; g.fillText('Maintenant · ' + (i % 2 ? 'Journal' : 'Film du soir'), tx + 4, ty + 178);
+                }
+            } else if (st.source === 4) {                // IPTV : liste des chaînes avec programme en cours et aperçu
+                g.fillStyle = '#0f1216'; g.fillRect(0, 0, W, H);
+                topBar(g, W, 'IPTV  ·  Chaînes', 'Villa Crans-Montana');
+                for (i = 0; i < IPTV_CH.length; i++) {
+                    var hl = i === (st.row || 0) % IPTV_CH.length, ry = 86 + i * 78;
+                    g.fillStyle = hl ? 'rgba(16,185,129,0.28)' : 'rgba(255,255,255,0.05)'; roundRect(g, 40, ry, 600, 66, 10); g.fill();
+                    if (hl) { g.fillStyle = '#10b981'; g.fillRect(40, ry, 6, 66); }
+                    g.fillStyle = hl ? '#fff' : 'rgba(255,255,255,0.85)'; g.font = 'bold 24px Arial'; g.textAlign = 'left'; g.fillText(IPTV_CH[i][0] + '   ' + IPTV_CH[i][1], 64, ry + 30);
+                    g.font = '18px Arial'; g.fillStyle = 'rgba(255,255,255,0.65)'; g.fillText(IPTV_CH[i][2], 64, ry + 54);
+                    g.fillStyle = 'rgba(255,255,255,0.15)'; g.fillRect(400, ry + 44, 220, 5); g.fillStyle = '#10b981'; g.fillRect(400, ry + 44, 220 * ((i * 37 + 20) % 100) / 100, 5);
+                }
+                var cur = IPTV_CH[(st.row || 0) % IPTV_CH.length];
+                poster(g, 670, 86, 314, 200, HUES[((st.row || 0) + 1) % HUES.length], cur[1], cur[2]);
+                g.fillStyle = 'rgba(255,255,255,0.7)'; g.font = '18px Arial'; g.textAlign = 'left'; g.fillText('Programme en cours · 20:30 – 21:45', 670, 316);
+                g.fillText('Ensuite · Météo des neiges · 21:45', 670, 344);
             }
-            g.fillStyle = 'rgba(255,255,255,0.05)'; g.fillRect(0, 0, W, H / 3);   // reflet léger
+            gr = g.createLinearGradient(0, 0, W * 0.6, H * 0.5); gr.addColorStop(0, 'rgba(255,255,255,0.09)'); gr.addColorStop(1, 'rgba(255,255,255,0)');   // reflet de la vitre
+            g.fillStyle = gr; g.fillRect(0, 0, W, H);
             tex.needsUpdate = true;
         }
         draw();
         return { tex: tex, st: st, draw: draw };
     }
-
     /* ---------- Thermostat : texture canvas ---------- */
     function makeThermo() {
         var c = document.createElement('canvas'); c.width = 128; c.height = 128;
@@ -175,32 +261,70 @@ export function createPlan3D(opts) {
         var g = new THREE.Group();
         var y0 = p.niveau * (NIVEAU_H + NIVEAU_GAP);
         g.position.set(p.x, y0, p.z);
-        scene.add(g);
         var w = p.w, d = p.d, ext = p.type === 'terrasse' || p.type === 'piscine';
+        (ext ? scene : sceneR).add(g);
         var R = { id: p.id, cfg: p, group: g, lamps: [], glow: [], levels: [0.9, 0.6], tv: null, speakers: [], hvac: null, thermo: null, y0: y0, ext: ext };
 
         // Sol, dalle et murs du fond (nord = -z, ouest = -x) : écorché ouvert vers la caméra (+x, +z)
         box(w, 0.25, d, M.dalle, w / 2, -0.125, d / 2, g);
         box(w - 0.1, 0.02, d - 0.1, ext ? (p.type === 'terrasse' ? M.gazon : M.solExt) : (p.type === 'chambre' || p.type === 'suite' ? M.solChambre : M.sol), w / 2, 0.01, d / 2, g);
         if (!ext) {
-            var wallH = NIVEAU_H;
-            box(w, wallH, 0.15, p.type === 'cinema' ? M.murSombre : M.mur, w / 2, wallH / 2, 0.075, g);          // mur nord
-            box(0.15, wallH, d, p.type === 'cinema' ? M.murSombre : M.mur, 0.075, wallH / 2, d / 2, g);          // mur ouest
-            // fenêtre sur le mur nord
-            // Fenêtre à gauche du mur nord (la TV occupe le centre / la droite), sauf bureau (TV à gauche)
-            var fw = Math.min(1.8, w * 0.32), fx = p.type === 'bureau' ? w * 0.75 : w * 0.2;
-            box(fw, 1.3, 0.06, M.verre, fx, 1.7, 0.12, g);
-            // Motorisations sur la fenêtre : volet roulant extérieur (derrière la vitre), store intérieur, rideaux.
-            // Chaque élément est un pavé dont l'échelle suit sa position 0 (ouvert) .. 1 (fermé).
-            var volet = box(fw + 0.1, 1.4, 0.05, new THREE.MeshStandardMaterial({ color: 0x8c8f96, roughness: 0.7, metalness: 0.3 }), fx, 2.35, 0.02, g); volet.geometry.translate(0, -0.7, 0); volet.position.y = 2.35; volet.scale.y = 0.02;
-            var store = box(fw - 0.05, 1.35, 0.03, new THREE.MeshStandardMaterial({ color: 0xe7dcc8, roughness: 1 }), fx, 2.35, 0.2, g); store.geometry.translate(0, -0.675, 0); store.position.y = 2.35; store.scale.y = 0.02;
-            var rMat = new THREE.MeshStandardMaterial({ color: 0xb8c4d6, roughness: 1 });
-            var rg = box(fw / 2 + 0.2, 2.2, 0.08, rMat, fx - fw / 2 - 0.15, 1.35, 0.3, g); rg.geometry.translate((fw / 2 + 0.2) / 2, 0, 0); rg.scale.x = 0.18;
-            var rd = box(fw / 2 + 0.2, 2.2, 0.08, rMat, fx + fw / 2 + 0.15, 1.35, 0.3, g); rd.geometry.translate(-(fw / 2 + 0.2) / 2, 0, 0); rd.scale.x = 0.18;
-            cyl(0.03, fw + 0.6, M.metal, fx, 2.5, 0.3, g).rotation.z = Math.PI / 2;
-            R.shades = { volet: { mesh: volet, pos: 0, cible: 0, min: 0.02 }, store: { mesh: store, pos: 0, cible: 0, min: 0.02 }, rideau: { meshes: [rg, rd], pos: 0, cible: 0, min: 0.18 } };
+            var wallH = NIVEAU_H, wallMat = p.type === 'cinema' ? M.murSombre : M.mur;
+            box(0.15, wallH, d, wallMat, 0.075, wallH / 2, d / 2, g);                                       // mur ouest
+            // Mur nord percé d'une vraie fenêtre (on voit le paysage à travers) à gauche, la TV occupe le
+            // centre / la droite ; bureau : fenêtre à droite, TV à gauche.
+            var fw = Math.min(2.2, w * 0.34), fx = p.type === 'bureau' ? w * 0.74 : w * 0.22, fy0 = 0.95, fh = 1.4, fy1 = fy0 + fh;
+            box(fx - fw / 2, wallH, 0.15, wallMat, (fx - fw / 2) / 2, wallH / 2, 0.075, g);
+            box(w - fx - fw / 2, wallH, 0.15, wallMat, fx + fw / 2 + (w - fx - fw / 2) / 2, wallH / 2, 0.075, g);
+            box(fw, fy0, 0.15, wallMat, fx, fy0 / 2, 0.075, g);                                             // allège
+            box(fw, wallH - fy1, 0.15, wallMat, fx, fy1 + (wallH - fy1) / 2, 0.075, g);                     // linteau
+            box(fw + 0.1, 0.05, 0.1, M.alu, fx, fy1 + 0.025, 0.075, g); box(fw + 0.1, 0.05, 0.1, M.alu, fx, fy0 - 0.025, 0.075, g);   // cadre
+            box(0.05, fh, 0.1, M.alu, fx - fw / 2 - 0.025, fy0 + fh / 2, 0.075, g); box(0.05, fh, 0.1, M.alu, fx + fw / 2 + 0.025, fy0 + fh / 2, 0.075, g);
+            box(0.04, fh, 0.08, M.alu, fx, fy0 + fh / 2, 0.075, g);                                         // meneau
+            var vitre = new THREE.Mesh(new THREE.PlaneGeometry(fw, fh), M.verre); vitre.position.set(fx, fy0 + fh / 2, 0.075); g.add(vitre);
+            box(fw + 0.24, 0.03, 0.2, M.blanc, fx, fy0 - 0.015, 0.2, g);                                    // tablette d'appui
+            // Rai de lumière du jour qui entre par la fenêtre (opacité = ouverture des motorisations)
+            var shaft = new THREE.Mesh(new THREE.PlaneGeometry(fw, 2.8), new THREE.MeshBasicMaterial({ color: 0xfff1d6, transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide }));
+            shaft.position.set(fx, 0.95, 1.25); shaft.rotation.x = -1.12; g.add(shaft); R.shaft = shaft; R.win = { x: fx, y: fy0 + fh / 2, w: fw };
+
+            // --- Volet roulant : tablier à lames derrière la vitre, caisson intérieur ouvert montrant l'axe,
+            //     le tablier enroulé et le moteur tubulaire (tête + voyant)
+            var volMat = new THREE.MeshStandardMaterial({ map: TEX.lames.clone(), roughness: 0.6, metalness: 0.35 }); volMat.map.needsUpdate = true;
+            var volet = box(fw + 0.08, fh + 0.14, 0.03, volMat, fx, fy1 + 0.1, 0.02, g); volet.geometry.translate(0, -(fh + 0.14) / 2, 0); volet.scale.y = 0.02;
+            var cw = fw + 0.36, ch = 0.28, cd = 0.26, cy = fy1 + 0.17, cz = 0.15 + cd / 2;
+            box(cw, 0.02, cd, M.blanc, fx, cy + ch / 2, cz, g); box(0.02, ch, cd, M.blanc, fx - cw / 2, cy, cz, g); box(0.02, ch, cd, M.blanc, fx + cw / 2, cy, cz, g);
+            box(cw, ch * 0.42, 0.02, M.blanc, fx, cy + ch * 0.29, cz + cd / 2, g);                            // face avant partielle : l'intérieur reste visible
+            var axe = cyl(0.028, fw + 0.1, M.metal, fx, cy - 0.03, cz - 0.03, g); axe.rotation.z = Math.PI / 2;
+            var rouleau = cyl(0.05, fw - 0.1, volMat, fx + 0.05, cy - 0.03, cz - 0.03, g); rouleau.rotation.z = Math.PI / 2;
+            var motV = cyl(0.036, 0.3, M.moteur, fx - fw / 2 + 0.1, cy - 0.03, cz - 0.03, g); motV.rotation.z = Math.PI / 2;
+            box(0.09, 0.09, 0.09, M.noir, fx - fw / 2 - 0.06, cy - 0.03, cz - 0.03, g);                       // tête du moteur (fixation)
+            box(0.012, 0.012, 0.35, M.noir, fx - fw / 2 - 0.06, cy - 0.11, cz - 0.03, g);                     // câble d'alimentation
+            var ledV = led(fx - fw / 2 + 0.24, cy + 0.02, cz + 0.015, g);
+            // --- Store intérieur : tube + supports, moteur tubulaire à droite, toile qui descend, barre de lest
+            var stoMat = new THREE.MeshStandardMaterial({ map: TEX.toile.clone(), roughness: 1, side: THREE.DoubleSide }); stoMat.map.needsUpdate = true;
+            var store = box(fw - 0.06, fh + 0.06, 0.012, stoMat, fx, fy1 + 0.04, 0.2, g); store.geometry.translate(0, -(fh + 0.06) / 2, 0); store.scale.y = 0.02;
+            cyl(0.026, fw + 0.02, M.metal, fx, fy1 + 0.06, 0.2, g).rotation.z = Math.PI / 2;
+            box(0.03, 0.09, 0.07, M.noir, fx - fw / 2 - 0.02, fy1 + 0.06, 0.19, g); box(0.03, 0.09, 0.07, M.noir, fx + fw / 2 + 0.02, fy1 + 0.06, 0.19, g);
+            var motS = cyl(0.04, 0.18, M.moteur, fx + fw / 2 - 0.1, fy1 + 0.06, 0.2, g); motS.rotation.z = Math.PI / 2;
+            var lest = box(fw - 0.06, 0.03, 0.03, M.metal, fx, fy1 + 0.04, 0.2, g);
+            var ledS = led(fx + fw / 2 - 0.2, fy1 + 0.06, 0.245, g);
+            // --- Rideaux : tringle motorisée (moteur de rail à droite), panneaux plissés depuis les bords
+            var rMat = new THREE.MeshStandardMaterial({ map: TEX.plis.clone(), roughness: 1, side: THREE.DoubleSide }); rMat.map.needsUpdate = true;
+            var rw = fw / 2 + 0.2, ry = fy1 + 0.27, rz = 0.5;
+            var rg = box(rw, ry - 0.3, 0.08, rMat, fx - fw / 2 - 0.15, (ry - 0.3) / 2 + 0.3, rz, g); rg.geometry.translate(rw / 2, 0, 0); rg.scale.x = 0.18;
+            var rd = box(rw, ry - 0.3, 0.08, rMat, fx + fw / 2 + 0.15, (ry - 0.3) / 2 + 0.3, rz, g); rd.geometry.translate(-rw / 2, 0, 0); rd.scale.x = 0.18;
+            cyl(0.02, fw + 0.9, M.metal, fx, ry + 0.06, rz, g).rotation.z = Math.PI / 2;
+            box(0.05, 0.12, 0.05, M.metal, fx - fw / 2 - 0.4, ry + 0.09, rz - 0.02, g); box(0.05, 0.12, 0.05, M.metal, fx + fw / 2 + 0.4, ry + 0.09, rz - 0.02, g);   // consoles
+            box(0.16, 0.11, 0.11, M.moteur, fx + fw / 2 + 0.5, ry + 0.06, rz, g);                             // moteur de rail
+            var ledR = led(fx + fw / 2 + 0.5, ry + 0.06, rz + 0.06, g);
+            R.shades = {
+                volet: { mesh: volet, pos: 0, cible: 0, min: 0.02, led: ledV, update: function (o, sc) { volMat.map.repeat.set(1, Math.max(1, Math.round(sc * 18))); rouleau.scale.set(1 + (1 - o.pos) * 0.9, 1, 1 + (1 - o.pos) * 0.9); } },
+                store: { mesh: store, pos: 0, cible: 0, min: 0.02, led: ledS, update: function (o, sc) { stoMat.map.repeat.set(2, Math.max(1, Math.round(sc * 6))); lest.position.y = fy1 + 0.04 - (fh + 0.06) * sc; } },
+                rideau: { meshes: [rg, rd], pos: 0, cible: 0, min: 0.18, led: ledR, update: function (o, sc) { rMat.map.repeat.set(Math.max(1, Math.round(sc * rw / 0.24)), 1); } }
+            };
+            Object.keys(R.shades).forEach(function (k) { var o = R.shades[k]; o.update(o, o.min); });
         } else {
-            box(w, 0.9, 0.12, M.verre, w / 2, 0.45, 0.06, g);   // garde-corps vitré
+            box(w, 0.9, 0.12, M.verreExt, w / 2, 0.45, 0.06, g);   // garde-corps vitré
         }
 
         // Mobilier par type
@@ -246,7 +370,19 @@ export function createPlan3D(opts) {
                 for (var lg = 0; lg < 2; lg++) { box(0.7, 0.25, 1.9, M.boisClair, w * 0.35 + lg * 1.0, 0.3, d * 0.5, g); box(0.7, 0.45, 0.4, M.boisClair, w * 0.35 + lg * 1.0, 0.5, d * 0.5 - 0.75, g); }
                 for (var pp = 0; pp < 3; pp++) { cyl(0.28, 0.5, M.pot, 0.7 + pp * (w - 1.4) / 2, 0.25, d - 0.7, g, 0.22); sph(0.5, M.plante, 0.7 + pp * (w - 1.4) / 2, 0.85, d - 0.7, g); }
                 for (var ps = 0; ps < 4; ps++) cyl(0.08, 2.6, M.bois, 0.4 + (ps % 2) * (w - 0.8), 1.3, 0.4 + Math.floor(ps / 2) * (d - 0.8), g);
-                box(w, 0.08, d, M.bois, w / 2, 2.6, d / 2, g);
+                // Pergola à cadre ouvert : store de toit motorisé (toile rayée) qui se déroule d'arrière en avant,
+                // tube + moteur tubulaire à droite, barre de charge, voyant — visible depuis le ciel
+                box(w, 0.12, 0.16, M.bois, w / 2, 2.6, 0.4, g); box(w, 0.12, 0.16, M.bois, w / 2, 2.6, d - 0.4, g);
+                box(0.16, 0.12, d, M.bois, 0.4, 2.6, d / 2, g); box(0.16, 0.12, d, M.bois, w - 0.4, 2.6, d / 2, g);
+                for (var lm = 1; lm < 5; lm++) box(w - 0.8, 0.04, 0.06, M.boisClair, w / 2, 2.58, 0.4 + lm * (d - 0.8) / 5, g);   // lambourdes
+                var banMat = new THREE.MeshStandardMaterial({ map: TEX.banne.clone(), roughness: 1, side: THREE.DoubleSide }); banMat.map.needsUpdate = true; banMat.map.repeat.set(Math.round((w - 1) / 0.6), 1);
+                var banne = box(w - 1.0, 0.01, d - 1.0, banMat, w / 2, 2.64, 0.55, g); banne.geometry.translate(0, 0, (d - 1.0) / 2); banne.scale.z = 0.02;
+                cyl(0.045, w - 0.9, M.metal, w / 2, 2.66, 0.5, g).rotation.z = Math.PI / 2;
+                var motB = cyl(0.055, 0.24, M.moteur, w - 0.62, 2.66, 0.5, g); motB.rotation.z = Math.PI / 2;
+                box(0.1, 0.1, 0.1, M.noir, w - 0.45, 2.66, 0.5, g);                                         // tête de fixation
+                var barreB = box(w - 1.0, 0.05, 0.06, M.alu, w / 2, 2.64, 0.55, g);
+                var ledB = led(w - 0.62, 2.73, 0.5, g);
+                R.shades = { store: { mesh: banne, axis: 'z', pos: 0, cible: 0, min: 0.02, led: ledB, update: function (o, sc) { barreB.position.z = 0.55 + (d - 1.0) * sc; } } };
                 tvPos = null; break;
             case 'piscine':
                 var eauMat = M.eau.clone(); R.eau = box(w * 0.7, 0.6, d * 0.55, eauMat, w * 0.5, 0.05, d * 0.5, g);
@@ -287,12 +423,19 @@ export function createPlan3D(opts) {
         // Audio / vidéo : TV murale + 2 enceintes
         if (tvPos && p.av !== false) {
             var sw = tvPos.size, shh = sw * 9 / 16;
-            box(sw + 0.08, shh + 0.08, 0.05, M.noir, tvPos.x, tvPos.y, tvPos.z, g);
+            // Téléviseur : dalle fine à bord alu, support mural, bandeau logo, voyant de veille, barre de son
+            box(sw + 0.05, shh + 0.05, 0.012, M.alu, tvPos.x, tvPos.y, tvPos.z - 0.01, g);                 // liseré arrière
+            box(sw + 0.03, shh + 0.03, 0.03, M.noir, tvPos.x, tvPos.y, tvPos.z, g);                        // châssis
+            box(0.4, 0.3, 0.05, M.moteur, tvPos.x, tvPos.y, tvPos.z - 0.03, g);                             // support mural
+            box(0.14, 0.012, 0.008, M.alu, tvPos.x, tvPos.y - shh / 2 - 0.004, tvPos.z + 0.018, g);       // bandeau logo
+            var veille = sph(0.01, new THREE.MeshStandardMaterial({ color: 0xff3b30, emissive: 0xff3b30, emissiveIntensity: 1.2 }), tvPos.x + sw / 2 - 0.06, tvPos.y - shh / 2 + 0.03, tvPos.z + 0.02, g);
+            box(sw * 0.85, 0.07, 0.1, M.moteur, tvPos.x, tvPos.y - shh / 2 - 0.13, tvPos.z + 0.04, g);      // barre de son
+            for (var sb = 0; sb < 5; sb++) cyl(0.018, 0.012, M.noir, tvPos.x - sw * 0.3 + sb * sw * 0.15, tvPos.y - shh / 2 - 0.13, tvPos.z + 0.095, g).rotation.x = Math.PI / 2;
             var scr = makeScreen();
             var scrMat = new THREE.MeshBasicMaterial({ map: scr.tex });
-            var scrMesh = new THREE.Mesh(new THREE.PlaneGeometry(sw, shh), M.ecranOff); scrMesh.position.set(tvPos.x, tvPos.y, tvPos.z + 0.03); g.add(scrMesh);
+            var scrMesh = new THREE.Mesh(new THREE.PlaneGeometry(sw, shh), M.ecranOff); scrMesh.position.set(tvPos.x, tvPos.y, tvPos.z + 0.02); g.add(scrMesh);
             var tvLight = new THREE.PointLight(0x9db8ff, 0, 5, 2); tvLight.position.set(tvPos.x, tvPos.y, tvPos.z + 0.8); g.add(tvLight);
-            R.tv = { mesh: scrMesh, on: scrMat, off: M.ecranOff, screen: scr, light: tvLight, source: 0 };
+            R.tv = { mesh: scrMesh, on: scrMat, off: M.ecranOff, screen: scr, light: tvLight, source: 0, veille: veille };
             var spkMat = new THREE.MeshStandardMaterial({ color: 0x1f2937, roughness: 0.7 });
             [-1, 1].forEach(function (side) {
                 var sx = tvPos.x + side * (sw / 2 + 0.45); if (sx < 0.35 || sx > w - 0.35) sx = tvPos.x + side * (sw / 2 + 0.2);
@@ -319,7 +462,7 @@ export function createPlan3D(opts) {
         }
 
         // Étiquette de la pièce (sprite texte)
-        R.label = makeLabel(p.nom || ('Pièce ' + p.id)); R.label.position.set(w / 2, NIVEAU_H + 0.35, d / 2); g.add(R.label);
+        R.label = makeLabel(p.nom || ('Pièce ' + p.id)); R.label.position.set(w / 2, NIVEAU_H + 1.15, d / 2); g.add(R.label);   // assez haut pour ne pas masquer la fenêtre et son caisson
         applyLevels(R);
         ROOMS[p.id] = R;
         return R;
@@ -337,12 +480,21 @@ export function createPlan3D(opts) {
     /* ---------- Motorisations : volets / rideaux / stores (course complète en ~4 s) ---------- */
     function animateShades(R, dt) {
         var sh = R.shades; if (!sh) return;
-        ['volet', 'store', 'rideau'].forEach(function (k) {
-            var o = sh[k]; if (o.pos === o.cible) return;
+        Object.keys(sh).forEach(function (k) {
+            var o = sh[k], moving = o.pos !== o.cible;
+            if (o.led) o.led.material.emissiveIntensity = moving ? 2.2 + Math.sin(idle * 14) * 1.2 : 0.3;   // voyant du moteur
+            if (!moving) return;
             var step = dt / 4; o.pos = o.pos < o.cible ? Math.min(o.cible, o.pos + step) : Math.max(o.cible, o.pos - step);
             var sc = o.min + (1 - o.min) * o.pos;
-            if (o.meshes) o.meshes.forEach(function (m) { m.scale.x = sc; }); else o.mesh.scale.y = sc;
+            if (o.meshes) o.meshes.forEach(function (m) { m.scale.x = sc; }); else if (o.axis === 'z') o.mesh.scale.z = sc; else o.mesh.scale.y = sc;
+            if (o.update) o.update(o, sc);
         });
+    }
+    // Lumière du jour qui entre dans la pièce : 0 (volet fermé) .. 1 (tout ouvert) ; store et rideaux tamisent
+    function daylight(R) {
+        var sh = R && R.shades; if (!sh || R.ext) return 1;
+        var v = sh.volet ? sh.volet.pos : 0, s = sh.store ? sh.store.pos : 0, r = sh.rideau ? sh.rideau.pos : 0;
+        return (1 - v) * (1 - 0.85 * s) * (1 - 0.7 * r);
     }
     var FAMILLES = { volet: 'volet', rideau: 'rideau', store: 'store' };
     function shadeCmd(R, famille, cmd) {           // cmd : 'up' (ouvrir) / 'stop' / 'down' (fermer)
@@ -376,6 +528,7 @@ export function createPlan3D(opts) {
         if (!R.tv) return;
         R.tv.source = src; R.tv.screen.st.source = src; R.tv.screen.st.open = null; R.tv.screen.draw();
         R.tv.mesh.material = src > 0 ? R.tv.on : R.tv.off;
+        R.tv.veille.material.emissiveIntensity = src > 0 ? 0 : 1.2; R.tv.veille.material.color.setHex(src > 0 ? 0x3a0d0b : 0xff3b30);
     }
 
     var activeRoom = null, tween = null, idle = 0, music = false;
@@ -399,8 +552,8 @@ export function createPlan3D(opts) {
     function overviewPose() {
         if (overviewCache) return overviewCache;
         var b = villaBounds(), c = b.getCenter(new THREE.Vector3()), s = b.getSize(new THREE.Vector3());
-        var dist = (Math.max(s.x, s.z * 1.3, s.y * 1.1) * 1.12 + 4) * (cfg.villaFit || 1);   // vue villa : pleine page, jamais la fenêtre
-        overviewCache = { pos: new THREE.Vector3(c.x + dist * 0.55, c.y + dist * 0.68, c.z + dist * 0.8), tgt: new THREE.Vector3(c.x, c.y + s.y * 0.06, c.z) };
+        var dist = (Math.max(s.x, s.z * 1.3, s.y * 1.1) * 1.22 + 4) * (cfg.villaFit || 1);   // vue villa : pleine page, jamais la fenêtre
+        overviewCache = { pos: new THREE.Vector3(c.x + dist * 0.55, c.y + dist * 0.56, c.z + dist * 0.84), tgt: new THREE.Vector3(c.x, c.y + s.y * 0.1, c.z) };   // assez bas pour garder les montagnes à l'horizon
         return overviewCache;
     }
     function goOverview(immediate) { var o = overviewPose(); flyTo(o.pos.clone(), o.tgt.clone(), immediate); }
@@ -426,6 +579,7 @@ export function createPlan3D(opts) {
         id = parseInt(id, 10); var R = ROOMS[id]; if (!R) return;
         if (activeRoom === R) return;
         var prev = activeRoom; activeRoom = R;
+        if (prev && prev.shaft) prev.shaft.material.opacity = 0;
         Object.keys(ROOMS).forEach(function (k) { ROOMS[k].label.material.opacity = ROOMS[k] === R ? 1 : 0.55; });
         queue = [];
         if (prev || firstRoom) {                       // on repasse par la villa entière, puis on zoome
@@ -462,6 +616,19 @@ export function createPlan3D(opts) {
         var sway = tween ? 0 : 1;
         camera.position.set(camState.pos.x + Math.sin(idle * 0.25) * 0.35 * sway, camState.pos.y + Math.sin(idle * 0.18) * 0.15 * sway, camState.pos.z + Math.cos(idle * 0.22) * 0.35 * sway);
         camera.lookAt(camState.tgt); applyViewOffset();
+        // Lumière du jour de la scène des pièces : pleine en vue villa, sinon celle qui entre par la fenêtre
+        // de la pièce active (volet / store / rideaux) ; les lampes des scènes ajoutent un rebond chaud.
+        var dayT = activeRoom ? daylight(activeRoom) : 1, lampAvg = activeRoom ? ((activeRoom.levels[0] || 0) + (activeRoom.levels[1] || 0)) / 2 : 0;
+        dayCur += (dayT - dayCur) * Math.min(1, dt * 4);
+        var dayF = 0.015 + 0.985 * dayCur;
+        hemi.intensity = DAY.hemi * dayF + lampAvg * 0.5 * (1 - dayCur); hemi.color.setHex(dayCur > 0.5 ? 0xe6eeff : 0xffe1bd);
+        sun.intensity = DAY.sun * dayF; fill.intensity = DAY.fill * dayF;
+        if (activeRoom && activeRoom.win && !activeRoom.ext) {
+            var wn = activeRoom.win, gw = activeRoom.group;
+            winLight.position.copy(gw.localToWorld(new THREE.Vector3(wn.x, wn.y + 1.4, -3.2)));
+            winLight.target.position.copy(gw.localToWorld(new THREE.Vector3(wn.x, 0, activeRoom.cfg.d * 0.55)));
+            winLight.intensity = 90 * dayCur; activeRoom.shaft.material.opacity = 0.16 * dayCur;
+        } else winLight.intensity = 0;
         // lampes réelles sur la pièce active
         if (activeRoom) {
             activeRoom.lamps.forEach(function (l, i) { if (i < 2) { var wp = l.pos.clone().applyMatrix4(activeRoom.group.matrixWorld); roomLights[i].position.copy(wp); roomLights[i].intensity = (activeRoom.levels[i] || 0) * (i === 0 ? 55 : 30) * (l.sousMarin ? 0.3 : 1); } });
@@ -476,7 +643,9 @@ export function createPlan3D(opts) {
             if (activeRoom.eau) { var em = activeRoom.eau.material; em.emissiveIntensity = 0.45 + Math.sin(idle * 1.3) * 0.15 + (activeRoom.levels[0] || 0) * 0.5; activeRoom.eau.position.y = 0.05 + Math.sin(idle * 0.9) * 0.012; em.color.setHex((activeRoom.levels[0] || 0) > 0.3 ? 0x5fc8f0 : 0x3fa7d6); }
             if (activeRoom.hvac) { activeRoom.hvac.flap.rotation.x = 0.5 + Math.sin(idle * 1.5) * 0.25; activeRoom.hvac.breeze.material.opacity = 0.08 + Math.abs(Math.sin(idle * 1.5)) * 0.1; activeRoom.hvac.breeze.material.color.setHex(activeRoom.hvac.thermo.st.chauffe ? 0xffc27a : 0x9fd8ff); }
         }
-        renderer.render(scene, camera);
+        renderer.clear();
+        renderer.render(scene, camera);          // extérieurs, lumière du jour constante
+        renderer.render(sceneR, camera);         // pièces, même profondeur, lumière du jour de la pièce active
     }
 
     /* ---------- Sol et décor ---------- */
@@ -491,8 +660,28 @@ export function createPlan3D(opts) {
             cyl(0.15, 1.2, M.bois, x, 0, z); var h = 3 + (i % 4);
             for (var k = 0; k < 3; k++) { var cone = new THREE.Mesh(new THREE.ConeGeometry(1.3 - k * 0.3, h * 0.45, 8), new THREE.MeshStandardMaterial({ color: 0x2f5e3a, roughness: 1 })); cone.position.set(x, 0.6 + k * h * 0.28 + h * 0.2, z); scene.add(cone); }
         }
-        // montagnes en arrière-plan
-        for (var m = 0; m < 6; m++) { var mh = 16 + (m % 3) * 6, mt = new THREE.Mesh(new THREE.ConeGeometry(14 + m * 3, mh, 5), new THREE.MeshStandardMaterial({ color: 0x4b5b7a, roughness: 1, flatShading: true })); mt.position.set(c.x - 40 + m * 16, -1, c.z - 55 + (m % 2) * 8); scene.add(mt); var neige = new THREE.Mesh(new THREE.ConeGeometry((14 + m * 3) * 0.32, mh * 0.32, 5), new THREE.MeshStandardMaterial({ color: 0xf3f6fb, roughness: 1, flatShading: true })); neige.position.set(mt.position.x, -1 + mh * 0.34, mt.position.z); scene.add(neige); }
+        // Montagnes en arrière-plan : un seul relief (grille de hauteurs) coloré par sommet — roche, alpages,
+        // neige au-dessus d'une limite ondulée. Plus aucune surface superposée, donc aucun scintillement.
+        var MW = 260, MD = 90, nx = 130, nz = 40;
+        var geo = new THREE.PlaneGeometry(MW, MD, nx, nz); geo.rotateX(-Math.PI / 2);
+        var pos = geo.attributes.position, col = new Float32Array(pos.count * 3);
+        var peaks = [[-95, 19, 11], [-58, 27, 13], [-22, 23, 10], [12, 31, 14], [48, 25, 11], [82, 21, 12], [115, 17, 10]];   // x, hauteur, largeur
+        var roche = new THREE.Color(0x56627c), alpage = new THREE.Color(0x4a6a48), neige = new THREE.Color(0xf4f7fc), tmp = new THREE.Color();
+        for (var i = 0; i < pos.count; i++) {
+            var x = pos.getX(i), z = pos.getZ(i), h = 0;
+            for (var k = 0; k < peaks.length; k++) { var dx = (x - peaks[k][0]) / peaks[k][2], dz = (z + 8) / 16; h += peaks[k][1] * Math.exp(-(dx * dx + dz * dz)); }
+            h += 1.2 * Math.sin(x * 0.31) * Math.cos(z * 0.23) + 0.7 * Math.sin(x * 0.9 + z * 0.6) + 0.35 * Math.sin(x * 2.1 - z * 1.3);
+            var edge = Math.min(1, Math.max(0, (z + MD / 2) / 12)) * Math.min(1, Math.max(0, (MD / 2 - z) / 6));   // s'aplanit vers le sol
+            h = Math.max(0, h) * edge;
+            pos.setY(i, h - 1.4);
+            var snowLine = 12.5 + 1.8 * Math.sin(x * 0.45) + 0.9 * Math.cos(x * 1.3), t;
+            if (h < 3) tmp.copy(alpage).lerp(roche, Math.min(1, h / 3));
+            else { t = Math.min(1, Math.max(0, (h - snowLine + 1.5) / 3)); tmp.copy(roche).lerp(neige, t); }
+            col[i * 3] = tmp.r; col[i * 3 + 1] = tmp.g; col[i * 3 + 2] = tmp.b;
+        }
+        geo.setAttribute('color', new THREE.BufferAttribute(col, 3)); geo.computeVertexNormals();
+        var mts = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 1, metalness: 0 }));
+        mts.position.set(c.x + 10, 0, c.z - 62); scene.add(mts);
     }
 
     /* ---------- Disposition par défaut (si meta.plan3d.pieces absent) ---------- */
@@ -526,6 +715,13 @@ export function createPlan3D(opts) {
         setSetpoint: function (roomId, deg) { var R = ROOMS[roomId]; if (!R || !R.hvac) return; R.hvac.thermo.st.setpoint = deg; R.hvac.thermo.draw(); },
         setHeating: function (roomId, chauffe) { var R = ROOMS[roomId]; if (!R || !R.hvac) return; R.hvac.thermo.st.chauffe = !!chauffe; R.hvac.thermo.draw(); },
         shade: function (famille, cmd) { shadeCmd(activeRoom, famille, cmd); },
+        shadePos: function (famille, pos) {            // tests : place immédiatement une motorisation de la pièce active (0 ouvert .. 1 fermé)
+            var o = activeRoom && activeRoom.shades && activeRoom.shades[famille]; if (!o) return;
+            o.pos = o.cible = Math.max(0, Math.min(1, pos)); var sc = o.min + (1 - o.min) * o.pos;
+            if (o.meshes) o.meshes.forEach(function (m) { m.scale.x = sc; }); else if (o.axis === 'z') o.mesh.scale.z = sc; else o.mesh.scale.y = sc;
+            if (o.update) o.update(o, sc);
+        },
+        daylight: function () { return activeRoom ? daylight(activeRoom) : 1; },
         shadeScene: function (n) { shadeScene(activeRoom, n); },
         motor: function (idx, cmd) { if (activeRoom) shadeCmd(activeRoom, motorFamily(activeRoom, idx), cmd); },
         remote: function (key) {                       // télécommande de la source affichée par la TV de la pièce active

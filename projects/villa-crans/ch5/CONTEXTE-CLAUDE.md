@@ -100,7 +100,9 @@ L'entête ne porte que la liste des pièces et l'engrenage (version, connexion, 
 **Vidéo par défaut** ; `apps/showcase/src/components/Plan3DBackground.jsx` ne la remplace que dans
 les cas de `PLAN3D_RULES` (`{device,minWidth,maxWidth}` — aujourd'hui : châssis Smartphone ; l'utilisateur
 teste d'autres tailles d'écran et dira quoi ajouter). 3D active ⇒ châssis calé à gauche (`.plan3d-on`,
-`--chassis-scale`), pièce cadrée avant la colonne des boutons. `public/plan3d/plan3d.js` (Three.js `public/plan3d/vendor/`, `import()` à l'exécution) et
+`--chassis-scale`), pièce cadrée avant la colonne des boutons. Deux scènes (extérieurs / pièces) : la
+lumière du jour de la pièce suit ses motorisations (`daylight()`), moteurs visibles avec voyants, montagnes
+en relief unique (sans scintillement), TV détaillée (écran 1024×576). `public/plan3d/plan3d.js` (Three.js `public/plan3d/vendor/`, `import()` à l'exécution) et
 `public/plan3d/villa-crans.json` (disposition, style). Lit le GUI **à travers l'iframe** (même
 origine) : CrComLib (a10, a71-80, d150-156, d155, a31/s33), clics `ch5-button[data-join]` (211-216,
 Sky 500+, IPTV 530+, Swisscom 574+, stores 61-69, moteurs 81-98), `animateGroupBlinds`. Villa plein

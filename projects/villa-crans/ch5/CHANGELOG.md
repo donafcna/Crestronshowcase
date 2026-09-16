@@ -72,8 +72,22 @@
   est calé au bord gauche de l'espace de travail (`.plan3d-on`, `--chassis-scale` exposée par
   `DeviceFrame`) et la pièce est cadrée dans la zone libre entre le châssis et la colonne des boutons
   (QR code, Fiche PDF, supports), jamais derrière eux. D'autres cas seront ajoutés au fil des essais.
-- Coût : 53 appels de rendu / 1 600 triangles en vue pièce, 107 / 5 700 en vue d'ensemble,
-  2 lumières réelles (pièce active), pixel ratio plafonné à 1,5, boucle en pause onglet caché.
+- **Détails 3D (`public/plan3d/plan3d.js`)** : montagnes = un seul relief (grille de hauteurs colorée par
+  sommet : alpage, roche, neige au-dessus d'une limite ondulée) — plus aucune surface superposée, donc plus
+  de scintillement ; vue villa abaissée pour garder les sommets à l'horizon. Vraie fenêtre percée dans le
+  mur (cadre alu, meneau, vitre, tablette) avec ses **motorisations visibles** : caisson de volet ouvert
+  (axe, tablier enroulé, moteur tubulaire, câble), store intérieur (tube, supports, moteur, toile, barre de
+  lest), rideaux plissés sur tringle à moteur de rail ; chaque moteur a son voyant vert qui clignote pendant
+  la course. Terrasse : pergola à cadre ouvert avec store de toit motorisé (toile rayée), famille « store ».
+  **Luminosité** : rendu en deux scènes (extérieurs sous jour constant / pièces) ; la lumière du jour de la
+  pièce active = (1 − volet) × (1 − 0,85 store) × (1 − 0,7 rideaux), spot par la fenêtre + rai de lumière ;
+  scène OFF + tout fermé → noir (luminance ≈ 11 % de la zone, dont l'extérieur), scène TOTAL + ouvert →
+  pleine lumière (59 %), lampes seules → rebond chaud. **TV** : dalle fine à liseré alu, support mural,
+  barre de son, voyant de veille rouge, écran 1024 × 576 : Apple TV (bandeau à la une, apps à glyphes,
+  lecteur plein écran), Sky Q (rail de menu, direct, tuiles), blue TV (menus, grille de chaînes),
+  IPTV (liste avec programme et progression, aperçu) ; éteinte = verre noir brillant.
+- Coût (après détails) : 83 appels de rendu / 3 000 triangles en vue pièce, 4 lumières réelles
+  (2 lampes, spot de fenêtre, TV) sur la pièce active, pixel ratio plafonné à 1,5, boucle en pause onglet caché.
 - `tools/check_contrast_dom.mjs` : termine les transitions CSS avant de mesurer (rendu logiciel),
   referme la confirmation audio après son audit, `--w/--h` pour la résolution du châssis.
 - Recette TSW : surbrillance tactile Chromium désactivée sur les deux GUI (cadre tuile + engrenage).
