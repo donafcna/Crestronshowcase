@@ -3,7 +3,7 @@ import * as T from './vendor/three.module.min.js';
 // Continuous coloured terrain: snow is part of the same surface as the rock.
 // No overlapping caps, alpha dithering or moving noise; all randomness is seeded.
 export function buildLandscape(scene, bounds, kit) {
-  const c=bounds.getCenter(new T.Vector3()),s=bounds.getSize(new T.Vector3());
+  const c=bounds.getCenter(new T.Vector3());
   const rand=kit.random,A=kit.materials;
   scene.fog=new T.Fog(0xaebfc3,85,240);
   const skyCanvas=document.createElement('canvas');skyCanvas.width=8;skyCanvas.height=256;
@@ -66,26 +66,13 @@ export function buildLandscape(scene, bounds, kit) {
     const angle=rand()*Math.PI*2,r=25+rand()*43,x=Math.cos(angle)*r,z=Math.sin(angle)*r;
     // The south-east foreground remains open for the architectural cutaway.
     const zz=z>5&&x>0?-z-20:z;
-    const base=hills(x,zz),height=.65+rand()*.8;
-    dummy.position.set(c.x+x,base+height*2,c.z+zz);dummy.scale.set(height,height,height);dummy.rotation.y=rand()*6.28;dummy.updateMatrix();trees.setMatrixAt(i,dummy.matrix);
+    // Keep trees below the snow line; no conifers growing on bare summits.
+    const treeZ=hills(x,zz)>10?-18-rand()*9:zz;
+    const base=hills(x,treeZ),height=.65+rand()*.8;
+    dummy.position.set(c.x+x,base+height*2,c.z+treeZ);dummy.scale.set(height,height,height);dummy.rotation.y=rand()*6.28;dummy.updateMatrix();trees.setMatrixAt(i,dummy.matrix);
     tint.setHex(i%3?0xf0eee2:0xc9d5bf);trees.setColorAt(i,tint);
     dummy.position.y=base+.45*height;dummy.updateMatrix();trunks.setMatrixAt(i,dummy.matrix);
   }
   scene.add(trees,trunks);
-  const garden=new T.Group();scene.add(garden);
-  const block=(m,x,y,z,w,h,d)=>{const o=new T.Mesh(new T.BoxGeometry(w,h,d),m);o.position.set(x,y,z);o.receiveShadow=true;garden.add(o);return o;};
-  // Stone walk, border, lawn terraces and a low retaining wall.
-  const front=c.z+s.z/2+1.7;
-  for(let i=0;i<33;i++)block(A.stone,c.x-s.x*.5+i, -.48,front,.92,.1,1.35);
-  for(let i=0;i<28;i++)block(A.stone,c.x-s.x*.5+i*1.15,-.4,front+3,1.1,.4,.42);
-  for(let i=0;i<12;i++)block(A.stone,c.x-s.x*.5-1.2,-.48,c.z-s.z/2+i*1.1,1.2,.1,1);
-  const bushes=new T.InstancedMesh(new T.IcosahedronGeometry(1,1),new T.MeshStandardMaterial({color:0x435c3f,roughness:1}),85);
-  const blooms=new T.InstancedMesh(new T.IcosahedronGeometry(.055,0),new T.MeshStandardMaterial({color:0xb6a0bd,roughness:1}),255);
-  for(let i=0;i<85;i++){
-    const x=c.x-s.x*.5+rand()*(s.x+1),z=front+1.5+rand()*.55;
-    dummy.position.set(x,-.25,z);dummy.scale.set(.18+rand()*.18,.3+rand()*.3,.25);dummy.updateMatrix();bushes.setMatrixAt(i,dummy.matrix);
-    for(let j=0;j<3;j++){dummy.position.set(x+(rand()-.5)*.3,.02+rand()*.22,z+(rand()-.5)*.2);dummy.scale.set(.7,2,.7);dummy.updateMatrix();blooms.setMatrixAt(i*3+j,dummy.matrix);}
-  }
-  scene.add(bushes,blooms);kit.batch(garden);
   return {skyTexture:skyTex,terrain:land};
 }

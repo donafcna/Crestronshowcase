@@ -889,25 +889,8 @@
             padding-bottom: 0 !important;
         }
 
-        /* Feedback lumineux actif pour les boutons du Contrôle Global Villa */
-        #global-control-overlay ch5-button[selected="true"] button,
-        #global-control-overlay ch5-button.ch5-button--selected button,
-        #global-control-overlay ch5-button[selected="true"] .scene-btn,
-        #global-control-overlay ch5-button.ch5-button--selected .scene-btn,
-        #global-control-overlay .scene-btn.ch5-button--selected,
-        #global-control-overlay .scene-btn[selected="true"],
-        #global-control-overlay ch5-button.selected .scene-btn,
-        #global-control-overlay ch5-button[selected] .scene-btn {
-            background-color: #10b981 !important;
-            border: 2px solid #ffffff !important;
-            color: #ffffff !important;
-            font-weight: 700 !important;
-            box-shadow: 0 0 22px rgba(16, 185, 129, 0.85) !important;
-        }
+        /* Retours globaux partagés : themes/global-controls.css. */
 
-        
-        
-        
         /* Prevent outer ch5-button element from duplicating logos (v1.0.149) */
         ch5-button[customClass*="src-"] {
             background-image: none !important;
@@ -3596,6 +3579,7 @@ body#app-body.theme-light ch5-button[customClass~="scene-btn"]:not([selected="tr
             filter: invert(1) !important;
         }
     </style>
+    <link rel="stylesheet" href="themes/global-controls.css">
 </head>
 <body id="app-body">
     <!-- Fond grisé pour modales (Backdrop) -->
@@ -4978,9 +4962,9 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
                     </div>
                     <p style="margin: 0 0 15px 0; color: #94a3b8; font-size: 0.85rem;">Commande groupée de tous les circuits d'éclairage de la villa.</p>
                     <div style="display: flex; gap: 10px;">
-                        <ch5-button label="TOUT ALLUMER" customClass="scene-btn" style="flex: 1; height: 42px;" sendEventOnClick="401" receiveStateSelected="401" onclick="window.selectGlobalControl(this)" data-join="401" data-rjoin="401"></ch5-button>
-                        <ch5-button label="MODE ÉCO" customClass="scene-btn" style="flex: 1; height: 42px;" sendEventOnClick="403" receiveStateSelected="403" onclick="window.selectGlobalControl(this)" data-join="403" data-rjoin="403"></ch5-button>
-                        <ch5-button label="TOUT ÉTEINDRE" customClass="scene-btn" style="flex: 1; height: 42px; --ch5-button-selected-background-color: #dc2626;" sendEventOnClick="402" receiveStateSelected="402" onclick="window.selectGlobalControl(this)" data-join="402" data-rjoin="402"></ch5-button>
+                        <ch5-button label="TOUT ALLUMER" customClass="scene-btn global-command" style="flex: 1; height: 42px;" sendEventOnClick="401" receiveStateSelected="401" data-join="401" data-rjoin="401"></ch5-button>
+                        <ch5-button label="MODE ÉCO" customClass="scene-btn global-command" style="flex: 1; height: 42px;" sendEventOnClick="403" receiveStateSelected="403" data-join="403" data-rjoin="403"></ch5-button>
+                        <ch5-button label="TOUT ÉTEINDRE" customClass="scene-btn global-command" style="flex: 1; height: 42px;" sendEventOnClick="402" receiveStateSelected="402" data-join="402" data-rjoin="402"></ch5-button>
                     </div>
                 </div>
                 <!-- Section Stores Globaux -->
@@ -4991,8 +4975,8 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
                     </div>
                     <p style="margin: 0 0 15px 0; color: #94a3b8; font-size: 0.85rem;">Commande centralisée de toutes les motorisations et volets.</p>
                     <div style="display: flex; gap: 10px;">
-                        <ch5-button label="TOUT OUVRIR" customClass="scene-btn" style="flex: 1; height: 42px;" sendEventOnClick="404" receiveStateSelected="404" onclick="window.selectGlobalControl(this)" data-join="404" data-rjoin="404"></ch5-button>
-                        <ch5-button label="TOUT FERMER" customClass="scene-btn" style="flex: 1; height: 42px; --ch5-button-selected-background-color: #dc2626;" sendEventOnClick="405" receiveStateSelected="405" onclick="window.selectGlobalControl(this)" data-join="405" data-rjoin="405"></ch5-button>
+                        <ch5-button label="TOUT OUVRIR" customClass="scene-btn global-command" style="flex: 1; height: 42px;" sendEventOnClick="404" receiveStateSelected="404" data-join="404" data-rjoin="404"></ch5-button>
+                        <ch5-button label="TOUT FERMER" customClass="scene-btn global-command" style="flex: 1; height: 42px;" sendEventOnClick="405" receiveStateSelected="405" data-join="405" data-rjoin="405"></ch5-button>
                     </div>
                 </div>
             </div>
@@ -5007,9 +4991,9 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
                     </div>
                     <p style="margin: 0 0 15px 0; color: #94a3b8; font-size: 0.85rem;">Mode de chauffage / climatisation central de la villa.</p>
                     <div style="display: flex; gap: 10px;">
-                        <ch5-button label="CONFORT" customClass="scene-btn" style="flex: 1; height: 42px;" sendEventOnClick="407" receiveStateSelected="407" onclick="window.selectGlobalControl(this)" data-join="407" data-rjoin="407"></ch5-button>
-                        <ch5-button label="NUIT" customClass="scene-btn" style="flex: 1; height: 42px;" sendEventOnClick="408" receiveStateSelected="408" onclick="window.selectGlobalControl(this)" data-join="408" data-rjoin="408"></ch5-button>
-                        <ch5-button label="HORS GEL" customClass="scene-btn" style="flex: 1; height: 42px;" sendEventOnClick="409" receiveStateSelected="409" onclick="window.selectGlobalControl(this)" data-join="409" data-rjoin="409"></ch5-button>
+                        <ch5-button label="CONFORT" customClass="scene-btn global-command" style="flex: 1; height: 42px;" sendEventOnClick="407" receiveStateSelected="407" data-join="407" data-rjoin="407"></ch5-button>
+                        <ch5-button label="NUIT" customClass="scene-btn global-command" style="flex: 1; height: 42px;" sendEventOnClick="408" receiveStateSelected="408" data-join="408" data-rjoin="408"></ch5-button>
+                        <ch5-button label="HORS GEL" customClass="scene-btn global-command" style="flex: 1; height: 42px;" sendEventOnClick="409" receiveStateSelected="409" data-join="409" data-rjoin="409"></ch5-button>
                     </div>
                 </div>
                 <!-- Section Mode Vacances -->
@@ -5020,8 +5004,8 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
                     </div>
                     <p style="margin: 0 0 15px 0; color: #94a3b8; font-size: 0.85rem;">Met la maison en veille prolongée (sécurité max, énergie min).</p>
                     <div style="display: flex; gap: 10px;">
-                        <ch5-button label="ACTIVER" customClass="scene-btn" style="flex: 1; height: 42px;" sendEventOnClick="410" receiveStateSelected="410" onclick="window.selectGlobalControl(this)" data-join="410" data-rjoin="410"></ch5-button>
-                        <ch5-button label="DÉSACTIVER" customClass="scene-btn" style="flex: 1; height: 42px; --ch5-button-selected-background-color: #dc2626;" sendEventOnClick="411" receiveStateSelected="411" onclick="window.selectGlobalControl(this)" data-join="411" data-rjoin="411"></ch5-button>
+                        <ch5-button label="ACTIVER" customClass="scene-btn global-command" style="flex: 1; height: 42px;" sendEventOnClick="410" receiveStateSelected="410" data-join="410" data-rjoin="410"></ch5-button>
+                        <ch5-button label="DÉSACTIVER" customClass="scene-btn global-command" style="flex: 1; height: 42px;" sendEventOnClick="411" receiveStateSelected="411" data-join="411" data-rjoin="411"></ch5-button>
                     </div>
                 </div>
             </div>

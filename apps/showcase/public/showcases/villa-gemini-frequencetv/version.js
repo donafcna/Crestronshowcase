@@ -1,1 +1,1 @@
-window.appVersion='v-test';
+window.appVersion = 'v1.0.178';

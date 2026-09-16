@@ -801,6 +801,7 @@
          clic posé sur le parent du logo), d'où un cadre qui englobait les deux boutons pendant
          quelques secondes. Le retour visuel vient des états CH5, jamais de cette surbrillance. -->
     <style id="touch-highlight">* { -webkit-tap-highlight-color: rgba(0, 0, 0, 0); }</style>
+    <link rel="stylesheet" href="themes/global-controls.css">
 </head>
 <body id="app-body">
     <!-- Fond grisé pour modales (Backdrop) -->
@@ -1565,7 +1566,7 @@
     </div>
 
     <!-- POPUP CONTRÔLE GLOBAL (Mobile Optimized) -->
-    <div id="global-control-overlay" class="custom-overlay-panel" style="width: 96% !important; max-width: 440px !important; height: auto !important; max-height: 92% !important; padding: 15px; box-sizing: border-box; display: flex; flex-direction: column;">
+    <div id="global-control-overlay" class="custom-overlay-panel" style="width: 96% !important; max-width: 440px !important; height: auto !important; max-height: 92% !important; padding: 15px; box-sizing: border-box; display: none; flex-direction: column;">
         <div class="overlay-header" style="margin-bottom: 12px;">
             <h3 style="display: flex; align-items: center; gap: 8px; color: #10b981; margin: 0; font-size: 1.1rem; text-transform: uppercase;">
                 🌐 Centralisation
@@ -1581,9 +1582,9 @@
                     <button onclick="window.openGlobalPresetCustomizer('lighting')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; cursor: pointer; outline: none; font-size: 0.75rem;"><svg class="gear-icon" viewBox="0 0 512 512" aria-hidden="true"><path d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6l-43.3 75c-3.2 8.7-12.2 13.9-21.4 11.7l-56.4-13.6c-15.6 12-33 21.6-51.7 28.5l-11.9 57.3c-2 9.7-10.5 16.7-20.5 16.7H220.4c-10 0-18.5-7-20.5-16.7l-11.9-57.3c-18.7-6.9-36.1-16.4-51.7-28.5l-56.4 13.6c-9.2 2.2-18.2-3-21.4-11.7l-43.3-75c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4c-1.1-8.3-1.7-16.8-1.7-25.4s.6-17.1 1.7-25.4L21.6 191.2c-6.9-6.2-9.6-15.9-6.4-24.6l43.3-75c3.2-8.7 12.2-13.9 21.4-11.7l56.4 13.6c15.6-12 33-21.6 51.7-28.5l11.9-57.3c2-9.7 10.5-16.7 20.5-16.7h72.8c10 0 18.5 7 20.5 16.7l11.9 57.3c18.7 6.9 36.1 16.4 51.7 28.5l56.4-13.6c9.2-2.2 18.2 3 21.4 11.7l43.3 75zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"/></svg></button>
                 </div>
                 <div style="display: flex; gap: 4px;">
-                    <ch5-button label="ON" customClass="scene-btn" style="height: 32px; flex: 1;" sendEventOnClick="401" data-join="401"></ch5-button>
-                    <ch5-button label="ÉCO" customClass="scene-btn" style="height: 32px; flex: 1;" sendEventOnClick="403" data-join="403"></ch5-button>
-                    <ch5-button label="OFF" customClass="scene-btn" style="height: 32px; flex: 1.2; --ch5-button-selected-background-color: #dc2626;" sendEventOnClick="402" data-join="402"></ch5-button>
+                    <ch5-button label="TOUT ALLUMER" customClass="scene-btn global-command" style="height: 32px; flex: 1;" sendEventOnClick="401" receiveStateSelected="401" data-rjoin="401" data-join="401"></ch5-button>
+                    <ch5-button label="MODE ÉCO" customClass="scene-btn global-command" style="height: 32px; flex: 1;" sendEventOnClick="403" receiveStateSelected="403" data-rjoin="403" data-join="403"></ch5-button>
+                    <ch5-button label="TOUT ÉTEINDRE" customClass="scene-btn global-command" style="height: 32px; flex: 1.2;" sendEventOnClick="402" receiveStateSelected="402" data-rjoin="402" data-join="402"></ch5-button>
                 </div>
             </div>
             <!-- Stores Globaux -->
@@ -1593,8 +1594,8 @@
                     <button onclick="window.openGlobalPresetCustomizer('shades')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; cursor: pointer; outline: none; font-size: 0.75rem;"><svg class="gear-icon" viewBox="0 0 512 512" aria-hidden="true"><path d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6l-43.3 75c-3.2 8.7-12.2 13.9-21.4 11.7l-56.4-13.6c-15.6 12-33 21.6-51.7 28.5l-11.9 57.3c-2 9.7-10.5 16.7-20.5 16.7H220.4c-10 0-18.5-7-20.5-16.7l-11.9-57.3c-18.7-6.9-36.1-16.4-51.7-28.5l-56.4 13.6c-9.2 2.2-18.2-3-21.4-11.7l-43.3-75c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4c-1.1-8.3-1.7-16.8-1.7-25.4s.6-17.1 1.7-25.4L21.6 191.2c-6.9-6.2-9.6-15.9-6.4-24.6l43.3-75c3.2-8.7 12.2-13.9 21.4-11.7l56.4 13.6c15.6-12 33-21.6 51.7-28.5l11.9-57.3c2-9.7 10.5-16.7 20.5-16.7h72.8c10 0 18.5 7 20.5 16.7l11.9 57.3c18.7 6.9 36.1 16.4 51.7 28.5l56.4-13.6c9.2-2.2 18.2 3 21.4 11.7l43.3 75zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"/></svg></button>
                 </div>
                 <div style="display: flex; gap: 4px;">
-                    <ch5-button label="OUVRIR" customClass="scene-btn" style="height: 32px; flex: 1;" sendEventOnClick="404" data-join="404"></ch5-button>
-                    <ch5-button label="FERMER" customClass="scene-btn" style="height: 32px; flex: 1; --ch5-button-selected-background-color: #dc2626;" sendEventOnClick="405" data-join="405"></ch5-button>
+                    <ch5-button label="TOUT OUVRIR" customClass="scene-btn global-command" style="height: 32px; flex: 1;" sendEventOnClick="404" receiveStateSelected="404" data-rjoin="404" data-join="404"></ch5-button>
+                    <ch5-button label="TOUT FERMER" customClass="scene-btn global-command" style="height: 32px; flex: 1;" sendEventOnClick="405" receiveStateSelected="405" data-rjoin="405" data-join="405"></ch5-button>
                 </div>
             </div>
             <!-- CVC Global -->
@@ -1604,9 +1605,9 @@
                     <button onclick="window.openGlobalPresetCustomizer('hvac')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; cursor: pointer; outline: none; font-size: 0.75rem;"><svg class="gear-icon" viewBox="0 0 512 512" aria-hidden="true"><path d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6l-43.3 75c-3.2 8.7-12.2 13.9-21.4 11.7l-56.4-13.6c-15.6 12-33 21.6-51.7 28.5l-11.9 57.3c-2 9.7-10.5 16.7-20.5 16.7H220.4c-10 0-18.5-7-20.5-16.7l-11.9-57.3c-18.7-6.9-36.1-16.4-51.7-28.5l-56.4 13.6c-9.2 2.2-18.2-3-21.4-11.7l-43.3-75c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4c-1.1-8.3-1.7-16.8-1.7-25.4s.6-17.1 1.7-25.4L21.6 191.2c-6.9-6.2-9.6-15.9-6.4-24.6l43.3-75c3.2-8.7 12.2-13.9 21.4-11.7l56.4 13.6c15.6-12 33-21.6 51.7-28.5l11.9-57.3c2-9.7 10.5-16.7 20.5-16.7h72.8c10 0 18.5 7 20.5 16.7l11.9 57.3c18.7 6.9 36.1 16.4 51.7 28.5l56.4-13.6c9.2-2.2 18.2 3 21.4 11.7l43.3 75zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"/></svg></button>
                 </div>
                 <div style="display: flex; gap: 4px;">
-                    <ch5-button label="CONFORT" customClass="scene-btn" style="height: 32px; flex: 1;" sendEventOnClick="407" data-join="407"></ch5-button>
-                    <ch5-button label="NUIT" customClass="scene-btn" style="height: 32px; flex: 1;" sendEventOnClick="408" data-join="408"></ch5-button>
-                    <ch5-button label="GEL" customClass="scene-btn" style="height: 32px; flex: 1;" sendEventOnClick="409" data-join="409"></ch5-button>
+                    <ch5-button label="CONFORT" customClass="scene-btn global-command" style="height: 32px; flex: 1;" sendEventOnClick="407" receiveStateSelected="407" data-rjoin="407" data-join="407"></ch5-button>
+                    <ch5-button label="NUIT" customClass="scene-btn global-command" style="height: 32px; flex: 1;" sendEventOnClick="408" receiveStateSelected="408" data-rjoin="408" data-join="408"></ch5-button>
+                    <ch5-button label="HORS GEL" customClass="scene-btn global-command" style="height: 32px; flex: 1;" sendEventOnClick="409" receiveStateSelected="409" data-rjoin="409" data-join="409"></ch5-button>
                 </div>
             </div>
             <!-- Vacances -->
@@ -1616,8 +1617,8 @@
                     <button onclick="window.openGlobalPresetCustomizer('vacation')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; cursor: pointer; outline: none; font-size: 0.75rem;"><svg class="gear-icon" viewBox="0 0 512 512" aria-hidden="true"><path d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6l-43.3 75c-3.2 8.7-12.2 13.9-21.4 11.7l-56.4-13.6c-15.6 12-33 21.6-51.7 28.5l-11.9 57.3c-2 9.7-10.5 16.7-20.5 16.7H220.4c-10 0-18.5-7-20.5-16.7l-11.9-57.3c-18.7-6.9-36.1-16.4-51.7-28.5l-56.4 13.6c-9.2 2.2-18.2-3-21.4-11.7l-43.3-75c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4c-1.1-8.3-1.7-16.8-1.7-25.4s.6-17.1 1.7-25.4L21.6 191.2c-6.9-6.2-9.6-15.9-6.4-24.6l43.3-75c3.2-8.7 12.2-13.9 21.4-11.7l56.4 13.6c15.6-12 33-21.6 51.7-28.5l11.9-57.3c2-9.7 10.5-16.7 20.5-16.7h72.8c10 0 18.5 7 20.5 16.7l11.9 57.3c18.7 6.9 36.1 16.4 51.7 28.5l56.4-13.6c9.2-2.2 18.2 3 21.4 11.7l43.3 75zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"/></svg></button>
                 </div>
                 <div style="display: flex; gap: 4px;">
-                    <ch5-button label="ACTIVER" customClass="scene-btn" style="height: 32px; flex: 1;" sendEventOnClick="410" receiveStateSelected="410" data-join="410" data-rjoin="410"></ch5-button>
-                    <ch5-button label="DÉSACTIVER" customClass="scene-btn" style="height: 32px; flex: 1.5; --ch5-button-selected-background-color: #dc2626;" sendEventOnClick="411" receiveStateSelected="411" data-join="411" data-rjoin="411"></ch5-button>
+                    <ch5-button label="ACTIVER" customClass="scene-btn global-command" style="height: 32px; flex: 1;" sendEventOnClick="410" receiveStateSelected="410" data-join="410" data-rjoin="410"></ch5-button>
+                    <ch5-button label="DÉSACTIVER" customClass="scene-btn global-command" style="height: 32px; flex: 1.5;" sendEventOnClick="411" receiveStateSelected="411" data-join="411" data-rjoin="411"></ch5-button>
                 </div>
             </div>
         </div>

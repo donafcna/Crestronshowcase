@@ -4,12 +4,12 @@ Synchronise la vitrine « Villa Crans-Montana » (public/showcases/villa-gemini-
 avec le GUI CH5 réel du projet VillaCrans (dossier src/ du dépôt VillaCrans).
 
 Usage :
-    python3 scripts/sync-villa-crans.py "C:/Users/donat/Desktop/VillaCrans/src"
+    python3 scripts/sync-villa-crans.py "C:/dev/crestron/repo/projects/villa-crans/ch5/src"
 
 Ce que fait le script :
   1. copie index.html, iphone.html, version.js, build_date.json, config.js / config.json ;
   2. remplace le chargement de js/webxpanel.js (connexion CP4) par js/local-feedback.js
-     (moteur d'état 100 % front-end, contrat de joins v2) ;
+     (moteur d'état 100 % front-end, joins globaux du contrat v4) ;
   3. masque l'indicateur Online/Offline et neutralise la console d'administration
      (moniteur de joins, terminal CP4) qui n'ont pas de sens sans processeur ;
   4. produit un villa_config.json / villa_config.js « vitrine » : mêmes structures que le
@@ -142,6 +142,7 @@ def main() -> None:
 
     patch_html(src / "index.html", DEST / "index.html")
     patch_html(src / "iphone.html", DEST / "iphone.html")
+    shutil.copy(src / "themes" / "global-controls.css", DEST / "themes" / "global-controls.css")
     for name in ("version.js", "build_date.json"):
         if (src / name).exists():
             shutil.copy(src / name, DEST / name)
@@ -156,7 +157,9 @@ def main() -> None:
     cfg_json.pop("admin_monitors", None)
     (DEST / "config.json").write_text(json.dumps(cfg_json, ensure_ascii=False, indent=2), encoding="utf-8")
 
-    c = clean_config(src / "villa_config.json")
+    # The root configuration is canonical; src/ can contain a stale build copy.
+    canonical_config = src.parent / "villa_config.json"
+    c = clean_config(canonical_config if canonical_config.exists() else src / "villa_config.json")
     (DEST / "villa_config.json").write_text(json.dumps(c, ensure_ascii=False, indent=2), encoding="utf-8")
     (DEST / "villa_config.js").write_text("window.villaConfigEmbedded = "
                                           + json.dumps(c, ensure_ascii=False, indent=2) + "\n;\n",

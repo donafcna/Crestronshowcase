@@ -1,5 +1,11 @@
 # VillaCrans — contexte pour Claude (lire en premier, économise les tokens)
 
+## Dernier lot Codex — contrôle global 1.0.178, 16/09/2026
+
+Demande explicite de Donatien après les lots 3D : corriger les retours de la fenêtre Centralisation sur tous les supports. Source `src/index.html` / `src/iphone.html`, CSS commun `src/themes/global-controls.css` : retours natifs `receiveStateSelected` (401–405, 407–411), gris inactif / vert actif. Ne jamais remettre le sélecteur CSS `[selected]` sans `="true"` : il active aussi les boutons false. Les retours d'état ne sont pas forcés au clic dans le DOM.
+
+Version **source** et config canonique 1.0.178 ; showcase régénéré par le script qui lit la config racine. Le feedback local conserve une seule commande globale par section, désélectionne les états devenus inexacts après réglage individuel, et distingue commande stores/position mesurée. Recette navigateur : 36 combinaisons, 1 292 assertions, injection de retours booléens natifs CH5 sans moteur local, contraste 4:1 pages/modales. **CH5Z, CPZ et LPZ préexistants préservés, aucun déploiement matériel** ; leur état installé n'est pas déduit de la version source. Donatien a signalé le chargement CPZ/LPZ le 16/09, sans vérification physique dans ce lot. Les tableaux historiques ci-dessous ne constituent pas un nouvel état matériel.
+
 ## Les 4 artefacts à suivre (convention validée le 13.09.2026)
 Quatre versions à tenir alignées, ici et en tête de chaque entrée du CHANGELOG.
 

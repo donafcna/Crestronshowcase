@@ -6,6 +6,8 @@ Déployé sur Vercel : https://crestrongui.vercel.app/ — le projet Vercel éta
 
 ## Stack
 
+Dernier lot Codex du 16/09 : moteur fond 3D `2026-09-16-estate-1` (`public/plan3d/estate.js`, villa assemblée puis éclatement/zoom), et demande distincte de correction du contrôle global GUI source **1.0.178**. Retours natifs CH5, un état sélectionné par section, gris/vert communs dans `themes/global-controls.css` ; feedback local vitrine interverrouillé. Voir les dernières entrées README et `docs/plan3d.md`. Le script de sync lit désormais le `villa_config.json` canonique à la racine CH5. Les archives et installations matérielles ne sont pas mises à jour par le push Vercel.
+
 - React 19 + Vite 8, lint via `oxlint` (pas ESLint) ; deps : `lucide-react` (via `src/icons.js`, imports nommés), `qrcode`, `html2canvas` (imports dynamiques)
 - `npm run dev` / `npm run build` / `npm run lint` / `npm run preview`
 

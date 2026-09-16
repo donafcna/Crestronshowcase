@@ -1,5 +1,22 @@
 # Villa Crans CH5 — journal des versions
 
+## v1.0.178 — 16.09.2026 — retours du contrôle global uniformisés
+
+| Artefact | État de ce lot |
+|---|---|
+| CH5 source | 1.0.178 ; HTML index/iPhone + CSS commun, config canonique versionnée |
+| CH5Z installé | Non compilé/déployé par ce lot ; archive locale préexistante préservée |
+| CPZ slot 1 | Aucun changement ni déploiement ; chargement du 16/09 rapporté par Donatien, non revérifié |
+| LPZ slot 2 | Aucun changement ni déploiement ; chargement du 16/09 rapporté par Donatien, non revérifié |
+| Showcase | Copie régénérée depuis la source 1.0.178, publication main → Vercel |
+
+- iPhone : `receiveStateSelected` statiques ajoutés à 401–405 et 407–409 ; 410/411 conservés. Les retours viennent du moteur CH5, pas d'une sélection forcée dans le DOM.
+- Dalle/tablette : suppression de la règle `[selected]` qui appliquait l'état actif à `selected="false"`. Tous les supports partagent `themes/global-controls.css` : gris inactif, vert actif, libellés identiques, contraste adapté aux trois thèmes, cibles 44 px minimum. Retrait des couleurs rouges individuelles et des callbacks de sélection inertes.
+- Vitrine : retours exclusifs par section, remise à false avant le nouveau true ; stores globaux conservés après l'impulsion (commande confirmée, pas fin de course mesurée). Modification individuelle : désélection d'un retour global devenu inexact. Mode vacances ferme aussi les stores. La source déployable n'embarque pas ce moteur de simulation.
+- Synchronisation : CSS copié et configuration canonique racine préférée à la copie de build `src/`. Noms de test toujours nettoyés. Fiche FR/EN/DE et capture mises à jour.
+- Recette navigateur : 36 combinaisons, 1 292 assertions ; injections natives sur les deux HTML de déploiement avec simulateur absent. Pages, modales et états d'alarme : outil de contraste passé à 4:1. Aucun test sur les appareils physiques effectué.
+- En parallèle, le fond Vercel seul reçoit une villa de luxe assemblée et la séquence enveloppe/étages/zoom. Détails dans `apps/showcase/docs/plan3d.md` et README.
+
 ## v1.0.177 (à compiler) — 15-16.09.2026 — Contrat v4, XPanel du bureau, lot smartphone Sources / Moteurs / Swisscom
 
 ### État des 4 artefacts

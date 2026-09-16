@@ -14,10 +14,10 @@ fs.mkdirSync(out,{recursive:true});
   const nav=()=>p.evaluate(()=>window.__plan3d.navigation());
   const waitPhase=phase=>p.waitForFunction(s=>window.__plan3d.navigation().phase===s,phase);
   const select=async id=>{await p.frameLocator('iframe').locator('#room-select').selectOption(String(id));await waitPhase('room');};
-  const scene=async id=>{await p.frameLocator('iframe').locator('#scene-btn-'+id).click();await p.waitForTimeout(100);};
+  const scene=async id=>{await p.frameLocator('iframe').locator('#scene-btn-'+id).click();await p.waitForTimeout(100);await p.waitForFunction(()=>Object.values(window.__plan3d.rooms).every(r=>!r.lightFade));};
   try{
     await p.goto(base+'/interfaces/residentiel/villa-gemini-frequencetv/phone');
-    await p.waitForFunction(()=>window.__plan3d?.version==='2026-09-16-atlas-2');await waitPhase('room');
+    await p.waitForFunction(()=>window.__plan3d?.version==='2026-09-16-estate-1');await waitPhase('room');
     await select(1);await scene(51);
     await p.evaluate(()=>{for(const k of ['volet','rideau','store'])window.__plan3d.shadePos(k,1);});
     await p.waitForTimeout(3000);
@@ -59,25 +59,43 @@ fs.mkdirSync(out,{recursive:true});
     const bg={x:rect.x+zone.x+zone.w/2,y:rect.y+zone.y+zone.h/2};
     await p.mouse.move(bg.x,bg.y);await p.mouse.wheel(0,400);await waitPhase('overview-closed');
     check('Overview restores all exterior walls',(await nav()).walls===1);await shot('overview-closed');
+    check('Closed villa has physically assembled storeys',await p.evaluate(()=>window.__plan3d.navigation().explosion===0&&Object.values(window.__plan3d.rooms).every(r=>Math.abs(r.y0-r.cfg.niveau*3.6)<.001)));
     await p.mouse.click(bg.x,bg.y);await waitPhase('overview-open');
     check('First background click removes walls without zoom',(await nav()).walls===0&&await p.evaluate(()=>window.__plan3d.activeRoom()===null));await shot('overview-open');
+    check('Open overview separates storeys',await p.evaluate(()=>window.__plan3d.navigation().explosion===1&&Object.values(window.__plan3d.rooms).every(r=>Math.abs(r.y0-r.cfg.niveau*7.2)<.001)));
     const point=await p.evaluate(()=>window.__plan3d.roomPoint(9));
     await p.mouse.click(rect.x+point.x,rect.y+point.y);await waitPhase('room');
     check('Room click selects same room in Smartphone',await p.frameLocator('iframe').locator('#room-select').inputValue()==='9');
     check('Room click focuses picked room',await p.evaluate(()=>window.__plan3d.activeRoom()===9));
     // Selecting another piece from a closed overview: fade first, camera second.
     await p.mouse.move(bg.x,bg.y);await p.mouse.wheel(0,400);await waitPhase('overview-closed');
-    const before=await nav();await p.frameLocator('iframe').locator('#room-select').selectOption('7');
+    const before=await nav();await p.evaluate(()=>{window.estatePhases=[];const sample=()=>{const s=window.__plan3d.navigation().phase;if(window.estatePhases.at(-1)!==s)window.estatePhases.push(s);if(s!=='room')requestAnimationFrame(sample);};requestAnimationFrame(sample);});await p.frameLocator('iframe').locator('#room-select').selectOption('7');
     const during=await nav();
     check('Walls fade before camera travel',during.phase==='opening'&&!during.moving&&Math.hypot(...during.camera.map((v,i)=>v-before.camera[i]))<.001);
     await waitPhase('room');check('GUI selection from overview completes smoothly',await p.evaluate(()=>window.__plan3d.activeRoom()===7));
+    check('Sequence opens shell then explodes then focuses',await p.evaluate(()=>['opening','exploding','focusing','room'].every((s,i,arr)=>window.estatePhases.includes(s)&&(i===0||window.estatePhases.indexOf(s)>window.estatePhases.indexOf(arr[i-1])))));
+    // Interrupt the explosion: the most recent room wins without snapping.
+    await p.evaluate(()=>{window.__plan3d.overview();window.__plan3d.jump();});await p.frameLocator('iframe').locator('#room-select').selectOption('9');await waitPhase('exploding');
+    const interruption=await p.evaluate(()=>{const a=window.__plan3d,b=a.navigation().camera;document.querySelector('iframe').contentWindow.changeRoomIphone('4');return Math.hypot(...a.navigation().camera.map((v,i)=>v-b[i]));});await waitPhase('room');
+    check('Changing selection during explosion preserves camera continuity',interruption<.000001&&await p.evaluate(()=>window.__plan3d.activeRoom()===4));
     await p.mouse.wheel(0,400);await waitPhase('overview-closed');await p.mouse.wheel(0,-400);await waitPhase('room');
     check('Wheel refocus also removes walls',(await nav()).walls===0);
+    await p.locator('iframe').evaluate(f=>f.contentWindow.openGlobalControlModal());
+    await p.frameLocator('iframe').locator('#global-control-overlay ch5-button[data-join="405"]').click();await p.waitForTimeout(4400);
+    check('Global close animates every room motor',await p.evaluate(()=>Object.values(window.__plan3d.rooms).every(r=>Object.values(r.shades||{}).every(s=>s.pos>.999))));
+    await p.frameLocator('iframe').locator('#global-control-overlay ch5-button[data-join="404"]').click();await p.waitForTimeout(4400);
+    check('Global open animates every room motor',await p.evaluate(()=>Object.values(window.__plan3d.rooms).every(r=>Object.values(r.shades||{}).every(s=>s.pos<.001))));
+    await p.locator('iframe').evaluate(f=>f.contentWindow.closeGlobalControlModal());
     await select(1);await scene(54);
     for(const theme of ['dark','light','frost']){await p.locator('iframe').evaluate((f,t)=>f.contentWindow.changeTheme(t),theme==='frost'?'glass':theme);await p.waitForTimeout(900);await shot('scene-'+theme);}
     await p.waitForTimeout(500);
-    const start=await p.evaluate(()=>({frame:window.__plan3d.renderer.info.render.frame,t:performance.now()}));await p.waitForTimeout(4000);
-    report.performance=await p.evaluate(start=>({fps:(window.__plan3d.renderer.info.render.frame-start.frame)/2/((performance.now()-start.t)/1000),...window.__plan3d.metrics()}),start);
+    report.performance=[];
+    for(const view of ['room','closed','open']){
+      if(view==='closed'){await p.evaluate(()=>{window.__plan3d.overview();window.__plan3d.jump();});}
+      if(view==='open'){await p.mouse.click(bg.x,bg.y);await waitPhase('overview-open');}
+      await p.waitForTimeout(1500);const start=await p.evaluate(()=>({frame:window.__plan3d.renderer.info.render.frame,t:performance.now()}));await p.waitForTimeout(4000);
+      report.performance.push({view,...await p.evaluate(start=>({fps:(window.__plan3d.renderer.info.render.frame-start.frame)/2/((performance.now()-start.t)/1000),...window.__plan3d.metrics()}),start)});
+    }
     check('No uncaught browser errors',errors.length===0);report.status='passed';
   }catch(e){report.status='failed';report.failure=e.stack;await shot('failure');throw e;}
   finally{clearInterval(keep);report.errors=errors;fs.writeFileSync(path.join(out,'navigation-results.json'),JSON.stringify(report,null,2));await browser.close();}

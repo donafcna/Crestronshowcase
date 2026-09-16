@@ -68,7 +68,7 @@
     ALL_LIGHTS_ON: "401",   // b : presets globaux éclairage
     ALL_LIGHTS_OFF: "402",
     LIGHTS_ECO: "403",
-    ALL_BLINDS_OPEN: "404", // b : presets globaux stores (momentanés)
+    ALL_BLINDS_OPEN: "404", // b : dernière commande globale stores (interlock)
     ALL_BLINDS_CLOSE: "405",
     BLINDS_MIDDLE: "406",
     HVAC_MODES: { "407": ["CONFORT", 22.0], "408": ["NUIT", 18.5], "409": ["HORS GEL", 8.0] },
@@ -257,12 +257,14 @@
     if (saved) SIG.CIRCUITS.forEach(function (c, idx) { if (saved[c] !== undefined) r.circuits[idx] = Number(saved[c]) || 0; });
     publishScenes(r);
     publishCircuits(r);
+    updateGlobalLights();
   }
 
   function applyStoresScene(sceneId) {
     var r = rooms[activeRoom];
     r.storesScene = sceneId;
     SIG.STORES_SCENES.forEach(function (s) { set("b", s, s === sceneId); });
+    exclusive(["404", "405", "406"], null);
   }
 
   function selectSource(idx) {
@@ -302,11 +304,34 @@
     r.setpoint = Math.max(5, Math.min(90, Math.round((r.setpoint + delta) * 2) / 2));
     if (r.mode !== "HORS GEL") r.mode = r.setpoint < r.temp - 0.4 ? "CLIMATISATION" : "CHAUFFAGE";
     publishHvac(r);
+    exclusive(Object.keys(SIG.HVAC_MODES), null);
+  }
+
+  // Clear the previous command before raising the next feedback. No DOM state
+  // is simulated: native CH5 receiveStateSelected consumes these booleans.
+  function exclusive(joins, selected) {
+    joins.forEach(function (j) { if (j !== selected) set("b", j, false); });
+    if (selected) set("b", selected, true);
+  }
+
+  function updateGlobalLights() {
+    var levels = Object.keys(rooms).map(function (k) { return rooms[k].circuits; });
+    function all(level) { return levels.every(function (circuits) {
+      return circuits.every(function (v) { return v === level; });
+    }); }
+    exclusive(["401", "402", "403"], all(FULL) ? "401" : all(0) ? "402" : all(pct(30)) ? "403" : null);
+  }
+
+  function setAllBlinds(id) {
+    exclusive(["404", "405", "406"], id);
+    // It is an acknowledged group command, not a measured end-stop position.
+    Object.keys(rooms).forEach(function (k) { rooms[k].storesScene = null; });
+    SIG.STORES_SCENES.forEach(function (j) { set("b", j, false); });
   }
 
   function setHvacPreset(id) {
     hvacPreset = id;
-    Object.keys(SIG.HVAC_MODES).forEach(function (k) { set("b", k, k === id); });
+    exclusive(Object.keys(SIG.HVAC_MODES), id);
     Object.keys(rooms).forEach(function (k) {
       var r = rooms[k];
       r.setpoint = SIG.HVAC_MODES[id][1];
@@ -331,20 +356,18 @@
       rooms[k].circuits = rooms[k].circuits.map(function () { return level; });
       rooms[k].scene = level === 0 ? "51" : level === FULL ? "54" : null;
     });
-    set("b", SIG.ALL_LIGHTS_ON, level === FULL);
-    set("b", SIG.ALL_LIGHTS_OFF, level === 0);
-    set("b", SIG.LIGHTS_ECO, level !== 0 && level !== FULL);
+    updateGlobalLights();
     publishRoom(activeRoom);
   }
 
   function setHoliday(onOff) {
     holiday = onOff;
-    set("b", SIG.HOLIDAY_ON, holiday);
-    set("b", SIG.HOLIDAY_OFF, !holiday);
+    exclusive(["410", "411"], holiday ? "410" : "411");
     if (holiday) {
       for (var i = 0; i < 4; i++) setPartition(i, "armed");
       setAllLights(0);
       setHvacPreset("409");
+      setAllBlinds("405");
     }
   }
 
@@ -384,6 +407,7 @@
     if (id === SIG.ALL_LIGHTS_ON) return setAllLights(FULL);
     if (id === SIG.ALL_LIGHTS_OFF) return setAllLights(0);
     if (id === SIG.LIGHTS_ECO) return setAllLights(pct(30));
+    if (["404", "405", "406"].indexOf(id) !== -1) return setAllBlinds(id);
     if (id === SIG.HOLIDAY_ON) return setHoliday(true);
     if (id === SIG.HOLIDAY_OFF) return setHoliday(false);
     if (id === SIG.ALARM_ARM) { for (var i = 0; i < 4; i++) setPartition(i, "armed"); return; }
@@ -395,7 +419,8 @@
       if (id === part.disarmed) return setPartition(p, "disarmed");
     }
     if (id === SIG.DALLE_MUTE) return set("b", id, !get("b", id));
-    // Tout le reste (moteurs 61..69 / 81..98, stores globaux 404..406, lecteur
+    if ((n >= 61 && n <= 69) || (n >= 81 && n <= 98)) exclusive(["404", "405", "406"], null);
+    // Tout le reste (moteurs 61..69 / 81..98, lecteur
     // média 211..220 / 251..253, widget météo 56, resync 250…) est momentané.
     pulse(id, 120);
   }
@@ -411,7 +436,10 @@
     var r = rooms[activeRoom];
     value = set("n", id, value);
     if (id === SIG.VOLUME) r.volume = value;
-    if (id === SIG.SETPOINT_X10) { r.setpoint = value / 10; publishHvac(r); }
+    if (id === SIG.SETPOINT_X10) {
+      if (r.setpoint !== value / 10) exclusive(Object.keys(SIG.HVAC_MODES), null);
+      r.setpoint = value / 10; publishHvac(r);
+    }
     var ci = SIG.CIRCUITS.indexOf(id);
     if (ci !== -1) {
       var changed = r.circuits[ci] !== value;
@@ -419,11 +447,13 @@
       // Un réglage manuel désélectionne la scène courante (pas un rappel qui renvoie les mêmes niveaux)
       if (changed && r.scene) { r.scene = null; publishScenes(r); }
       set("n", SIG.MASTER_LEVEL, maxLevel(r));
+      updateGlobalLights();
     }
     if (id === SIG.MASTER_LEVEL) {
       r.circuits = r.circuits.map(function () { return value; });
       if (r.scene) { r.scene = null; publishScenes(r); }
       SIG.CIRCUITS.forEach(function (c, idx) { set("n", c, r.circuits[idx]); });
+      updateGlobalLights();
     }
   }
 
@@ -508,6 +538,8 @@
     Object.keys(SIG.HVAC_MODES).forEach(function (k) { set("b", k, k === hvacPreset); });
     set("b", SIG.HOLIDAY_ON, false);
     set("b", SIG.HOLIDAY_OFF, true);
+    updateGlobalLights();
+    exclusive(["404", "405", "406"], null);
     set("n", SIG.DALLE_VOLUME, 65);
     set("b", SIG.DALLE_MUTE, false);
     set("s", SIG.IPID, "0x04");
