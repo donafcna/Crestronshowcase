@@ -123,6 +123,24 @@ for (let mo = 1; mo <= 6; mo++) {
 for (let s = 0; s <= 5; s++) { din(150 + s, 'Source_Select_' + s); dout(150 + s, 'Source_Select_' + s + '_fb'); }
 // 156 : l'audio revient a la source video (v1.0.166) — manquait dans toutes les generations.
 din(156, 'Source_AudioReturn'); dout(156, 'Source_AudioReturn_fb');
+// Lecteur media (251-253 transport, a254 volume) : manquaient aussi dans les signaux globaux
+// (seuls les blocs pieces, desactives en v4, les portaient). Recus de la GUI = sorties du symbole.
+dout(251, 'Media_PlayPause'); dout(252, 'Media_Next'); dout(253, 'Media_Prev');
+ain(254, 'Media_Volume#'); aout(254, 'Media_Volume_fb#');
+// Partitions d'alarme 1..4 (301-312, triplets Armer / Partiel / Desarmer, bidirectionnels) et
+// commandes globales 401-411 : absents de toutes les generations (recette TSW du 16.09.2026,
+// « aucun bouton de la fenetre Systeme de securite ne remonte »). Appuis recus = sorties ;
+// l'etat renvoye par le slot 2 (nom nu, entree) est facultatif : le C# tient deja ce feedback.
+const PART = ['Arm', 'Partial', 'Disarm'];
+for (let pa = 1; pa <= 4; pa++) for (let k = 0; k < 3; k++) {
+  const j = 301 + (pa - 1) * 3 + k;
+  din(j, 'Alarm_Part' + pa + '_' + PART[k]); dout(j, 'Alarm_Part' + pa + '_' + PART[k] + '_fb');
+}
+const GLOBAL = { 401: 'Global_Lights_AllOn', 402: 'Global_Lights_AllOff', 403: 'Global_Lights_Eco',
+  404: 'Global_Shades_AllOpen', 405: 'Global_Shades_AllClose', 406: 'Global_Shades_Preset',
+  407: 'Global_HVAC_Comfort', 408: 'Global_HVAC_Night', 409: 'Global_HVAC_Frost',
+  410: 'Global_Vacation_On', 411: 'Global_Vacation_Off' };
+Object.keys(GLOBAL).forEach(j => { dout(+j, GLOBAL[j] + '_fb'); if (+j >= 410) din(+j, GLOBAL[j]); });
 // Scènes de stores 1..4 (201-204)
 for (let s = 1; s <= 4; s++) { din(200 + s, 'Shades_Scene_' + s); dout(200 + s, 'Shades_Scene_' + s + '_fb'); }
 // --- TELECOMMANDES DES SOURCES (contrat v4, 15.09.2026) ---

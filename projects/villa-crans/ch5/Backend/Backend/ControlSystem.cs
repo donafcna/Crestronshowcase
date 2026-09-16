@@ -1861,6 +1861,7 @@ namespace VillaFrequenceTvAutomation
             SetUShort(panel, 51, room.ActiveVideoSource);
             SetUShort(panel, 52, room.AudioVolume);
             SetUShort(panel, 53, room.MusicAudio ? (ushort)5 : room.ActiveVideoSource); // source audio (5 = musique)
+            SetUShort(panel, 254, room.MediaVolume);  // v4 : le curseur du lecteur média (receiveStateValue 254) retombait à 0 sans ce feedback
             SetBool(panel, 55, room.IsAudioMuted);
 
             SetBool(panel, 41, _globalAlarmArmedState);

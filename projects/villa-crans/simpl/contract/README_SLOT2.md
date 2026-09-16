@@ -28,6 +28,9 @@ et flag `intersystem` de chacune.
 | Stores groupés | d61-69 | `Shades_Volets/Rideaux/Stores_Up/Stop/Down` |
 | Moteurs 1..6 | d81-98 | `Motor_n_Up/Stop/Down` (+`_fb`) |
 | Sources A/V 0..5, retour audio | d150-156 | `Source_Select_0..5`, `Source_AudioReturn` (+`_fb`) |
+| Partitions d'alarme 1..4 | d301-312 | `Alarm_Part<n>_Arm/Partial/Disarm` (+`_fb` reçus) |
+| Commandes globales | d401-411 | `Global_Lights_AllOn/AllOff/Eco`, `Global_Shades_AllOpen/AllClose/Preset`, `Global_HVAC_Comfort/Night/Frost`, `Global_Vacation_On/Off` (`_fb` = reçus) |
+| Lecteur média | d251-253, a254 | `Media_PlayPause` / `_Next` / `_Prev` (reçus), `Media_Volume#` (+`_fb#`) |
 | Scènes stores 1..4 | d201-204 | `Shades_Scene_1..4` (+`_fb`) |
 | Pièce active | a10 | `Room_Select#` / `Room_Selected#` |
 | Master éclairage / consigne | a21 / a31 | `Lighting_Master` / `HVAC_Setpoint` (+`_fb`) |
