@@ -8,6 +8,7 @@ export default {
     intro:
       "L'interface est identique sur la dalle murale Crestron TSW-1070, sur l'iPad et sur le XPanel du PC : une seule page, un seul contrat de signaux vers le processeur Crestron. La version iPhone reprend les mêmes fonctions dans une mise en page verticale. Toutes les commandes agissent sur l'installation en temps réel ; chaque bouton reçoit son état (feedback) depuis le processeur, jamais depuis l'écran.",
     sections: [
+      {"title": "HVAC : marche et ventilation", "image": IMG + "18-iphone-hvac.png", "portrait": true, "text": "Les commandes HVAC sont identiques sur téléphone, tablette et dalle. ON et OFF indiquent la marche de la pièce sélectionnée ; la vitesse reste mémorisée quand on éteint. Les boutons actifs sont verts, les autres gris. Dans la vitrine, le souffle chaud ou froid du plan 3D suit la marche et la ventilation.", "buttons": [["ON / OFF", "Allumer ou arrêter la climatisation de la pièce. OFF supprime le souffle sur le plan."], ["AUTO · 1 · 2 · 3", "Ventilation automatique, faible, moyenne ou forte. Une seule vitesse est sélectionnée."]]},
       {
         title: "Écran principal",
         image: IMG + "01-accueil.png",
@@ -47,7 +48,7 @@ export default {
       {
         title: "Fenêtre Circuits",
         image: IMG + "03-circuits.png",
-        text: "Réglage fin de l'éclairage : un curseur par circuit gradable de la pièce (jusqu'à 10), et la mémorisation des scènes.",
+        text: "Cinq circuits dans la démonstration : spots et suspensions, lampes d’ambiance, corniches, appliques et bandeaux LED. Le passage entre scènes varie linéairement sur trois secondes dans le plan 3D. La configuration permet jusqu’à dix circuits par pièce.",
         buttons: [
           ["Curseurs", "Niveau de 0 à 100 % de chaque circuit. Un réglage manuel désélectionne la scène en cours."],
           ["TOTAL · REPAS · CINÉMA · OFF", "Rappel de la scène (comme sur l'écran principal)."],
@@ -182,6 +183,7 @@ export default {
     intro:
       "The interface is identical on the Crestron TSW-1070 wall panel, on the iPad and on the PC XPanel: one page, one signal contract to the Crestron processor. The iPhone version offers the same functions in a vertical layout. Every command acts on the installation in real time; each button receives its state (feedback) from the processor, never from the screen.",
     sections: [
+      {"title": "HVAC: power and fan speed", "image": IMG + "18-iphone-hvac.png", "portrait": true, "text": "Phone, tablet and wall panel share the same HVAC controls. ON and OFF show power for the selected room; the fan setting is remembered while off. Selected buttons are green, others grey. In the showcase, warm or cool airflow follows power and fan speed in the 3D room.", "buttons": [["ON / OFF", "Switch room HVAC on or off. OFF removes the airflow animation."], ["AUTO · 1 · 2 · 3", "Automatic, low, medium or high fan speed. Only one speed is selected."]]},
       {
         title: "Main screen",
         image: IMG + "01-accueil.png",
@@ -227,6 +229,7 @@ export default {
     intro:
       "Die Oberfläche ist auf dem Crestron-Wandpanel TSW-1070, auf dem iPad und auf dem PC-XPanel identisch: eine Seite, ein Signalvertrag zum Crestron-Prozessor. Die iPhone-Version bietet dieselben Funktionen im Hochformat. Jeder Befehl wirkt in Echtzeit auf die Anlage; jede Taste erhält ihren Zustand (Feedback) vom Prozessor, nie vom Bildschirm.",
     sections: [
+      {"title": "HVAC: Betrieb und Lüfterstufe", "image": IMG + "18-iphone-hvac.png", "portrait": true, "text": "Smartphone, Tablet und Wandpanel verwenden dieselben HVAC-Befehle. ON und OFF zeigen den Betrieb des gewählten Raums; die Lüfterstufe bleibt beim Ausschalten gespeichert. Gewählte Tasten sind grün, die anderen grau. In der Demo folgt die warme oder kühle Luftanimation dem Betrieb und der Lüfterstufe.", "buttons": [["ON / OFF", "Raumklimatisierung ein- oder ausschalten. OFF beendet die Luftanimation."], ["AUTO · 1 · 2 · 3", "Automatische, niedrige, mittlere oder hohe Lüfterstufe. Nur eine Stufe ist gewählt."]]},
       {
         title: "Hauptbildschirm",
         image: IMG + "01-accueil.png",

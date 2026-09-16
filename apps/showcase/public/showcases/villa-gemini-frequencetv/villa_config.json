@@ -2,7 +2,7 @@
   "meta": {
     "projet": "Villa Crans",
     "integrateur": "Fréquence TV",
-    "version": "1.0.178-showcase",
+    "version": "1.0.179-showcase",
     "mode": "showcase",
     "modeDescription": "'deploiement' = GUI livré chez le client : les feedbacks viennent du CP4 (C# slot 1 + SIMPL slot 2) via js/webxpanel.js / CrComLib, aucune simulation. 'showcase' = copie pour le site crestrongui.vercel.app : posé UNIQUEMENT par scripts/sync-villa-crans.py du dépôt Crestronshowcase, feedbacks simulés dans le navigateur (js/local-feedback.js), curseur de démo géré par le site (jamais par le GUI). Ne jamais mettre 'showcase' ici. Voir docs/08_WORKFLOW_SHOWCASE.md.",
     "tracesConsole": false,
@@ -176,12 +176,13 @@
             ]
           },
           "circuits": {
-            "nombre": 4,
+            "nombre": 5,
             "noms": [
-              "Spots plafond ouest",
-              "Lustre principal",
-              "Ruban LED corniche",
-              "Applique murale nord"
+              "Spots & suspensions",
+              "Lampes d’ambiance",
+              "Corniches",
+              "Appliques murales",
+              "Bandeaux LED"
             ]
           }
         },
@@ -210,13 +211,27 @@
               "type": "store"
             },
             {
-              "nom": "Store 2",
+              "nom": "Store banne extérieur",
               "type": "store"
             }
           ]
         },
         "cvc": {
-          "actif": true
+          "actif": true,
+          "marcheArret": true,
+          "ventilation": {
+            "actif": true,
+            "vitesses": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          "etatInitial": {
+            "marche": true,
+            "ventilation": 0
+          }
         },
         "controlesGeneraux": {
           "actif": true,
@@ -232,7 +247,8 @@
             5
           ]
         }
-      }
+      },
+      "actif": true
     },
     {
       "id": 2,
@@ -252,12 +268,13 @@
             ]
           },
           "circuits": {
-            "nombre": 4,
+            "nombre": 5,
             "noms": [
-              "Spots zone cuisson",
-              "Suspension îlot",
-              "LED plan de travail",
-              "Plafonnier central"
+              "Spots & suspensions",
+              "Lampes d’ambiance",
+              "Corniches",
+              "Appliques murales",
+              "Bandeaux LED"
             ]
           }
         },
@@ -286,13 +303,27 @@
               "type": "store"
             },
             {
-              "nom": "Store 2",
+              "nom": "Store banne extérieur",
               "type": "store"
             }
           ]
         },
         "cvc": {
-          "actif": true
+          "actif": true,
+          "marcheArret": true,
+          "ventilation": {
+            "actif": true,
+            "vitesses": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          "etatInitial": {
+            "marche": true,
+            "ventilation": 0
+          }
         },
         "controlesGeneraux": {
           "actif": true,
@@ -308,7 +339,8 @@
             5
           ]
         }
-      }
+      },
+      "actif": true
     },
     {
       "id": 3,
@@ -328,12 +360,13 @@
             ]
           },
           "circuits": {
-            "nombre": 4,
+            "nombre": 5,
             "noms": [
-              "Lustre table repas",
-              "Spots plafond",
-              "Appliques buffet est",
-              "Ruban LED vaisselier"
+              "Spots & suspensions",
+              "Lampes d’ambiance",
+              "Corniches",
+              "Appliques murales",
+              "Bandeaux LED"
             ]
           }
         },
@@ -362,13 +395,27 @@
               "type": "store"
             },
             {
-              "nom": "Store 2",
+              "nom": "Store banne extérieur",
               "type": "store"
             }
           ]
         },
         "cvc": {
-          "actif": true
+          "actif": true,
+          "marcheArret": true,
+          "ventilation": {
+            "actif": true,
+            "vitesses": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          "etatInitial": {
+            "marche": true,
+            "ventilation": 0
+          }
         },
         "controlesGeneraux": {
           "actif": true,
@@ -384,7 +431,8 @@
             5
           ]
         }
-      }
+      },
+      "actif": true
     },
     {
       "id": 4,
@@ -404,12 +452,13 @@
             ]
           },
           "circuits": {
-            "nombre": 4,
+            "nombre": 5,
             "noms": [
-              "Plafonnier suite",
-              "Liseuse lit gauche",
-              "Liseuse lit droite",
-              "Corniche LED tête de lit"
+              "Spots & suspensions",
+              "Lampes d’ambiance",
+              "Corniches",
+              "Appliques murales",
+              "Bandeaux LED"
             ]
           }
         },
@@ -444,7 +493,21 @@
           ]
         },
         "cvc": {
-          "actif": true
+          "actif": true,
+          "marcheArret": true,
+          "ventilation": {
+            "actif": true,
+            "vitesses": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          "etatInitial": {
+            "marche": true,
+            "ventilation": 0
+          }
         },
         "controlesGeneraux": {
           "actif": true,
@@ -460,7 +523,8 @@
             5
           ]
         }
-      }
+      },
+      "actif": true
     },
     {
       "id": 5,
@@ -480,12 +544,13 @@
             ]
           },
           "circuits": {
-            "nombre": 4,
+            "nombre": 5,
             "noms": [
-              "Plafonnier chambre 1",
-              "Lampe bureau 1",
-              "Liseuse lit 1",
-              "Spots dressing 1"
+              "Spots & suspensions",
+              "Lampes d’ambiance",
+              "Corniches",
+              "Appliques murales",
+              "Bandeaux LED"
             ]
           }
         },
@@ -520,7 +585,21 @@
           ]
         },
         "cvc": {
-          "actif": true
+          "actif": true,
+          "marcheArret": true,
+          "ventilation": {
+            "actif": true,
+            "vitesses": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          "etatInitial": {
+            "marche": true,
+            "ventilation": 0
+          }
         },
         "controlesGeneraux": {
           "actif": true,
@@ -536,7 +615,8 @@
             5
           ]
         }
-      }
+      },
+      "actif": true
     },
     {
       "id": 6,
@@ -556,12 +636,13 @@
             ]
           },
           "circuits": {
-            "nombre": 4,
+            "nombre": 5,
             "noms": [
-              "Plafonnier chambre 2",
-              "Lampe bureau 2",
-              "Liseuse lit 2",
-              "Spots dressing 2"
+              "Spots & suspensions",
+              "Lampes d’ambiance",
+              "Corniches",
+              "Appliques murales",
+              "Bandeaux LED"
             ]
           }
         },
@@ -596,7 +677,21 @@
           ]
         },
         "cvc": {
-          "actif": true
+          "actif": true,
+          "marcheArret": true,
+          "ventilation": {
+            "actif": true,
+            "vitesses": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          "etatInitial": {
+            "marche": true,
+            "ventilation": 0
+          }
         },
         "controlesGeneraux": {
           "actif": true,
@@ -612,7 +707,8 @@
             5
           ]
         }
-      }
+      },
+      "actif": true
     },
     {
       "id": 7,
@@ -632,12 +728,13 @@
             ]
           },
           "circuits": {
-            "nombre": 4,
+            "nombre": 5,
             "noms": [
-              "Spots plafond bureau",
-              "Lampe bureau design",
-              "Ruban LED bibliothèque",
-              "Applique zone accueil"
+              "Spots & suspensions",
+              "Lampes d’ambiance",
+              "Corniches",
+              "Appliques murales",
+              "Bandeaux LED"
             ]
           }
         },
@@ -672,7 +769,21 @@
           ]
         },
         "cvc": {
-          "actif": true
+          "actif": true,
+          "marcheArret": true,
+          "ventilation": {
+            "actif": true,
+            "vitesses": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          "etatInitial": {
+            "marche": true,
+            "ventilation": 0
+          }
         },
         "controlesGeneraux": {
           "actif": true,
@@ -688,7 +799,8 @@
             5
           ]
         }
-      }
+      },
+      "actif": true
     },
     {
       "id": 8,
@@ -708,12 +820,13 @@
             ]
           },
           "circuits": {
-            "nombre": 4,
+            "nombre": 5,
             "noms": [
-              "Nez de marche gradué",
-              "Appliques murales gauche",
-              "Appliques murales droite",
-              "Ruban LED écran"
+              "Spots & suspensions",
+              "Lampes d’ambiance",
+              "Corniches",
+              "Appliques murales",
+              "Bandeaux LED"
             ]
           }
         },
@@ -748,7 +861,21 @@
           ]
         },
         "cvc": {
-          "actif": true
+          "actif": true,
+          "marcheArret": true,
+          "ventilation": {
+            "actif": true,
+            "vitesses": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          "etatInitial": {
+            "marche": true,
+            "ventilation": 0
+          }
         },
         "controlesGeneraux": {
           "actif": true,
@@ -764,7 +891,8 @@
             5
           ]
         }
-      }
+      },
+      "actif": true
     },
     {
       "id": 9,
@@ -784,12 +912,13 @@
             ]
           },
           "circuits": {
-            "nombre": 4,
+            "nombre": 5,
             "noms": [
-              "Plafonnier chambre 3",
-              "Lampe bureau 3",
-              "Liseuse lit 3",
-              "Spots dressing 3"
+              "Spots & suspensions",
+              "Lampes d’ambiance",
+              "Corniches",
+              "Appliques murales",
+              "Bandeaux LED"
             ]
           }
         },
@@ -824,7 +953,21 @@
           ]
         },
         "cvc": {
-          "actif": true
+          "actif": true,
+          "marcheArret": true,
+          "ventilation": {
+            "actif": true,
+            "vitesses": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          "etatInitial": {
+            "marche": true,
+            "ventilation": 0
+          }
         },
         "controlesGeneraux": {
           "actif": true,
@@ -840,7 +983,8 @@
             5
           ]
         }
-      }
+      },
+      "actif": true
     },
     {
       "id": 10,
@@ -860,12 +1004,13 @@
             ]
           },
           "circuits": {
-            "nombre": 4,
+            "nombre": 5,
             "noms": [
-              "Lustre suite invités",
-              "Liseuse invités",
-              "LED tête de lit",
-              "Spots dressing invités"
+              "Spots & suspensions",
+              "Lampes d’ambiance",
+              "Corniches",
+              "Appliques murales",
+              "Bandeaux LED"
             ]
           }
         },
@@ -900,7 +1045,21 @@
           ]
         },
         "cvc": {
-          "actif": true
+          "actif": true,
+          "marcheArret": true,
+          "ventilation": {
+            "actif": true,
+            "vitesses": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          "etatInitial": {
+            "marche": true,
+            "ventilation": 0
+          }
         },
         "controlesGeneraux": {
           "actif": true,
@@ -916,7 +1075,8 @@
             5
           ]
         }
-      }
+      },
+      "actif": true
     },
     {
       "id": 11,
@@ -936,12 +1096,13 @@
             ]
           },
           "circuits": {
-            "nombre": 4,
+            "nombre": 5,
             "noms": [
-              "Projecteurs avant-toit",
-              "Appliques façade sud",
-              "Spots encastrés sol",
-              "Ruban LED Sous-Banc"
+              "Spots & suspensions",
+              "Lampes d’ambiance",
+              "Corniches",
+              "Appliques murales",
+              "Bandeaux LED"
             ]
           }
         },
@@ -976,7 +1137,21 @@
           ]
         },
         "cvc": {
-          "actif": true
+          "actif": true,
+          "marcheArret": true,
+          "ventilation": {
+            "actif": true,
+            "vitesses": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          "etatInitial": {
+            "marche": true,
+            "ventilation": 0
+          }
         },
         "controlesGeneraux": {
           "actif": true,
@@ -992,7 +1167,8 @@
             5
           ]
         }
-      }
+      },
+      "actif": true
     },
     {
       "id": 12,
@@ -1012,12 +1188,13 @@
             ]
           },
           "circuits": {
-            "nombre": 4,
+            "nombre": 5,
             "noms": [
-              "Projecteurs subaquatiques",
-              "Spots plafond spa",
-              "Ruban LED margelle",
-              "Appliques ambiance plage"
+              "Spots & suspensions",
+              "Lampes d’ambiance",
+              "Corniches",
+              "Appliques murales",
+              "Bandeaux LED"
             ]
           }
         },
@@ -1052,7 +1229,21 @@
           ]
         },
         "cvc": {
-          "actif": true
+          "actif": true,
+          "marcheArret": true,
+          "ventilation": {
+            "actif": true,
+            "vitesses": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          "etatInitial": {
+            "marche": true,
+            "ventilation": 0
+          }
         },
         "controlesGeneraux": {
           "actif": true,
@@ -1068,7 +1259,8 @@
             5
           ]
         }
-      }
+      },
+      "actif": true
     },
     {
       "id": 13,
@@ -1088,12 +1280,13 @@
             ]
           },
           "circuits": {
-            "nombre": 4,
+            "nombre": 5,
             "noms": [
-              "Plafonnier vapeur sauna",
-              "Ruban LED Sous-Banc sauna",
-              "Projecteurs hammam",
-              "Spots douche pluie"
+              "Spots & suspensions",
+              "Lampes d’ambiance",
+              "Corniches",
+              "Appliques murales",
+              "Bandeaux LED"
             ]
           }
         },
@@ -1128,7 +1321,21 @@
           ]
         },
         "cvc": {
-          "actif": true
+          "actif": true,
+          "marcheArret": true,
+          "ventilation": {
+            "actif": true,
+            "vitesses": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          "etatInitial": {
+            "marche": true,
+            "ventilation": 0
+          }
         },
         "controlesGeneraux": {
           "actif": true,
@@ -1144,7 +1351,8 @@
             5
           ]
         }
-      }
+      },
+      "actif": true
     },
     {
       "id": 14,
@@ -1164,12 +1372,13 @@
             ]
           },
           "circuits": {
-            "nombre": 4,
+            "nombre": 5,
             "noms": [
-              "Suspensions bar pool house",
-              "Spots plafond salon d'Été",
-              "Ruban LED comptoir",
-              "Appliques terrasse pool house"
+              "Spots & suspensions",
+              "Lampes d’ambiance",
+              "Corniches",
+              "Appliques murales",
+              "Bandeaux LED"
             ]
           }
         },
@@ -1198,13 +1407,27 @@
               "type": "store"
             },
             {
-              "nom": "Store 2",
+              "nom": "Store banne extérieur",
               "type": "store"
             }
           ]
         },
         "cvc": {
-          "actif": true
+          "actif": true,
+          "marcheArret": true,
+          "ventilation": {
+            "actif": true,
+            "vitesses": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          "etatInitial": {
+            "marche": true,
+            "ventilation": 0
+          }
         },
         "controlesGeneraux": {
           "actif": true,
@@ -1220,7 +1443,8 @@
             5
           ]
         }
-      }
+      },
+      "actif": true
     },
     {
       "id": 15,
@@ -1240,12 +1464,13 @@
             ]
           },
           "circuits": {
-            "nombre": 4,
+            "nombre": 5,
             "noms": [
-              "Réglettes LED garage",
-              "Spots zone établi",
-              "Éclairage porte sectionnelle",
-              "Appliques entrée garage"
+              "Spots & suspensions",
+              "Lampes d’ambiance",
+              "Corniches",
+              "Appliques murales",
+              "Bandeaux LED"
             ]
           }
         },
@@ -1280,7 +1505,21 @@
           ]
         },
         "cvc": {
-          "actif": true
+          "actif": true,
+          "marcheArret": true,
+          "ventilation": {
+            "actif": true,
+            "vitesses": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          "etatInitial": {
+            "marche": true,
+            "ventilation": 0
+          }
         },
         "controlesGeneraux": {
           "actif": true,
@@ -1297,7 +1536,99 @@
           ]
         }
       },
-      "actif": false
+      "actif": true
+    },
+    {
+      "id": 16,
+      "nom": "Simulateur de golf",
+      "icone": "",
+      "intersystem": true,
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "scenes": {
+            "nombre": 4,
+            "noms": [
+              "OFF",
+              "CINÉMA",
+              "REPAS",
+              "TOTAL"
+            ]
+          },
+          "circuits": {
+            "nombre": 5,
+            "noms": [
+              "Spots & suspensions",
+              "Lampes d’ambiance",
+              "Corniches",
+              "Appliques murales",
+              "Bandeaux LED"
+            ]
+          }
+        },
+        "moteurs": {
+          "actif": true,
+          "nombre": 6,
+          "liste": [
+            {
+              "nom": "Volet ext. 1",
+              "type": "volet"
+            },
+            {
+              "nom": "Volet ext. 2",
+              "type": "volet"
+            },
+            {
+              "nom": "Rideau ext. 1",
+              "type": "rideau"
+            },
+            {
+              "nom": "Rideau ext. 2",
+              "type": "rideau"
+            },
+            {
+              "nom": "Store 1",
+              "type": "store"
+            },
+            {
+              "nom": "Store 2",
+              "type": "store"
+            }
+          ]
+        },
+        "cvc": {
+          "actif": true,
+          "marcheArret": true,
+          "ventilation": {
+            "actif": true,
+            "vitesses": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          "etatInitial": {
+            "marche": true,
+            "ventilation": 0
+          }
+        },
+        "controlesGeneraux": {
+          "actif": true,
+          "partitionsAlarme": 4
+        },
+        "audioVideo": {
+          "actif": true,
+          "sources": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      },
+      "actif": true
     }
   ],
   "traductions": {
@@ -2258,6 +2589,62 @@
         "direction": "entree",
         "eiscJoin": 46,
         "description": "Appui sur la touche C du pave : efface la saisie en cours."
+      },
+      {
+        "contractName": "CVC.Marche",
+        "type": "digital",
+        "join": 610,
+        "eiscJoin": 610,
+        "direction": "bidirectionnel",
+        "description": "GUI : impulsion commande et retour selection natif. EISC : impulsion vers slot 2 seulement ; etat via bloc CVC de piece."
+      },
+      {
+        "contractName": "CVC.Arret",
+        "type": "digital",
+        "join": 611,
+        "eiscJoin": 611,
+        "direction": "bidirectionnel",
+        "description": "GUI : impulsion commande et retour selection natif. EISC : impulsion vers slot 2 seulement ; etat via bloc CVC de piece."
+      },
+      {
+        "contractName": "CVC.VentilationAuto",
+        "type": "digital",
+        "join": 612,
+        "eiscJoin": 612,
+        "direction": "bidirectionnel",
+        "description": "GUI : impulsion commande et retour selection natif. EISC : impulsion vers slot 2 seulement ; etat via bloc CVC de piece."
+      },
+      {
+        "contractName": "CVC.VentilationFaible",
+        "type": "digital",
+        "join": 613,
+        "eiscJoin": 613,
+        "direction": "bidirectionnel",
+        "description": "GUI : impulsion commande et retour selection natif. EISC : impulsion vers slot 2 seulement ; etat via bloc CVC de piece."
+      },
+      {
+        "contractName": "CVC.VentilationMoyenne",
+        "type": "digital",
+        "join": 614,
+        "eiscJoin": 614,
+        "direction": "bidirectionnel",
+        "description": "GUI : impulsion commande et retour selection natif. EISC : impulsion vers slot 2 seulement ; etat via bloc CVC de piece."
+      },
+      {
+        "contractName": "CVC.VentilationForte",
+        "type": "digital",
+        "join": 615,
+        "eiscJoin": 615,
+        "direction": "bidirectionnel",
+        "description": "GUI : impulsion commande et retour selection natif. EISC : impulsion vers slot 2 seulement ; etat via bloc CVC de piece."
+      },
+      {
+        "contractName": "CVC.Ventilation",
+        "type": "analog",
+        "join": 61,
+        "eiscJoin": 61,
+        "direction": "bidirectionnel",
+        "description": "Vitesse 0 Auto, 1 faible, 2 moyenne, 3 forte ; retour GUI de la piece affichee."
       }
     ],
     "blocsPieces": {
@@ -2433,6 +2820,21 @@
           "offset": 54,
           "direction": "bidirectionnel",
           "description": "Volume du lecteur media 0..65535 (join logique GUI 254)."
+        },
+        {
+          "contractName": "Piece.<id>.CVC.MarcheVentilation",
+          "type": "digital",
+          "offsetDebut": 93,
+          "nombre": 6,
+          "direction": "bidirectionnel",
+          "description": "+93 marche (retour slot 2 niveau vrai/faux), +94 arret, +95 Auto, +96 faible, +97 moyen, +98 fort. Les offsets alarme +81..92 restent reserves."
+        },
+        {
+          "contractName": "Piece.<id>.CVC.Ventilation",
+          "type": "analog",
+          "offset": 33,
+          "direction": "bidirectionnel",
+          "description": "Vitesse 0 Auto, 1 faible, 2 moyenne, 3 forte. Ne pas confondre avec temperature mesuree +32."
         }
       ]
     },
@@ -2544,7 +2946,13 @@
           "95": 75,
           "96": 76,
           "97": 77,
-          "98": 78
+          "98": 78,
+          "610": 93,
+          "611": 94,
+          "612": 95,
+          "613": 96,
+          "614": 97,
+          "615": 98
         },
         "analog": {
           "31": 31,
@@ -2561,7 +2969,8 @@
           "77": 77,
           "78": 78,
           "79": 79,
-          "80": 80
+          "80": 80,
+          "61": 33
         },
         "serial": {
           "10": 10,
@@ -2570,6 +2979,31 @@
           "34": 34
         }
       }
+    },
+    "cvcEtendu": {
+      "actif": true,
+      "commandes": {
+        "marche": 610,
+        "arret": 611,
+        "auto": 612,
+        "faible": 613,
+        "moyen": 614,
+        "fort": 615
+      },
+      "ventilationAnalogique": 61,
+      "ventilationValeurs": {
+        "auto": 0,
+        "faible": 1,
+        "moyen": 2,
+        "fort": 3
+      },
+      "retoursPieces": {
+        "marcheDigitalOffset": 93,
+        "arretDigitalOffset": 94,
+        "ventilationDigitalOffsetDebut": 95,
+        "ventilationAnalogOffset": 33
+      },
+      "note": "Commandes GUI globales 610-615, routage par a10 avant impulsion. Retours materiels par bloc CVC de piece : d(base+93) niveau marche vrai/faux, a(base+33) vitesse 0..3. Aucun retour global ambigu du slot 2."
     }
   },
   "pagesSpeciales": {

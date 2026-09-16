@@ -5,7 +5,7 @@ import * as T from './vendor/three.module.min.js';
 export function buildLandscape(scene, bounds, kit) {
   const c=bounds.getCenter(new T.Vector3());
   const rand=kit.random,A=kit.materials;
-  scene.fog=new T.Fog(0xaebfc3,85,240);
+  scene.fog=new T.Fog(0xaebfc3,175,400);
   const skyCanvas=document.createElement('canvas');skyCanvas.width=8;skyCanvas.height=256;
   const ctx=skyCanvas.getContext('2d'),gradient=ctx.createLinearGradient(0,0,0,256);
   gradient.addColorStop(0,'#dce1d7');gradient.addColorStop(.5,'#b3c8ce');gradient.addColorStop(1,'#426d8c');ctx.fillStyle=gradient;ctx.fillRect(0,0,8,256);
@@ -29,6 +29,8 @@ export function buildLandscape(scene, bounds, kit) {
     color.lerp(snow,T.MathUtils.smoothstep(h-snowline,-2,2.8));
     color.multiplyScalar(.95+.05*Math.sin(x*.4+z*.6));color.toArray(colors,i*3);
   }
+  // Remove terrain triangles across the actual sloping driveway opening.
+  const indices=[];for(let i=0;i<terrain.index.count;i+=3){const ids=[0,1,2].map(j=>terrain.index.getX(i+j));const xs=ids.map(j=>p.getX(j)+c.x),zs=ids.map(j=>p.getZ(j)+c.z);if(Math.max(...xs)>12.1&&Math.min(...xs)<18.9&&Math.max(...zs)>10.8&&Math.min(...zs)<40)continue;indices.push(...ids);}terrain.setIndex(indices);
   terrain.setAttribute('color',new T.BufferAttribute(colors,3));terrain.computeVertexNormals();
   const soil=document.createElement('canvas');soil.width=soil.height=256;const sg=soil.getContext('2d');sg.fillStyle='#e8e8e8';sg.fillRect(0,0,256,256);
   for(let i=0;i<12000;i++){const v=218+Math.floor(rand()*37);sg.fillStyle=`rgb(${v},${v},${v})`;sg.fillRect(rand()*256,rand()*256,1,1+rand()*3);}
@@ -74,5 +76,5 @@ export function buildLandscape(scene, bounds, kit) {
     dummy.position.y=base+.45*height;dummy.updateMatrix();trunks.setMatrixAt(i,dummy.matrix);
   }
   scene.add(trees,trunks);
-  return {skyTexture:skyTex,terrain:land};
+  return {skyTexture:skyTex,terrain:land,trees,setDay(day){sky.material.color.setRGB(.06+.94*day,.08+.92*day,.16+.84*day);trees.material.color.setRGB(.1+.9*day,.13+.87*day,.19+.81*day);scene.fog.color.setRGB(.045+.38*day,.065+.46*day,.11+.47*day);}};
 }

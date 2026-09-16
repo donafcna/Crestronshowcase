@@ -2,7 +2,7 @@
   "meta": {
     "projet": "Villa Crans",
     "integrateur": "Fréquence TV",
-    "version": "1.0.178",
+    "version": "1.0.179",
     "mode": "deploiement",
     "modeDescription": "'deploiement' = GUI livré chez le client : les feedbacks viennent du CP4 (C# slot 1 + SIMPL slot 2) via js/webxpanel.js / CrComLib, aucune simulation. 'showcase' = copie pour le site crestrongui.vercel.app : posé UNIQUEMENT par scripts/sync-villa-crans.py du dépôt Crestronshowcase, feedbacks simulés dans le navigateur (js/local-feedback.js), curseur de démo géré par le site (jamais par le GUI). Ne jamais mettre 'showcase' ici. Voir docs/08_WORKFLOW_SHOWCASE.md.",
     "tracesConsole": false,
@@ -273,7 +273,21 @@
           ]
         },
         "cvc": {
-          "actif": false
+          "actif": false,
+          "marcheArret": true,
+          "ventilation": {
+            "actif": true,
+            "vitesses": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          "etatInitial": {
+            "marche": true,
+            "ventilation": 0
+          }
         },
         "controlesGeneraux": {
           "actif": true,
@@ -376,7 +390,21 @@
           ]
         },
         "cvc": {
-          "actif": false
+          "actif": false,
+          "marcheArret": true,
+          "ventilation": {
+            "actif": true,
+            "vitesses": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          "etatInitial": {
+            "marche": true,
+            "ventilation": 0
+          }
         },
         "controlesGeneraux": {
           "actif": false,
@@ -479,7 +507,21 @@
           ]
         },
         "cvc": {
-          "actif": true
+          "actif": true,
+          "marcheArret": true,
+          "ventilation": {
+            "actif": true,
+            "vitesses": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          "etatInitial": {
+            "marche": true,
+            "ventilation": 0
+          }
         },
         "controlesGeneraux": {
           "actif": true,
@@ -582,7 +624,21 @@
           ]
         },
         "cvc": {
-          "actif": true
+          "actif": true,
+          "marcheArret": true,
+          "ventilation": {
+            "actif": true,
+            "vitesses": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          "etatInitial": {
+            "marche": true,
+            "ventilation": 0
+          }
         },
         "controlesGeneraux": {
           "actif": false,
@@ -685,7 +741,21 @@
           ]
         },
         "cvc": {
-          "actif": true
+          "actif": true,
+          "marcheArret": true,
+          "ventilation": {
+            "actif": true,
+            "vitesses": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          "etatInitial": {
+            "marche": true,
+            "ventilation": 0
+          }
         },
         "controlesGeneraux": {
           "actif": true,
@@ -788,7 +858,21 @@
           ]
         },
         "cvc": {
-          "actif": true
+          "actif": true,
+          "marcheArret": true,
+          "ventilation": {
+            "actif": true,
+            "vitesses": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          "etatInitial": {
+            "marche": true,
+            "ventilation": 0
+          }
         },
         "controlesGeneraux": {
           "actif": true,
@@ -891,7 +975,21 @@
           ]
         },
         "cvc": {
-          "actif": true
+          "actif": true,
+          "marcheArret": true,
+          "ventilation": {
+            "actif": true,
+            "vitesses": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          "etatInitial": {
+            "marche": true,
+            "ventilation": 0
+          }
         },
         "controlesGeneraux": {
           "actif": true,
@@ -994,7 +1092,21 @@
           ]
         },
         "cvc": {
-          "actif": true
+          "actif": true,
+          "marcheArret": true,
+          "ventilation": {
+            "actif": true,
+            "vitesses": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          "etatInitial": {
+            "marche": true,
+            "ventilation": 0
+          }
         },
         "controlesGeneraux": {
           "actif": true,
@@ -1097,7 +1209,21 @@
           ]
         },
         "cvc": {
-          "actif": true
+          "actif": true,
+          "marcheArret": true,
+          "ventilation": {
+            "actif": true,
+            "vitesses": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          "etatInitial": {
+            "marche": true,
+            "ventilation": 0
+          }
         },
         "controlesGeneraux": {
           "actif": true,
@@ -1200,7 +1326,21 @@
           ]
         },
         "cvc": {
-          "actif": true
+          "actif": true,
+          "marcheArret": true,
+          "ventilation": {
+            "actif": true,
+            "vitesses": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          "etatInitial": {
+            "marche": true,
+            "ventilation": 0
+          }
         },
         "controlesGeneraux": {
           "actif": true,
@@ -1303,7 +1443,21 @@
           ]
         },
         "cvc": {
-          "actif": true
+          "actif": true,
+          "marcheArret": true,
+          "ventilation": {
+            "actif": true,
+            "vitesses": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          "etatInitial": {
+            "marche": true,
+            "ventilation": 0
+          }
         },
         "controlesGeneraux": {
           "actif": true,
@@ -1406,7 +1560,21 @@
           ]
         },
         "cvc": {
-          "actif": true
+          "actif": true,
+          "marcheArret": true,
+          "ventilation": {
+            "actif": true,
+            "vitesses": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          "etatInitial": {
+            "marche": true,
+            "ventilation": 0
+          }
         },
         "controlesGeneraux": {
           "actif": true,
@@ -1509,7 +1677,21 @@
           ]
         },
         "cvc": {
-          "actif": true
+          "actif": true,
+          "marcheArret": true,
+          "ventilation": {
+            "actif": true,
+            "vitesses": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          "etatInitial": {
+            "marche": true,
+            "ventilation": 0
+          }
         },
         "controlesGeneraux": {
           "actif": true,
@@ -1612,7 +1794,21 @@
           ]
         },
         "cvc": {
-          "actif": true
+          "actif": true,
+          "marcheArret": true,
+          "ventilation": {
+            "actif": true,
+            "vitesses": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          "etatInitial": {
+            "marche": true,
+            "ventilation": 0
+          }
         },
         "controlesGeneraux": {
           "actif": true,
@@ -1715,7 +1911,21 @@
           ]
         },
         "cvc": {
-          "actif": true
+          "actif": true,
+          "marcheArret": true,
+          "ventilation": {
+            "actif": true,
+            "vitesses": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          "etatInitial": {
+            "marche": true,
+            "ventilation": 0
+          }
         },
         "controlesGeneraux": {
           "actif": true,
@@ -2721,6 +2931,62 @@
         "direction": "entree",
         "eiscJoin": 46,
         "description": "Appui sur la touche C du pave : efface la saisie en cours."
+      },
+      {
+        "contractName": "CVC.Marche",
+        "type": "digital",
+        "join": 610,
+        "eiscJoin": 610,
+        "direction": "bidirectionnel",
+        "description": "GUI : impulsion commande et retour selection natif. EISC : impulsion vers slot 2 seulement ; etat via bloc CVC de piece."
+      },
+      {
+        "contractName": "CVC.Arret",
+        "type": "digital",
+        "join": 611,
+        "eiscJoin": 611,
+        "direction": "bidirectionnel",
+        "description": "GUI : impulsion commande et retour selection natif. EISC : impulsion vers slot 2 seulement ; etat via bloc CVC de piece."
+      },
+      {
+        "contractName": "CVC.VentilationAuto",
+        "type": "digital",
+        "join": 612,
+        "eiscJoin": 612,
+        "direction": "bidirectionnel",
+        "description": "GUI : impulsion commande et retour selection natif. EISC : impulsion vers slot 2 seulement ; etat via bloc CVC de piece."
+      },
+      {
+        "contractName": "CVC.VentilationFaible",
+        "type": "digital",
+        "join": 613,
+        "eiscJoin": 613,
+        "direction": "bidirectionnel",
+        "description": "GUI : impulsion commande et retour selection natif. EISC : impulsion vers slot 2 seulement ; etat via bloc CVC de piece."
+      },
+      {
+        "contractName": "CVC.VentilationMoyenne",
+        "type": "digital",
+        "join": 614,
+        "eiscJoin": 614,
+        "direction": "bidirectionnel",
+        "description": "GUI : impulsion commande et retour selection natif. EISC : impulsion vers slot 2 seulement ; etat via bloc CVC de piece."
+      },
+      {
+        "contractName": "CVC.VentilationForte",
+        "type": "digital",
+        "join": 615,
+        "eiscJoin": 615,
+        "direction": "bidirectionnel",
+        "description": "GUI : impulsion commande et retour selection natif. EISC : impulsion vers slot 2 seulement ; etat via bloc CVC de piece."
+      },
+      {
+        "contractName": "CVC.Ventilation",
+        "type": "analog",
+        "join": 61,
+        "eiscJoin": 61,
+        "direction": "bidirectionnel",
+        "description": "Vitesse 0 Auto, 1 faible, 2 moyenne, 3 forte ; retour GUI de la piece affichee."
       }
     ],
     "blocsPieces": {
@@ -2896,6 +3162,21 @@
           "offset": 54,
           "direction": "bidirectionnel",
           "description": "Volume du lecteur media 0..65535 (join logique GUI 254)."
+        },
+        {
+          "contractName": "Piece.<id>.CVC.MarcheVentilation",
+          "type": "digital",
+          "offsetDebut": 93,
+          "nombre": 6,
+          "direction": "bidirectionnel",
+          "description": "+93 marche (retour slot 2 niveau vrai/faux), +94 arret, +95 Auto, +96 faible, +97 moyen, +98 fort. Les offsets alarme +81..92 restent reserves."
+        },
+        {
+          "contractName": "Piece.<id>.CVC.Ventilation",
+          "type": "analog",
+          "offset": 33,
+          "direction": "bidirectionnel",
+          "description": "Vitesse 0 Auto, 1 faible, 2 moyenne, 3 forte. Ne pas confondre avec temperature mesuree +32."
         }
       ]
     },
@@ -3007,7 +3288,13 @@
           "95": 75,
           "96": 76,
           "97": 77,
-          "98": 78
+          "98": 78,
+          "610": 93,
+          "611": 94,
+          "612": 95,
+          "613": 96,
+          "614": 97,
+          "615": 98
         },
         "analog": {
           "31": 31,
@@ -3024,7 +3311,8 @@
           "77": 77,
           "78": 78,
           "79": 79,
-          "80": 80
+          "80": 80,
+          "61": 33
         },
         "serial": {
           "10": 10,
@@ -3033,6 +3321,31 @@
           "34": 34
         }
       }
+    },
+    "cvcEtendu": {
+      "actif": true,
+      "commandes": {
+        "marche": 610,
+        "arret": 611,
+        "auto": 612,
+        "faible": 613,
+        "moyen": 614,
+        "fort": 615
+      },
+      "ventilationAnalogique": 61,
+      "ventilationValeurs": {
+        "auto": 0,
+        "faible": 1,
+        "moyen": 2,
+        "fort": 3
+      },
+      "retoursPieces": {
+        "marcheDigitalOffset": 93,
+        "arretDigitalOffset": 94,
+        "ventilationDigitalOffsetDebut": 95,
+        "ventilationAnalogOffset": 33
+      },
+      "note": "Commandes GUI globales 610-615, routage par a10 avant impulsion. Retours materiels par bloc CVC de piece : d(base+93) niveau marche vrai/faux, a(base+33) vitesse 0..3. Aucun retour global ambigu du slot 2."
     }
   },
   "pagesSpeciales": {

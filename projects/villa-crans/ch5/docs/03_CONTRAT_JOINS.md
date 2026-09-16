@@ -1,5 +1,9 @@
 # 03 — Contrat de joins v3
 
+## Extension HVAC v4 du 16/09/2026
+
+ON/OFF : d610/611 ; ventilation Auto/1/2/3 : d612–615 et a61 (0..3). Retours par pièce : digitaux +93..98, analogique +33 ; la température mesurée reste +32. Aucun bloc GUI v3 réactivé. Détails, sens des signaux et recette Debugger : `projects/villa-crans/ch5/docs/HVAC-2026-09-16.md` depuis la racine du dépôt.
+
 Référence unique. **Le GUI, le C# (slot 1) et le SIMPL (slot 2) doivent s'y conformer.**
 Source : `villa_config.json` → `contrat`. Version **3**, du 11.09.2026.
 Couche d'exécution côté GUI : `src/js/villa-joins.js`.

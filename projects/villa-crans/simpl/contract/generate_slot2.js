@@ -13,16 +13,16 @@ const path = require('path');
 // Le fichier est modifié EN PLACE (la base VillaCrans.smw d'origine a été supprimée).
 // Une copie de sécurité horodatée est créée à chaque exécution.
 // IMPORTANT : fermer VillaCrans_Slot2.smw dans SIMPL Windows avant de lancer ce script.
-const BASE = path.join(__dirname, '..', 'simpl-windows', 'VillaCrans_Slot2.smw');
-const OUT = BASE;
+const arg = name => { const i = process.argv.indexOf(name); return i < 0 ? null : process.argv[i + 1]; };
+const BASE = path.resolve(arg('--input') || path.join(__dirname, '..', 'simpl-windows', 'VillaCrans_Slot2.smw'));
+const OUT = path.resolve(arg('--output') || BASE);
 
 let raw = fs.readFileSync(BASE, 'latin1');
-const stamp = new Date().toISOString().replace(/[:T]/g, '-').slice(0, 16);
-const backupDir = path.dirname(BASE);
-for (const f of fs.readdirSync(backupDir)) {
-  if (/^VillaCrans_Slot2\.backup-.*\.smw$/.test(f)) { try { fs.unlinkSync(path.join(backupDir, f)); } catch (e) { /* verrouille */ } }
+// Never delete user backups. A separate output leaves the working SIMPL project untouched.
+if (OUT === BASE) {
+  const stamp = new Date().toISOString().replace(/[:.T]/g, '-').replace('Z', '');
+  fs.writeFileSync(path.join(path.dirname(BASE), 'VillaCrans_Slot2.backup-' + stamp + '.smw'), raw, {encoding:'latin1',flag:'wx'});
 }
-fs.writeFileSync(path.join(backupDir, 'VillaCrans_Slot2.backup-' + stamp + '.smw'), raw, 'latin1');
 const EOL = raw.includes('\r\n') ? '\r\n' : '\n';
 
 // --- 1. Corrections globales (sans effet si déjà appliquées) ---
@@ -98,6 +98,9 @@ din(42, 'Alarm_Disarm'); dout(42, 'Alarm_Disarm_fb');
 // entrees I49/I50 sont purgees ci-dessous.
 dout(49, 'HVAC_Setpoint_Up');
 dout(50, 'HVAC_Setpoint_Down');
+const HVAC = ['On', 'Off', 'Fan_Auto', 'Fan_Low', 'Fan_Medium', 'Fan_High'];
+HVAC.forEach((name, i) => dout(610 + i, 'HVAC_' + name + '_Cmd'));
+aout(61, 'HVAC_FanSpeed_Cmd#');
 // Scènes 51-54 : déjà câblées dans la base (Lighting_Scene1..4 + fb)
 // Mute (55)
 din(55, 'Audio_Mute'); dout(55, 'Audio_Mute_fb');
@@ -192,6 +195,7 @@ const ROOM_BASE = 1000, ROOM_SIZE = 100;
 
 // Nom métier de chaque offset, dérivé du mapping du contrat (join logique -> offset).
 const OFF_D = {};
+HVAC.forEach((name, i) => { OFF_D[93 + i] = 'HVAC_' + name; });
 ['Volets', 'Rideaux', 'Stores'].forEach((g, gi) => {          // joins logiques 61-69
   OFF_D[1 + gi * 3] = 'Shades_' + g + '_Up';
   OFF_D[2 + gi * 3] = 'Shades_' + g + '_Stop';
@@ -223,7 +227,7 @@ for (let mo = 1; mo <= 6; mo++) {                                   // 81-98
 // L'analogique +21 (Lighting_Master) a été retiré du bloc pièce le 13.09.2026 : la GUI ne le
 // lisait pas et il ne portait aucune information que les niveaux de circuits ne donnent déjà.
 // Le signal GLOBAL 'Lighting_Master' (a21) reste en place : il sert au calibrage ci-dessus.
-const OFF_A = { 31: 'HVAC_Setpoint', 51: 'Source_Active',
+const OFF_A = { 31: 'HVAC_Setpoint', 33: 'HVAC_FanSpeed', 51: 'Source_Active',
                 52: 'Audio_Volume', 53: 'Source_Audio', 54: 'Media_Volume' };
 for (let ci = 1; ci <= 10; ci++) OFF_A[70 + ci] = 'Circuit_' + ci;  // 71-80
 
@@ -292,7 +296,13 @@ const piecesCvc = (villaCfg.pieces || []).filter(p => p.intersystem !== false &&
 let cvcWired = 0;
 for (const p of piecesCvc) {
   const b = roomBase(p.id), R = 'R' + String(p.id).padStart(2, '0') + '_';
-  if (b + 34 > CAP.aIn || b + 34 > CAP.aOut || b + 34 > CAP.sOut) { skipped.push('piece ' + p.id + ' (CVC hors capacite)'); continue; }
+  if (b + 34 > CAP.aIn || b + 34 > CAP.aOut || b + 34 > CAP.sOut || b + 98 > CAP.dIn || b + 98 > CAP.dOut) { skipped.push('piece ' + p.id + ' (CVC hors capacite)'); continue; }
+  // Per-room state/driver targets, separate from the global GUI command pulses.
+  for (let h=0;h<6;h++) aHvac(h);
+  function aHvac(h) { dout(b + 93 + h, R + 'HVAC_' + HVAC[h] + '_fb'); }
+  din(b + 93, R + 'HVAC_On_Actual'); // true AND false are meaningful measured returns
+  aout(b + 33, R + 'HVAC_FanSpeed_fb#');
+  ain(b + 33, R + 'HVAC_FanSpeed_Actual#');
   aout(b + 31, R + 'HVAC_Setpoint_fb#');      // consigne renvoyee par le C# (x10 : 215 = 21,5 C)
   ain(b + 31, R + 'HVAC_Setpoint#');          // consigne imposee par le slot 2 (thermostat reel)
   ain(b + 32, R + 'HVAC_Temperature#');       // temperature mesuree, envoyee par le slot 2 (x10)
@@ -302,6 +312,8 @@ for (const p of piecesCvc) {
   cvcWired++;
 }
 console.log('Bloc CVC par piece (v4) : ' + cvcWired + ' piece(s) x (consigne bidirectionnelle, temperature mesuree, 3 seriels).');
+
+if (CAP.dOut < 615 || CAP.aOut < 61 || skipped.length) throw new Error('Capacite EISC insuffisante : aucun fichier ecrit. ' + skipped.join('; '));
 
 // --- 4. Réécriture du symbole EISC (H=21) ---
 const smRe = /\[\r?\nObjTp=Sm\r?\nH=21\r?\n[\s\S]*?\r?\n\]/;

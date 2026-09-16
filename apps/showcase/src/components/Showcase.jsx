@@ -196,20 +196,23 @@ const ShowcaseInner = ({ sectorId, projectId, device }) => {
   const [demoRunning, setDemoRunning] = useState(true);
   const [resumeAt, setResumeAt] = useState(null);
   const resumeTimer = useRef(null);
+  const idleResumeMs = viewportDevice === "phone" ? 60000 : IDLE_RESUME_MS;
 
   const armResume = useCallback(() => {
     clearTimeout(resumeTimer.current);
-    setResumeAt(Date.now() + IDLE_RESUME_MS);
+    setResumeAt(Date.now() + idleResumeMs);
     resumeTimer.current = setTimeout(() => {
       setResumeAt(null);
       setDemoRunning(true);
-    }, IDLE_RESUME_MS);
-  }, []);
+    }, idleResumeMs);
+  }, [idleResumeMs]);
 
   const pauseDemo = useCallback(() => {
     setDemoRunning(false);
     armResume();
   }, [armResume]);
+
+  useEffect(() => { setDemoRunning(false); armResume(); }, [viewportDevice, armResume]);
 
   const resumeDemo = useCallback(() => {
     clearTimeout(resumeTimer.current);
@@ -595,7 +598,7 @@ const ShowcaseInner = ({ sectorId, projectId, device }) => {
       {calibOpen && <CalibrateCard onClose={() => setCalibOpen(false)} />}
       {demoEnabled && <DemoCursor cursor={cursor} />}
       {demoEnabled && !demoRunning && resumeAt && (
-        <DemoCountdown resumeAt={resumeAt} total={IDLE_RESUME_MS} onResumeNow={resumeDemo} />
+        <DemoCountdown resumeAt={resumeAt} total={idleResumeMs} onResumeNow={resumeDemo} />
       )}
     </div>
   );

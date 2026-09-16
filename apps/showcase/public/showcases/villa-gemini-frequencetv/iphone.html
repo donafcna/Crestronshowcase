@@ -802,6 +802,8 @@
          quelques secondes. Le retour visuel vient des états CH5, jamais de cette surbrillance. -->
     <style id="touch-highlight">* { -webkit-tap-highlight-color: rgba(0, 0, 0, 0); }</style>
     <link rel="stylesheet" href="themes/global-controls.css">
+<link rel="stylesheet" href="themes/room-controls.css">
+<script defer src="js/room-controls.js"></script>
     <!-- Vitrine : pas de processeur, indicateur de connexion masqué -->
     <style>#connection-status{display:none !important}</style>
     <script>window.updateConnectionStatusUI = function () {};</script>
@@ -932,6 +934,20 @@
                 <!-- État de chauffe/clim -->
                 <div id="hvac-status" class="hvac-mode-val" style="background-color: rgba(255,255,255,0.03); border: 1px solid var(--border-color); padding: 8px 20px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; text-transform: uppercase;">
                     <span data-ch5-textcontent="33">--</span>
+                </div>
+
+                <div class="hvac-controls" aria-label="Marche et ventilation">
+                    <div class="hvac-row">
+                        <ch5-button label="ON" customClass="hvac-command" sendEventOnClick="610" receiveStateSelected="610" data-join="610"></ch5-button>
+                        <ch5-button label="OFF" customClass="hvac-command" sendEventOnClick="611" receiveStateSelected="611" data-join="611"></ch5-button>
+                    </div>
+                    <div class="hvac-caption">Ventilation</div>
+                    <div class="hvac-row">
+                        <ch5-button label="AUTO" customClass="hvac-command" sendEventOnClick="612" receiveStateSelected="612" data-join="612"></ch5-button>
+                        <ch5-button label="1" customClass="hvac-command" sendEventOnClick="613" receiveStateSelected="613" data-join="613"></ch5-button>
+                        <ch5-button label="2" customClass="hvac-command" sendEventOnClick="614" receiveStateSelected="614" data-join="614"></ch5-button>
+                        <ch5-button label="3" customClass="hvac-command" sendEventOnClick="615" receiveStateSelected="615" data-join="615"></ch5-button>
+                    </div>
                 </div>
             </div>
         </div>

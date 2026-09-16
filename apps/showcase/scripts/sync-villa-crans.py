@@ -19,6 +19,7 @@ Ce que fait le script :
 
 Le moteur js/local-feedback.js n'est PAS écrasé : il est maintenu à la main dans ce dépôt.
 """
+import copy
 import json
 import re
 import shutil
@@ -30,7 +31,7 @@ DEST = ROOT / "public" / "showcases" / "villa-gemini-frequencetv"
 
 ROOM_NAMES = ["Salon", "Cuisine", "Salle à manger", "Suite parentale", "Chambre 1", "Chambre 2",
               "Bureau", "Home Cinéma", "Chambre 3", "Suite invités", "Terrasse & Jardin",
-              "Piscine & Spa", "Sauna & Hammam", "Pool House", "Garage & Ateliers"]
+              "Piscine & Spa", "Sauna & Hammam", "Pool House", "Garage & Ateliers", "Simulateur de golf"]
 ROOM_ICONS = {"Salon": "🛋️", "Cuisine": "🍳", "Salle à manger": "🍽️", "Suite parentale": "🛏️",
               "Chambre 1": "🛏️", "Chambre 2": "🛏️", "Bureau": "💼", "Home Cinéma": "🎬",
               "Chambre 3": "🛏️", "Suite invités": "🚪", "Terrasse & Jardin": "🌿",
@@ -114,14 +115,20 @@ def clean_config(src: Path) -> dict:
     for k in ("jeux", "animation"):
         if k in c.get("pagesSpeciales", {}):
             c["pagesSpeciales"][k]["actif"] = False
+    # Additional virtual room and controls belong to the showcase, not the physical house.
+    if not any(p['id'] == 16 for p in c['pieces']):
+        golf = copy.deepcopy(c['pieces'][0]); golf['id'] = 16; golf['icone'] = ''; c['pieces'].append(golf)
     for p in c["pieces"]:
+        p['actif'] = True
         p["nom"] = ROOM_NAMES[p["id"] - 1] if p["id"] <= len(ROOM_NAMES) else p["nom"]
         p["icone"] = ROOM_ICONS.get(p["nom"], p.get("icone", "🏠"))
         pl = p["pilotages"]
         pl["eclairages"]["actif"] = True
         pl["eclairages"]["scenes"] = {"nombre": 4, "noms": list(SCENES)}
-        circ = pl["eclairages"]["circuits"]["noms"][:4]
+        circ = ["Spots & suspensions", "Lampes d’ambiance", "Corniches", "Appliques murales", "Bandeaux LED"]
         pl["eclairages"]["circuits"] = {"nombre": len(circ), "noms": circ}
+        if p['id'] in (1, 2, 3, 14):
+            pl['moteurs']['liste'][5] = {'nom': 'Store banne extérieur', 'type': 'store'}
         for k in ("moteurs", "cvc", "controlesGeneraux", "audioVideo"):
             pl[k]["actif"] = True
     for lang, d in c.get("traductions", {}).items():
@@ -143,6 +150,8 @@ def main() -> None:
     patch_html(src / "index.html", DEST / "index.html")
     patch_html(src / "iphone.html", DEST / "iphone.html")
     shutil.copy(src / "themes" / "global-controls.css", DEST / "themes" / "global-controls.css")
+    shutil.copy(src / "themes" / "room-controls.css", DEST / "themes" / "room-controls.css")
+    shutil.copy(src / "js" / "room-controls.js", DEST / "js" / "room-controls.js")
     for name in ("version.js", "build_date.json"):
         if (src / name).exists():
             shutil.copy(src / name, DEST / name)

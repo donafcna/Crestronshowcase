@@ -13,9 +13,12 @@
  * api.setWindow(rect) cadre la pièce dans la zone libre de la page ; api.dispose() à la fin.
  * =========================================================================== */
 import * as THREE from './vendor/three.module.min.js';
-import { createInteriors } from './interiors.js?v=2026-09-16-estate-1';
-import { buildLandscape } from './landscape.js?v=2026-09-16-estate-1';
-import { createEstate } from './estate.js?v=2026-09-16-estate-1';
+import { createInteriors } from './interiors.js?v=2026-09-16-estate-2';
+import { buildLandscape } from './landscape.js?v=2026-09-16-estate-2';
+import { createEstate } from './estate.js?v=2026-09-16-estate-2';
+import { enrichRoom } from './room-features.js?v=2026-09-16-estate-2';
+import { drawProgramme } from './tv-programmes.js?v=2026-09-16-estate-2';
+import { addNaturalMotion } from './natural-motion.js?v=2026-09-16-estate-2';
 
 export function createPlan3D(opts) {
     'use strict';
@@ -73,7 +76,14 @@ export function createPlan3D(opts) {
     // Deux lampes réelles : celles de la pièce zoomée (les autres pièces n'ont que des matériaux émissifs)
     var roomLights = [new THREE.PointLight(0xffd9a3, 0, 16, 2), new THREE.PointLight(0xffe6c4, 0, 12, 2)];
     roomLights.forEach(function (l) { sceneR.add(l); });
-    var dayCur = 1;                                                   // facteur jour courant (lissé) de la scène des pièces
+    var dayCur = 1, environmentDay = 1, fixedDay = null, landscape;
+    // A 20-second showcase cycle: ten seconds per half, gentle two-second dusk/dawn.
+    function updateEnvironment(seconds) {
+        var phase=seconds%20, day=phase<8?1:phase<10?1-ease((phase-8)/2):phase<18?0:ease((phase-18)/2);
+        environmentDay=fixedDay===null?day:fixedDay;
+        hemiE.intensity=.1+environmentDay;sunE.intensity=.035+1.765*environmentDay;fillE.intensity=.035+.465*environmentDay;
+        envelope.setNight(1-environmentDay);landscape?.setDay(environmentDay);
+    }
 
     /* ---------- Matériaux partagés (deux palettes : 'chaleureux' bois / tissus, 'maquette' blanc et gris) ---------- */
     var STYLE = cfg.style === 'maquette' ? 'maquette' : 'chaleureux';
@@ -146,7 +156,7 @@ export function createPlan3D(opts) {
     function makeScreen() {
         var c = document.createElement('canvas'); c.width = 1024; c.height = 576;
         var tex = new THREE.CanvasTexture(c); tex.colorSpace = THREE.SRGBColorSpace; tex.anisotropy = 4;
-        var st = { source: 0, sel: 0, open: null, tick: 0, row: 0 };
+        var st = { source: 0, sel: 0, open: null, tick: 0, row: 0, program: false, paused: false, programme: null };
         // Affiche stylisée (dégradé + formes) servant de visuel de programme
         function poster(g, x, y, w, h, hue, title, sub) {
             var gr = g.createLinearGradient(x, y, x + w, y + h);
@@ -170,6 +180,7 @@ export function createPlan3D(opts) {
                 gr = g.createLinearGradient(0, 0, W, H); gr.addColorStop(0, 'rgba(255,255,255,0.06)'); gr.addColorStop(0.5, 'rgba(255,255,255,0)'); gr.addColorStop(1, 'rgba(255,255,255,0.03)');
                 g.fillStyle = gr; g.fillRect(0, 0, W, H); tex.needsUpdate = true; return;
             }
+            if (st.program) { st.programme = drawProgramme(g, st.source, st.tick / 15, st.row); tex.needsUpdate = true; return; }
             if (st.source === 1) {                       // Apple TV : bandeau à la une, rangée d'apps, « Regarder ensuite »
                 gr = g.createLinearGradient(0, 0, 0, H); gr.addColorStop(0, '#2b2f3a'); gr.addColorStop(1, '#0b0d12');
                 g.fillStyle = gr; g.fillRect(0, 0, W, H);
@@ -278,15 +289,18 @@ export function createPlan3D(opts) {
         g.position.set(p.x, y0, p.z);
         var w = p.w, d = p.d, ext = p.type === 'terrasse' || p.type === 'piscine';
         (ext ? scene : sceneR).add(g);
-        var R = { id: p.id, cfg: p, group: g, lamps: [], glow: [], levels: [0, 0], renderLevels: [0, 0], fadeTargets: [0, 0], lightFade: null, sceneOff: false, tv: null, speakers: [], hvac: null, thermo: null, y0: y0, ext: ext };
+        var R = { id: p.id, cfg: p, group: g, lamps: [], glow: [], levels: [0,0,0,0,0], renderLevels: [0,0,0,0,0], fadeTargets: [0,0,0,0,0], lightFade: null, sceneOff: false, audio: { source: 0, music: false, mute: false, volume: 0, mediaVolume: 0, paused: false }, tv: null, speakers: [], hvac: null, thermo: null, y0: y0, ext: ext };
 
         // Sol, dalle et murs du fond (nord = -z, ouest = -x) : écorché ouvert vers la caméra (+x, +z)
         box(w, 0.25, d, M.dalle, w / 2, -0.125, d / 2, g);
         box(w - 0.1, 0.02, d - 0.1, ext ? (p.type === 'terrasse' ? M.gazon : M.solExt) : (p.type === 'chambre' || p.type === 'suite' ? M.solChambre : M.sol), w / 2, 0.01, d / 2, g);
-        if (!ext) {
-            var wallH = NIVEAU_H, wallMat = p.type === 'cinema' ? M.murSombre : M.mur;
-            var cinema = p.type === 'cinema', roomGroup = g, wallWidth = cinema ? d : w;
-            if (cinema) {
+        if (!ext && p.windowWall === 'none') {
+            box(w, NIVEAU_H, .15, M.mur, w/2, NIVEAU_H/2, .075, g);
+            box(.15, NIVEAU_H, d, M.mur, .075, NIVEAU_H/2, d/2, g);
+        } else if (!ext) {
+            var wallH = NIVEAU_H, wallMat = p.type === 'sauna' ? M.bois : p.type === 'cinema' ? M.murSombre : M.mur;
+            var west = p.windowWall === 'west', roomGroup = g, wallWidth = west ? d : w;
+            if (west) {
                 // Screen on an uninterrupted north wall; the entire window and
                 // motor assembly lives on the west wall, clear of the screen.
                 box(w, wallH, .15, wallMat, w / 2, wallH / 2, .075, g);
@@ -294,7 +308,7 @@ export function createPlan3D(opts) {
             } else box(0.15, wallH, d, wallMat, 0.075, wallH / 2, d / 2, g);
             // Mur nord percé d'une vraie fenêtre (on voit le paysage à travers) à gauche, la TV occupe le
             // centre / la droite ; bureau : fenêtre à droite, TV à gauche.
-            var fw = Math.min(2.2, wallWidth * 0.34), fx = cinema ? d * .5 : p.type === 'bureau' ? w * 0.74 : w * 0.22, fy0 = 0.95, fh = 1.4, fy1 = fy0 + fh;
+            var fw = Math.min(2.4, wallWidth * 0.34), fx = west ? d * .5 : w * 0.22, fy0 = 0.95, fh = 1.4, fy1 = fy0 + fh;
             box(fx - fw / 2, wallH, 0.15, wallMat, (fx - fw / 2) / 2, wallH / 2, 0.075, g);
             box(wallWidth - fx - fw / 2, wallH, 0.15, wallMat, fx + fw / 2 + (wallWidth - fx - fw / 2) / 2, wallH / 2, 0.075, g);
             box(fw, fy0, 0.15, wallMat, fx, fy0 / 2, 0.075, g);                                             // allège
@@ -306,7 +320,7 @@ export function createPlan3D(opts) {
             box(fw + 0.24, 0.03, 0.2, M.blanc, fx, fy0 - 0.015, 0.2, g);                                    // tablette d'appui
             // Rai de lumière du jour qui entre par la fenêtre (opacité = ouverture des motorisations)
             var shaft = new THREE.Mesh(new THREE.PlaneGeometry(fw, 2.8), new THREE.MeshBasicMaterial({ color: 0xfff1d6, transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide }));
-            shaft.position.set(fx, 0.95, 1.25); shaft.rotation.x = -1.12; g.add(shaft); R.shaft = shaft; R.win = { x: fx, y: fy0 + fh / 2, w: fw, group: g, depth: cinema ? w : d, wall: cinema ? 'west' : 'north' };
+            shaft.position.set(fx, 0.95, 1.25); shaft.rotation.x = -1.12; g.add(shaft); R.shaft = shaft; R.win = { x: fx, y: fy0 + fh / 2, w: fw, group: g, depth: west ? w : d, wall: west ? 'west' : 'north' };
 
             // --- Volet roulant : tablier à lames derrière la vitre, caisson intérieur ouvert montrant l'axe,
             //     le tablier enroulé et le moteur tubulaire (tête + voyant)
@@ -360,8 +374,8 @@ export function createPlan3D(opts) {
                 box(2.4, 0.5, 0.45, M.bois, w * 0.55, 0.25, 0.4, g);
                 tvPos = { x: w * 0.55, y: 1.45, z: 0.19, size: 1.8 }; break;
             case 'repas':
-                box(2.4, 0.08, 1.1, M.bois, w / 2, 0.75, d / 2, g); cyl(0.06, 0.72, M.metal, w / 2, 0.36, d / 2, g);
-                for (var i = 0; i < 6; i++) box(0.42, 0.9, 0.42, M.tissuFonce, w / 2 - 0.85 + (i % 3) * 0.85, 0.45, d / 2 + (i < 3 ? -0.85 : 0.85), g);
+                box(6.0, 0.08, 1.45, M.bois, w / 2, 0.75, d / 2, g); for(const x of [w/2-2,w/2+2]) box(.3,.72,.9,M.metal,x,.36,d/2,g);
+
                 cyl(0.18, 0.25, M.noir, w / 2, 2.55, d / 2, g, 0.02);
                 tvPos = { x: w * 0.7, y: 1.45, z: 0.19, size: 1.3 }; break;
             case 'cuisine':
@@ -414,10 +428,10 @@ export function createPlan3D(opts) {
                 cyl(0.28, 0.5, M.pot, w - 0.6, 0.25, d - 0.6, g, 0.22); sph(0.5, M.plante, w - 0.6, 0.85, d - 0.6, g);
                 tvPos = null; break;
             case 'sauna':
-                box(w, NIVEAU_H, 0.12, M.bois, w / 2, NIVEAU_H / 2, 0.14, g); box(0.12, NIVEAU_H, d, M.bois, 0.14, NIVEAU_H / 2, d / 2, g);
                 box(w - 0.5, 0.1, 0.7, M.boisClair, w / 2, 0.45, 0.6, g); box(w - 0.5, 0.1, 0.7, M.boisClair, w / 2, 0.95, 1.3, g);
                 box(0.6, 0.8, 0.6, M.noir, w - 0.7, 0.4, d - 0.7, g); box(0.5, 0.15, 0.5, M.pot, w - 0.7, 0.87, d - 0.7, g);
                 tvPos = null; break;
+            case 'garage': case 'golf': tvPos = null; break;
             case 'poolhouse':
                 box(2.6, 1.0, 0.7, M.bois, w * 0.45, 0.5, 0.75, g); box(2.7, 0.06, 0.8, M.metal, w * 0.45, 1.03, 0.75, g);
                 for (var st2 = 0; st2 < 3; st2++) cyl(0.18, 0.75, M.metal, w * 0.45 - 0.9 + st2 * 0.9, 0.37, 1.5, g);
@@ -477,16 +491,23 @@ export function createPlan3D(opts) {
             var flap = box(0.84, 0.03, 0.14, M.metal, w - 0.75, NIVEAU_H - 0.6, 0.34, g); flap.rotation.x = 0.5;
             var th = makeThermo();
             var thMesh = new THREE.Mesh(new THREE.PlaneGeometry(0.26, 0.26), new THREE.MeshBasicMaterial({ map: th.tex }));
-            thMesh.position.set(0.19, 1.45, d * 0.35); thMesh.rotation.y = Math.PI / 2; g.add(thMesh);
-            box(0.03, 0.3, 0.3, M.noir, 0.17, 1.45, d * 0.35, g);
+            var thermostatZ=p.windowWall==='west'?.55:d*.35;
+            thMesh.position.set(0.19, 1.45, thermostatZ); thMesh.rotation.y = Math.PI / 2; g.add(thMesh);
+            box(0.03, 0.3, 0.3, M.noir, 0.17, 1.45, thermostatZ, g);
             var breeze = new THREE.Mesh(new THREE.PlaneGeometry(0.8, 0.5), new THREE.MeshBasicMaterial({ color: 0x9fd8ff, transparent: true, opacity: 0, side: THREE.DoubleSide, depthWrite: false }));
             breeze.position.set(w - 0.75, NIVEAU_H - 0.85, 0.6); breeze.rotation.x = -0.9; g.add(breeze);
-            R.hvac = { unit: unit, flap: flap, breeze: breeze, thermo: th, mesh: thMesh };
+            R.hvac = { unit: unit, flap: flap, breeze: breeze, thermo: th, mesh: thMesh, enabled:true,fan:0,streams:[] };
+            for(var ai=0;ai<5;ai++){
+                var curve=new THREE.CatmullRomCurve3([new THREE.Vector3(0,0,0),new THREE.Vector3(0,-.13,.45),new THREE.Vector3(.05,-.45,1.1)]);
+                var stream=new THREE.Mesh(new THREE.TubeGeometry(curve,14,.012,4,false),new THREE.MeshBasicMaterial({color:0x70cbff,transparent:true,opacity:0,depthWrite:false}));
+                stream.position.set(w-1.08+ai*.165,NIVEAU_H-.73,.45);g.add(stream);R.hvac.streams.push(stream);
+            }
         }
 
         // Étiquette de la pièce (sprite texte)
         R.label = makeLabel(p.nom || ('Pièce ' + p.id)); R.label.position.set(w / 2, NIVEAU_H + .5, 0); g.add(R.label);
         interiors.curtains(R);
+        enrichRoom(R, M);
         interiors.decorate(R);
         // Preserve only the meshes whose transforms or material assignments change at runtime.
         var moving = new Set([R.label, R.eau, R.shaft, R.tv && R.tv.mesh, R.hvac && R.hvac.flap, R.hvac && R.hvac.breeze]);
@@ -523,9 +544,10 @@ export function createPlan3D(opts) {
     }
     // Lumière du jour qui entre dans la pièce : 0 (volet fermé) .. 1 (tout ouvert) ; store et rideaux tamisent
     function daylight(R) {
+        if (R && R.cfg.windowWall === 'none') return 0;
         var sh = R && R.shades; if (!sh || R.ext) return 1;
         var v = sh.volet ? sh.volet.pos : 0, s = sh.store ? sh.store.pos : 0, r = sh.rideau ? sh.rideau.pos : 0;
-        return (1 - v) * (1 - 0.85 * s) * (1 - 0.7 * r);
+        return (R.cfg.niveau < 0 ? .6 : 1) * (1 - v) * (1 - 0.85 * s) * (1 - 0.7 * r);
     }
     function shadeCmd(R, famille, cmd) {           // cmd : 'up' (ouvrir) / 'stop' / 'down' (fermer)
         if (!R || !R.shades || !R.shades[famille]) return;
@@ -534,13 +556,14 @@ export function createPlan3D(opts) {
     }
     function shadeScene(R, n) {                     // scènes 201-204 : Tout ouvrir / Position été / Position hiver / Tout fermer
         if (!R || !R.shades) return;
-        var t = [{ volet: 0, rideau: 0, store: 0 }, { volet: 0, rideau: 0.5, store: 1 }, { volet: 1, rideau: 1, store: 0 }, { volet: 1, rideau: 1, store: 1 }][n - 1];
+        var t = [{ volet: 0, rideau: 0, store: 0, banne: 0 }, { volet: 0, rideau: 0.5, store: 1, banne: 1 }, { volet: 1, rideau: 1, store: 0, banne: 0 }, { volet: 1, rideau: 1, store: 1, banne: 1 }][n - 1];
         if (t) Object.keys(t).forEach(function (k) { if (R.shades[k]) R.shades[k].cible = t[k]; });
     }
     function motorFamily(R, idx) {                  // moteur 1..6 -> famille, d'après villa_config pieces[].pilotages.moteurs.liste
         var pc = (vc.pieces || []).filter(function (p) { return p.id === R.id; })[0];
         var l = pc && pc.pilotages && pc.pilotages.moteurs && pc.pilotages.moteurs.liste;
-        var t = l && l[idx - 1] && String(l[idx - 1].type || l[idx - 1].nom || '').toLowerCase();
+        var t = l && l[idx - 1] && String((l[idx - 1].type || '') + ' ' + (l[idx - 1].nom || '')).toLowerCase();
+        if (t && t.indexOf('banne') >= 0 && R.shades?.banne) return 'banne';
         if (!t) return ['volet', 'volet', 'rideau', 'rideau', 'store', 'store'][idx - 1];
         return t.indexOf('rideau') >= 0 ? 'rideau' : (t.indexOf('store') >= 0 ? 'store' : 'volet');
     }
@@ -553,12 +576,12 @@ export function createPlan3D(opts) {
     function animateLights(R, now) {
         var f = R.lightFade; if (!f) return;
         var t = Math.min(1, Math.max(0, (now - f.started) / LIGHT_FADE_MS));
-        for (var i = 0; i < 2; i++) R.renderLevels[i] = THREE.MathUtils.lerp(f.from[i], f.to[i], t);
+        for (var i = 0; i < 5; i++) R.renderLevels[i] = THREE.MathUtils.lerp(f.from[i], f.to[i], t);
         if (t === 1) R.lightFade = null;
         applyLevels(R);
     }
     function targetLights(R) {
-        var to = [0, 1].map(function (i) { return R.sceneOff ? 0 : R.levels[i]; });
+        var to = [0, 1, 2, 3, 4].map(function (i) { return R.sceneOff ? 0 : R.levels[i]; });
         if (to.every(function (v,i) { return v === R.fadeTargets[i]; })) return;
         var now = performance.now();
         // Retarget from the displayed level, even halfway through a previous fade.
@@ -568,20 +591,21 @@ export function createPlan3D(opts) {
     }
     function applyLevels(R) {
         R.lamps.forEach(function (l, i) {
-            var v = lightLevel(R, l.sousMarin ? 0 : i);
+            var v = lightLevel(R, l.circuit ?? (l.sousMarin ? 0 : i));
             if (l.sousMarin) { l.mat.emissiveIntensity = 0.1 + v * 2.2; return; }   // projecteurs de piscine : circuit 1
             l.mat.emissiveIntensity = v * 1.6; l.mat.color.copy(lampUnlit).lerp(lampLit, Math.min(1, v / .15));
         });
         R.glow.forEach(function (gm, i) { gm.material.opacity = lightLevel(R, i) * 0.12; });
     }
     function setTv(R, src) {
+        R.audio.source = src;
         if (!R.tv) return;
-        R.tv.source = src; R.tv.screen.st.source = src; R.tv.screen.st.open = null; R.tv.screen.draw();
+        R.tv.source = src; R.tv.screen.st.source = src; R.tv.screen.st.open = null; R.tv.screen.st.program = src > 0; R.tv.screen.st.paused = false; R.audio.paused = false; R.tv.screen.draw();
         R.tv.mesh.material = src > 0 ? R.tv.on : R.tv.off;
         R.tv.veille.material.emissiveIntensity = src > 0 ? 0 : 1.2; R.tv.veille.material.color.setHex(src > 0 ? 0x3a0d0b : 0xff3b30);
     }
 
-    var activeRoom = null, selectedRoom = null, tween = null, idle = 0, music = false;
+    var activeRoom = null, selectedRoom = null, tween = null, idle = 0;
     var envelope = null, shellTween = null, layoutTween = null, explosion = 0, phase = 'overview-closed';
     // Fenêtre de la carte Sources (rect écran) : la caméra y centre la pièce et l'y fait tenir
     var win = null;
@@ -591,8 +615,9 @@ export function createPlan3D(opts) {
         camera.setViewOffset(W, H, W / 2 - (win.x + win.w / 2), H / 2 - (win.y + win.h / 2), W, H);
     }
     var camState = { pos: new THREE.Vector3(), tgt: new THREE.Vector3(), basePos: new THREE.Vector3(), baseTgt: new THREE.Vector3() };
+    function roomElevation(p, layout) { return p.type === 'terrasse' || p.type === 'piscine' ? 0 : p.niveau * 3.6 + layout * (p.niveau * 3.6 + 7.2); }
     function villaBounds(layout) {
-        var b = new THREE.Box3(); Object.values(ROOMS).forEach(function (R) { var p=R.cfg,y=p.niveau*(3.6+3.6*(layout ?? explosion));b.expandByPoint(new THREE.Vector3(p.x,y-.25,p.z));b.expandByPoint(new THREE.Vector3(p.x+p.w,y+3.85,p.z+p.d)); }); return b;
+        var b = new THREE.Box3(); Object.values(ROOMS).forEach(function (R) { var p=R.cfg,y=roomElevation(p, layout ?? explosion);b.expandByPoint(new THREE.Vector3(p.x,y-.25,p.z));b.expandByPoint(new THREE.Vector3(p.x+p.w,y+3.85,p.z+p.d)); }); return b;
     }
     function fitBounds(bounds, target, angle) {
         var W = canvas.clientWidth || 1280, H = canvas.clientHeight || 800;
@@ -633,7 +658,7 @@ export function createPlan3D(opts) {
     }
     function applyLayout(value) {
         explosion = value;
-        Object.values(ROOMS).forEach(function (R) { R.y0=R.cfg.niveau*(3.6+3.6*value);R.group.position.y=R.y0;if(R.lod)R.lod.position.y=R.y0; });
+        Object.values(ROOMS).forEach(function (R) { R.y0=roomElevation(R.cfg,value);R.group.position.y=R.y0;if(R.lod)R.lod.position.y=R.y0; });
     }
     function finishLayout() {
         if (!layoutTween) return;
@@ -741,6 +766,7 @@ export function createPlan3D(opts) {
         if (elapsed > 25 && elapsed < 200) slowFrames++; else slowFrames = Math.max(0, slowFrames - 1);
         if (slowFrames > 90 && quality > 1) { quality = Math.max(1, quality - .25); renderer.setPixelRatio(Math.min(devicePixelRatio || 1, quality)); slowFrames = 0; }
         var dt = Math.min(0.25, clock.getDelta()); idle += dt;
+        naturalMotion?.update(idle,quality);
         resize();
         if (layoutTween) {
             layoutTween.t+=dt/.95;applyLayout(THREE.MathUtils.lerp(layoutTween.from,layoutTween.to,ease(Math.min(1,layoutTween.t))));
@@ -766,7 +792,8 @@ export function createPlan3D(opts) {
         Object.values(ROOMS).forEach(function (R) { animateLights(R, ts); });
         // Lumière du jour de la scène des pièces : pleine en vue villa, sinon celle qui entre par la fenêtre
         // de la pièce active (volet / store / rideaux) ; les lampes des scènes ajoutent un rebond chaud.
-        var dayT = activeRoom ? daylight(activeRoom) : 1, lampAvg = activeRoom ? (lightLevel(activeRoom, 0) + lightLevel(activeRoom, 1)) / 2 : 0;
+        updateEnvironment(idle);
+        var dayT = (activeRoom ? daylight(activeRoom) : 1) * environmentDay, lampAvg = activeRoom ? activeRoom.renderLevels.reduce(function(a,b){return a+b;},0) / 5 : 0;
         dayCur += (dayT - dayCur) * Math.min(1, dt * 4);
         var dayF = dayCur < .0001 ? 0 : dayCur;
         hemi.intensity = DAY.hemi * dayF + lampAvg * 0.5 * (1 - dayCur); hemi.color.setHex(dayCur > 0.5 ? 0xe6eeff : 0xffe1bd);
@@ -781,16 +808,23 @@ export function createPlan3D(opts) {
         roomLights.forEach(function (l) { l.intensity = 0; });
         Object.values(ROOMS).forEach(function (R) { if (R.tv) R.tv.light.intensity = 0; });
         if (activeRoom) {
-            activeRoom.lamps.forEach(function (l, i) { if (i < 2) { var wp = l.pos.clone().applyMatrix4(activeRoom.group.matrixWorld); roomLights[i].position.copy(wp); roomLights[i].intensity = lightLevel(activeRoom, i) * (i === 0 ? 55 : 30) * (l.sousMarin ? 0.3 : 1); } });
+            activeRoom.lamps.forEach(function (l, i) { if (i < 2) { var wp = l.pos.clone().applyMatrix4(activeRoom.group.matrixWorld); roomLights[i].position.copy(wp); roomLights[i].intensity = (lightLevel(activeRoom, i) + lightLevel(activeRoom, 2)*.3 + lightLevel(activeRoom, 3)*.25 + lightLevel(activeRoom, 4)*.18) * (i === 0 ? 55 : 30) * (l.sousMarin ? 0.3 : 1); } });
             if (activeRoom.tv) activeRoom.tv.light.intensity = activeRoom.tv.source > 0 ? .28 : 0;
-            if (activeRoom.tv && activeRoom.tv.source === 1 && activeRoom.tv.screen.st.open !== null) { activeRoom.tv.screen.st.tick++; if (activeRoom.tv.screen.st.tick % 10 === 0) activeRoom.tv.screen.draw(); }
+            if (activeRoom.tv && activeRoom.tv.source > 0 && ts - (activeRoom.tv.lastFrame || 0) >= 1000/15) { var screen=activeRoom.tv.screen;activeRoom.tv.lastFrame=ts;if(screen.st.program&&!screen.st.paused){screen.st.tick++;screen.draw();} }
             activeRoom.speakers.forEach(function (s) {
-                var on = music; var pulse = on ? 1 + Math.abs(Math.sin(idle * 6 + s.phase)) * 0.06 : 1;
-                s.body.scale.set(pulse, 1, pulse); s.ring.material.opacity = on ? 0.35 + Math.abs(Math.sin(idle * 6 + s.phase)) * 0.5 : 0;
-                s.ring.scale.setScalar(on ? 1 + Math.abs(Math.sin(idle * 6 + s.phase)) * 0.6 : 1);
+                var audio=activeRoom.audio, level=audio.music?audio.mediaVolume:audio.volume, on=(audio.source>0||audio.music)&&!audio.mute&&!(audio.paused&&!audio.music)&&level>0;
+                var wave=Math.abs(Math.sin(idle*6+s.phase)), volume=level;
+                s.body.scale.set(1,1,1);s.ring.visible=on;s.ring.material.opacity=on?.25+wave*.4:0;
+                s.ring.scale.setScalar(on?1+volume*(1.5+wave*2.5):1);
             });
-            if (activeRoom.eau) { var em = activeRoom.eau.material, poolLevel = lightLevel(activeRoom, 0); em.emissiveIntensity = 0.45 + Math.sin(idle * 1.3) * 0.15 + poolLevel * 0.5; activeRoom.eau.position.y = 0.05 + Math.sin(idle * 0.9) * 0.012; em.color.copy(poolUnlit).lerp(poolLit, poolLevel); }
-            if (activeRoom.hvac) { activeRoom.hvac.flap.rotation.x = 0.5 + Math.sin(idle * 1.5) * 0.25; activeRoom.hvac.breeze.material.opacity = (0.08 + Math.abs(Math.sin(idle * 1.5)) * 0.1) * Math.max(dayF, lampAvg); activeRoom.hvac.breeze.material.color.setHex(activeRoom.hvac.thermo.st.chauffe ? 0xffc27a : 0x9fd8ff); }
+            if (activeRoom.eau) { var em = activeRoom.eau.material, poolLevel = lightLevel(activeRoom, 0); em.emissiveIntensity = .05+(1-environmentDay)*1.4+poolLevel*.3; em.color.copy(poolUnlit).lerp(poolLit, poolLevel); }
+            if (activeRoom.hvac) {
+                var h=activeRoom.hvac, speed=h.fan===0?.5:h.fan/3;
+                h.flap.rotation.x=h.enabled?.3+speed*.4:0;h.breeze.visible=h.enabled;
+                h.breeze.material.opacity=h.enabled?.08+speed*.15:0;h.breeze.material.color.setHex(h.thermo.st.chauffe?0xffa25b:0x70cbff);
+                h.breeze.scale.set(1, .5+speed*1.5, 1);
+                (h.streams||[]).forEach(function(o,i){o.visible=h.enabled;o.material.color.copy(h.breeze.material.color);o.material.opacity=h.enabled?(.12+speed*.32)*(1+.25*Math.sin(idle*(1+speed*3)+i)):0;o.scale.z=.35+speed*1.25;o.position.y=h.unit.position.y-.28-Math.sin(idle*(1+speed*3)+i)*.035;});
+            }
         }
         Object.values(ROOMS).forEach(function (R) { if (R.shades) animateShades(R, dt); });
         renderer.info.autoReset = false; renderer.info.reset();
@@ -817,7 +851,8 @@ export function createPlan3D(opts) {
     PIECES.forEach(function (p) { if (!p.nom) p.nom = noms[p.id] || ('Pièce ' + p.id); buildRoom(p); });
     envelope = createEstate(scene, ROOMS, interiors, renderer);
     applyLayout(0);showOnly(null);
-    buildLandscape(scene, envelope.bounds, interiors); sceneR.fog = scene.fog;
+    landscape = buildLandscape(scene, envelope.bounds, interiors); sceneR.fog = scene.fog;
+    var naturalMotion=addNaturalMotion(ROOMS[12],landscape);
     goOverview(true);
     resize();
     raf = requestAnimationFrame(loop);
@@ -825,7 +860,7 @@ export function createPlan3D(opts) {
     /* ---------- API publique ---------- */
     var API = {
         setRoom: setRoom,
-        version: '2026-09-16-estate-1',
+        version: '2026-09-16-estate-2',
         overview: overview,
         click: clickPlan,
         focusSelected: function () { if (!selectedRoom || activeRoom === selectedRoom) return; focusRoom(selectedRoom); },
@@ -833,9 +868,11 @@ export function createPlan3D(opts) {
         roomPoint: function (id) { var R = ROOMS[id]; if (!R) return null; var v = R.group.localToWorld(new THREE.Vector3(R.cfg.w * .6, .1, R.cfg.d * .8)).project(camera); return { x: (v.x + 1) * canvas.clientWidth / 2, y: (1 - v.y) * canvas.clientHeight / 2 }; },
         selectedRoom: function () { return selectedRoom && selectedRoom.id; },
         metrics: function () { var sorted = frames.slice().sort(function (a,b) { return a-b; }); return { frames: frames.length, medianMs: sorted[Math.floor(sorted.length / 2)] || 0, p95Ms: sorted[Math.floor(sorted.length * .95)] || 0, pixelRatio: renderer.getPixelRatio(), drawCalls: renderer.info.render.calls, triangles: renderer.info.render.triangles, zone: win }; },
+        environment: function(){return {day:environmentDay,seconds:idle,cycleSeconds:20};},
+        setDay: function(value){fixedDay=value===null?null:Math.max(0,Math.min(1,value));},
         setCircuit: function (roomId, idx, level) { var R = ROOMS[roomId]; if (!R) return; R.levels[idx] = Math.max(0, Math.min(1, level)); targetLights(R); },
         setVideoSource: function (roomId, n) { var R = ROOMS[roomId]; if (R) setTv(R, n); },
-        setMusic: function (on) { music = !!on; }, isMusic: function () { return music; },
+        setMusic: function (on) { if(selectedRoom)selectedRoom.audio.music=!!on; }, isMusic: function () { return !!selectedRoom?.audio.music; },
         setSetpoint: function (roomId, deg) { var R = ROOMS[roomId]; if (!R || !R.hvac) return; R.hvac.thermo.st.setpoint = deg; R.hvac.thermo.draw(); },
         setHeating: function (roomId, chauffe) { var R = ROOMS[roomId]; if (!R || !R.hvac) return; R.hvac.thermo.st.chauffe = !!chauffe; R.hvac.thermo.draw(); },
         shade: function (famille, cmd) { shadeCmd(selectedRoom, famille, cmd); },
@@ -851,6 +888,10 @@ export function createPlan3D(opts) {
         remote: function (key) {                       // télécommande de la source affichée par la TV de la pièce active
             var R = selectedRoom; if (!R || !R.tv || !R.tv.source) return;
             var st = R.tv.screen.st, cols = 5;
+            if(key==='menu'){st.program=false;st.open=null;R.tv.screen.draw();return;}
+            if(key==='pause'||key==='stop'){st.paused=true;R.audio.paused=true;if(key==='stop'){st.program=false;st.open=null;R.tv.screen.draw();}return;}
+            if(st.program&&(key==='ok'||key==='play')){st.paused=!st.paused;R.audio.paused=st.paused;return;}
+            if(st.program&&R.tv.source===1){st.program=false;st.open=null;}
             if (R.tv.source !== 1) {                   // Sky Q / Swisscom / IPTV : la ligne ou la tuile en surbrillance se déplace
                 var n = R.tv.source === 3 ? 8 : (R.tv.source === 2 ? 4 : 6);
                 if (key === 'down' || key === 'chdn') st.row = ((st.row || 0) + 1) % n;
@@ -864,7 +905,7 @@ export function createPlan3D(opts) {
             else if (key === 'down') st.sel = st.sel + cols < APPS.length ? st.sel + cols : st.sel;
             else if (key === 'left') st.sel = st.sel % cols > 0 ? st.sel - 1 : st.sel;
             else if (key === 'right') st.sel = st.sel % cols < cols - 1 && st.sel + 1 < APPS.length ? st.sel + 1 : st.sel;
-            else if (key === 'ok') { st.open = st.sel; st.tick = 0; }
+            else if (key === 'ok') { st.open = st.sel; st.tick = 0; st.program=true;st.paused=false;R.audio.paused=false; }
             R.tv.screen.draw();
         },
         rooms: ROOMS, activeRoom: function () { return activeRoom ? activeRoom.id : null }, scene: scene, renderer: renderer,
@@ -901,7 +942,8 @@ export function createPlan3D(opts) {
     };
 
     /* ---------- Liaison aux joins (feedbacks CrComLib) ---------- */
-    var REMOTE = { 211: 'up', 212: 'down', 213: 'left', 214: 'right', 215: 'ok', 216: 'menu',
+    var REMOTE = { 211: 'up', 212: 'down', 213: 'left', 214: 'right', 215: 'ok', 216: 'menu', 217: 'menu', 218: 'play',
+        518:'play',520:'pause',521:'stop',548:'play',550:'pause',551:'stop',568:'play',
         500: 'up', 501: 'down', 502: 'left', 503: 'right', 504: 'ok', 515: 'chup', 516: 'chdn',          // Sky Q
         530: 'up', 531: 'down', 532: 'left', 533: 'right', 534: 'ok', 545: 'chup', 546: 'chdn',          // IPTV
         574: 'up', 575: 'down', 576: 'left', 577: 'right', 578: 'ok', 582: 'chup', 583: 'chdn' };        // Swisscom
@@ -940,17 +982,25 @@ export function createPlan3D(opts) {
                 var V = win.Villa, R = ROOMS[id];
                 if (!R || cur() !== Number(id) || win !== boundWin || !V || typeof V.get !== 'function') return;
                 R.sceneOff = V.get('b', '51') === true;
-                for (var i = 0; i < 2; i++) { var value = V.get('n', String(71 + i)); if (value !== undefined) R.levels[i] = Math.max(0, Math.min(1, Number(value) / 65535)); }
+                for (var i = 0; i < 5; i++) { var value = V.get('n', String(71 + i)); if (value !== undefined) R.levels[i] = Math.max(0, Math.min(1, Number(value) / 65535)); }
+                R.audio.volume=Math.max(0,Math.min(1,Number(V.get('n','52')||0)/65535));R.audio.mediaVolume=Math.max(0,Math.min(1,Number(V.get('n','254')||0)/65535));R.audio.mute=V.get('b','55')===true;R.audio.music=V.get('b','155')===true;
+                if(R.hvac){R.hvac.enabled=V.get('b','610')!==false;R.hvac.fan=Number(V.get('n','61')||0);}
+                var video=Number(V.get('n','51')||0);video=video>=1&&video<=4?video:0;if(R.audio.source!==video)setTv(R,video);
                 targetLights(R);
             }, 0);
         }
         subscribe('n', '10', function (v) { if (v >= 1) { setRoom(v); refreshRoomFeedback(v); } });
         subscribe('b', '51', function (v) { var R = ROOMS[cur()]; if (R) { R.sceneOff = !!v; targetLights(R); } });
-        for (var i = 0; i < 10; i++) (function (i) { subscribe('n', String(71 + i), function (v) { var id = cur(); if (id && i < 2) API.setCircuit(id, i, Number(v) / 65535); }); })(i);
-        for (var s = 1; s <= 4; s++) (function (s) { subscribe('b', String(150 + s), function (v) { var id = cur(); if (!id) return; if (v) API.setVideoSource(id, s); else if (ROOMS[id].tv && ROOMS[id].tv.source === s) API.setVideoSource(id, 0); }); })(s);
-        subscribe('b', '150', function (v) { var id = cur(); if (v && id) API.setVideoSource(id, 0); });
-        subscribe('b', '200', function (v) { var id = cur(); if (v && id) { API.setVideoSource(id, 0); music = false; } });
-        subscribe('b', '155', function (v) { music = !!v; });
+        for (var i = 0; i < 10; i++) (function (i) { subscribe('n', String(71 + i), function (v) { var id = cur(); if (id && i < 5) API.setCircuit(id, i, Number(v) / 65535); }); })(i);
+        for (var s = 1; s <= 4; s++) (function (s) { subscribe('b', String(150 + s), function (v) { var id = cur(); if (!id) return; if (v) API.setVideoSource(id, s); else if (ROOMS[id].audio.source === s) API.setVideoSource(id, 0); }); })(s);
+        subscribe('b', '150', function (v) { var id = cur(); if (v && id) { API.setVideoSource(id, 0);ROOMS[id].audio.music=false; } });
+        subscribe('b', '200', function (v) { var id = cur(); if (v && id) { API.setVideoSource(id, 0); ROOMS[id].audio.music = false; } });
+        subscribe('b', '155', function (v) { if(ROOMS[cur()])ROOMS[cur()].audio.music=!!v; });
+        subscribe('n', '254', function(v){if(ROOMS[cur()])ROOMS[cur()].audio.mediaVolume=Math.max(0,Math.min(1,Number(v)/65535));});
+        subscribe('n', '52', function(v){if(ROOMS[cur()])ROOMS[cur()].audio.volume=Math.max(0,Math.min(1,Number(v)/65535));});
+        subscribe('b', '55', function(v){if(ROOMS[cur()])ROOMS[cur()].audio.mute=!!v;});
+        subscribe('b', '610', function(v){var h=ROOMS[cur()]?.hvac;if(h)h.enabled=!!v;});
+        subscribe('n', '61', function(v){var h=ROOMS[cur()]?.hvac;if(h)h.fan=Math.max(0,Math.min(3,Number(v)||0));});
         subscribe('n', '31', function (v) { var id = cur(); if (id && v > 0) API.setSetpoint(id, Number(v) / 10); });
         subscribe('s', '33', function (v) { var id = cur(); if (id) API.setHeating(id, String(v).toUpperCase().indexOf('CHAUFF') === 0); });
         // Télécommande Apple TV : on observe les appuis émis par la GUI (pont CH5), pas un feedback

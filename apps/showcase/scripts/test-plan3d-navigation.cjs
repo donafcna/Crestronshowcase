@@ -17,7 +17,7 @@ fs.mkdirSync(out,{recursive:true});
   const scene=async id=>{await p.frameLocator('iframe').locator('#scene-btn-'+id).click();await p.waitForTimeout(100);await p.waitForFunction(()=>Object.values(window.__plan3d.rooms).every(r=>!r.lightFade));};
   try{
     await p.goto(base+'/interfaces/residentiel/villa-gemini-frequencetv/phone');
-    await p.waitForFunction(()=>window.__plan3d?.version==='2026-09-16-estate-1');await waitPhase('room');
+    await p.waitForFunction(()=>window.__plan3d?.version==='2026-09-16-estate-2');await waitPhase('room');
     await select(1);await scene(51);
     await p.evaluate(()=>{for(const k of ['volet','rideau','store'])window.__plan3d.shadePos(k,1);});
     await p.waitForTimeout(3000);
@@ -62,7 +62,7 @@ fs.mkdirSync(out,{recursive:true});
     check('Closed villa has physically assembled storeys',await p.evaluate(()=>window.__plan3d.navigation().explosion===0&&Object.values(window.__plan3d.rooms).every(r=>Math.abs(r.y0-r.cfg.niveau*3.6)<.001)));
     await p.mouse.click(bg.x,bg.y);await waitPhase('overview-open');
     check('First background click removes walls without zoom',(await nav()).walls===0&&await p.evaluate(()=>window.__plan3d.activeRoom()===null));await shot('overview-open');
-    check('Open overview separates storeys',await p.evaluate(()=>window.__plan3d.navigation().explosion===1&&Object.values(window.__plan3d.rooms).every(r=>Math.abs(r.y0-r.cfg.niveau*7.2)<.001)));
+    check('Open overview separates storeys',await p.evaluate(()=>window.__plan3d.navigation().explosion===1&&Object.values(window.__plan3d.rooms).every(r=>Math.abs(r.y0-(r.ext?0:r.cfg.niveau*7.2+7.2))<.001)));
     const point=await p.evaluate(()=>window.__plan3d.roomPoint(9));
     await p.mouse.click(rect.x+point.x,rect.y+point.y);await waitPhase('room');
     check('Room click selects same room in Smartphone',await p.frameLocator('iframe').locator('#room-select').inputValue()==='9');

@@ -22,7 +22,7 @@ const route = '/interfaces/residentiel/villa-gemini-frequencetv';
   const shot = async name => { await pause(); await page.screenshot({path:path.join(out,name+'.png')}); report.screenshots.push(name+'.png'); };
   try {
     await page.goto(base+route+'/phone');
-    await page.waitForFunction(() => window.__plan3d?.version === '2026-09-16-estate-1');
+    await page.waitForFunction(() => window.__plan3d?.version === '2026-09-16-estate-2');
     await pause(); await page.waitForTimeout(1700);
     const gui=page.frameLocator('iframe');
     await gui.locator('#room-select').selectOption('1');
@@ -50,6 +50,7 @@ const route = '/interfaces/residentiel/villa-gemini-frequencetv';
     await shot('villa-overview');
     // Isolate the landscape: a canvas-element screenshot also includes the
     // overlaid iPhone clock, GUI video and countdown, which legitimately move.
+    await page.evaluate(()=>window.__plan3d.setDay(1));
     const skyClip={x:340,y:10,width:600,height:100};
     await page.waitForTimeout(1200);
     const stableA=await page.screenshot({clip:skyClip});await page.waitForTimeout(700);const stableB=await page.screenshot({clip:skyClip});
@@ -70,12 +71,12 @@ const route = '/interfaces/residentiel/villa-gemini-frequencetv';
     check('Three motors move',await page.evaluate(()=>Object.values(window.__plan3d.rooms[1].shades).every(s=>s.pos>.1&&s.pos<1)));await shot('salon-motors-moving');
     await page.evaluate(()=>{window.__plan3d.shade('volet','stop')});const stopped=await page.evaluate(()=>window.__plan3d.rooms[1].shades.volet.pos);await page.waitForTimeout(500);
     check('Motor stop holds position',await page.evaluate(p=>window.__plan3d.rooms[1].shades.volet.pos===p,stopped));
-    await page.evaluate(()=>{const a=window.__plan3d;a.setVideoSource(1,1);a.remote('right');});
+    await page.evaluate(()=>{const a=window.__plan3d;a.setVideoSource(1,1);a.remote('menu');a.remote('right');});
     check('Apple remote selection',await page.evaluate(()=>window.__plan3d.rooms[1].tv.screen.st.sel===1));
     await page.evaluate(()=>window.__plan3d.remote('ok'));check('Apple remote opens selected app',await page.evaluate(()=>window.__plan3d.rooms[1].tv.screen.st.open===1));
     await page.evaluate(()=>{const a=window.__plan3d;a.remote('menu');a.setSetpoint(1,23.5);});
     check('Live thermostat updates',await page.evaluate(()=>window.__plan3d.rooms[1].hvac.thermo.st.setpoint===23.5));
-    for(const id of [2,3,4,5,6,7,8,9,10,11,12,13,14]){
+    for(const id of [2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]){
       await pause();await gui.locator('#room-select').selectOption(String(id));await page.waitForTimeout(250);await settle();
       check('GUI selects 3D room '+id,await page.evaluate(id=>window.__plan3d.activeRoom()===id,id));
       await gui.locator('#scene-btn-54').click();

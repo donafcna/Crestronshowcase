@@ -44,7 +44,7 @@ export function createInteriors(renderer, palette) {
     brass: mat(0x9d8052,.32,{metalness:.75}), black:mat(0x101719,.45,{metalness:.3}),
     ceramic: mat(0xcac6b9,.28), white:mat(0xf0eee7,.42), leaf:mat(0x385943,.95),
     grill:mat(0xdddddd,.9,{map:grille}), art:mat(0xffffff,.9,{map:art}),
-    glass:mat(0xabc5ca,.18,{metalness:.25}), earth:mat(0x292c21,1),
+    glass:mat(0xabc5ca,.18,{metalness:.15,transparent:true,opacity:.22,depthWrite:false,side:T.DoubleSide}), earth:mat(0x292c21,1),
     paper:mat(0xe8e3d9,.9), ink:mat(0x32474a,.8)
   };
   const loader = new T.TextureLoader();
@@ -99,31 +99,32 @@ export function createInteriors(renderer, palette) {
     }
     const e0=R.lamps.find(l=>!l.sousMarin)?.mat || A.white;
     const e1=R.lamps.filter(l=>!l.sousMarin)[1]?.mat || e0;
+    const cornice=R.lamps.find(l=>l.circuit===2)?.mat||e1,strip=R.lamps.find(l=>l.circuit===4)?.mat||e1;
     if(!R.ext){
       // Plinths and timber cornice give the cutaway a credible architectural thickness.
       box(details,A.oak,.164,.085,d/2,.025,.16,d-.12);
       box(details,A.oak,w/2,.085,.168,w-.15,.16,.025);
       box(details,A.oak,.16,2.94,d/2,.09,.12,d);
       box(details,A.oak,w/2,2.94,.16,w,.12,.09);
-      if(type!=='cinema')picture(details,d*.72);
-      keypad(details,type==='cinema'?d-.8:d*.35+.4);
+      if(type!=='cinema')picture(details,R.cfg.windowWall==='west'?d*.86:d*.72);
+      keypad(details,R.cfg.windowWall==='west'?.95:d*.35+.4);
       if(type!=='sauna'){
         plant(details,w-.52,d-.55,.85);
         // Recessed wall speaker, distinct from hi-fi columns and the soundbar.
-        const wallSpeakerZ=type==='cinema'?.6:d*.3;
-        box(details,A.white,.17,2.25,wallSpeakerZ,.05,.42,.28);box(details,A.grill,.2,2.25,wallSpeakerZ,.01,.37,.23);
+
+
         // Track with three adjustable downlights, warm indirect LED cornice.
         if(type!=='cinema'){
           const trackZ=d*.6;
           box(details,A.black,w*.6,2.88,trackZ,w*.5,.025,.045);
           for(let i=0;i<3;i++){const x=w*.4+i*w*.2;cylinder(details,A.black,x,2.79,trackZ,.065,.17);cylinder(details,e0,x,2.697,trackZ,.051,.008);}
         }
-        box(details,e1,.215,2.84,d/2,.012,.014,d-.35);
+        box(details,cornice,.215,2.84,d/2,.012,.014,d-.35);
         // Details on the HVAC case and the existing live thermostat.
         if(R.hvac){
           for(let i=0;i<10;i++)box(details,A.charcoal,w-.75-.36+i*.08,2.405,.429,.045,.015,.005);
-          const thermostatZ=type==='cinema'?d-.4:d*.35;
-          if(type==='cinema')R.hvac.mesh.position.z=thermostatZ;
+          const thermostatZ=R.cfg.windowWall==='west'?.55:d*.35;
+          R.hvac.mesh.position.z=thermostatZ;
           box(details,A.brass,.167,1.45,thermostatZ,.022,.35,.35);
           box(details,A.black,.208,1.255,thermostatZ,.018,.019,.08);
           for(const dz of [-.055,.055])ball(details,A.white,.219,1.26,thermostatZ+dz,.006);
@@ -159,11 +160,18 @@ export function createInteriors(renderer, palette) {
           contact(details,w/2,bz,bw+1.1,2.9);
         }
         if(type==='repas'){
-          // Replace the original solid chair blocks with legged chairs.
-          for(const o of [...g.children])if(o.isMesh&&o.geometry.parameters?.width===.42&&o.geometry.parameters?.height===.9)g.remove(o);
-          for(let i=0;i<6;i++)chair(details,w/2-.85+(i%3)*.85,d/2+(i<3?-.85:.85),i<3?Math.PI:0);
-          for(let i=0;i<6;i++){const x=w/2-.8+(i%3)*.8,z=d/2+(i<3?-.32:.32);cylinder(details,A.white,x,.805,z,.15,.012);cylinder(details,A.glass,x+.22,.88,z,.036,.16);box(details,A.brass,x-.2,.804,z,.016,.009,.22);}
-          cylinder(details,A.ceramic,w/2,.97,d/2,.11,.35,.065);contact(details,w/2,d/2,3.2,2.8);
+          for(let i=0;i<12;i++){
+            const x=w/2-2.3+(i%6)*.92,z=d/2+(i<6?-1.05:1.05);
+            chair(details,x,z,i<6?Math.PI:0);
+            cylinder(details,A.white,x,.805,d/2+(i<6?-.47:.47),.17,.012);
+            cylinder(details,A.glass,x+.22,.88,d/2+(i<6?-.47:.47),.036,.16);
+          }
+          for(const x of [w/2-1.5,w/2+1.5])cylinder(details,A.ceramic,x,.97,d/2,.11,.35,.065);
+          contact(details,w/2,d/2,6.8,3.2);
+          box(details,A.oak,w*.24,.45,.45,4.2,.9,.55);box(details,A.stone,w*.24,.93,.45,4.3,.06,.6);
+          for(let i=0;i<6;i++){const x=w*.24-1.75+i*.7;box(details,A.brass,x,.6,.74,.23,.018,.02);}
+          for(let i=0;i<7;i++){const x=w*.76-1.4+i*.45;box(details,A.oak,x,1.4,.4,.05,2.6,.55);for(let j=0;j<5;j++)cylinder(details,A.moss,x, .5+j*.43,.43,.08,.3);}
+          box(details,A.glass,w*.76,1.4,.72,3.3,2.6,.015);
         }
         if(type==='cuisine'||type==='poolhouse'){
           const z=type==='cuisine'?d*.55:.75,y=type==='cuisine'?.97:1.07;
@@ -190,15 +198,23 @@ export function createInteriors(renderer, palette) {
             for(const s of [-1,1]){box(details,A.black,x+s*.38,.55+y,z,.1,.31,.83);cylinder(details,A.brass,x+s*.38,.71+y,z-.25,.041,.008);}
           }
           for(const x of [.55,1.05,w-1.05,w-.55])box(details,A.charcoal,x,1.55,.185,.38,1.8,.09);
-          for(const z of [.6,d-.5]){box(details,A.black,.24,1.9,z,.16,.4,.27);box(details,A.grill,.329,1.9,z,.01,.35,.21);}
-          box(details,e1,w/2,.08,d-.3,w-.8,.028,.03);
+
+          box(details,strip,w/2,.08,d-.3,w-.8,.028,.03);
         }
       } else {
         for(let i=0;i<28;i++)box(details,A.oak,.216,1.5,.2+i*(d-.4)/28,.035,2.8,.03);
         for(let i=0;i<8;i++)box(details,A.cream,w*.4,.53,.38+i*.062,.6,.015,.043);
         cylinder(details,A.oak,w*.3,.65,1.3,.16,.28,.2);
         for(let i=0;i<8;i++)ball(details,A.charcoal,w-.85+rand()*.3,.94+rand()*.05,d-.86+rand()*.3,.085,.065,.075);
-        box(details,e1,w/2,.32,.3,w-.5,.025,.03);
+        box(details,strip,w/2,.32,.3,w-.5,.025,.03);
+        box(details,A.stone,w-1.6,.07,d-1.5,2.7,.1,2.6);
+        box(details,A.stone,w-.45,1.25,d-1.5,.12,2.5,2.6);
+        box(details,A.glass,w-2.9,1.2,d-1.5,.018,2.4,2.5);
+        box(details,A.glass,w-1.6,1.2,d-.25,2.7,2.4,.018);
+        box(details,A.stone,w-1.45,.4,d-.7,2.2,.65,.6);
+        cylinder(details,A.brass,w-.55,2.25,d-1.5,.18,.025);
+        for(const x of [w*.28,w*.48]){box(details,A.oak,x,.22,d-1.15,.75,.35,1.7);box(details,A.cream,x,.42,d-1.15,.7,.06,1.65);}
+
       }
     } else {
       // Terracotta planters, teak decking and soft upholstery outside.

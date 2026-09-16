@@ -1,5 +1,9 @@
 # VillaCrans_Slot2.smw — programme SIMPL du slot 2
 
+## Extension HVAC v4 du 16/09/2026
+
+ON/OFF : d610/611 ; ventilation Auto/1/2/3 : d612–615 et a61 (0..3). Retours par pièce : digitaux +93..98, analogique +33 ; la température mesurée reste +32. Aucun bloc GUI v3 réactivé. Détails, sens des signaux et recette Debugger : `projects/villa-crans/ch5/docs/HVAC-2026-09-16.md` depuis la racine du dépôt.
+
 Généré par `contract/generate_slot2.js` à partir de `simpl-windows/VillaCrans_Slot2.smw`
 (modifié en place, une sauvegarde `VillaCrans_Slot2.backup-<horodatage>.smw` est écrite à
 chaque exécution et remplace la précédente). **Fermer le projet dans SIMPL Windows avant de

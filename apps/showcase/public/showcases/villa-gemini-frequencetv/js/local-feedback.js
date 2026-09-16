@@ -55,7 +55,7 @@
     MUSIC_OFF: "156",       // b : l'audio revient à la source vidéo (v1.0.166)
     POWER_OFF: "200",       // b : extinction globale
     STORES_SCENES: ["201", "202", "203", "204"], // b : scènes de stores + feedback
-    MEDIA_POS: "254",       // n : position lecteur média
+    MEDIA_VOLUME: "254",       // n : position lecteur média
     CIRCUITS: ["71", "72", "73", "74", "75", "76", "77", "78", "79", "80"], // n : gradateurs 0..65535
     DALLE_VOLUME: "260",    // n : volume matériel de la dalle (0-100)
     DALLE_MUTE: "261",      // b : mute matériel de la dalle
@@ -95,8 +95,8 @@
   var roomNames = {};
   function makeRoom(temp, setpoint, mode, source, volume, scene) {
     return {
-      temp: temp, setpoint: setpoint, mode: mode,
-      source: source, music: false, volume: volume, mute: false,
+      temp: temp, setpoint: setpoint, mode: mode, hvacOn: true, fan: 0,
+      source: source, music: false, volume: volume, mediaVolume: volume, mute: false,
       scene: scene, circuits: SCENE_PRESETS[scene].slice(), storesScene: null,
     };
   }
@@ -203,7 +203,10 @@
     set("s", SIG.TEMP_ACTUAL, fmtTemp(r.temp));
     set("s", SIG.TEMP_SETPOINT, fmtTemp(r.setpoint));
     set("n", SIG.SETPOINT_X10, Math.round(r.setpoint * 10));
-    set("s", SIG.HVAC_MODE, r.mode);
+    set("s", SIG.HVAC_MODE, r.hvacOn ? r.mode : "ARRÊT");
+    exclusive(["610", "611"], r.hvacOn ? "610" : "611");
+    exclusive(["612", "613", "614", "615"], String(612 + r.fan));
+    set("n", "61", r.fan);
   }
 
   // Sources : vidéo (1..4) en interlock, musique (155) indépendante (elle joue sur les
@@ -225,6 +228,7 @@
     publishHvac(r);
     publishSource(r);
     set("n", SIG.VOLUME, r.volume);
+    set("n", SIG.MEDIA_VOLUME, r.mediaVolume);
     set("b", SIG.MUTE, r.mute);
     publishScenes(r);
     publishCircuits(r);
@@ -334,6 +338,7 @@
     exclusive(Object.keys(SIG.HVAC_MODES), id);
     Object.keys(rooms).forEach(function (k) {
       var r = rooms[k];
+      r.hvacOn = true;
       r.setpoint = SIG.HVAC_MODES[id][1];
       r.mode = id === "409" ? "HORS GEL" : (r.setpoint < r.temp - 0.4 ? "CLIMATISATION" : "CHAUFFAGE");
     });
@@ -383,6 +388,11 @@
     if (roomFromJoin(n)) return selectRoom(roomFromJoin(n));
     if (SIG.SCENES.indexOf(id) !== -1) return applyScene(id);
     if (SIG.SOURCES.indexOf(id) !== -1) return selectSource(SIG.SOURCES.indexOf(id));
+    if (+id >= 610 && +id <= 615) {
+      var climate = rooms[activeRoom];
+      if (+id < 612) { climate.hvacOn = id === '610'; exclusive(Object.keys(SIG.HVAC_MODES), null); } else climate.fan = +id - 612;
+      publishHvac(climate); return;
+    }
     if (id === SIG.MUSIC_OFF) return musicOff();
     if (id === SIG.POWER_OFF) return powerOff();
     if (id === SIG.MUTE) return toggleMute();
@@ -435,7 +445,9 @@
     }
     var r = rooms[activeRoom];
     value = set("n", id, value);
+    if (id === "61") { if (value <= 3) r.fan = value; publishHvac(r); }
     if (id === SIG.VOLUME) r.volume = value;
+    if (id === SIG.MEDIA_VOLUME) r.mediaVolume = value;
     if (id === SIG.SETPOINT_X10) {
       if (r.setpoint !== value / 10) exclusive(Object.keys(SIG.HVAC_MODES), null);
       r.setpoint = value / 10; publishHvac(r);

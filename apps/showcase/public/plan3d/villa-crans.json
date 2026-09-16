@@ -8,44 +8,49 @@
       "niveau": 0,
       "x": 0,
       "z": 0,
-      "w": 7,
-      "d": 6
+      "w": 10,
+      "d": 6,
+      "windowWall": "north"
     },
     {
       "id": 2,
       "type": "cuisine",
       "niveau": 0,
-      "x": 7.3,
+      "x": 10.3,
       "z": 0,
-      "w": 5.5,
-      "d": 6
+      "w": 8.3,
+      "d": 6,
+      "windowWall": "north"
     },
     {
       "id": 3,
       "type": "repas",
       "niveau": 0,
-      "x": 13.1,
-      "z": 0,
-      "w": 5.5,
-      "d": 6
+      "x": 0,
+      "z": 6.4,
+      "w": 18.6,
+      "d": 5,
+      "windowWall": "west"
     },
     {
       "id": 8,
       "type": "cinema",
-      "niveau": 0,
+      "niveau": -1,
       "x": 0,
-      "z": 6.4,
-      "w": 7,
-      "d": 5
+      "z": 0,
+      "w": 9,
+      "d": 6,
+      "windowWall": "west"
     },
     {
       "id": 14,
       "type": "poolhouse",
       "niveau": 0,
-      "x": 7.3,
-      "z": 6.4,
-      "w": 5,
-      "d": 5
+      "x": 26,
+      "z": 0,
+      "w": 4,
+      "d": 6,
+      "windowWall": "north"
     },
     {
       "id": 11,
@@ -54,7 +59,8 @@
       "x": 19.5,
       "z": 0,
       "w": 6,
-      "d": 6
+      "d": 6,
+      "windowWall": "north"
     },
     {
       "id": 12,
@@ -63,16 +69,18 @@
       "x": 19.5,
       "z": 6.4,
       "w": 9,
-      "d": 7
+      "d": 7,
+      "windowWall": "north"
     },
     {
       "id": 13,
       "type": "sauna",
-      "niveau": 0,
-      "x": 26,
+      "niveau": -1,
+      "x": 9.3,
       "z": 0,
-      "w": 4,
-      "d": 4
+      "w": 9.3,
+      "d": 6,
+      "windowWall": "north"
     },
     {
       "id": 4,
@@ -81,7 +89,8 @@
       "x": 0,
       "z": 0,
       "w": 6.5,
-      "d": 6
+      "d": 6,
+      "windowWall": "north"
     },
     {
       "id": 5,
@@ -90,7 +99,8 @@
       "x": 6.8,
       "z": 0,
       "w": 5.5,
-      "d": 6
+      "d": 6,
+      "windowWall": "north"
     },
     {
       "id": 6,
@@ -99,7 +109,8 @@
       "x": 12.6,
       "z": 0,
       "w": 5.5,
-      "d": 6
+      "d": 6,
+      "windowWall": "north"
     },
     {
       "id": 7,
@@ -108,7 +119,8 @@
       "x": 0,
       "z": 6.4,
       "w": 6.5,
-      "d": 5
+      "d": 5,
+      "windowWall": "west"
     },
     {
       "id": 9,
@@ -117,7 +129,8 @@
       "x": 0,
       "z": 0,
       "w": 5.5,
-      "d": 6
+      "d": 6,
+      "windowWall": "north"
     },
     {
       "id": 10,
@@ -126,7 +139,28 @@
       "x": 5.8,
       "z": 0,
       "w": 6.5,
-      "d": 6
+      "d": 6,
+      "windowWall": "north"
+    },
+    {
+      "id": 15,
+      "type": "garage",
+      "niveau": -1,
+      "x": 9.3,
+      "z": 6.4,
+      "w": 9.3,
+      "d": 5,
+      "windowWall": "none"
+    },
+    {
+      "id": 16,
+      "type": "golf",
+      "niveau": -1,
+      "x": 0,
+      "z": 6.4,
+      "w": 9,
+      "d": 5,
+      "windowWall": "west"
     }
   ]
 }

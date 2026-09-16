@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Crestron.SimplSharp;
 using Crestron.SimplSharpPro;
@@ -11,6 +11,7 @@ namespace VillaFrequenceTvAutomation
 {
     public class RoomState
     {
+        public HvacState Hvac { get; private set; }
         public int RoomId { get; set; }
         public string RoomName { get; set; }
         public ushort ActiveScene { get; set; }
@@ -28,6 +29,7 @@ namespace VillaFrequenceTvAutomation
 
         public RoomState(int id, string name)
         {
+            Hvac = new HvacState();
             RoomId = id;
             RoomName = name;
             ActiveScene = 1; // index de scène 1..4 (contrat v2 : joins digitaux 45-48)
@@ -720,6 +722,13 @@ namespace VillaFrequenceTvAutomation
             try
             {
                 uint join = joinRaw;
+                if ((args.Sig.Type == eSigType.Bool && join >= 610 && join <= 615 && args.Sig.BoolValue)
+                    || (args.Sig.Type == eSigType.UShort && join == 61))
+                {
+                    int roomId = _activeRoomPerDevice.ContainsKey(sourceDevice.ID)
+                        ? _activeRoomPerDevice[sourceDevice.ID] : DefaultRoomForPanel(sourceDevice.ID);
+                    _eisc.UShortInput[10].UShortValue = (ushort)roomId;
+                }
                 switch (args.Sig.Type)
                 {
                     case eSigType.Bool:
@@ -970,7 +979,14 @@ namespace VillaFrequenceTvAutomation
                         if (!_roomsRegistry.ContainsKey(id))
                             _roomsRegistry.Add(id, new RoomState(id, nom));
 
-                        // Flag 'intersystem' : expose (ou non) le bloc EISC de cette pièce vers le slot 2
+                        var initialHvac = piece["pilotages"]?["cvc"]?["etatInitial"];
+                        if (initialHvac != null)
+                        {
+                            if (initialHvac["marche"] != null) _roomsRegistry[id].Hvac.Enabled = (bool)initialHvac["marche"];
+                            if (initialHvac["ventilation"] != null) _roomsRegistry[id].Hvac.SetFan((ushort)initialHvac["ventilation"]);
+                        }
+
+                        // Flag 'intersystem'  : expose (ou non) le bloc EISC de cette pièce vers le slot 2
                         bool eiscOn = piece["intersystem"] == null || (bool)piece["intersystem"];
                         _roomEiscEnabled[id] = eiscOn;
                         if (eiscOn) eiscExposed++;
@@ -1086,6 +1102,8 @@ namespace VillaFrequenceTvAutomation
                     // L'analogique +21 (Lighting_Master) a été retiré du contrat le 13.09.2026 :
                     // aucun composant de la GUI ne le lisait et il ne portait aucune information
                     // que les niveaux de circuits ne donnent déjà.
+                    for (uint h = 93; h <= 98; h++) SetBool(dev, b + h, room.Hvac.Selected(h));
+                    SetUShort(dev, b + 33, room.Hvac.Fan);
                     SetUShort(dev, b + 31, room.TargetTemperature);
                     SetUShort(dev, b + 51, room.ActiveVideoSource);
                     SetUShort(dev, b + 52, room.AudioVolume);
@@ -1097,7 +1115,7 @@ namespace VillaFrequenceTvAutomation
                     // Serials : nom (+10), temp actuelle (+32), mode (+33), consigne texte (+34)
                     SetString(dev, b + 10, room.RoomName);
                     SetString(dev, b + 32, ((double)room.CurrentTemperature / 10.0).ToString("F1"));
-                    SetString(dev, b + 33, room.TargetTemperature > room.CurrentTemperature ? "CHAUFFAGE" : "CLIMATISATION");
+                    SetString(dev, b + 33, !room.Hvac.Enabled ? "ARRÊT" : room.TargetTemperature > room.CurrentTemperature ? "CHAUFFAGE" : "CLIMATISATION");
                     SetString(dev, b + 34, ((double)room.TargetTemperature / 10.0).ToString("F1"));
                 }
 
@@ -1142,6 +1160,13 @@ namespace VillaFrequenceTvAutomation
 
             if (args.Sig.Type == eSigType.Bool)
             {
+                // A physical power return is a level, including the falling edge.
+                if (sourceDevice == _eisc && offset == 93)
+                {
+                    _roomsRegistry[roomId].Hvac.Enabled = args.Sig.BoolValue;
+                    PushRoomFeedback(roomId);
+                    return;
+                }
                 if (!args.Sig.BoolValue) return; // front montant uniquement
                 ApplyRoomDigitalCommand(roomId, offset, sourceDevice);
             }
@@ -1210,6 +1235,7 @@ namespace VillaFrequenceTvAutomation
                 room.MusicAudio = false;
                 DispatchAudioRouting(roomId);
             }
+            else if (room.Hvac.Apply(offset)) { }
             else if (offset >= 81 && offset <= 92)      // Partitions d'alarme (joins logiques 301-312)
             {
                 uint partIdx = (offset - 81) / 3;
@@ -1233,6 +1259,7 @@ namespace VillaFrequenceTvAutomation
             // L'analogique +21 (Lighting_Master) n'existe plus dans le contrat (13.09.2026).
             if (offset == 31) room.TargetTemperature = val;                  // join logique 31
             else if (offset == 32) room.CurrentTemperature = val;            // v4 : température mesurée, envoyée par le slot 2 (x10)
+            else if (offset == 33) { if (!room.Hvac.SetFan(val)) return; } // fan, never the measured temperature (+32)
             else if (offset == 51) { room.ActiveVideoSource = val; DispatchIpCommandToSonyTv(roomId, val); } // join logique 51
             else if (offset == 52) room.AudioVolume = val;                   // join logique 52
             else if (offset == 53)
@@ -1463,6 +1490,7 @@ namespace VillaFrequenceTvAutomation
             { 61, 1 }, { 62, 2 }, { 63, 3 }, { 64, 4 }, { 65, 5 }, { 66, 6 }, { 67, 7 }, { 68, 8 }, { 69, 9 },
             { 51, 21 }, { 52, 22 }, { 53, 23 }, { 54, 24 },
             { 49, 35 }, { 50, 36 },
+            { 610, 93 }, { 611, 94 }, { 612, 95 }, { 613, 96 }, { 614, 97 }, { 615, 98 },
             { 201, 41 }, { 202, 42 }, { 203, 43 }, { 204, 44 }, { 200, 45 },
             { 55, 50 },
             { 150, 51 }, { 151, 52 }, { 152, 53 }, { 153, 54 }, { 154, 55 }, { 155, 56 }, { 156, 57 },
@@ -1472,7 +1500,7 @@ namespace VillaFrequenceTvAutomation
         };
         private static readonly Dictionary<ushort, uint> V4AnalogOffsets = new Dictionary<ushort, uint>
         {
-            { 31, 31 }, { 51, 51 }, { 52, 52 }, { 53, 53 }, { 254, 54 },
+            { 31, 31 }, { 61, 33 }, { 51, 51 }, { 52, 52 }, { 53, 53 }, { 254, 54 },
             { 71, 71 }, { 72, 72 }, { 73, 73 }, { 74, 74 }, { 75, 75 }, { 76, 76 }, { 77, 77 }, { 78, 78 }, { 79, 79 }, { 80, 80 }
         };
 
@@ -1657,7 +1685,7 @@ namespace VillaFrequenceTvAutomation
                     Trace("GLOBAL: Climatisation - Mode Confort demandé.");
                     if (!ApplyPreset("hvac_confort"))
                     {
-                        foreach (var rm in _roomsRegistry.Values) rm.TargetTemperature = 210;
+                        foreach (var rm in _roomsRegistry.Values) { rm.TargetTemperature = 210; rm.Hvac.Enabled = true; }
                         BroadcastFeedbackToAll();
                     }
                     break;
@@ -1666,7 +1694,7 @@ namespace VillaFrequenceTvAutomation
                     Trace("GLOBAL: Climatisation - Mode Nuit demandé.");
                     if (!ApplyPreset("hvac_nuit"))
                     {
-                        foreach (var rm in _roomsRegistry.Values) rm.TargetTemperature = 180;
+                        foreach (var rm in _roomsRegistry.Values) { rm.TargetTemperature = 180; rm.Hvac.Enabled = true; }
                         BroadcastFeedbackToAll();
                     }
                     break;
@@ -1675,7 +1703,7 @@ namespace VillaFrequenceTvAutomation
                     Trace("GLOBAL: Climatisation - Mode Hors Gel demandé.");
                     if (!ApplyPreset("hvac_horsgel"))
                     {
-                        foreach (var rm in _roomsRegistry.Values) rm.TargetTemperature = 120;
+                        foreach (var rm in _roomsRegistry.Values) { rm.TargetTemperature = 120; rm.Hvac.Enabled = true; }
                         BroadcastFeedbackToAll();
                     }
                     break;
@@ -1688,6 +1716,7 @@ namespace VillaFrequenceTvAutomation
                         foreach (var rm in _roomsRegistry.Values)
                         {
                             rm.TargetTemperature = 120;
+                            rm.Hvac.Enabled = true;
                             rm.LightLevel1 = 0;
                             for (int i = 0; i < 10; i++) rm.CircuitLevels[i] = 0; // P1-3 : 10 circuits, pas 6
                         }
@@ -1820,6 +1849,12 @@ namespace VillaFrequenceTvAutomation
                 SetBool(panel, 50 + s, (room.ActiveScene == s));
             }
 
+            // Global EISC 610-615 carry pulses only; never overwrite them with latched feedback.
+            if (panel != _eisc)
+            {
+                for (uint h = 0; h < 6; h++) SetBool(panel, 610 + h, room.Hvac.Selected(93 + h));
+                SetUShort(panel, 61, room.Hvac.Fan);
+            }
             SetUShort(panel, 31, room.TargetTemperature);
 
             // Envoyer le niveau des 10 circuits d'éclairage
@@ -1853,7 +1888,7 @@ namespace VillaFrequenceTvAutomation
 
             // v3 : le sériel 33 (mode CVC) manquait ici : le libellé CHAUFFAGE / CLIMATISATION
             // restait vide à la connexion et au changement de pièce, jusqu'au premier appui consigne.
-            SetString(panel, 33, room.TargetTemperature > room.CurrentTemperature ? "CHAUFFAGE" : "CLIMATISATION");
+            SetString(panel, 33, !room.Hvac.Enabled ? "ARRÊT" : room.TargetTemperature > room.CurrentTemperature ? "CHAUFFAGE" : "CLIMATISATION");
 
             // Formatted target temperature for String Join 34
             double convertedTargetTemp = (double)room.TargetTemperature / 10.0;
@@ -2137,6 +2172,7 @@ namespace VillaFrequenceTvAutomation
                             {
                                 ushort targetTemp = (ushort)tempObj["temp"];
                                 roomState.TargetTemperature = targetTemp;
+                                roomState.Hvac.Enabled = true;
                             }
                         }
                     }
@@ -2174,7 +2210,7 @@ namespace VillaFrequenceTvAutomation
                         if (!ApplyPreset("hvac_horsgel"))
                         {
                             // Fallback to default
-                            foreach (var rm in _roomsRegistry.Values) rm.TargetTemperature = 120;
+                            foreach (var rm in _roomsRegistry.Values) { rm.TargetTemperature = 120; rm.Hvac.Enabled = true; }
                         }
                     }
                     

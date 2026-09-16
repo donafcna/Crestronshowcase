@@ -802,6 +802,8 @@
          quelques secondes. Le retour visuel vient des états CH5, jamais de cette surbrillance. -->
     <style id="touch-highlight">* { -webkit-tap-highlight-color: rgba(0, 0, 0, 0); }</style>
     <link rel="stylesheet" href="themes/global-controls.css">
+<link rel="stylesheet" href="themes/room-controls.css">
+<script defer src="js/room-controls.js"></script>
 </head>
 <body id="app-body">
     <!-- Fond grisé pour modales (Backdrop) -->
@@ -930,6 +932,20 @@
                 <div id="hvac-status" class="hvac-mode-val" style="background-color: rgba(255,255,255,0.03); border: 1px solid var(--border-color); padding: 8px 20px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; text-transform: uppercase;">
                     <span data-ch5-textcontent="33">--</span>
                 </div>
+
+                <div class="hvac-controls" aria-label="Marche et ventilation">
+                    <div class="hvac-row">
+                        <ch5-button label="ON" customClass="hvac-command" sendEventOnClick="610" receiveStateSelected="610" data-join="610"></ch5-button>
+                        <ch5-button label="OFF" customClass="hvac-command" sendEventOnClick="611" receiveStateSelected="611" data-join="611"></ch5-button>
+                    </div>
+                    <div class="hvac-caption">Ventilation</div>
+                    <div class="hvac-row">
+                        <ch5-button label="AUTO" customClass="hvac-command" sendEventOnClick="612" receiveStateSelected="612" data-join="612"></ch5-button>
+                        <ch5-button label="1" customClass="hvac-command" sendEventOnClick="613" receiveStateSelected="613" data-join="613"></ch5-button>
+                        <ch5-button label="2" customClass="hvac-command" sendEventOnClick="614" receiveStateSelected="614" data-join="614"></ch5-button>
+                        <ch5-button label="3" customClass="hvac-command" sendEventOnClick="615" receiveStateSelected="615" data-join="615"></ch5-button>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -979,7 +995,7 @@
     </div>
 
     <!-- POPUP REGLAGE DES CIRCUITS (Mobile Optimized) -->
-    <div id="circuits-overlay" class="custom-overlay-panel" style="display: flex; flex-direction: column;">
+    <div id="circuits-overlay" class="custom-overlay-panel" style="display: none; flex-direction: column;">
         <div class="overlay-header">
             <h3 style="display: flex; align-items: center; gap: 8px; color: #eab308; margin: 0; font-size: 1.1rem; text-transform: uppercase;">
                 <svg viewBox="0 0 352 512" style="width: 18px; height: 18px; fill: #eab308;"><path d="M176 0C78.8 0 0 78.8 0 176c0 53.2 23.3 101 60.1 133.9C90.2 338.2 112 379.7 112 424v16c0 17.7 14.3 32 32 32h64c17.7 0 32-14.3 32-32v-16c0-44.3 21.8-85.8 51.9-114.1C328.7 277 352 229.2 352 176 352 78.8 273.2 0 176 0zm74.8 285.5c-30.6 28.7-50.8 69.1-50.8 122.5v16h-48v-16c0-53.4-20.2-93.8-50.8-122.5C70.1 257.5 48 219.7 48 176c0-70.6 57.4-128 128-128s128 57.4 128 128c0 43.7-22.1 81.5-53.2 109.5z"/></svg>
@@ -1002,7 +1018,7 @@
     </div>
 
     <!-- POPUP REGLAGE DES MOTEURS (Mobile Optimized) -->
-    <div id="motors-overlay" class="custom-overlay-panel" style="display: flex; flex-direction: column;">
+    <div id="motors-overlay" class="custom-overlay-panel" style="display: none; flex-direction: column;">
         <div class="overlay-header">
             <h3 style="display: flex; align-items: center; gap: 8px; color: #00b4c5; margin: 0; font-size: 1.1rem; text-transform: uppercase;">
                 <svg viewBox="0 0 512 512" style="width: 18px; height: 18px; fill: #00b4c5;"><path d="M0 64C0 28.7 28.7 0 64 0H448c35.3 0 64 28.7 64 64V448c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V64zm64 64V224H224V128H64zm0 160V384H224V288H64zm384-160H288V224H448V128zm0 160H288V384H448V288z"/></svg>
@@ -1551,7 +1567,7 @@
     </div>
 
     <!-- POPUP MOSAÏQUE CAMÉRAS (Mobile Optimized) -->
-    <div id="cameras-overlay" class="custom-overlay-panel" style="width: 96% !important; max-width: 440px !important; height: auto !important; max-height: 92% !important; padding: 15px; box-sizing: border-box; display: flex; flex-direction: column;">
+    <div id="cameras-overlay" class="custom-overlay-panel" style="width: 96% !important; max-width: 440px !important; height: auto !important; max-height: 92% !important; padding: 15px; box-sizing: border-box; display: none; flex-direction: column;">
         <div class="overlay-header" style="margin-bottom: 12px;">
             <h3 style="display: flex; align-items: center; gap: 8px; color: #3b82f6; margin: 0; font-size: 1.1rem; text-transform: uppercase;">
                 📷 Caméras
