@@ -210,3 +210,12 @@ Fichiers : `index.html`, `iphone.html`, `config.js`/`config.json`, `js/local-fee
 - Supports : le bouton TSW-1080 n'est plus proposé sur aucun projet (gabarit conservé dans `devices`) ; libellé « Dalle TSW-1070 » → « Dalle TSW ».
 - Appartement Carouge : textes du menu latéral 13 → 16 px, icônes 18 → 21 px.
 - Palace Genève (Connect Dashboard) : boutons, textes et panneaux agrandis d'un bloc — `zoom` 1,35 sur la racine `.hotel-geneva-dashboard` (1,5 sur Xpanel), fin d'`index.css`.
+
+# maj 16/9/2026 — reprise Codex du fond 3D
+
+- Smartphone à gauche également en **Mode Scène** ; bouton d'angle repositionné et caméra cadrée dans l'espace libre entre le boîtier et la colonne de droite.
+- Molette sur le décor : vers le bas, vue globale ; vers le haut, dernière pièce sélectionnée. Les commandes continuent de cibler la pièce choisie en vue globale. Les gestes dans la GUI, la colonne de droite et Ctrl/Cmd + molette sont préservés.
+- Parquet texturé, textiles, rideaux plissés, mobilier/accessoires différenciés, éclairages variés, enceintes encastrées/surround, thermostats et claviers muraux détaillés. Terrain continu avec neige intégrée, jardin, cheminement et feuillage instancié. Caméra stable au repos.
+- Surfaces statiques regroupées, ombre calculée à la demande, résolution adaptée aux performances, imports versionnés et ressources libérées à la sortie. Trois textures WebP CC0 ajoutées : 111 Ko. La 3D reste un fond de showcase réservé à la règle Smartphone existante ; aucune édition des GUI CH5 générées.
+- Suppression de l'enregistrement de `/sw.js`, inexistant. Exclusion des bibliothèques tierces minifiées du lint, maintien de l'analyse du code applicatif.
+- Conception, limites et tests : `docs/plan3d.md`. Point de départ réversible : `571f7c76`. Aucune compilation ni publication matérielle CH5/CP4/TSW dans ce lot.

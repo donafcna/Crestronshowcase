@@ -186,7 +186,7 @@ export const DeviceFrame = ({
       {inlineBanners && devMode && (
         <DevMetrics device={cfg} stage={stageSize} scale={chassisScale} fitScale={fitScale} mode={effectiveMode} realSizeAvailable={realSizeAvailable} />
       )}
-      <div className="device-stage" ref={stageRef}>
+      <div className="device-stage" ref={stageRef} style={{ "--visible-chassis-width": `${cfg.chassisW * chassisScale}px` }}>
         {!isFullscreen && cornerButton}
         {deviceType === "desktop" && (
           <div className="desktop-browser-frame glass-panel" style={chassisStyle}>

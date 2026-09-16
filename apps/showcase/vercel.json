@@ -1,8 +1,12 @@
 {
   "rewrites": [
-    { "source": "/((?!assets/|showcases/|videos/|sw\\.js|manifest\\.webmanifest|robots\\.txt|sitemap\\.xml|favicon\\.svg|icons/|og-image\\.jpg).*)", "destination": "/index.html" }
+    { "source": "/((?!assets/|showcases/|plan3d/|videos/|sw\\.js|manifest\\.webmanifest|robots\\.txt|sitemap\\.xml|favicon\\.svg|icons/|og-image\\.jpg).*)", "destination": "/index.html" }
   ],
   "headers": [
+    {
+      "source": "/plan3d/(.*)",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }]
+    },
     {
       "source": "/sw.js",
       "headers": [{ "key": "Cache-Control", "value": "no-cache" }]

@@ -5206,10 +5206,13 @@ body.workspace-maximized .demo-countdown { left: 16px; bottom: 16px; }
 .plan3d-bg-canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
 
 /* Plan 3D actif : châssis calé à gauche de l'espace de travail, la pièce 3D vit entre lui et la colonne des boutons */
-.showcase-container.plan3d-on .device-display-workspace:not(.fullscreen-mode) .device-stage > .phone-device-frame,
-.showcase-container.plan3d-on .device-display-workspace:not(.fullscreen-mode) .device-stage > .tablet-device-frame,
-.showcase-container.plan3d-on .device-display-workspace:not(.fullscreen-mode) .device-stage > .crestron-panel-frame,
-.showcase-container.plan3d-on .device-display-workspace:not(.fullscreen-mode) .device-stage > .desktop-browser-frame {
+.showcase-container.plan3d-on .device-display-workspace .device-stage > .phone-device-frame {
   /* le boîtier est centré par left:50% + translate(-50%) puis mis à l'échelle : on recale son bord gauche à 16 px */
   left: calc(var(--chassis-w) * var(--chassis-scale, 1) / 2 + 16px) !important;
 }
+.plan3d-on .device-stage { --plan3d-left: 16px; }
+.plan3d-on .btn-exit-fullscreen-device-corner--stage {
+  right: auto !important;
+  left: calc(var(--plan3d-left) + var(--visible-chassis-width) + 8px) !important;
+}
+.plan3d-on.fullscreen-mode .plan3d-bg-container { position: fixed; }
