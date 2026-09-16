@@ -37,23 +37,6 @@ ROOM_ICONS = {"Salon": "🛋️", "Cuisine": "🍳", "Salle à manger": "🍽️
               "Piscine & Spa": "🏊", "Sauna & Hammam": "🧖", "Pool House": "🏖️",
               "Garage & Ateliers": "🚗"}
 SCENES = ["OFF", "CINÉMA", "REPAS", "TOTAL"]
-# Disposition du plan 3D de la vitrine (m) : niveau 0 = RDC + extérieurs, 1 = étage, 2 = combles
-PLAN3D_SHOWCASE = [
-    {"id": 1, "type": "salon", "niveau": 0, "x": 0, "z": 0, "w": 7, "d": 6},
-    {"id": 2, "type": "cuisine", "niveau": 0, "x": 7.3, "z": 0, "w": 5.5, "d": 6},
-    {"id": 3, "type": "repas", "niveau": 0, "x": 13.1, "z": 0, "w": 5.5, "d": 6},
-    {"id": 8, "type": "cinema", "niveau": 0, "x": 0, "z": 6.4, "w": 7, "d": 5},
-    {"id": 14, "type": "poolhouse", "niveau": 0, "x": 7.3, "z": 6.4, "w": 5, "d": 5},
-    {"id": 11, "type": "terrasse", "niveau": 0, "x": 19.5, "z": 0, "w": 6, "d": 6},
-    {"id": 12, "type": "piscine", "niveau": 0, "x": 19.5, "z": 6.4, "w": 9, "d": 7},
-    {"id": 13, "type": "sauna", "niveau": 0, "x": 26, "z": 0, "w": 4, "d": 4},
-    {"id": 4, "type": "suite", "niveau": 1, "x": 0, "z": 0, "w": 6.5, "d": 6},
-    {"id": 5, "type": "chambre", "niveau": 1, "x": 6.8, "z": 0, "w": 5.5, "d": 6},
-    {"id": 6, "type": "chambre", "niveau": 1, "x": 12.6, "z": 0, "w": 5.5, "d": 6},
-    {"id": 7, "type": "bureau", "niveau": 1, "x": 0, "z": 6.4, "w": 6.5, "d": 5},
-    {"id": 9, "type": "chambre", "niveau": 2, "x": 0, "z": 0, "w": 5.5, "d": 6},
-    {"id": 10, "type": "suite", "niveau": 2, "x": 5.8, "z": 0, "w": 6.5, "d": 6},
-]
 SOURCES = [{"id": 1, "nom": "APPLE TV"}, {"id": 2, "nom": "SKY Q"}, {"id": 3, "nom": "SWISSCOM TV"},
            {"id": 4, "nom": "IPTV"}, {"id": 5, "nom": "MUSIQUE"}]
 # Termes de test présents dans le fichier de développement : jamais dans la vitrine publique
@@ -65,11 +48,6 @@ SHOWCASE_STYLE = ("    <!-- Vitrine : pas de processeur, indicateur de connexion
                   "    <script>window.updateConnectionStatusUI = function () {};</script>\n")
 SHOWCASE_SCRIPT = ("<!-- Vitrine : console d'administration (joins, terminal CP4) sans objet -->\n"
                    "<script>window.openAdminModal = function () {};</script>\n")
-# Plan 3D de la villa (16.09.2026) : VITRINE UNIQUEMENT. js/plan3d-vitrine.js (pose toile, fenêtre et
-# feuille de style, puis charge js/plan3d.js + js/vendor/three.module.min.js) est maintenu à la main
-# dans ce dépôt, comme js/local-feedback.js ; la source CH5 n'en contient rien.
-PLAN3D_SCRIPT = ("<!-- Vitrine : plan 3D de la villa en fond d'écran (dalle / tablette) -->\n"
-                 "<script src=\"js/plan3d-vitrine.js\"></script>\n")
 
 
 # iphone.html (v1.0.165) : dictionnaire « ru » tronqué (chaîne non terminée) qui rend tout le
@@ -110,7 +88,7 @@ def patch_html(src: Path, dest: Path) -> None:
                         '<script src="js/local-feedback.js"></script>')
     assert html.count("</head>") == 1 and html.count("</body>") == 1
     html = html.replace("</head>", SHOWCASE_STYLE + "</head>")
-    html = html.replace("</body>", SHOWCASE_SCRIPT + (PLAN3D_SCRIPT if dest.name == "index.html" else "") + "</body>")
+    html = html.replace("</body>", SHOWCASE_SCRIPT + "</body>")
     dest.write_text(html, encoding="utf-8")
 
 
@@ -136,10 +114,6 @@ def clean_config(src: Path) -> dict:
     for k in ("jeux", "animation"):
         if k in c.get("pagesSpeciales", {}):
             c["pagesSpeciales"][k]["actif"] = False
-    # Plan 3D en fond d'écran (16.09.2026) : vitrine uniquement — la clé n'existe pas dans la source.
-    # Disposition alignée sur les noms de pièces ci-dessus (1 Salon, 2 Cuisine, 3 Salle à manger...).
-    # style : "chaleureux" (bois / tissus, retenu) ou "maquette" (blanc et gris)
-    c["meta"]["plan3d"] = {"actif": True, "style": "chaleureux", "fpsMax": 60, "pieces": PLAN3D_SHOWCASE}
     for p in c["pieces"]:
         p["nom"] = ROOM_NAMES[p["id"] - 1] if p["id"] <= len(ROOM_NAMES) else p["nom"]
         p["icone"] = ROOM_ICONS.get(p["nom"], p.get("icone", "🏠"))

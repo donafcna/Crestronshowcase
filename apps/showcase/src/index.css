@@ -5200,3 +5200,7 @@ body.workspace-maximized .demo-countdown { left: 16px; bottom: 16px; }
    rester dans l'écran (10/9/2026). */
 .hotel-geneva-dashboard{zoom:1.35}
 .desktop-browser-frame .hotel-geneva-dashboard{zoom:1.5}
+
+/* Fond de page 3D (Plan3DBackground) : même emprise que la vidéo de fond, jamais cliquable */
+.plan3d-bg-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; overflow: hidden; background: linear-gradient(180deg, #0b1220 0%, #16243a 55%, #1f3324 100%); pointer-events: none; }
+.plan3d-bg-canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }

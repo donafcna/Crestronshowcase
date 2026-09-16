@@ -3,6 +3,7 @@ import { Icons as LucideIcons } from "../icons";
 import { useTranslation } from "../context/LanguageContext";
 import { projects, getDeviceById, getProjectText, getProjectName, getStatusLabel } from "../data/projects";
 import { BackgroundVideo } from "./BackgroundVideo";
+import { Plan3DBackground, PLAN3D_PROJECTS } from "./Plan3DBackground";
 import { DeviceFrame } from "./DeviceFrame";
 import { DevMetrics } from "./DevMetrics";
 import { ChassisCaption } from "./ChassisCaption";
@@ -157,6 +158,7 @@ const ShowcaseInner = ({ sectorId, projectId, device }) => {
   const [capturing, setCapturing] = useState(false);
   const [captureNotice, setCaptureNotice] = useState("");
   const stageRef = useRef(null);
+  const guiFrameRef = useRef(null);   // iframe du GUI embarqué : le fond 3D y lit les feedbacks
 
   // ---- Plein écran ---------------------------------------------------------
   useEffect(() => {
@@ -348,6 +350,7 @@ const ShowcaseInner = ({ sectorId, projectId, device }) => {
     </Suspense>
   ) : embedSrc ? (
     <iframe
+      ref={guiFrameRef}
       src={embedSrc}
       title={displayTitle}
       style={{ width: "100%", height: "100%", border: "none", backgroundColor: "#080b11" }}
@@ -365,7 +368,11 @@ const ShowcaseInner = ({ sectorId, projectId, device }) => {
       className={`showcase-container fade-in sector-${sectorId || "all"} ${isFullscreen ? "fullscreen-mode" : ""}`}
       ref={stageRef}
     >
-      <BackgroundVideo sectionId={sectorId || activeProject.sectors[0]} />
+      {PLAN3D_PROJECTS[activeProject.id] ? (
+        <Plan3DBackground projectId={activeProject.id} stageRef={stageRef} guiFrameRef={guiFrameRef} />
+      ) : (
+        <BackgroundVideo sectionId={sectorId || activeProject.sectors[0]} />
+      )}
 
       <div className={`main-workspace-container transparent-workspace ${isFullscreen ? "fullscreen-mode" : ""}`}>
         {/* 1. Liste horizontale des projets */}

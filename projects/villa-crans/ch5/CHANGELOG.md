@@ -37,14 +37,16 @@
   neutralisée, le C# tient déjà l'interlock 410/411.
 - `README_SLOT2.md` : tableau de la logique à câbler côté slot 2 (interlocks, toggle musique).
 
-### Plan 3D de la villa en fond d'écran — VITRINE UNIQUEMENT (16.09.2026, crestrongui.vercel.app)
+### Plan 3D de la villa — fond de page du SITE VITRINE (16.09.2026), le GUI des châssis ne change pas
 
-- **Rien dans la source CH5.** Tout vit dans le dépôt de la vitrine : `js/plan3d-vitrine.js` (pose la
-  toile, la fenêtre et la feuille de style, puis charge le module), `js/plan3d.js` (Three.js,
-  `js/vendor/three.module.min.js`, 676 Ko), maintenus à la main comme `js/local-feedback.js` ;
-  `sync-villa-crans.py` injecte `<script src="js/plan3d-vitrine.js">` dans `index.html` et pose
-  `meta.plan3d` (actif, disposition `PLAN3D_SHOWCASE` : niveau, x, z, w, d, type ∈ salon / cuisine /
-  repas / chambre / suite / bureau / cinema / terrasse / piscine / sauna / poolhouse).
+- **Rien dans le GUI** (ni dans la source CH5, ni dans la copie vitrine `public/showcases/…`, qui reste
+  la sortie brute de `sync-villa-crans.py`). La 3D remplace la **vidéo de fond de page** du site pour
+  Villa Crans-Montana : `src/components/Plan3DBackground.jsx` (à la place de `BackgroundVideo`),
+  `public/plan3d/plan3d.js` + `public/plan3d/vendor/three.module.min.js` (676 Ko, chargés à
+  l'exécution, hors bundle), `public/plan3d/villa-crans.json` (style, disposition : niveau, x, z, w, d,
+  type ∈ salon / cuisine / repas / chambre / suite / bureau / cinema / terrasse / piscine / sauna / poolhouse).
+- Le module lit le GUI à travers son iframe (même origine) : feedbacks CrComLib, clics sur les
+  `ch5-button[data-join]`, `animateGroupBlinds` ; noms de pièces lus dans `villaConfigEmbedded`.
 - Vue d'ensemble en écorché (3 niveaux + extérieurs, pins, montagnes), puis à chaque sélection
   de pièce : passage par la villa entière et zoom sur la pièce, seule à l'écran avec les
   extérieurs. Chaque pièce a ses lampes (2 circuits), sa TV, ses enceintes, sa climatisation et
@@ -53,18 +55,16 @@
   allumée avec l'écran de la source (Apple TV = grille d'apps, Sky Q, Swisscom, IPTV) ; télécommande
   211-216 → curseur de la grille, OK ouvre l'app, Menu revient ; d155 → enceintes animées ; a31 et
   s33 → thermostat (consigne, chauffage / clim). Aucune présomption : tout vient de CrComLib.
-- **Fenêtre dans la carte Sources** : la zone vide sous les tuiles montre la pièce nette ; la carte
-  perd fond et flou, ses enfants sont regroupés en deux bandeaux opaques (titre + tuiles, volume +
-  état) — contraste 4:1 conservé. Si la place manque (iPad 11", XPanel 768 px) : pas de fenêtre,
-  fond d'écran seul ; en thème clair la toile est limitée à la fenêtre (les cartes claires comptent
-  sur un fond clair). Toile en `z-index: -1` (aucun contexte d'empilement sur `.app-container`,
-  les fenêtres modales restent au-dessus du voile).
+- **Cadrage sur la page** : villa entière plein fond derrière le châssis ; la pièce active est cadrée
+  dans la zone libre à droite du châssis (colonne des supports), sinon au-dessus, sinon vue villa
+  seule — recalculé chaque seconde depuis le rectangle de l'iframe (`api.setWindow`).
 - **Motorisations** : chaque pièce a sa fenêtre avec volet roulant, store intérieur et rideaux ;
   l'onglet Stores (joins 61-69), les presets « Tout ouvrir / Demi-ouverture / Tout fermer » de la
   fenêtre Stores (`animateGroupBlinds`) et les moteurs 81-98 (famille lue dans
   `pilotages.moteurs.liste`) les font bouger en 3D (course complète ≈ 4 s, stop respecté).
 - Télécommandes Sky Q / IPTV / Swisscom : haut / bas / P± déplacent la ligne en surbrillance de
   l'écran TV. Deux palettes (`meta.plan3d.style`) : « chaleureux » (retenu) / « maquette ».
+- Piscine : eau animée (reflet, ondulation) et projecteurs sous-marins sur le circuit 1 de la pièce.
 - Coût : 53 appels de rendu / 1 600 triangles en vue pièce, 107 / 5 700 en vue d'ensemble,
   2 lumières réelles (pièce active), pixel ratio plafonné à 1,5, boucle en pause onglet caché.
 - `tools/check_contrast_dom.mjs` : termine les transitions CSS avant de mesurer (rendu logiciel),

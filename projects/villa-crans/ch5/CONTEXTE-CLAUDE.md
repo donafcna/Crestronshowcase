@@ -96,20 +96,18 @@ L'entête ne porte que la liste des pièces et l'engrenage (version, connexion, 
   (cache observé sur un même `stagedPath`) ; `src/villa_config.json` est une copie de build, la
   source est `villa_config.json` à la racine (la recopier avant `sync-villa-crans.py`).
 
-## Plan 3D (16.09.2026) — VITRINE UNIQUEMENT, rien dans la source CH5
-Dans `apps/showcase/public/showcases/villa-gemini-frequencetv/js/` : `plan3d-vitrine.js` (toile,
-fenêtre, CSS, chargeur), `plan3d.js` (Three.js, `vendor/three.module.min.js`), maintenus à la main
-comme `local-feedback.js` ; `sync-villa-crans.py` injecte la balise dans `index.html` et pose
-`meta.plan3d` (`PLAN3D_SHOWCASE`). Villa en écorché + zoom sur la pièce affichée, piloté par les
-feedbacks CrComLib (a10, a71-80, d150-156, a31/s33) et les clics `ch5-button[data-join]` 211-216.
-Fenêtre = `#plan3d-fenetre` créée dans `#card-av` (enfants regroupés en `.plan3d-band-top/bottom`
-opaques, `plan3dLayout()` → `Plan3D.setWindow`) ; hauteur < 110 px → fond seul, toile masquée en Clair.
-**Pièges** : toile en `z-index:-1` (jamais de z-index sur `.app-container`, les modales y vivent) ;
-drapeau sur `<html>` (`applyTheme` réécrit `<body>`) ; hôte `<ch5-button>` des télécommandes en 0×0,
-viser `.cb-btn` ; `Plan3D.jump()` termine les mouvements de caméra ; `check_contrast_dom.mjs --w 1920 --h 1200`.
+## Plan 3D (16.09.2026) — fond de page du SITE, le GUI des châssis ne change jamais
+`apps/showcase/src/components/Plan3DBackground.jsx` remplace la vidéo de fond pour Villa Crans ;
+`public/plan3d/plan3d.js` (Three.js `public/plan3d/vendor/`, `import()` à l'exécution) et
+`public/plan3d/villa-crans.json` (disposition, style). Lit le GUI **à travers l'iframe** (même
+origine) : CrComLib (a10, a71-80, d150-156, d155, a31/s33), clics `ch5-button[data-join]` (211-216,
+Sky 500+, IPTV 530+, Swisscom 574+, stores 61-69, moteurs 81-98), `animateGroupBlinds`. Villa plein
+fond, pièce active cadrée dans la zone libre à droite du châssis (`api.setWindow`). `window.__plan3d`
+= API (`jump()` termine les mouvements). Détail dans `apps/showcase/CLAUDE.md`. **Malentendu du
+16.09 à ne pas répéter** : une demande « plan 3D / fond d'écran » vise le site Vercel, jamais le GUI.
 
 ## Vitrine (apps/showcase, crestrongui.vercel.app)
-Copie régénérée par `python apps/showcase/scripts/sync-villa-crans.py <chemin>/projects/villa-crans/ch5/src` (jamais éditée à la main) ; `meta.mode = "showcase"`, feedback simulé par `js/local-feedback.js`, curseur de démo. Le script copie aussi `js/villa-joins.js` ; `js/local-feedback.js`, `js/plan3d*.js` et `js/vendor/` sont propres à la vitrine.
+Copie régénérée par `python apps/showcase/scripts/sync-villa-crans.py <chemin>/projects/villa-crans/ch5/src` (jamais éditée à la main) ; `meta.mode = "showcase"`, feedback simulé par `js/local-feedback.js`, curseur de démo. Le script copie aussi `js/villa-joins.js` ; `js/local-feedback.js` est propre à la vitrine.
 **Barre d'outils (14.09.2026) : QR code · Fiche PDF.** « Présentation » retiré (la bulle « Reprise
 de la démo dans N secondes », désormais en bas à gauche dans tous les modes, est la seule commande
 de la démo) et « Plein écran » caché derrière `showEmbedTool` : doublon avec le bouton Scène. Le
