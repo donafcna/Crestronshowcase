@@ -281,6 +281,28 @@ for (const p of pieces) {
   wired++;
 }
 
+// --- 3b. Bloc CVC réduit par pièce (v4, demande du 16.09.2026) ---------------------------
+// La fenêtre Contrôle global (Confort / Nuit / Hors gel) agit sur toutes les pièces : le slot 2
+// doit voir et piloter CHAQUE consigne séparément. On garde donc, par pièce 'intersystem',
+// uniquement les joins CVC du bloc (base 1000 + (id-1)*100) : analogique +31 (consigne x10, dans
+// les deux sens) et sériels +32/+33/+34 (température, mode, consigne texte). Le C# les pousse
+// déjà (PushRoomFeedback) et applique une consigne reçue du slot 2 sur +31.
+const piecesCvc = (villaCfg.pieces || []).filter(p => p.intersystem !== false && p.actif !== false
+  && p.pilotages && p.pilotages.cvc && p.pilotages.cvc.actif !== false);
+let cvcWired = 0;
+for (const p of piecesCvc) {
+  const b = roomBase(p.id), R = 'R' + String(p.id).padStart(2, '0') + '_';
+  if (b + 34 > CAP.aIn || b + 34 > CAP.aOut || b + 34 > CAP.sOut) { skipped.push('piece ' + p.id + ' (CVC hors capacite)'); continue; }
+  aout(b + 31, R + 'HVAC_Setpoint_fb#');      // consigne renvoyee par le C# (x10 : 215 = 21,5 C)
+  ain(b + 31, R + 'HVAC_Setpoint#');          // consigne imposee par le slot 2 (thermostat reel)
+  ain(b + 32, R + 'HVAC_Temperature#');       // temperature mesuree, envoyee par le slot 2 (x10)
+  sout(b + 32, R + 'HVAC_Temperature_fb$');
+  sout(b + 33, R + 'HVAC_Mode_fb$');
+  sout(b + 34, R + 'HVAC_Setpoint_fb$');
+  cvcWired++;
+}
+console.log('Bloc CVC par piece (v4) : ' + cvcWired + ' piece(s) x (consigne bidirectionnelle, temperature mesuree, 3 seriels).');
+
 // --- 4. Réécriture du symbole EISC (H=21) ---
 const smRe = /\[\r?\nObjTp=Sm\r?\nH=21\r?\n[\s\S]*?\r?\n\]/;
 const smMatch = raw.match(smRe);

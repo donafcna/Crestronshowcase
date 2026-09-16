@@ -30,6 +30,7 @@ et flag `intersystem` de chacune.
 | Sources A/V 0..5, retour audio | d150-156 | `Source_Select_0..5`, `Source_AudioReturn` (+`_fb`) |
 | Partitions d'alarme 1..4 | d301-312 | `Alarm_Part<n>_Arm/Partial/Disarm` (+`_fb` reçus) |
 | Commandes globales | d401-411 | `Global_Lights_AllOn/AllOff/Eco`, `Global_Shades_AllOpen/AllClose/Preset`, `Global_HVAC_Comfort/Night/Frost`, `Global_Vacation_On/Off` (`_fb` = reçus) |
+| **CVC par pièce (v4)** | a/s 1000+(id-1)*100 +31..34 | `R<nn>_HVAC_Setpoint_fb#` (reçu) / `R<nn>_HVAC_Setpoint#` (envoyé), `R<nn>_HVAC_Temperature#` (mesure envoyée, x10), `R<nn>_HVAC_Temperature_fb$`, `R<nn>_HVAC_Mode_fb$`, `R<nn>_HVAC_Setpoint_fb$` — seuls joins de bloc conservés en v4 |
 | Lecteur média | d251-253, a254 | `Media_PlayPause` / `_Next` / `_Prev` (reçus), `Media_Volume#` (+`_fb#`) |
 | Scènes stores 1..4 | d201-204 | `Shades_Scene_1..4` (+`_fb`) |
 | Pièce active | a10 | `Room_Select#` / `Room_Selected#` |

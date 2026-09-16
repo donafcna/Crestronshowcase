@@ -1232,6 +1232,7 @@ namespace VillaFrequenceTvAutomation
 
             // L'analogique +21 (Lighting_Master) n'existe plus dans le contrat (13.09.2026).
             if (offset == 31) room.TargetTemperature = val;                  // join logique 31
+            else if (offset == 32) room.CurrentTemperature = val;            // v4 : température mesurée, envoyée par le slot 2 (x10)
             else if (offset == 51) { room.ActiveVideoSource = val; DispatchIpCommandToSonyTv(roomId, val); } // join logique 51
             else if (offset == 52) room.AudioVolume = val;                   // join logique 52
             else if (offset == 53)
