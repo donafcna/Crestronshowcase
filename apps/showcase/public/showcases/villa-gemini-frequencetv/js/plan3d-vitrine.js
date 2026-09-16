@@ -1,1 +1,0 @@
-// Obsolète (16.09.2026) : le plan 3D vit dans apps/showcase/public/plan3d/ (fond de page du site), plus dans le GUI. Fichier à supprimer : git rm apps/showcase/public/showcases/villa-gemini-frequencetv/js/plan3d-vitrine.js
