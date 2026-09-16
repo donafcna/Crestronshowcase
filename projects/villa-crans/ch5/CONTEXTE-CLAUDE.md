@@ -1,9 +1,7 @@
 # VillaCrans — contexte pour Claude (lire en premier, économise les tokens)
 
 ## Les 4 artefacts à suivre (convention validée le 13.09.2026)
-Toute modification du projet se solde par quatre versions à tenir alignées. Les tenir à jour ici et
-en tête de chaque entrée du CHANGELOG, de sorte qu'on puisse dire pour n'importe quelle version
-passée ce qui tournait réellement sur la dalle, les deux slots et Vercel.
+Quatre versions à tenir alignées, ici et en tête de chaque entrée du CHANGELOG.
 
 | Artefact | Version | Compilation |
 |---|---|---|
@@ -12,9 +10,7 @@ passée ce qui tournait réellement sur la dalle, les deux slots et Vercel.
 | LPZ slot 2 (SIMPL) | 15.09 (contrat v3) | **à régénérer** : `generate_slot2.js` (v4, 107 `Remote_*`, blocs pièces retirés) + F12, puis buffers sur `Room_Select#` |
 | Showcase Vercel | lot du 16.09 | poussé sur `main` — Vercel déploie automatiquement ; `deployer-v2.bat` est obsolète |
 
-`deploy.ps1` incrémente `version.json` à chaque build, y compris quand le build échoue ensuite :
-un numéro sauté ne veut pas dire qu'une version a existé. `meta.version` du `villa_config.json`,
-lui, n'est pas incrémenté par le script — l'aligner à la main.
+`deploy.ps1` incrémente `version.json` à chaque build (même si le build échoue ensuite) ; `meta.version` du `villa_config.json` s'aligne à la main.
 
 Projet Fréquence TV : GUI Crestron CH5 « Villa Crans-Montana » + SIMPL# Pro (slot 1, `Backend/Backend/ControlSystem.cs`) + SIMPL Windows (slot 2). Contrat de joins **v4** (15.09.2026, `villa_config.json` → `contrat`, doc `docs/03_CONTRAT_JOINS.md` encore en v3). Doc dans `docs/` (01 spéc · 02 villa_config · 03 joins · 04 SIMPL · 05 recette · 06 to-do · 07 retours direction 09.09 · 08 workflow showcase), audit `AUDIT_2026-09-02.md`, journal `CHANGELOG.md`, règles CH5 `.agents/AGENTS.md` (« Rule of Gold » : états par joins natifs CH5, jamais par DOM JS).
 
@@ -62,21 +58,11 @@ scènes, consigne, vacances, partitions ; le slot 2 pilote le matériel réel.
   - Clair = coque `#f8fafc`, cartes `rgba(15,23,42,.06)`, textes `#0f172a` / `#475569`, accents foncés (`#047857` `#1d4ed8` `#a16207` `#6d28d9` `#b91c1c`). Ne jamais repeindre : fonds hexadécimaux en dur, dégradés, `ch5-button[selected="true"]`.
   - Bouton CH5 sans style dédié : `#0369a1` en thèmes sombres (le bleu `#0099ff` ne porte pas de texte blanc). Sélectionné vert `#10b981` → libellé `#052e16`.
   - Badges d'alarme : classes `.alarm-badge--off/--partial/--active`, jamais de couleur en dur dans le JS.
-- Menu de gauche : Réglages + version + météo groupés au-dessus du menu des pièces à TOUTES les largeurs.
-- Icônes : engrenages = SVG `.gear-icon` (jamais d'emoji).
-- **Logos des boutons de source : une seule couche (v1.0.168).** Le logo est l'`<img class="src-overlay-img">`, frère du `ch5-button` dans le wrapper, positionné en absolu et mis à l'échelle par CSS (`.logo-active` = sélectionné, 1,7 ; sinon 1,0, et 1,28 pour `.logo-mono`). Les fonds CSS de logo sur le châssis sont neutralisés dans `<style id="logo-source-couche-unique">` (fin de `<head>`) : ils doublaient l'overlay à l'état non sélectionné et, étirés dans un carré alors que les viewBox ne sont pas carrés (Apple 384×512, Swisscom 200×290), donnaient une pomme à feuille soudée et bord dentelé. Ne jamais rajouter de `background-image` de logo sur `.src-*`.
-  - Logos monochromes blancs → classe `.logo-mono` sur l'`<img>` (aujourd'hui Apple TV) : `filter: invert(1)` en thème Clair, où le blanc disparaissait.
-  - L'état est lu sur le châssis (`ch5-button:not([selected="true"]):not(.ch5-button--selected) ~ .src-overlay-img`), pas sur `.logo-active` : les deux se désynchronisent pendant la transition et on obtiendrait une pomme sombre sur fond violet.
-  - Cascade : `ch5-button.src-appletv` ne matche jamais rien (voir `[customClass~=]` plus bas) ; une ligne CSS cassée vers la ligne 1452 (`ch5-button.src-iptv { ... }utf8,<svg …`) avale encore le bloc suivant.
+- Menu de gauche : Réglages + version + météo groupés au-dessus des pièces à toutes les largeurs. Icônes : SVG `.gear-icon`, jamais d'emoji.
+- **Logos des boutons de source : une seule couche (v1.0.168).** Le logo est l'`<img class="src-overlay-img">`, frère du `ch5-button`, mis à l'échelle par CSS (`.logo-active` 1,7 ; `.logo-mono` 1,28 + `filter: invert(1)` en Clair). Fonds CSS de logo neutralisés dans `<style id="logo-source-couche-unique">` — ne jamais rajouter de `background-image` sur `.src-*`. L'état est lu sur le châssis (`ch5-button:not([selected="true"]) ~ .src-overlay-img`). Une ligne CSS cassée vers la ligne 1452 (`ch5-button.src-iptv { ... }utf8,<svg …`) avale encore le bloc suivant.
 - **Aucun son** : `playFunnySound` neutralisée, `playSynthSound` supprimée (11.09.2026).
-- **Le debugger ne montre que des signaux (13.09).** Émission sur changement uniquement (`SetBool` /
-  `SetUShort` / `SetString` ; exceptions : impulsions, relance du code d'alarme, `_forcePush` au
-  rafraîchissement d'un périphérique). Traces C# et recopie des `console.log` (s100) sous
-  `meta.tracesConsole`, relu à chaque chargement de config (`progreset`).
-- **Scènes d'éclairage → circuits (13.09.2026).** `pieces[].pilotages.eclairages.scenes.niveaux`
-  donne le niveau 0-65535 de chaque circuit pour chaque scène. **Le slot 2 fait foi** : dès qu'un
-  niveau remonte de l'EISC sur +71..+80, `_circuitFromSlot2` marque ce circuit et la table ne le
-  repositionne plus. Elle ne sert que tant que rien n'est câblé derrière. Démarrage sur la scène 1.
+- **Le debugger ne montre que des signaux (13.09).** Émission sur changement uniquement (`SetBool` / `SetUShort` / `SetString` ; exceptions : impulsions, code d'alarme, `_forcePush`). Traces C# et `console.log` (s100) sous `meta.tracesConsole` (`progreset` pour relire).
+- **Scènes d'éclairage → circuits (13.09).** `pieces[].pilotages.eclairages.scenes.niveaux` (0-65535 par circuit) ; **le slot 2 fait foi** dès qu'un niveau remonte sur +71..+80 (`_circuitFromSlot2`). Démarrage scène 1.
 
 ## GUI smartphone — agrandissement (14.09.2026)
 Tout tient dans `<style id="mobile-xl">` (fin de `<body>`) + `<style id="mobile-ux">` (moteurs animés,
@@ -101,23 +87,29 @@ L'entête ne porte que la liste des pièces et l'engrenage (version, connexion, 
   (XPanel) et les icônes noires du thème clair (haut-parleur, Power) en dépendent.
 - Menu : pièces `actif:false` (15 Garage & ateliers) et `pagesSpeciales.video.actif=false` masqués
   par `villaPiecesActives(vc)` — réversible dans `villa_config.json`.
-- Retirés à la demande : bouton PRESET (406) des stores globaux, TOTAL/REPAS/CINÉMA/ÉTEINDRE de la
-  config du preset global (`const scenes = []`), sélecteur de preset et ligne Climatisation du mode
-  Vacances (titre « Sélection des pièces : simulation de présence aléatoire »).
-- iPhone : « Sources » (titre) / « Source » (onglet) est l'exception assumée à la cohérence des
-  textes ; grille `#sources-container` 2 colonnes, MUSIQUE seule en pleine largeur ; pagination
-  `#moteurs-pager` (Stores atteignable) ; presets moteurs par famille Volet / Rideaux / Stores
-  (Tout ouvrir / Demi-ouverture / Tout fermer) ; Swisscom sans vol± / ✦ / ⇥ / 🔇, grille 5 colonnes.
-- **Après toute reconstruction de bloc HTML par script : compter les `<div>`** et vérifier que
-  chaque fenêtre (`.custom-overlay-panel`) est enfant direct de `body` — une fermeture avalée a
-  imbriqué 10 fenêtres. Sections conditionnelles (Éclairage) pilotées par `applyPilotageVisibility`,
-  jamais par heuristique sur le nom de la pièce.
+- Retirés à la demande : PRESET (406) des stores globaux, TOTAL/REPAS/CINÉMA/ÉTEINDRE de la config
+  du preset global, sélecteur de preset et ligne Climatisation du mode Vacances. iPhone : « Sources »
+  (titre) / « Source » (onglet) = exception assumée ; grille sources 2 colonnes (MUSIQUE pleine
+  largeur), Moteurs paginés, presets par famille Volet / Rideaux / Stores, Swisscom sans vol± / ✦ / ⇥ / 🔇.
+- **Après toute reconstruction de bloc HTML par script : compter les `<div>`** et vérifier que chaque fenêtre est enfant direct de `body` (une fermeture avalée a imbriqué 10 fenêtres). Sections conditionnelles pilotées par `applyPilotageVisibility`, jamais par heuristique sur le nom de la pièce.
 - Outillage conteneur : `device_commit_files` sert un **chemin de sortie neuf** à chaque livraison
   (cache observé sur un même `stagedPath`) ; `src/villa_config.json` est une copie de build, la
   source est `villa_config.json` à la racine (la recopier avant `sync-villa-crans.py`).
 
+## Plan 3D (16.09.2026) — VITRINE UNIQUEMENT, rien dans la source CH5
+Dans `apps/showcase/public/showcases/villa-gemini-frequencetv/js/` : `plan3d-vitrine.js` (toile,
+fenêtre, CSS, chargeur), `plan3d.js` (Three.js, `vendor/three.module.min.js`), maintenus à la main
+comme `local-feedback.js` ; `sync-villa-crans.py` injecte la balise dans `index.html` et pose
+`meta.plan3d` (`PLAN3D_SHOWCASE`). Villa en écorché + zoom sur la pièce affichée, piloté par les
+feedbacks CrComLib (a10, a71-80, d150-156, a31/s33) et les clics `ch5-button[data-join]` 211-216.
+Fenêtre = `#plan3d-fenetre` créée dans `#card-av` (enfants regroupés en `.plan3d-band-top/bottom`
+opaques, `plan3dLayout()` → `Plan3D.setWindow`) ; hauteur < 110 px → fond seul, toile masquée en Clair.
+**Pièges** : toile en `z-index:-1` (jamais de z-index sur `.app-container`, les modales y vivent) ;
+drapeau sur `<html>` (`applyTheme` réécrit `<body>`) ; hôte `<ch5-button>` des télécommandes en 0×0,
+viser `.cb-btn` ; `Plan3D.jump()` termine les mouvements de caméra ; `check_contrast_dom.mjs --w 1920 --h 1200`.
+
 ## Vitrine (apps/showcase, crestrongui.vercel.app)
-Copie régénérée par `python apps/showcase/scripts/sync-villa-crans.py <chemin>/projects/villa-crans/ch5/src` (jamais éditée à la main) ; `meta.mode = "showcase"`, feedback simulé par `js/local-feedback.js`, curseur de démo. Le script copie aussi `js/villa-joins.js` depuis la v3.
+Copie régénérée par `python apps/showcase/scripts/sync-villa-crans.py <chemin>/projects/villa-crans/ch5/src` (jamais éditée à la main) ; `meta.mode = "showcase"`, feedback simulé par `js/local-feedback.js`, curseur de démo. Le script copie aussi `js/villa-joins.js` ; `js/local-feedback.js`, `js/plan3d*.js` et `js/vendor/` sont propres à la vitrine.
 **Barre d'outils (14.09.2026) : QR code · Fiche PDF.** « Présentation » retiré (la bulle « Reprise
 de la démo dans N secondes », désormais en bas à gauche dans tous les modes, est la seule commande
 de la démo) et « Plein écran » caché derrière `showEmbedTool` : doublon avec le bouton Scène. Le
@@ -147,7 +139,6 @@ La démo automatique démarre désormais sur **tous les supports** (elle était 
 5. Réserves : libellé « P » des flèches de chaîne Swisscom disparu ; scènes 201-204 encore au contrat / slot 2 ; `docs/03_CONTRAT_JOINS.md` à passer en v4.
 
 ## État au 16.09.2026
-Tous les lots des 15-16.09 sont dans les sources et poussés (source + vitrine régénérée), batterie
-Playwright verte (3 thèmes, 393×852 / 402×874 / 402×760, clics réels, `local-feedback.js`).
-**Rien n'est recompilé** : `.ch5z` 1.0.176 (XPanel bureau) antérieur aux lots, LPZ en v3.
-Vitrine : `python apps/showcase/scripts/sync-villa-crans.py` depuis `projects/villa-crans/ch5/src`.
+Lots 15-16.09 dans les sources et poussés (source + vitrine), batteries vertes (Playwright 3 thèmes,
+contraste dalle 1920×1200 + smartphone, interactions 3D). CPZ et LPZ rechargés par Donatien le 16.09
+(routage v4, CVC par pièce, média, partitions) ; **CH5 à recompiler** (badge, tap-highlight). CP4 .1.200 : v1.0.149 du 21.07 tant que `-Target web` n'a pas été relancé.

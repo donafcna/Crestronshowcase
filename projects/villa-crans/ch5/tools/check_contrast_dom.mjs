@@ -11,7 +11,6 @@
  * Prérequis : npm run build && npx vite preview --port 4173
  */
 import { chromium } from "playwright";
-import { existsSync } from "node:fs";
 
 const arg = (n, d) => { const i = process.argv.indexOf(n); return i > 0 ? process.argv[i + 1] : d; };
 const BASE = arg("--base", "http://localhost:4173");
@@ -52,42 +51,41 @@ window.__audit = function (root) {
       sel: el.tagName + (el.id ? '#'+el.id : '') + (typeof el.className === 'string' && el.className ? '.'+el.className.trim().split(/\\s+/).join('.') : '') });
   });
   return out;
-};
-window.__setTheme = function (t) {
-  if (typeof window.applyTheme === 'function') return window.applyTheme(t);
-  if (typeof window.changeTheme === 'function') return window.changeTheme(t);
-  document.body.className = document.body.className.replace(/theme-\\w+/g, '').trim() + ' theme-' + t;
 };`;
 
 const problems = [];
 const report = (ctx, list) => list.forEach(r => problems.push({ ctx, ...r }));
 
-// Navigateur : celui installé par « npx playwright install chromium » par défaut. PW_CHROMIUM
-// force un binaire précis ; le chemin du conteneur Linux n'est utilisé que s'il existe vraiment
-// (il était codé en dur, ce qui rendait le script inutilisable sous Windows).
-const exe = process.env.PW_CHROMIUM || (existsSync("/opt/pw-browsers/chromium") ? "/opt/pw-browsers/chromium" : undefined);
-const b = await chromium.launch(exe ? { executablePath: exe } : {});
+const b = await chromium.launch({ executablePath: process.env.PW_CHROMIUM || "/opt/pw-browsers/chromium" });
 
 // --- GUI dalle / tablette -----------------------------------------------
 {
-  const p = await b.newPage({ viewport: { width: 1280, height: 800 } });
+  // --w / --h : châssis de référence (TSW-1070 = 1920x1200 ; 1280x800 par défaut, historique)
+  const p = await b.newPage({ viewport: { width: parseInt(arg("--w", "1280"), 10), height: parseInt(arg("--h", "800"), 10) } });
   await p.goto(`${ROOT}/index.html?mode=showcase`, { waitUntil: "networkidle" });
   await p.waitForTimeout(1500);
   await p.addScriptTag({ content: AUDIT });
+  // États finaux uniquement : transitions et animations CSS neutralisées (le rendu logiciel du navigateur de test les étire).
+  await p.addStyleTag({ content: '*, *::before, *::after { transition: none !important; animation-duration: 0s !important; }' });
   for (const th of THEMES) {
-    await p.evaluate(t => window.__setTheme(t), th);
+    await p.evaluate(t => window.changeTheme(t), th);
     // Les panneaux ont une transition CSS : attendre qu'elle soit terminée, sinon
-    // on mesure des couleurs et des backdrop-filter intermédiaires.
+    // on mesure des couleurs et des backdrop-filter intermédiaires. 16.09.2026 : avec le
+    // plan 3D, la boucle de rendu logicielle du navigateur de test peut geler les transitions
+    // au-delà du délai ; on les termine explicitement (document.getAnimations).
     await p.waitForTimeout(900);
-    report(`dalle/${th}/page`, await p.evaluate(() => window.__audit(document.querySelector('.app-container') || document.body)));
+    await p.evaluate(() => { try { document.getAnimations().forEach(a => { try { a.finish(); } catch (e) {} }); } catch (e) {} });
+    await p.waitForTimeout(100);
+    report(`dalle/${th}/page`, await p.evaluate(() => window.__audit(document.querySelector('.app-container'))));
     for (const id of OVERLAYS) {
       const res = await p.evaluate(async id => {
         window.closeAllModals && window.closeAllModals();
         const el = document.getElementById(id); if (!el) return [];
-        if (id === 'audio-confirm-overlay' || typeof window.showModalOverlay !== 'function') el.style.display = 'block';
-        else window.showModalOverlay(id);
+        if (id === 'audio-confirm-overlay') el.style.display = 'block'; else window.showModalOverlay(id);
         await new Promise(r => setTimeout(r, 250));
-        return window.__audit(el);
+        const res = window.__audit(el);
+        if (id === 'audio-confirm-overlay') el.style.display = 'none';   // closeAllModals ne la connaît pas : sinon elle pollue l'audit suivant
+        return res;
       }, id);
       report(`dalle/${th}/${id}`, res);
     }
@@ -95,12 +93,10 @@ const b = await chromium.launch(exe ? { executablePath: exe } : {});
     for (const state of ["active", "partial", "off"]) {
       const res = await p.evaluate(async state => {
         window.closeAllModals && window.closeAllModals();
-        const ov = document.getElementById('alarm-overlay'); if (!ov) return [];
-        if (typeof window.showModalOverlay === 'function') window.showModalOverlay('alarm-overlay'); else ov.style.display = 'block';
-        const kp = document.getElementById('alarm-keypad-screen'); if (kp) kp.style.display = 'none';
-        const scr = document.getElementById('alarm-partitions-screen'); if (!scr) return [];
-        scr.style.display = 'flex';
-        if (typeof window.updateAlarmPartitionBadge === 'function') { for (let i = 1; i <= 4; i++) window.updateAlarmPartitionBadge(i, state); }
+        window.showModalOverlay('alarm-overlay');
+        document.getElementById('alarm-keypad-screen').style.display = 'none';
+        const scr = document.getElementById('alarm-partitions-screen'); scr.style.display = 'flex';
+        for (let i = 1; i <= 4; i++) window.updateAlarmPartitionBadge(i, state);
         await new Promise(r => setTimeout(r, 200));
         return window.__audit(scr);
       }, state);
@@ -117,8 +113,10 @@ const b = await chromium.launch(exe ? { executablePath: exe } : {});
   await p.goto(`${ROOT}/iphone.html?mode=showcase`, { waitUntil: "networkidle" });
   await p.waitForTimeout(1800);
   await p.addScriptTag({ content: AUDIT });
+  // États finaux uniquement : transitions et animations CSS neutralisées (le rendu logiciel du navigateur de test les étire).
+  await p.addStyleTag({ content: '*, *::before, *::after { transition: none !important; animation-duration: 0s !important; }' });
   for (const th of THEMES) {
-    await p.evaluate(t => window.__setTheme(t), th);
+    await p.evaluate(t => window.changeTheme(t), th);
     // Les panneaux ont une transition CSS : attendre qu'elle soit terminée, sinon
     // on mesure des couleurs et des backdrop-filter intermédiaires.
     await p.waitForTimeout(900);

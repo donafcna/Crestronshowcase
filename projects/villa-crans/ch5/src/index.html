@@ -12,6 +12,11 @@
     <script src="config.js"></script>
     <!-- Configuration de dimensionnement embarquée (générée depuis villa_config.json par deploy.ps1) -->
     <script src="villa_config.js"></script>
+    <!-- 16.09.2026 (recette TSW) : Chromium peint un rectangle de surbrillance tactile sur l'élément
+         cliquable touché ; sur les tuiles de source c'est le conteneur tuile + engrenage (écouteur de
+         clic posé sur le parent du logo), d'où un cadre qui englobait les deux boutons pendant
+         quelques secondes. Le retour visuel vient des états CH5, jamais de cette surbrillance. -->
+    <style id="touch-highlight">* { -webkit-tap-highlight-color: rgba(0, 0, 0, 0); }</style>
     <script src="version.js"></script>
     <!-- Contrat de joins v3 : traduction des joins logiques en joins physiques par piece -->
     <script src="js/villa-joins.js"></script>

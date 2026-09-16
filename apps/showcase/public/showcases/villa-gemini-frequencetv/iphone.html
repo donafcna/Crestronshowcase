@@ -796,6 +796,11 @@
         body#app-body.theme-light .source-btn-mobile.audio-music { border-color: #0f172a !important; box-shadow: 0 0 10px rgba(15, 23, 42, 0.35) !important; }
         body#app-body.theme-light .source-btn-mobile.audio-music .tv-live-badge { border-color: #0f172a; box-shadow: 0 0 10px rgba(15, 23, 42, 0.35); }
     </style>
+    <!-- 16.09.2026 (recette TSW) : Chromium peint un rectangle de surbrillance tactile sur l'élément
+         cliquable touché ; sur les tuiles de source c'est le conteneur tuile + engrenage (écouteur de
+         clic posé sur le parent du logo), d'où un cadre qui englobait les deux boutons pendant
+         quelques secondes. Le retour visuel vient des états CH5, jamais de cette surbrillance. -->
+    <style id="touch-highlight">* { -webkit-tap-highlight-color: rgba(0, 0, 0, 0); }</style>
     <!-- Vitrine : pas de processeur, indicateur de connexion masqué -->
     <style>#connection-status{display:none !important}</style>
     <script>window.updateConnectionStatusUI = function () {};</script>

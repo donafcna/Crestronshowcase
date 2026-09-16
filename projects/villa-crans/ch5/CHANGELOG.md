@@ -37,6 +37,40 @@
   neutralisée, le C# tient déjà l'interlock 410/411.
 - `README_SLOT2.md` : tableau de la logique à câbler côté slot 2 (interlocks, toggle musique).
 
+### Plan 3D de la villa en fond d'écran — VITRINE UNIQUEMENT (16.09.2026, crestrongui.vercel.app)
+
+- **Rien dans la source CH5.** Tout vit dans le dépôt de la vitrine : `js/plan3d-vitrine.js` (pose la
+  toile, la fenêtre et la feuille de style, puis charge le module), `js/plan3d.js` (Three.js,
+  `js/vendor/three.module.min.js`, 676 Ko), maintenus à la main comme `js/local-feedback.js` ;
+  `sync-villa-crans.py` injecte `<script src="js/plan3d-vitrine.js">` dans `index.html` et pose
+  `meta.plan3d` (actif, disposition `PLAN3D_SHOWCASE` : niveau, x, z, w, d, type ∈ salon / cuisine /
+  repas / chambre / suite / bureau / cinema / terrasse / piscine / sauna / poolhouse).
+- Vue d'ensemble en écorché (3 niveaux + extérieurs, pins, montagnes), puis à chaque sélection
+  de pièce : passage par la villa entière et zoom sur la pièce, seule à l'écran avec les
+  extérieurs. Chaque pièce a ses lampes (2 circuits), sa TV, ses enceintes, sa climatisation et
+  son thermostat.
+- **Les feedbacks pilotent la 3D** : circuits a71-80 → intensité des lampes ; d150-154 → TV
+  allumée avec l'écran de la source (Apple TV = grille d'apps, Sky Q, Swisscom, IPTV) ; télécommande
+  211-216 → curseur de la grille, OK ouvre l'app, Menu revient ; d155 → enceintes animées ; a31 et
+  s33 → thermostat (consigne, chauffage / clim). Aucune présomption : tout vient de CrComLib.
+- **Fenêtre dans la carte Sources** : la zone vide sous les tuiles montre la pièce nette ; la carte
+  perd fond et flou, ses enfants sont regroupés en deux bandeaux opaques (titre + tuiles, volume +
+  état) — contraste 4:1 conservé. Si la place manque (iPad 11", XPanel 768 px) : pas de fenêtre,
+  fond d'écran seul ; en thème clair la toile est limitée à la fenêtre (les cartes claires comptent
+  sur un fond clair). Toile en `z-index: -1` (aucun contexte d'empilement sur `.app-container`,
+  les fenêtres modales restent au-dessus du voile).
+- **Motorisations** : chaque pièce a sa fenêtre avec volet roulant, store intérieur et rideaux ;
+  l'onglet Stores (joins 61-69), les presets « Tout ouvrir / Demi-ouverture / Tout fermer » de la
+  fenêtre Stores (`animateGroupBlinds`) et les moteurs 81-98 (famille lue dans
+  `pilotages.moteurs.liste`) les font bouger en 3D (course complète ≈ 4 s, stop respecté).
+- Télécommandes Sky Q / IPTV / Swisscom : haut / bas / P± déplacent la ligne en surbrillance de
+  l'écran TV. Deux palettes (`meta.plan3d.style`) : « chaleureux » (retenu) / « maquette ».
+- Coût : 53 appels de rendu / 1 600 triangles en vue pièce, 107 / 5 700 en vue d'ensemble,
+  2 lumières réelles (pièce active), pixel ratio plafonné à 1,5, boucle en pause onglet caché.
+- `tools/check_contrast_dom.mjs` : termine les transitions CSS avant de mesurer (rendu logiciel),
+  referme la confirmation audio après son audit, `--w/--h` pour la résolution du châssis.
+- Recette TSW : surbrillance tactile Chromium désactivée sur les deux GUI (cadre tuile + engrenage).
+
 ### Chaîne de déploiement
 
 - `deploy.ps1` réparé et fiabilisé : ASCII pur + BOM, serveur `tools/serve_src.mjs`, `ch5-cli -p`,
