@@ -97,8 +97,10 @@ L'entête ne porte que la liste des pièces et l'engrenage (version, connexion, 
   source est `villa_config.json` à la racine (la recopier avant `sync-villa-crans.py`).
 
 ## Plan 3D (16.09.2026) — fond de page du SITE, le GUI des châssis ne change jamais
-`apps/showcase/src/components/Plan3DBackground.jsx` remplace la vidéo de fond pour Villa Crans ;
-`public/plan3d/plan3d.js` (Three.js `public/plan3d/vendor/`, `import()` à l'exécution) et
+**Vidéo par défaut** ; `apps/showcase/src/components/Plan3DBackground.jsx` ne la remplace que dans
+les cas de `PLAN3D_RULES` (`{device,minWidth,maxWidth}` — aujourd'hui : châssis Smartphone ; l'utilisateur
+teste d'autres tailles d'écran et dira quoi ajouter). 3D active ⇒ châssis calé à gauche (`.plan3d-on`,
+`--chassis-scale`), pièce cadrée avant la colonne des boutons. `public/plan3d/plan3d.js` (Three.js `public/plan3d/vendor/`, `import()` à l'exécution) et
 `public/plan3d/villa-crans.json` (disposition, style). Lit le GUI **à travers l'iframe** (même
 origine) : CrComLib (a10, a71-80, d150-156, d155, a31/s33), clics `ch5-button[data-join]` (211-216,
 Sky 500+, IPTV 530+, Swisscom 574+, stores 61-69, moteurs 81-98), `animateGroupBlinds`. Villa plein

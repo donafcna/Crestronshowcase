@@ -65,6 +65,13 @@
 - Télécommandes Sky Q / IPTV / Swisscom : haut / bas / P± déplacent la ligne en surbrillance de
   l'écran TV. Deux palettes (`meta.plan3d.style`) : « chaleureux » (retenu) / « maquette ».
 - Piscine : eau animée (reflet, ondulation) et projecteurs sous-marins sur le circuit 1 de la pièce.
+- **Vidéo par défaut, 3D au cas par cas** (décision du 16.09 après essai sur portable 14") : la vidéo
+  de fond est rétablie partout ; la 3D ne remplace la vidéo que dans les cas listés dans
+  `PLAN3D_RULES` (`Plan3DBackground.jsx`, règles `{device, minWidth, maxWidth}`) — pour l'instant
+  **châssis Smartphone sélectionné**, quelle que soit la largeur. Quand la 3D est active, le châssis
+  est calé au bord gauche de l'espace de travail (`.plan3d-on`, `--chassis-scale` exposée par
+  `DeviceFrame`) et la pièce est cadrée dans la zone libre entre le châssis et la colonne des boutons
+  (QR code, Fiche PDF, supports), jamais derrière eux. D'autres cas seront ajoutés au fil des essais.
 - Coût : 53 appels de rendu / 1 600 triangles en vue pièce, 107 / 5 700 en vue d'ensemble,
   2 lumières réelles (pièce active), pixel ratio plafonné à 1,5, boucle en pause onglet caché.
 - `tools/check_contrast_dom.mjs` : termine les transitions CSS avant de mesurer (rendu logiciel),

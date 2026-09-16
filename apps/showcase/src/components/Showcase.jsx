@@ -3,7 +3,8 @@ import { Icons as LucideIcons } from "../icons";
 import { useTranslation } from "../context/LanguageContext";
 import { projects, getDeviceById, getProjectText, getProjectName, getStatusLabel } from "../data/projects";
 import { BackgroundVideo } from "./BackgroundVideo";
-import { Plan3DBackground, PLAN3D_PROJECTS } from "./Plan3DBackground";
+import { Plan3DBackground, plan3dEnabled } from "./Plan3DBackground";
+import { useViewportMetrics } from "../hooks/useViewportMetrics";
 import { DeviceFrame } from "./DeviceFrame";
 import { DevMetrics } from "./DevMetrics";
 import { ChassisCaption } from "./ChassisCaption";
@@ -159,6 +160,7 @@ const ShowcaseInner = ({ sectorId, projectId, device }) => {
   const [captureNotice, setCaptureNotice] = useState("");
   const stageRef = useRef(null);
   const guiFrameRef = useRef(null);   // iframe du GUI embarqué : le fond 3D y lit les feedbacks
+  const { windowW } = useViewportMetrics();
 
   // ---- Plein écran ---------------------------------------------------------
   useEffect(() => {
@@ -363,12 +365,15 @@ const ShowcaseInner = ({ sectorId, projectId, device }) => {
     return <div className="gui-fullscreen-stage">{guiContent}</div>;
   }
 
+  // Plan 3D en fond de page à la place de la vidéo : seulement dans les cas listés (PLAN3D_RULES).
+  // Le châssis est alors poussé à gauche pour laisser la pièce 3D visible entre lui et la colonne des boutons.
+  const plan3dOn = !guiFullscreen && plan3dEnabled(activeProject.id, viewportDevice, windowW);
   return (
     <div
-      className={`showcase-container fade-in sector-${sectorId || "all"} ${isFullscreen ? "fullscreen-mode" : ""}`}
+      className={`showcase-container fade-in sector-${sectorId || "all"} ${isFullscreen ? "fullscreen-mode" : ""} ${plan3dOn ? "plan3d-on" : ""}`}
       ref={stageRef}
     >
-      {PLAN3D_PROJECTS[activeProject.id] ? (
+      {plan3dOn ? (
         <Plan3DBackground projectId={activeProject.id} stageRef={stageRef} guiFrameRef={guiFrameRef} />
       ) : (
         <BackgroundVideo sectionId={sectorId || activeProject.sectors[0]} />

@@ -175,6 +175,7 @@ export const DeviceFrame = ({
   const chassisStyle = {
     "--chassis-w": `${cfg.chassisW}px`,
     "--chassis-h": `${cfg.chassisH}px`,
+    "--chassis-scale": chassisScale,   // lu par le CSS quand le plan 3D pousse le châssis à gauche
     width: cfg.chassisW,
     height: cfg.chassisH,
     transform: `translate(-50%, -50%) scale(${chassisScale})`,
