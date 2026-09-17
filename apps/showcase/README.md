@@ -365,3 +365,5 @@ Validation locale : 34 contrôles du nouveau banc test-villa-tour.cjs, cycle obs
 Preuves : `Claude outputs/villa-tour/qa-final`, `fades`, `comparison/index.html`. Aucun modèle, média ou éclairage dynamique ajouté. Source GUI, JSON physique, SIMPL# et SIMPL Windows inchangés par ce lot ; aucune compilation ou livraison sur matériel.
 
 Contrôles complémentaires : 27 contrôles de navigation 3D réussis, quatre contrôles de reprise/menu/autre projet réussis. Comparatif visuel avant/après, trois thèmes en colonnes : `Claude outputs/villa-tour/comparison/index.html`.
+
+Ajustement de chronométrage après le premier contrôle public : les pauses de déplacement du pointeur vers la liste des pièces sont plafonnées par la prochaine échéance, pour ne pas ajouter 810 ms après un ralentissement de rendu. Le banc horodate désormais les événements de sélection réels, avant le rendu synchrone, au lieu de déduire leur heure des captures échantillonnées.

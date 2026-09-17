@@ -20,6 +20,12 @@ fs.mkdirSync(out, { recursive: true });
   const captured = new Set();
   const read = () => page.evaluate(() => {
     const w = document.querySelector('iframe')?.contentWindow, v = w?.Villa, a = window.__plan3d;
+    window.__tourSelections ??= [];
+    const select = w?.document.querySelector('#room-select');
+    if (select && select !== window.__observedTourSelect) {
+      window.__observedTourSelect = select;
+      select.addEventListener('change', e => window.__tourSelections.push({at:performance.now(), room:Number(e.target.value)}), true);
+    }
     const rooms = Object.values(v?.demoRooms?.() || {});
     const shades = a ? Object.values(a.rooms).filter(r => r.shades?.rideau).map(r => r.shades.rideau) : [];
     const cursor = document.querySelector('.demo-cursor');
@@ -66,7 +72,8 @@ fs.mkdirSync(out, { recursive: true });
     check('Smartphone lasts 60 seconds', Math.abs(firstWall - origin - 60000) < 1600);
     const wallReady = samples.find(s => s.device === 'wallpanel' && s.ready);
     check('TSW lasts 10 seconds once loaded', Math.abs(secondPhone - wallReady.at - 10000) < 1200);
-    const changes = phone.filter((s, i) => i > 0 && s.room !== phone[i - 1].room);
+    report.selections = await page.evaluate(() => window.__tourSelections);
+    const changes = report.selections.filter(s => s.at < firstWall).map(s => ({...s, seconds:(s.at-origin)/1000}));
     check('First room selected after 3 seconds', changes[0]?.seconds >= 2.9 && changes[0]?.seconds < 4.5);
     check('Room selected every 5 seconds', changes.length >= 11 && changes.slice(1).every((s, i) => Math.abs(s.seconds - changes[i].seconds - 5) < 1.6));
     check('Random room bag does not repeat rooms during the minute', new Set(changes.map(s => s.room)).size === changes.length);

@@ -392,13 +392,13 @@ export const useAutoDemo = ({ enabled, running, stageRef, guiKey, onCycleEnd, on
       return centerOf(el, gui);
     };
 
-    const moveTo = async (el, gui) => {
+    const moveTo = async (el, gui, deadline = Infinity) => {
       if (!insideScreen(el, gui, stage)) return false;
       const { x, y } = targetPoint(el, gui);
       setCursor((c) => ({ ...c, x, y, visible: true }));
-      await sleep(TIMING.travel, token);
+      await sleep(Math.max(0, Math.min(TIMING.travel, deadline - performance.now())), token);
       if (token.cancelled) return false;
-      await sleep(TIMING.press, token);
+      await sleep(Math.max(0, Math.min(TIMING.press, deadline - performance.now())), token);
       if (token.cancelled || !el.isConnected || !insideScreen(el, gui, stage)) return false;
       return true;
     };

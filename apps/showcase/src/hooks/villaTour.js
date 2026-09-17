@@ -58,7 +58,7 @@ export async function runVillaTour({ gui, device, sessionRef, token, sleep, move
         const select = gui.doc.querySelector('#room-select');
         await until(next - 810); // move the pointer first; change the room at the deadline
         if (token.cancelled) return false;
-        await moveTo(select, gui);
+        await moveTo(select, gui, next);
         await until(next);
         if (token.cancelled || performance.now() >= end) break;
         if (!bag.length) bag = options.map(o => Number(o.value));
