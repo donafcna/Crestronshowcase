@@ -14,7 +14,7 @@
  * =========================================================================== */
 import * as THREE from './vendor/three.module.min.js';
 import { createInteriors } from './interiors.js?v=2026-09-17-rooms-1';
-import { buildLandscape } from './landscape.js?v=2026-09-17-rooms-1';
+import { buildLandscape } from './landscape.js?v=2026-09-17-valley-1';
 import { createEstate } from './estate.js?v=2026-09-16-estate-2';
 import { enrichRoom } from './room-features.js?v=2026-09-17-rooms-1';
 import { furnishSpecialRoom } from './special-rooms.js?v=2026-09-17-rooms-1';
@@ -894,7 +894,7 @@ export function createPlan3D(opts) {
     /* ---------- API publique ---------- */
     var API = {
         setRoom: setRoom,
-        version: '2026-09-17-stadiums-1',
+        version: '2026-09-17-valley-1',
         overview: overview,
         click: clickPlan,
         focusSelected: function () { if (!selectedRoom || activeRoom === selectedRoom) return; focusRoom(selectedRoom); },
@@ -902,7 +902,7 @@ export function createPlan3D(opts) {
         roomPoint: function (id) { var R = ROOMS[id]; if (!R) return null; var v = R.group.localToWorld(new THREE.Vector3(R.cfg.w * .6, .1, R.cfg.d * .8)).project(camera); return { x: (v.x + 1) * canvas.clientWidth / 2, y: (1 - v.y) * canvas.clientHeight / 2 }; },
         selectedRoom: function () { return selectedRoom && selectedRoom.id; },
         metrics: function () { var sorted = frames.slice().sort(function (a,b) { return a-b; }); return { frames: frames.length, renderedFrames:renderedFrames, medianMs: sorted[Math.floor(sorted.length / 2)] || 0, p95Ms: sorted[Math.floor(sorted.length * .95)] || 0, pixelRatio: renderer.getPixelRatio(), drawCalls: renderer.info.render.calls, triangles: renderer.info.render.triangles, zone: win, tv3D:tvStage?.metrics() }; },
-        environment: function(){return {day:environmentDay,seconds:idle,cycleSeconds:environmentCycle};},
+        environment: function(){return {day:environmentDay,seconds:idle,cycleSeconds:environmentCycle,landscape:landscape?.metrics};},
         setDay: function(value){fixedDay=value===null?null:Math.max(0,Math.min(1,value));},
         setCircuit: function (roomId, idx, level) { var R = ROOMS[roomId]; if (!R) return; R.levels[idx] = Math.max(0, Math.min(1, level)); targetLights(R); },
         setVideoSource: function (roomId, n) { var R = ROOMS[roomId]; if (R) setTv(R, n); },

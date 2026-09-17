@@ -106,3 +106,11 @@ Validation : cycle complet de 80 s observé, neuf contrôles réussis (dont les 
 Le chargeur et l'API moteur portent `2026-09-17-stadiums-1`, et les imports TV sont versionnés. `metrics().tv3D` expose le programme, la taille, les enceintes instanciées et leur coût. `dispose()` libère aussi les géométries, textures Canvas et buffers d'instances des enceintes.
 
 Recette ciblée : `node scripts/test-tv-stadiums.cjs` avec `BASE_URL`, `BROWSER_EXE`, `NODE_PATH` et éventuellement `TEST_OUTPUT`. 31 contrôles locaux réussis, trois thèmes/deux modes, commandes de télécommande et OFF, vidéo dalle/tablette. 52,0–53,5 images/s sur le laptop de référence en 1280×800 DPR 1,5, pas de promesse universelle. Banc isolé : 3 appels de dessin supplémentaires pour l'enceinte, 40 850 / 71 710 / 45 756 triangles totaux selon le programme (tennis/football/course), ressources GPU à zéro après destruction. Captures et mesures : `Claude outputs/sports-stadiums/`. La GUI et le contrat matériel ne changent pas.
+
+## 17/09/2026 — valley-1 : paysage et hydrologie
+
+`valley.js` partage les bassins et le profil descendant des deux ruisseaux entre terrain, eau et exclusions de végétation. Recherche spatiale des échantillons ; le terrain est creusé avant sa coloration. L'eau se poursuit jusqu'à z=150, au-delà de la limite visible ; des ponts franchissent les ruisseaux. Les chemins utilisent la hauteur triangulée réellement affichée, avec leurs échantillons mis en cache pour éviter de recalculer les courbes à chaque placement d'arbre.
+
+Onze parcelles colorées dans le même maillage, herbe Canvas générée localement, 620 arbres et 1 800 touffes instanciés. Champs exclus des fortes pentes et de l'eau, arbres exclus des accès et du premier plan des vues pièces. Rochers et détails regroupés par matériau. Environ 4 Ko gzip ajoutés, aucun nouveau modèle, image ou vidéo à charger. L'environnement suit toujours le jour/nuit 30/10/30/10 ; API `environment().landscape` pour la recette.
+
+`scripts/test-plan3d-landscape.cjs` : trois thèmes × normal/Scène × jour/nuit, retour molette et sélection GUI, mesures de cadence et rayons sur la vraie géométrie pour détecter l'eau enterrée. 29 contrôles réussis, 31 contrôles TV également ; build/lint réussis. Preuves : `Claude outputs/alpine-landscape/qa-publish` et planche avant/après. La GUI et les programmes matériels ne sont pas modifiés.
