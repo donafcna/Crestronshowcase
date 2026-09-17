@@ -803,7 +803,9 @@
     <style id="touch-highlight">* { -webkit-tap-highlight-color: rgba(0, 0, 0, 0); }</style>
     <link rel="stylesheet" href="themes/global-controls.css">
 <link rel="stylesheet" href="themes/room-controls.css">
+<link rel="stylesheet" href="themes/wellness-controls.css">
 <script defer src="js/room-controls.js"></script>
+<script defer src="js/wellness-controls.js"></script>
     <!-- Vitrine : pas de processeur, indicateur de connexion masqué -->
     <style>#connection-status{display:none !important}</style>
     <script>window.updateConnectionStatusUI = function () {};</script>
@@ -903,10 +905,7 @@
 
         <!-- ONGLET 2 : TEMPERATURE (HVAC) -->
         <div id="panel-hvac" class="tab-panel">
-            <h2 style="display: flex; align-items: center; gap: 8px;">
-                <svg viewBox="0 0 288 512" style="width: 20px; height: 20px; fill: #00b4c5;"><path d="M144 0C91 0 48 43 48 96v202.7c-29.2 27.2-48 66-48 109.3 0 82.8 67.2 150 150 150s150-67.2 150-150c0-43.3-18.8-82.1-48-109.3V96c0-53-43-96-96-96zm48 408c0 26.5-21.5 48-48 48s-48-21.5-48-48c0-18 10-33.8 24.8-41.9V144c0-13.3 10.7-24 24-24s24 10.7 24 24v222.1c14.8 8.1 24.8 23.9 24.8 41.9z"/></svg>
-                <span data-i18n="temp_title">HVAC</span>
-            </h2>
+            <div class="climate-tabs" role="tablist" aria-label="Climat"><button data-climate-tab="hvac" role="tab" aria-selected="true" onclick="showWellnessPanel('hvac')">HVAC</button><button hidden data-wellness-tab="sauna" data-climate-tab="sauna" role="tab" aria-selected="false" onclick="showWellnessPanel('sauna')">Sauna</button><button hidden data-wellness-tab="hammam" data-climate-tab="hammam" role="tab" aria-selected="false" onclick="showWellnessPanel('hammam')">Hammam</button></div><div data-climate-panel="hvac" class="climate-hvac">
             <div class="temp-container" style="display: flex; flex-direction: column; gap: 20px; align-items: center; justify-content: center; flex: 1;">
                 
                 <!-- Température Actuelle -->
@@ -950,7 +949,17 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div><div hidden data-climate-panel="sauna" class="wellness-panel">
+ <div><div class="wellness-label" data-wellness-label="0">Température actuelle</div><div class="wellness-value"><span data-ch5-textcontent="64">--</span> °C</div></div>
+ <div class="wellness-label"><span data-wellness-label="2">Consigne</span> <span class="wellness-range" data-wellness-range="sauna"></span></div>
+ <div class="hvac-controls wellness-setpoint"><ch5-button label="−" customClass="hvac-command" sendEventOnClick="623" data-join="623"></ch5-button><div class="wellness-value"><span data-ch5-textcontent="62">--</span> °C</div><ch5-button label="+" customClass="hvac-command" sendEventOnClick="622" data-join="622"></ch5-button></div>
+ <div class="hvac-controls"><div class="hvac-row"><ch5-button label="ON" customClass="hvac-command" sendEventOnClick="620" receiveStateSelected="620" data-join="620"></ch5-button><ch5-button label="OFF" customClass="hvac-command" sendEventOnClick="621" receiveStateSelected="621" data-join="621"></ch5-button></div></div>
+ </div><div hidden data-climate-panel="hammam" class="wellness-panel">
+ <div><div class="wellness-label" data-wellness-label="1">Humidité actuelle</div><div class="wellness-value"><span data-ch5-textcontent="65">--</span> %</div></div>
+ <div class="wellness-label"><span data-wellness-label="2">Consigne</span> <span class="wellness-range" data-wellness-range="hammam"></span></div>
+ <div class="hvac-controls wellness-setpoint"><ch5-button label="−" customClass="hvac-command" sendEventOnClick="627" data-join="627"></ch5-button><div class="wellness-value"><span data-ch5-textcontent="63">--</span> %</div><ch5-button label="+" customClass="hvac-command" sendEventOnClick="626" data-join="626"></ch5-button></div>
+ <div class="hvac-controls"><div class="hvac-row"><ch5-button label="ON" customClass="hvac-command" sendEventOnClick="624" receiveStateSelected="624" data-join="624"></ch5-button><ch5-button label="OFF" customClass="hvac-command" sendEventOnClick="625" receiveStateSelected="625" data-join="625"></ch5-button></div></div>
+ </div></div>
 
         <!-- ONGLET 3 : MULTIMEDIA -->
         <div id="panel-audio" class="tab-panel">
@@ -2894,6 +2903,7 @@
                     localStorage.setItem('active_room_iphone', roomId.toString());
                 } catch (e) {}
                 applyPilotageVisibility(roomId);
+                if(window.refreshWellnessControls)window.refreshWellnessControls(roomId);
                 const roomObj = config.rooms.find(r => r.id === roomId);
                 const roomName = roomObj ? roomObj.name : ("Pièce " + roomId);
 

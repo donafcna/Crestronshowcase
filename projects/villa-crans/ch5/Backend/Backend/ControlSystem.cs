@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Crestron.SimplSharp;
 using Crestron.SimplSharpPro;
@@ -12,6 +12,7 @@ namespace VillaFrequenceTvAutomation
     public class RoomState
     {
         public HvacState Hvac { get; private set; }
+        public WellnessState Wellness { get; private set; }
         public int RoomId { get; set; }
         public string RoomName { get; set; }
         public ushort ActiveScene { get; set; }
@@ -30,6 +31,7 @@ namespace VillaFrequenceTvAutomation
         public RoomState(int id, string name)
         {
             Hvac = new HvacState();
+            Wellness = new WellnessState();
             RoomId = id;
             RoomName = name;
             ActiveScene = 1; // index de scène 1..4 (contrat v2 : joins digitaux 45-48)
@@ -697,6 +699,19 @@ namespace VillaFrequenceTvAutomation
         {
             if (_eisc == null || sourceDevice == _eisc) return;
             uint joinRaw = args.Sig.Number;
+            if ((args.Sig.Type == eSigType.Bool && joinRaw >= 620 && joinRaw <= 627)
+                || (args.Sig.Type == eSigType.UShort && joinRaw >= 62 && joinRaw <= 65))
+            {
+                int wellnessRoom = _activeRoomPerDevice.ContainsKey(sourceDevice.ID) ? _activeRoomPerDevice[sourceDevice.ID] : DefaultRoomForPanel(sourceDevice.ID);
+                if (!_roomsRegistry.ContainsKey(wellnessRoom) || !_roomsRegistry[wellnessRoom].Wellness.Available || (args.Sig.Type == eSigType.UShort && joinRaw >= 64)) return;
+                if (args.Sig.Type == eSigType.UShort)
+                {
+                    var ws = _roomsRegistry[wellnessRoom].Wellness;
+                    ushort value = args.Sig.UShortValue;
+                    if (joinRaw == 62 && (value < ws.SaunaMin || value > ws.SaunaMax)) return;
+                    if (joinRaw == 63 && (value < ws.HumidityMin || value > ws.HumidityMax)) return;
+                }
+            }
 
             if (joinRaw >= RoomBlockBase)
             {
@@ -722,8 +737,17 @@ namespace VillaFrequenceTvAutomation
             try
             {
                 uint join = joinRaw;
-                if ((args.Sig.Type == eSigType.Bool && join >= 610 && join <= 615 && args.Sig.BoolValue)
-                    || (args.Sig.Type == eSigType.UShort && join == 61))
+                // L'EISC partage a10 alors que chaque écran conserve sa propre pièce.
+                // Rafraîchir ce contexte à CHAQUE commande, même si cet écran n'a pas
+                // changé de pièce depuis qu'un autre écran a piloté une autre zone.
+                // Les télécommandes n'ont pas d'offset d'état mais pilotent aussi la pièce.
+                bool roomDigital = args.Sig.Type == eSigType.Bool && args.Sig.BoolValue
+                    && (V4DigitalOffsets.ContainsKey((ushort)join)
+                        || (join >= 211 && join <= 220) || (join >= 500 && join <= 527)
+                        || (join >= 530 && join <= 557) || (join >= 560 && join <= 600));
+                bool roomAnalog = args.Sig.Type == eSigType.UShort && join != 53
+                    && (join == 21 || V4AnalogOffsets.ContainsKey((ushort)join));
+                if (roomDigital || roomAnalog)
                 {
                     int roomId = _activeRoomPerDevice.ContainsKey(sourceDevice.ID)
                         ? _activeRoomPerDevice[sourceDevice.ID] : DefaultRoomForPanel(sourceDevice.ID);
@@ -979,6 +1003,14 @@ namespace VillaFrequenceTvAutomation
                         if (!_roomsRegistry.ContainsKey(id))
                             _roomsRegistry.Add(id, new RoomState(id, nom));
 
+                        var wellness = piece["pilotages"]?["wellness"];
+                        if (wellness != null && (bool?)wellness["sauna"]?["actif"] == true && (bool?)wellness["hammam"]?["actif"] == true)
+                        {
+                            var ws = _roomsRegistry[id].Wellness; ws.Available = true;
+                            ws.SaunaMin = (ushort)((int)wellness["sauna"]["min"] * 10); ws.SaunaMax = (ushort)((int)wellness["sauna"]["max"] * 10);
+                            ws.HumidityMin = (ushort)wellness["hammam"]["min"]; ws.HumidityMax = (ushort)wellness["hammam"]["max"];
+                            ws.SetValue(34, (ushort)((int)wellness["sauna"]["consigne"] * 10)); ws.SetValue(35, (ushort)wellness["hammam"]["consigne"]);
+                        }
                         var initialHvac = piece["pilotages"]?["cvc"]?["etatInitial"];
                         if (initialHvac != null)
                         {
@@ -1104,6 +1136,10 @@ namespace VillaFrequenceTvAutomation
                     // que les niveaux de circuits ne donnent déjà.
                     for (uint h = 93; h <= 98; h++) SetBool(dev, b + h, room.Hvac.Selected(h));
                     SetUShort(dev, b + 33, room.Hvac.Fan);
+                    if (room.Wellness.Available) {
+                        foreach (uint offset in new uint[] {11,12,15,16}) SetBool(dev, b + offset, room.Wellness.Selected(offset));
+                        for (uint offset=34;offset<=37;offset++) { SetUShort(dev,b+offset,room.Wellness.Value(offset)); SetString(dev,b+offset+10,room.Wellness.Text(offset)); }
+                    }
                     SetUShort(dev, b + 31, room.TargetTemperature);
                     SetUShort(dev, b + 51, room.ActiveVideoSource);
                     SetUShort(dev, b + 52, room.AudioVolume);
@@ -1160,6 +1196,12 @@ namespace VillaFrequenceTvAutomation
 
             if (args.Sig.Type == eSigType.Bool)
             {
+                if (sourceDevice == _eisc && (offset == 11 || offset == 15) && _roomsRegistry[roomId].Wellness.Available)
+                {
+                    if(offset == 11) _roomsRegistry[roomId].Wellness.SaunaOn = args.Sig.BoolValue;
+                    else _roomsRegistry[roomId].Wellness.HammamOn = args.Sig.BoolValue;
+                    PushRoomFeedback(roomId); return;
+                }
                 // A physical power return is a level, including the falling edge.
                 if (sourceDevice == _eisc && offset == 93)
                 {
@@ -1235,6 +1277,7 @@ namespace VillaFrequenceTvAutomation
                 room.MusicAudio = false;
                 DispatchAudioRouting(roomId);
             }
+            else if (room.Wellness.Apply(offset)) { }
             else if (room.Hvac.Apply(offset)) { }
             else if (offset >= 81 && offset <= 92)      // Partitions d'alarme (joins logiques 301-312)
             {
@@ -1257,8 +1300,9 @@ namespace VillaFrequenceTvAutomation
             RoomState room = _roomsRegistry[roomId];
 
             // L'analogique +21 (Lighting_Master) n'existe plus dans le contrat (13.09.2026).
-            if (offset == 31) room.TargetTemperature = val;                  // join logique 31
+            if (offset == 31) { if (val < 160 || val > 280) return; room.TargetTemperature = val; } // HVAC, never the sauna circuit
             else if (offset == 32) room.CurrentTemperature = val;            // v4 : température mesurée, envoyée par le slot 2 (x10)
+            else if (offset >= 34 && offset <= 37) { if ((offset >= 36 && sourceDevice != _eisc) || !room.Wellness.SetValue(offset, val)) return; }
             else if (offset == 33) { if (!room.Hvac.SetFan(val)) return; } // fan, never the measured temperature (+32)
             else if (offset == 51) { room.ActiveVideoSource = val; DispatchIpCommandToSonyTv(roomId, val); } // join logique 51
             else if (offset == 52) room.AudioVolume = val;                   // join logique 52
@@ -1490,6 +1534,7 @@ namespace VillaFrequenceTvAutomation
             { 61, 1 }, { 62, 2 }, { 63, 3 }, { 64, 4 }, { 65, 5 }, { 66, 6 }, { 67, 7 }, { 68, 8 }, { 69, 9 },
             { 51, 21 }, { 52, 22 }, { 53, 23 }, { 54, 24 },
             { 49, 35 }, { 50, 36 },
+            { 620, 11 }, { 621, 12 }, { 622, 13 }, { 623, 14 }, { 624, 15 }, { 625, 16 }, { 626, 17 }, { 627, 18 },
             { 610, 93 }, { 611, 94 }, { 612, 95 }, { 613, 96 }, { 614, 97 }, { 615, 98 },
             { 201, 41 }, { 202, 42 }, { 203, 43 }, { 204, 44 }, { 200, 45 },
             { 55, 50 },
@@ -1500,7 +1545,7 @@ namespace VillaFrequenceTvAutomation
         };
         private static readonly Dictionary<ushort, uint> V4AnalogOffsets = new Dictionary<ushort, uint>
         {
-            { 31, 31 }, { 61, 33 }, { 51, 51 }, { 52, 52 }, { 53, 53 }, { 254, 54 },
+            { 31, 31 }, { 61, 33 }, { 62, 34 }, { 63, 35 }, { 51, 51 }, { 52, 52 }, { 53, 53 }, { 254, 54 },
             { 71, 71 }, { 72, 72 }, { 73, 73 }, { 74, 74 }, { 75, 75 }, { 76, 76 }, { 77, 77 }, { 78, 78 }, { 79, 79 }, { 80, 80 }
         };
 
@@ -1854,6 +1899,8 @@ namespace VillaFrequenceTvAutomation
             {
                 for (uint h = 0; h < 6; h++) SetBool(panel, 610 + h, room.Hvac.Selected(93 + h));
                 SetUShort(panel, 61, room.Hvac.Fan);
+                for(uint k=0;k<8;k++) SetBool(panel,620+k,room.Wellness.Selected(11+k));
+                for(uint k=0;k<4;k++) { SetUShort(panel,62+k,room.Wellness.Value(34+k)); SetString(panel,62+k,room.Wellness.Text(34+k)); }
             }
             SetUShort(panel, 31, room.TargetTemperature);
 

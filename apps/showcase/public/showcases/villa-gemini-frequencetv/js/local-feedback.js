@@ -96,6 +96,7 @@
   function makeRoom(temp, setpoint, mode, source, volume, scene) {
     return {
       temp: temp, setpoint: setpoint, mode: mode, hvacOn: true, fan: 0,
+      wellness: {saunaOn:false,hammamOn:false,saunaTarget:80,humidityTarget:95,saunaActual:22,humidityActual:50},
       source: source, music: false, volume: volume, mediaVolume: volume, mute: false,
       scene: scene, circuits: SCENE_PRESETS[scene].slice(), storesScene: null,
     };
@@ -113,7 +114,7 @@
     10: makeRoom(21.0, 21.0, "CHAUFFAGE", 5, 22000, "53"),
     11: makeRoom(24.2, 22.0, "CLIMATISATION", 5, 30000, "54"),
     12: makeRoom(28.5, 28.0, "CHAUFFAGE", 5, 26000, "53"),
-    13: makeRoom(45.0, 60.0, "CHAUFFAGE", 0, 12000, "52"),
+    13: makeRoom(22.0, 22.0, "CHAUFFAGE", 0, 12000, "52"),
     14: makeRoom(23.1, 22.0, "CLIMATISATION", 2, 34000, "54"),
     15: makeRoom(17.4, 16.0, "HORS GEL", 0, 10000, "51"),
   };
@@ -207,6 +208,9 @@
     exclusive(["610", "611"], r.hvacOn ? "610" : "611");
     exclusive(["612", "613", "614", "615"], String(612 + r.fan));
     set("n", "61", r.fan);
+    var w=r.wellness;
+    exclusive(['620','621'],w.saunaOn?'620':'621');exclusive(['624','625'],w.hammamOn?'624':'625');
+    [w.saunaTarget*10,w.humidityTarget,w.saunaActual*10,w.humidityActual].forEach(function(v,i){set('n',String(62+i),Math.round(v));set('s',String(62+i),i%2===0?(v/10).toFixed(1):String(Math.round(v)));});
   }
 
   // Sources : vidéo (1..4) en interlock, musique (155) indépendante (elle joue sur les
@@ -305,7 +309,7 @@
 
   function adjustSetpoint(delta) {
     var r = rooms[activeRoom];
-    r.setpoint = Math.max(5, Math.min(90, Math.round((r.setpoint + delta) * 2) / 2));
+    r.setpoint = Math.max(16, Math.min(28, Math.round((r.setpoint + delta) * 2) / 2));
     if (r.mode !== "HORS GEL") r.mode = r.setpoint < r.temp - 0.4 ? "CLIMATISATION" : "CHAUFFAGE";
     publishHvac(r);
     exclusive(Object.keys(SIG.HVAC_MODES), null);
@@ -388,6 +392,15 @@
     if (roomFromJoin(n)) return selectRoom(roomFromJoin(n));
     if (SIG.SCENES.indexOf(id) !== -1) return applyScene(id);
     if (SIG.SOURCES.indexOf(id) !== -1) return selectSource(SIG.SOURCES.indexOf(id));
+    if (+id >= 620 && +id <= 627) {
+      var r=rooms[activeRoom],cfg=window.villaConfigEmbedded?.pieces.find(function(p){return p.id===activeRoom;})?.pilotages.wellness;
+      if(!cfg)return;var w=r.wellness,n=+id;
+      if(n===620||n===621)w.saunaOn=n===620;
+      if(n===624||n===625)w.hammamOn=n===624;
+      if(n===622||n===623)w.saunaTarget=Math.max(cfg.sauna.min,Math.min(cfg.sauna.max,w.saunaTarget+(n===622?1:-1)));
+      if(n===626||n===627)w.humidityTarget=Math.max(cfg.hammam.min,Math.min(cfg.hammam.max,w.humidityTarget+(n===626?1:-1)));
+      publishHvac(r);return;
+    }
     if (+id >= 610 && +id <= 615) {
       var climate = rooms[activeRoom];
       if (+id < 612) { climate.hvacOn = id === '610'; exclusive(Object.keys(SIG.HVAC_MODES), null); } else climate.fan = +id - 612;
@@ -444,13 +457,20 @@
       return;
     }
     var r = rooms[activeRoom];
+    if (+id >= 62 && +id <= 65) {
+      var cfg=window.villaConfigEmbedded?.pieces.find(function(p){return p.id===activeRoom;})?.pilotages.wellness;
+      if (!cfg || +id >= 64) return;
+      var item=cfg[id==='62'?'sauna':'hammam'],v=Number(value)/(id==='62'?10:1);
+      if (!item || !item.actif || v<item.min || v>item.max) return;
+      r.wellness[id==='62'?'saunaTarget':'humidityTarget']=v;publishHvac(r);return;
+    }
     value = set("n", id, value);
     if (id === "61") { if (value <= 3) r.fan = value; publishHvac(r); }
     if (id === SIG.VOLUME) r.volume = value;
     if (id === SIG.MEDIA_VOLUME) r.mediaVolume = value;
     if (id === SIG.SETPOINT_X10) {
       if (r.setpoint !== value / 10) exclusive(Object.keys(SIG.HVAC_MODES), null);
-      r.setpoint = value / 10; publishHvac(r);
+      r.setpoint = Math.max(16,Math.min(28,value / 10)); publishHvac(r);
     }
     var ci = SIG.CIRCUITS.indexOf(id);
     if (ci !== -1) {
@@ -468,6 +488,13 @@
       updateGlobalLights();
     }
   }
+
+  setInterval(function(){
+    var r=rooms[13];if(!r)return;var w=r.wellness;
+    w.saunaActual += Math.sign((w.saunaOn?w.saunaTarget:22)-w.saunaActual)*Math.min(.25,Math.abs((w.saunaOn?w.saunaTarget:22)-w.saunaActual));
+    w.humidityActual += Math.sign((w.hammamOn?w.humidityTarget:50)-w.humidityActual)*Math.min(.3,Math.abs((w.hammamOn?w.humidityTarget:50)-w.humidityActual));
+    if(activeRoom===13)publishHvac(r);
+  },1500);
 
   // Dérive lente de la température mesurée vers la consigne (effet "vivant")
   setInterval(function () {

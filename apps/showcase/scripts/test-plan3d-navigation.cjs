@@ -17,7 +17,7 @@ fs.mkdirSync(out,{recursive:true});
   const scene=async id=>{await p.frameLocator('iframe').locator('#scene-btn-'+id).click();await p.waitForTimeout(100);await p.waitForFunction(()=>Object.values(window.__plan3d.rooms).every(r=>!r.lightFade));};
   try{
     await p.goto(base+'/interfaces/residentiel/villa-gemini-frequencetv/phone');
-    await p.waitForFunction(()=>window.__plan3d?.version==='2026-09-16-estate-4');await waitPhase('room');
+    await p.waitForFunction(()=>window.__plan3d?.version==='2026-09-17-rooms-1');await waitPhase('room');
     await select(1);await scene(51);
     await p.evaluate(()=>{for(const k of ['volet','rideau','store'])window.__plan3d.shadePos(k,1);});
     await p.waitForTimeout(3000);
@@ -40,15 +40,8 @@ fs.mkdirSync(out,{recursive:true});
     check('OFF remains dark after switching between OFF rooms',(await nav()).lamps.every(v=>v===0));
     await p.locator('.btn-exit-fullscreen-device-corner').click();await waitPhase('room');await p.waitForTimeout(700);
     await select(8);await scene(54);await p.evaluate(()=>window.__plan3d.setVideoSource(8,1));
-    for(const pos of [0,1]){
-      await p.evaluate(v=>{for(const k of ['volet','rideau','store'])window.__plan3d.shadePos(k,v);},pos);
-      await p.waitForTimeout(600);await shot('cinema-'+(pos?'closed':'open'));
-      check('Cinema curtain geometry clears TV at position '+pos,await p.evaluate(async()=>{
-        const T=await import('/plan3d/vendor/three.module.min.js'),r=window.__plan3d.rooms[8];
-        r.group.updateMatrixWorld(true);const screen=new T.Box3().setFromObject(r.tv.mesh);
-        return r.win.wall==='west'&&r.shades.rideau.meshes.every(m=>!new T.Box3().setFromObject(m).intersectsBox(screen));
-      }));
-    }
+    check('All basement rooms have no window',await p.evaluate(()=>Object.values(__plan3d.rooms).filter(r=>r.cfg.niveau<0).every(r=>!r.win)));
+    await shot('cinema-no-window');
     // The command itself may change the target, never the camera position.
     for(const id of [3,9,4,8]){
       const diff=await p.evaluate(id=>{const a=window.__plan3d,b=a.navigation().camera;document.querySelector('iframe').contentWindow.changeRoomIphone(String(id));return Math.hypot(...a.navigation().camera.map((v,i)=>v-b[i]));},id);
@@ -93,8 +86,8 @@ fs.mkdirSync(out,{recursive:true});
     for(const view of ['room','closed','open']){
       if(view==='closed'){await p.evaluate(()=>{window.__plan3d.overview();window.__plan3d.jump();});}
       if(view==='open'){await p.mouse.click(bg.x,bg.y);await waitPhase('overview-open');}
-      await p.waitForTimeout(1500);const start=await p.evaluate(()=>({frame:window.__plan3d.renderer.info.render.frame,t:performance.now()}));await p.waitForTimeout(4000);
-      report.performance.push({view,...await p.evaluate(start=>({fps:(window.__plan3d.renderer.info.render.frame-start.frame)/2/((performance.now()-start.t)/1000),...window.__plan3d.metrics()}),start)});
+      await p.waitForTimeout(1500);const start=await p.evaluate(()=>({frame:window.__plan3d.metrics().renderedFrames,t:performance.now()}));await p.waitForTimeout(4000);
+      report.performance.push({view,...await p.evaluate(start=>({fps:(window.__plan3d.metrics().renderedFrames-start.frame)/((performance.now()-start.t)/1000),...window.__plan3d.metrics()}),start)});
     }
     check('No uncaught browser errors',errors.length===0);report.status='passed';
   }catch(e){report.status='failed';report.failure=e.stack;await shot('failure');throw e;}

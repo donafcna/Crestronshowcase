@@ -22,7 +22,7 @@ const route = '/interfaces/residentiel/villa-gemini-frequencetv';
   const shot = async name => { await pause(); await page.screenshot({path:path.join(out,name+'.png')}); report.screenshots.push(name+'.png'); };
   try {
     await page.goto(base+route+'/phone');
-    await page.waitForFunction(() => window.__plan3d?.version === '2026-09-16-estate-4');
+    await page.waitForFunction(() => window.__plan3d?.version === '2026-09-17-rooms-1');
     await pause(); await page.waitForTimeout(1700);
     const gui=page.frameLocator('iframe');
     await gui.locator('#room-select').selectOption('1');
@@ -76,7 +76,7 @@ const route = '/interfaces/residentiel/villa-gemini-frequencetv';
     await page.evaluate(()=>window.__plan3d.remote('ok'));check('Apple remote opens selected app',await page.evaluate(()=>window.__plan3d.rooms[1].tv.screen.st.open===1));
     await page.evaluate(()=>{const a=window.__plan3d;a.remote('menu');a.setSetpoint(1,23.5);});
     check('Live thermostat updates',await page.evaluate(()=>window.__plan3d.rooms[1].hvac.thermo.st.setpoint===23.5));
-    for(const id of [2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]){
+    for(const id of [2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17]){
       await pause();await gui.locator('#room-select').selectOption(String(id));await page.waitForTimeout(250);await settle();
       check('GUI selects 3D room '+id,await page.evaluate(id=>window.__plan3d.activeRoom()===id,id));
       await gui.locator('#scene-btn-54').click();

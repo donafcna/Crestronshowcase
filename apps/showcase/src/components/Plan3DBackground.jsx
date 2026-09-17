@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { BackgroundVideo } from "./BackgroundVideo";
 
 // A deployment changes the module URL, including its dependent assets.
-const PLAN3D_VERSION = "2026-09-16-estate-4";
+const PLAN3D_VERSION = "2026-09-17-rooms-1";
 
 // Fond de page 3D (Three.js) à la place de la vidéo, pour les projets qui ont un plan 3D
 // (public/plan3d/<id>.json). Le GUI tourne dans son iframe et n'est pas modifié : le module

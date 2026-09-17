@@ -40,7 +40,7 @@
       "z": 0,
       "w": 9,
       "d": 6,
-      "windowWall": "west"
+      "windowWall": "none"
     },
     {
       "id": 14,
@@ -80,7 +80,7 @@
       "z": 0,
       "w": 9.3,
       "d": 6,
-      "windowWall": "north"
+      "windowWall": "none"
     },
     {
       "id": 4,
@@ -146,9 +146,9 @@
       "id": 15,
       "type": "garage",
       "niveau": -1,
-      "x": 9.3,
+      "x": 12.6,
       "z": 6.4,
-      "w": 9.3,
+      "w": 6,
       "d": 5,
       "windowWall": "none"
     },
@@ -160,7 +160,18 @@
       "z": 6.4,
       "w": 9,
       "d": 5,
-      "windowWall": "west"
+      "windowWall": "none"
+    },
+    {
+      "id": 17,
+      "type": "technique",
+      "niveau": -1,
+      "x": 9.3,
+      "z": 6.4,
+      "w": 3,
+      "d": 5,
+      "windowWall": "none",
+      "av": false
     }
   ]
 }

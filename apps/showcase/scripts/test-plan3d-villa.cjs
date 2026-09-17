@@ -6,17 +6,17 @@ const base=process.env.BASE_URL||'http://127.0.0.1:4200',out=process.env.TEST_OU
  const shot=async name=>{await p.screenshot({path:path.join(out,name+'.png')});report.captures.push(name);};
  const keep=setInterval(()=>p.locator('.device-stage').click({position:{x:5,y:5},timeout:1000}).catch(()=>{}),4000);
  try{
-  await p.goto(base+'/interfaces/residentiel/villa-gemini-frequencetv/phone');await p.waitForFunction(()=>window.__plan3d?.version==='2026-09-16-estate-4');await p.waitForFunction(()=>window.__plan3d.navigation().phase==='room');await p.evaluate(()=>window.__plan3d.setDay(1));
+  await p.goto(base+'/interfaces/residentiel/villa-gemini-frequencetv/phone');await p.waitForFunction(()=>window.__plan3d?.version==='2026-09-17-rooms-1');await p.waitForFunction(()=>window.__plan3d.navigation().phase==='room');await p.evaluate(()=>window.__plan3d.setDay(1));
   const f=p.frames().find(f=>f.url().includes('/showcases/'));const room=async id=>{await f.locator('#room-select').selectOption(String(id));await p.waitForFunction(id=>window.__plan3d.activeRoom()===id,id);await p.evaluate(()=>window.__plan3d.jump());await p.waitForTimeout(300);};
-  check('Sixteen rooms selectable',await f.locator('#room-select option').count()===16);
-  check('Basement includes cinema, sauna, garage and golf',await p.evaluate(()=>[8,13,15,16].every(id=>window.__plan3d.rooms[id].cfg.niveau===-1)));
+  check('Seventeen rooms selectable',await f.locator('#room-select option').count()===17);
+  check('Basement includes cinema, sauna, garage, golf and technical room',await p.evaluate(()=>[8,13,15,16,17].every(id=>window.__plan3d.rooms[id].cfg.niveau===-1)));
   check('Large ground-floor living and dining rooms',await p.evaluate(()=>[1,3].every(id=>{const p=window.__plan3d.rooms[id].cfg;return p.niveau===0&&p.w*p.d>=60;})));
   const conflicts=await p.evaluate(()=>{const rooms=Object.values(window.__plan3d.rooms);return rooms.filter(r=>r.win).filter(r=>rooms.some(n=>n!==r&&n.cfg.niveau===r.cfg.niveau&&(r.win.wall==='west'?Math.abs(n.cfg.x+n.cfg.w-r.cfg.x)<.4&&n.cfg.z<r.cfg.z+r.cfg.d&&n.cfg.z+n.cfg.d>r.cfg.z:Math.abs(n.cfg.z+n.cfg.d-r.cfg.z)<.4&&n.cfg.x<r.cfg.x+r.cfg.w&&n.cfg.x+n.cfg.w>r.cfg.x))).map(r=>r.id);});check('No window opens into adjacent room',conflicts.length===0);
   check('Bureau window on west facade',await p.evaluate(()=>window.__plan3d.rooms[7].win.wall==='west'));
   for(const id of [7,13,8,16,15,1,2,3,14]){await room(id);await f.evaluate(()=>window.Villa.press('54'));await p.waitForTimeout(3200);await shot('room-'+id);}
   await room(8);await f.evaluate(()=>{window.Villa.press('151');window.Villa.setAnalog('52',8000);});await p.waitForTimeout(450);
-  check('Video source activates all cinema channels',await p.evaluate(()=>window.__plan3d.rooms[8].speakers.length===11&&window.__plan3d.rooms[8].speakers.every(s=>s.ring.visible)));
-  check('Cinema has surround, rear and ceiling channels',await p.evaluate(()=>['front','center','surround','rear','ceiling'].every(k=>window.__plan3d.rooms[8].speakers.some(s=>s.kind===k))));
+  check('Video source activates all cinema channels',await p.evaluate(()=>window.__plan3d.rooms[8].speakers.length===7&&window.__plan3d.rooms[8].speakers.every(s=>s.ring.visible)));
+  check('Cinema has surround and rear channels without ceiling speakers',await p.evaluate(()=>['front','center','surround','rear'].every(k=>window.__plan3d.rooms[8].speakers.some(s=>s.kind===k))&&!window.__plan3d.rooms[8].speakers.some(s=>s.kind==='ceiling')));
   const low=await p.evaluate(()=>window.__plan3d.rooms[8].speakers[0].ring.scale.x);await f.evaluate(()=>window.Villa.setAnalog('52',60000));await p.waitForTimeout(250);check('Volume increases animation diameter',await p.evaluate(()=>window.__plan3d.rooms[8].speakers[0].ring.scale.x)>low);
   await f.evaluate(()=>window.Villa.press('55'));await p.waitForTimeout(250);check('Mute stops every channel',await p.evaluate(()=>window.__plan3d.rooms[8].speakers.every(s=>!s.ring.visible)));await f.evaluate(()=>window.Villa.press('55'));
   await f.evaluate(()=>window.Villa.press('150'));await p.waitForTimeout(250);check('AV OFF stops every channel',await p.evaluate(()=>window.__plan3d.rooms[8].speakers.every(s=>!s.ring.visible)));
@@ -28,7 +28,7 @@ const base=process.env.BASE_URL||'http://127.0.0.1:4200',out=process.env.TEST_OU
   check('Awnings in every indoor ground-floor room',await p.evaluate(()=>Object.values(window.__plan3d.rooms).filter(r=>r.cfg.niveau===0&&!r.ext).every(r=>r.shades.banne)));
   await p.evaluate(()=>{window.__plan3d.overview();window.__plan3d.jump();});await p.waitForTimeout(700);await shot('villa-day');await p.evaluate(()=>window.__plan3d.setDay(0));await p.waitForTimeout(1400);await shot('villa-night');
   await p.evaluate(()=>{const z=window.__plan3d.metrics().zone;window.__plan3d.click(z.x+z.w/2,z.y+z.h/2);window.__plan3d.jump();});await p.waitForTimeout(700);await shot('villa-open-night');await p.evaluate(()=>window.__plan3d.setDay(1));await p.waitForTimeout(500);await shot('villa-open-day');
-  check('Basement exposed above ground in exploded view',await p.evaluate(()=>[8,13,15,16].every(id=>window.__plan3d.rooms[id].y0===0)));
+  check('Basement exposed above ground in exploded view',await p.evaluate(()=>[8,13,15,16,17].every(id=>window.__plan3d.rooms[id].y0===0)));
   await p.evaluate(()=>window.__plan3d.setDay(null));const phases=[];for(let i=0;i<81;i++){phases.push(await p.evaluate(()=>window.__plan3d.environment()));await p.waitForTimeout(1000);}check('Eighty-second day/night loop',phases.some(v=>v.day===0)&&phases.some(v=>v.day===1)&&phases.some(v=>v.day>0&&v.day<1));report.cycle=phases;
   check('No JavaScript errors',errors.length===0);report.status='passed';
  }finally{clearInterval(keep);report.errors=errors;fs.writeFileSync(path.join(out,'results.json'),JSON.stringify(report,null,2));await b.close();}

@@ -1,5 +1,10 @@
 # VillaCrans_Slot2.smw — programme SIMPL du slot 2
 
+## Extension wellness v4 — 17/09/2026
+
+Sauna/hammam : d620–627 ; a/s62–65. Cibles et mesures indépendantes du HVAC, sorties de pièce a+34..37 et s+44..47 (s+34 HVAC préservé). Détails : `projects/villa-crans/ch5/docs/WELLNESS-2026-09-17.md`. Générer une copie SMW puis compiler le LPZ avant recette Debugger. Aucun déploiement matériel réalisé.
+
+
 ## Extension HVAC v4 du 16/09/2026
 
 ON/OFF : d610/611 ; ventilation Auto/1/2/3 : d612–615 et a61 (0..3). Retours par pièce : digitaux +93..98, analogique +33 ; la température mesurée reste +32. Aucun bloc GUI v3 réactivé. Détails, sens des signaux et recette Debugger : `projects/villa-crans/ch5/docs/HVAC-2026-09-16.md` depuis la racine du dépôt.

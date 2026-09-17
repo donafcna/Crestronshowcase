@@ -2,6 +2,8 @@ import * as T from './vendor/three.module.min.js';
 
 // Continuous coloured terrain: snow is part of the same surface as the rock.
 // No overlapping caps, alpha dithering or moving noise; all randomness is seeded.
+import { buildNeighborhood } from './neighborhood.js?v=2026-09-17-rooms-1';
+
 export function buildLandscape(scene, bounds, kit) {
   const c=bounds.getCenter(new T.Vector3());
   const rand=kit.random,A=kit.materials;
@@ -58,6 +60,24 @@ export function buildLandscape(scene, bounds, kit) {
     }
   }
   const foliageTex=new T.CanvasTexture(foliage);foliageTex.colorSpace=T.SRGBColorSpace;foliageTex.anisotropy=4;
+  // Sample the actual triangulated terrain, not the analytic curve: paths must
+  // follow the rendered surface even where the mesh approximates a steep slope.
+  function surfaceHeight(x,z){
+    const gx=T.MathUtils.clamp((x-c.x+215)/430*200,0,199.999),gz=T.MathUtils.clamp((z-c.z+125)/250*110,0,109.999);
+    const ix=Math.floor(gx),iz=Math.floor(gz),u=gx-ix,v=gz-iz,a=iz*201+ix;
+    const h00=p.getY(a),h10=p.getY(a+1),h01=p.getY(a+201),h11=p.getY(a+202);
+    return (u+v<=1?h00+(h10-h00)*u+(h01-h00)*v:h11+(h01-h11)*(1-u)+(h10-h11)*(1-v))-.02;
+  }
+  const neighborhood=buildNeighborhood(scene,surfaceHeight,kit);
+  // Meadows are colours in the same surface, never overlapping polygons.
+  for(let i=0;i<p.count;i++){
+    const x=p.getX(i)+c.x,z=p.getZ(i)+c.z;
+    for(const f of neighborhood.fields){
+      const edge=Math.min(f.w/2-Math.abs(x-f.x),f.d/2-Math.abs(z-f.z));
+      if(edge>0&&p.getY(i)<7){color.fromArray(colors,i*3).lerp(f.color,.55*T.MathUtils.smoothstep(edge,0,2));color.toArray(colors,i*3);}
+    }
+  }
+  terrain.attributes.color.needsUpdate=true;
   const positions=[],uvs=[];
   for(let j=0;j<3;j++){const a=j*Math.PI/3,x=Math.cos(a)*1.3,z=Math.sin(a)*1.3;positions.push(-x,-1.9,-z,x,-1.9,z,x,1.9,z,-x,-1.9,-z,x,1.9,z,-x,1.9,-z);uvs.push(0,0,1,0,1,1,0,0,1,1,0,1);}
   const crown=new T.BufferGeometry();crown.setAttribute('position',new T.Float32BufferAttribute(positions,3));crown.setAttribute('uv',new T.Float32BufferAttribute(uvs,2));
@@ -70,7 +90,7 @@ export function buildLandscape(scene, bounds, kit) {
     const zz=z>5&&x>0?-z-20:z;
     // Keep trees below the snow line; no conifers growing on bare summits.
     const treeZ=hills(x,zz)>10?-18-rand()*9:zz;
-    const base=hills(x,treeZ),height=.65+rand()*.8;
+    const base=hills(x,treeZ),height=neighborhood.reserved(c.x+x,c.z+treeZ)?0:.65+rand()*.8;
     dummy.position.set(c.x+x,base+height*2,c.z+treeZ);dummy.scale.set(height,height,height);dummy.rotation.y=rand()*6.28;dummy.updateMatrix();trees.setMatrixAt(i,dummy.matrix);
     tint.setHex(i%3?0xf0eee2:0xc9d5bf);trees.setColorAt(i,tint);
     dummy.position.y=base+.45*height;dummy.updateMatrix();trunks.setMatrixAt(i,dummy.matrix);

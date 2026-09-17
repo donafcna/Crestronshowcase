@@ -19,10 +19,17 @@ export function enrichRoom(R, M) {
       box(features,mat,w/2,h+.06,.27,w-.52,.025,.045);
     }else if(circuit===3){
       // Sconces sit clear of both the window aperture and the television.
-      for(const z of [.45,d-.48]){
+      const positions=type==='repas'?[.5,d-.5]:[.45,d-.48];
+      for(const z of positions){
         box(features,M.alu,.24,1.92,z,.18,.4,.19);
         fixture=box(features,mat,.25,2.13,z,.16,.022,.16);
         box(features,mat,.25,1.71,z,.16,.022,.16);
+      }
+      if(type==='repas')for(let i=0;i<8;i++){
+        const x=1.1+i*(w-2.2)/7;
+        box(features,M.alu,x,2.28,.22,.17,.42,.16);
+        box(features,mat,x,2.5,.23,.15,.025,.13);
+        box(features,mat,x,2.06,.23,.15,.025,.13);
       }
     }else{
       fixture=box(features,mat,w/2,.13,d-.18,w-.6,.026,.028);
@@ -33,30 +40,45 @@ export function enrichRoom(R, M) {
     R.lamps.push({mesh:fixture,mat,circuit,pos:new T.Vector3(w/2,circuit===2?2.7:1.4,d/2)});
   }
   // Additional channels share exactly the same per-room playback and volume state.
-  function speaker(kind,x,y,z,rotation=0,ceiling=false){
-    const s=new T.Group();s.position.set(x,y,z);s.rotation.y=rotation;if(ceiling)s.rotation.x=-Math.PI/2;g.add(s);
-    const body=box(s,M.noir,0,0,0,ceiling?.32:.24,ceiling?.32:.4,.12);
-    const cone=cyl(s,M.metal,0,0,.072,.083,.016);cone.rotation.x=Math.PI/2;
-    const ring=new T.Mesh(new T.RingGeometry(.1,.15,28),new T.MeshBasicMaterial({color:0x10b981,transparent:true,opacity:0,depthWrite:false,side:T.DoubleSide}));ring.position.z=.087;s.add(ring);
+  function speaker(kind,x,y,z,rotation=0,model='compact'){
+    const s=new T.Group();s.name=kind+' loudspeaker';s.position.set(x,y,z);s.rotation.y=rotation;g.add(s);
+    const tower=model==='tower',sub=model==='sub',center=kind==='center';
+    const width=sub?.5:center?.7:tower?.26:.22,height=sub?.5:center?.13:tower?.9:.34,depth=sub?.46:tower?.28:.15;
+    const body=box(s,M.noir,0,0,0,width,height,depth);
+    const cone=cyl(s,M.metal,0,tower?.14:0,depth/2+.01,sub?.16:center?.048:.08,.012);cone.rotation.x=Math.PI/2;
+    if(tower){const bass=cyl(s,M.metal,0,-.17,depth/2+.01,.085,.012);bass.rotation.x=Math.PI/2;}
+    const radius=sub?.165:center?.053:.086;
+    const ring=new T.Mesh(new T.RingGeometry(radius,radius+.007,32),new T.MeshBasicMaterial({color:0xd1dedc,transparent:true,opacity:0,depthWrite:false,side:T.DoubleSide}));ring.position.set(0,tower?.14:0,depth/2+.023);s.add(ring);
     body.userData.animated=true;ring.userData.animated=true;
-    R.speakers.push({body,ring,phase:R.speakers.length*.7,kind});
+    R.speakers.push({body,ring,group:s,phase:R.speakers.length*.7,kind,model});
   }
-  R.speakers.forEach(s=>{s.kind='front';});
   if(type==='cinema'){
-    speaker('center',w/2,.67,.25);
+    speaker('center',w/2,.115,.42);
     for(const side of [-1,1]){
+      speaker('front',side<0?1.4:w-1.4,.45,.45,0,'tower');
+      // Behind the west window (aperture z≈2–4), never over the glazing.
       const x=side<0?.25:w-.25;
-      speaker('surround',x,1.9,d*.62,side<0?Math.PI/2:-Math.PI/2);
+      box(features,M.alu,x,.86,d-.5,.045,1.72,.045);
+      speaker('surround',x,1.9,d-.5,side<0?Math.PI/2:-Math.PI/2);
       // Low rear pedestals preserve the cutaway view without inventing floating speakers.
       box(features,M.alu,w/2+side*1.5,.68,d-.35,.045,1.36,.045);
       speaker('rear',w/2+side*1.5,1.45,d-.35,Math.PI);
-      for(const z of [d*.36,d*.72]){
-        box(features,M.alu,w/2+side*1.55,2.98,z,.46,.06,.46);
-        speaker('ceiling',w/2+side*1.55,2.94,z,0,true);
-      }
     }
-  }else{
-    speaker(R.ext?'outdoor':'ceiling',w*.7,R.ext?1.65:2.94,d*.65,0,!R.ext);
+  }else if(type==='salon'){
+    for(const side of [-1,1]){
+      speaker('front',w*.55+side*1.4,.45,.46,0,'tower');
+      const x=w*.55+side*1.85;box(features,M.alu,x,.49,d-.55,.045,.98,.045);
+      speaker('rear',x,1.12,d-.55,Math.PI);
+    }
+    speaker('subwoofer',w*.55-2.15,.25,.5,0,'sub');
+  }else if(type==='repas'){
+    speaker('front',.6,.45,.5,0,'tower');speaker('front',w-.6,.45,.5,0,'tower');
+  }else if(type==='chambre'||type==='suite'){
+    speaker('corner',.45,.45,.5,0,'tower');speaker('corner',w-.45,.45,.5,0,'tower');
+  }else if(type==='bureau'){
+    speaker('corner',.45,.45,.5,0,'tower');
+  }else if(R.ext||type==='poolhouse'){
+    speaker('outdoor',w-.4,1.6,.45);
   }
   if(R.win && niveau<0){
     // Cour anglaise: daylight has an explicit open-to-sky path to the basement.
@@ -79,18 +101,7 @@ export function enrichRoom(R, M) {
     R.shades.banne={mesh:cloth,axis:'z',min:.02,pos:0,cible:0,update(o,sc){bar.position.z=z+reach*sc;arms.forEach(a=>a.scale.z=sc);}};
     R.shades.banne.update(R.shades.banne,.02);
   }
-  if(type==='garage'){
-    for(const x of [w*.28,w*.7]){
-      const car=new T.Group();car.name='Electric grand tourer';car.position.set(x,0,d*.5);g.add(car);
-      box(car,M.metal,0,.5,0,1.8,.5,3.7);box(car,M.noir,0,.95,-.15,1.5,.5,1.8);
-      box(car,M.verreExt,0,1.05,.79,1.42,.35,.03);
-      for(const sx of [-.92,.92])for(const sz of [-1.1,1.1]){const wheel=cyl(car,M.noir,sx,.33,sz,.32,.18);wheel.rotation.z=Math.PI/2;}
-      for(const sx of [-.62,.62])box(car,M.blanc,sx,.56,1.87,.4,.1,.035);
-    }
-    box(features,M.noir,w-.2,1.25,.8,.16,.45,.3);box(features,M.plante,w-.1,1.27,.8,.01,.14,.17);
-    box(features,M.alu,w/2,1.1,.3,3,2.2,.35);
-    for(let i=0;i<4;i++)box(features,M.noir,w/2-1.1+i*.73,1.1,.49,.018,2,.012);
-  }
+
   if(type==='golf'){
     box(features,M.tissuFonce,w/2,1.5,.24,w-1,2.85,.2);
     box(features,M.gazon,w/2,.055,d*.55,w-1,.06,d-1);
@@ -104,5 +115,24 @@ export function enrichRoom(R, M) {
     box(features,M.noir,w/2,2.83,d*.63,.42,.19,.33);cyl(features,M.blanc,w/2,.1,d*.65,.025,.03);
     box(features,M.noir,w-.65,.2,d*.7,.15,.4,.25);
     for(let i=0;i<3;i++){const club=cyl(features,M.metal,.65+i*.12,.7,d-.65,.018,1.2);club.rotation.z=.13;}
+  }
+  if(type==='technique'){
+    // Two full-height AV/network racks and an electrical distribution cabinet.
+    for(const x of [.65,1.45]){
+      box(features,M.noir,x,1.12,.55,.65,2.2,.7);
+      for(let u=0;u<11;u++){
+        box(features,M.alu,x,.2+u*.175,.915,.55,.13,.02);
+        for(let port=0;port<6;port++)box(features,M.noir,x-.22+port*.085,.21+u*.175,.93,.035,.035,.012);
+        box(features,M.plante,x+.23,.21+u*.175,.945,.016,.015,.014);
+      }
+    }
+    box(features,M.blanc,w-.53,1.36,.32,.74,1.1,.3);
+    for(let i=0;i<4;i++)for(let j=0;j<5;j++)box(features,M.noir,w-.79+j*.13,1.01+i*.21,.485,.06,.11,.02);
+    for(const x of [.65,1.45])box(features,M.alu,x,2.5,.55,.09,.6,.09);
+    box(features,M.alu,w/2,2.79,.55,w-.4,.08,.3);
+    box(features,M.bois,w/2,.77,d-1,w-.5,.08,.65);
+    for(const x of [.35,w-.35])box(features,M.alu,x,.37,d-1,.06,.74,.55);
+    box(features,M.noir,w/2,1.02,d-1.1,.58,.38,.045);
+    box(features,M.noir,w/2,.83,d-.87,.42,.02,.14);
   }
 }

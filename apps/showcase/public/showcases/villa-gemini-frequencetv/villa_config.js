@@ -2,12 +2,12 @@ window.villaConfigEmbedded = {
   "meta": {
     "projet": "Villa Crans",
     "integrateur": "Fréquence TV",
-    "version": "1.0.179-showcase",
+    "version": "1.0.180-showcase",
     "mode": "showcase",
     "modeDescription": "'deploiement' = GUI livré chez le client : les feedbacks viennent du CP4 (C# slot 1 + SIMPL slot 2) via js/webxpanel.js / CrComLib, aucune simulation. 'showcase' = copie pour le site crestrongui.vercel.app : posé UNIQUEMENT par scripts/sync-villa-crans.py du dépôt Crestronshowcase, feedbacks simulés dans le navigateur (js/local-feedback.js), curseur de démo géré par le site (jamais par le GUI). Ne jamais mettre 'showcase' ici. Voir docs/08_WORKFLOW_SHOWCASE.md.",
     "tracesConsole": false,
     "tracesConsoleDescription": "false = le programme du slot 1 n'affiche en console que ses messages de diagnostic (démarrage, configuration, EISC, arrivée d'un périphérique, erreurs) et la GUI ne recopie plus ses console.log sur le sériel 100. Passer à true pour retrouver la trace complète des actions utilisateur pendant une mise au point ; un progreset suffit, aucune recompilation.",
-    "dateModification": "2026-09-11",
+    "dateModification": "2026-09-17",
     "langueReference": "fr",
     "languesDisponibles": [
       "fr",
@@ -231,6 +231,11 @@ window.villaConfigEmbedded = {
           "etatInitial": {
             "marche": true,
             "ventilation": 0
+          },
+          "consigne": {
+            "min": 16,
+            "max": 28,
+            "pas": 0.5
           }
         },
         "controlesGeneraux": {
@@ -323,6 +328,11 @@ window.villaConfigEmbedded = {
           "etatInitial": {
             "marche": true,
             "ventilation": 0
+          },
+          "consigne": {
+            "min": 16,
+            "max": 28,
+            "pas": 0.5
           }
         },
         "controlesGeneraux": {
@@ -415,6 +425,11 @@ window.villaConfigEmbedded = {
           "etatInitial": {
             "marche": true,
             "ventilation": 0
+          },
+          "consigne": {
+            "min": 16,
+            "max": 28,
+            "pas": 0.5
           }
         },
         "controlesGeneraux": {
@@ -507,6 +522,11 @@ window.villaConfigEmbedded = {
           "etatInitial": {
             "marche": true,
             "ventilation": 0
+          },
+          "consigne": {
+            "min": 16,
+            "max": 28,
+            "pas": 0.5
           }
         },
         "controlesGeneraux": {
@@ -599,6 +619,11 @@ window.villaConfigEmbedded = {
           "etatInitial": {
             "marche": true,
             "ventilation": 0
+          },
+          "consigne": {
+            "min": 16,
+            "max": 28,
+            "pas": 0.5
           }
         },
         "controlesGeneraux": {
@@ -691,6 +716,11 @@ window.villaConfigEmbedded = {
           "etatInitial": {
             "marche": true,
             "ventilation": 0
+          },
+          "consigne": {
+            "min": 16,
+            "max": 28,
+            "pas": 0.5
           }
         },
         "controlesGeneraux": {
@@ -783,6 +813,11 @@ window.villaConfigEmbedded = {
           "etatInitial": {
             "marche": true,
             "ventilation": 0
+          },
+          "consigne": {
+            "min": 16,
+            "max": 28,
+            "pas": 0.5
           }
         },
         "controlesGeneraux": {
@@ -875,6 +910,11 @@ window.villaConfigEmbedded = {
           "etatInitial": {
             "marche": true,
             "ventilation": 0
+          },
+          "consigne": {
+            "min": 16,
+            "max": 28,
+            "pas": 0.5
           }
         },
         "controlesGeneraux": {
@@ -967,6 +1007,11 @@ window.villaConfigEmbedded = {
           "etatInitial": {
             "marche": true,
             "ventilation": 0
+          },
+          "consigne": {
+            "min": 16,
+            "max": 28,
+            "pas": 0.5
           }
         },
         "controlesGeneraux": {
@@ -1059,6 +1104,11 @@ window.villaConfigEmbedded = {
           "etatInitial": {
             "marche": true,
             "ventilation": 0
+          },
+          "consigne": {
+            "min": 16,
+            "max": 28,
+            "pas": 0.5
           }
         },
         "controlesGeneraux": {
@@ -1151,6 +1201,11 @@ window.villaConfigEmbedded = {
           "etatInitial": {
             "marche": true,
             "ventilation": 0
+          },
+          "consigne": {
+            "min": 16,
+            "max": 28,
+            "pas": 0.5
           }
         },
         "controlesGeneraux": {
@@ -1243,6 +1298,11 @@ window.villaConfigEmbedded = {
           "etatInitial": {
             "marche": true,
             "ventilation": 0
+          },
+          "consigne": {
+            "min": 16,
+            "max": 28,
+            "pas": 0.5
           }
         },
         "controlesGeneraux": {
@@ -1335,6 +1395,11 @@ window.villaConfigEmbedded = {
           "etatInitial": {
             "marche": true,
             "ventilation": 0
+          },
+          "consigne": {
+            "min": 16,
+            "max": 28,
+            "pas": 0.5
           }
         },
         "controlesGeneraux": {
@@ -1350,6 +1415,22 @@ window.villaConfigEmbedded = {
             4,
             5
           ]
+        },
+        "wellness": {
+          "sauna": {
+            "actif": true,
+            "min": 60,
+            "max": 100,
+            "pas": 1,
+            "consigne": 80
+          },
+          "hammam": {
+            "actif": true,
+            "min": 90,
+            "max": 100,
+            "pas": 1,
+            "consigne": 95
+          }
         }
       },
       "actif": true
@@ -1427,6 +1508,11 @@ window.villaConfigEmbedded = {
           "etatInitial": {
             "marche": true,
             "ventilation": 0
+          },
+          "consigne": {
+            "min": 16,
+            "max": 28,
+            "pas": 0.5
           }
         },
         "controlesGeneraux": {
@@ -1519,6 +1605,11 @@ window.villaConfigEmbedded = {
           "etatInitial": {
             "marche": true,
             "ventilation": 0
+          },
+          "consigne": {
+            "min": 16,
+            "max": 28,
+            "pas": 0.5
           }
         },
         "controlesGeneraux": {
@@ -1611,6 +1702,108 @@ window.villaConfigEmbedded = {
           "etatInitial": {
             "marche": true,
             "ventilation": 0
+          },
+          "consigne": {
+            "min": 16,
+            "max": 28,
+            "pas": 0.5
+          }
+        },
+        "controlesGeneraux": {
+          "actif": true,
+          "partitionsAlarme": 4
+        },
+        "audioVideo": {
+          "actif": true,
+          "sources": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      },
+      "actif": true
+    },
+    {
+      "id": 17,
+      "nom": "Local technique",
+      "icone": "",
+      "intersystem": true,
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "scenes": {
+            "nombre": 4,
+            "noms": [
+              "OFF",
+              "CINÉMA",
+              "REPAS",
+              "TOTAL"
+            ]
+          },
+          "circuits": {
+            "nombre": 5,
+            "noms": [
+              "Spots & suspensions",
+              "Lampes d’ambiance",
+              "Corniches",
+              "Appliques murales",
+              "Bandeaux LED"
+            ]
+          }
+        },
+        "moteurs": {
+          "actif": true,
+          "nombre": 6,
+          "liste": [
+            {
+              "nom": "Volet ext. 1",
+              "type": "volet"
+            },
+            {
+              "nom": "Volet ext. 2",
+              "type": "volet"
+            },
+            {
+              "nom": "Rideau ext. 1",
+              "type": "rideau"
+            },
+            {
+              "nom": "Rideau ext. 2",
+              "type": "rideau"
+            },
+            {
+              "nom": "Store 1",
+              "type": "store"
+            },
+            {
+              "nom": "Store 2",
+              "type": "store"
+            }
+          ]
+        },
+        "cvc": {
+          "actif": true,
+          "marcheArret": true,
+          "ventilation": {
+            "actif": true,
+            "vitesses": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          "etatInitial": {
+            "marche": true,
+            "ventilation": 0
+          },
+          "consigne": {
+            "min": 16,
+            "max": 28,
+            "pas": 0.5
           }
         },
         "controlesGeneraux": {
@@ -2645,6 +2838,118 @@ window.villaConfigEmbedded = {
         "eiscJoin": 61,
         "direction": "bidirectionnel",
         "description": "Vitesse 0 Auto, 1 faible, 2 moyenne, 3 forte ; retour GUI de la piece affichee."
+      },
+      {
+        "contractName": "Wellness.Sauna.On",
+        "type": "digital",
+        "join": 620,
+        "eiscJoin": 620,
+        "direction": "bidirectionnel"
+      },
+      {
+        "contractName": "Wellness.Sauna.Off",
+        "type": "digital",
+        "join": 621,
+        "eiscJoin": 621,
+        "direction": "bidirectionnel"
+      },
+      {
+        "contractName": "Wellness.Sauna.Plus",
+        "type": "digital",
+        "join": 622,
+        "eiscJoin": 622,
+        "direction": "bidirectionnel"
+      },
+      {
+        "contractName": "Wellness.Sauna.Moins",
+        "type": "digital",
+        "join": 623,
+        "eiscJoin": 623,
+        "direction": "bidirectionnel"
+      },
+      {
+        "contractName": "Wellness.Hammam.On",
+        "type": "digital",
+        "join": 624,
+        "eiscJoin": 624,
+        "direction": "bidirectionnel"
+      },
+      {
+        "contractName": "Wellness.Hammam.Off",
+        "type": "digital",
+        "join": 625,
+        "eiscJoin": 625,
+        "direction": "bidirectionnel"
+      },
+      {
+        "contractName": "Wellness.Hammam.Plus",
+        "type": "digital",
+        "join": 626,
+        "eiscJoin": 626,
+        "direction": "bidirectionnel"
+      },
+      {
+        "contractName": "Wellness.Hammam.Moins",
+        "type": "digital",
+        "join": 627,
+        "eiscJoin": 627,
+        "direction": "bidirectionnel"
+      },
+      {
+        "contractName": "Wellness.Sauna.Consigne",
+        "type": "analog",
+        "join": 62,
+        "eiscJoin": 62,
+        "direction": "bidirectionnel"
+      },
+      {
+        "contractName": "Wellness.Hammam.Consigne",
+        "type": "analog",
+        "join": 63,
+        "eiscJoin": 63,
+        "direction": "bidirectionnel"
+      },
+      {
+        "contractName": "Wellness.Sauna.Mesure",
+        "type": "analog",
+        "join": 64,
+        "eiscJoin": 64,
+        "direction": "sortie"
+      },
+      {
+        "contractName": "Wellness.Hammam.Mesure",
+        "type": "analog",
+        "join": 65,
+        "eiscJoin": 65,
+        "direction": "sortie"
+      },
+      {
+        "contractName": "Wellness.Sauna.Consigne.Texte",
+        "type": "serial",
+        "join": 62,
+        "eiscJoin": 62,
+        "direction": "sortie"
+      },
+      {
+        "contractName": "Wellness.Hammam.Consigne.Texte",
+        "type": "serial",
+        "join": 63,
+        "eiscJoin": 63,
+        "direction": "sortie"
+      },
+      {
+        "contractName": "Wellness.Sauna.Mesure.Texte",
+        "type": "serial",
+        "join": 64,
+        "eiscJoin": 64,
+        "direction": "sortie"
+      },
+      {
+        "contractName": "Wellness.Hammam.Mesure.Texte",
+        "type": "serial",
+        "join": 65,
+        "eiscJoin": 65,
+        "direction": "sortie"
       }
     ],
     "blocsPieces": {
@@ -2835,6 +3140,28 @@ window.villaConfigEmbedded = {
           "offset": 33,
           "direction": "bidirectionnel",
           "description": "Vitesse 0 Auto, 1 faible, 2 moyenne, 3 forte. Ne pas confondre avec temperature mesuree +32."
+        },
+        {
+          "contractName": "Piece.<id>.Wellness.Commandes",
+          "type": "digital",
+          "offsetDebut": 11,
+          "nombre": 8,
+          "direction": "bidirectionnel"
+        },
+        {
+          "contractName": "Piece.<id>.Wellness.ConsignesMesures",
+          "type": "analog",
+          "offsetDebut": 34,
+          "nombre": 4,
+          "direction": "bidirectionnel"
+        },
+        {
+          "contractName": "Piece.<id>.Wellness.Texte",
+          "type": "serial",
+          "offsetDebut": 44,
+          "nombre": 4,
+          "direction": "sortie",
+          "description": "Consigne sauna, humidité cible hammam, température mesurée sauna, humidité mesurée hammam. -- tant que le driver ne fournit pas la mesure."
         }
       ]
     },
@@ -2952,7 +3279,15 @@ window.villaConfigEmbedded = {
           "612": 95,
           "613": 96,
           "614": 97,
-          "615": 98
+          "615": 98,
+          "620": 11,
+          "621": 12,
+          "622": 13,
+          "623": 14,
+          "624": 15,
+          "625": 16,
+          "626": 17,
+          "627": 18
         },
         "analog": {
           "31": 31,
@@ -2970,13 +3305,21 @@ window.villaConfigEmbedded = {
           "78": 78,
           "79": 79,
           "80": 80,
-          "61": 33
+          "61": 33,
+          "62": 34,
+          "63": 35,
+          "64": 36,
+          "65": 37
         },
         "serial": {
           "10": 10,
           "32": 32,
           "33": 33,
-          "34": 34
+          "34": 34,
+          "62": 44,
+          "63": 45,
+          "64": 46,
+          "65": 47
         }
       }
     },
@@ -3004,6 +3347,26 @@ window.villaConfigEmbedded = {
         "ventilationAnalogOffset": 33
       },
       "note": "Commandes GUI globales 610-615, routage par a10 avant impulsion. Retours materiels par bloc CVC de piece : d(base+93) niveau marche vrai/faux, a(base+33) vitesse 0..3. Aucun retour global ambigu du slot 2."
+    },
+    "wellness": {
+      "actif": true,
+      "sauna": {
+        "marche": 620,
+        "arret": 621,
+        "plus": 622,
+        "moins": 623,
+        "consigne": 62,
+        "mesure": 64
+      },
+      "hammam": {
+        "marche": 624,
+        "arret": 625,
+        "plus": 626,
+        "moins": 627,
+        "consigne": 63,
+        "mesure": 65
+      },
+      "note": "Commandes globales, piece a10 avant impulsion; retours EISC par piece d+11/+15, a+34..37. Etat OFF initial; aucune ventilation des cabines. Reglages definitifs selon le fabricant du generateur."
     }
   },
   "pagesSpeciales": {

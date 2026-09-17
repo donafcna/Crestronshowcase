@@ -101,6 +101,9 @@ dout(50, 'HVAC_Setpoint_Down');
 const HVAC = ['On', 'Off', 'Fan_Auto', 'Fan_Low', 'Fan_Medium', 'Fan_High'];
 HVAC.forEach((name, i) => dout(610 + i, 'HVAC_' + name + '_Cmd'));
 aout(61, 'HVAC_FanSpeed_Cmd#');
+const WELLNESS=['Sauna_On','Sauna_Off','Sauna_Up','Sauna_Down','Hammam_On','Hammam_Off','Hammam_Up','Hammam_Down'];
+WELLNESS.forEach((name,i)=>dout(620+i,name+'_Cmd'));
+aout(62,'Sauna_Setpoint_Cmd#');aout(63,'Hammam_Humidity_Cmd#');
 // Scènes 51-54 : déjà câblées dans la base (Lighting_Scene1..4 + fb)
 // Mute (55)
 din(55, 'Audio_Mute'); dout(55, 'Audio_Mute_fb');
@@ -227,11 +230,12 @@ for (let mo = 1; mo <= 6; mo++) {                                   // 81-98
 // L'analogique +21 (Lighting_Master) a été retiré du bloc pièce le 13.09.2026 : la GUI ne le
 // lisait pas et il ne portait aucune information que les niveaux de circuits ne donnent déjà.
 // Le signal GLOBAL 'Lighting_Master' (a21) reste en place : il sert au calibrage ci-dessus.
-const OFF_A = { 31: 'HVAC_Setpoint', 33: 'HVAC_FanSpeed', 51: 'Source_Active',
+WELLNESS.forEach((name,i)=>OFF_D[11+i]=name);
+const OFF_A = { 34:'Sauna_Setpoint',35:'Hammam_Humidity_Setpoint',36:'Sauna_Temperature',37:'Hammam_Humidity', 31: 'HVAC_Setpoint', 33: 'HVAC_FanSpeed', 51: 'Source_Active',
                 52: 'Audio_Volume', 53: 'Source_Audio', 54: 'Media_Volume' };
 for (let ci = 1; ci <= 10; ci++) OFF_A[70 + ci] = 'Circuit_' + ci;  // 71-80
 
-const OFF_S = { 10: 'Room_Name', 32: 'HVAC_Temperature', 33: 'HVAC_Mode', 34: 'HVAC_Setpoint_Text' };
+const OFF_S = { 44:'Sauna_Setpoint_Text',45:'Hammam_Setpoint_Text',46:'Sauna_Temperature_Text',47:'Hammam_Humidity_Text', 10: 'Room_Name', 32: 'HVAC_Temperature', 33: 'HVAC_Mode', 34: 'HVAC_Setpoint_Text' };
 
 // Controle du plan par rapport au mapping du contrat : aucun offset ne doit manquer.
 let villaCfg = null;
@@ -313,7 +317,16 @@ for (const p of piecesCvc) {
 }
 console.log('Bloc CVC par piece (v4) : ' + cvcWired + ' piece(s) x (consigne bidirectionnelle, temperature mesuree, 3 seriels).');
 
-if (CAP.dOut < 615 || CAP.aOut < 61 || skipped.length) throw new Error('Capacite EISC insuffisante : aucun fichier ecrit. ' + skipped.join('; '));
+for(const p of villaCfg.pieces.filter(p=>p.actif!==false&&p.intersystem!==false&&p.pilotages?.wellness?.sauna?.actif&&p.pilotages?.wellness?.hammam?.actif)) {
+ const b=roomBase(p.id),R='R'+String(p.id).padStart(2,'0')+'_';
+ if(b+37>CAP.aIn||b+37>CAP.aOut||b+47>CAP.sOut||b+16>CAP.dIn||b+16>CAP.dOut){skipped.push('Wellness hors capacite '+p.id);continue;}
+ for(const i of [0,1,4,5])dout(b+11+i,R+WELLNESS[i]+'_fb');
+ din(b+11,R+'Sauna_On_Actual');din(b+15,R+'Hammam_On_Actual');
+ for(const [i,name] of ['Sauna_Setpoint','Hammam_Humidity_Setpoint','Sauna_Temperature','Hammam_Humidity'].entries()){
+  aout(b+34+i,R+name+'_fb#');ain(b+34+i,R+name+'_Actual#');sout(b+44+i,R+name+'_fb$');
+ }
+}
+if (CAP.dOut < 627 || CAP.aOut < 63 || skipped.length) throw new Error('Capacite EISC insuffisante : aucun fichier ecrit. ' + skipped.join('; '));
 
 // --- 4. Réécriture du symbole EISC (H=21) ---
 const smRe = /\[\r?\nObjTp=Sm\r?\nH=21\r?\n[\s\S]*?\r?\n\]/;
@@ -339,10 +352,10 @@ const joinOfIn = i => (i <= N1I ? i : i - IN_A);
 const joinOfOut = i => (i <= N1O ? i : (i <= OUT_S ? i - OUT_A : i - OUT_S));
 let purgedRoom = 0;
 for (const k of Object.keys(curI).map(Number)) {
-  if (joinOfIn(k) >= ROOM_BASE) { delete curI[k]; purgedRoom++; }
+  if (joinOfIn(k) >= ROOM_BASE && inputs[k] !== undefined) { delete curI[k]; purgedRoom++; }
 }
 for (const k of Object.keys(curO).map(Number)) {
-  if (joinOfOut(k) >= ROOM_BASE) { delete curO[k]; purgedRoom++; }
+  if (joinOfOut(k) >= ROOM_BASE && outputs[k] !== undefined) { delete curO[k]; purgedRoom++; }
 }
 // Fusion (les entrées existantes sont prioritaires)
 for (const k of Object.keys(inputs)) if (curI[k] === undefined) curI[k] = inputs[k];

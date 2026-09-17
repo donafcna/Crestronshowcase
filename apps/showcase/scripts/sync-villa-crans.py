@@ -31,7 +31,7 @@ DEST = ROOT / "public" / "showcases" / "villa-gemini-frequencetv"
 
 ROOM_NAMES = ["Salon", "Cuisine", "Salle à manger", "Suite parentale", "Chambre 1", "Chambre 2",
               "Bureau", "Home Cinéma", "Chambre 3", "Suite invités", "Terrasse & Jardin",
-              "Piscine & Spa", "Sauna & Hammam", "Pool House", "Garage & Ateliers", "Simulateur de golf"]
+              "Piscine & Spa", "Sauna & Hammam", "Pool House", "Garage & Ateliers", "Simulateur de golf", "Local technique"]
 ROOM_ICONS = {"Salon": "🛋️", "Cuisine": "🍳", "Salle à manger": "🍽️", "Suite parentale": "🛏️",
               "Chambre 1": "🛏️", "Chambre 2": "🛏️", "Bureau": "💼", "Home Cinéma": "🎬",
               "Chambre 3": "🛏️", "Suite invités": "🚪", "Terrasse & Jardin": "🌿",
@@ -116,8 +116,9 @@ def clean_config(src: Path) -> dict:
         if k in c.get("pagesSpeciales", {}):
             c["pagesSpeciales"][k]["actif"] = False
     # Additional virtual room and controls belong to the showcase, not the physical house.
-    if not any(p['id'] == 16 for p in c['pieces']):
-        golf = copy.deepcopy(c['pieces'][0]); golf['id'] = 16; golf['icone'] = ''; c['pieces'].append(golf)
+    for extra_id in (16, 17):
+        if not any(p['id'] == extra_id for p in c['pieces']):
+            extra = copy.deepcopy(c['pieces'][0]); extra['id'] = extra_id; extra['icone'] = ''; c['pieces'].append(extra)
     for p in c["pieces"]:
         p['actif'] = True
         p["nom"] = ROOM_NAMES[p["id"] - 1] if p["id"] <= len(ROOM_NAMES) else p["nom"]
@@ -152,6 +153,8 @@ def main() -> None:
     shutil.copy(src / "themes" / "global-controls.css", DEST / "themes" / "global-controls.css")
     shutil.copy(src / "themes" / "room-controls.css", DEST / "themes" / "room-controls.css")
     shutil.copy(src / "js" / "room-controls.js", DEST / "js" / "room-controls.js")
+    shutil.copy(src / "js" / "wellness-controls.js", DEST / "js" / "wellness-controls.js")
+    shutil.copy(src / "themes" / "wellness-controls.css", DEST / "themes" / "wellness-controls.css")
     for name in ("version.js", "build_date.json"):
         if (src / name).exists():
             shutil.copy(src / name, DEST / name)

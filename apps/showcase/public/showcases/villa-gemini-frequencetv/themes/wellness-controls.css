@@ -1,0 +1,16 @@
+body#app-body [data-climate-panel][hidden],body#app-body [data-wellness-tab][hidden] { display:none!important; }
+body#app-body .climate-tabs { display:flex;align-items:center;gap:5px;margin:0 0 8px;flex:none; }
+body#app-body .climate-tabs button { min-width:44px;min-height:44px;padding:0 8px;background:transparent;color:var(--text-primary);border:0;border-bottom:3px solid transparent;font:inherit;font-size:.9rem;font-weight:700;cursor:pointer;border-radius:4px; }
+body#app-body .climate-tabs button[aria-selected="true"] { border-bottom-color:var(--text-primary); }
+body#app-body .wellness-panel { flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;min-height:0; }
+body#app-body .wellness-label,body#app-body .wellness-range { color:var(--text-primary);font-size:.9rem;text-align:center; }
+body#app-body .wellness-value { font-size:2.4rem;font-weight:700;color:var(--text-primary);text-align:center; }
+body#app-body .wellness-setpoint { display:flex;align-items:center;gap:14px;width:100%;justify-content:center; }
+body#app-body .wellness-setpoint ch5-button { width:56px;flex:none!important; }
+body#app-body .wellness-panel .hvac-controls { display:grid;margin:0; }
+body#app-body .wellness-panel .wellness-setpoint { display:flex; }
+body#app-body .wellness-panel .hvac-row { width:100%; }
+body#app-body #card-cvc .wellness-panel { gap:10px; }
+body#app-body #card-cvc .wellness-value { font-size:2rem; }
+
+body#app-body #panel-hvac .climate-hvac { display:flex;flex-direction:column;flex:1;min-height:0; }
