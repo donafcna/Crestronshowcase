@@ -1,4 +1,4 @@
-// Génère VillaCrans_Slot2.smw à partir de VillaCrans.smw (base créée dans SIMPL Windows).
+// Complète Project_Slot2.smw (candidat courant, 17.09.2026 ; l'historique VillaCrans_Slot2.smw a été supprimé).
 // - Corrige l'IP de l'EISC : 172.0.0.2 -> 127.0.0.2 (boucle inter-slots du CP4)
 // - Complète le symbole EISC (H=21) avec les signaux du contrat global villa_config.json
 // Mapping du symbole EISC "Packed" (dimensions 232/233, vérifié sur le câblage existant) :
@@ -12,9 +12,9 @@ const path = require('path');
 
 // Le fichier est modifié EN PLACE (la base VillaCrans.smw d'origine a été supprimée).
 // Une copie de sécurité horodatée est créée à chaque exécution.
-// IMPORTANT : fermer VillaCrans_Slot2.smw dans SIMPL Windows avant de lancer ce script.
+// IMPORTANT : fermer Project_Slot2.smw dans SIMPL Windows avant de lancer ce script.
 const arg = name => { const i = process.argv.indexOf(name); return i < 0 ? null : process.argv[i + 1]; };
-const BASE = path.resolve(arg('--input') || path.join(__dirname, '..', 'simpl-windows', 'VillaCrans_Slot2.smw'));
+const BASE = path.resolve(arg('--input') || path.join(__dirname, '..', 'simpl-windows', 'Project_Slot2.smw'));
 const OUT = path.resolve(arg('--output') || BASE);
 const CONFIG = path.resolve(arg('--config') || path.join(__dirname, '..', '..', 'ch5', 'villa_config.json'));
 const configRaw = fs.readFileSync(CONFIG, 'utf8');
@@ -390,7 +390,7 @@ raw = raw.replace(/\s*$/, EOL) + sgBlocks;
 if (fs.readFileSync(CONFIG, 'utf8') !== configRaw || fs.readFileSync(BASE, 'latin1') !== original) throw new Error('Sources modifiées pendant la génération : aucun fichier écrit');
 if (sameFile(OUT, BASE)) {
   const stamp = new Date().toISOString().replace(/[:.T]/g, '-').replace('Z', '');
-  fs.writeFileSync(path.join(path.dirname(BASE), 'VillaCrans_Slot2.backup-' + stamp + '.smw'), original, {encoding:'latin1',flag:'wx'});
+  fs.writeFileSync(path.join(path.dirname(BASE), path.basename(BASE, '.smw') + '.backup-' + stamp + '.smw'), original, {encoding:'latin1',flag:'wx'});
 }
 fs.writeFileSync(OUT, raw, {encoding:'latin1', flag: sameFile(OUT, BASE) ? 'w' : 'wx'});
 console.log('OK : ' + path.basename(OUT));

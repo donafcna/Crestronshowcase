@@ -1,0 +1,10 @@
+Dimensions EISC : 2732 digitaux / 2733 analog-série | offsets : analogIn=2733 analogOut=2732 serieOut=5464
+Blocs pieces desactives (contrat v4) : seuls les signaux globaux sont cables.
+Bloc CVC par piece (v4) : 12 piece(s) x (consigne bidirectionnelle, temperature mesuree, 3 seriels).
+OK : Project_Slot2.smw
+Signaux ajoutés : 143 (handles 2582..2724)
+Entrées EISC : 153 | Sorties EISC : 395 | anciens câblages de pièce remplacés : 72
+Capacités du symbole EISC : digital 2732 | analog 2732 | série 2552 joins
+Blocs pièces : 0 pièce(s) câblée(s) sur 0 exposée(s) au slot 2, 0 hors capacité
+Convention : R07_Lighting_Scene2 = reçu par le slot 2 (appui GUI + état) ;
+             R07_Lighting_Scene2_CMD = émis par le slot 2 vers la GUI.
