@@ -9,7 +9,7 @@ fs.mkdirSync(out,{recursive:true});
  const keep=setInterval(()=>p.locator('.device-stage').click({position:{x:5,y:5},timeout:1000}).catch(()=>{}),4000);
  const shot=async n=>p.screenshot({path:path.join(out,n+'.png')});
  try{
-  await p.goto(base+'/interfaces/residentiel/villa-gemini-frequencetv/phone');await p.waitForFunction(()=>window.__plan3d?.version==='2026-09-17-lighting-1');await p.waitForFunction(()=>__plan3d.navigation().phase==='room');
+  await p.goto(base+'/interfaces/residentiel/villa-gemini-frequencetv/phone');await p.waitForFunction(()=>window.__plan3d?.version==='2026-09-17-feedback-1');await p.waitForFunction(()=>__plan3d.navigation().phase==='room');
   const f=p.frames().find(f=>f.url().includes('/showcases/'));
   const room=async id=>{await f.locator('#room-select').selectOption(String(id));await p.waitForFunction(id=>__plan3d.activeRoom()===id,id);await p.evaluate(()=>__plan3d.jump());};
   const press=async n=>{await f.evaluate(n=>Villa.press(String(n)),n);await p.waitForTimeout(200);};

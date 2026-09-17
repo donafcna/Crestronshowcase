@@ -22,7 +22,7 @@ const route = '/interfaces/residentiel/villa-gemini-frequencetv';
   const shot = async name => { await pause(); await page.screenshot({path:path.join(out,name+'.png')}); report.screenshots.push(name+'.png'); };
   try {
     await page.goto(base+route+'/phone');
-    await page.waitForFunction(() => window.__plan3d?.version === '2026-09-17-lighting-1');
+    await page.waitForFunction(() => window.__plan3d?.version === '2026-09-17-feedback-1');
     await pause(); await page.waitForTimeout(1700);
     const gui=page.frameLocator('iframe');
     await gui.locator('#room-select').selectOption('1');

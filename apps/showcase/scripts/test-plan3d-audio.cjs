@@ -10,13 +10,20 @@ fs.mkdirSync(out,{recursive:true});
  const keep=setInterval(()=>page.locator('.device-stage').click({position:{x:5,y:5},timeout:700}).catch(()=>{}),4000);
  try{
   await page.goto(base+'/interfaces/residentiel/villa-gemini-frequencetv/phone');await page.waitForFunction(()=>window.__plan3d?.navigation().phase==='room');
-  check('Expected renderer version',await page.evaluate(()=>__plan3d.version)===(baseline?'2026-09-17-valley-1':'2026-09-17-lighting-1'));
+  check('Expected renderer version',await page.evaluate(()=>__plan3d.version)===(baseline?'2026-09-17-valley-1':'2026-09-17-feedback-1'));
   const gui=page.frames().find(f=>f.url().includes('/showcases/'));
   await page.locator('.btn-exit-fullscreen-device-corner').click();await gui.locator('[data-i18n="tab_source"]').click();
   const room=async id=>{await gui.locator('#room-select').selectOption(String(id));await page.waitForFunction(id=>__plan3d.activeRoom()===id,id);await page.evaluate(()=>__plan3d.jump());await page.waitForTimeout(120);};
   const press=async j=>{await gui.evaluate(j=>Villa.press(String(j)),j);await page.waitForTimeout(130);};
   const volume=async(j,n)=>{await gui.evaluate(([j,n])=>Villa.setAnalog(String(j),n),[j,n]);await page.waitForTimeout(150);};
-  const waves=()=>page.evaluate(()=>{const r=__plan3d.rooms[__plan3d.activeRoom()];return{audio:{...r.audio},speakers:r.speakers.map(s=>({kind:s.kind,visible:s.ring.visible,diameter:s.ring.geometry.parameters.outerRadius*s.ring.scale.x*2,scale:s.ring.scale.x,opacity:s.ring.material.opacity}))};});
+  const waves=(cycle=false)=>page.evaluate(async cycle=>{
+   const r=__plan3d.rooms[__plan3d.activeRoom()],read=()=>({audio:{...r.audio},speakers:r.speakers.map(s=>({kind:s.kind,visible:s.ring.visible,diameter:s.ring.geometry.parameters.outerRadius*s.ring.scale.x*2,scale:s.ring.scale.x,opacity:s.ring.material.opacity}))});
+   const result=read();if(!cycle)return result;
+   result.speakers.forEach(s=>{s.minScale=s.scale;s.minOpacity=s.opacity;});
+   const start=performance.now();let frames=0;
+   while(performance.now()-start<1700){await new Promise(requestAnimationFrame);frames++;read().speakers.forEach((s,i)=>{const v=result.speakers[i];v.minScale=Math.min(v.minScale,s.scale);v.scale=Math.max(v.scale,s.scale);v.minOpacity=Math.min(v.minOpacity,s.opacity);v.opacity=Math.max(v.opacity,s.opacity);v.diameter=Math.max(v.diameter,s.diameter);});}
+   result.frames=frames;return result;
+  },cycle);
   const allOn=s=>s.speakers.length>0&&s.speakers.every(s=>s.visible&&s.opacity>0),allOff=s=>s.speakers.every(s=>!s.visible);
   report.initial=[];
   for(const id of [10,11,12]){await room(id);const s=await waves();report.initial.push({id,...s});if(!baseline)check('Initial music and waves in room '+id,s.audio.music&&s.audio.source===0&&allOn(s));}
@@ -30,13 +37,14 @@ fs.mkdirSync(out,{recursive:true});
   for(const meta of roomList){
    if([2,17].includes(meta.id)){check(meta.name+' intentionally has no speakers',meta.count===0);report.rooms.push({...meta,status:'not-applicable'});continue;}
    await room(meta.id);await press(150);await press(151);
-   await volume(52,4000);const low=await waves();await volume(52,60000);const high=await waves();
+   await volume(52,4000);const low=await waves(true);await volume(52,60000);const high=await waves(true);
    check(meta.name+' video on every speaker',allOn(high));check(meta.name+' diameter rises with AV volume',high.speakers.every((s,i)=>s.diameter>low.speakers[i].diameter*1.5));
-   check(meta.name+' enlarged waves remain subtle',high.speakers.every(s=>s.scale>3.5&&s.scale<4&&s.opacity<.3));
+   check(meta.name+' enlarged waves remain subtle',high.speakers.every(s=>s.scale>3.5&&s.scale<4&&s.opacity<.33));
+   check(meta.name+' every wave expands and fades visibly',high.frames>30&&high.speakers.every(s=>s.scale/s.minScale>1.5&&s.opacity-s.minOpacity>.25));
    await volume(52,0);check(meta.name+' AV zero stops waves',allOff(await waves()));await volume(52,60000);
    await press(55);check(meta.name+' mute stops all speakers',allOff(await waves()));await press(55);check(meta.name+' unmute resumes',allOn(await waves()));
    for(const j of [152,153,154]){await press(j);check(meta.name+' video source '+j,allOn(await waves()));}
-   await press(155);await volume(254,4000);const musicLow=await waves();await volume(254,60000);const musicHigh=await waves();
+   await press(155);await volume(254,4000);const musicLow=await waves(true);await volume(254,60000);const musicHigh=await waves(true);
    check(meta.name+' music volume drives every speaker',allOn(musicHigh)&&musicHigh.speakers.every((s,i)=>s.diameter>musicLow.speakers[i].diameter*1.5));
    await volume(254,0);check(meta.name+' music zero stops waves',allOff(await waves()));await volume(254,60000);
    await press(55);check(meta.name+' music mute stops waves',allOff(await waves()));await press(55);
@@ -64,6 +72,13 @@ fs.mkdirSync(out,{recursive:true});
   await page.locator('.btn-exit-fullscreen-device-corner').click();
   for(const theme of ['dark','light','glass']){await gui.evaluate(t=>changeTheme(t),theme);await page.waitForTimeout(650);check('Normal '+theme+' waves active',allOn(await waves()));await page.screenshot({path:path.join(out,'suite-normal-'+theme+'.png')});}
   check('Normal mode has no JavaScript or shader errors',report.errors.length===0);
+  if(process.env.CAPTURE_MOTION==='1'){
+   await gui.evaluate(()=>changeTheme('dark'));await page.waitForTimeout(650);
+   const bytes=await page.evaluate(async()=>{
+    const stream=document.querySelector('.plan3d-bg-canvas').captureStream(30),chunks=[],recorder=new MediaRecorder(stream,{mimeType:'video/webm',videoBitsPerSecond:2500000});
+    const done=new Promise(resolve=>{recorder.ondataavailable=e=>chunks.push(e.data);recorder.onstop=resolve;});recorder.start();await new Promise(r=>setTimeout(r,5000));recorder.stop();await done;stream.getTracks().forEach(t=>t.stop());return Array.from(new Uint8Array(await new Blob(chunks).arrayBuffer()));
+   });fs.writeFileSync(path.join(out,'ondes-audio.webm'),Buffer.from(bytes));
+  }
   report.otherSupportErrors=[];
   for(const device of ['tablet','wallpanel']){
    await page.goto(base+'/interfaces/residentiel/villa-gemini-frequencetv/'+device);await page.waitForTimeout(1800);

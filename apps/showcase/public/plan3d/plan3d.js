@@ -13,7 +13,7 @@
  * api.setWindow(rect) cadre la pièce dans la zone libre de la page ; api.dispose() à la fin.
  * =========================================================================== */
 import * as THREE from './vendor/three.module.min.js';
-import { createInteriors } from './interiors.js?v=2026-09-17-rooms-1';
+import { createInteriors } from './interiors.js?v=2026-09-17-feedback-1';
 import { buildLandscape } from './landscape.js?v=2026-09-17-valley-1';
 import { createEstate } from './estate.js?v=2026-09-17-lighting-1';
 import { enrichRoom } from './room-features.js?v=2026-09-17-audio-1';
@@ -387,7 +387,8 @@ export function createPlan3D(opts) {
                 box(6.0, 0.08, 1.45, M.bois, w / 2, 0.75, d / 2, g); for(const x of [w/2-2,w/2+2]) box(.3,.72,.9,M.metal,x,.36,d/2,g);
 
                 cyl(0.18, 0.25, M.noir, w / 2, 2.55, d / 2, g, 0.02);
-                tvPos = { x: w * 0.7, y: 1.45, z: 0.19, size: 1.3 }; break;
+                // Reserved central wall bay: the buffet/art are left and wine cabinet right.
+                tvPos = { x: w * 0.57, y: 1.4, z: 0.22, size: 2.05 }; break;
             case 'cuisine':
                 box(2.4, 0.9, 1.0, M.blanc, w / 2, 0.45, d * 0.55, g); box(2.5, 0.06, 1.1, M.metal, w / 2, 0.93, d * 0.55, g);
                 box(w - 0.6, 0.9, 0.65, M.boisClair, w / 2, 0.45, 0.5, g); box(w - 0.6, 0.05, 0.7, M.metal, w / 2, 0.93, 0.5, g);
@@ -413,7 +414,8 @@ export function createPlan3D(opts) {
             case 'cinema':
                 for (var row = 0; row < 2; row++) for (var c = 0; c < 3; c++) box(0.8, 0.9, 0.9, M.tissuFonce, w / 2 - 1 + c, 0.45 + row * 0.15, d * 0.45 + row * 1.2, g);
                 box(w, 0.02, d, M.tapis, w / 2, 0.02, d / 2, g);
-                tvPos = { x: w / 2, y: 1.56, z: 0.24, size: Math.min(w-3,4.65) }; break;
+                // Fit between the low soundbar and the cornice, with installation clearance.
+                tvPos = { x: w / 2, y: 1.46, z: 0.24, size: Math.min(w-3,4.5) }; break;
             case 'terrasse':
                 for (var lg = 0; lg < 2; lg++) { box(0.7, 0.25, 1.9, M.boisClair, w * 0.35 + lg * 1.0, 0.3, d * 0.5, g); box(0.7, 0.45, 0.4, M.boisClair, w * 0.35 + lg * 1.0, 0.5, d * 0.5 - 0.75, g); }
                 for (var pp = 0; pp < 3; pp++) { cyl(0.28, 0.5, M.pot, 0.7 + pp * (w - 1.4) / 2, 0.25, d - 0.7, g, 0.22); sph(0.5, M.plante, 0.7 + pp * (w - 1.4) / 2, 0.85, d - 0.7, g); }
@@ -459,7 +461,7 @@ export function createPlan3D(opts) {
             if (p.type !== 'cinema') cyl(0.05, 0.2, M.metal, w / 2, NIVEAU_H - 0.05, d / 2, g);
             var gl = new THREE.Mesh(new THREE.CircleGeometry(Math.min(w, d) * 0.42, 24), glowMat); gl.rotation.x = -Math.PI / 2; gl.position.set(w / 2, 0.03, d / 2); g.add(gl);
             R.lamps.push({ mesh: l1, mat: lampMat1, pos: new THREE.Vector3(w / 2, NIVEAU_H - 0.5, d / 2) }); R.glow.push(gl);
-            var l2a = box(0.3, 0.16, 0.12, lampMat2, p.type==='cinema'?.7:w*.45, 2.0, 0.2, g), l2b = box(0.3, 0.16, 0.12, lampMat2, p.type==='cinema'?w-.7:w*.86, 2.0, 0.2, g);
+            var l2a = box(0.3, 0.16, 0.12, lampMat2, p.type==='cinema'?.7:p.type==='salon'?w*.425:w*.45, 2.0, 0.2, g), l2b = box(0.3, 0.16, 0.12, lampMat2, p.type==='cinema'?w-.7:w*.86, 2.0, 0.2, g);
             R.lamps.push({ mesh: l2a, mat: lampMat2, pos: new THREE.Vector3(w * 0.5, 1.9, 0.5), extra: l2b });
         } else {
             for (var lp = 0; lp < 2; lp++) { cyl(0.05, 2.2, M.metal, 0.5 + lp * (w - 1), 1.1, d * 0.2, g); var lb = sph(0.16, lp ? lampMat2 : lampMat1, 0.5 + lp * (w - 1), 2.3, d * 0.2, g); R.lamps.push({ mesh: lb, mat: lp ? lampMat2 : lampMat1, pos: new THREE.Vector3(0.5 + lp * (w - 1), 2.0, d * 0.3) }); }
@@ -827,7 +829,15 @@ export function createPlan3D(opts) {
         roomLights.forEach(function (l) { l.intensity = 0; });
         Object.values(ROOMS).forEach(function (R) { if (R.tv) R.tv.light.intensity = 0; });
         if (activeRoom) {
-            activeRoom.lamps.forEach(function (l, i) { if (i < 2) { var wp = l.pos.clone().applyMatrix4(activeRoom.group.matrixWorld); roomLights[i].position.copy(wp); roomLights[i].intensity = (lightLevel(activeRoom, i) + lightLevel(activeRoom, 2)*.3 + lightLevel(activeRoom, 3)*.25 + lightLevel(activeRoom, 4)*.18) * (i === 0 ? 55 : 30) * (l.sousMarin ? 0.3 : 1); } });
+            activeRoom.lamps.forEach(function (l, i) {
+                if (i >= 2) return;
+                var wp = l.pos.clone().applyMatrix4(activeRoom.group.matrixWorld);
+                roomLights[i].position.copy(wp);
+                // Keep overhead and local ambience distinct while pooling five circuits
+                // into the existing two lights (no extra shadows or GPU light count).
+                var level = lightLevel(activeRoom,i) + lightLevel(activeRoom,2)*(i===0?.3:.12) + lightLevel(activeRoom,3)*(i===0?.10:.4) + lightLevel(activeRoom,4)*(i===0?.05:.25);
+                roomLights[i].intensity = level * (i === 0 ? 55 : 30) * (l.sousMarin ? .3 : 1);
+            });
             if (activeRoom.tv) activeRoom.tv.light.intensity = activeRoom.tv.source > 0 ? .28 : 0;
             if (activeRoom.tv && activeRoom.tv.source > 0 && ts - (activeRoom.tv.lastFrame || 0) >= 1000/(quality<1.25?10:15)) {
                 var television=activeRoom.tv,screen=television.screen;television.lastFrame=ts;
@@ -840,10 +850,11 @@ export function createPlan3D(opts) {
             }
             activeRoom.speakers.forEach(function (s) {
                 var audio=activeRoom.audio, level=audio.music?audio.mediaVolume:audio.volume, on=(audio.source>0||audio.music)&&!audio.mute&&!(audio.paused&&!audio.music)&&level>0;
-                var wave=(1+Math.sin(idle*3+s.phase))/2, volume=level;
-                s.ring.visible=on;s.ring.material.opacity=on?.12+volume*.13+wave*.035:0;
-                // Twice the previous diameter, still driven by the playing source's volume.
-                s.ring.scale.setScalar(on?2*(1+volume*.85+wave*.06):1);
+                // A travelling wave, not an almost static halo: expand then fade every 1.6 s.
+                // Both ends vanish at the loop boundary, so the diameter never visibly snaps.
+                var wave=(idle/1.6+s.phase/(Math.PI*2))%1, volume=level;
+                s.ring.visible=on;s.ring.material.opacity=on?(.16+volume*.16)*Math.sin(Math.PI*wave):0;
+                s.ring.scale.setScalar(on?2*(1+volume*.85)*(.6+.4*wave):1);
             });
             if(activeRoom.wellness){
                 const w=activeRoom.wellness;w.heat.emissiveIntensity=w.saunaOn?.55:0;
@@ -901,7 +912,7 @@ export function createPlan3D(opts) {
     /* ---------- API publique ---------- */
     var API = {
         setRoom: setRoom,
-        version: '2026-09-17-lighting-1',
+        version: '2026-09-17-feedback-1',
         overview: overview,
         click: clickPlan,
         focusSelected: function () { if (!selectedRoom || activeRoom === selectedRoom) return; focusRoom(selectedRoom); },

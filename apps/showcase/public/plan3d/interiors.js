@@ -122,6 +122,8 @@ export function createInteriors(renderer, palette) {
       box(g,A.brass,.745,1.18,2.65,.025,.018,1.55);
       R.decor.fireplace={wall:'west',z:2.65};
       const lx=w*.55+1.85,lz=d*.62+.35;
+      // Circuit 2 lights the seating area from its actual floor lamp, not the TV wall.
+      R.lamps[1].pos.set(lx,1.62,lz);
       cylinder(g,A.black,lx,.03,lz,.22,.06);cylinder(g,A.brass,lx,.91,lz,.022,1.78);cylinder(g,A.cream,lx,1.77,lz,.28,.38,.19);ball(g,emit,lx,1.65,lz,.09);R.decor.floorLamp=true;
       plant(g,1.25,d-.45,.85);plant(g,w-1.4,.9,.7);
       box(g,A.oak,w-1.15,.4,d-1.7,1.1,.65,.5);books(g,w-1.55,.74,d-1.7,8);
@@ -146,6 +148,8 @@ export function createInteriors(renderer, palette) {
       bookcase(g,3.25,.38,1.55,2.55);bookcase(g,w-1,.38,1.45,2.55);bookcase(g,.39,d-.65,1.0,2.45,Math.PI/2);
       box(g,A.oak,w-1.3,.45,d-.7,1.5,.75,.55);books(g,w-1.9,.84,d-.7,12);
     }else if(type==='chambre'||type==='suite'){
+      // Shared bounce for the two bedside lamps, centred on the rotated headboard.
+      R.lamps[1].pos.set(w/2+.8,1.05,d*.5);
       const style={4:'suite-ivory-brass',5:'botanical-sage',6:'terracotta-studio',9:'alpine-traveller',10:'guest-lilac-linen'}[R.id];R.decor.style=style;
       const accent=R.id===5?A.moss:R.id===6?A.clay:R.id===9?A.ink:R.id===10?mat(0x88778e,1,{map:linen}):A.cream;
       // Distinct fabrics in each room; headboard/pillows stay aligned with the rotated bed.
@@ -189,7 +193,8 @@ export function createInteriors(renderer, palette) {
 
         // Track with three adjustable downlights, warm indirect LED cornice.
         if(type!=='cinema'){
-          const trackZ=d*.6;
+          // Keep suspended tracks near the rear wall, outside the camera-to-TV sightline.
+          const trackZ=Math.min(1.25,d*.25);
           box(details,A.black,w*.6,2.88,trackZ,w*.5,.025,.045);
           for(let i=0;i<3;i++){const x=w*.4+i*w*.2;cylinder(details,A.black,x,2.79,trackZ,.065,.17);cylinder(details,e0,x,2.697,trackZ,.051,.008);}
         }
