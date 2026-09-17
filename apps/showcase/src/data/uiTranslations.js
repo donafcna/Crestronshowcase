@@ -8,6 +8,11 @@
 // des projets vivent dans projects.js.
 export const uiTranslations = {
   fr: {
+    demo_back: "Retour aux démos",
+    demo_toggle_device: "Basculer téléphone / tablette",
+    demo_unsupported: "Cette interface n’est pas prévue pour ce support. Retrouvez ses supports disponibles sur le site complet.",
+    demo_unknown: "Démo introuvable",
+    demo_unknown_hint: "Ce lien ne correspond à aucune interface du catalogue.",
     calib_link: "Calibrer l'écran",
     calib_title: "Calibrer la taille réelle",
     calib_hint: "Posez une carte bancaire sur l'écran et ajustez le curseur jusqu'à ce que le cadre coïncide exactement avec la carte. Le réglage est mémorisé dans ce navigateur : les châssis « Taille réelle » auront ensuite leurs vraies dimensions.",
@@ -79,6 +84,11 @@ export const uiTranslations = {
     demo_resume_now: "Reprendre la démo maintenant",
   },
   en: {
+    demo_back: "Back to demos",
+    demo_toggle_device: "Switch phone / tablet",
+    demo_unsupported: "This interface is not designed for this device. Find its available devices on the full site.",
+    demo_unknown: "Demo not found",
+    demo_unknown_hint: "This link does not match any interface in the catalogue.",
     calib_link: "Calibrate screen",
     calib_title: "Calibrate actual size",
     calib_hint: "Hold a bank card against the screen and move the slider until the frame matches the card exactly. The setting is stored in this browser: “Actual size” chassis will then have their true dimensions.",
@@ -150,6 +160,11 @@ export const uiTranslations = {
     demo_resume_now: "Resume the demo now",
   },
   de: {
+    demo_back: "Zurück zu den Demos",
+    demo_toggle_device: "Telefon / Tablet wechseln",
+    demo_unsupported: "Diese Oberfläche ist für dieses Gerät nicht vorgesehen. Die unterstützten Geräte finden Sie auf der vollständigen Website.",
+    demo_unknown: "Demo nicht gefunden",
+    demo_unknown_hint: "Dieser Link gehört zu keiner Oberfläche im Katalog.",
     calib_link: "Bildschirm kalibrieren",
     calib_title: "Originalgrösse kalibrieren",
     calib_hint: "Halten Sie eine Bankkarte an den Bildschirm und verschieben Sie den Regler, bis der Rahmen genau mit der Karte übereinstimmt. Die Einstellung wird in diesem Browser gespeichert: Gehäuse in „Originalgrösse“ haben dann ihre echten Abmessungen.",

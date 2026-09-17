@@ -2,10 +2,12 @@
   "meta": {
     "projet": "Villa Crans",
     "integrateur": "Fréquence TV",
-    "version": "1.0.168",
+    "version": "1.0.181",
     "mode": "deploiement",
     "modeDescription": "'deploiement' = GUI livré chez le client : les feedbacks viennent du CP4 (C# slot 1 + SIMPL slot 2) via js/webxpanel.js / CrComLib, aucune simulation. 'showcase' = copie pour le site crestrongui.vercel.app : posé UNIQUEMENT par scripts/sync-villa-crans.py du dépôt Crestronshowcase, feedbacks simulés dans le navigateur (js/local-feedback.js), curseur de démo géré par le site (jamais par le GUI). Ne jamais mettre 'showcase' ici. Voir docs/08_WORKFLOW_SHOWCASE.md.",
-    "dateModification": "2026-09-11",
+    "tracesConsole": false,
+    "tracesConsoleDescription": "false = le programme du slot 1 n'affiche en console que ses messages de diagnostic (démarrage, configuration, EISC, arrivée d'un périphérique, erreurs) et la GUI ne recopie plus ses console.log sur le sériel 100. Passer à true pour retrouver la trace complète des actions utilisateur pendant une mise au point ; un progreset suffit, aucune recompilation.",
+    "dateModification": "2026-09-17",
     "langueReference": "fr",
     "languesDisponibles": [
       "fr",
@@ -171,7 +173,58 @@
               "CINÉMA",
               "REPAS2",
               "TOTAL3"
-            ]
+            ],
+            "niveaux": [
+              [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                16384,
+                19660,
+                13107,
+                16384,
+                19660,
+                13107,
+                16384,
+                19660,
+                13107
+              ],
+              [
+                32768,
+                39321,
+                45874,
+                32768,
+                39321,
+                45874,
+                32768,
+                39321,
+                45874,
+                32768
+              ],
+              [
+                65535,
+                65535,
+                65535,
+                65535,
+                65535,
+                65535,
+                65535,
+                65535,
+                65535,
+                65535
+              ]
+            ],
+            "niveauxDescription": "Niveau 0-65535 de chaque circuit pour chaque scène, dans l'ordre de circuits.noms. Valeur de repli : dès que le slot 2 remonte le niveau réel d'un circuit, c'est lui qui fait foi et la scène ne le repositionne plus."
           },
           "circuits": {
             "nombre": 10,
@@ -220,7 +273,26 @@
           ]
         },
         "cvc": {
-          "actif": false
+          "actif": false,
+          "marcheArret": true,
+          "ventilation": {
+            "actif": true,
+            "vitesses": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          "etatInitial": {
+            "marche": true,
+            "ventilation": 0
+          },
+          "consigne": {
+            "min": 16,
+            "max": 28,
+            "pas": 0.5
+          }
         },
         "controlesGeneraux": {
           "actif": true,
@@ -253,7 +325,34 @@
               "Jeux",
               "Baise",
               "TOTAL"
-            ]
+            ],
+            "niveaux": [
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                16384,
+                19660,
+                13107
+              ],
+              [
+                32768,
+                39321,
+                45874,
+                32768
+              ],
+              [
+                65535,
+                65535,
+                65535,
+                65535
+              ]
+            ],
+            "niveauxDescription": "Niveau 0-65535 de chaque circuit pour chaque scène, dans l'ordre de circuits.noms. Valeur de repli : dès que le slot 2 remonte le niveau réel d'un circuit, c'est lui qui fait foi et la scène ne le repositionne plus."
           },
           "circuits": {
             "nombre": 4,
@@ -296,7 +395,26 @@
           ]
         },
         "cvc": {
-          "actif": false
+          "actif": false,
+          "marcheArret": true,
+          "ventilation": {
+            "actif": true,
+            "vitesses": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          "etatInitial": {
+            "marche": true,
+            "ventilation": 0
+          },
+          "consigne": {
+            "min": 16,
+            "max": 28,
+            "pas": 0.5
+          }
         },
         "controlesGeneraux": {
           "actif": false,
@@ -329,7 +447,34 @@
               "CINÉMA",
               "REPAS",
               "TOTAL"
-            ]
+            ],
+            "niveaux": [
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                16384,
+                19660,
+                13107
+              ],
+              [
+                32768,
+                39321,
+                45874,
+                32768
+              ],
+              [
+                65535,
+                65535,
+                65535,
+                65535
+              ]
+            ],
+            "niveauxDescription": "Niveau 0-65535 de chaque circuit pour chaque scène, dans l'ordre de circuits.noms. Valeur de repli : dès que le slot 2 remonte le niveau réel d'un circuit, c'est lui qui fait foi et la scène ne le repositionne plus."
           },
           "circuits": {
             "nombre": 4,
@@ -372,7 +517,26 @@
           ]
         },
         "cvc": {
-          "actif": true
+          "actif": true,
+          "marcheArret": true,
+          "ventilation": {
+            "actif": true,
+            "vitesses": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          "etatInitial": {
+            "marche": true,
+            "ventilation": 0
+          },
+          "consigne": {
+            "min": 16,
+            "max": 28,
+            "pas": 0.5
+          }
         },
         "controlesGeneraux": {
           "actif": true,
@@ -394,7 +558,7 @@
       "id": 4,
       "nom": "Suite amis",
       "icone": "🚪",
-      "intersystem": false,
+      "intersystem": true,
       "pilotages": {
         "eclairages": {
           "actif": true,
@@ -405,7 +569,34 @@
               "CINÉMA",
               "REPAS",
               "TOTAL"
-            ]
+            ],
+            "niveaux": [
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                16384,
+                19660,
+                13107
+              ],
+              [
+                32768,
+                39321,
+                45874,
+                32768
+              ],
+              [
+                65535,
+                65535,
+                65535,
+                65535
+              ]
+            ],
+            "niveauxDescription": "Niveau 0-65535 de chaque circuit pour chaque scène, dans l'ordre de circuits.noms. Valeur de repli : dès que le slot 2 remonte le niveau réel d'un circuit, c'est lui qui fait foi et la scène ne le repositionne plus."
           },
           "circuits": {
             "nombre": 4,
@@ -448,7 +639,26 @@
           ]
         },
         "cvc": {
-          "actif": true
+          "actif": true,
+          "marcheArret": true,
+          "ventilation": {
+            "actif": true,
+            "vitesses": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          "etatInitial": {
+            "marche": true,
+            "ventilation": 0
+          },
+          "consigne": {
+            "min": 16,
+            "max": 28,
+            "pas": 0.5
+          }
         },
         "controlesGeneraux": {
           "actif": false,
@@ -470,7 +680,7 @@
       "id": 5,
       "nom": "Chambre amis",
       "icone": "🛏️",
-      "intersystem": false,
+      "intersystem": true,
       "pilotages": {
         "eclairages": {
           "actif": true,
@@ -481,7 +691,34 @@
               "CINÉMA",
               "REPAS",
               "TOTAL"
-            ]
+            ],
+            "niveaux": [
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                16384,
+                19660,
+                13107
+              ],
+              [
+                32768,
+                39321,
+                45874,
+                32768
+              ],
+              [
+                65535,
+                65535,
+                65535,
+                65535
+              ]
+            ],
+            "niveauxDescription": "Niveau 0-65535 de chaque circuit pour chaque scène, dans l'ordre de circuits.noms. Valeur de repli : dès que le slot 2 remonte le niveau réel d'un circuit, c'est lui qui fait foi et la scène ne le repositionne plus."
           },
           "circuits": {
             "nombre": 4,
@@ -524,7 +761,26 @@
           ]
         },
         "cvc": {
-          "actif": true
+          "actif": true,
+          "marcheArret": true,
+          "ventilation": {
+            "actif": true,
+            "vitesses": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          "etatInitial": {
+            "marche": true,
+            "ventilation": 0
+          },
+          "consigne": {
+            "min": 16,
+            "max": 28,
+            "pas": 0.5
+          }
         },
         "controlesGeneraux": {
           "actif": true,
@@ -546,7 +802,7 @@
       "id": 6,
       "nom": "Chambre 2",
       "icone": "🛏️",
-      "intersystem": false,
+      "intersystem": true,
       "pilotages": {
         "eclairages": {
           "actif": true,
@@ -557,7 +813,34 @@
               "CINÉMA",
               "REPAS",
               "TOTAL"
-            ]
+            ],
+            "niveaux": [
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                16384,
+                19660,
+                13107
+              ],
+              [
+                32768,
+                39321,
+                45874,
+                32768
+              ],
+              [
+                65535,
+                65535,
+                65535,
+                65535
+              ]
+            ],
+            "niveauxDescription": "Niveau 0-65535 de chaque circuit pour chaque scène, dans l'ordre de circuits.noms. Valeur de repli : dès que le slot 2 remonte le niveau réel d'un circuit, c'est lui qui fait foi et la scène ne le repositionne plus."
           },
           "circuits": {
             "nombre": 4,
@@ -600,7 +883,26 @@
           ]
         },
         "cvc": {
-          "actif": true
+          "actif": true,
+          "marcheArret": true,
+          "ventilation": {
+            "actif": true,
+            "vitesses": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          "etatInitial": {
+            "marche": true,
+            "ventilation": 0
+          },
+          "consigne": {
+            "min": 16,
+            "max": 28,
+            "pas": 0.5
+          }
         },
         "controlesGeneraux": {
           "actif": true,
@@ -622,7 +924,7 @@
       "id": 7,
       "nom": "Bureau",
       "icone": "💼",
-      "intersystem": false,
+      "intersystem": true,
       "pilotages": {
         "eclairages": {
           "actif": true,
@@ -633,7 +935,34 @@
               "CINÉMA",
               "REPAS",
               "TOTAL"
-            ]
+            ],
+            "niveaux": [
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                16384,
+                19660,
+                13107
+              ],
+              [
+                32768,
+                39321,
+                45874,
+                32768
+              ],
+              [
+                65535,
+                65535,
+                65535,
+                65535
+              ]
+            ],
+            "niveauxDescription": "Niveau 0-65535 de chaque circuit pour chaque scène, dans l'ordre de circuits.noms. Valeur de repli : dès que le slot 2 remonte le niveau réel d'un circuit, c'est lui qui fait foi et la scène ne le repositionne plus."
           },
           "circuits": {
             "nombre": 4,
@@ -676,7 +1005,26 @@
           ]
         },
         "cvc": {
-          "actif": true
+          "actif": true,
+          "marcheArret": true,
+          "ventilation": {
+            "actif": true,
+            "vitesses": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          "etatInitial": {
+            "marche": true,
+            "ventilation": 0
+          },
+          "consigne": {
+            "min": 16,
+            "max": 28,
+            "pas": 0.5
+          }
         },
         "controlesGeneraux": {
           "actif": true,
@@ -698,7 +1046,7 @@
       "id": 8,
       "nom": "Home cinéma",
       "icone": "🎬",
-      "intersystem": false,
+      "intersystem": true,
       "pilotages": {
         "eclairages": {
           "actif": true,
@@ -709,7 +1057,34 @@
               "CINÉMA",
               "REPAS",
               "TOTAL"
-            ]
+            ],
+            "niveaux": [
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                16384,
+                19660,
+                13107
+              ],
+              [
+                32768,
+                39321,
+                45874,
+                32768
+              ],
+              [
+                65535,
+                65535,
+                65535,
+                65535
+              ]
+            ],
+            "niveauxDescription": "Niveau 0-65535 de chaque circuit pour chaque scène, dans l'ordre de circuits.noms. Valeur de repli : dès que le slot 2 remonte le niveau réel d'un circuit, c'est lui qui fait foi et la scène ne le repositionne plus."
           },
           "circuits": {
             "nombre": 4,
@@ -752,7 +1127,26 @@
           ]
         },
         "cvc": {
-          "actif": true
+          "actif": true,
+          "marcheArret": true,
+          "ventilation": {
+            "actif": true,
+            "vitesses": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          "etatInitial": {
+            "marche": true,
+            "ventilation": 0
+          },
+          "consigne": {
+            "min": 16,
+            "max": 28,
+            "pas": 0.5
+          }
         },
         "controlesGeneraux": {
           "actif": true,
@@ -774,7 +1168,7 @@
       "id": 9,
       "nom": "Chambre 3",
       "icone": "🛏️",
-      "intersystem": false,
+      "intersystem": true,
       "pilotages": {
         "eclairages": {
           "actif": true,
@@ -785,7 +1179,34 @@
               "CINÉMA",
               "REPAS",
               "TOTAL"
-            ]
+            ],
+            "niveaux": [
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                16384,
+                19660,
+                13107
+              ],
+              [
+                32768,
+                39321,
+                45874,
+                32768
+              ],
+              [
+                65535,
+                65535,
+                65535,
+                65535
+              ]
+            ],
+            "niveauxDescription": "Niveau 0-65535 de chaque circuit pour chaque scène, dans l'ordre de circuits.noms. Valeur de repli : dès que le slot 2 remonte le niveau réel d'un circuit, c'est lui qui fait foi et la scène ne le repositionne plus."
           },
           "circuits": {
             "nombre": 4,
@@ -828,7 +1249,26 @@
           ]
         },
         "cvc": {
-          "actif": true
+          "actif": true,
+          "marcheArret": true,
+          "ventilation": {
+            "actif": true,
+            "vitesses": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          "etatInitial": {
+            "marche": true,
+            "ventilation": 0
+          },
+          "consigne": {
+            "min": 16,
+            "max": 28,
+            "pas": 0.5
+          }
         },
         "controlesGeneraux": {
           "actif": true,
@@ -850,7 +1290,7 @@
       "id": 10,
       "nom": "Suite invités",
       "icone": "🚪",
-      "intersystem": false,
+      "intersystem": true,
       "pilotages": {
         "eclairages": {
           "actif": true,
@@ -861,7 +1301,34 @@
               "CINÉMA",
               "REPAS",
               "TOTAL"
-            ]
+            ],
+            "niveaux": [
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                16384,
+                19660,
+                13107
+              ],
+              [
+                32768,
+                39321,
+                45874,
+                32768
+              ],
+              [
+                65535,
+                65535,
+                65535,
+                65535
+              ]
+            ],
+            "niveauxDescription": "Niveau 0-65535 de chaque circuit pour chaque scène, dans l'ordre de circuits.noms. Valeur de repli : dès que le slot 2 remonte le niveau réel d'un circuit, c'est lui qui fait foi et la scène ne le repositionne plus."
           },
           "circuits": {
             "nombre": 4,
@@ -904,7 +1371,26 @@
           ]
         },
         "cvc": {
-          "actif": true
+          "actif": true,
+          "marcheArret": true,
+          "ventilation": {
+            "actif": true,
+            "vitesses": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          "etatInitial": {
+            "marche": true,
+            "ventilation": 0
+          },
+          "consigne": {
+            "min": 16,
+            "max": 28,
+            "pas": 0.5
+          }
         },
         "controlesGeneraux": {
           "actif": true,
@@ -926,7 +1412,7 @@
       "id": 11,
       "nom": "Terrasse & jardin",
       "icone": "🌿",
-      "intersystem": false,
+      "intersystem": true,
       "pilotages": {
         "eclairages": {
           "actif": true,
@@ -937,7 +1423,34 @@
               "CINÉMA",
               "REPAS",
               "TOTAL"
-            ]
+            ],
+            "niveaux": [
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                16384,
+                19660,
+                13107
+              ],
+              [
+                32768,
+                39321,
+                45874,
+                32768
+              ],
+              [
+                65535,
+                65535,
+                65535,
+                65535
+              ]
+            ],
+            "niveauxDescription": "Niveau 0-65535 de chaque circuit pour chaque scène, dans l'ordre de circuits.noms. Valeur de repli : dès que le slot 2 remonte le niveau réel d'un circuit, c'est lui qui fait foi et la scène ne le repositionne plus."
           },
           "circuits": {
             "nombre": 4,
@@ -980,7 +1493,26 @@
           ]
         },
         "cvc": {
-          "actif": true
+          "actif": true,
+          "marcheArret": true,
+          "ventilation": {
+            "actif": true,
+            "vitesses": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          "etatInitial": {
+            "marche": true,
+            "ventilation": 0
+          },
+          "consigne": {
+            "min": 16,
+            "max": 28,
+            "pas": 0.5
+          }
         },
         "controlesGeneraux": {
           "actif": true,
@@ -1002,7 +1534,7 @@
       "id": 12,
       "nom": "Piscine & spa",
       "icone": "🏊",
-      "intersystem": false,
+      "intersystem": true,
       "pilotages": {
         "eclairages": {
           "actif": true,
@@ -1013,7 +1545,34 @@
               "CINÉMA",
               "REPAS",
               "TOTAL"
-            ]
+            ],
+            "niveaux": [
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                16384,
+                19660,
+                13107
+              ],
+              [
+                32768,
+                39321,
+                45874,
+                32768
+              ],
+              [
+                65535,
+                65535,
+                65535,
+                65535
+              ]
+            ],
+            "niveauxDescription": "Niveau 0-65535 de chaque circuit pour chaque scène, dans l'ordre de circuits.noms. Valeur de repli : dès que le slot 2 remonte le niveau réel d'un circuit, c'est lui qui fait foi et la scène ne le repositionne plus."
           },
           "circuits": {
             "nombre": 4,
@@ -1056,7 +1615,26 @@
           ]
         },
         "cvc": {
-          "actif": true
+          "actif": true,
+          "marcheArret": true,
+          "ventilation": {
+            "actif": true,
+            "vitesses": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          "etatInitial": {
+            "marche": true,
+            "ventilation": 0
+          },
+          "consigne": {
+            "min": 16,
+            "max": 28,
+            "pas": 0.5
+          }
         },
         "controlesGeneraux": {
           "actif": true,
@@ -1078,7 +1656,7 @@
       "id": 13,
       "nom": "Sauna & hammam",
       "icone": "🧖",
-      "intersystem": false,
+      "intersystem": true,
       "pilotages": {
         "eclairages": {
           "actif": true,
@@ -1089,7 +1667,34 @@
               "CINÉMA",
               "REPAS",
               "TOTAL"
-            ]
+            ],
+            "niveaux": [
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                16384,
+                19660,
+                13107
+              ],
+              [
+                32768,
+                39321,
+                45874,
+                32768
+              ],
+              [
+                65535,
+                65535,
+                65535,
+                65535
+              ]
+            ],
+            "niveauxDescription": "Niveau 0-65535 de chaque circuit pour chaque scène, dans l'ordre de circuits.noms. Valeur de repli : dès que le slot 2 remonte le niveau réel d'un circuit, c'est lui qui fait foi et la scène ne le repositionne plus."
           },
           "circuits": {
             "nombre": 4,
@@ -1132,7 +1737,26 @@
           ]
         },
         "cvc": {
-          "actif": true
+          "actif": true,
+          "marcheArret": true,
+          "ventilation": {
+            "actif": true,
+            "vitesses": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          "etatInitial": {
+            "marche": true,
+            "ventilation": 0
+          },
+          "consigne": {
+            "min": 16,
+            "max": 28,
+            "pas": 0.5
+          }
         },
         "controlesGeneraux": {
           "actif": true,
@@ -1147,6 +1771,22 @@
             4,
             5
           ]
+        },
+        "wellness": {
+          "sauna": {
+            "actif": true,
+            "min": 60,
+            "max": 100,
+            "pas": 1,
+            "consigne": 80
+          },
+          "hammam": {
+            "actif": true,
+            "min": 90,
+            "max": 100,
+            "pas": 1,
+            "consigne": 95
+          }
         }
       }
     },
@@ -1154,7 +1794,7 @@
       "id": 14,
       "nom": "Pool house",
       "icone": "🏖️",
-      "intersystem": false,
+      "intersystem": true,
       "pilotages": {
         "eclairages": {
           "actif": true,
@@ -1165,7 +1805,34 @@
               "CINÉMA",
               "REPAS",
               "TOTAL"
-            ]
+            ],
+            "niveaux": [
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                16384,
+                19660,
+                13107
+              ],
+              [
+                32768,
+                39321,
+                45874,
+                32768
+              ],
+              [
+                65535,
+                65535,
+                65535,
+                65535
+              ]
+            ],
+            "niveauxDescription": "Niveau 0-65535 de chaque circuit pour chaque scène, dans l'ordre de circuits.noms. Valeur de repli : dès que le slot 2 remonte le niveau réel d'un circuit, c'est lui qui fait foi et la scène ne le repositionne plus."
           },
           "circuits": {
             "nombre": 4,
@@ -1208,7 +1875,26 @@
           ]
         },
         "cvc": {
-          "actif": true
+          "actif": true,
+          "marcheArret": true,
+          "ventilation": {
+            "actif": true,
+            "vitesses": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          "etatInitial": {
+            "marche": true,
+            "ventilation": 0
+          },
+          "consigne": {
+            "min": 16,
+            "max": 28,
+            "pas": 0.5
+          }
         },
         "controlesGeneraux": {
           "actif": true,
@@ -1230,7 +1916,7 @@
       "id": 15,
       "nom": "Garage & ateliers",
       "icone": "🚗",
-      "intersystem": false,
+      "intersystem": true,
       "pilotages": {
         "eclairages": {
           "actif": true,
@@ -1241,7 +1927,34 @@
               "CINÉMA",
               "REPAS",
               "TOTAL"
-            ]
+            ],
+            "niveaux": [
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                16384,
+                19660,
+                13107
+              ],
+              [
+                32768,
+                39321,
+                45874,
+                32768
+              ],
+              [
+                65535,
+                65535,
+                65535,
+                65535
+              ]
+            ],
+            "niveauxDescription": "Niveau 0-65535 de chaque circuit pour chaque scène, dans l'ordre de circuits.noms. Valeur de repli : dès que le slot 2 remonte le niveau réel d'un circuit, c'est lui qui fait foi et la scène ne le repositionne plus."
           },
           "circuits": {
             "nombre": 4,
@@ -1284,7 +1997,26 @@
           ]
         },
         "cvc": {
-          "actif": true
+          "actif": true,
+          "marcheArret": true,
+          "ventilation": {
+            "actif": true,
+            "vitesses": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          "etatInitial": {
+            "marche": true,
+            "ventilation": 0
+          },
+          "consigne": {
+            "min": 16,
+            "max": 28,
+            "pas": 0.5
+          }
         },
         "controlesGeneraux": {
           "actif": true,
@@ -1300,7 +2032,8 @@
             5
           ]
         }
-      }
+      },
+      "actif": false
     }
   ],
   "traductions": {
@@ -1746,7 +2479,7 @@
     }
   },
   "contrat": {
-    "version": 3,
+    "version": "v4 (15.09.2026) — joins de pilotage globaux, routage SIMPL par buffers",
     "alarme": {
       "description": "Centrale d'alarme de la villa. Le code de reference n'est plus code en dur ni dans le JavaScript du panel ni dans le C# : le GUI envoie la saisie sur le serial 43, le C# la relaie telle quelle a l'EISC du slot 2 (serial 43) et attend le verdict de la vraie centrale (digital 44 = accepte, 45 = refuse). Si le slot 2 ne repond pas dans le delai ci-dessous, le C# tranche localement avec codeParDefaut.",
       "codeParDefaut": "1234",
@@ -2289,6 +3022,174 @@
         "direction": "entree",
         "eiscJoin": 46,
         "description": "Appui sur la touche C du pave : efface la saisie en cours."
+      },
+      {
+        "contractName": "CVC.Marche",
+        "type": "digital",
+        "join": 610,
+        "eiscJoin": 610,
+        "direction": "bidirectionnel",
+        "description": "GUI : impulsion commande et retour selection natif. EISC : impulsion vers slot 2 seulement ; etat via bloc CVC de piece."
+      },
+      {
+        "contractName": "CVC.Arret",
+        "type": "digital",
+        "join": 611,
+        "eiscJoin": 611,
+        "direction": "bidirectionnel",
+        "description": "GUI : impulsion commande et retour selection natif. EISC : impulsion vers slot 2 seulement ; etat via bloc CVC de piece."
+      },
+      {
+        "contractName": "CVC.VentilationAuto",
+        "type": "digital",
+        "join": 612,
+        "eiscJoin": 612,
+        "direction": "bidirectionnel",
+        "description": "GUI : impulsion commande et retour selection natif. EISC : impulsion vers slot 2 seulement ; etat via bloc CVC de piece."
+      },
+      {
+        "contractName": "CVC.VentilationFaible",
+        "type": "digital",
+        "join": 613,
+        "eiscJoin": 613,
+        "direction": "bidirectionnel",
+        "description": "GUI : impulsion commande et retour selection natif. EISC : impulsion vers slot 2 seulement ; etat via bloc CVC de piece."
+      },
+      {
+        "contractName": "CVC.VentilationMoyenne",
+        "type": "digital",
+        "join": 614,
+        "eiscJoin": 614,
+        "direction": "bidirectionnel",
+        "description": "GUI : impulsion commande et retour selection natif. EISC : impulsion vers slot 2 seulement ; etat via bloc CVC de piece."
+      },
+      {
+        "contractName": "CVC.VentilationForte",
+        "type": "digital",
+        "join": 615,
+        "eiscJoin": 615,
+        "direction": "bidirectionnel",
+        "description": "GUI : impulsion commande et retour selection natif. EISC : impulsion vers slot 2 seulement ; etat via bloc CVC de piece."
+      },
+      {
+        "contractName": "CVC.Ventilation",
+        "type": "analog",
+        "join": 61,
+        "eiscJoin": 61,
+        "direction": "bidirectionnel",
+        "description": "Vitesse 0 Auto, 1 faible, 2 moyenne, 3 forte ; retour GUI de la piece affichee."
+      },
+      {
+        "contractName": "Wellness.Sauna.On",
+        "type": "digital",
+        "join": 620,
+        "eiscJoin": 620,
+        "direction": "bidirectionnel"
+      },
+      {
+        "contractName": "Wellness.Sauna.Off",
+        "type": "digital",
+        "join": 621,
+        "eiscJoin": 621,
+        "direction": "bidirectionnel"
+      },
+      {
+        "contractName": "Wellness.Sauna.Plus",
+        "type": "digital",
+        "join": 622,
+        "eiscJoin": 622,
+        "direction": "bidirectionnel"
+      },
+      {
+        "contractName": "Wellness.Sauna.Moins",
+        "type": "digital",
+        "join": 623,
+        "eiscJoin": 623,
+        "direction": "bidirectionnel"
+      },
+      {
+        "contractName": "Wellness.Hammam.On",
+        "type": "digital",
+        "join": 624,
+        "eiscJoin": 624,
+        "direction": "bidirectionnel"
+      },
+      {
+        "contractName": "Wellness.Hammam.Off",
+        "type": "digital",
+        "join": 625,
+        "eiscJoin": 625,
+        "direction": "bidirectionnel"
+      },
+      {
+        "contractName": "Wellness.Hammam.Plus",
+        "type": "digital",
+        "join": 626,
+        "eiscJoin": 626,
+        "direction": "bidirectionnel"
+      },
+      {
+        "contractName": "Wellness.Hammam.Moins",
+        "type": "digital",
+        "join": 627,
+        "eiscJoin": 627,
+        "direction": "bidirectionnel"
+      },
+      {
+        "contractName": "Wellness.Sauna.Consigne",
+        "type": "analog",
+        "join": 62,
+        "eiscJoin": 62,
+        "direction": "bidirectionnel"
+      },
+      {
+        "contractName": "Wellness.Hammam.Consigne",
+        "type": "analog",
+        "join": 63,
+        "eiscJoin": 63,
+        "direction": "bidirectionnel"
+      },
+      {
+        "contractName": "Wellness.Sauna.Mesure",
+        "type": "analog",
+        "join": 64,
+        "eiscJoin": 64,
+        "direction": "sortie"
+      },
+      {
+        "contractName": "Wellness.Hammam.Mesure",
+        "type": "analog",
+        "join": 65,
+        "eiscJoin": 65,
+        "direction": "sortie"
+      },
+      {
+        "contractName": "Wellness.Sauna.Consigne.Texte",
+        "type": "serial",
+        "join": 62,
+        "eiscJoin": 62,
+        "direction": "sortie"
+      },
+      {
+        "contractName": "Wellness.Hammam.Consigne.Texte",
+        "type": "serial",
+        "join": 63,
+        "eiscJoin": 63,
+        "direction": "sortie"
+      },
+      {
+        "contractName": "Wellness.Sauna.Mesure.Texte",
+        "type": "serial",
+        "join": 64,
+        "eiscJoin": 64,
+        "direction": "sortie"
+      },
+      {
+        "contractName": "Wellness.Hammam.Mesure.Texte",
+        "type": "serial",
+        "join": 65,
+        "eiscJoin": 65,
+        "direction": "sortie"
       }
     ],
     "blocsPieces": {
@@ -2464,12 +3365,49 @@
           "offset": 54,
           "direction": "bidirectionnel",
           "description": "Volume du lecteur media 0..65535 (join logique GUI 254)."
+        },
+        {
+          "contractName": "Piece.<id>.CVC.MarcheVentilation",
+          "type": "digital",
+          "offsetDebut": 93,
+          "nombre": 6,
+          "direction": "bidirectionnel",
+          "description": "+93 marche (retour slot 2 niveau vrai/faux), +94 arret, +95 Auto, +96 faible, +97 moyen, +98 fort. Les offsets alarme +81..92 restent reserves."
+        },
+        {
+          "contractName": "Piece.<id>.CVC.Ventilation",
+          "type": "analog",
+          "offset": 33,
+          "direction": "bidirectionnel",
+          "description": "Vitesse 0 Auto, 1 faible, 2 moyenne, 3 forte. Ne pas confondre avec temperature mesuree +32."
+        },
+        {
+          "contractName": "Piece.<id>.Wellness.Commandes",
+          "type": "digital",
+          "offsetDebut": 11,
+          "nombre": 8,
+          "direction": "bidirectionnel"
+        },
+        {
+          "contractName": "Piece.<id>.Wellness.ConsignesMesures",
+          "type": "analog",
+          "offsetDebut": 34,
+          "nombre": 4,
+          "direction": "bidirectionnel"
+        },
+        {
+          "contractName": "Piece.<id>.Wellness.Texte",
+          "type": "serial",
+          "offsetDebut": 44,
+          "nombre": 4,
+          "direction": "sortie",
+          "description": "Consigne sauna, humidité cible hammam, température mesurée sauna, humidité mesurée hammam. -- tant que le driver ne fournit pas la mesure."
         }
       ]
     },
     "blocsPiecesGui": {
-      "actif": true,
-      "description": "Depuis le contrat v3 (11.09.2026) chaque piece expose son PROPRE bloc de joins cote GUI, identique au bloc EISC : base = 1000 + (pieceId - 1) * 100. Aucun join de pilotage n'est partage d'une piece a l'autre. Les numeros ci-dessous (cles du mapping) sont les joins LOGIQUES historiques utilises dans le HTML ; la couche VillaJoins les traduit a l'execution en joins PHYSIQUES base + offset selon la piece affichee par CE panel.",
+      "actif": false,
+      "description": "Contrat v3 (blocs par piece) DESACTIVE le 15.09.2026. Deux raisons : (1) CH5 fige sendEventOnClick a l'initialisation du composant, la reecriture d'attribut faite ici n'avait donc aucun effet sur l'emission — un bouton portant 1052 emettait toujours 151 ; (2) choix d'architecture : tous les pilotages (sources, telecommandes, scenes, stores) utilisent desormais des joins IDENTIQUES quelle que soit la piece, et SIMPL route sur Room_Select# (a10) avec des buffers, ce qui allege aussi le debugger Toolbox. Remettre actif=true restaurerait une traduction qui ne fonctionne pas : ne pas le faire sans avoir d'abord corrige le point (1).",
       "baseFormule": "1000 + (pieceId - 1) * 100",
       "tailleBloc": 100,
       "pieceMax": 30,
@@ -2575,10 +3513,23 @@
           "95": 75,
           "96": 76,
           "97": 77,
-          "98": 78
+          "98": 78,
+          "610": 93,
+          "611": 94,
+          "612": 95,
+          "613": 96,
+          "614": 97,
+          "615": 98,
+          "620": 11,
+          "621": 12,
+          "622": 13,
+          "623": 14,
+          "624": 15,
+          "625": 16,
+          "626": 17,
+          "627": 18
         },
         "analog": {
-          "21": 21,
           "31": 31,
           "51": 51,
           "52": 52,
@@ -2593,19 +3544,73 @@
           "77": 77,
           "78": 78,
           "79": 79,
-          "80": 80
+          "80": 80,
+          "61": 33,
+          "62": 34,
+          "63": 35,
+          "64": 36,
+          "65": 37
         },
         "serial": {
           "10": 10,
           "32": 32,
           "33": 33,
-          "34": 34
+          "34": 34,
+          "62": 44,
+          "63": 45,
+          "64": 46,
+          "65": 47
         }
       }
+    },
+    "cvcEtendu": {
+      "actif": true,
+      "commandes": {
+        "marche": 610,
+        "arret": 611,
+        "auto": 612,
+        "faible": 613,
+        "moyen": 614,
+        "fort": 615
+      },
+      "ventilationAnalogique": 61,
+      "ventilationValeurs": {
+        "auto": 0,
+        "faible": 1,
+        "moyen": 2,
+        "fort": 3
+      },
+      "retoursPieces": {
+        "marcheDigitalOffset": 93,
+        "arretDigitalOffset": 94,
+        "ventilationDigitalOffsetDebut": 95,
+        "ventilationAnalogOffset": 33
+      },
+      "note": "Commandes GUI globales 610-615, routage par a10 avant impulsion. Retours materiels par bloc CVC de piece : d(base+93) niveau marche vrai/faux, a(base+33) vitesse 0..3. Aucun retour global ambigu du slot 2."
+    },
+    "wellness": {
+      "actif": true,
+      "sauna": {
+        "marche": 620,
+        "arret": 621,
+        "plus": 622,
+        "moins": 623,
+        "consigne": 62,
+        "mesure": 64
+      },
+      "hammam": {
+        "marche": 624,
+        "arret": 625,
+        "plus": 626,
+        "moins": 627,
+        "consigne": 63,
+        "mesure": 65
+      },
+      "note": "Commandes globales, piece a10 avant impulsion; retours EISC par piece d+11/+15, a+34..37. Etat OFF initial; aucune ventilation des cabines. Reglages definitifs selon le fabricant du generateur."
     }
   },
   "pagesSpeciales": {
-    "description": "Pages speciales du menu de navigation (true = presente dans le menu). Jeux et Animation desactivees le 09.09.2026 (code conserve : remettre actif = true pour les retrouver). youtubeRecherche personnalise la video.",
+    "description": "Pages speciales du menu de navigation (true = presente dans le menu). Jeux et Animation desactivees le 09.09.2026 (code conserve : remettre actif = true pour les retrouver). youtubeRecherche personnalise la video. Video desactivee le 15.09.2026. Meme convention sur les pieces : \"actif\": false sort la piece des menus sans toucher a ses joins.",
     "jeux": {
       "actif": false,
       "nom": "Jeux",
@@ -2617,7 +3622,7 @@
       "icone": "✨"
     },
     "video": {
-      "actif": true,
+      "actif": false,
       "nom": "Vidéo",
       "icone": "⚽",
       "youtubeRecherche": "football highlights"

@@ -16,13 +16,15 @@ const path = require('path');
 const arg = name => { const i = process.argv.indexOf(name); return i < 0 ? null : process.argv[i + 1]; };
 const BASE = path.resolve(arg('--input') || path.join(__dirname, '..', 'simpl-windows', 'VillaCrans_Slot2.smw'));
 const OUT = path.resolve(arg('--output') || BASE);
+const CONFIG = path.resolve(arg('--config') || path.join(__dirname, '..', '..', 'ch5', 'villa_config.json'));
+const configRaw = fs.readFileSync(CONFIG, 'utf8');
+const villaCfg = JSON.parse(configRaw);
+const sameFile = (a, b) => process.platform === 'win32' ? a.toLowerCase() === b.toLowerCase() : a === b;
+if (!sameFile(OUT, BASE) && fs.existsSync(OUT)) throw new Error('La sortie SIMPL doit être un fichier neuf');
 
 let raw = fs.readFileSync(BASE, 'latin1');
+const original = raw;
 // Never delete user backups. A separate output leaves the working SIMPL project untouched.
-if (OUT === BASE) {
-  const stamp = new Date().toISOString().replace(/[:.T]/g, '-').replace('Z', '');
-  fs.writeFileSync(path.join(path.dirname(BASE), 'VillaCrans_Slot2.backup-' + stamp + '.smw'), raw, {encoding:'latin1',flag:'wx'});
-}
 const EOL = raw.includes('\r\n') ? '\r\n' : '\n';
 
 // --- 1. Corrections globales (sans effet si déjà appliquées) ---
@@ -238,11 +240,6 @@ for (let ci = 1; ci <= 10; ci++) OFF_A[70 + ci] = 'Circuit_' + ci;  // 71-80
 const OFF_S = { 44:'Sauna_Setpoint_Text',45:'Hammam_Setpoint_Text',46:'Sauna_Temperature_Text',47:'Hammam_Humidity_Text', 10: 'Room_Name', 32: 'HVAC_Temperature', 33: 'HVAC_Mode', 34: 'HVAC_Setpoint_Text' };
 
 // Controle du plan par rapport au mapping du contrat : aucun offset ne doit manquer.
-let villaCfg = null;
-for (const rel of [['..', '..', 'ch5', 'villa_config.json'], ['ch5', 'villa_config.json']]) {
-  try { villaCfg = JSON.parse(fs.readFileSync(path.join(__dirname, ...rel), 'utf8')); break; } catch (e) { /* suivant */ }
-}
-if (!villaCfg) { console.error('villa_config.json introuvable (attendu dans ../../ch5/)'); process.exit(1); }
 const mapping = (villaCfg.contrat && villaCfg.contrat.blocsPiecesGui && villaCfg.contrat.blocsPiecesGui.mapping) || {};
 const manquants = [];
 for (const [type, table, plan] of [['digital', mapping.digital, OFF_D], ['analog', mapping.analog, OFF_A], ['serial', mapping.serial, OFF_S]]) {
@@ -386,7 +383,12 @@ for (const s of newSignals) {
 }
 raw = raw.replace(/\s*$/, EOL) + sgBlocks;
 
-fs.writeFileSync(OUT, raw, 'latin1');
+if (fs.readFileSync(CONFIG, 'utf8') !== configRaw || fs.readFileSync(BASE, 'latin1') !== original) throw new Error('Sources modifiées pendant la génération : aucun fichier écrit');
+if (sameFile(OUT, BASE)) {
+  const stamp = new Date().toISOString().replace(/[:.T]/g, '-').replace('Z', '');
+  fs.writeFileSync(path.join(path.dirname(BASE), 'VillaCrans_Slot2.backup-' + stamp + '.smw'), original, {encoding:'latin1',flag:'wx'});
+}
+fs.writeFileSync(OUT, raw, {encoding:'latin1', flag: sameFile(OUT, BASE) ? 'w' : 'wx'});
 console.log('OK : ' + path.basename(OUT));
 console.log('Signaux ajoutés : ' + newSignals.length + ' (handles ' + (maxSgH + 1) + '..' + (nextH - 1) + ')');
 console.log('Entrées EISC : ' + iKeys.length + ' | Sorties EISC : ' + oKeys.length

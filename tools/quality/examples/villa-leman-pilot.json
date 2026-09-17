@@ -1,6 +1,6 @@
-window.villaConfigEmbedded = {
+{
   "meta": {
-    "projet": "Villa Crans",
+    "projet": "Villa Léman — pilote de réutilisation",
     "integrateur": "Fréquence TV",
     "version": "1.0.181",
     "mode": "deploiement",
@@ -17,15 +17,10 @@ window.villaConfigEmbedded = {
       "ru"
     ],
     "aide": [
-      "PROCESS ÉQUIPE FTV : 1) Remplir ce fichier (sections 'pieces', 'sourcesAudioVideo', 'scenesStores').",
-      "2) L'envoyer dans la conversation Claude qui complète la section 'traductions' pour toutes les langues du GUI.",
-      "3) Le déployer sur le CP4 (deploy.ps1 le copie dans /user/villa_config.json).",
-      "4) Au démarrage, le CP4 lit ce fichier et le transmet au CH5 qui modèle le GUI en conséquence.",
-      "RÈGLES : maximum 4 scènes d'éclairage par pièce. Maximum 10 circuits par pièce. Maximum 6 moteurs par pièce.",
-      "Un nom laissé vide (\"\") reprend le nom par défaut indiqué dans 'valeursParDefaut'.",
-      "Un pilotage avec \"actif\": false masque toute la section correspondante dans le GUI pour cette pièce.",
-      "ICONES : chaque piece a un champ icone (emoji affiche dans le menu de gauche). Choisir dans valeursParDefaut.iconesDisponibles et copier-coller."
-    ]
+      "Exemple de banc à deux pièces, sans installation physique.",
+      "Le moteur et les écrans Grand Montana sont inchangés ; la GUI commerciale Villa Léman reste distincte."
+    ],
+    "profil": "pilot-reuse-two-rooms"
   },
   "valeursParDefaut": {
     "iconesDisponibles": {
@@ -52,9 +47,9 @@ window.villaConfigEmbedded = {
     },
     "scenesEclairage": [
       "OFF",
-      "Sex",
-      "Baise",
-      "Alcool"
+      "CINÉMA",
+      "REPAS",
+      "TOTAL"
     ],
     "circuits": [
       "Spots plafond",
@@ -103,19 +98,19 @@ window.villaConfigEmbedded = {
   "sourcesAudioVideo": [
     {
       "id": 1,
-      "nom": "IPTV"
+      "nom": "APPLE TV"
     },
     {
       "id": 2,
-      "nom": "Box pirate"
+      "nom": "SKY Q"
     },
     {
       "id": 3,
-      "nom": "Humax"
+      "nom": "SWISSCOM TV"
     },
     {
       "id": 4,
-      "nom": "Jukebox"
+      "nom": "IPTV"
     },
     {
       "id": 5,
@@ -160,404 +155,8 @@ window.villaConfigEmbedded = {
   "pieces": [
     {
       "id": 1,
-      "nom": "Salle de jeux",
-      "icone": "🎮",
-      "intersystem": true,
-      "pilotages": {
-        "eclairages": {
-          "actif": true,
-          "scenes": {
-            "nombre": 4,
-            "noms": [
-              "OFF",
-              "CINÉMA",
-              "REPAS2",
-              "TOTAL3"
-            ],
-            "niveaux": [
-              [
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0
-              ],
-              [
-                0,
-                16384,
-                19660,
-                13107,
-                16384,
-                19660,
-                13107,
-                16384,
-                19660,
-                13107
-              ],
-              [
-                32768,
-                39321,
-                45874,
-                32768,
-                39321,
-                45874,
-                32768,
-                39321,
-                45874,
-                32768
-              ],
-              [
-                65535,
-                65535,
-                65535,
-                65535,
-                65535,
-                65535,
-                65535,
-                65535,
-                65535,
-                65535
-              ]
-            ],
-            "niveauxDescription": "Niveau 0-65535 de chaque circuit pour chaque scène, dans l'ordre de circuits.noms. Valeur de repli : dès que le slot 2 remonte le niveau réel d'un circuit, c'est lui qui fait foi et la scène ne le repositionne plus."
-          },
-          "circuits": {
-            "nombre": 10,
-            "noms": [
-              "Spots plafond ouest",
-              "Lustre principal",
-              "Ruban LED corniche",
-              "Applique murale nord",
-              "Spots plafond Ouest2",
-              "Lustre Principal2",
-              "Ruban LED Corniche2",
-              "Applique murale Nord2",
-              "Ruban LED Corniche3",
-              "Applique murale Nord3"
-            ]
-          }
-        },
-        "moteurs": {
-          "actif": false,
-          "nombre": 6,
-          "liste": [
-            {
-              "nom": "Volet ext. 1",
-              "type": "volet"
-            },
-            {
-              "nom": "Volet ext. 2",
-              "type": "volet"
-            },
-            {
-              "nom": "Rideau ext. 1",
-              "type": "rideau"
-            },
-            {
-              "nom": "Rideau ext. 2",
-              "type": "rideau"
-            },
-            {
-              "nom": "Store 1",
-              "type": "store"
-            },
-            {
-              "nom": "Store 2",
-              "type": "store"
-            }
-          ]
-        },
-        "cvc": {
-          "actif": false,
-          "marcheArret": true,
-          "ventilation": {
-            "actif": true,
-            "vitesses": [
-              0,
-              1,
-              2,
-              3
-            ]
-          },
-          "etatInitial": {
-            "marche": true,
-            "ventilation": 0
-          },
-          "consigne": {
-            "min": 16,
-            "max": 28,
-            "pas": 0.5
-          }
-        },
-        "controlesGeneraux": {
-          "actif": true,
-          "partitionsAlarme": 4
-        },
-        "audioVideo": {
-          "actif": false,
-          "sources": [
-            1,
-            2,
-            3,
-            4,
-            5
-          ]
-        }
-      }
-    },
-    {
-      "id": 2,
-      "nom": "Chambre maman",
-      "icone": "🛏️",
-      "intersystem": true,
-      "pilotages": {
-        "eclairages": {
-          "actif": true,
-          "scenes": {
-            "nombre": 4,
-            "noms": [
-              "OFF",
-              "Jeux",
-              "Baise",
-              "TOTAL"
-            ],
-            "niveaux": [
-              [
-                0,
-                0,
-                0,
-                0
-              ],
-              [
-                0,
-                16384,
-                19660,
-                13107
-              ],
-              [
-                32768,
-                39321,
-                45874,
-                32768
-              ],
-              [
-                65535,
-                65535,
-                65535,
-                65535
-              ]
-            ],
-            "niveauxDescription": "Niveau 0-65535 de chaque circuit pour chaque scène, dans l'ordre de circuits.noms. Valeur de repli : dès que le slot 2 remonte le niveau réel d'un circuit, c'est lui qui fait foi et la scène ne le repositionne plus."
-          },
-          "circuits": {
-            "nombre": 4,
-            "noms": [
-              "Spots zone cuisson",
-              "Suspension îlot",
-              "LED plan de travail",
-              "Plafonnier central"
-            ]
-          }
-        },
-        "moteurs": {
-          "actif": true,
-          "nombre": 6,
-          "liste": [
-            {
-              "nom": "Volet ext. 1",
-              "type": "volet"
-            },
-            {
-              "nom": "Volet ext. 2",
-              "type": "volet"
-            },
-            {
-              "nom": "Rideau ext. 1",
-              "type": "rideau"
-            },
-            {
-              "nom": "Rideau ext. 2",
-              "type": "rideau"
-            },
-            {
-              "nom": "Store 1",
-              "type": "store"
-            },
-            {
-              "nom": "Store 2",
-              "type": "store"
-            }
-          ]
-        },
-        "cvc": {
-          "actif": false,
-          "marcheArret": true,
-          "ventilation": {
-            "actif": true,
-            "vitesses": [
-              0,
-              1,
-              2,
-              3
-            ]
-          },
-          "etatInitial": {
-            "marche": true,
-            "ventilation": 0
-          },
-          "consigne": {
-            "min": 16,
-            "max": 28,
-            "pas": 0.5
-          }
-        },
-        "controlesGeneraux": {
-          "actif": false,
-          "partitionsAlarme": 4
-        },
-        "audioVideo": {
-          "actif": true,
-          "sources": [
-            1,
-            2,
-            3,
-            4,
-            5
-          ]
-        }
-      }
-    },
-    {
-      "id": 3,
-      "nom": "Chambre papa",
-      "icone": "🛏️",
-      "intersystem": true,
-      "pilotages": {
-        "eclairages": {
-          "actif": false,
-          "scenes": {
-            "nombre": 4,
-            "noms": [
-              "OFF",
-              "CINÉMA",
-              "REPAS",
-              "TOTAL"
-            ],
-            "niveaux": [
-              [
-                0,
-                0,
-                0,
-                0
-              ],
-              [
-                0,
-                16384,
-                19660,
-                13107
-              ],
-              [
-                32768,
-                39321,
-                45874,
-                32768
-              ],
-              [
-                65535,
-                65535,
-                65535,
-                65535
-              ]
-            ],
-            "niveauxDescription": "Niveau 0-65535 de chaque circuit pour chaque scène, dans l'ordre de circuits.noms. Valeur de repli : dès que le slot 2 remonte le niveau réel d'un circuit, c'est lui qui fait foi et la scène ne le repositionne plus."
-          },
-          "circuits": {
-            "nombre": 4,
-            "noms": [
-              "Lustre table repas",
-              "Spots plafond",
-              "Appliques buffet est",
-              "Ruban LED vaisselier"
-            ]
-          }
-        },
-        "moteurs": {
-          "actif": true,
-          "nombre": 6,
-          "liste": [
-            {
-              "nom": "Volet ext. 1",
-              "type": "volet"
-            },
-            {
-              "nom": "Volet ext. 2",
-              "type": "volet"
-            },
-            {
-              "nom": "Rideau ext. 1",
-              "type": "rideau"
-            },
-            {
-              "nom": "Rideau ext. 2",
-              "type": "rideau"
-            },
-            {
-              "nom": "Store 1",
-              "type": "store"
-            },
-            {
-              "nom": "Store 2",
-              "type": "store"
-            }
-          ]
-        },
-        "cvc": {
-          "actif": true,
-          "marcheArret": true,
-          "ventilation": {
-            "actif": true,
-            "vitesses": [
-              0,
-              1,
-              2,
-              3
-            ]
-          },
-          "etatInitial": {
-            "marche": true,
-            "ventilation": 0
-          },
-          "consigne": {
-            "min": 16,
-            "max": 28,
-            "pas": 0.5
-          }
-        },
-        "controlesGeneraux": {
-          "actif": true,
-          "partitionsAlarme": 4
-        },
-        "audioVideo": {
-          "actif": true,
-          "sources": [
-            1,
-            2,
-            3,
-            4,
-            5
-          ]
-        }
-      }
-    },
-    {
-      "id": 4,
-      "nom": "Suite amis",
-      "icone": "🚪",
+      "nom": "Salon",
+      "icone": "🛋️",
       "intersystem": true,
       "pilotages": {
         "eclairages": {
@@ -569,164 +168,16 @@ window.villaConfigEmbedded = {
               "CINÉMA",
               "REPAS",
               "TOTAL"
-            ],
-            "niveaux": [
-              [
-                0,
-                0,
-                0,
-                0
-              ],
-              [
-                0,
-                16384,
-                19660,
-                13107
-              ],
-              [
-                32768,
-                39321,
-                45874,
-                32768
-              ],
-              [
-                65535,
-                65535,
-                65535,
-                65535
-              ]
-            ],
-            "niveauxDescription": "Niveau 0-65535 de chaque circuit pour chaque scène, dans l'ordre de circuits.noms. Valeur de repli : dès que le slot 2 remonte le niveau réel d'un circuit, c'est lui qui fait foi et la scène ne le repositionne plus."
-          },
-          "circuits": {
-            "nombre": 4,
-            "noms": [
-              "Plafonnier suite",
-              "Liseuse lit gauche",
-              "Liseuse lit droite",
-              "Corniche LED tête de lit"
-            ]
-          }
-        },
-        "moteurs": {
-          "actif": false,
-          "nombre": 6,
-          "liste": [
-            {
-              "nom": "Volet ext. 1",
-              "type": "volet"
-            },
-            {
-              "nom": "Volet ext. 2",
-              "type": "volet"
-            },
-            {
-              "nom": "Rideau ext. 1",
-              "type": "rideau"
-            },
-            {
-              "nom": "Rideau ext. 2",
-              "type": "rideau"
-            },
-            {
-              "nom": "Store 1",
-              "type": "store"
-            },
-            {
-              "nom": "Store 2",
-              "type": "store"
-            }
-          ]
-        },
-        "cvc": {
-          "actif": true,
-          "marcheArret": true,
-          "ventilation": {
-            "actif": true,
-            "vitesses": [
-              0,
-              1,
-              2,
-              3
             ]
           },
-          "etatInitial": {
-            "marche": true,
-            "ventilation": 0
-          },
-          "consigne": {
-            "min": 16,
-            "max": 28,
-            "pas": 0.5
-          }
-        },
-        "controlesGeneraux": {
-          "actif": false,
-          "partitionsAlarme": 4
-        },
-        "audioVideo": {
-          "actif": false,
-          "sources": [
-            1,
-            2,
-            3,
-            4,
-            5
-          ]
-        }
-      }
-    },
-    {
-      "id": 5,
-      "nom": "Chambre amis",
-      "icone": "🛏️",
-      "intersystem": true,
-      "pilotages": {
-        "eclairages": {
-          "actif": true,
-          "scenes": {
-            "nombre": 4,
-            "noms": [
-              "OFF",
-              "CINÉMA",
-              "REPAS",
-              "TOTAL"
-            ],
-            "niveaux": [
-              [
-                0,
-                0,
-                0,
-                0
-              ],
-              [
-                0,
-                16384,
-                19660,
-                13107
-              ],
-              [
-                32768,
-                39321,
-                45874,
-                32768
-              ],
-              [
-                65535,
-                65535,
-                65535,
-                65535
-              ]
-            ],
-            "niveauxDescription": "Niveau 0-65535 de chaque circuit pour chaque scène, dans l'ordre de circuits.noms. Valeur de repli : dès que le slot 2 remonte le niveau réel d'un circuit, c'est lui qui fait foi et la scène ne le repositionne plus."
-          },
           "circuits": {
-            "nombre": 4,
+            "nombre": 5,
             "noms": [
-              "Plafonnier chambre 1",
-              "Lampe bureau 1",
-              "Liseuse lit 1",
-              "Spots dressing 1"
+              "Spots & suspensions",
+              "Lampes d’ambiance",
+              "Corniches",
+              "Appliques murales",
+              "Bandeaux LED"
             ]
           }
         },
@@ -755,1243 +206,7 @@ window.villaConfigEmbedded = {
               "type": "store"
             },
             {
-              "nom": "Store 2",
-              "type": "store"
-            }
-          ]
-        },
-        "cvc": {
-          "actif": true,
-          "marcheArret": true,
-          "ventilation": {
-            "actif": true,
-            "vitesses": [
-              0,
-              1,
-              2,
-              3
-            ]
-          },
-          "etatInitial": {
-            "marche": true,
-            "ventilation": 0
-          },
-          "consigne": {
-            "min": 16,
-            "max": 28,
-            "pas": 0.5
-          }
-        },
-        "controlesGeneraux": {
-          "actif": true,
-          "partitionsAlarme": 4
-        },
-        "audioVideo": {
-          "actif": true,
-          "sources": [
-            1,
-            2,
-            3,
-            4,
-            5
-          ]
-        }
-      }
-    },
-    {
-      "id": 6,
-      "nom": "Chambre 2",
-      "icone": "🛏️",
-      "intersystem": true,
-      "pilotages": {
-        "eclairages": {
-          "actif": true,
-          "scenes": {
-            "nombre": 4,
-            "noms": [
-              "OFF",
-              "CINÉMA",
-              "REPAS",
-              "TOTAL"
-            ],
-            "niveaux": [
-              [
-                0,
-                0,
-                0,
-                0
-              ],
-              [
-                0,
-                16384,
-                19660,
-                13107
-              ],
-              [
-                32768,
-                39321,
-                45874,
-                32768
-              ],
-              [
-                65535,
-                65535,
-                65535,
-                65535
-              ]
-            ],
-            "niveauxDescription": "Niveau 0-65535 de chaque circuit pour chaque scène, dans l'ordre de circuits.noms. Valeur de repli : dès que le slot 2 remonte le niveau réel d'un circuit, c'est lui qui fait foi et la scène ne le repositionne plus."
-          },
-          "circuits": {
-            "nombre": 4,
-            "noms": [
-              "Plafonnier chambre 2",
-              "Lampe bureau 2",
-              "Liseuse lit 2",
-              "Spots dressing 2"
-            ]
-          }
-        },
-        "moteurs": {
-          "actif": true,
-          "nombre": 6,
-          "liste": [
-            {
-              "nom": "Volet ext. 1",
-              "type": "volet"
-            },
-            {
-              "nom": "Volet ext. 2",
-              "type": "volet"
-            },
-            {
-              "nom": "Rideau ext. 1",
-              "type": "rideau"
-            },
-            {
-              "nom": "Rideau ext. 2",
-              "type": "rideau"
-            },
-            {
-              "nom": "Store 1",
-              "type": "store"
-            },
-            {
-              "nom": "Store 2",
-              "type": "store"
-            }
-          ]
-        },
-        "cvc": {
-          "actif": true,
-          "marcheArret": true,
-          "ventilation": {
-            "actif": true,
-            "vitesses": [
-              0,
-              1,
-              2,
-              3
-            ]
-          },
-          "etatInitial": {
-            "marche": true,
-            "ventilation": 0
-          },
-          "consigne": {
-            "min": 16,
-            "max": 28,
-            "pas": 0.5
-          }
-        },
-        "controlesGeneraux": {
-          "actif": true,
-          "partitionsAlarme": 4
-        },
-        "audioVideo": {
-          "actif": true,
-          "sources": [
-            1,
-            2,
-            3,
-            4,
-            5
-          ]
-        }
-      }
-    },
-    {
-      "id": 7,
-      "nom": "Bureau",
-      "icone": "💼",
-      "intersystem": true,
-      "pilotages": {
-        "eclairages": {
-          "actif": true,
-          "scenes": {
-            "nombre": 4,
-            "noms": [
-              "OFF",
-              "CINÉMA",
-              "REPAS",
-              "TOTAL"
-            ],
-            "niveaux": [
-              [
-                0,
-                0,
-                0,
-                0
-              ],
-              [
-                0,
-                16384,
-                19660,
-                13107
-              ],
-              [
-                32768,
-                39321,
-                45874,
-                32768
-              ],
-              [
-                65535,
-                65535,
-                65535,
-                65535
-              ]
-            ],
-            "niveauxDescription": "Niveau 0-65535 de chaque circuit pour chaque scène, dans l'ordre de circuits.noms. Valeur de repli : dès que le slot 2 remonte le niveau réel d'un circuit, c'est lui qui fait foi et la scène ne le repositionne plus."
-          },
-          "circuits": {
-            "nombre": 4,
-            "noms": [
-              "Spots plafond bureau",
-              "Lampe bureau design",
-              "Ruban LED bibliothèque",
-              "Applique zone accueil"
-            ]
-          }
-        },
-        "moteurs": {
-          "actif": true,
-          "nombre": 6,
-          "liste": [
-            {
-              "nom": "Volet ext. 1",
-              "type": "volet"
-            },
-            {
-              "nom": "Volet ext. 2",
-              "type": "volet"
-            },
-            {
-              "nom": "Rideau ext. 1",
-              "type": "rideau"
-            },
-            {
-              "nom": "Rideau ext. 2",
-              "type": "rideau"
-            },
-            {
-              "nom": "Store 1",
-              "type": "store"
-            },
-            {
-              "nom": "Store 2",
-              "type": "store"
-            }
-          ]
-        },
-        "cvc": {
-          "actif": true,
-          "marcheArret": true,
-          "ventilation": {
-            "actif": true,
-            "vitesses": [
-              0,
-              1,
-              2,
-              3
-            ]
-          },
-          "etatInitial": {
-            "marche": true,
-            "ventilation": 0
-          },
-          "consigne": {
-            "min": 16,
-            "max": 28,
-            "pas": 0.5
-          }
-        },
-        "controlesGeneraux": {
-          "actif": true,
-          "partitionsAlarme": 4
-        },
-        "audioVideo": {
-          "actif": true,
-          "sources": [
-            1,
-            2,
-            3,
-            4,
-            5
-          ]
-        }
-      }
-    },
-    {
-      "id": 8,
-      "nom": "Home cinéma",
-      "icone": "🎬",
-      "intersystem": true,
-      "pilotages": {
-        "eclairages": {
-          "actif": true,
-          "scenes": {
-            "nombre": 4,
-            "noms": [
-              "OFF",
-              "CINÉMA",
-              "REPAS",
-              "TOTAL"
-            ],
-            "niveaux": [
-              [
-                0,
-                0,
-                0,
-                0
-              ],
-              [
-                0,
-                16384,
-                19660,
-                13107
-              ],
-              [
-                32768,
-                39321,
-                45874,
-                32768
-              ],
-              [
-                65535,
-                65535,
-                65535,
-                65535
-              ]
-            ],
-            "niveauxDescription": "Niveau 0-65535 de chaque circuit pour chaque scène, dans l'ordre de circuits.noms. Valeur de repli : dès que le slot 2 remonte le niveau réel d'un circuit, c'est lui qui fait foi et la scène ne le repositionne plus."
-          },
-          "circuits": {
-            "nombre": 4,
-            "noms": [
-              "Nez de marche gradué",
-              "Appliques murales gauche",
-              "Appliques murales droite",
-              "Ruban LED écran"
-            ]
-          }
-        },
-        "moteurs": {
-          "actif": true,
-          "nombre": 6,
-          "liste": [
-            {
-              "nom": "Volet ext. 1",
-              "type": "volet"
-            },
-            {
-              "nom": "Volet ext. 2",
-              "type": "volet"
-            },
-            {
-              "nom": "Rideau ext. 1",
-              "type": "rideau"
-            },
-            {
-              "nom": "Rideau ext. 2",
-              "type": "rideau"
-            },
-            {
-              "nom": "Store 1",
-              "type": "store"
-            },
-            {
-              "nom": "Store 2",
-              "type": "store"
-            }
-          ]
-        },
-        "cvc": {
-          "actif": true,
-          "marcheArret": true,
-          "ventilation": {
-            "actif": true,
-            "vitesses": [
-              0,
-              1,
-              2,
-              3
-            ]
-          },
-          "etatInitial": {
-            "marche": true,
-            "ventilation": 0
-          },
-          "consigne": {
-            "min": 16,
-            "max": 28,
-            "pas": 0.5
-          }
-        },
-        "controlesGeneraux": {
-          "actif": true,
-          "partitionsAlarme": 4
-        },
-        "audioVideo": {
-          "actif": true,
-          "sources": [
-            1,
-            2,
-            3,
-            4,
-            5
-          ]
-        }
-      }
-    },
-    {
-      "id": 9,
-      "nom": "Chambre 3",
-      "icone": "🛏️",
-      "intersystem": true,
-      "pilotages": {
-        "eclairages": {
-          "actif": true,
-          "scenes": {
-            "nombre": 4,
-            "noms": [
-              "OFF",
-              "CINÉMA",
-              "REPAS",
-              "TOTAL"
-            ],
-            "niveaux": [
-              [
-                0,
-                0,
-                0,
-                0
-              ],
-              [
-                0,
-                16384,
-                19660,
-                13107
-              ],
-              [
-                32768,
-                39321,
-                45874,
-                32768
-              ],
-              [
-                65535,
-                65535,
-                65535,
-                65535
-              ]
-            ],
-            "niveauxDescription": "Niveau 0-65535 de chaque circuit pour chaque scène, dans l'ordre de circuits.noms. Valeur de repli : dès que le slot 2 remonte le niveau réel d'un circuit, c'est lui qui fait foi et la scène ne le repositionne plus."
-          },
-          "circuits": {
-            "nombre": 4,
-            "noms": [
-              "Plafonnier chambre 3",
-              "Lampe bureau 3",
-              "Liseuse lit 3",
-              "Spots dressing 3"
-            ]
-          }
-        },
-        "moteurs": {
-          "actif": true,
-          "nombre": 6,
-          "liste": [
-            {
-              "nom": "Volet ext. 1",
-              "type": "volet"
-            },
-            {
-              "nom": "Volet ext. 2",
-              "type": "volet"
-            },
-            {
-              "nom": "Rideau ext. 1",
-              "type": "rideau"
-            },
-            {
-              "nom": "Rideau ext. 2",
-              "type": "rideau"
-            },
-            {
-              "nom": "Store 1",
-              "type": "store"
-            },
-            {
-              "nom": "Store 2",
-              "type": "store"
-            }
-          ]
-        },
-        "cvc": {
-          "actif": true,
-          "marcheArret": true,
-          "ventilation": {
-            "actif": true,
-            "vitesses": [
-              0,
-              1,
-              2,
-              3
-            ]
-          },
-          "etatInitial": {
-            "marche": true,
-            "ventilation": 0
-          },
-          "consigne": {
-            "min": 16,
-            "max": 28,
-            "pas": 0.5
-          }
-        },
-        "controlesGeneraux": {
-          "actif": true,
-          "partitionsAlarme": 4
-        },
-        "audioVideo": {
-          "actif": true,
-          "sources": [
-            1,
-            2,
-            3,
-            4,
-            5
-          ]
-        }
-      }
-    },
-    {
-      "id": 10,
-      "nom": "Suite invités",
-      "icone": "🚪",
-      "intersystem": true,
-      "pilotages": {
-        "eclairages": {
-          "actif": true,
-          "scenes": {
-            "nombre": 4,
-            "noms": [
-              "OFF",
-              "CINÉMA",
-              "REPAS",
-              "TOTAL"
-            ],
-            "niveaux": [
-              [
-                0,
-                0,
-                0,
-                0
-              ],
-              [
-                0,
-                16384,
-                19660,
-                13107
-              ],
-              [
-                32768,
-                39321,
-                45874,
-                32768
-              ],
-              [
-                65535,
-                65535,
-                65535,
-                65535
-              ]
-            ],
-            "niveauxDescription": "Niveau 0-65535 de chaque circuit pour chaque scène, dans l'ordre de circuits.noms. Valeur de repli : dès que le slot 2 remonte le niveau réel d'un circuit, c'est lui qui fait foi et la scène ne le repositionne plus."
-          },
-          "circuits": {
-            "nombre": 4,
-            "noms": [
-              "Lustre suite invités",
-              "Liseuse invités",
-              "LED tête de lit",
-              "Spots dressing invités"
-            ]
-          }
-        },
-        "moteurs": {
-          "actif": true,
-          "nombre": 6,
-          "liste": [
-            {
-              "nom": "Volet ext. 1",
-              "type": "volet"
-            },
-            {
-              "nom": "Volet ext. 2",
-              "type": "volet"
-            },
-            {
-              "nom": "Rideau ext. 1",
-              "type": "rideau"
-            },
-            {
-              "nom": "Rideau ext. 2",
-              "type": "rideau"
-            },
-            {
-              "nom": "Store 1",
-              "type": "store"
-            },
-            {
-              "nom": "Store 2",
-              "type": "store"
-            }
-          ]
-        },
-        "cvc": {
-          "actif": true,
-          "marcheArret": true,
-          "ventilation": {
-            "actif": true,
-            "vitesses": [
-              0,
-              1,
-              2,
-              3
-            ]
-          },
-          "etatInitial": {
-            "marche": true,
-            "ventilation": 0
-          },
-          "consigne": {
-            "min": 16,
-            "max": 28,
-            "pas": 0.5
-          }
-        },
-        "controlesGeneraux": {
-          "actif": true,
-          "partitionsAlarme": 4
-        },
-        "audioVideo": {
-          "actif": true,
-          "sources": [
-            1,
-            2,
-            3,
-            4,
-            5
-          ]
-        }
-      }
-    },
-    {
-      "id": 11,
-      "nom": "Terrasse & jardin",
-      "icone": "🌿",
-      "intersystem": true,
-      "pilotages": {
-        "eclairages": {
-          "actif": true,
-          "scenes": {
-            "nombre": 4,
-            "noms": [
-              "OFF",
-              "CINÉMA",
-              "REPAS",
-              "TOTAL"
-            ],
-            "niveaux": [
-              [
-                0,
-                0,
-                0,
-                0
-              ],
-              [
-                0,
-                16384,
-                19660,
-                13107
-              ],
-              [
-                32768,
-                39321,
-                45874,
-                32768
-              ],
-              [
-                65535,
-                65535,
-                65535,
-                65535
-              ]
-            ],
-            "niveauxDescription": "Niveau 0-65535 de chaque circuit pour chaque scène, dans l'ordre de circuits.noms. Valeur de repli : dès que le slot 2 remonte le niveau réel d'un circuit, c'est lui qui fait foi et la scène ne le repositionne plus."
-          },
-          "circuits": {
-            "nombre": 4,
-            "noms": [
-              "Projecteurs avant-toit",
-              "Appliques façade sud",
-              "Spots encastrés sol",
-              "Ruban LED Sous-Banc"
-            ]
-          }
-        },
-        "moteurs": {
-          "actif": true,
-          "nombre": 6,
-          "liste": [
-            {
-              "nom": "Volet ext. 1",
-              "type": "volet"
-            },
-            {
-              "nom": "Volet ext. 2",
-              "type": "volet"
-            },
-            {
-              "nom": "Rideau ext. 1",
-              "type": "rideau"
-            },
-            {
-              "nom": "Rideau ext. 2",
-              "type": "rideau"
-            },
-            {
-              "nom": "Store 1",
-              "type": "store"
-            },
-            {
-              "nom": "Store 2",
-              "type": "store"
-            }
-          ]
-        },
-        "cvc": {
-          "actif": true,
-          "marcheArret": true,
-          "ventilation": {
-            "actif": true,
-            "vitesses": [
-              0,
-              1,
-              2,
-              3
-            ]
-          },
-          "etatInitial": {
-            "marche": true,
-            "ventilation": 0
-          },
-          "consigne": {
-            "min": 16,
-            "max": 28,
-            "pas": 0.5
-          }
-        },
-        "controlesGeneraux": {
-          "actif": true,
-          "partitionsAlarme": 4
-        },
-        "audioVideo": {
-          "actif": true,
-          "sources": [
-            1,
-            2,
-            3,
-            4,
-            5
-          ]
-        }
-      }
-    },
-    {
-      "id": 12,
-      "nom": "Piscine & spa",
-      "icone": "🏊",
-      "intersystem": true,
-      "pilotages": {
-        "eclairages": {
-          "actif": true,
-          "scenes": {
-            "nombre": 4,
-            "noms": [
-              "OFF",
-              "CINÉMA",
-              "REPAS",
-              "TOTAL"
-            ],
-            "niveaux": [
-              [
-                0,
-                0,
-                0,
-                0
-              ],
-              [
-                0,
-                16384,
-                19660,
-                13107
-              ],
-              [
-                32768,
-                39321,
-                45874,
-                32768
-              ],
-              [
-                65535,
-                65535,
-                65535,
-                65535
-              ]
-            ],
-            "niveauxDescription": "Niveau 0-65535 de chaque circuit pour chaque scène, dans l'ordre de circuits.noms. Valeur de repli : dès que le slot 2 remonte le niveau réel d'un circuit, c'est lui qui fait foi et la scène ne le repositionne plus."
-          },
-          "circuits": {
-            "nombre": 4,
-            "noms": [
-              "Projecteurs subaquatiques",
-              "Spots plafond spa",
-              "Ruban LED margelle",
-              "Appliques ambiance plage"
-            ]
-          }
-        },
-        "moteurs": {
-          "actif": true,
-          "nombre": 6,
-          "liste": [
-            {
-              "nom": "Volet ext. 1",
-              "type": "volet"
-            },
-            {
-              "nom": "Volet ext. 2",
-              "type": "volet"
-            },
-            {
-              "nom": "Rideau ext. 1",
-              "type": "rideau"
-            },
-            {
-              "nom": "Rideau ext. 2",
-              "type": "rideau"
-            },
-            {
-              "nom": "Store 1",
-              "type": "store"
-            },
-            {
-              "nom": "Store 2",
-              "type": "store"
-            }
-          ]
-        },
-        "cvc": {
-          "actif": true,
-          "marcheArret": true,
-          "ventilation": {
-            "actif": true,
-            "vitesses": [
-              0,
-              1,
-              2,
-              3
-            ]
-          },
-          "etatInitial": {
-            "marche": true,
-            "ventilation": 0
-          },
-          "consigne": {
-            "min": 16,
-            "max": 28,
-            "pas": 0.5
-          }
-        },
-        "controlesGeneraux": {
-          "actif": true,
-          "partitionsAlarme": 4
-        },
-        "audioVideo": {
-          "actif": true,
-          "sources": [
-            1,
-            2,
-            3,
-            4,
-            5
-          ]
-        }
-      }
-    },
-    {
-      "id": 13,
-      "nom": "Sauna & hammam",
-      "icone": "🧖",
-      "intersystem": true,
-      "pilotages": {
-        "eclairages": {
-          "actif": true,
-          "scenes": {
-            "nombre": 4,
-            "noms": [
-              "OFF",
-              "CINÉMA",
-              "REPAS",
-              "TOTAL"
-            ],
-            "niveaux": [
-              [
-                0,
-                0,
-                0,
-                0
-              ],
-              [
-                0,
-                16384,
-                19660,
-                13107
-              ],
-              [
-                32768,
-                39321,
-                45874,
-                32768
-              ],
-              [
-                65535,
-                65535,
-                65535,
-                65535
-              ]
-            ],
-            "niveauxDescription": "Niveau 0-65535 de chaque circuit pour chaque scène, dans l'ordre de circuits.noms. Valeur de repli : dès que le slot 2 remonte le niveau réel d'un circuit, c'est lui qui fait foi et la scène ne le repositionne plus."
-          },
-          "circuits": {
-            "nombre": 4,
-            "noms": [
-              "Plafonnier vapeur sauna",
-              "Ruban LED Sous-Banc sauna",
-              "Projecteurs hammam",
-              "Spots douche pluie"
-            ]
-          }
-        },
-        "moteurs": {
-          "actif": true,
-          "nombre": 6,
-          "liste": [
-            {
-              "nom": "Volet ext. 1",
-              "type": "volet"
-            },
-            {
-              "nom": "Volet ext. 2",
-              "type": "volet"
-            },
-            {
-              "nom": "Rideau ext. 1",
-              "type": "rideau"
-            },
-            {
-              "nom": "Rideau ext. 2",
-              "type": "rideau"
-            },
-            {
-              "nom": "Store 1",
-              "type": "store"
-            },
-            {
-              "nom": "Store 2",
-              "type": "store"
-            }
-          ]
-        },
-        "cvc": {
-          "actif": true,
-          "marcheArret": true,
-          "ventilation": {
-            "actif": true,
-            "vitesses": [
-              0,
-              1,
-              2,
-              3
-            ]
-          },
-          "etatInitial": {
-            "marche": true,
-            "ventilation": 0
-          },
-          "consigne": {
-            "min": 16,
-            "max": 28,
-            "pas": 0.5
-          }
-        },
-        "controlesGeneraux": {
-          "actif": true,
-          "partitionsAlarme": 4
-        },
-        "audioVideo": {
-          "actif": true,
-          "sources": [
-            1,
-            2,
-            3,
-            4,
-            5
-          ]
-        },
-        "wellness": {
-          "sauna": {
-            "actif": true,
-            "min": 60,
-            "max": 100,
-            "pas": 1,
-            "consigne": 80
-          },
-          "hammam": {
-            "actif": true,
-            "min": 90,
-            "max": 100,
-            "pas": 1,
-            "consigne": 95
-          }
-        }
-      }
-    },
-    {
-      "id": 14,
-      "nom": "Pool house",
-      "icone": "🏖️",
-      "intersystem": true,
-      "pilotages": {
-        "eclairages": {
-          "actif": true,
-          "scenes": {
-            "nombre": 4,
-            "noms": [
-              "OFF",
-              "CINÉMA",
-              "REPAS",
-              "TOTAL"
-            ],
-            "niveaux": [
-              [
-                0,
-                0,
-                0,
-                0
-              ],
-              [
-                0,
-                16384,
-                19660,
-                13107
-              ],
-              [
-                32768,
-                39321,
-                45874,
-                32768
-              ],
-              [
-                65535,
-                65535,
-                65535,
-                65535
-              ]
-            ],
-            "niveauxDescription": "Niveau 0-65535 de chaque circuit pour chaque scène, dans l'ordre de circuits.noms. Valeur de repli : dès que le slot 2 remonte le niveau réel d'un circuit, c'est lui qui fait foi et la scène ne le repositionne plus."
-          },
-          "circuits": {
-            "nombre": 4,
-            "noms": [
-              "Suspensions bar pool house",
-              "Spots plafond salon d'Été",
-              "Ruban LED comptoir",
-              "Appliques terrasse pool house"
-            ]
-          }
-        },
-        "moteurs": {
-          "actif": true,
-          "nombre": 6,
-          "liste": [
-            {
-              "nom": "Volet ext. 1",
-              "type": "volet"
-            },
-            {
-              "nom": "Volet ext. 2",
-              "type": "volet"
-            },
-            {
-              "nom": "Rideau ext. 1",
-              "type": "rideau"
-            },
-            {
-              "nom": "Rideau ext. 2",
-              "type": "rideau"
-            },
-            {
-              "nom": "Store 1",
-              "type": "store"
-            },
-            {
-              "nom": "Store 2",
-              "type": "store"
-            }
-          ]
-        },
-        "cvc": {
-          "actif": true,
-          "marcheArret": true,
-          "ventilation": {
-            "actif": true,
-            "vitesses": [
-              0,
-              1,
-              2,
-              3
-            ]
-          },
-          "etatInitial": {
-            "marche": true,
-            "ventilation": 0
-          },
-          "consigne": {
-            "min": 16,
-            "max": 28,
-            "pas": 0.5
-          }
-        },
-        "controlesGeneraux": {
-          "actif": true,
-          "partitionsAlarme": 4
-        },
-        "audioVideo": {
-          "actif": true,
-          "sources": [
-            1,
-            2,
-            3,
-            4,
-            5
-          ]
-        }
-      }
-    },
-    {
-      "id": 15,
-      "nom": "Garage & ateliers",
-      "icone": "🚗",
-      "intersystem": true,
-      "pilotages": {
-        "eclairages": {
-          "actif": true,
-          "scenes": {
-            "nombre": 4,
-            "noms": [
-              "OFF",
-              "CINÉMA",
-              "REPAS",
-              "TOTAL"
-            ],
-            "niveaux": [
-              [
-                0,
-                0,
-                0,
-                0
-              ],
-              [
-                0,
-                16384,
-                19660,
-                13107
-              ],
-              [
-                32768,
-                39321,
-                45874,
-                32768
-              ],
-              [
-                65535,
-                65535,
-                65535,
-                65535
-              ]
-            ],
-            "niveauxDescription": "Niveau 0-65535 de chaque circuit pour chaque scène, dans l'ordre de circuits.noms. Valeur de repli : dès que le slot 2 remonte le niveau réel d'un circuit, c'est lui qui fait foi et la scène ne le repositionne plus."
-          },
-          "circuits": {
-            "nombre": 4,
-            "noms": [
-              "Réglettes LED garage",
-              "Spots zone établi",
-              "Éclairage porte sectionnelle",
-              "Appliques entrée garage"
-            ]
-          }
-        },
-        "moteurs": {
-          "actif": true,
-          "nombre": 6,
-          "liste": [
-            {
-              "nom": "Volet ext. 1",
-              "type": "volet"
-            },
-            {
-              "nom": "Volet ext. 2",
-              "type": "volet"
-            },
-            {
-              "nom": "Rideau ext. 1",
-              "type": "rideau"
-            },
-            {
-              "nom": "Rideau ext. 2",
-              "type": "rideau"
-            },
-            {
-              "nom": "Store 1",
-              "type": "store"
-            },
-            {
-              "nom": "Store 2",
+              "nom": "Store banne extérieur",
               "type": "store"
             }
           ]
@@ -2033,7 +248,104 @@ window.villaConfigEmbedded = {
           ]
         }
       },
-      "actif": false
+      "actif": true
+    },
+    {
+      "id": 2,
+      "nom": "Cuisine",
+      "icone": "🍳",
+      "intersystem": true,
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "scenes": {
+            "nombre": 4,
+            "noms": [
+              "OFF",
+              "CINÉMA",
+              "REPAS",
+              "TOTAL"
+            ]
+          },
+          "circuits": {
+            "nombre": 5,
+            "noms": [
+              "Spots & suspensions",
+              "Lampes d’ambiance",
+              "Corniches",
+              "Appliques murales",
+              "Bandeaux LED"
+            ]
+          }
+        },
+        "moteurs": {
+          "actif": true,
+          "nombre": 6,
+          "liste": [
+            {
+              "nom": "Volet ext. 1",
+              "type": "volet"
+            },
+            {
+              "nom": "Volet ext. 2",
+              "type": "volet"
+            },
+            {
+              "nom": "Rideau ext. 1",
+              "type": "rideau"
+            },
+            {
+              "nom": "Rideau ext. 2",
+              "type": "rideau"
+            },
+            {
+              "nom": "Store 1",
+              "type": "store"
+            },
+            {
+              "nom": "Store banne extérieur",
+              "type": "store"
+            }
+          ]
+        },
+        "cvc": {
+          "actif": true,
+          "marcheArret": true,
+          "ventilation": {
+            "actif": true,
+            "vitesses": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          "etatInitial": {
+            "marche": true,
+            "ventilation": 0
+          },
+          "consigne": {
+            "min": 16,
+            "max": 28,
+            "pas": 0.5
+          }
+        },
+        "controlesGeneraux": {
+          "actif": true,
+          "partitionsAlarme": 4
+        },
+        "audioVideo": {
+          "actif": true,
+          "sources": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      },
+      "actif": true
     }
   ],
   "traductions": {
@@ -2134,18 +446,11 @@ window.villaConfigEmbedded = {
       "Éclairage porte sectionnelle": "Sectional door light",
       "Appliques entrée garage": "Garage entry sconces",
       "IPTV": "IPTV",
-      "Box pirate": "Pirate box",
-      "Humax": "Humax",
-      "Jukebox": "Jukebox",
-      "Sex": "Sex",
-      "Baise": "Fuck",
-      "Alcool": "Alcohol",
       "Salon2": "Living room 2",
-      "REPAS2": "DINNER 2",
-      "TOTAL3": "FULL 3",
-      "Chambre pour baiser": "Fuck room",
-      "Salle à baiser": "Shagging room",
-      "Suite bébé": "Baby suite"
+      "Suite bébé": "Baby suite",
+      "APPLE TV": "APPLE TV",
+      "SKY Q": "SKY Q",
+      "SWISSCOM TV": "SWISSCOM TV"
     },
     "es": {
       "Salon": "Salón",
@@ -2244,18 +549,11 @@ window.villaConfigEmbedded = {
       "Éclairage porte sectionnelle": "Luz puerta seccional",
       "Appliques entrée garage": "Apliques entrada garaje",
       "IPTV": "IPTV",
-      "Box pirate": "Caja pirata",
-      "Humax": "Humax",
-      "Jukebox": "Jukebox",
-      "Sex": "Sexo",
-      "Baise": "Follar",
-      "Alcool": "Alcohol",
       "Salon2": "Salón 2",
-      "REPAS2": "COMIDA 2",
-      "TOTAL3": "TOTAL 3",
-      "Chambre pour baiser": "Cuarto de follar",
-      "Salle à baiser": "Sala de follar",
-      "Suite bébé": "Suite del bebé"
+      "Suite bébé": "Suite del bebé",
+      "APPLE TV": "APPLE TV",
+      "SKY Q": "SKY Q",
+      "SWISSCOM TV": "SWISSCOM TV"
     },
     "de": {
       "Salon": "Wohnzimmer",
@@ -2354,18 +652,11 @@ window.villaConfigEmbedded = {
       "Éclairage porte sectionnelle": "Licht Sektionaltor",
       "Appliques entrée garage": "Wandleuchten Garageneinfahrt",
       "IPTV": "IPTV",
-      "Box pirate": "Piraten-Box",
-      "Humax": "Humax",
-      "Jukebox": "Jukebox",
-      "Sex": "Sex",
-      "Baise": "Fick",
-      "Alcool": "Alkohol",
       "Salon2": "Wohnzimmer 2",
-      "REPAS2": "ESSEN 2",
-      "TOTAL3": "VOLL 3",
-      "Chambre pour baiser": "Fickzimmer",
-      "Salle à baiser": "Ficksalon",
-      "Suite bébé": "Babysuite"
+      "Suite bébé": "Babysuite",
+      "APPLE TV": "APPLE TV",
+      "SKY Q": "SKY Q",
+      "SWISSCOM TV": "SWISSCOM TV"
     },
     "ru": {
       "Salon": "Гостиная",
@@ -2464,25 +755,18 @@ window.villaConfigEmbedded = {
       "Éclairage porte sectionnelle": "Свет секционных ворот",
       "Appliques entrée garage": "Бра въезда в гараж",
       "IPTV": "IPTV",
-      "Box pirate": "Пиратский бокс",
-      "Humax": "Humax",
-      "Jukebox": "Джукбокс",
-      "Sex": "Секс",
-      "Baise": "Трах",
-      "Alcool": "Алкоголь",
       "Salon2": "Гостиная 2",
-      "REPAS2": "УЖИН 2",
-      "TOTAL3": "ПОЛНЫЙ 3",
-      "Chambre pour baiser": "Комната для траха",
-      "Salle à baiser": "Зал для траха",
-      "Suite bébé": "Детская спальня"
+      "Suite bébé": "Детская спальня",
+      "APPLE TV": "APPLE TV",
+      "SKY Q": "SKY Q",
+      "SWISSCOM TV": "SWISSCOM TV"
     }
   },
   "contrat": {
     "version": "v4 (15.09.2026) — joins de pilotage globaux, routage SIMPL par buffers",
     "alarme": {
       "description": "Centrale d'alarme de la villa. Le code de reference n'est plus code en dur ni dans le JavaScript du panel ni dans le C# : le GUI envoie la saisie sur le serial 43, le C# la relaie telle quelle a l'EISC du slot 2 (serial 43) et attend le verdict de la vraie centrale (digital 44 = accepte, 45 = refuse). Si le slot 2 ne repond pas dans le delai ci-dessous, le C# tranche localement avec codeParDefaut.",
-      "codeParDefaut": "1234",
+      "codeParDefaut": "",
       "delaiReponseCentraleMs": 1200,
       "note": "codeParDefaut n'est qu'un repli de mise en service : a changer sur site, ou a vider (\"\") pour refuser toute validation locale et n'accepter que le verdict de la centrale du slot 2."
     },
@@ -3465,6 +1749,13 @@ window.villaConfigEmbedded = {
       ],
       "mapping": {
         "digital": {
+          "49": 35,
+          "50": 36,
+          "51": 21,
+          "52": 22,
+          "53": 23,
+          "54": 24,
+          "55": 50,
           "61": 1,
           "62": 2,
           "63": 3,
@@ -3474,28 +1765,6 @@ window.villaConfigEmbedded = {
           "67": 7,
           "68": 8,
           "69": 9,
-          "51": 21,
-          "52": 22,
-          "53": 23,
-          "54": 24,
-          "49": 35,
-          "50": 36,
-          "201": 41,
-          "202": 42,
-          "203": 43,
-          "204": 44,
-          "200": 45,
-          "55": 50,
-          "150": 51,
-          "151": 52,
-          "152": 53,
-          "153": 54,
-          "154": 55,
-          "155": 56,
-          "156": 57,
-          "251": 58,
-          "252": 59,
-          "253": 60,
           "81": 61,
           "82": 62,
           "83": 63,
@@ -3514,6 +1783,21 @@ window.villaConfigEmbedded = {
           "96": 76,
           "97": 77,
           "98": 78,
+          "150": 51,
+          "151": 52,
+          "152": 53,
+          "153": 54,
+          "154": 55,
+          "155": 56,
+          "156": 57,
+          "200": 45,
+          "201": 41,
+          "202": 42,
+          "203": 43,
+          "204": 44,
+          "251": 58,
+          "252": 59,
+          "253": 60,
           "610": 93,
           "611": 94,
           "612": 95,
@@ -3534,7 +1818,11 @@ window.villaConfigEmbedded = {
           "51": 51,
           "52": 52,
           "53": 53,
-          "254": 54,
+          "61": 33,
+          "62": 34,
+          "63": 35,
+          "64": 36,
+          "65": 37,
           "71": 71,
           "72": 72,
           "73": 73,
@@ -3545,11 +1833,7 @@ window.villaConfigEmbedded = {
           "78": 78,
           "79": 79,
           "80": 80,
-          "61": 33,
-          "62": 34,
-          "63": 35,
-          "64": 36,
-          "65": 37
+          "254": 54
         },
         "serial": {
           "10": 10,
@@ -3628,4 +1912,4 @@ window.villaConfigEmbedded = {
       "youtubeRecherche": "football highlights"
     }
   }
-};
+}

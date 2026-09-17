@@ -13,6 +13,19 @@ Vérifications locales : 36 combinaisons HVAC (555 assertions), 36 combinaisons 
 CH5Z assemblé et CPZ compilé (assembly 1.0.180.0), copie SMW préparée ; **LPZ non compilé, aucun matériel déployé ou vérifié**. Mesures wellness physiques inconnues tant qu’aucun driver ne les fournit. Le dossier `Claude outputs/room-revision/livraison` et les planches avant/après consignent le résultat ; ne pas assimiler la version du site à celle installée sur CP4/TSW.
 
 
+## 17/09/2026 — candidat 1.0.180, outillage de stabilisation 0.1.0
+
+| Artefact | État dans ce lot |
+|---|---|
+| CH5Z | Candidat bêta Alexandre 1.0.180, profil neutre, compilé hors dépôt |
+| CPZ slot 1 | Assembly 1.0.180.0 compilé et empaqueté avec le correctif de contexte EISC |
+| LPZ slot 2 | Non compilé ; copie SMW générée, contrôle HVAC 76/76 |
+| Showcase | Registre partagé et garde catalogue vérifiés localement ; aucune publication par ce lot |
+
+Le miroir vers SIMPL remet désormais la pièce a10 de l'écran émetteur avant les commandes sources, scènes, stores, télécommandes et analogiques. Reproduction sur le vrai corps C# avec objets de signaux simulés : 8 échecs/10 avant ; 22 scénarios réussis après. La recette de simultanéité et de timing EISC reste matérielle. Configuration embarquée réalignée depuis la source canonique, sans modification des noms/activations physiques de celle-ci. Le profil bêta exporté possède des libellés neutres et aucun code alarme de secours.
+
+Nouveaux outils sous `tools/quality/` à la racine du monorepo ; méthode et limites dans `docs/industrialisation/`. Aucun appareil contacté, aucun ancien LPZ recopié comme un binaire validé. Préserver le travail 3D/Wellness concurrent.
+
 
 ## 16/09/2026 — estate-2, GUI 1.0.179 : villa, animations et HVAC
 
@@ -608,3 +621,13 @@ cohérence des 3 thèmes, engrenages en SVG, son caché retiré.
 
 ## v1.0.165 — 09.09.2026
 Retours de direction du 09.09 appliqués, bandeau « État de la villa », contrat de joins v2.
+
+## 17/09/2026 — outillage 0.2.0, GUI 1.0.181 / C# 1.0.180 inchangé
+
+Préparation CH5 et SIMPL depuis la même configuration, profil de compatibilité versionné avec empreintes des sources, refus des joins/plages/identifiants non pris en charge. Générateur SIMPL : --config, sortie distincte neuve, conservation du fichier de travail et contrôle des entrées avant écriture. Pilote Villa Léman à deux pièces préparé et chargé sur trois supports × trois thèmes. Contraintes et preuves : docs/industrialisation/LOT-0.2.0.md.
+
+Quatre artefacts : CH5Z pilote assemblé/non qualifié ; CPZ inchangé par ce lot ; SMW préparés, LPZ non compilé ; correction du mode démo/registre sur le site, publication suivie dans le bilan. Aucune connexion matérielle. Validation ciblée : 43 tests outillage, 49 démo, 28 chargement/visibilité pilote, 76 HVAC, 53 Wellness ; build/lint réussis.
+
+Correction commune de la carte HVAC après revue à 1280 × 800 : marges adaptées au conteneur Wellness et disposition compacte des commandes ON/OFF/ventilation. CH5 et copie vitrine synchronisés en 1.0.181. Programme C# identique, assembly 1.0.180.0 ; CH5Z beta et pilote reconstruits. Les empreintes de la copie C# ayant produit le CPZ précédent correspondent aux sources actuelles. Matrice HVAC : 555 contrôles réussis après reprise d’un essai expiré. Aucun LPZ compilé.
+
+Validation finale GUI 1.0.181 : 632 contrôles Wellness (36 combinaisons et retours natifs) et contraste 4:1 réussis. Les fiches FR/EN/DE et captures d’accueil sombre/clair décrivent la disposition compacte.

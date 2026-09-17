@@ -1,30 +1,11 @@
-import React, { Suspense, lazy, useState, useEffect, useCallback } from "react";
+import React, { Suspense, useState, useEffect, useCallback } from "react";
 import { Icons } from "../icons";
 import { useTranslation } from "../context/LanguageContext";
 import { projects, getProjectName } from "../data/projects";
 import "../demo.css";
 
-// Simulateurs chargés à la demande (même stratégie que Showcase.jsx).
-const lazyNamed = (loader, name) => lazy(() => loader().then((m) => ({ default: m[name] })));
-const SIMULATORS = {
-  "villa-gemini": lazyNamed(() => import("./simulators/VillaGemini"), "VillaGemini"),
-  "hotel-geneva": lazyNamed(() => import("./simulators/HotelGeneva"), "HotelGeneva"),
-  "crestron-home": lazyNamed(() => import("./simulators/CrestronHome"), "CrestronHome"),
-  "yacht-monaco": lazyNamed(() => import("./simulators/YachtMonaco"), "YachtMonaco"),
-  "chalet-zermatt": lazyNamed(() => import("./simulators/ChaletZermatt"), "ChaletZermatt"),
-  "boardroom-futureav": lazyNamed(() => import("./simulators/BoardroomFutureAV"), "BoardroomFutureAV"),
-  "club-etoile": lazyNamed(() => import("./simulators/ClubEtoile"), "ClubEtoile"),
-  "boutique-hermes": lazyNamed(() => import("./simulators/BoutiqueHermes"), "BoutiqueHermes"),
-  "sushi-bar-kyoto": lazyNamed(() => import("./simulators/SushiBarKyoto"), "SushiBarKyoto"),
-  "auditorium-richmond": lazyNamed(() => import("./simulators/AuditoriumRichmond"), "AuditoriumRichmond"),
-  "home-cinema-cologny": lazyNamed(() => import("./simulators/HomeCinemaCologny"), "HomeCinemaCologny"),
-  "huddle-room-nyon": lazyNamed(() => import("./simulators/HuddleRoomNyon"), "HuddleRoomNyon"),
-  "suite-palace-montreux": lazyNamed(() => import("./simulators/SuitePalaceMontreux"), "SuitePalaceMontreux"),
-  "appartement-eaux-vives": lazyNamed(() => import("./simulators/AppartementEauxVives"), "AppartementEauxVives"),
-  "villa-leman": lazyNamed(() => import("./simulators/VillaLeman"), "VillaLeman"),
-  "siege-nyon": lazyNamed(() => import("./simulators/SiegeNyon"), "SiegeNyon"),
-  "appartement-carouge": lazyNamed(() => import("./simulators/AppartementCarouge"), "AppartementCarouge"),
-};
+import { getSimulator } from "./simulatorRegistry";
+import { supportsDemoDevice, nextDemoDevice } from "./demoCapabilities";
 
 const SimulatorFallback = () => (
   <div className="simulator-loading">
@@ -67,7 +48,7 @@ const renderIcon = (iconName, size = 16, className = "") => {
 /* appareil (aucun boîtier simulé).                                   */
 /* ------------------------------------------------------------------ */
 const DemoPlayer = ({ project, deviceType, onBack, onToggleDevice }) => {
-  const { lang } = useTranslation();
+  const { lang, t } = useTranslation();
   const [controlsVisible, setControlsVisible] = useState(true);
 
   // Masquage automatique des contrôles flottants
@@ -79,9 +60,7 @@ const DemoPlayer = ({ project, deviceType, onBack, onToggleDevice }) => {
 
   const showControls = useCallback(() => setControlsVisible(true), []);
 
-  const Simulator = project.isInteractive
-    ? SIMULATORS[project.id] || SIMULATORS["villa-gemini"]
-    : null;
+  const Simulator = getSimulator(project);
 
   const embedSrc =
     deviceType === "phone" && project.embedPhoneUrl
@@ -109,17 +88,17 @@ const DemoPlayer = ({ project, deviceType, onBack, onToggleDevice }) => {
       <div
         className={`demo-player-controls ${controlsVisible ? "visible" : "hidden"}`}
       >
-        <button className="demo-ctrl-btn" onClick={onBack} aria-label="Retour">
+        <button className="demo-ctrl-btn" onClick={onBack} aria-label={t("demo_back")}>
           {renderIcon("ChevronLeft", 20)}
         </button>
         <span className="demo-ctrl-title">{getProjectName(project, lang)}</span>
-        <button
+        {nextDemoDevice(project, deviceType) !== deviceType && <button
           className="demo-ctrl-btn"
           onClick={onToggleDevice}
-          aria-label="Basculer téléphone / tablette"
+          aria-label={t("demo_toggle_device")}
         >
           {renderIcon(deviceType === "phone" ? "Smartphone" : "Tablet", 18)}
-        </button>
+        </button>}
       </div>
     </div>
   );
@@ -128,7 +107,7 @@ const DemoPlayer = ({ project, deviceType, onBack, onToggleDevice }) => {
 /* ------------------------------------------------------------------ */
 /* Launcher : liste tactile de toutes les interfaces                   */
 /* ------------------------------------------------------------------ */
-const DemoLauncher = ({ onOpenProject, onExitDemo }) => {
+const DemoLauncher = ({ deviceType, onOpenProject, onExitDemo }) => {
   const { t, lang, changeLanguage, supportedLangs } = useTranslation();
   const [isStandalone] = useState(
     () =>
@@ -176,7 +155,7 @@ const DemoLauncher = ({ onOpenProject, onExitDemo }) => {
       )}
 
       <main className="demo-project-grid">
-        {projects.map((proj) => (
+        {projects.filter(proj => supportsDemoDevice(proj, deviceType)).map((proj) => (
           <button
             key={proj.id}
             className="demo-project-card"
@@ -245,6 +224,10 @@ export const DemoMode = ({ route, onNavigate, onExitDemo }) => {
   const projectId = route.startsWith("demo/") ? route.slice(5) : null;
   const project = projectId ? projects.find((p) => p.id === projectId) : null;
 
+  if (projectId && !supportsDemoDevice(project, deviceType)) {
+    return <DemoUnavailable project={project} onBack={() => onNavigate("demo")} onExitDemo={onExitDemo} />;
+  }
+
   if (project) {
     return (
       <DemoPlayer
@@ -252,7 +235,7 @@ export const DemoMode = ({ route, onNavigate, onExitDemo }) => {
         deviceType={deviceType}
         onBack={() => onNavigate("demo")}
         onToggleDevice={() =>
-          setDeviceType((d) => (d === "phone" ? "tablet" : "phone"))
+          setDeviceType((d) => nextDemoDevice(project, d))
         }
       />
     );
@@ -260,8 +243,21 @@ export const DemoMode = ({ route, onNavigate, onExitDemo }) => {
 
   return (
     <DemoLauncher
+      deviceType={deviceType}
       onOpenProject={(id) => onNavigate(`demo/${id}`)}
       onExitDemo={onExitDemo}
     />
+  );
+};
+
+const DemoUnavailable = ({ project, onBack, onExitDemo }) => {
+  const { t, lang } = useTranslation();
+  return (
+    <main className="demo-launcher demo-unavailable">
+      <h1>{project ? getProjectName(project, lang) : t("demo_unknown")}</h1>
+      <p>{t(project ? "demo_unsupported" : "demo_unknown_hint")}</p>
+      <button className="demo-unavailable-action" onClick={onBack}>{t("demo_back")}</button>
+      <button className="demo-exit-link" onClick={onExitDemo}>{t("demo_full_site")}</button>
+    </main>
   );
 };

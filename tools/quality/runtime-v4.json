@@ -1,0 +1,2390 @@
+{
+  "id": "grand-montana-v4-gui1.0.181-csharp1.0.180",
+  "sourceVersion": "1.0.181",
+  "qualification": "static-compatibility-only",
+  "hashFormat": "sha256 UTF-8 with LF line endings",
+  "hvacDefaults": {
+    "consigneMinC": 16,
+    "consigneMaxC": 28,
+    "pasC": 0.5
+  },
+  "contract": {
+    "cvcEtendu": {
+      "actif": true,
+      "commandes": {
+        "arret": 611,
+        "auto": 612,
+        "faible": 613,
+        "fort": 615,
+        "marche": 610,
+        "moyen": 614
+      },
+      "retoursPieces": {
+        "arretDigitalOffset": 94,
+        "marcheDigitalOffset": 93,
+        "ventilationAnalogOffset": 33,
+        "ventilationDigitalOffsetDebut": 95
+      },
+      "ventilationAnalogique": 61,
+      "ventilationValeurs": {
+        "auto": 0,
+        "faible": 1,
+        "fort": 3,
+        "moyen": 2
+      }
+    },
+    "eisc": {
+      "actif": true,
+      "adresseIp": "127.0.0.2",
+      "ipid": "0XF0",
+      "slotCible": 2
+    },
+    "globals": [
+      {
+        "direction": "bidirectionnel",
+        "eiscJoin": 10,
+        "join": 10,
+        "type": "analog"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoin": 21,
+        "join": 21,
+        "type": "analog"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoin": 31,
+        "join": 31,
+        "type": "analog"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoin": 51,
+        "join": 51,
+        "type": "analog"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoin": 52,
+        "join": 52,
+        "type": "analog"
+      },
+      {
+        "direction": "sortie",
+        "eiscJoin": 53,
+        "join": 53,
+        "type": "analog"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoin": 61,
+        "join": 61,
+        "type": "analog"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoin": 62,
+        "join": 62,
+        "type": "analog"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoin": 63,
+        "join": 63,
+        "type": "analog"
+      },
+      {
+        "direction": "sortie",
+        "eiscJoin": 64,
+        "join": 64,
+        "type": "analog"
+      },
+      {
+        "direction": "sortie",
+        "eiscJoin": 65,
+        "join": 65,
+        "type": "analog"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 71,
+        "join": 71,
+        "type": "analog"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 71,
+        "join": 72,
+        "type": "analog"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 71,
+        "join": 73,
+        "type": "analog"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 71,
+        "join": 74,
+        "type": "analog"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 71,
+        "join": 75,
+        "type": "analog"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 71,
+        "join": 76,
+        "type": "analog"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 71,
+        "join": 77,
+        "type": "analog"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 71,
+        "join": 78,
+        "type": "analog"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 71,
+        "join": 79,
+        "type": "analog"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 71,
+        "join": 80,
+        "type": "analog"
+      },
+      {
+        "direction": "sortie",
+        "eiscJoin": 240,
+        "join": 240,
+        "type": "analog"
+      },
+      {
+        "direction": "entree",
+        "eiscJoin": 250,
+        "join": 250,
+        "type": "analog"
+      },
+      {
+        "direction": "bidirectionnel",
+        "join": 254,
+        "type": "analog"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoin": 260,
+        "join": 260,
+        "type": "analog"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 11,
+        "join": 11,
+        "type": "digital"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 11,
+        "join": 12,
+        "type": "digital"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 11,
+        "join": 13,
+        "type": "digital"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 11,
+        "join": 14,
+        "type": "digital"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 11,
+        "join": 15,
+        "type": "digital"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 11,
+        "join": 16,
+        "type": "digital"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 11,
+        "join": 17,
+        "type": "digital"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 11,
+        "join": 18,
+        "type": "digital"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 11,
+        "join": 19,
+        "type": "digital"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 11,
+        "join": 20,
+        "type": "digital"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 11,
+        "join": 21,
+        "type": "digital"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 11,
+        "join": 22,
+        "type": "digital"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 11,
+        "join": 23,
+        "type": "digital"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 11,
+        "join": 24,
+        "type": "digital"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 11,
+        "join": 25,
+        "type": "digital"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 11,
+        "join": 26,
+        "type": "digital"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 11,
+        "join": 27,
+        "type": "digital"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 11,
+        "join": 28,
+        "type": "digital"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 11,
+        "join": 29,
+        "type": "digital"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 11,
+        "join": 30,
+        "type": "digital"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 11,
+        "join": 31,
+        "type": "digital"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 11,
+        "join": 32,
+        "type": "digital"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 11,
+        "join": 33,
+        "type": "digital"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 11,
+        "join": 34,
+        "type": "digital"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 11,
+        "join": 35,
+        "type": "digital"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 11,
+        "join": 36,
+        "type": "digital"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 11,
+        "join": 37,
+        "type": "digital"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 11,
+        "join": 38,
+        "type": "digital"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 11,
+        "join": 39,
+        "type": "digital"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 11,
+        "join": 40,
+        "type": "digital"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoin": 41,
+        "join": 41,
+        "type": "digital"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoin": 42,
+        "join": 42,
+        "type": "digital"
+      },
+      {
+        "direction": "sortie",
+        "eiscJoin": 44,
+        "join": 44,
+        "type": "digital"
+      },
+      {
+        "direction": "sortie",
+        "eiscJoin": 45,
+        "join": 45,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoin": 46,
+        "join": 46,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoin": 49,
+        "join": 49,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoin": 50,
+        "join": 50,
+        "type": "digital"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 51,
+        "join": 51,
+        "type": "digital"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 51,
+        "join": 52,
+        "type": "digital"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 51,
+        "join": 53,
+        "type": "digital"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 51,
+        "join": 54,
+        "type": "digital"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoin": 55,
+        "join": 55,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoin": 56,
+        "join": 56,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 61,
+        "join": 61,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 61,
+        "join": 62,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 61,
+        "join": 63,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 61,
+        "join": 64,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 61,
+        "join": 65,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 61,
+        "join": 66,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 61,
+        "join": 67,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 61,
+        "join": 68,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 61,
+        "join": 69,
+        "type": "digital"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 81,
+        "join": 81,
+        "type": "digital"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 81,
+        "join": 82,
+        "type": "digital"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 81,
+        "join": 83,
+        "type": "digital"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 81,
+        "join": 84,
+        "type": "digital"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 81,
+        "join": 85,
+        "type": "digital"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 81,
+        "join": 86,
+        "type": "digital"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 81,
+        "join": 87,
+        "type": "digital"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 81,
+        "join": 88,
+        "type": "digital"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 81,
+        "join": 89,
+        "type": "digital"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 81,
+        "join": 90,
+        "type": "digital"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 81,
+        "join": 91,
+        "type": "digital"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 81,
+        "join": 92,
+        "type": "digital"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 81,
+        "join": 93,
+        "type": "digital"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 81,
+        "join": 94,
+        "type": "digital"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 81,
+        "join": 95,
+        "type": "digital"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 81,
+        "join": 96,
+        "type": "digital"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 81,
+        "join": 97,
+        "type": "digital"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 81,
+        "join": 98,
+        "type": "digital"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 150,
+        "join": 150,
+        "type": "digital"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 150,
+        "join": 151,
+        "type": "digital"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 150,
+        "join": 152,
+        "type": "digital"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 150,
+        "join": 153,
+        "type": "digital"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 150,
+        "join": 154,
+        "type": "digital"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoin": 155,
+        "join": 155,
+        "type": "digital"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoin": 156,
+        "join": 156,
+        "type": "digital"
+      },
+      {
+        "direction": "bidirectionnel",
+        "join": 200,
+        "type": "digital"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 201,
+        "join": 201,
+        "type": "digital"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 201,
+        "join": 202,
+        "type": "digital"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 201,
+        "join": 203,
+        "type": "digital"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 201,
+        "join": 204,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 211,
+        "join": 211,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 211,
+        "join": 212,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 211,
+        "join": 213,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 211,
+        "join": 214,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 211,
+        "join": 215,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 211,
+        "join": 216,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 211,
+        "join": 217,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 211,
+        "join": 218,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 211,
+        "join": 219,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 211,
+        "join": 220,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoin": 250,
+        "join": 250,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "join": 251,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "join": 252,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "join": 253,
+        "type": "digital"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoin": 261,
+        "join": 261,
+        "type": "digital"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 301,
+        "join": 301,
+        "type": "digital"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 301,
+        "join": 302,
+        "type": "digital"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 301,
+        "join": 303,
+        "type": "digital"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 301,
+        "join": 304,
+        "type": "digital"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 301,
+        "join": 305,
+        "type": "digital"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 301,
+        "join": 306,
+        "type": "digital"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 301,
+        "join": 307,
+        "type": "digital"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 301,
+        "join": 308,
+        "type": "digital"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 301,
+        "join": 309,
+        "type": "digital"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 301,
+        "join": 310,
+        "type": "digital"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 301,
+        "join": 311,
+        "type": "digital"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 301,
+        "join": 312,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoin": 401,
+        "join": 401,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoin": 402,
+        "join": 402,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoin": 403,
+        "join": 403,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoin": 404,
+        "join": 404,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoin": 405,
+        "join": 405,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoin": 406,
+        "join": 406,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoin": 407,
+        "join": 407,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoin": 408,
+        "join": 408,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoin": 409,
+        "join": 409,
+        "type": "digital"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoin": 410,
+        "join": 410,
+        "type": "digital"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoin": 411,
+        "join": 411,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 500,
+        "join": 500,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 500,
+        "join": 501,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 500,
+        "join": 502,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 500,
+        "join": 503,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 500,
+        "join": 504,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 500,
+        "join": 505,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 500,
+        "join": 506,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 500,
+        "join": 507,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 500,
+        "join": 508,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 500,
+        "join": 509,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 500,
+        "join": 510,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 500,
+        "join": 511,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 500,
+        "join": 512,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 500,
+        "join": 513,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 500,
+        "join": 514,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 500,
+        "join": 515,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 500,
+        "join": 516,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 500,
+        "join": 517,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 500,
+        "join": 518,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 500,
+        "join": 519,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 500,
+        "join": 520,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 500,
+        "join": 521,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 500,
+        "join": 522,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 500,
+        "join": 523,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 500,
+        "join": 524,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 500,
+        "join": 525,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 500,
+        "join": 526,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 500,
+        "join": 527,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 530,
+        "join": 530,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 530,
+        "join": 531,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 530,
+        "join": 532,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 530,
+        "join": 533,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 530,
+        "join": 534,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 530,
+        "join": 535,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 530,
+        "join": 536,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 530,
+        "join": 537,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 530,
+        "join": 538,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 530,
+        "join": 539,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 530,
+        "join": 540,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 530,
+        "join": 541,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 530,
+        "join": 542,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 530,
+        "join": 543,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 530,
+        "join": 544,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 530,
+        "join": 545,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 530,
+        "join": 546,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 530,
+        "join": 547,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 530,
+        "join": 548,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 530,
+        "join": 549,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 530,
+        "join": 550,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 530,
+        "join": 551,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 530,
+        "join": 552,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 530,
+        "join": 553,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 530,
+        "join": 554,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 530,
+        "join": 555,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 530,
+        "join": 556,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 530,
+        "join": 557,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 560,
+        "join": 560,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 560,
+        "join": 561,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 560,
+        "join": 562,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 560,
+        "join": 563,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 560,
+        "join": 564,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 560,
+        "join": 565,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 560,
+        "join": 566,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 560,
+        "join": 567,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 560,
+        "join": 568,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 560,
+        "join": 569,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 560,
+        "join": 570,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 560,
+        "join": 571,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 560,
+        "join": 572,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 560,
+        "join": 573,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 560,
+        "join": 574,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 560,
+        "join": 575,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 560,
+        "join": 576,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 560,
+        "join": 577,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 560,
+        "join": 578,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 560,
+        "join": 579,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 560,
+        "join": 580,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 560,
+        "join": 581,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 560,
+        "join": 582,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 560,
+        "join": 583,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 560,
+        "join": 584,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 560,
+        "join": 585,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 560,
+        "join": 586,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 560,
+        "join": 587,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 560,
+        "join": 588,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 560,
+        "join": 589,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 560,
+        "join": 590,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 560,
+        "join": 591,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 560,
+        "join": 592,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 560,
+        "join": 593,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 560,
+        "join": 594,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 560,
+        "join": 595,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 560,
+        "join": 596,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 560,
+        "join": 597,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 560,
+        "join": 598,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 560,
+        "join": 599,
+        "type": "digital"
+      },
+      {
+        "direction": "entree",
+        "eiscJoinDebut": 560,
+        "join": 600,
+        "type": "digital"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoin": 610,
+        "join": 610,
+        "type": "digital"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoin": 611,
+        "join": 611,
+        "type": "digital"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoin": 612,
+        "join": 612,
+        "type": "digital"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoin": 613,
+        "join": 613,
+        "type": "digital"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoin": 614,
+        "join": 614,
+        "type": "digital"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoin": 615,
+        "join": 615,
+        "type": "digital"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoin": 620,
+        "join": 620,
+        "type": "digital"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoin": 621,
+        "join": 621,
+        "type": "digital"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoin": 622,
+        "join": 622,
+        "type": "digital"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoin": 623,
+        "join": 623,
+        "type": "digital"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoin": 624,
+        "join": 624,
+        "type": "digital"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoin": 625,
+        "join": 625,
+        "type": "digital"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoin": 626,
+        "join": 626,
+        "type": "digital"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoin": 627,
+        "join": 627,
+        "type": "digital"
+      },
+      {
+        "direction": "sortie",
+        "eiscJoin": 10,
+        "join": 10,
+        "type": "serial"
+      },
+      {
+        "direction": "sortie",
+        "eiscJoin": 32,
+        "join": 32,
+        "type": "serial"
+      },
+      {
+        "direction": "sortie",
+        "eiscJoin": 33,
+        "join": 33,
+        "type": "serial"
+      },
+      {
+        "direction": "sortie",
+        "eiscJoin": 34,
+        "join": 34,
+        "type": "serial"
+      },
+      {
+        "direction": "entree",
+        "eiscJoin": 43,
+        "join": 43,
+        "type": "serial"
+      },
+      {
+        "direction": "sortie",
+        "eiscJoin": 62,
+        "join": 62,
+        "type": "serial"
+      },
+      {
+        "direction": "sortie",
+        "eiscJoin": 63,
+        "join": 63,
+        "type": "serial"
+      },
+      {
+        "direction": "sortie",
+        "eiscJoin": 64,
+        "join": 64,
+        "type": "serial"
+      },
+      {
+        "direction": "sortie",
+        "eiscJoin": 65,
+        "join": 65,
+        "type": "serial"
+      },
+      {
+        "direction": "sortie",
+        "eiscJoin": 99,
+        "join": 99,
+        "type": "serial"
+      },
+      {
+        "direction": "sortie",
+        "eiscJoin": 100,
+        "join": 100,
+        "type": "serial"
+      },
+      {
+        "direction": "sortie",
+        "eiscJoin": 101,
+        "join": 101,
+        "type": "serial"
+      },
+      {
+        "direction": "sortie",
+        "eiscJoin": 102,
+        "join": 102,
+        "type": "serial"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoin": 103,
+        "join": 103,
+        "type": "serial"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoin": 104,
+        "join": 104,
+        "type": "serial"
+      },
+      {
+        "direction": "sortie",
+        "eiscJoin": 105,
+        "join": 105,
+        "type": "serial"
+      },
+      {
+        "direction": "sortie",
+        "eiscJoin": 106,
+        "join": 106,
+        "type": "serial"
+      },
+      {
+        "direction": "entree",
+        "eiscJoin": 420,
+        "join": 420,
+        "type": "serial"
+      }
+    ],
+    "gui": {
+      "actif": false,
+      "baseFormule": "1000 + (pieceId - 1) * 100",
+      "mapping": {
+        "analog": {
+          "31": 31,
+          "51": 51,
+          "52": 52,
+          "53": 53,
+          "61": 33,
+          "62": 34,
+          "63": 35,
+          "64": 36,
+          "65": 37,
+          "71": 71,
+          "72": 72,
+          "73": 73,
+          "74": 74,
+          "75": 75,
+          "76": 76,
+          "77": 77,
+          "78": 78,
+          "79": 79,
+          "80": 80,
+          "254": 54
+        },
+        "digital": {
+          "49": 35,
+          "50": 36,
+          "51": 21,
+          "52": 22,
+          "53": 23,
+          "54": 24,
+          "55": 50,
+          "61": 1,
+          "62": 2,
+          "63": 3,
+          "64": 4,
+          "65": 5,
+          "66": 6,
+          "67": 7,
+          "68": 8,
+          "69": 9,
+          "81": 61,
+          "82": 62,
+          "83": 63,
+          "84": 64,
+          "85": 65,
+          "86": 66,
+          "87": 67,
+          "88": 68,
+          "89": 69,
+          "90": 70,
+          "91": 71,
+          "92": 72,
+          "93": 73,
+          "94": 74,
+          "95": 75,
+          "96": 76,
+          "97": 77,
+          "98": 78,
+          "150": 51,
+          "151": 52,
+          "152": 53,
+          "153": 54,
+          "154": 55,
+          "155": 56,
+          "156": 57,
+          "200": 45,
+          "201": 41,
+          "202": 42,
+          "203": 43,
+          "204": 44,
+          "251": 58,
+          "252": 59,
+          "253": 60,
+          "610": 93,
+          "611": 94,
+          "612": 95,
+          "613": 96,
+          "614": 97,
+          "615": 98,
+          "620": 11,
+          "621": 12,
+          "622": 13,
+          "623": 14,
+          "624": 15,
+          "625": 16,
+          "626": 17,
+          "627": 18
+        },
+        "serial": {
+          "10": 10,
+          "32": 32,
+          "33": 33,
+          "34": 34,
+          "62": 44,
+          "63": 45,
+          "64": 46,
+          "65": 47
+        }
+      },
+      "pieceMax": 30,
+      "tailleBloc": 100
+    },
+    "room": {
+      "baseFormule": "1000 + (pieceId - 1) * 100",
+      "offsets": [
+        {
+          "direction": "bidirectionnel",
+          "join": 21,
+          "type": "analog"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 31,
+          "type": "analog"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 33,
+          "type": "analog"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 34,
+          "type": "analog"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 35,
+          "type": "analog"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 36,
+          "type": "analog"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 37,
+          "type": "analog"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 51,
+          "type": "analog"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 52,
+          "type": "analog"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 53,
+          "type": "analog"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 54,
+          "type": "analog"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 71,
+          "type": "analog"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 72,
+          "type": "analog"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 73,
+          "type": "analog"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 74,
+          "type": "analog"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 75,
+          "type": "analog"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 76,
+          "type": "analog"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 77,
+          "type": "analog"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 78,
+          "type": "analog"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 79,
+          "type": "analog"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 80,
+          "type": "analog"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 1,
+          "type": "digital"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 2,
+          "type": "digital"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 3,
+          "type": "digital"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 4,
+          "type": "digital"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 5,
+          "type": "digital"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 6,
+          "type": "digital"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 7,
+          "type": "digital"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 8,
+          "type": "digital"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 9,
+          "type": "digital"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 11,
+          "type": "digital"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 12,
+          "type": "digital"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 13,
+          "type": "digital"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 14,
+          "type": "digital"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 15,
+          "type": "digital"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 16,
+          "type": "digital"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 17,
+          "type": "digital"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 18,
+          "type": "digital"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 21,
+          "type": "digital"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 22,
+          "type": "digital"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 23,
+          "type": "digital"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 24,
+          "type": "digital"
+        },
+        {
+          "direction": "entree",
+          "join": 35,
+          "type": "digital"
+        },
+        {
+          "direction": "entree",
+          "join": 36,
+          "type": "digital"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 41,
+          "type": "digital"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 42,
+          "type": "digital"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 43,
+          "type": "digital"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 44,
+          "type": "digital"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 45,
+          "type": "digital"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 50,
+          "type": "digital"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 51,
+          "type": "digital"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 52,
+          "type": "digital"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 53,
+          "type": "digital"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 54,
+          "type": "digital"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 55,
+          "type": "digital"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 56,
+          "type": "digital"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 57,
+          "type": "digital"
+        },
+        {
+          "direction": "entree",
+          "join": 58,
+          "type": "digital"
+        },
+        {
+          "direction": "entree",
+          "join": 59,
+          "type": "digital"
+        },
+        {
+          "direction": "entree",
+          "join": 60,
+          "type": "digital"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 61,
+          "type": "digital"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 62,
+          "type": "digital"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 63,
+          "type": "digital"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 64,
+          "type": "digital"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 65,
+          "type": "digital"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 66,
+          "type": "digital"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 67,
+          "type": "digital"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 68,
+          "type": "digital"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 69,
+          "type": "digital"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 70,
+          "type": "digital"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 71,
+          "type": "digital"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 72,
+          "type": "digital"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 73,
+          "type": "digital"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 74,
+          "type": "digital"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 75,
+          "type": "digital"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 76,
+          "type": "digital"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 77,
+          "type": "digital"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 78,
+          "type": "digital"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 81,
+          "type": "digital"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 82,
+          "type": "digital"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 83,
+          "type": "digital"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 84,
+          "type": "digital"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 85,
+          "type": "digital"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 86,
+          "type": "digital"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 87,
+          "type": "digital"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 88,
+          "type": "digital"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 89,
+          "type": "digital"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 90,
+          "type": "digital"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 91,
+          "type": "digital"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 92,
+          "type": "digital"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 93,
+          "type": "digital"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 94,
+          "type": "digital"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 95,
+          "type": "digital"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 96,
+          "type": "digital"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 97,
+          "type": "digital"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 98,
+          "type": "digital"
+        },
+        {
+          "direction": "sortie",
+          "join": 10,
+          "type": "serial"
+        },
+        {
+          "direction": "sortie",
+          "join": 32,
+          "type": "serial"
+        },
+        {
+          "direction": "sortie",
+          "join": 33,
+          "type": "serial"
+        },
+        {
+          "direction": "sortie",
+          "join": 34,
+          "type": "serial"
+        },
+        {
+          "direction": "sortie",
+          "join": 44,
+          "type": "serial"
+        },
+        {
+          "direction": "sortie",
+          "join": 45,
+          "type": "serial"
+        },
+        {
+          "direction": "sortie",
+          "join": 46,
+          "type": "serial"
+        },
+        {
+          "direction": "sortie",
+          "join": 47,
+          "type": "serial"
+        }
+      ],
+      "tailleBloc": 100
+    },
+    "version": "v4",
+    "wellness": {
+      "actif": true,
+      "hammam": {
+        "arret": 625,
+        "consigne": 63,
+        "marche": 624,
+        "mesure": 65,
+        "moins": 627,
+        "plus": 626
+      },
+      "sauna": {
+        "arret": 621,
+        "consigne": 62,
+        "marche": 620,
+        "mesure": 64,
+        "moins": 623,
+        "plus": 622
+      }
+    }
+  },
+  "files": [
+    {
+      "path": "projects/villa-crans/ch5/Backend/Backend/ControlSystem.cs",
+      "sha256": "6cadb4a115846e82287509b0a54c3de330acb351b2be3f2133645ad736b796b0"
+    },
+    {
+      "path": "projects/villa-crans/ch5/Backend/Backend/HvacState.cs",
+      "sha256": "351877eaf9a064ce8bdde7adbf8cedf96e8e567a00a7bb6d76b7cc12aa8de66e"
+    },
+    {
+      "path": "projects/villa-crans/ch5/Backend/Backend/WellnessState.cs",
+      "sha256": "af9ead94e744156f06a2c881d36cac53d0697298a8700ecb9f73da61a8a20c01"
+    },
+    {
+      "path": "projects/villa-crans/ch5/src/index.html",
+      "sha256": "3da12a6edc3c4d86dc82342ea1e17efbda6851e3a7fe6d6fa371875c54448307"
+    },
+    {
+      "path": "projects/villa-crans/ch5/src/iphone.html",
+      "sha256": "df5638dee70ceb1fcce444a5ed33cf6eabbd9210c0f454b016e2e68aec66119b"
+    },
+    {
+      "path": "projects/villa-crans/ch5/src/js/villa-joins.js",
+      "sha256": "603fa1b0ad5e1c16824d4d3271823854baa73a2b09368d2d6ac92112a6bfe684"
+    },
+    {
+      "path": "projects/villa-crans/ch5/src/js/room-controls.js",
+      "sha256": "d0abfffc03d0b9c2f53454a01afdfb84af578d80e3402718263d8c7663de48c1"
+    },
+    {
+      "path": "projects/villa-crans/ch5/src/js/wellness-controls.js",
+      "sha256": "f7ce625475710f963e9bdd23ffb624297774d5bad96440efcf4ee64ceba5d1a1"
+    },
+    {
+      "path": "projects/villa-crans/ch5/src/js/webxpanel.js",
+      "sha256": "d271545ff966d0f6252229344aed260d39f224143e0f2db1402bc8dae0719644"
+    },
+    {
+      "path": "projects/villa-crans/simpl/contract/generate_slot2.js",
+      "sha256": "ebb0196e5cb7b13ef5689e9b77736c9c01f3124d8b0882deb1b8076c0c0e3829"
+    },
+    {
+      "path": "projects/villa-crans/ch5/src/themes/room-controls.css",
+      "sha256": "30248422cca7245a15785fb225e6434b6f8aed52e7c3c25968fb88a68c172132"
+    },
+    {
+      "path": "projects/villa-crans/ch5/src/themes/wellness-controls.css",
+      "sha256": "1beab3fd5a8540b4ee8003c765709ba152cbba74fc23fbc12a0164894d5cd6a7"
+    },
+    {
+      "path": "projects/villa-crans/ch5/src/themes/global-controls.css",
+      "sha256": "276d00b5ca8803b97494ad02180d7acd570a5a053570d66cc4e3a51505414e9d"
+    }
+  ],
+  "backendAssemblyVersion": "1.0.180.0"
+}

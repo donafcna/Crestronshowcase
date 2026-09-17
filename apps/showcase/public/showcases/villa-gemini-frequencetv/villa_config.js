@@ -2,7 +2,7 @@ window.villaConfigEmbedded = {
   "meta": {
     "projet": "Villa Crans",
     "integrateur": "Fréquence TV",
-    "version": "1.0.180-showcase",
+    "version": "1.0.181-showcase",
     "mode": "showcase",
     "modeDescription": "'deploiement' = GUI livré chez le client : les feedbacks viennent du CP4 (C# slot 1 + SIMPL slot 2) via js/webxpanel.js / CrComLib, aucune simulation. 'showcase' = copie pour le site crestrongui.vercel.app : posé UNIQUEMENT par scripts/sync-villa-crans.py du dépôt Crestronshowcase, feedbacks simulés dans le navigateur (js/local-feedback.js), curseur de démo géré par le site (jamais par le GUI). Ne jamais mettre 'showcase' ici. Voir docs/08_WORKFLOW_SHOWCASE.md.",
     "tracesConsole": false,

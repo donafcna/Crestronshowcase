@@ -266,6 +266,14 @@ Nouvel ajustement demandé : 30 s de jour, transition de 10 s vers la nuit, 30 s
 
 Validation : cycle complet de 80 s observé, neuf contrôles réussis (dont les transitions et l'éclairage piscine), aucune erreur JavaScript/shader ; build et lint réussis. Rapport local : Claude outputs/day-night-80-verification.json. Aucun changement de GUI ou de programmes Crestron.
 
+## 17/09/2026 — industrialisation 0.1.0 : registre commun et contrôles pré-bêta
+
+Les 17 simulateurs React sont désormais enregistrés dans `src/components/simulatorRegistry.js`, utilisé par Showcase et DemoMode. Un projet absent est détecté par `scripts/check-catalogue.mjs`, ajouté au prébuild ; le repli silencieux vers Villa Nyon est supprimé. Aucun changement visuel des simulateurs dans ce lot.
+
+Contrôles : 32 chargements navigateur du catalogue et de la démo, sans exception ; build réussi, lint sans erreur (avertissements préexistants). L'audit recense 18 projets / 8 secteurs et 18 fiches FR/EN/DE, avec 173 images présentes. Cette couverture ne qualifie pas encore les fonctionnalités des 17 concepts ni leur déploiement CH5.
+
+Méthode et candidats matériels : `../../docs/industrialisation/`. Le correctif C# de contexte EISC, les copies de configuration et les nouveaux outils qualité sont décrits dans le journal Villa. Dossier pré-bêta Alexandre produit en local ; pas de publication Vercel par cette tâche, pas d'installation sur équipement. Les tests portent sur des snapshots et ne couvrent pas les changements 3D/Wellness ultérieurs de l'autre tâche active.
+
 ## 17/09/2026 — rooms-1, GUI 1.0.180 : décors, wellness et voisinage
 
 Lot demandé par Donatien : local technique au sous-sol (17 pièces vitrine), vue villa rapprochée de 10 %, décoration et enceintes différenciées, cinq TV escamotables au pied des lits, écran cinéma agrandi et haut-parleurs dégagés. Ondes audio fines proportionnelles au volume ; mute, OFF et pause les arrêtent. Quatre programmes réellement 3D dans les TV via un rendu partagé 640 × 360 à 10–15 images/s, sans téléchargement vidéo ni son.
@@ -277,3 +285,15 @@ GUI commune : onglets HVAC/Sauna/Hammam, ON/OFF indépendants, cibles sauna 60�
 Vérifications locales : 36 combinaisons HVAC (555 assertions), 36 combinaisons wellness et retours natifs sans simulateur (632 assertions), 53 tests C#/JSON/SMW wellness et 76 HVAC, 40 contrôles pièces/TV, 27 navigation, 23 fondu, 24 villa, cinq nouveaux contrôles 3D wellness/garage. Matrice 3D supports/thèmes/modes réussie ; audit page/modales/états à 4:1 réussi. Cycle jour/nuit 30/10/30/10 s revérifié. Environ 52–54 images/s mesurées localement à 1280×800, DPR 1,5, rendu GPU. Les performances dépendent de l’appareil et de la connexion.
 
 CH5Z assemblé et CPZ compilé (assembly 1.0.180.0), copie SMW préparée ; **LPZ non compilé, aucun matériel déployé ou vérifié**. Mesures wellness physiques inconnues tant qu’aucun driver ne les fournit. Le dossier `Claude outputs/room-revision/livraison` et les planches avant/après consignent le résultat ; ne pas assimiler la version du site à celle installée sur CP4/TSW.
+
+## 17/09/2026 — industrialisation 0.2.0 : supports et préparation commune
+
+Registre partagé des 17 simulateurs entre Showcase et DemoMode, contrôlé au prébuild. Le mode #demo filtre les interfaces selon le téléphone/tablette déclaré au catalogue ; liens incompatibles/inconnus expliqués en FR/EN/DE, bascule limitée aux supports prévus, boutons flottants 44 px. Les écrans internes des simulateurs sont conservés.
+
+Préparation indépendante CH5/SIMPL depuis un seul profil JSON, contrôle du contrat et empreintes du socle GUI 1.0.181 / C# 1.0.180. Exemple de banc Villa Léman à deux pièces, mêmes sources Grand Montana, CH5Z assemblé. Aucun LPZ compilé ni matériel contacté. Voir docs/industrialisation/LOT-0.2.0.md à la racine du dépôt.
+
+Validation : 43 tests de configuration/compatibilité ; 49 contrôles navigateur démo FR/EN/DE sur téléphone/tablette ; 28 contrôles de chargement et de visibilité HVAC du pilote sur trois supports et trois thèmes ; 76 HVAC + 53 Wellness sur la copie SMW. Build et lint réussis. Workflow GitHub ajouté pour tests, catalogue, build et lint ; il ne remplace pas la recette visuelle/matérielle ni une protection de branche.
+
+Complément de revue visuelle : en 1280 × 800, l’enveloppe Wellness empêchait les anciens sélecteurs de marge d’agir et les boutons de ventilation dépassaient de leur carte. Correction dans themes/room-controls.css commun, GUI 1.0.181 ; ON/OFF et ventilation sur une ligne en faible hauteur, cibles tactiles conservées. Matrice HVAC relancée avec succès : 555 contrôles ; premier essai parallèle expiré à la capture, conservé parmi les preuves. C# inchangé en 1.0.180.
+
+Validation finale GUI 1.0.181 : 632 contrôles Wellness (36 combinaisons et retours natifs) et contraste 4:1 réussis. Les fiches FR/EN/DE et captures d’accueil sombre/clair décrivent la disposition compacte.

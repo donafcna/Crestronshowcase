@@ -1,5 +1,9 @@
 # VillaCrans_Slot2.smw — programme SIMPL du slot 2
 
+## Préparation par projet — outillage 0.2.0, 17/09/2026
+
+`generate_slot2.js --config <profil.json> --input <base.smw> --output <nouveau.smw>` lit exactement le profil indiqué et conserve la base. La sortie distincte doit être neuve. Les sources sont vérifiées avant écriture ; le mode historique en place garde sa sauvegarde. Pour vérifier aussi le contrat et les sources du socle, utiliser `tools/quality/prepare-project.mjs` depuis la racine du dépôt (voir `docs/industrialisation/LOT-0.2.0.md`). Le SMW généré conserve les anciens câblages : vérifier les drivers et compiler le LPZ dans SIMPL Windows avant recette. Les capacités de la base historique peuvent être insuffisantes ; aucun agrandissement implicite du symbole n'est effectué.
+
 ## Extension wellness v4 — 17/09/2026
 
 Sauna/hammam : d620–627 ; a/s62–65. Cibles et mesures indépendantes du HVAC, sorties de pièce a+34..37 et s+44..47 (s+34 HVAC préservé). Détails : `projects/villa-crans/ch5/docs/WELLNESS-2026-09-17.md`. Générer une copie SMW puis compiler le LPZ avant recette Debugger. Aucun déploiement matériel réalisé.

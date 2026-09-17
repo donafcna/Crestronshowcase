@@ -1,4 +1,4 @@
-import React, { Suspense, lazy, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import React, { Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Icons as LucideIcons } from "../icons";
 import { useTranslation } from "../context/LanguageContext";
 import { projects, getDeviceById, getProjectText, getProjectName, getStatusLabel } from "../data/projects";
@@ -18,28 +18,7 @@ import { useAutoDemo } from "../hooks/useAutoDemo";
 import { DemoCursor, DemoCountdown } from "./DemoOverlay";
 import { useGuiFullscreen } from "../hooks/useGuiFullscreen";
 
-// Simulateurs chargés à la demande : seul celui du projet affiché est
-// téléchargé (≈ 20–35 ko chacun), ce qui rend la première visite rapide en 4G.
-const lazyNamed = (loader, name) => lazy(() => loader().then((m) => ({ default: m[name] })));
-const SIMULATORS = {
-  "villa-gemini": lazyNamed(() => import("./simulators/VillaGemini"), "VillaGemini"),
-  "hotel-geneva": lazyNamed(() => import("./simulators/HotelGeneva"), "HotelGeneva"),
-  "crestron-home": lazyNamed(() => import("./simulators/CrestronHome"), "CrestronHome"),
-  "yacht-monaco": lazyNamed(() => import("./simulators/YachtMonaco"), "YachtMonaco"),
-  "chalet-zermatt": lazyNamed(() => import("./simulators/ChaletZermatt"), "ChaletZermatt"),
-  "boardroom-futureav": lazyNamed(() => import("./simulators/BoardroomFutureAV"), "BoardroomFutureAV"),
-  "club-etoile": lazyNamed(() => import("./simulators/ClubEtoile"), "ClubEtoile"),
-  "boutique-hermes": lazyNamed(() => import("./simulators/BoutiqueHermes"), "BoutiqueHermes"),
-  "sushi-bar-kyoto": lazyNamed(() => import("./simulators/SushiBarKyoto"), "SushiBarKyoto"),
-  "auditorium-richmond": lazyNamed(() => import("./simulators/AuditoriumRichmond"), "AuditoriumRichmond"),
-  "home-cinema-cologny": lazyNamed(() => import("./simulators/HomeCinemaCologny"), "HomeCinemaCologny"),
-  "huddle-room-nyon": lazyNamed(() => import("./simulators/HuddleRoomNyon"), "HuddleRoomNyon"),
-  "suite-palace-montreux": lazyNamed(() => import("./simulators/SuitePalaceMontreux"), "SuitePalaceMontreux"),
-  "appartement-eaux-vives": lazyNamed(() => import("./simulators/AppartementEauxVives"), "AppartementEauxVives"),
-  "villa-leman": lazyNamed(() => import("./simulators/VillaLeman"), "VillaLeman"),
-  "siege-nyon": lazyNamed(() => import("./simulators/SiegeNyon"), "SiegeNyon"),
-  "appartement-carouge": lazyNamed(() => import("./simulators/AppartementCarouge"), "AppartementCarouge"),
-};
+import { getSimulator } from "./simulatorRegistry";
 
 const VIEWPORT_IDS = ["phone", "tablet", "wallpanel", "wallpanel_hd", "desktop"];
 // Ordre d'affichage des supports, identique pour tous les projets :
@@ -344,7 +323,7 @@ const ShowcaseInner = ({ sectorId, projectId, device }) => {
         : activeProject.embedUrl
       : null;
   const displayTitle = clientName || getProjectName(activeProject, lang);
-  const Simulator = SIMULATORS[activeProject.id] || SIMULATORS["villa-gemini"];
+  const Simulator = getSimulator(activeProject);
   const simulatorType = viewportDevice === "wallpanel_hd" ? "wallpanel" : viewportDevice;
 
   // Contenu de l'écran : simulateur React ou GUI embarquée. Servi à l'identique
