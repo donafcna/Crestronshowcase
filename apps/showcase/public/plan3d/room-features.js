@@ -48,7 +48,7 @@ export function enrichRoom(R, M) {
     const cone=cyl(s,M.metal,0,tower?.14:0,depth/2+.01,sub?.16:center?.048:.08,.012);cone.rotation.x=Math.PI/2;
     if(tower){const bass=cyl(s,M.metal,0,-.17,depth/2+.01,.085,.012);bass.rotation.x=Math.PI/2;}
     const radius=sub?.165:center?.053:.086;
-    const ring=new T.Mesh(new T.RingGeometry(radius,radius+.007,32),new T.MeshBasicMaterial({color:0xd1dedc,transparent:true,opacity:0,depthWrite:false,side:T.DoubleSide}));ring.position.set(0,tower?.14:0,depth/2+.023);s.add(ring);
+    const ring=new T.Mesh(new T.RingGeometry(radius,radius+.007,32),new T.MeshBasicMaterial({color:0xd1dedc,transparent:true,opacity:0,depthWrite:false,side:T.DoubleSide}));ring.position.set(0,tower?.14:0,depth/2+.07);s.add(ring);
     body.userData.animated=true;ring.userData.animated=true;
     R.speakers.push({body,ring,group:s,phase:R.speakers.length*.7,kind,model});
   }
@@ -74,9 +74,17 @@ export function enrichRoom(R, M) {
   }else if(type==='repas'){
     speaker('front',.6,.45,.5,0,'tower');speaker('front',w-.6,.45,.5,0,'tower');
   }else if(type==='chambre'||type==='suite'){
-    speaker('corner',.45,.45,.5,0,'tower');speaker('corner',w-.45,.45,.5,0,'tower');
+    // Keep the suite's left tower clear of the vanity and raised TV cabinet.
+    speaker('corner',type==='suite'?1.3:.45,.45,.5,0,'tower');speaker('corner',w-.45,.45,.5,0,'tower');
   }else if(type==='bureau'){
     speaker('corner',.45,.45,.5,0,'tower');
+  }else if(type==='sauna'){
+    // Moisture-resistant wall speaker in the shared vestibule, outside both cabins.
+    speaker('wellness',.29,2.25,d-1.05,Math.PI/2);
+  }else if(type==='garage'){
+    speaker('workshop',.29,2.3,1.15,Math.PI/2);
+  }else if(type==='golf'){
+    speaker('front',.32,1.75,.28);speaker('front',w-.32,1.75,.28);
   }else if(R.ext||type==='poolhouse'){
     speaker('outdoor',w-.4,1.6,.45);
   }

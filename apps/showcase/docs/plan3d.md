@@ -114,3 +114,14 @@ Recette ciblée : `node scripts/test-tv-stadiums.cjs` avec `BASE_URL`, `BROWSER_
 Onze parcelles colorées dans le même maillage, herbe Canvas générée localement, 620 arbres et 1 800 touffes instanciés. Champs exclus des fortes pentes et de l'eau, arbres exclus des accès et du premier plan des vues pièces. Rochers et détails regroupés par matériau. Environ 4 Ko gzip ajoutés, aucun nouveau modèle, image ou vidéo à charger. L'environnement suit toujours le jour/nuit 30/10/30/10 ; API `environment().landscape` pour la recette.
 
 `scripts/test-plan3d-landscape.cjs` : trois thèmes × normal/Scène × jour/nuit, retour molette et sélection GUI, mesures de cadence et rayons sur la vraie géométrie pour détecter l'eau enterrée. 29 contrôles réussis, 31 contrôles TV également ; build/lint réussis. Preuves : `Claude outputs/alpine-landscape/qa-publish` et planche avant/après. La GUI et les programmes matériels ne sont pas modifiés.
+
+
+## 17/09/2026 — audio-1 : ondes agrandies et Suite invités
+
+Diamètre des ondes multiplié par deux, proportionnel au volume de la source audible : audio/vidéo (a52) ou lecteur musique (a254), conformément aux deux volumes indépendants existants. Mute, OFF, pause vidéo et volume nul arrêtent l'animation. Transparence légère conservée ; anneaux légèrement dégagés des façades des enceintes, sans désactiver leur occlusion par les objets.
+
+Cause reproduite dans la Suite invités, la terrasse et la piscine : le préréglage historique source=5 ne déclenchait pas le booléen musique. L'initialisation du feedback local traduit désormais ce préréglage en musique active et source vidéo éteinte. L'enceinte gauche des deux suites est dégagée du mobilier et de la TV escamotable. Enceintes animées ajoutées dans le vestibule Wellness, le garage et le simulateur de golf. Total : 32 enceintes dans 15 pièces ; cuisine sans enceintes selon la demande précédente, local technique sans équipement AV.
+
+Recette dédiée scripts/test-plan3d-audio.cjs : 263 contrôles locaux réussis (17 pièces, quatre sources vidéo, deux volumes, mute/OFF/pause, retour de pièce, visibilité réelle par rayons, trois thèmes, normal/Scène, feedback dalle/tablette). Les deux suites présentent chacune deux anneaux dégagés. Aucun défaut JavaScript/shader téléphone ; messages WebXPanel/SVG préexistants dalle/tablette consignés séparément. Deux assertions supplémentaires verrouillent les erreurs des modes normal et des autres supports. Build/lint réussis ; 56,0 images/s mesurées localement sur 4 secondes, 1280×800 DPR 1,5. Aucun média distant ajouté. Preuves : Claude outputs/audio-waves/qa-final, baseline et planche-avant-apres.png.
+
+Périmètre : fond 3D et feedback local showcase uniquement. Source GUI, JSON de déploiement, C# et SIMPL inchangés ; aucune compilation ou installation matérielle par ce lot. Chargeur et API 2026-09-17-audio-1 ; imports paysage valley-1 et TV stadiums-1 conservés.

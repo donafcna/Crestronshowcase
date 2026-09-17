@@ -16,7 +16,7 @@ import * as THREE from './vendor/three.module.min.js';
 import { createInteriors } from './interiors.js?v=2026-09-17-rooms-1';
 import { buildLandscape } from './landscape.js?v=2026-09-17-valley-1';
 import { createEstate } from './estate.js?v=2026-09-16-estate-2';
-import { enrichRoom } from './room-features.js?v=2026-09-17-rooms-1';
+import { enrichRoom } from './room-features.js?v=2026-09-17-audio-1';
 import { furnishSpecialRoom } from './special-rooms.js?v=2026-09-17-rooms-1';
 import { createTVStage } from './tv-stage.js?v=2026-09-17-stadiums-1';
 import { drawProgramme } from './tv-programmes.js?v=2026-09-16-estate-2';
@@ -836,7 +836,8 @@ export function createPlan3D(opts) {
                 var audio=activeRoom.audio, level=audio.music?audio.mediaVolume:audio.volume, on=(audio.source>0||audio.music)&&!audio.mute&&!(audio.paused&&!audio.music)&&level>0;
                 var wave=(1+Math.sin(idle*3+s.phase))/2, volume=level;
                 s.ring.visible=on;s.ring.material.opacity=on?.12+volume*.13+wave*.035:0;
-                s.ring.scale.setScalar(on?1+volume*.85+wave*.06:1);
+                // Twice the previous diameter, still driven by the playing source's volume.
+                s.ring.scale.setScalar(on?2*(1+volume*.85+wave*.06):1);
             });
             if(activeRoom.wellness){
                 const w=activeRoom.wellness;w.heat.emissiveIntensity=w.saunaOn?.55:0;
@@ -894,7 +895,7 @@ export function createPlan3D(opts) {
     /* ---------- API publique ---------- */
     var API = {
         setRoom: setRoom,
-        version: '2026-09-17-valley-1',
+        version: '2026-09-17-audio-1',
         overview: overview,
         click: clickPlan,
         focusSelected: function () { if (!selectedRoom || activeRoom === selectedRoom) return; focusRoom(selectedRoom); },

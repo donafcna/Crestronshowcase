@@ -109,3 +109,8 @@ CH5Z assemblé et CPZ compilé (assembly 1.0.180.0), copie SMW préparée ; **LP
 ## 17/09/2026 — paysage valley-1
 
 Deux lacs alimentent les ruisseaux ; eau et relief partagent le profil de valley.js. Chemins raccordés, ponts, soubassements des chalets ; onze champs, bosquets et herbe texturée. Arbres/touffes instanciés, détails fixes regroupés, environ 4 Ko gzip supplémentaires et aucun asset distant. Trois thèmes × deux modes × jour/nuit vérifiés, contrôle réel eau/terrain, 29 tests paysage et 31 tests TV. Voir docs/plan3d.md et les preuves Claude outputs/alpine-landscape. Chargeur/API valley-1, imports TV stadiums-1 conservés. GUI 1.0.181 inchangée ; aucun déploiement matériel par ce lot.
+
+
+## 17/09/2026 — audio-1
+
+Ondes ×2, diamètre lié au volume audible (a52 AV / a254 musique). Initialisation source=5 corrigée en musique active dans le feedback local ; Suite invités/terrasse/piscine concernées. Enceintes des suites dégagées, Wellness/garage/golf équipés : 32 enceintes, 15 pièces. Cuisine et local technique sans enceintes. 263 contrôles locaux, build/lint réussis ; détails et preuves dans README et docs/plan3d.md. Aucun changement des programmes matériels.

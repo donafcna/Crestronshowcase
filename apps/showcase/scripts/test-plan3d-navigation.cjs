@@ -17,7 +17,7 @@ fs.mkdirSync(out,{recursive:true});
   const scene=async id=>{await p.frameLocator('iframe').locator('#scene-btn-'+id).click();await p.waitForTimeout(100);await p.waitForFunction(()=>Object.values(window.__plan3d.rooms).every(r=>!r.lightFade));};
   try{
     await p.goto(base+'/interfaces/residentiel/villa-gemini-frequencetv/phone');
-    await p.waitForFunction(()=>window.__plan3d?.version==='2026-09-17-valley-1');await waitPhase('room');
+    await p.waitForFunction(()=>window.__plan3d?.version==='2026-09-17-audio-1');await waitPhase('room');
     await select(1);await scene(51);
     await p.evaluate(()=>{for(const k of ['volet','rideau','store'])window.__plan3d.shadePos(k,1);});
     await p.waitForTimeout(3000);

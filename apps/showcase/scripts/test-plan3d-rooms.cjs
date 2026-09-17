@@ -9,7 +9,7 @@ fs.mkdirSync(out,{recursive:true});
  const keep=setInterval(()=>p.locator('.device-stage').click({position:{x:5,y:5},timeout:1000}).catch(()=>{}),4000);
  const shot=async n=>p.screenshot({path:path.join(out,n+'.png')});
  try{
-  await p.goto(base+'/interfaces/residentiel/villa-gemini-frequencetv/phone');await p.waitForFunction(()=>window.__plan3d?.version==='2026-09-17-valley-1');await p.waitForFunction(()=>__plan3d.navigation().phase==='room');
+  await p.goto(base+'/interfaces/residentiel/villa-gemini-frequencetv/phone');await p.waitForFunction(()=>window.__plan3d?.version==='2026-09-17-audio-1');await p.waitForFunction(()=>__plan3d.navigation().phase==='room');
   const f=p.frames().find(f=>f.url().includes('/showcases/'));
   const room=async id=>{await f.locator('#room-select').selectOption(String(id));await p.waitForFunction(id=>__plan3d.activeRoom()===id,id);await p.evaluate(()=>__plan3d.jump());};
   const press=async n=>{await f.evaluate(n=>Villa.press(String(n)),n);await p.waitForTimeout(200);};
@@ -36,7 +36,7 @@ fs.mkdirSync(out,{recursive:true});
   await room(8);await press(54);await press(151);await f.evaluate(()=>Villa.setAnalog('52',6000));await p.waitForTimeout(300);
   const low=await p.evaluate(()=>__plan3d.rooms[8].speakers[0].ring.scale.x);
   await f.evaluate(()=>Villa.setAnalog('52',65535));await p.waitForTimeout(300);
-  check('Audio amplitude follows volume without large halos',await p.evaluate(low=>__plan3d.rooms[8].speakers.every(s=>s.ring.visible&&s.ring.scale.x>low&&s.ring.scale.x<2&&s.ring.material.opacity<.3),low));
+  check('Audio diameter doubled and follows volume with restrained opacity',await p.evaluate(low=>__plan3d.rooms[8].speakers.every(s=>s.ring.visible&&s.ring.scale.x>low&&s.ring.scale.x<4&&s.ring.material.opacity<.3),low));
   await press(55);check('Mute hides all waves',await p.evaluate(()=>__plan3d.rooms[8].speakers.every(s=>!s.ring.visible)));await press(55);
   await press(150);check('OFF hides all waves',await p.evaluate(()=>__plan3d.rooms[8].speakers.every(s=>!s.ring.visible)));
   for(const [join,kind] of [[151,'film'],[152,'race'],[153,'football'],[154,'tennis']]){

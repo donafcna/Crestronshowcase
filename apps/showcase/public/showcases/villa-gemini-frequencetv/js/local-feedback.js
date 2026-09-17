@@ -97,7 +97,8 @@
     return {
       temp: temp, setpoint: setpoint, mode: mode, hvacOn: true, fan: 0,
       wellness: {saunaOn:false,hammamOn:false,saunaTarget:80,humidityTarget:95,saunaActual:22,humidityActual:50},
-      source: source, music: false, volume: volume, mediaVolume: volume, mute: false,
+      // Legacy preset 5 means music, never a fifth video source without playback.
+      source: source === 5 ? 0 : source, music: source === 5, volume: volume, mediaVolume: volume, mute: false,
       scene: scene, circuits: SCENE_PRESETS[scene].slice(), storesScene: null,
     };
   }
