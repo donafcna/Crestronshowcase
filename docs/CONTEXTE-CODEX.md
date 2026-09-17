@@ -1,5 +1,11 @@
 # Reprise Codex — Crestron CH5 Cowork
 
+## 17/09/2026 — limite de sauvegarde vérifiée après la demande de pause
+
+La sauvegarde Git est confirmée pour les sources et les fichiers non ignorés. **Elle n'est pas une image complète du laptop ni une garantie de restauration intégrale.** Les derniers `Villaftv.cpz` et `Project_Slot2.lpz`, ainsi que `deploy.secrets.psd1`, sont présents localement et ignorés ; logiciels/outils Windows et accès externes restent à sauvegarder ou réinstaller. Voir [AUDIT-RESTAURATION-2026-09-17.md](AUDIT-RESTAURATION-2026-09-17.md) pour l'inventaire vérifié et les lacunes. Ne pas annoncer « tout récupérable à l'identique depuis Git seul ». Aucun changement fonctionnel ; pause maintenue.
+
+
+
 ## 17/09/2026 — sauvegarde complète avant pause demandée par Donatien
 
 Pause explicite en attendant le rétablissement du quota de tokens. Dernier lot site publié et vérifié : `74cd4a41`, preuves `f0cee4d9` (156 contrôles publics réussis). La demande F1 reste uniquement en TODO ; aucun nouveau travail à lancer pendant cette pause.

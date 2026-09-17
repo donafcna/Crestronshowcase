@@ -37,3 +37,8 @@ Pause explicite en attendant le rétablissement du quota de tokens. Dernier lot 
 Tous les écarts suivis et fichiers nouveaux non ignorés du dépôt sont sauvegardés dans `backup/crestron-local-2026-09-17`, commit `0ca2b6c47d948466cbb8829ee77f6d7dd1e5f988`, poussé et vérifié. Cet instantané inclut cette fois le CH5Z local, les QR et dates/versions générés déjà suivis, le document backend C#, les autosauvegardes SIMPL et les suppressions locales. Il conserve aussi l'historique de la sauvegarde précédente. Aucune validation ni mise en service matérielle n'est impliquée.
 
 Le dossier de travail reste sur main ; ses écarts matériels restent visibles et leur contenu est désormais enregistré dans la branche de sauvegarde. Ne pas les effacer ni les confondre avec de nouveaux travaux à effectuer. Les dépendances et fichiers temporaires ignorés restent locaux ; sources et preuves utiles sont sur GitHub.
+
+
+## 17/09/2026 — limite de sauvegarde vérifiée après la demande de pause
+
+La sauvegarde Git est confirmée pour les sources et les fichiers non ignorés. **Elle n'est pas une image complète du laptop ni une garantie de restauration intégrale.** Les derniers `Villaftv.cpz` et `Project_Slot2.lpz`, ainsi que `deploy.secrets.psd1`, sont présents localement et ignorés ; logiciels/outils Windows et accès externes restent à sauvegarder ou réinstaller. Voir [AUDIT-RESTAURATION-2026-09-17.md](AUDIT-RESTAURATION-2026-09-17.md) pour l'inventaire vérifié et les lacunes. Ne pas annoncer « tout récupérable à l'identique depuis Git seul ». Aucun changement fonctionnel ; pause maintenue.
