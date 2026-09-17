@@ -18,7 +18,7 @@ import { buildLandscape } from './landscape.js?v=2026-09-17-rooms-1';
 import { createEstate } from './estate.js?v=2026-09-16-estate-2';
 import { enrichRoom } from './room-features.js?v=2026-09-17-rooms-1';
 import { furnishSpecialRoom } from './special-rooms.js?v=2026-09-17-rooms-1';
-import { createTVStage } from './tv-stage.js?v=2026-09-17-rooms-1';
+import { createTVStage } from './tv-stage.js?v=2026-09-17-stadiums-1';
 import { drawProgramme } from './tv-programmes.js?v=2026-09-16-estate-2';
 import { addNaturalMotion } from './natural-motion.js?v=2026-09-16-estate-2';
 
@@ -894,7 +894,7 @@ export function createPlan3D(opts) {
     /* ---------- API publique ---------- */
     var API = {
         setRoom: setRoom,
-        version: '2026-09-17-rooms-1',
+        version: '2026-09-17-stadiums-1',
         overview: overview,
         click: clickPlan,
         focusSelected: function () { if (!selectedRoom || activeRoom === selectedRoom) return; focusRoom(selectedRoom); },

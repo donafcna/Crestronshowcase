@@ -98,3 +98,11 @@ Validation ciblée : un cycle complet observé au navigateur, neuf contrôles r�
 Nouvel ajustement demandé : 30 s de jour, transition de 10 s vers la nuit, 30 s de nuit, transition de 10 s vers le jour. Cycle total 80 s, même variation douce et synchronisation des éclairages extérieurs.
 
 Validation : cycle complet de 80 s observé, neuf contrôles réussis (dont les transitions et l'éclairage piscine), aucune erreur JavaScript/shader ; build et lint réussis. Rapport local : Claude outputs/day-night-80-verification.json. Aucun changement de GUI ou de programmes Crestron.
+
+## 17/09/2026 — stadiums-1 : programmes sportifs
+
+`tv-stage.js` construit les terrains et acteurs ; `tv-venues.js` ajoute les enceintes spécifiques tennis, football et circuit. Le public est fixe : les acteurs seuls sont animés. Décor regroupé en deux `InstancedMesh` et un tableau Canvas par enceinte, créé à la première sélection du programme. Aucun nouvel asset distant. Le rendu TV unique reste limité à 640 × 360 et 10–15 mises à jour/s ; MSAA 2 pour les lignes du terrain, sans ombre dynamique supplémentaire.
+
+Le chargeur et l'API moteur portent `2026-09-17-stadiums-1`, et les imports TV sont versionnés. `metrics().tv3D` expose le programme, la taille, les enceintes instanciées et leur coût. `dispose()` libère aussi les géométries, textures Canvas et buffers d'instances des enceintes.
+
+Recette ciblée : `node scripts/test-tv-stadiums.cjs` avec `BASE_URL`, `BROWSER_EXE`, `NODE_PATH` et éventuellement `TEST_OUTPUT`. 31 contrôles locaux réussis, trois thèmes/deux modes, commandes de télécommande et OFF, vidéo dalle/tablette. 52,0–53,5 images/s sur le laptop de référence en 1280×800 DPR 1,5, pas de promesse universelle. Banc isolé : 3 appels de dessin supplémentaires pour l'enceinte, 40 850 / 71 710 / 45 756 triangles totaux selon le programme (tennis/football/course), ressources GPU à zéro après destruction. Captures et mesures : `Claude outputs/sports-stadiums/`. La GUI et le contrat matériel ne changent pas.

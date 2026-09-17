@@ -11,6 +11,8 @@ Dernier lot Codex du 16/09 : moteur fond 3D `2026-09-16-estate-1` (`public/plan3
 - React 19 + Vite 8, lint via `oxlint` (pas ESLint) ; deps : `lucide-react` (via `src/icons.js`, imports nommés), `qrcode`, `html2canvas` (imports dynamiques)
 - `npm run dev` / `npm run build` / `npm run lint` / `npm run preview`
 
+Dernier complément 3D du 17/09 : `stadiums-1`, tribunes/public/paddock dans les programmes TV via `public/plan3d/tv-venues.js`. GUI conservée en 1.0.181. Recette ciblée `scripts/test-tv-stadiums.cjs`, 31 contrôles trois thèmes/deux modes ; détails et limites dans le journal README et `docs/plan3d.md`.
+
 ## Structure
 
 - `src/data/projects.js` — source de vérité unique du contenu : `sectors`, `devices` (avec `viewport`/`simulatorType`, dont TSW-1080 = wallpanel_hd), `projects` (textes FR/EN/DE dans `text`, `status` realisation/concept, `isInteractive`, éventuellement `embedUrl`/`embedPhoneUrl`). Helpers `getProjectText/getProjectName/getStatusLabel/getDeviceById`. Guide non-dev : `docs/GUIDE-MARKETING.md`.
