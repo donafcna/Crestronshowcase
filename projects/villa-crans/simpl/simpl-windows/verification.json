@@ -1,0 +1,81 @@
+{
+  "gui": "1.0.181",
+  "csharp": "1.0.180.0",
+  "compiledBy": "Donatien, SIMPL Windows, 17/09/2026 16:25 Europe/Paris",
+  "deployed": false,
+  "lpzArchiveValid": true,
+  "embeddedSourceMatches": true,
+  "sigRecords": 550,
+  "signalChecks": {
+    "Sauna_On_Cmd": true,
+    "Sauna_Off_Cmd": true,
+    "Hammam_On_Cmd": true,
+    "Hammam_Off_Cmd": true,
+    "R13_Sauna_On_fb": true,
+    "R13_Hammam_On_fb": true,
+    "R13_Sauna_On_Actual": true,
+    "R13_Hammam_On_Actual": true,
+    "HVAC_On_Cmd": true,
+    "HVAC_Off_Cmd": true,
+    "HVAC_Fan_Auto_Cmd": true,
+    "HVAC_Fan_Low_Cmd": true,
+    "HVAC_Fan_Medium_Cmd": true,
+    "HVAC_Fan_High_Cmd": true,
+    "HVAC_FanSpeed_Cmd#": true,
+    "R13_HVAC_On_Actual": true,
+    "R13_HVAC_FanSpeed_Actual#": true
+  },
+  "hardwareTested": false,
+  "artifacts": [
+    {
+      "name": "generation.log",
+      "bytes": 752,
+      "sha256": "2df060f9a4fdeec596dc66179babf7588547cac07ce7f4b14af666b3c2bf9f92"
+    },
+    {
+      "name": "Project_Slot2.dip",
+      "bytes": 36,
+      "sha256": "83e3e00a6a95819038527bae7d96ec1f9080b3587b9777ed9aedb12a64a0c42a"
+    },
+    {
+      "name": "Project_Slot2.lpz",
+      "bytes": 26878,
+      "sha256": "a2e2cec19d91edd4e473b9e3370ea533fdc0351924446793f92b8bef39aece16"
+    },
+    {
+      "name": "Project_Slot2.lpz.hash",
+      "bytes": 20,
+      "sha256": "bd68e314445b77933d46a4a1579de769faa5b6925baef6233cb0a48ba3e7411a"
+    },
+    {
+      "name": "Project_Slot2.sig",
+      "bytes": 23461,
+      "sha256": "af6257434aff855a02f8675b68dd423af2d37d24d6a3b7e19094cb08be570772"
+    },
+    {
+      "name": "Project_Slot2.smft",
+      "bytes": 110,
+      "sha256": "3363e193df9bc0acbca7bfb0402f6fd34607f66512bc49858588a3793284ac4d"
+    },
+    {
+      "name": "Project_Slot2.smw",
+      "bytes": 160430,
+      "sha256": "896b4f08f92e9f0a3fa3d74c2972edd162f3abd361c2f408c76f1bf77b6d6bef"
+    },
+    {
+      "name": "Project_Slot2_archive.zip",
+      "bytes": 25395,
+      "sha256": "c37536aec02ec3d146518a7ecb0bba587652652589eb8ca112c0641b6f4009e8"
+    },
+    {
+      "name": "Project_Slot2_compiled.zip",
+      "bytes": 56523,
+      "sha256": "546c4ac6d689d75dc024c4cb2701b6e6d0a1ab22d2b29b96611c357813ce9b0c"
+    },
+    {
+      "name": "villa_config-banc.json",
+      "bytes": 108114,
+      "sha256": "602bd65b20df7b6c3cf49469fbfc1d3f7cb470f76fb6bddaefd0a7676620e974"
+    }
+  ]
+}

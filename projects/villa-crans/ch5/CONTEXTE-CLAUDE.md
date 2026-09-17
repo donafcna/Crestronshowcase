@@ -1,40 +1,26 @@
 # VillaCrans — contexte pour Claude (lire en premier, économise les tokens)
 
+## 17/09/2026 — feuille de route (conversation vocale ChatGPT ; détail : docs du projet Cowork 00, 10, 30, 60)
+- Nom : **Crans-Montana**, jamais « Grand Montana » ; « Villa Gemini » = même projet.
+- Étapes : V1 stable → bêta Alexandre (chaque blocage = à simplifier ou à passer dans `villa_config.json`) → « Core Fréquence TV » réutilisable → toutes les GUI du showcase au niveau Villa Crans → livrable client. Horizon 1–2 mois.
+- Architecture cible : CH5 + C# générique maintenus par l'IA ; le programmeur ne touche que le JSON de config et SIMPL. Critère : un programmeur SIMPL qui ne connaît ni CH5 ni C# déploie seul.
+- Premier chantier : audit de la Villa Crans (design system, composants, interactions, points de rupture, animations, contraintes physiques) + contrat de données JSON ↔ C# ↔ SIMPL ↔ CH5.
+- Qualité en amont : cohérence architecturale/physique → AV → graphique/fonctionnelle ; chaque correction devient une règle écrite, puis un contrôle automatique si possible.
+- Session « Work » ChatGPT lancée le 17.09 à 10 h 21 : résultat inconnu, à vérifier.
+
 ## 17/09/2026 — rooms-1, GUI 1.0.180 : décors, wellness et voisinage
-
 Lot demandé par Donatien : local technique au sous-sol (17 pièces vitrine), vue villa rapprochée de 10 %, décoration et enceintes différenciées, cinq TV escamotables au pied des lits, écran cinéma agrandi et haut-parleurs dégagés. Ondes audio fines proportionnelles au volume ; mute, OFF et pause les arrêtent. Quatre programmes réellement 3D dans les TV via un rendu partagé 640 × 360 à 10–15 images/s, sans téléchargement vidéo ni son.
-
 Sous-sol entièrement sans fenêtres. Wellness : deux cabines cloisonnées sauna/hammam, carrelage, douche, vasque ; coupe architecturale des plafonds pour voir l’intérieur, vapeur seulement lorsque le hammam fonctionne. Garage atelier avec deux silhouettes sportives distinctes, carrosseries courbes, roues et détails. Route devant le portail, ponts, sentiers, champs, deux ruisseaux, allées d’arbres, voisins et chalets éloignés des clôtures. Décor fixe regroupé par matériau, aucun nouveau modèle distant. Rendu enrichi mais stylisé, pas photographique.
-
 GUI commune : onglets HVAC/Sauna/Hammam, ON/OFF indépendants, cibles sauna 60–100 °C et humidité hammam 90–100 %, plages dans le JSON ; HVAC normal 16–28 °C. Pas de ventilation sauna/hammam ni de température hammam. Joins d620–627, a/s62–65, C# WellnessState, entrées/sorties EISC nommées dans le générateur SIMPL. Détails et recette Debugger : `projects/villa-crans/ch5/docs/WELLNESS-2026-09-17.md`. Le correctif parallèle de routage inter-écrans dans ControlSystem est préservé et ses 22 scénarios simulés revérifiés ; les autres changements d’industrialisation restent hors publication de ce lot.
-
 Vérifications locales : 36 combinaisons HVAC (555 assertions), 36 combinaisons wellness et retours natifs sans simulateur (632 assertions), 53 tests C#/JSON/SMW wellness et 76 HVAC, 40 contrôles pièces/TV, 27 navigation, 23 fondu, 24 villa, cinq nouveaux contrôles 3D wellness/garage. Matrice 3D supports/thèmes/modes réussie ; audit page/modales/états à 4:1 réussi. Cycle jour/nuit 30/10/30/10 s revérifié. Environ 52–54 images/s mesurées localement à 1280×800, DPR 1,5, rendu GPU. Les performances dépendent de l’appareil et de la connexion.
-
 CH5Z assemblé et CPZ compilé (assembly 1.0.180.0), copie SMW préparée ; **LPZ non compilé, aucun matériel déployé ou vérifié**. Mesures wellness physiques inconnues tant qu’aucun driver ne les fournit. Le dossier `Claude outputs/room-revision/livraison` et les planches avant/après consignent le résultat ; ne pas assimiler la version du site à celle installée sur CP4/TSW.
 
-
-
-## 16/09/2026 — estate-2, GUI 1.0.179 : villa, animations et HVAC
-
-Demande groupée de Donatien : sous-sol avec cinéma, sauna/hammam, garage et simulateur de golf (16 pièces showcase), grand salon/cuisine/salle à manger au RDC, rampe d'accès garage dégagée, fenêtres vers l'extérieur avec cours anglaises au sous-sol, bannes de chaque pièce RDC. Cinq circuits lumineux indépendants ; fondu linéaire 3 s conservé. Rideaux : flèches horizontales dans les GUI sources.
-
-Audio : ondes sur sources vidéo et musique, diamètres selon le volume A/V ou le volume média distinct, arrêt sur mute/OFF ; cinéma 11 canaux dont arrière/surround/plafond. TV : programmes Canvas animés cinéma, football, tennis, course automobile, 15 images/s sans téléchargement de vidéos ni son. Jardin : luminaires, projections douces, clôtures/terrasse/piscine et lumière sous l'eau ; portiques caméra quatre coins, façades et portail. Cycle 20 s (deux demi-cycles de 10 s, transitions de 2 s). Eau déformée par shader et brise discrète sur une partie du feuillage, haies fixes ; réduction avec le niveau de qualité. Démo automatique : Smartphone 60 s, autres supports 10 s.
-
-**Extension matérielle explicitement demandée** : ON/OFF + Auto/1/2/3 sur toutes les pages HVAC. Contrat JSON canonique, six joins digitaux 610–615, analogique 61, état par pièce C#, miroir EISC, signaux nommés du générateur SIMPL. Voir `projects/villa-crans/ch5/docs/HVAC-2026-09-16.md`. Les noms/activations réels de la configuration physique restent conservés ; la nouvelle architecture 3D appartient à la démonstration.
-
-Tests locaux : 24 contrôles villa, 28 navigation, 23 fondu, 40 matrice 3D, 36 combinaisons GUI HVAC et 15 contrôles réception native sans simulateur ; 76 contrôles C#/JSON/SMW. Contraste pages/fenêtres/états dans les trois thèmes : aucun texte sous 4:1. Test dédié des délais 60/10 s, volume musique, pause vidéo et shader de l'eau. Mesure locale GPU 1280×800 DPR 1,5 : environ 55–60 images/s (pièce, villa fermée et ouverte). Limite : rendu stylisé enrichi, pas promesse de photoréalisme.
-
-Preuves dans `Claude outputs/codex-plan3d-villa2/` ; dossier `livraison-hvac` : JSON, CH5Z assemblé, SMW préparé. Le projet SIMPL original et ses modifications locales sont préservés : copie = 715 ajouts, aucune suppression. **LPZ non compilé ; aucun déploiement matériel.** C# compilé, mais Windows bloque l'empaquetage final du CPZ (`MSB3441 / 0x800711C7`, contrôle d'applications). Premier CPZ d'essai écarté de la livraison. La mise en service nécessite les bons CPZ/LPZ et la recette Debugger.
-
-## Dernier lot Codex — contrôle global 1.0.178, 16/09/2026
-
-Demande explicite de Donatien après les lots 3D : corriger les retours de la fenêtre Centralisation sur tous les supports. Source `src/index.html` / `src/iphone.html`, CSS commun `src/themes/global-controls.css` : retours natifs `receiveStateSelected` (401–405, 407–411), gris inactif / vert actif. Ne jamais remettre le sélecteur CSS `[selected]` sans `="true"` : il active aussi les boutons false. Les retours d'état ne sont pas forcés au clic dans le DOM.
-
-Version **source** et config canonique 1.0.178 ; showcase régénéré par le script qui lit la config racine. Le feedback local conserve une seule commande globale par section, désélectionne les états devenus inexacts après réglage individuel, et distingue commande stores/position mesurée. Recette navigateur : 36 combinaisons, 1 292 assertions, injection de retours booléens natifs CH5 sans moteur local, contraste 4:1 pages/modales. **CH5Z, CPZ et LPZ préexistants préservés, aucun déploiement matériel** ; leur état installé n'est pas déduit de la version source. Donatien a signalé le chargement CPZ/LPZ le 16/09, sans vérification physique dans ce lot. Les tableaux historiques ci-dessous ne constituent pas un nouvel état matériel.
+## Lots précédents (détail : CHANGELOG)
+- 16/09 estate-2, GUI 1.0.179 : sous-sol cinéma/sauna/hammam/garage/golf, ondes audio, TV animées, jardin, cycle jour/nuit ; HVAC ON/OFF + Auto/1/2/3 (joins 610–615, a61, `docs/HVAC-2026-09-16.md`). LPZ non compilé, CPZ bloqué par Windows (`MSB3441`), aucun déploiement matériel.
+- 16/09 lot Codex 1.0.178 : retours natifs de la fenêtre Centralisation (`receiveStateSelected` 401–405, 407–411, `src/themes/global-controls.css`) ; ne jamais remettre `[selected]` sans `="true"`. CH5Z/CPZ/LPZ préexistants préservés.
 
 ## Les 4 artefacts à suivre (convention validée le 13.09.2026)
 Quatre versions à tenir alignées, ici et en tête de chaque entrée du CHANGELOG.
-
 | Artefact | Version | Compilation |
 |---|---|---|
 | CH5 `.ch5z` (TSW + XPanel) | **1.0.176** (15.09, XPanel sur le CP4 du bureau) | `.\deploy.ps1 -Target web -CP4Host 192.168.3.109` — **à relancer** : lots des 15-16.09 non compilés |
@@ -43,19 +29,15 @@ Quatre versions à tenir alignées, ici et en tête de chaque entrée du CHANGEL
 | Showcase Vercel | lot du 16.09 | poussé sur `main` — Vercel déploie automatiquement ; `deployer-v2.bat` est obsolète |
 
 `deploy.ps1` incrémente `version.json` à chaque build (même si le build échoue ensuite) ; `meta.version` du `villa_config.json` s'aligne à la main.
-
 Projet Fréquence TV : GUI Crestron CH5 « Villa Crans-Montana » + SIMPL# Pro (slot 1, `Backend/Backend/ControlSystem.cs`) + SIMPL Windows (slot 2). Contrat de joins **v4** (15.09.2026, `villa_config.json` → `contrat`, doc `docs/03_CONTRAT_JOINS.md` encore en v3). Doc dans `docs/` (01 spéc · 02 villa_config · 03 joins · 04 SIMPL · 05 recette · 06 to-do · 07 retours direction 09.09 · 08 workflow showcase), audit `AUDIT_2026-09-02.md`, journal `CHANGELOG.md`, règles CH5 `.agents/AGENTS.md` (« Rule of Gold » : états par joins natifs CH5, jamais par DOM JS).
-
 ## Arborescence (monorepo, depuis la restructuration du 11.09.2026)
 `C:\dev\crestron\repo` — `projects/villa-crans/ch5` (GUI + C#, ce fichier à la racine) · `projects/villa-crans/simpl` (slot 2 `.smw`, contrat) · `apps/showcase` (site vitrine, clone de `donafcna/Crestronshowcase`, main → Vercel). Les anciens chemins `C:\Users\donat\Desktop\VillaCrans` et `VillaCrans SIMPL` ne sont plus utilisés.
-
 ## Fichiers qui comptent
 - `src/index.html` (dalle TSW-1070, iPad, XPanel) et `src/iphone.html` : SOURCE DE VÉRITÉ. Blocs `<style id="tablet-sidebar">` (menu de gauche groupé), `<style id="global-modals-xl">` (modales agrandies), `<style id="theme-readability">` / `<style id="theme-overlays">` (thèmes Sombre / Clair / Verre dépoli).
 - `src/js/villa-joins.js` : couche v3 (traduction par pièce) **désactivée** par `contrat.blocsPiecesGui.actif=false` ; sert encore à `villaPiecesActives(vc)` (pièces `actif:false` hors menus) et aux miroirs `data-join`.
 - `villa_config.json` (racine = copié dans `src/` par `deploy.ps1`) : `meta.mode = "deploiement"` (jamais `showcase` ici), **`meta.tracesConsole`** (faux = debugger propre, voir plus bas), `contrat.signauxGlobaux`, `contrat.blocsPieces` (EISC), **`contrat.blocsPiecesGui`** (mapping join logique → offset), `contrat.alarme`, **`pieces[].pilotages.eclairages.scenes.niveaux`** (niveaux de circuits par scène), `pagesSpeciales`, `traductions`.
 - `deploy.ps1` : `node --check` de chaque `<script>` + validation JSON + contraste → `npx ch5-cli archive` → TSW (pscp/plink) → CP4. `-Target web` = XPanel + QR codes.
 - **Contraste (règle permanente : 0 défaut)** — `node tools/check_contrast_dom.mjs --root http://localhost:4173 --min 4` sur une preview servie (3 thèmes × page + 10 fenêtres × états dynamiques, dalle et smartphone). Attendre 900 ms après un changement de thème.
-
 ## Contrat de joins v4 (15.09.2026) — joins de pilotage identiques dans toutes les pièces
 Décision de Donatien : **tous les pilotages (sources 150-156, télécommandes Apple TV 211-220 / Sky Q
 500-527 / IPTV 530-557 / Swisscom 560-600, scènes stores 201-204, stores groupés 61-69) portent le
@@ -74,7 +56,6 @@ En mode `showcase` tout tourne sur ces joins avec `js/local-feedback.js`.
 RENVOYER (entrée). Sans logique câblée (interlocks sources / scènes, toggle musique 155 remis à 0
 par 156), la dalle ne voit rien venir du slot 2 — le C# fournit déjà le feedback des sources,
 scènes, consigne, vacances, partitions ; le slot 2 pilote le matériel réel.
-
 ## Règles GUI validées par Donatien
 - **Aucun défilement** (14.09) : le contenu tient à l'écran, quitte à redimensionner ; seules exceptions
   smartphone : Caméras, Circuits, Configuration preset. **Occuper la place au mieux** : fenêtres 92 % de
@@ -95,17 +76,9 @@ scènes, consigne, vacances, partitions ; le slot 2 pilote le matériel réel.
 - **Aucun son** : `playFunnySound` neutralisée, `playSynthSound` supprimée (11.09.2026).
 - **Le debugger ne montre que des signaux (13.09).** Émission sur changement uniquement (`SetBool` / `SetUShort` / `SetString` ; exceptions : impulsions, code d'alarme, `_forcePush`). Traces C# et `console.log` (s100) sous `meta.tracesConsole` (`progreset` pour relire).
 - **Scènes d'éclairage → circuits (13.09).** `pieces[].pilotages.eclairages.scenes.niveaux` (0-65535 par circuit) ; **le slot 2 fait foi** dès qu'un niveau remonte sur +71..+80 (`_circuitFromSlot2`). Démarrage scène 1.
-
 ## GUI smartphone — agrandissement (14.09.2026)
-Tout tient dans `<style id="mobile-xl">` (fin de `<body>`) + `<style id="mobile-ux">` (moteurs animés,
-scènes mémorisées `villa_scene_<pièce>_<n>`, MutationObserver sur `#motors-container` /
-`#circuits-container`) + blocs `mobile-lot-0915` / `mobile-lot-0916`. Cibles ≥ 44 px, repli
-`@media (max-height: 700px)`. Pièges : un style en ligne `!important` ne se reprend pas en CSS (le
-retirer du HTML) ; sur un `ch5-button` donner `width/height: 100%` à `> div` et `.cb-btn` ; `min-width: 0`
-sur les éléments de grille ; le fond générique `#0369a1 !important` des boutons CH5 écrase les
-`customStyle` → ceux de `#source-control-overlay` sont `!important` un par un, ne pas les « nettoyer ».
-L'entête ne porte que la liste des pièces et l'engrenage (version, connexion, admin dans Réglages).
-
+Styles `mobile-xl` (fin de `<body>`), `mobile-ux` (moteurs animés, scènes `villa_scene_<pièce>_<n>`, MutationObserver), blocs `mobile-lot-0915/0916` ; cibles ≥ 44 px, repli `@media (max-height: 700px)`. Entête = pièces + engrenage.
+Pièges : un style en ligne `!important` ne se reprend pas en CSS (le retirer du HTML) ; `ch5-button` → `width/height:100%` sur `> div` et `.cb-btn` ; `min-width:0` en grille ; les `customStyle` de `#source-control-overlay` sont `!important` un par un, ne pas les « nettoyer ».
 ## Lot smartphone 15-16.09.2026 — logique audio/vidéo et pièges CH5
 - **Un seul point d'entrée pour les sources : `window.avSelect(join)`** (bloc IIFE `AV`, identique
   dalle / iPhone) : confirmation « musique ou audio de la vidéo » (`#audio-confirm-overlay`), ouverture
@@ -127,7 +100,6 @@ L'entête ne porte que la liste des pièces et l'engrenage (version, connexion, 
 - Outillage conteneur : `device_commit_files` sert un **chemin de sortie neuf** à chaque livraison
   (cache observé sur un même `stagedPath`) ; `src/villa_config.json` est une copie de build, la
   source est `villa_config.json` à la racine (la recopier avant `sync-villa-crans.py`).
-
 ## Plan 3D (16.09.2026) — fond de page du SITE, le GUI des châssis ne change jamais
 **Vidéo par défaut** ; `apps/showcase/src/components/Plan3DBackground.jsx` ne la remplace que dans
 les cas de `PLAN3D_RULES` (`{device,minWidth,maxWidth}` — aujourd'hui : châssis Smartphone ; l'utilisateur
@@ -141,7 +113,6 @@ Sky 500+, IPTV 530+, Swisscom 574+, stores 61-69, moteurs 81-98), `animateGroupB
 fond, pièce active cadrée dans la zone libre à droite du châssis (`api.setWindow`). `window.__plan3d`
 = API (`jump()` termine les mouvements). Détail dans `apps/showcase/CLAUDE.md`. **Malentendu du
 16.09 à ne pas répéter** : une demande « plan 3D / fond d'écran » vise le site Vercel, jamais le GUI.
-
 ## Vitrine (apps/showcase, crestrongui.vercel.app)
 Copie régénérée par `python apps/showcase/scripts/sync-villa-crans.py <chemin>/projects/villa-crans/ch5/src` (jamais éditée à la main) ; `meta.mode = "showcase"`, feedback simulé par `js/local-feedback.js`, curseur de démo. Le script copie aussi `js/villa-joins.js` ; `js/local-feedback.js` est propre à la vitrine.
 **Barre d'outils (14.09.2026) : QR code · Fiche PDF.** « Présentation » retiré (la bulle « Reprise
@@ -151,7 +122,6 @@ plein écran se demande par l'adresse — **`/3` GUI seule plein écran, `/4` re
 sur le modèle de `/1` et `/0` du Mode Dev (`hooks/useGuiFullscreen.js`, Échap en échappatoire).
 La démo automatique démarre désormais sur **tous les supports** (elle était réservée au PC via
 `isDesktopPointer`) : sans bouton, elle n'était plus démarrable à la main sur mobile et tablette.
-
 ## Pièges de la chaîne de déploiement (15.09.2026, tous rencontrés en conditions réelles)
 1. `deploy.ps1` en **ASCII pur + BOM** : sans BOM, PowerShell 5.1 lit cp1252, un tiret cadratin devient
    `â€"` dont le guillemet typographique inverse la parité des chaînes. Parser dans les deux décodages.
@@ -164,15 +134,9 @@ La démo automatique démarre désormais sur **tous les supports** (elle était 
 5. `ch5-cli` sort en code 0 même en échec : le succès se vérifie sur `https://<cp4>/villaftv/index.html`.
 6. Banc du bureau : CP4 `192.168.3.109`, compte SFTP `FTV`, `-CP4Host <ip>` ; `Test-NetConnection -Port 22`.
    `-SkipContrast` / `-SkipBuild` existent. PowerShell bloque les scripts : `-ExecutionPolicy Bypass`.
-
 ## Reste à faire
 1. Recompiler le CPZ (SIMPL# Pro, routage v4) puis `powershell -ExecutionPolicy Bypass -File C:\dev\crestron\repo\projects\villa-crans\ch5\deploy.ps1 -Target cp4` ; CH5 : `... deploy.ps1 -Target tsw -TswHost 192.168.1.16` / `-Target web` (CP4 .1.200 encore en v1.0.149 du 21.07).
 2. LPZ : `node C:\dev\crestron\repo\projects\villa-crans\simpl\contract\generate_slot2.js` + F12 ; buffers SIMPL sur `Room_Select#` ; supprimer les 2010 signaux `R*_` ; chaîne d'alarme s43 / d44-46.
 3. Recette : deux supports sur deux pièces en même temps ; joins de télécommande dans le debugger (Apple TV / Sky Q : aucun ne remontait en v3).
 4. `villa_config.json` porte encore des noms de test inappropriés (`valeursParDefaut.scenesEclairage`) — avant toute visite client.
 5. Réserves : libellé « P » des flèches de chaîne Swisscom disparu ; scènes 201-204 encore au contrat / slot 2 ; `docs/03_CONTRAT_JOINS.md` à passer en v4.
-
-## État au 16.09.2026
-Lots 15-16.09 dans les sources et poussés (source + vitrine), batteries vertes (Playwright 3 thèmes,
-contraste dalle 1920×1200 + smartphone, interactions 3D). CPZ et LPZ rechargés par Donatien le 16.09
-(routage v4, CVC par pièce, média, partitions) ; **CH5 à recompiler** (badge, tap-highlight). CP4 .1.200 : v1.0.149 du 21.07 tant que `-Target web` n'a pas été relancé.
