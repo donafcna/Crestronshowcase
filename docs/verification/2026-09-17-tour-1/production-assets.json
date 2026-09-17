@@ -1,0 +1,12 @@
+[
+  {
+    "path": "apps/showcase/public/plan3d/plan3d.js",
+    "matches": true,
+    "sha256": "4f3b7d6f447e54bbe5abc62d87217c5e290511662db43a16aadfa599c7b1dafa"
+  },
+  {
+    "path": "apps/showcase/public/showcases/villa-gemini-frequencetv/js/local-feedback.js",
+    "matches": true,
+    "sha256": "49cd82e6635a88da0c87cf41cfe66ec4b74cf75ca17d0d4c3b22e2ed1c654725"
+  }
+]

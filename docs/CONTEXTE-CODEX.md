@@ -3,6 +3,8 @@
 
 ## 17/09/2026 — tour-1 : séquençage Villa Crans autorisé
 
+**Publié et vérifié : `b1de7af0`, main → Vercel. 34 contrôles du cycle complet sur le site public réussis, aucune nouvelle erreur ; sélections à 3 s puis toutes les 5 s mesurées avant le rendu. Preuves archivées dans [verification/2026-09-17-tour-1/README.md](verification/2026-09-17-tour-1/README.md).**
+
 La TODO a été précisée et activée par Donatien : au clic Residential, Smartphone 60 s (villa globale 3 s, puis pièce aléatoire toutes les 5 s), TSW 10 s, puis boucle. Pas de Tablette dans ce nouveau cycle. Au crépuscule : CINÉMA basse/variée dans les 17 pièces et tous les rideaux fermés ; à l'aube : lumières OFF et rideaux ouverts. Cycle extérieur 30/10/30/10 conservé et horloge continue pendant TSW. Le visiteur peut interrompre immédiatement, reprise après 60 s sur Smartphone.
 
 Implémentation uniquement Showcase : hook villaTour, orchestration, moteur local et liaison 3D. Aucun changement de la GUI source ou des programmes Crestron. 34 contrôles de cycle et 23 de fondu réussis localement ; trois thèmes / normal / Scène. Détails dans apps/showcase/README.md et docs/plan3d.md, preuves dans Claude outputs/villa-tour. L'adaptation générale du GUI Showcase aux équipements de chaque pièce reste dans la TODO et n'est pas incluse dans cette demande de séquençage.

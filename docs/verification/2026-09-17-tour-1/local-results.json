@@ -1,0 +1,469 @@
+{
+  "functionalCommit": "5192b5cb8a7c5b74b1f82ee0f8b2b0d8cd4ff3f3",
+  "local": {
+    "cycle-local": {
+      "status": "passed",
+      "checks": [
+        "Residential starts Villa Crans on Smartphone",
+        "Introduction remains completely zoomed out",
+        "Introduction remains completely zoomed out",
+        "Introduction remains completely zoomed out",
+        "Introduction remains completely zoomed out",
+        "Introduction remains completely zoomed out",
+        "Introduction remains completely zoomed out",
+        "Introduction remains completely zoomed out",
+        "Night: all 17 rooms use low varied scene",
+        "Night: every curtain is closed",
+        "Dawn: all 17 rooms are OFF",
+        "Dawn: every curtain is open",
+        "Night returns in the next cycle",
+        "Loop returns to Smartphone after TSW",
+        "Smartphone lasts 60 seconds",
+        "TSW lasts 10 seconds once loaded",
+        "First room selected after 3 seconds",
+        "Room selected every 5 seconds",
+        "Random room bag does not repeat rooms during the minute",
+        "Animated cursor moves on the GUI",
+        "No inactivity countdown between automatic chassis changes",
+        "Environment time survives TSW and the 3D remount",
+        "Second Smartphone introduction uses the closed villa",
+        "Manual input pauses room selection for 60 seconds",
+        "Manual scene survives the tour pause",
+        "Tour cursor is hidden while paused",
+        "GUI normal/dark keeps manual control",
+        "GUI normal/light keeps manual control",
+        "GUI normal/glass keeps manual control",
+        "GUI scene/dark keeps manual control",
+        "GUI scene/light keeps manual control",
+        "GUI scene/glass keeps manual control",
+        "Pause countdown was armed by real input",
+        "No new JavaScript or rendering errors"
+      ],
+      "errors": [],
+      "legacyErrors": [
+        "CH5: La bibliothèque WebXPanel n'est pas chargée.",
+        "Error: <path> attribute d: Expected number, \"… 8.2 3 21.4 11.7l43.3 75zM256 33…\"."
+      ],
+      "performance": {
+        "frames": 180,
+        "renderedFrames": 2995,
+        "medianMs": 24.26666666661913,
+        "p95Ms": 32.30000000000291,
+        "pixelRatio": 1.5,
+        "drawCalls": 114,
+        "triangles": 206036,
+        "zone": {
+          "x": 421.9111022949219,
+          "y": 70,
+          "w": 610.0888977050781,
+          "h": 706
+        },
+        "tv3D": {
+          "mode": "3d",
+          "version": "stadiums-1",
+          "width": 640,
+          "height": 360,
+          "programmes": 2,
+          "draws": 274,
+          "currentKind": "film",
+          "venues": {
+            "football": {
+              "stands": 4,
+              "spectators": 1060,
+              "staticDrawCalls": 3,
+              "instances": 4836
+            }
+          }
+        }
+      },
+      "transitions": [
+        {
+          "at": 3448,
+          "device": "phone",
+          "room": 1,
+          "seconds": 0.062,
+          "phase": "overview-closed"
+        },
+        {
+          "at": 6700.799999982119,
+          "device": "phone",
+          "room": 16,
+          "seconds": 3.3147999999821187,
+          "phase": "opening"
+        },
+        {
+          "at": 11951.699999988079,
+          "device": "phone",
+          "room": 4,
+          "seconds": 8.565699999988079,
+          "phase": "focusing"
+        },
+        {
+          "at": 17206.5,
+          "device": "phone",
+          "room": 7,
+          "seconds": 13.8205,
+          "phase": "focusing"
+        },
+        {
+          "at": 21473.19999998808,
+          "device": "phone",
+          "room": 13,
+          "seconds": 18.08719999998808,
+          "phase": "focusing"
+        },
+        {
+          "at": 26594.79999998212,
+          "device": "phone",
+          "room": 8,
+          "seconds": 23.20879999998212,
+          "phase": "focusing"
+        },
+        {
+          "at": 31545.29999998212,
+          "device": "phone",
+          "room": 1,
+          "seconds": 28.159299999982117,
+          "phase": "focusing"
+        },
+        {
+          "at": 36466.40000000596,
+          "device": "phone",
+          "room": 6,
+          "seconds": 33.08040000000596,
+          "phase": "focusing"
+        },
+        {
+          "at": 41569.19999998808,
+          "device": "phone",
+          "room": 10,
+          "seconds": 38.18319999998808,
+          "phase": "focusing"
+        },
+        {
+          "at": 46488.09999999404,
+          "device": "phone",
+          "room": 5,
+          "seconds": 43.10219999998808,
+          "phase": "focusing"
+        },
+        {
+          "at": 51576.79999998212,
+          "device": "phone",
+          "room": 11,
+          "seconds": 48.19079999998212,
+          "phase": "focusing"
+        },
+        {
+          "at": 56917.69999998808,
+          "device": "phone",
+          "room": 2,
+          "seconds": 53.53169999998808,
+          "phase": "focusing"
+        },
+        {
+          "at": 61430,
+          "device": "phone",
+          "room": 17,
+          "seconds": 58.044,
+          "phase": "focusing"
+        },
+        {
+          "at": 63640.79999998212,
+          "device": "wallpanel",
+          "room": 1
+        },
+        {
+          "at": 64319.19999998808,
+          "device": "wallpanel",
+          "room": 17
+        },
+        {
+          "at": 74472.29999998212,
+          "device": "phone"
+        },
+        {
+          "at": 75688.79999998212,
+          "device": "phone",
+          "room": 1,
+          "seconds": 72.30279999998211,
+          "phase": "overview-closed"
+        },
+        {
+          "at": 76109.59999999404,
+          "device": "phone",
+          "room": 17,
+          "seconds": 72.72359999999404,
+          "phase": "overview-closed"
+        },
+        {
+          "at": 79544,
+          "device": "phone",
+          "room": 16,
+          "seconds": 76.158,
+          "phase": "opening"
+        },
+        {
+          "at": 84281.59999999404,
+          "device": "phone",
+          "room": 12,
+          "seconds": 80.89559999999403,
+          "phase": "focusing"
+        },
+        {
+          "at": 89465.5,
+          "device": "phone",
+          "room": 3,
+          "seconds": 86.07959999999404,
+          "phase": "focusing"
+        },
+        {
+          "at": 94363.09999999404,
+          "device": "phone",
+          "room": 5,
+          "seconds": 90.97709999999404,
+          "phase": "focusing"
+        },
+        {
+          "at": 99328,
+          "device": "phone",
+          "room": 15,
+          "seconds": 95.942,
+          "phase": "focusing"
+        },
+        {
+          "at": 104328.79999998212,
+          "device": "phone",
+          "room": 1,
+          "seconds": 100.94279999998211,
+          "phase": "focusing"
+        },
+        {
+          "at": 109291.5,
+          "device": "phone",
+          "room": 13,
+          "seconds": 105.9055,
+          "phase": "focusing"
+        },
+        {
+          "at": 114425,
+          "device": "phone",
+          "room": 10,
+          "seconds": 111.039,
+          "phase": "focusing"
+        }
+      ]
+    },
+    "fades-local": {
+      "status": "passed",
+      "checks": [
+        "OFF to TOTAL begins with a fade",
+        "OFF to TOTAL linear trajectory",
+        "OFF to TOTAL finishes at 3 seconds",
+        "OFF to TOTAL halfway is intermediate",
+        "TOTAL to CINEMA begins with a fade",
+        "TOTAL to CINEMA linear trajectory",
+        "TOTAL to CINEMA finishes at 3 seconds",
+        "TOTAL to CINEMA halfway is intermediate",
+        "CINEMA to REPAS begins with a fade",
+        "CINEMA to REPAS linear trajectory",
+        "CINEMA to REPAS finishes at 3 seconds",
+        "CINEMA to REPAS halfway is intermediate",
+        "REPAS to OFF begins with a fade",
+        "REPAS to OFF linear trajectory",
+        "REPAS to OFF finishes at 3 seconds",
+        "REPAS to OFF halfway is intermediate",
+        "OFF fully extinguishes room lamps",
+        "Interrupting fades from current visible level",
+        "Repeated target does not restart 3 second fade",
+        "Global OFF also fades",
+        "Global OFF reaches zero",
+        "Fade completes while visiting another room",
+        "No browser exceptions"
+      ],
+      "errors": []
+    },
+    "navigation-local": {
+      "status": "passed",
+      "checks": [
+        "Real OFF button extinguishes both light circuits",
+        "Closed motors suppress ambient daylight",
+        "TV casts only a weak local light",
+        "Saved OFF preset cannot leave lamps on",
+        "Manual circuit control exits OFF and relights",
+        "Equal levels survive room switch",
+        "OFF remains dark after switching between OFF rooms",
+        "All basement rooms have no window",
+        "No camera snap on rapid selection 3",
+        "No camera snap on rapid selection 9",
+        "No camera snap on rapid selection 4",
+        "No camera snap on rapid selection 8",
+        "Rapid selections finish on latest room",
+        "Overview restores all exterior walls",
+        "Closed villa has physically assembled storeys",
+        "First background click removes walls without zoom",
+        "Open overview separates storeys",
+        "Room click selects same room in Smartphone",
+        "Room click focuses picked room",
+        "Walls fade before camera travel",
+        "GUI selection from overview completes smoothly",
+        "Sequence opens shell then explodes then focuses",
+        "Changing selection during explosion preserves camera continuity",
+        "Wheel refocus also removes walls",
+        "Global close animates every room motor",
+        "Global open animates every room motor",
+        "No uncaught browser errors"
+      ],
+      "errors": [],
+      "performance": [
+        {
+          "view": "room",
+          "fps": 53.513204072140255,
+          "frames": 180,
+          "renderedFrames": 4415,
+          "medianMs": 24.266666666633682,
+          "p95Ms": 32.30000000000291,
+          "pixelRatio": 1.5,
+          "drawCalls": 114,
+          "triangles": 206036,
+          "zone": {
+            "x": 421.9111022949219,
+            "y": 70,
+            "w": 610.0888977050781,
+            "h": 706
+          },
+          "tv3D": {
+            "mode": "3d",
+            "version": "stadiums-1",
+            "width": 640,
+            "height": 360,
+            "programmes": 4,
+            "draws": 664,
+            "currentKind": "film",
+            "venues": {
+              "football": {
+                "stands": 4,
+                "spectators": 1060,
+                "staticDrawCalls": 3,
+                "instances": 4836
+              },
+              "race": {
+                "stands": 4,
+                "spectators": 650,
+                "staticDrawCalls": 3,
+                "instances": 3244
+              },
+              "tennis": {
+                "stands": 4,
+                "spectators": 620,
+                "staticDrawCalls": 3,
+                "instances": 2864
+              }
+            }
+          }
+        },
+        {
+          "view": "closed",
+          "fps": 52.524146171228914,
+          "frames": 180,
+          "renderedFrames": 4704,
+          "medianMs": 24.26666666661913,
+          "p95Ms": 32.30000000000291,
+          "pixelRatio": 1.5,
+          "drawCalls": 134,
+          "triangles": 217708,
+          "zone": {
+            "x": 421.9111022949219,
+            "y": 70,
+            "w": 610.0888977050781,
+            "h": 706
+          },
+          "tv3D": {
+            "mode": "3d",
+            "version": "stadiums-1",
+            "width": 640,
+            "height": 360,
+            "programmes": 4,
+            "draws": 664,
+            "currentKind": "film",
+            "venues": {
+              "football": {
+                "stands": 4,
+                "spectators": 1060,
+                "staticDrawCalls": 3,
+                "instances": 4836
+              },
+              "race": {
+                "stands": 4,
+                "spectators": 650,
+                "staticDrawCalls": 3,
+                "instances": 3244
+              },
+              "tennis": {
+                "stands": 4,
+                "spectators": 620,
+                "staticDrawCalls": 3,
+                "instances": 2864
+              }
+            }
+          }
+        },
+        {
+          "view": "open",
+          "fps": 51.6479952093845,
+          "frames": 180,
+          "renderedFrames": 5069,
+          "medianMs": 23.299999999959255,
+          "p95Ms": 32.30000000000291,
+          "pixelRatio": 1.5,
+          "drawCalls": 204,
+          "triangles": 403436,
+          "zone": {
+            "x": 421.9111022949219,
+            "y": 70,
+            "w": 610.0888977050781,
+            "h": 706
+          },
+          "tv3D": {
+            "mode": "3d",
+            "version": "stadiums-1",
+            "width": 640,
+            "height": 360,
+            "programmes": 4,
+            "draws": 664,
+            "currentKind": "film",
+            "venues": {
+              "football": {
+                "stands": 4,
+                "spectators": 1060,
+                "staticDrawCalls": 3,
+                "instances": 4836
+              },
+              "race": {
+                "stands": 4,
+                "spectators": 650,
+                "staticDrawCalls": 3,
+                "instances": 3244
+              },
+              "tennis": {
+                "stands": 4,
+                "spectators": 620,
+                "staticDrawCalls": 3,
+                "instances": 2864
+              }
+            }
+          }
+        }
+      ]
+    },
+    "controls-local": {
+      "status": "passed",
+      "checks": [
+        "Generic tour still starts after idle plus its normal initial delay",
+        "Early manual gesture cancels the initial tour before first room",
+        "Resume button starts a new introduction then focuses a room",
+        "Residential restarts the tour even on the same project"
+      ]
+    }
+  }
+}
