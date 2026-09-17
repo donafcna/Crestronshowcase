@@ -352,3 +352,16 @@ Recettes : scripts/test-plan3d-room-feedback.cjs (boutons réels, quatre scènes
 Validation du lot : 69 contrôles scènes/TV réussis, 280 contrôles audio réussis (15 pièces et 32 enceintes, amplitude mesurée pendant un cycle complet), 23 contrôles de fondu réussis. Les tests plus fins ont révélé le rail du Salon dans l'axe de la caméra en Mode normal ; tous les rails sont désormais rapprochés du mur arrière. Contrôle final normal 1280 × 800 : 6 006 rayons caméra-écran dégagés sur 11 TV, volets/rideaux ouverts et fermés. Build et lint réussis (avertissements préexistants). Mesure locale : 56,8 images/s, DPR 1,5 ; 459 octets gzip ajoutés aux deux modules, aucune ressource distante ni lumière supplémentaire. Preuves dans Claude outputs/room-feedback (before, qa, audio, normal-dense, fades).
 
 Mode Scène 1920 × 1080 : 23 contrôles réussis, 6 006/6 006 rayons dégagés également. Trois thèmes photographiés dans les deux modes ; dalle et tablette gardent la vidéo de fond (banc audio).
+
+
+## 17/09/2026 — tour-1 : séquence résidentielle dédiée à Villa Crans
+
+Entrée par le secteur Residential/Résidentiel : Smartphone en premier, vue villa assemblée pendant 3 secondes, pièce aléatoire différente toutes les 5 secondes, passage au TSW à 60 secondes. Présentation TSW 10 secondes après chargement, puis nouvelle minute Smartphone en boucle. La dernière visite commence à t=58 et se termine à t=60. Aucune attente d'inactivité entre ces changements automatiques ; intervention manuelle prioritaire et reprise après 60 s sur téléphone, 10 s ailleurs. Le bandeau ramène la carte du projet actif dans la zone visible après navigation.
+
+Horloge 30/10/30/10 conservée entre les châssis : scène CINÉMA basse et variée dans les 17 pièces au début du crépuscule, fermeture des rideaux ; OFF et ouverture des rideaux au début de l'aube. Les fondus restent linéaires sur 3 secondes. Le curseur visite les onglets et commandes HVAC/volume sans contredire cette ambiance. Volets, stores et bannes ne sont pas assimilés aux rideaux. États par pièce synchronisés dans le feedback local Showcase, sans sélectionner successivement toutes les pièces ni faire sauter la caméra.
+
+Validation locale : 34 contrôles du nouveau banc test-villa-tour.cjs, cycle observé sur plus de 110 secondes (jour/nuit/aube/nuit, deux passages Smartphone), navigation par le menu depuis Appartement Carouge, rythmes, tirage sans répétition, pointeur animé et priorité manuelle. Trois thèmes × normal/Scène photographiés. Les 23 contrôles de fondu passent. Premier essai du nouveau banc : assertion trop restrictive sur le nombre de coordonnées distinctes du curseur ; remplacée par le nombre réel de déplacements, puis cycle complet repassé. Deux messages console TSW préexistants (WebXPanel absent et tracé SVG) consignés séparément ; aucune nouvelle erreur. Build/lint réussis, avertissements préexistants.
+
+Preuves : `Claude outputs/villa-tour/qa-final`, `fades`, `comparison/index.html`. Aucun modèle, média ou éclairage dynamique ajouté. Source GUI, JSON physique, SIMPL# et SIMPL Windows inchangés par ce lot ; aucune compilation ou livraison sur matériel.
+
+Contrôles complémentaires : 27 contrôles de navigation 3D réussis, quatre contrôles de reprise/menu/autre projet réussis. Comparatif visuel avant/après, trois thèmes en colonnes : `Claude outputs/villa-tour/comparison/index.html`.

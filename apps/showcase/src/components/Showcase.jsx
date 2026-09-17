@@ -15,6 +15,7 @@ import { DemoToolbar } from "./DemoToolbar";
 import { useRouter, buildShowcasePath } from "../router";
 import { useDemoSettings } from "../hooks/useDemoSettings";
 import { useAutoDemo } from "../hooks/useAutoDemo";
+import { VILLA_PROJECT, createVillaSession } from "../hooks/villaTour";
 import { DemoCursor, DemoCountdown } from "./DemoOverlay";
 import { useGuiFullscreen } from "../hooks/useGuiFullscreen";
 
@@ -39,7 +40,7 @@ const SimulatorFallback = () => (
 
 // Bandeau des projets sur UNE seule ligne : défilement horizontal masqué + flèches
 // gauche / droite affichées seulement quand la liste dépasse la largeur disponible.
-const useProjectsStrip = () => {
+const useProjectsStrip = (projectId) => {
   const ref = useRef(null);
   const [state, setState] = useState({ canLeft: false, canRight: false });
   const update = useCallback(() => {
@@ -57,12 +58,11 @@ const useProjectsStrip = () => {
     ro.observe(el);
     return () => ro.disconnect();
   }, [update]);
-  // Amener le projet sélectionné dans la zone visible (au montage seulement : ne pas
-  // ramener la liste en arrière quand l'utilisateur fait défiler avec les flèches)
+  // Show the selected project after navigation; manual scrolling alone does not reset it.
   useEffect(() => {
     const sel = ref.current?.querySelector(".selected");
     if (sel) sel.scrollIntoView({ block: "nearest", inline: "nearest" });
-  }, []);
+  }, [projectId]);
   const scrollBy = useCallback((dir) => {
     const el = ref.current;
     if (!el) return;
@@ -83,7 +83,7 @@ export const Showcase = (props) => (
 const ShowcaseInner = ({ sectorId, projectId, device }) => {
   const { devMode } = useDevMode();
   const frameInfo = useFrameInfo()?.info;
-  const strip = useProjectsStrip();
+  const strip = useProjectsStrip(projectId);
   const [calibOpen, setCalibOpen] = useState(false);
   const openCalib = useCallback(() => setCalibOpen(true), []);
   const { t, lang } = useTranslation();
@@ -113,7 +113,8 @@ const ShowcaseInner = ({ sectorId, projectId, device }) => {
     );
   }, [activeProject]);
 
-  const defaultViewport = projectViewports[0]?.viewport || "wallpanel";
+  const villaProject = activeProject.id === VILLA_PROJECT;
+  const defaultViewport = villaProject ? "phone" : projectViewports[0]?.viewport || "wallpanel";
   const viewportDevice =
     device && VIEWPORT_IDS.includes(device) && projectViewports.some((d) => d.viewport === device)
       ? device
@@ -140,6 +141,13 @@ const ShowcaseInner = ({ sectorId, projectId, device }) => {
   const stageRef = useRef(null);
   const guiFrameRef = useRef(null);   // iframe du GUI embarqué : le fond 3D y lit les feedbacks
   const { windowW } = useViewportMetrics();
+  const { guiFullscreen, setGuiFullscreen } = useGuiFullscreen();
+  const villaSessionRef = useRef(null);
+  if (!villaSessionRef.current) villaSessionRef.current = createVillaSession();
+  const automaticAdvance = useRef(false);
+  const previousGui = useRef(null);
+  const [demoEpoch, setDemoEpoch] = useState(0);
+  const villaDevice = villaProject && !guiFullscreen && ['phone', 'wallpanel'].includes(viewportDevice) ? viewportDevice : null;
 
   // ---- Plein écran ---------------------------------------------------------
   useEffect(() => {
@@ -149,6 +157,12 @@ const ShowcaseInner = ({ sectorId, projectId, device }) => {
 
   // ---- Fin de parcours d'un GUI : support suivant, puis projet suivant ------
   const advance = useCallback(() => {
+    if (villaDevice) {
+      automaticAdvance.current = true;
+      villaSessionRef.current.overview = true;
+      goTo(activeProject, villaDevice === 'phone' ? 'wallpanel' : 'phone', { replace: true });
+      return;
+    }
     const vps = projectViewports.map((d) => d.viewport);
     const idx = vps.indexOf(viewportDevice);
     if (idx < vps.length - 1) {
@@ -159,7 +173,7 @@ const ShowcaseInner = ({ sectorId, projectId, device }) => {
     const next = filteredProjects[(pIdx + 1) % filteredProjects.length] || activeProject;
     const nextDev = firstViewportOf(next);
     goTo(next, nextDev, { replace: true });
-  }, [projectViewports, viewportDevice, activeProject, filteredProjects, goTo]);
+  }, [projectViewports, viewportDevice, activeProject, filteredProjects, goTo, villaDevice]);
 
   // ---- Démo automatique -----------------------------------------------------
   // Sur PC (et en mode salon), la démo tourne d'elle-même : le curseur presse
@@ -187,11 +201,29 @@ const ShowcaseInner = ({ sectorId, projectId, device }) => {
   }, [idleResumeMs]);
 
   const pauseDemo = useCallback(() => {
+    if (villaSessionRef.current.started === null) villaSessionRef.current.started = performance.now();
+    villaSessionRef.current.overview = false;
+    window.__plan3d?.holdOverview(false);
     setDemoRunning(false);
     armResume();
   }, [armResume]);
 
-  useEffect(() => { setDemoRunning(false); armResume(); }, [viewportDevice, armResume]);
+  useEffect(() => {
+    const key = `${activeProject.id}/${viewportDevice}`;
+    const entry = villaProject && !projectId;
+    const first = previousGui.current === null || !previousGui.current.startsWith(`${activeProject.id}/`);
+    if (!entry && previousGui.current === key) return;
+    previousGui.current = key;
+    if (entry || (first && villaProject)) {
+      villaSessionRef.current = createVillaSession();
+      setDemoEpoch(n => n + 1);
+    }
+    if (villaDevice && (entry || first || automaticAdvance.current)) {
+      clearTimeout(resumeTimer.current);
+      setResumeAt(null); setDemoRunning(true);
+    } else { setDemoRunning(false); armResume(); }
+    automaticAdvance.current = false;
+  }, [activeProject.id, viewportDevice, projectId, villaProject, villaDevice, armResume]);
 
   const resumeDemo = useCallback(() => {
     clearTimeout(resumeTimer.current);
@@ -205,6 +237,7 @@ const ShowcaseInner = ({ sectorId, projectId, device }) => {
   // Onglet en arrière-plan : on suspend pour ne pas dérouler dans le vide.
   useEffect(() => {
     const onVis = () => {
+      villaSessionRef.current.visibility(document.hidden);
       if (document.hidden) {
         clearTimeout(resumeTimer.current);
         setResumeAt(null);
@@ -221,14 +254,13 @@ const ShowcaseInner = ({ sectorId, projectId, device }) => {
     enabled: demoEnabled,
     running: demoRunning && !expandedProjectId,
     stageRef,
-    guiKey: `${activeProject.id}/${viewportDevice}`,
+    guiKey: `${activeProject.id}/${viewportDevice}/${demoEpoch}`,
+    villaDevice, villaSessionRef,
     onCycleEnd: advance,
     onUserActivity: pauseDemo,
   });
 
   // Plein écran de la GUI demandé par l'adresse : /3 active, /4 revient au Mode normal.
-  const { guiFullscreen, setGuiFullscreen } = useGuiFullscreen();
-
   useEffect(() => {
     const onKey = (e) => {
       // Échappatoire clavier : aucun bouton visible ne sort du plein écran GUI.
@@ -356,7 +388,7 @@ const ShowcaseInner = ({ sectorId, projectId, device }) => {
       ref={stageRef}
     >
       {plan3dOn ? (
-        <Plan3DBackground projectId={activeProject.id} stageRef={stageRef} guiFrameRef={guiFrameRef} />
+        <Plan3DBackground projectId={activeProject.id} stageRef={stageRef} guiFrameRef={guiFrameRef} tourSessionRef={villaSessionRef} />
       ) : (
         <BackgroundVideo sectionId={sectorId || activeProject.sectors[0]} />
       )}

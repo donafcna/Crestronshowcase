@@ -9,7 +9,7 @@ fs.mkdirSync(out,{recursive:true});
  const check=(name,value)=>{assert.ok(value,name);report.checks.push(name);console.log('PASS '+name);};
  const keepAlive=setInterval(()=>page.locator('.device-stage').click({position:{x:5,y:5},timeout:1000}).catch(()=>{}),5000);
  try{
-  await page.goto(base+'/interfaces/residentiel/villa-gemini-frequencetv/phone');await page.waitForFunction(()=>window.__plan3d?.version==='2026-09-17-feedback-1');
+  await page.goto(base+'/interfaces/residentiel/villa-gemini-frequencetv/phone');await require('./helpers/villa-manual.cjs').pauseVillaTour(page);await page.waitForFunction(()=>window.__plan3d?.version==='2026-09-17-tour-1');
   const gui=page.frames().find(f=>f.url().includes('/showcases/'));
   await gui.locator('#room-select').selectOption('8');await page.waitForFunction(()=>__plan3d.activeRoom()===8);await page.evaluate(()=>{__plan3d.jump();__plan3d.setDay(1);});
   await gui.evaluate(()=>Villa.press('54'));await page.waitForTimeout(3200);

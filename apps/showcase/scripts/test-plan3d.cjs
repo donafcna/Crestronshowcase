@@ -21,8 +21,8 @@ const route = '/interfaces/residentiel/villa-gemini-frequencetv';
   const settle = async () => { await page.evaluate(() => window.__plan3d.jump()); await page.waitForTimeout(400); await page.waitForFunction(()=>Object.values(window.__plan3d.rooms).every(r=>!r.lightFade)); };
   const shot = async name => { await pause(); await page.screenshot({path:path.join(out,name+'.png')}); report.screenshots.push(name+'.png'); };
   try {
-    await page.goto(base+route+'/phone');
-    await page.waitForFunction(() => window.__plan3d?.version === '2026-09-17-feedback-1');
+    await page.goto(base+route+'/phone');await require('./helpers/villa-manual.cjs').pauseVillaTour(page);
+    await page.waitForFunction(() => window.__plan3d?.version === '2026-09-17-tour-1');
     await pause(); await page.waitForTimeout(1700);
     const gui=page.frameLocator('iframe');
     await gui.locator('#room-select').selectOption('1');

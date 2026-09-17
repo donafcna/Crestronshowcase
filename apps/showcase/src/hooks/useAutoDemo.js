@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import { runVillaTour } from "./villaTour";
 
 // ----------------------------------------------------------------------------
 // Démo automatique d'une interface.
@@ -57,11 +58,15 @@ const EXCLUDE_TEXT_RE = /^(⚙|✕|×|x)$|plein écran|fullscreen|quitter|décon
 
 const sleep = (ms, token) =>
   new Promise((resolve) => {
-    const id = setTimeout(resolve, ms);
-    token.cancels.push(() => {
+    if (token.cancelled) { resolve(); return; }
+    const done = () => {
       clearTimeout(id);
+      const index = token.cancels.indexOf(done);
+      if (index >= 0) token.cancels.splice(index, 1);
       resolve();
-    });
+    };
+    const id = setTimeout(done, ms);
+    token.cancels.push(done);
   });
 
 // Élément réellement dessiné / cliquable : un <ch5-button> a pointer-events:
@@ -106,7 +111,7 @@ const isAlreadyActive = (el) => {
   if (el.getAttribute?.("aria-pressed") === "true" || el.getAttribute?.("aria-selected") === "true") return true;
   if (el.getAttribute?.("aria-current") && el.getAttribute("aria-current") !== "false") return true;
   if (el.tagName === "CH5-BUTTON") {
-    if (el.getAttribute("selected") === "true" || el.hasAttribute("selected")) return true;
+    if (el.getAttribute("selected") === "true") return true;
     const inner = el.querySelector("button");
     if (inner && /ch5-button--selected|active/i.test(inner.getAttribute("class") || "")) return true;
   }
@@ -307,7 +312,7 @@ const shuffle = (arr) => {
 
 const randomBetween = ([min, max]) => min + Math.floor(Math.random() * (max - min + 1));
 
-export const useAutoDemo = ({ enabled, running, stageRef, guiKey, onCycleEnd, onUserActivity }) => {
+export const useAutoDemo = ({ enabled, running, stageRef, guiKey, onCycleEnd, onUserActivity, villaDevice, villaSessionRef }) => {
   const [cursor, setCursor] = useState({ x: -100, y: -100, visible: false, pulse: 0, pressed: false });
   const tokenRef = useRef(null);
   const onCycleEndRef = useRef(onCycleEnd);
@@ -319,7 +324,7 @@ export const useAutoDemo = ({ enabled, running, stageRef, guiKey, onCycleEnd, on
     const tok = tokenRef.current;
     if (tok) {
       tok.cancelled = true;
-      tok.cancels.forEach((fn) => fn());
+      tok.cancels.slice().forEach((fn) => fn());
       tok.cancels = [];
     }
     tokenRef.current = null;
@@ -463,7 +468,7 @@ export const useAutoDemo = ({ enabled, running, stageRef, guiKey, onCycleEnd, on
     };
 
     const run = async () => {
-      await sleep(TIMING.startDelay, token);
+      if (!villaDevice) await sleep(TIMING.startDelay, token);
       if (token.cancelled) return;
 
       // Attendre que le GUI soit prêt (iframe chargée / simulateur monté).
@@ -472,7 +477,7 @@ export const useAutoDemo = ({ enabled, running, stageRef, guiKey, onCycleEnd, on
       let gui = null;
       for (let i = 0; i < 180 && !token.cancelled; i++) {
         gui = resolveGui(stage);
-        if (gui && collect(gui).actions.length >= 3) break;
+        if (gui && collect(gui).actions.length >= 3 && (!villaDevice || (gui.win.Villa?.ready && gui.doc.URL.includes(villaDevice === "phone" ? "/iphone.html" : "/index.html")))) break;
         gui = null;
         await sleep(250, token);
       }
@@ -481,6 +486,11 @@ export const useAutoDemo = ({ enabled, running, stageRef, guiKey, onCycleEnd, on
         return;
       }
 
+      if (villaDevice) {
+        const complete = await runVillaTour({ gui, device: villaDevice, sessionRef: villaSessionRef, token, sleep, moveTo, act, collect, setCursor });
+        if (complete && !token.cancelled) onCycleEndRef.current?.();
+        return;
+      }
       const { nav } = collect(gui);
       // Sans liste de pièces détectée : deux séries d'actions sur le même écran.
       const rooms = nav.length ? nav.slice(0, TIMING.maxRooms) : [null, null];
@@ -539,7 +549,7 @@ export const useAutoDemo = ({ enabled, running, stageRef, guiKey, onCycleEnd, on
 
     run().catch((err) => console.warn("Auto-demo stopped", err));
     return cancel;
-  }, [enabled, running, guiKey, stageRef, cancel]);
+  }, [enabled, running, guiKey, stageRef, cancel, villaDevice, villaSessionRef]);
 
   return { cursor };
 };

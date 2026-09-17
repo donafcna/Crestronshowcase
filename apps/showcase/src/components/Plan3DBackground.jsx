@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { BackgroundVideo } from "./BackgroundVideo";
 
 // A deployment changes the module URL, including its dependent assets.
-const PLAN3D_VERSION = "2026-09-17-feedback-1";
+const PLAN3D_VERSION = "2026-09-17-tour-1";
 
 // Fond de page 3D (Three.js) à la place de la vidéo, pour les projets qui ont un plan 3D
 // (public/plan3d/<id>.json). Le GUI tourne dans son iframe et n'est pas modifié : le module
@@ -22,7 +22,7 @@ export const plan3dEnabled = (projectId, device, windowW) =>
   PLAN3D_RULES.some((r) => (!r.device || r.device === device) &&
     (r.minWidth === undefined || windowW >= r.minWidth) && (r.maxWidth === undefined || windowW <= r.maxWidth));
 
-export const Plan3DBackground = ({ projectId, stageRef, guiFrameRef }) => {
+export const Plan3DBackground = ({ projectId, stageRef, guiFrameRef, tourSessionRef }) => {
   const canvasRef = useRef(null);
   const apiRef = useRef(null);
   const [failed, setFailed] = useState(false);
@@ -39,7 +39,7 @@ export const Plan3DBackground = ({ projectId, stageRef, guiFrameRef }) => {
           import(/* @vite-ignore */ `/plan3d/plan3d.js?v=${PLAN3D_VERSION}`),
         ]);
         if (!alive) return;
-        apiRef.current = mod.createPlan3D({ canvas: canvasRef.current, config });
+        apiRef.current = mod.createPlan3D({ canvas: canvasRef.current, config, startOverview: tourSessionRef?.current.overview, environmentTime: () => tourSessionRef?.current.seconds() });
         window.__plan3d = apiRef.current;   // point d'accès pour les tests Playwright et la console
         window.dispatchEvent(new Event("plan3d-ready"));
       } catch (e) {
@@ -51,13 +51,14 @@ export const Plan3DBackground = ({ projectId, stageRef, guiFrameRef }) => {
       alive = false;
       if (apiRef.current) { apiRef.current.dispose(); if (window.__plan3d === apiRef.current) delete window.__plan3d; apiRef.current = null; }
     };
-  }, [projectId]);
+  }, [projectId, tourSessionRef]);
 
   // 2. Liaison au GUI (iframe rechargée à chaque pièce / support) + cadrage dans la zone libre
   useEffect(() => {
     const tick = () => {
       const api = apiRef.current;
       if (!api) return;
+      if (!tourSessionRef?.current.overview) api.holdOverview(false);
       const frame = guiFrameRef?.current;
       const win = frame && frame.contentWindow;
       if (win) api.attach(win);
@@ -102,7 +103,7 @@ export const Plan3DBackground = ({ projectId, stageRef, guiFrameRef }) => {
     window.addEventListener("resize", tick);
     window.addEventListener("plan3d-ready", tick);
     return () => { clearInterval(id); window.removeEventListener("resize", tick); window.removeEventListener("plan3d-ready", tick); stage?.removeEventListener("wheel", wheel); stage?.removeEventListener("click", click); };
-  }, [projectId, stageRef, guiFrameRef]);
+  }, [projectId, stageRef, guiFrameRef, tourSessionRef]);
 
   if (failed) return <BackgroundVideo />;
   return (

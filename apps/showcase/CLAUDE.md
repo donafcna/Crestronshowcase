@@ -125,3 +125,8 @@ Scènes mieux distinctes en journée : lumière naturelle intérieure rééquili
 ## 17/09/2026 — feedback-1
 
 TV salle à manger déplacée hors du meuble à bouteilles ; tous les écrans contrôlés par rayons (11 TV, occultations ouvertes/fermées, normal/Scène). Rails reculés près du mur arrière, applique Salon dégagée et écran cinéma ajusté sous la corniche. Lumière d’ambiance localisée canapé/chevets, deux sources lumineuses conservées ; fondu 3 s inchangé. Ondes fines réellement expansives sur 1,6 s, amplitude selon le volume audible, arrêt mute/OFF/pause. Recettes test-plan3d-room-feedback.cjs, test-plan3d-audio.cjs et test-plan3d-lighting.cjs ; résultats et limites dans docs/plan3d.md. Aucun changement GUI ou matériel.
+
+
+## 17/09/2026 — tour-1
+
+Villa Crans ouvre le secteur Residential sur Smartphone : vue globale 3 s, pièces aléatoires à t=3 puis toutes les 5 s, TSW à t=60 pendant 10 s, retour Smartphone en boucle. Horloge jour/nuit commune conservée entre les montages 3D ; CINÉMA + rideaux fermés au crépuscule, OFF + rideaux ouverts à l'aube. Contrôle manuel prioritaire, reprise téléphone 60 s. `src/hooks/villaTour.js` porte cette séquence, les autres projets conservent useAutoDemo générique. État dans local-feedback.js, sans changement GUI ou programmes matériels. Recette : test-villa-tour.cjs ; autres bancs prennent la main via helpers/villa-manual.cjs. Voir README et docs/plan3d.md.

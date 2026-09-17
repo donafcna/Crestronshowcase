@@ -624,6 +624,7 @@ export function createPlan3D(opts) {
     }
 
     var activeRoom = null, selectedRoom = null, tween = null, idle = 0;
+    var overviewHeld = !!opts.startOverview;
     var envelope = null, shellTween = null, layoutTween = null, explosion = 0, phase = 'overview-closed';
     // Fenêtre de la carte Sources (rect écran) : la caméra y centre la pièce et l'y fait tenir
     var win = null;
@@ -730,11 +731,11 @@ export function createPlan3D(opts) {
 
     function setRoom(id) {
         id = parseInt(id, 10); var R = ROOMS[id]; if (!R) return;
-        if (selectedRoom === R) return;
+        if (selectedRoom === R) { if (!overviewHeld && activeRoom !== R) focusRoom(R); return; }
         var prev = activeRoom; selectedRoom = R;
         if (prev && prev.shaft) prev.shaft.material.opacity = 0;
         Object.keys(ROOMS).forEach(function (k) { ROOMS[k].label.material.opacity = ROOMS[k] === R ? 1 : 0.55; });
-        focusRoom(R);
+        if (!overviewHeld) focusRoom(R);
     }
     function roomPose(R) {
         var p = R.cfg;
@@ -810,7 +811,7 @@ export function createPlan3D(opts) {
         Object.values(ROOMS).forEach(function (R) { animateLights(R, ts); });
         // Lumière du jour de la scène des pièces : pleine en vue villa, sinon celle qui entre par la fenêtre
         // de la pièce active (volet / store / rideaux) ; les lampes des scènes ajoutent un rebond chaud.
-        updateEnvironment(idle);
+        updateEnvironment(opts.environmentTime?.() ?? idle);
         var dayT = (activeRoom ? daylight(activeRoom) : 1) * environmentDay, lampAvg = activeRoom ? activeRoom.renderLevels.reduce(function(a,b){return a+b;},0) / 5 : 0;
         dayCur += (dayT - dayCur) * Math.min(1, dt * 4);
         var dayF = dayCur < .0001 ? 0 : dayCur;
@@ -912,7 +913,17 @@ export function createPlan3D(opts) {
     /* ---------- API publique ---------- */
     var API = {
         setRoom: setRoom,
-        version: '2026-09-17-feedback-1',
+        version: '2026-09-17-tour-1',
+        holdOverview: function (held) { overviewHeld = !!held; },
+        applyDemoAmbience: function (snapshot) {
+            Object.entries(snapshot).forEach(function ([id, state]) {
+                var R = ROOMS[id]; if (!R) return;
+                R.sceneOff = state.scene === '51';
+                R.levels = state.circuits.slice(0, 5).map(v => v / 65535);
+                targetLights(R);
+                shadeCmd(R, 'rideau', state.curtainClosed ? 'down' : 'up');
+            });
+        },
         overview: overview,
         click: clickPlan,
         focusSelected: function () { if (!selectedRoom || activeRoom === selectedRoom) return; focusRoom(selectedRoom); },
@@ -920,7 +931,7 @@ export function createPlan3D(opts) {
         roomPoint: function (id) { var R = ROOMS[id]; if (!R) return null; var v = R.group.localToWorld(new THREE.Vector3(R.cfg.w * .6, .1, R.cfg.d * .8)).project(camera); return { x: (v.x + 1) * canvas.clientWidth / 2, y: (1 - v.y) * canvas.clientHeight / 2 }; },
         selectedRoom: function () { return selectedRoom && selectedRoom.id; },
         metrics: function () { var sorted = frames.slice().sort(function (a,b) { return a-b; }); return { frames: frames.length, renderedFrames:renderedFrames, medianMs: sorted[Math.floor(sorted.length / 2)] || 0, p95Ms: sorted[Math.floor(sorted.length * .95)] || 0, pixelRatio: renderer.getPixelRatio(), drawCalls: renderer.info.render.calls, triangles: renderer.info.render.triangles, zone: win, tv3D:tvStage?.metrics() }; },
-        environment: function(){return {day:environmentDay,seconds:idle,cycleSeconds:environmentCycle,landscape:landscape?.metrics,facade:envelope.lighting()};},
+        environment: function(){return {day:environmentDay,seconds:opts.environmentTime?.() ?? idle,cycleSeconds:environmentCycle,landscape:landscape?.metrics,facade:envelope.lighting()};},
         setDay: function(value){fixedDay=value===null?null:Math.max(0,Math.min(1,value));},
         setCircuit: function (roomId, idx, level) { var R = ROOMS[roomId]; if (!R) return; R.levels[idx] = Math.max(0, Math.min(1, level)); targetLights(R); },
         setVideoSource: function (roomId, n) { var R = ROOMS[roomId]; if (R) setTv(R, n); },

@@ -6,7 +6,7 @@ const base=process.env.BASE_URL||'http://127.0.0.1:4200',out=process.env.TEST_OU
  const shot=async name=>{await p.screenshot({path:path.join(out,name+'.png')});report.captures.push(name);};
  const keep=setInterval(()=>p.locator('.device-stage').click({position:{x:5,y:5},timeout:1000}).catch(()=>{}),4000);
  try{
-  await p.goto(base+'/interfaces/residentiel/villa-gemini-frequencetv/phone');await p.waitForFunction(()=>window.__plan3d?.version==='2026-09-17-feedback-1');await p.waitForFunction(()=>window.__plan3d.navigation().phase==='room');await p.evaluate(()=>window.__plan3d.setDay(1));
+  await p.goto(base+'/interfaces/residentiel/villa-gemini-frequencetv/phone');await require('./helpers/villa-manual.cjs').pauseVillaTour(p);await p.waitForFunction(()=>window.__plan3d?.version==='2026-09-17-tour-1');await p.waitForFunction(()=>window.__plan3d.navigation().phase==='room');await p.evaluate(()=>window.__plan3d.setDay(1));
   const f=p.frames().find(f=>f.url().includes('/showcases/'));const room=async id=>{await f.locator('#room-select').selectOption(String(id));await p.waitForFunction(id=>window.__plan3d.activeRoom()===id,id);await p.evaluate(()=>window.__plan3d.jump());await p.waitForTimeout(300);};
   check('Seventeen rooms selectable',await f.locator('#room-select option').count()===17);
   check('Basement includes cinema, sauna, garage, golf and technical room',await p.evaluate(()=>[8,13,15,16,17].every(id=>window.__plan3d.rooms[id].cfg.niveau===-1)));

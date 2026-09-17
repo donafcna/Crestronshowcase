@@ -269,6 +269,28 @@
     updateGlobalLights();
   }
 
+  // Only the public tour calls this. Do not select each room in turn: that would
+  // move the camera and publish transient feedback for rooms the visitor is not in.
+  function demoRooms() {
+    var snapshot = {};
+    Object.keys(rooms).forEach(function (id) {
+      var r = rooms[id];
+      snapshot[id] = { scene:r.scene, circuits:r.circuits.slice(), curtainClosed:!!r.curtainClosed };
+    });
+    return snapshot;
+  }
+  function applyDemoAmbience(night) {
+    if (window.villaConfigEmbedded?.meta?.mode !== 'showcase') return {};
+    Object.keys(rooms).forEach(function (id) {
+      var r = rooms[id];
+      r.scene = night ? '52' : '51'; // CINÉMA: low, varied circuits; OFF by day
+      r.circuits = SCENE_PRESETS[r.scene].slice();
+      r.curtainClosed = !!night;
+    });
+    publishScenes(rooms[activeRoom]); publishCircuits(rooms[activeRoom]); updateGlobalLights();
+    return demoRooms();
+  }
+
   function applyStoresScene(sceneId) {
     var r = rooms[activeRoom];
     r.storesScene = sceneId;
@@ -603,6 +625,8 @@
     SIG: SIG, on: on, off: off, get: get, set: set, press: press, setAnalog: setAnalog,
     selectRoom: selectRoom, init: init, state: state,
     get activeRoom() { return activeRoom; },
+    get ready() { return initialized; },
+    applyDemoAmbience: applyDemoAmbience, demoRooms: demoRooms,
   };
 
   // Démarrage automatique : une fois la page chargée (toutes les fonctions du

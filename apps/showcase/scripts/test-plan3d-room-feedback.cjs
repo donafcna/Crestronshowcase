@@ -8,7 +8,7 @@ fs.mkdirSync(out,{recursive:true});
  page.on('pageerror',e=>report.errors.push(e.message));page.on('console',m=>{if(m.type()==='error')report.errors.push(m.text());});
  const keep=setInterval(()=>page.locator('.device-stage').click({position:{x:5,y:5},timeout:700}).catch(()=>{}),3000);
  try{
-  await page.goto(base+'/interfaces/residentiel/villa-gemini-frequencetv/phone');await page.waitForFunction(()=>window.__plan3d?.navigation().phase==='room');
+  await page.goto(base+'/interfaces/residentiel/villa-gemini-frequencetv/phone');await require('./helpers/villa-manual.cjs').pauseVillaTour(page);await page.waitForFunction(()=>window.__plan3d?.navigation().phase==='room');
   const gui=page.frames().find(f=>f.url().includes('/showcases/'));if(!process.env.NORMAL_MODE)await page.locator('.btn-exit-fullscreen-device-corner').click();
   const room=async id=>{await gui.locator('#room-select').selectOption(String(id));await page.waitForFunction(id=>__plan3d.activeRoom()===id,id);await page.evaluate(()=>__plan3d.jump());await page.waitForTimeout(150);};
   const snapshot=async name=>{
