@@ -32,6 +32,7 @@ export const VillaGemini = ({ deviceType }) => {
 
   const [hvacMode, setHvacMode] = useState("heat");
   const [isAudioPlaying, setIsAudioPlaying] = useState(false);
+  const [audioVolume, setAudioVolume] = useState(65);
   const [audioSource, setAudioSource] = useState("spotify");
   const [audioTrack, setAudioTrack] = useState({
     title: "Monaco Sunset",
@@ -179,7 +180,7 @@ export const VillaGemini = ({ deviceType }) => {
               {Object.keys(roomNames).map((roomKey) => (
                 <li key={roomKey}>
                   <button
-                    onClick={() => setActiveRoom(roomKey)}
+                    data-demo-room={roomKey} onClick={() => setActiveRoom(roomKey)}
                     className={`room-select-btn ${activeRoom === roomKey ? "active" : ""}`}
                   >
                     {roomKey === "salon" && renderIcon("Tv", 16)}
@@ -221,7 +222,7 @@ export const VillaGemini = ({ deviceType }) => {
                 {Object.keys(roomNames).map((roomKey) => (
                   <button
                     key={roomKey}
-                    onClick={() => setActiveRoom(roomKey)}
+                    data-demo-room={roomKey} onClick={() => setActiveRoom(roomKey)}
                     className={`phone-room-tab ${activeRoom === roomKey ? "active" : ""}`}
                   >
                     {roomNames[roomKey].split(" ")[0]}
@@ -464,19 +465,19 @@ export const VillaGemini = ({ deviceType }) => {
                 <div className="card-content audio-player">
                   <div className="audio-sources">
                     <button
-                      onClick={() => setAudioSource("spotify")}
+                      onClick={() => { setAudioSource("spotify"); setIsAudioPlaying(true); }}
                       className={`source-btn ${audioSource === "spotify" ? "active" : ""}`}
                     >
                       Spotify
                     </button>
                     <button
-                      onClick={() => setAudioSource("airplay")}
+                      onClick={() => { setAudioSource("airplay"); setIsAudioPlaying(true); }}
                       className={`source-btn ${audioSource === "airplay" ? "active" : ""}`}
                     >
                       AirPlay 2
                     </button>
                     <button
-                      onClick={() => setAudioSource("sonos")}
+                      onClick={() => { setAudioSource("sonos"); setIsAudioPlaying(true); }}
                       className={`source-btn ${audioSource === "sonos" ? "active" : ""}`}
                     >
                       Sonos
@@ -505,7 +506,7 @@ export const VillaGemini = ({ deviceType }) => {
                   <div className="player-controls">
                     <button className="play-control-btn">{renderIcon("SkipBack", 16)}</button>
                     <button
-                      onClick={() => setIsAudioPlaying(!isAudioPlaying)}
+                      data-demo-action={isAudioPlaying ? "av-off" : undefined} onClick={() => setIsAudioPlaying(!isAudioPlaying)}
                       className={`play-pause-btn ${isAudioPlaying ? "playing" : ""}`}
                     >
                       {isAudioPlaying ? renderIcon("Pause", 18) : renderIcon("Play", 18)}
@@ -515,8 +516,8 @@ export const VillaGemini = ({ deviceType }) => {
 
                   <div className="volume-control-row">
                     {renderIcon("Volume2", 14, "vol-icon")}
-                    <input type="range" className="slider volume-slider" defaultValue="65" />
-                    <span className="vol-label">65%</span>
+                    <input type="range" aria-label="Volume" className="slider volume-slider" value={audioVolume} onChange={e => setAudioVolume(Number(e.target.value))} />
+                    <span className="vol-label">{audioVolume}%</span>
                   </div>
                 </div>
               </section>

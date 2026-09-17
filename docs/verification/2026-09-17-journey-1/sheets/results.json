@@ -1,0 +1,14 @@
+{
+  "checks": [
+    "light volume feedback",
+    "light touch sizes",
+    "dark volume feedback",
+    "dark touch sizes",
+    "FTV sheet fr",
+    "FTV sheet en",
+    "FTV sheet de",
+    "Villa Nyon actual volume label"
+  ],
+  "errors": [],
+  "status": "passed"
+}

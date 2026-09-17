@@ -147,7 +147,7 @@ const ShowcaseInner = ({ sectorId, projectId, device }) => {
   const automaticAdvance = useRef(false);
   const previousGui = useRef(null);
   const [demoEpoch, setDemoEpoch] = useState(0);
-  const villaDevice = villaProject && !guiFullscreen && ['phone', 'wallpanel'].includes(viewportDevice) ? viewportDevice : null;
+  const villaDevice = villaProject && !guiFullscreen && VIEWPORT_IDS.includes(viewportDevice) ? viewportDevice : null;
 
   // ---- Plein écran ---------------------------------------------------------
   useEffect(() => {

@@ -1,0 +1,800 @@
+{
+  "base": "http://127.0.0.1:4211",
+  "baseline": false,
+  "checks": [
+    "Renderer journey-1 loaded",
+    "Daylight scenes retain substantial contrast",
+    "Ordered scenes day=1 closed=0",
+    "Ordered scenes day=0 closed=0",
+    "OFF has no unexplained light 0/0",
+    "Ordered scenes day=1 closed=1",
+    "OFF has no unexplained light 1/1",
+    "Ordered scenes day=0 closed=1",
+    "OFF has no unexplained light 0/1",
+    "Visible scene contrast room 1",
+    "Visible scene contrast room 8",
+    "Visible scene contrast room 14",
+    "Terrace renamed Pool House",
+    "Bar renamed consistently",
+    "Facade sconces across storeys",
+    "Facade lights off in daylight",
+    "Facade lights follow dusk",
+    "No JavaScript or shader errors"
+  ],
+  "samples": [
+    {
+      "id": 7,
+      "day": 1,
+      "closed": 0,
+      "join": 51,
+      "mean": 0.25862251569008393,
+      "clipped": 0.00046177384576357177,
+      "lights": {
+        "phase": "room",
+        "walls": 0,
+        "explosion": 1,
+        "camera": [
+          9.167971126008812,
+          21.271388995758446,
+          21.02910651251836
+        ],
+        "target": [
+          3.25,
+          15.6,
+          8.700000000000001
+        ],
+        "moving": false,
+        "lamps": [
+          0,
+          0
+        ],
+        "day": 1,
+        "presentationFill": {
+          "hemi": 0.32,
+          "fill": 0.18
+        }
+      }
+    },
+    {
+      "id": 7,
+      "day": 1,
+      "closed": 0,
+      "join": 52,
+      "mean": 0.38122917388180794,
+      "clipped": 0.0020571727549467274,
+      "lights": {
+        "phase": "room",
+        "walls": 0,
+        "explosion": 1,
+        "camera": [
+          9.167971126008812,
+          21.271388995758446,
+          21.02910651251836
+        ],
+        "target": [
+          3.25,
+          15.6,
+          8.700000000000001
+        ],
+        "moving": false,
+        "lamps": [
+          12.924979018844892,
+          4.080073243305105
+        ],
+        "day": 1,
+        "presentationFill": {
+          "hemi": 0.35500083924620435,
+          "fill": 0.18
+        }
+      }
+    },
+    {
+      "id": 7,
+      "day": 1,
+      "closed": 0,
+      "join": 53,
+      "mean": 0.5175798652099266,
+      "clipped": 0.0053450818112633185,
+      "lights": {
+        "phase": "room",
+        "walls": 0,
+        "explosion": 1,
+        "camera": [
+          9.167971126008812,
+          21.271388995758446,
+          21.02910651251836
+        ],
+        "target": [
+          3.25,
+          15.6,
+          8.700000000000001
+        ],
+        "moving": false,
+        "lamps": [
+          39.324895094224466,
+          29.220105287251087
+        ],
+        "day": 1,
+        "presentationFill": {
+          "hemi": 0.49800076295109486,
+          "fill": 0.18
+        }
+      }
+    },
+    {
+      "id": 7,
+      "day": 1,
+      "closed": 0,
+      "join": 54,
+      "mean": 0.5986333091840232,
+      "clipped": 0.02359208523592085,
+      "lights": {
+        "phase": "room",
+        "walls": 0,
+        "explosion": 1,
+        "camera": [
+          9.167971126008812,
+          21.271388995758446,
+          21.02910651251836
+        ],
+        "target": [
+          3.25,
+          15.6,
+          8.700000000000001
+        ],
+        "moving": false,
+        "lamps": [
+          79.75000000000001,
+          53.1
+        ],
+        "day": 1,
+        "presentationFill": {
+          "hemi": 0.788,
+          "fill": 0.18
+        }
+      }
+    },
+    {
+      "id": 7,
+      "day": 0,
+      "closed": 0,
+      "join": 51,
+      "mean": 0.058476676807714185,
+      "clipped": 0,
+      "lights": {
+        "phase": "room",
+        "walls": 0,
+        "explosion": 1,
+        "camera": [
+          9.167971126008812,
+          21.271388995758446,
+          21.02910651251836
+        ],
+        "target": [
+          3.25,
+          15.6,
+          8.700000000000001
+        ],
+        "moving": false,
+        "lamps": [
+          0,
+          0
+        ],
+        "day": 5.346470930566134e-12,
+        "presentationFill": {
+          "hemi": 0.32,
+          "fill": 0.18
+        }
+      }
+    },
+    {
+      "id": 7,
+      "day": 0,
+      "closed": 0,
+      "join": 52,
+      "mean": 0.24227725718248885,
+      "clipped": 0.0003963723997970573,
+      "lights": {
+        "phase": "room",
+        "walls": 0,
+        "explosion": 1,
+        "camera": [
+          9.167971126008812,
+          21.271388995758446,
+          21.02910651251836
+        ],
+        "target": [
+          3.25,
+          15.6,
+          8.700000000000001
+        ],
+        "moving": false,
+        "lamps": [
+          12.924979018844892,
+          4.080073243305105
+        ],
+        "day": 4.877993372830717e-19,
+        "presentationFill": {
+          "hemi": 0.32,
+          "fill": 0.18
+        }
+      }
+    },
+    {
+      "id": 7,
+      "day": 0,
+      "closed": 0,
+      "join": 53,
+      "mean": 0.4174905294766611,
+      "clipped": 0.003270072298325723,
+      "lights": {
+        "phase": "room",
+        "walls": 0,
+        "explosion": 1,
+        "camera": [
+          9.167971126008812,
+          21.271388995758446,
+          21.02910651251836
+        ],
+        "target": [
+          3.25,
+          15.6,
+          8.700000000000001
+        ],
+        "moving": false,
+        "lamps": [
+          39.324895094224466,
+          29.220105287251087
+        ],
+        "day": 2.6848424035575353e-26,
+        "presentationFill": {
+          "hemi": 0.32,
+          "fill": 0.18
+        }
+      }
+    },
+    {
+      "id": 7,
+      "day": 0,
+      "closed": 0,
+      "join": 54,
+      "mean": 0.5171898941899759,
+      "clipped": 0.013922580542871639,
+      "lights": {
+        "phase": "room",
+        "walls": 0,
+        "explosion": 1,
+        "camera": [
+          9.167971126008812,
+          21.271388995758446,
+          21.02910651251836
+        ],
+        "target": [
+          3.25,
+          15.6,
+          8.700000000000001
+        ],
+        "moving": false,
+        "lamps": [
+          79.75000000000001,
+          53.1
+        ],
+        "day": 1.09615603085392e-33,
+        "presentationFill": {
+          "hemi": 0.5,
+          "fill": 0.18
+        }
+      }
+    },
+    {
+      "id": 7,
+      "day": 1,
+      "closed": 1,
+      "join": 51,
+      "mean": 0.0869242589936164,
+      "clipped": 0,
+      "lights": {
+        "phase": "room",
+        "walls": 0,
+        "explosion": 1,
+        "camera": [
+          9.167971126008812,
+          21.271388995758446,
+          21.02910651251836
+        ],
+        "target": [
+          3.25,
+          15.6,
+          8.700000000000001
+        ],
+        "moving": false,
+        "lamps": [
+          0,
+          0
+        ],
+        "day": 9.284654832049623e-46,
+        "presentationFill": {
+          "hemi": 0.32,
+          "fill": 0.18
+        }
+      }
+    },
+    {
+      "id": 7,
+      "day": 1,
+      "closed": 1,
+      "join": 52,
+      "mean": 0.27187971478894835,
+      "clipped": 0.0003963723997970573,
+      "lights": {
+        "phase": "room",
+        "walls": 0,
+        "explosion": 1,
+        "camera": [
+          9.167971126008812,
+          21.271388995758446,
+          21.02910651251836
+        ],
+        "target": [
+          3.25,
+          15.6,
+          8.700000000000001
+        ],
+        "moving": false,
+        "lamps": [
+          12.924979018844892,
+          4.080073243305105
+        ],
+        "day": 7.757079835902101e-54,
+        "presentationFill": {
+          "hemi": 0.32,
+          "fill": 0.18
+        }
+      }
+    },
+    {
+      "id": 7,
+      "day": 1,
+      "closed": 1,
+      "join": 53,
+      "mean": 0.452903047842494,
+      "clipped": 0.003270072298325723,
+      "lights": {
+        "phase": "room",
+        "walls": 0,
+        "explosion": 1,
+        "camera": [
+          9.167971126008812,
+          21.271388995758446,
+          21.02910651251836
+        ],
+        "target": [
+          3.25,
+          15.6,
+          8.700000000000001
+        ],
+        "moving": false,
+        "lamps": [
+          39.324895094224466,
+          29.220105287251087
+        ],
+        "day": 7.527911924934647e-62,
+        "presentationFill": {
+          "hemi": 0.32,
+          "fill": 0.18
+        }
+      }
+    },
+    {
+      "id": 7,
+      "day": 1,
+      "closed": 1,
+      "join": 54,
+      "mean": 0.5587792939202038,
+      "clipped": 0.013922580542871639,
+      "lights": {
+        "phase": "room",
+        "walls": 0,
+        "explosion": 1,
+        "camera": [
+          9.167971126008812,
+          21.271388995758446,
+          21.02910651251836
+        ],
+        "target": [
+          3.25,
+          15.6,
+          8.700000000000001
+        ],
+        "moving": false,
+        "lamps": [
+          79.75000000000001,
+          53.1
+        ],
+        "day": 3.551976343640632e-69,
+        "presentationFill": {
+          "hemi": 0.5,
+          "fill": 0.18
+        }
+      }
+    },
+    {
+      "id": 7,
+      "day": 0,
+      "closed": 1,
+      "join": 51,
+      "mean": 0.0567074503167856,
+      "clipped": 0,
+      "lights": {
+        "phase": "room",
+        "walls": 0,
+        "explosion": 1,
+        "camera": [
+          9.167971126008812,
+          21.271388995758446,
+          21.02910651251836
+        ],
+        "target": [
+          3.25,
+          15.6,
+          8.700000000000001
+        ],
+        "moving": false,
+        "lamps": [
+          0,
+          0
+        ],
+        "day": 3.427526884728928e-80,
+        "presentationFill": {
+          "hemi": 0.32,
+          "fill": 0.18
+        }
+      }
+    },
+    {
+      "id": 7,
+      "day": 0,
+      "closed": 1,
+      "join": 52,
+      "mean": 0.24159532764940095,
+      "clipped": 0.0003963723997970573,
+      "lights": {
+        "phase": "room",
+        "walls": 0,
+        "explosion": 1,
+        "camera": [
+          9.167971126008812,
+          21.271388995758446,
+          21.02910651251836
+        ],
+        "target": [
+          3.25,
+          15.6,
+          8.700000000000001
+        ],
+        "moving": false,
+        "lamps": [
+          12.924979018844892,
+          4.080073243305105
+        ],
+        "day": 4.694639150275144e-87,
+        "presentationFill": {
+          "hemi": 0.32,
+          "fill": 0.18
+        }
+      }
+    },
+    {
+      "id": 7,
+      "day": 0,
+      "closed": 1,
+      "join": 53,
+      "mean": 0.42265718386352347,
+      "clipped": 0.003270072298325723,
+      "lights": {
+        "phase": "room",
+        "walls": 0,
+        "explosion": 1,
+        "camera": [
+          9.167971126008812,
+          21.271388995758446,
+          21.02910651251836
+        ],
+        "target": [
+          3.25,
+          15.6,
+          8.700000000000001
+        ],
+        "moving": false,
+        "lamps": [
+          39.324895094224466,
+          29.220105287251087
+        ],
+        "day": 2.631185326905943e-94,
+        "presentationFill": {
+          "hemi": 0.32,
+          "fill": 0.18
+        }
+      }
+    },
+    {
+      "id": 7,
+      "day": 0,
+      "closed": 1,
+      "join": 54,
+      "mean": 0.5285277787551536,
+      "clipped": 0.013922580542871639,
+      "lights": {
+        "phase": "room",
+        "walls": 0,
+        "explosion": 1,
+        "camera": [
+          9.167971126008812,
+          21.271388995758446,
+          21.02910651251836
+        ],
+        "target": [
+          3.25,
+          15.6,
+          8.700000000000001
+        ],
+        "moving": false,
+        "lamps": [
+          79.75000000000001,
+          53.1
+        ],
+        "day": 3.074278730959568e-101,
+        "presentationFill": {
+          "hemi": 0.5,
+          "fill": 0.18
+        }
+      }
+    },
+    {
+      "id": 1,
+      "day": 1,
+      "closed": 0,
+      "join": 51,
+      "mean": 0.28488289757411195,
+      "clipped": 0.0006599600456621004,
+      "lights": {
+        "phase": "room",
+        "walls": 0,
+        "explosion": 1,
+        "camera": [
+          13.408586690164995,
+          16.45822891140812,
+          20.27788893784374
+        ],
+        "target": [
+          5,
+          8.4,
+          2.7600000000000002
+        ],
+        "moving": false,
+        "lamps": [
+          0,
+          0
+        ],
+        "day": 0.9999999999986273,
+        "presentationFill": {
+          "hemi": 0.32,
+          "fill": 0.18
+        }
+      }
+    },
+    {
+      "id": 1,
+      "day": 1,
+      "closed": 0,
+      "join": 54,
+      "mean": 0.5343637611348496,
+      "clipped": 0.0011296613394216133,
+      "lights": {
+        "phase": "room",
+        "walls": 0,
+        "explosion": 1,
+        "camera": [
+          13.408586690164995,
+          16.45822891140812,
+          20.27788893784374
+        ],
+        "target": [
+          5,
+          8.4,
+          2.7600000000000002
+        ],
+        "moving": false,
+        "lamps": [
+          79.75000000000001,
+          53.1
+        ],
+        "day": 1,
+        "presentationFill": {
+          "hemi": 0.788,
+          "fill": 0.18
+        }
+      }
+    },
+    {
+      "id": 8,
+      "day": 1,
+      "closed": 0,
+      "join": 51,
+      "mean": 0.15775722759578584,
+      "clipped": 0,
+      "lights": {
+        "phase": "room",
+        "walls": 0,
+        "explosion": 1,
+        "camera": [
+          12.335566218952334,
+          8.709084293162654,
+          19.08409628948403
+        ],
+        "target": [
+          4.5,
+          1.2,
+          2.7600000000000002
+        ],
+        "moving": false,
+        "lamps": [
+          0,
+          0
+        ],
+        "day": 6.6267046405653176e-15,
+        "presentationFill": {
+          "hemi": 0.32,
+          "fill": 0.18
+        }
+      }
+    },
+    {
+      "id": 8,
+      "day": 1,
+      "closed": 0,
+      "join": 54,
+      "mean": 0.3723650941807342,
+      "clipped": 0.0002338597158802638,
+      "lights": {
+        "phase": "room",
+        "walls": 0,
+        "explosion": 1,
+        "camera": [
+          12.335566218952334,
+          8.709084293162654,
+          19.08409628948403
+        ],
+        "target": [
+          4.5,
+          1.2,
+          2.7600000000000002
+        ],
+        "moving": false,
+        "lamps": [
+          79.75000000000001,
+          53.1
+        ],
+        "day": 1.347020442344539e-22,
+        "presentationFill": {
+          "hemi": 0.5,
+          "fill": 0.18
+        }
+      }
+    },
+    {
+      "id": 14,
+      "day": 1,
+      "closed": 0,
+      "join": 51,
+      "mean": 0.3230224437093865,
+      "clipped": 0.0013615391933028919,
+      "lights": {
+        "phase": "room",
+        "walls": 0,
+        "explosion": 1,
+        "camera": [
+          32.970463862889034,
+          13.163361201935327,
+          13.115133047685488
+        ],
+        "target": [
+          28,
+          8.4,
+          2.7600000000000002
+        ],
+        "moving": false,
+        "lamps": [
+          0,
+          0
+        ],
+        "day": 0.9999999999999998,
+        "presentationFill": {
+          "hemi": 0.32,
+          "fill": 0.18
+        }
+      }
+    },
+    {
+      "id": 14,
+      "day": 1,
+      "closed": 0,
+      "join": 54,
+      "mean": 0.6711461055725131,
+      "clipped": 0.06393486808726535,
+      "lights": {
+        "phase": "room",
+        "walls": 0,
+        "explosion": 1,
+        "camera": [
+          32.970463862889034,
+          13.163361201935327,
+          13.115133047685488
+        ],
+        "target": [
+          28,
+          8.4,
+          2.7600000000000002
+        ],
+        "moving": false,
+        "lamps": [
+          79.75000000000001,
+          53.1
+        ],
+        "day": 1,
+        "presentationFill": {
+          "hemi": 0.788,
+          "fill": 0.18
+        }
+      }
+    }
+  ],
+  "errors": [],
+  "facade": {
+    "sconces": 54,
+    "washDrawCalls": 1,
+    "intensity": 1
+  },
+  "performance": {
+    "fps": 51.20007992199976,
+    "metrics": {
+      "frames": 180,
+      "renderedFrames": 6531,
+      "medianMs": 24.300000000046566,
+      "p95Ms": 32.26666666663368,
+      "pixelRatio": 1.5,
+      "drawCalls": 132,
+      "triangles": 217580,
+      "zone": {
+        "x": 421.9111022949219,
+        "y": 70,
+        "w": 610.0888977050781,
+        "h": 706
+      },
+      "tv3D": {
+        "mode": "3d",
+        "version": "stadiums-1",
+        "width": 640,
+        "height": 360,
+        "programmes": 3,
+        "draws": 36,
+        "currentKind": "race",
+        "venues": {
+          "tennis": {
+            "stands": 4,
+            "spectators": 620,
+            "staticDrawCalls": 3,
+            "instances": 2864
+          },
+          "race": {
+            "stands": 4,
+            "spectators": 650,
+            "staticDrawCalls": 3,
+            "instances": 3244
+          }
+        }
+      }
+    }
+  },
+  "status": "passed"
+}

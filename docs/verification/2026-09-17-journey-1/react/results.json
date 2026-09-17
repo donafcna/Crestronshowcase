@@ -1,0 +1,2456 @@
+{
+  "base": "http://127.0.0.1:4211",
+  "reports": [
+    {
+      "project": "crestron-home",
+      "device": "tablet",
+      "events": [
+        {
+          "at": 13200.90000000596,
+          "action": "rooms",
+          "room": null,
+          "source": null,
+          "active": true,
+          "offApplied": null
+        },
+        {
+          "at": 15722.600000023842,
+          "room": "living",
+          "source": null,
+          "active": false,
+          "offApplied": null
+        },
+        {
+          "at": 18200,
+          "action": "lights",
+          "room": null,
+          "source": null,
+          "active": false,
+          "offApplied": null
+        },
+        {
+          "at": 20735,
+          "action": "close",
+          "room": null,
+          "source": null,
+          "active": false,
+          "offApplied": null
+        },
+        {
+          "at": 22140.20000001788,
+          "action": "hvac",
+          "room": null,
+          "source": null,
+          "active": false,
+          "offApplied": null
+        },
+        {
+          "at": 24663.5,
+          "action": "close",
+          "room": null,
+          "source": null,
+          "active": false,
+          "offApplied": null
+        },
+        {
+          "at": 26181,
+          "action": "av",
+          "room": null,
+          "source": null,
+          "active": false,
+          "offApplied": null
+        },
+        {
+          "at": 28689.20000001788,
+          "room": null,
+          "source": "apple",
+          "active": true,
+          "offApplied": null
+        },
+        {
+          "at": 32007.80000001192,
+          "room": null,
+          "source": "iptv",
+          "active": true,
+          "offApplied": null
+        },
+        {
+          "at": 35581,
+          "action": "volume-change",
+          "value": 38
+        },
+        {
+          "at": 35643.5,
+          "action": "volume-change",
+          "value": 41
+        },
+        {
+          "at": 35706.90000000596,
+          "action": "volume-change",
+          "value": 43
+        },
+        {
+          "at": 35770.40000000596,
+          "action": "volume-change",
+          "value": 46
+        },
+        {
+          "at": 35836.40000000596,
+          "action": "volume-change",
+          "value": 49
+        },
+        {
+          "at": 35905.30000001192,
+          "action": "volume-change",
+          "value": 52
+        },
+        {
+          "at": 35964.5,
+          "action": "volume-change",
+          "value": 54
+        },
+        {
+          "at": 36027.40000000596,
+          "action": "volume-change",
+          "value": 57
+        },
+        {
+          "at": 36084.60000002384,
+          "action": "volume-change",
+          "value": 60
+        },
+        {
+          "at": 36138,
+          "action": "volume-change",
+          "value": 63
+        },
+        {
+          "at": 36195.60000002384,
+          "action": "volume-change",
+          "value": 65
+        },
+        {
+          "at": 36255.20000001788,
+          "action": "volume-change",
+          "value": 68
+        },
+        {
+          "at": 36328.60000002384,
+          "action": "volume-change",
+          "value": 71
+        },
+        {
+          "at": 36386.40000000596,
+          "action": "volume-change",
+          "value": 74
+        },
+        {
+          "at": 36443.60000002384,
+          "action": "volume-change",
+          "value": 76
+        },
+        {
+          "at": 36498.90000000596,
+          "action": "volume-change",
+          "value": 79
+        },
+        {
+          "at": 36556.10000002384,
+          "action": "volume-change",
+          "value": 82
+        },
+        {
+          "at": 36620.20000001788,
+          "action": "volume-change",
+          "value": 85
+        },
+        {
+          "at": 36684.5,
+          "action": "volume-change",
+          "value": 87
+        },
+        {
+          "at": 36737.40000000596,
+          "action": "volume-change",
+          "value": 90
+        },
+        {
+          "at": 38899.30000001192,
+          "action": "av-off",
+          "room": null,
+          "source": null,
+          "active": false,
+          "offApplied": true
+        },
+        {
+          "at": 41026.20000001788,
+          "action": "close",
+          "room": null,
+          "source": null,
+          "active": false,
+          "offApplied": null
+        },
+        {
+          "at": 42439.5,
+          "action": "rooms",
+          "room": null,
+          "source": null,
+          "active": true,
+          "offApplied": null
+        },
+        {
+          "at": 44959.80000001192,
+          "room": "cinema",
+          "source": null,
+          "active": false,
+          "offApplied": null
+        },
+        {
+          "at": 47470.40000000596,
+          "action": "lights",
+          "room": null,
+          "source": null,
+          "active": false,
+          "offApplied": null
+        },
+        {
+          "at": 49981.5,
+          "action": "close",
+          "room": null,
+          "source": null,
+          "active": false,
+          "offApplied": null
+        },
+        {
+          "at": 51397.10000002384,
+          "action": "hvac",
+          "room": null,
+          "source": null,
+          "active": false,
+          "offApplied": null
+        },
+        {
+          "at": 53915.40000000596,
+          "action": "close",
+          "room": null,
+          "source": null,
+          "active": false,
+          "offApplied": null
+        },
+        {
+          "at": 55340.80000001192,
+          "action": "av",
+          "room": null,
+          "source": null,
+          "active": false,
+          "offApplied": null
+        },
+        {
+          "at": 57843.60000002384,
+          "room": null,
+          "source": "apple",
+          "active": true,
+          "offApplied": null
+        },
+        {
+          "at": 61155.40000000596,
+          "room": null,
+          "source": "iptv",
+          "active": true,
+          "offApplied": null
+        },
+        {
+          "at": 64748.30000001192,
+          "action": "volume-change",
+          "value": 38
+        },
+        {
+          "at": 64802.5,
+          "action": "volume-change",
+          "value": 40
+        },
+        {
+          "at": 64860.30000001192,
+          "action": "volume-change",
+          "value": 43
+        },
+        {
+          "at": 64918.60000002384,
+          "action": "volume-change",
+          "value": 46
+        },
+        {
+          "at": 64973.30000001192,
+          "action": "volume-change",
+          "value": 49
+        },
+        {
+          "at": 65033.70000001788,
+          "action": "volume-change",
+          "value": 51
+        },
+        {
+          "at": 65091.90000000596,
+          "action": "volume-change",
+          "value": 54
+        },
+        {
+          "at": 65150.40000000596,
+          "action": "volume-change",
+          "value": 57
+        },
+        {
+          "at": 65206.40000000596,
+          "action": "volume-change",
+          "value": 59
+        },
+        {
+          "at": 65268.30000001192,
+          "action": "volume-change",
+          "value": 62
+        },
+        {
+          "at": 65337,
+          "action": "volume-change",
+          "value": 65
+        },
+        {
+          "at": 65393.5,
+          "action": "volume-change",
+          "value": 67
+        },
+        {
+          "at": 65452,
+          "action": "volume-change",
+          "value": 70
+        },
+        {
+          "at": 65508.10000002384,
+          "action": "volume-change",
+          "value": 73
+        },
+        {
+          "at": 65561.80000001192,
+          "action": "volume-change",
+          "value": 76
+        },
+        {
+          "at": 65621.60000002384,
+          "action": "volume-change",
+          "value": 78
+        },
+        {
+          "at": 65690.10000002384,
+          "action": "volume-change",
+          "value": 81
+        },
+        {
+          "at": 65747.30000001192,
+          "action": "volume-change",
+          "value": 84
+        },
+        {
+          "at": 65811.5,
+          "action": "volume-change",
+          "value": 86
+        },
+        {
+          "at": 65870.80000001192,
+          "action": "volume-change",
+          "value": 89
+        },
+        {
+          "at": 68021.80000001192,
+          "action": "av-off",
+          "room": null,
+          "source": null,
+          "active": false,
+          "offApplied": true
+        },
+        {
+          "at": 70167.30000001192,
+          "action": "close",
+          "room": null,
+          "source": null,
+          "active": false,
+          "offApplied": null
+        },
+        {
+          "at": 71597.5,
+          "action": "rooms",
+          "room": null,
+          "source": null,
+          "active": true,
+          "offApplied": null
+        },
+        {
+          "at": 74115,
+          "room": "master",
+          "source": null,
+          "active": false,
+          "offApplied": null
+        },
+        {
+          "at": 76642.20000001788,
+          "action": "lights",
+          "room": null,
+          "source": null,
+          "active": false,
+          "offApplied": null
+        },
+        {
+          "at": 79155,
+          "action": "close",
+          "room": null,
+          "source": null,
+          "active": false,
+          "offApplied": null
+        },
+        {
+          "at": 80570.20000001788,
+          "action": "hvac",
+          "room": null,
+          "source": null,
+          "active": false,
+          "offApplied": null
+        },
+        {
+          "at": 83073.20000001788,
+          "action": "close",
+          "room": null,
+          "source": null,
+          "active": false,
+          "offApplied": null
+        },
+        {
+          "at": 84496.30000001192,
+          "action": "av",
+          "room": null,
+          "source": null,
+          "active": false,
+          "offApplied": null
+        },
+        {
+          "at": 86999.20000001788,
+          "room": null,
+          "source": "apple",
+          "active": true,
+          "offApplied": null
+        },
+        {
+          "at": 90326.40000000596,
+          "room": null,
+          "source": "iptv",
+          "active": true,
+          "offApplied": null
+        },
+        {
+          "at": 93877,
+          "action": "volume-change",
+          "value": 37
+        },
+        {
+          "at": 93941.90000000596,
+          "action": "volume-change",
+          "value": 39
+        },
+        {
+          "at": 94000.10000002384,
+          "action": "volume-change",
+          "value": 42
+        },
+        {
+          "at": 94055,
+          "action": "volume-change",
+          "value": 44
+        },
+        {
+          "at": 94114.5,
+          "action": "volume-change",
+          "value": 46
+        },
+        {
+          "at": 94180.20000001788,
+          "action": "volume-change",
+          "value": 48
+        },
+        {
+          "at": 94256.30000001192,
+          "action": "volume-change",
+          "value": 50
+        },
+        {
+          "at": 94318.30000001192,
+          "action": "volume-change",
+          "value": 52
+        },
+        {
+          "at": 94376.5,
+          "action": "volume-change",
+          "value": 55
+        },
+        {
+          "at": 94432.40000000596,
+          "action": "volume-change",
+          "value": 57
+        },
+        {
+          "at": 94497.5,
+          "action": "volume-change",
+          "value": 59
+        },
+        {
+          "at": 94562.70000001788,
+          "action": "volume-change",
+          "value": 61
+        },
+        {
+          "at": 94614.10000002384,
+          "action": "volume-change",
+          "value": 63
+        },
+        {
+          "at": 94667.20000001788,
+          "action": "volume-change",
+          "value": 66
+        },
+        {
+          "at": 94721.20000001788,
+          "action": "volume-change",
+          "value": 68
+        },
+        {
+          "at": 94776,
+          "action": "volume-change",
+          "value": 70
+        },
+        {
+          "at": 94842.30000001192,
+          "action": "volume-change",
+          "value": 72
+        },
+        {
+          "at": 94896.80000001192,
+          "action": "volume-change",
+          "value": 74
+        },
+        {
+          "at": 94949,
+          "action": "volume-change",
+          "value": 76
+        },
+        {
+          "at": 95014,
+          "action": "volume-change",
+          "value": 79
+        },
+        {
+          "at": 97161.5,
+          "action": "av-off",
+          "room": null,
+          "source": null,
+          "active": false,
+          "offApplied": true
+        }
+      ],
+      "errors": [],
+      "checks": [
+        "Three complete room demonstrations",
+        "Room 0 selects two different sources",
+        "Room 0 source feedback is active",
+        "Room 0 changes volume before OFF",
+        "Room 0 stops playback",
+        "Room 0 ordered lights",
+        "Room 0 ordered hvac",
+        "Room 0 ordered av",
+        "Room 0 ordered apple",
+        "Room 0 ordered iptv",
+        "Room 0 ordered volume-change",
+        "Room 0 ordered av-off",
+        "Room 1 selects two different sources",
+        "Room 1 source feedback is active",
+        "Room 1 changes volume before OFF",
+        "Room 1 stops playback",
+        "Room 1 ordered lights",
+        "Room 1 ordered hvac",
+        "Room 1 ordered av",
+        "Room 1 ordered apple",
+        "Room 1 ordered iptv",
+        "Room 1 ordered volume-change",
+        "Room 1 ordered av-off",
+        "Room 2 selects two different sources",
+        "Room 2 source feedback is active",
+        "Room 2 changes volume before OFF",
+        "Room 2 stops playback",
+        "Room 2 ordered lights",
+        "Room 2 ordered hvac",
+        "Room 2 ordered av",
+        "Room 2 ordered apple",
+        "Room 2 ordered iptv",
+        "Room 2 ordered volume-change",
+        "Room 2 ordered av-off",
+        "Different rooms visited",
+        "Manual interaction pauses the demo",
+        "No browser exceptions"
+      ],
+      "status": "passed"
+    },
+    {
+      "project": "crestron-home",
+      "device": "wallpanel",
+      "events": [
+        {
+          "at": 13207.199999988079,
+          "action": "rooms",
+          "room": null,
+          "source": null,
+          "active": true,
+          "offApplied": null
+        },
+        {
+          "at": 15727.09999999404,
+          "room": "living",
+          "source": null,
+          "active": false,
+          "offApplied": null
+        },
+        {
+          "at": 18226.19999998808,
+          "action": "lights",
+          "room": null,
+          "source": null,
+          "active": false,
+          "offApplied": null
+        },
+        {
+          "at": 20757.19999998808,
+          "action": "close",
+          "room": null,
+          "source": null,
+          "active": false,
+          "offApplied": null
+        },
+        {
+          "at": 22172.09999999404,
+          "action": "hvac",
+          "room": null,
+          "source": null,
+          "active": false,
+          "offApplied": null
+        },
+        {
+          "at": 24695.59999999404,
+          "action": "close",
+          "room": null,
+          "source": null,
+          "active": false,
+          "offApplied": null
+        },
+        {
+          "at": 26107.40000000596,
+          "action": "av",
+          "room": null,
+          "source": null,
+          "active": false,
+          "offApplied": null
+        },
+        {
+          "at": 28623,
+          "room": null,
+          "source": "apple",
+          "active": true,
+          "offApplied": null
+        },
+        {
+          "at": 31966.19999998808,
+          "room": null,
+          "source": "iptv",
+          "active": true,
+          "offApplied": null
+        },
+        {
+          "at": 35523.40000000596,
+          "action": "volume-change",
+          "value": 38
+        },
+        {
+          "at": 35586.29999998212,
+          "action": "volume-change",
+          "value": 41
+        },
+        {
+          "at": 35649.90000000596,
+          "action": "volume-change",
+          "value": 44
+        },
+        {
+          "at": 35710.69999998808,
+          "action": "volume-change",
+          "value": 47
+        },
+        {
+          "at": 35769.29999998212,
+          "action": "volume-change",
+          "value": 49
+        },
+        {
+          "at": 35829.69999998808,
+          "action": "volume-change",
+          "value": 52
+        },
+        {
+          "at": 35895.5,
+          "action": "volume-change",
+          "value": 55
+        },
+        {
+          "at": 35955.69999998808,
+          "action": "volume-change",
+          "value": 58
+        },
+        {
+          "at": 36018,
+          "action": "volume-change",
+          "value": 61
+        },
+        {
+          "at": 36076.19999998808,
+          "action": "volume-change",
+          "value": 64
+        },
+        {
+          "at": 36129.79999998212,
+          "action": "volume-change",
+          "value": 67
+        },
+        {
+          "at": 36185.59999999404,
+          "action": "volume-change",
+          "value": 70
+        },
+        {
+          "at": 36245.40000000596,
+          "action": "volume-change",
+          "value": 72
+        },
+        {
+          "at": 36318.90000000596,
+          "action": "volume-change",
+          "value": 75
+        },
+        {
+          "at": 36376,
+          "action": "volume-change",
+          "value": 78
+        },
+        {
+          "at": 36433.90000000596,
+          "action": "volume-change",
+          "value": 81
+        },
+        {
+          "at": 36488.79999998212,
+          "action": "volume-change",
+          "value": 84
+        },
+        {
+          "at": 36541.09999999404,
+          "action": "volume-change",
+          "value": 87
+        },
+        {
+          "at": 36594.79999998212,
+          "action": "volume-change",
+          "value": 90
+        },
+        {
+          "at": 36657.5,
+          "action": "volume-change",
+          "value": 93
+        },
+        {
+          "at": 38821.5,
+          "action": "av-off",
+          "room": null,
+          "source": null,
+          "active": false,
+          "offApplied": true
+        },
+        {
+          "at": 40950,
+          "action": "close",
+          "room": null,
+          "source": null,
+          "active": false,
+          "offApplied": null
+        },
+        {
+          "at": 42358.40000000596,
+          "action": "rooms",
+          "room": null,
+          "source": null,
+          "active": true,
+          "offApplied": null
+        },
+        {
+          "at": 44883.79999998212,
+          "room": "cinema",
+          "source": null,
+          "active": false,
+          "offApplied": null
+        },
+        {
+          "at": 47396.40000000596,
+          "action": "lights",
+          "room": null,
+          "source": null,
+          "active": false,
+          "offApplied": null
+        },
+        {
+          "at": 49903.19999998808,
+          "action": "close",
+          "room": null,
+          "source": null,
+          "active": false,
+          "offApplied": null
+        },
+        {
+          "at": 51348.19999998808,
+          "action": "hvac",
+          "room": null,
+          "source": null,
+          "active": false,
+          "offApplied": null
+        },
+        {
+          "at": 53855,
+          "action": "close",
+          "room": null,
+          "source": null,
+          "active": false,
+          "offApplied": null
+        },
+        {
+          "at": 55266.09999999404,
+          "action": "av",
+          "room": null,
+          "source": null,
+          "active": false,
+          "offApplied": null
+        },
+        {
+          "at": 57772,
+          "room": null,
+          "source": "apple",
+          "active": true,
+          "offApplied": null
+        },
+        {
+          "at": 61105.69999998808,
+          "room": null,
+          "source": "iptv",
+          "active": true,
+          "offApplied": null
+        },
+        {
+          "at": 64684.09999999404,
+          "action": "volume-change",
+          "value": 37
+        },
+        {
+          "at": 64741.79999998212,
+          "action": "volume-change",
+          "value": 39
+        },
+        {
+          "at": 64800.90000000596,
+          "action": "volume-change",
+          "value": 40
+        },
+        {
+          "at": 64860.5,
+          "action": "volume-change",
+          "value": 42
+        },
+        {
+          "at": 64923.90000000596,
+          "action": "volume-change",
+          "value": 44
+        },
+        {
+          "at": 64987,
+          "action": "volume-change",
+          "value": 46
+        },
+        {
+          "at": 65049.09999999404,
+          "action": "volume-change",
+          "value": 48
+        },
+        {
+          "at": 65104.09999999404,
+          "action": "volume-change",
+          "value": 49
+        },
+        {
+          "at": 65158.59999999404,
+          "action": "volume-change",
+          "value": 51
+        },
+        {
+          "at": 65224,
+          "action": "volume-change",
+          "value": 53
+        },
+        {
+          "at": 65292.19999998808,
+          "action": "volume-change",
+          "value": 55
+        },
+        {
+          "at": 65351.79999998212,
+          "action": "volume-change",
+          "value": 56
+        },
+        {
+          "at": 65409.09999999404,
+          "action": "volume-change",
+          "value": 58
+        },
+        {
+          "at": 65476.40000000596,
+          "action": "volume-change",
+          "value": 60
+        },
+        {
+          "at": 65535.5,
+          "action": "volume-change",
+          "value": 62
+        },
+        {
+          "at": 65594.09999999404,
+          "action": "volume-change",
+          "value": 64
+        },
+        {
+          "at": 65651.79999998212,
+          "action": "volume-change",
+          "value": 65
+        },
+        {
+          "at": 65711.09999999404,
+          "action": "volume-change",
+          "value": 67
+        },
+        {
+          "at": 65763.5,
+          "action": "volume-change",
+          "value": 69
+        },
+        {
+          "at": 65819.29999998212,
+          "action": "volume-change",
+          "value": 71
+        },
+        {
+          "at": 67979.59999999404,
+          "action": "av-off",
+          "room": null,
+          "source": null,
+          "active": false,
+          "offApplied": true
+        },
+        {
+          "at": 70083.79999998212,
+          "action": "close",
+          "room": null,
+          "source": null,
+          "active": false,
+          "offApplied": null
+        },
+        {
+          "at": 71512.40000000596,
+          "action": "rooms",
+          "room": null,
+          "source": null,
+          "active": true,
+          "offApplied": null
+        },
+        {
+          "at": 74015.09999999404,
+          "room": "master",
+          "source": null,
+          "active": false,
+          "offApplied": null
+        },
+        {
+          "at": 76524.19999998808,
+          "action": "lights",
+          "room": null,
+          "source": null,
+          "active": false,
+          "offApplied": null
+        },
+        {
+          "at": 79028.40000000596,
+          "action": "close",
+          "room": null,
+          "source": null,
+          "active": false,
+          "offApplied": null
+        },
+        {
+          "at": 80443.59999999404,
+          "action": "hvac",
+          "room": null,
+          "source": null,
+          "active": false,
+          "offApplied": null
+        },
+        {
+          "at": 82962.09999999404,
+          "action": "close",
+          "room": null,
+          "source": null,
+          "active": false,
+          "offApplied": null
+        },
+        {
+          "at": 84364.79999998212,
+          "action": "av",
+          "room": null,
+          "source": null,
+          "active": false,
+          "offApplied": null
+        },
+        {
+          "at": 86883.79999998212,
+          "room": null,
+          "source": "apple",
+          "active": true,
+          "offApplied": null
+        },
+        {
+          "at": 90203.59999999404,
+          "room": null,
+          "source": "iptv",
+          "active": true,
+          "offApplied": null
+        },
+        {
+          "at": 93778.79999998212,
+          "action": "volume-change",
+          "value": 37
+        },
+        {
+          "at": 93836.29999998212,
+          "action": "volume-change",
+          "value": 40
+        },
+        {
+          "at": 93890.40000000596,
+          "action": "volume-change",
+          "value": 42
+        },
+        {
+          "at": 93947.90000000596,
+          "action": "volume-change",
+          "value": 45
+        },
+        {
+          "at": 94006.79999998212,
+          "action": "volume-change",
+          "value": 47
+        },
+        {
+          "at": 94071.59999999404,
+          "action": "volume-change",
+          "value": 50
+        },
+        {
+          "at": 94124,
+          "action": "volume-change",
+          "value": 52
+        },
+        {
+          "at": 94181.69999998808,
+          "action": "volume-change",
+          "value": 54
+        },
+        {
+          "at": 94258.09999999404,
+          "action": "volume-change",
+          "value": 57
+        },
+        {
+          "at": 94315.59999999404,
+          "action": "volume-change",
+          "value": 59
+        },
+        {
+          "at": 94373.19999998808,
+          "action": "volume-change",
+          "value": 62
+        },
+        {
+          "at": 94431.09999999404,
+          "action": "volume-change",
+          "value": 64
+        },
+        {
+          "at": 94487.79999998212,
+          "action": "volume-change",
+          "value": 66
+        },
+        {
+          "at": 94547.09999999404,
+          "action": "volume-change",
+          "value": 69
+        },
+        {
+          "at": 94602.40000000596,
+          "action": "volume-change",
+          "value": 71
+        },
+        {
+          "at": 94659.90000000596,
+          "action": "volume-change",
+          "value": 74
+        },
+        {
+          "at": 94723.40000000596,
+          "action": "volume-change",
+          "value": 76
+        },
+        {
+          "at": 94783.09999999404,
+          "action": "volume-change",
+          "value": 79
+        },
+        {
+          "at": 94843.69999998808,
+          "action": "volume-change",
+          "value": 81
+        },
+        {
+          "at": 94899.79999998212,
+          "action": "volume-change",
+          "value": 83
+        },
+        {
+          "at": 97047.40000000596,
+          "action": "av-off",
+          "room": null,
+          "source": null,
+          "active": false,
+          "offApplied": true
+        }
+      ],
+      "errors": [],
+      "checks": [
+        "Three complete room demonstrations",
+        "Room 0 selects two different sources",
+        "Room 0 source feedback is active",
+        "Room 0 changes volume before OFF",
+        "Room 0 stops playback",
+        "Room 0 ordered lights",
+        "Room 0 ordered hvac",
+        "Room 0 ordered av",
+        "Room 0 ordered apple",
+        "Room 0 ordered iptv",
+        "Room 0 ordered volume-change",
+        "Room 0 ordered av-off",
+        "Room 1 selects two different sources",
+        "Room 1 source feedback is active",
+        "Room 1 changes volume before OFF",
+        "Room 1 stops playback",
+        "Room 1 ordered lights",
+        "Room 1 ordered hvac",
+        "Room 1 ordered av",
+        "Room 1 ordered apple",
+        "Room 1 ordered iptv",
+        "Room 1 ordered volume-change",
+        "Room 1 ordered av-off",
+        "Room 2 selects two different sources",
+        "Room 2 source feedback is active",
+        "Room 2 changes volume before OFF",
+        "Room 2 stops playback",
+        "Room 2 ordered lights",
+        "Room 2 ordered hvac",
+        "Room 2 ordered av",
+        "Room 2 ordered apple",
+        "Room 2 ordered iptv",
+        "Room 2 ordered volume-change",
+        "Room 2 ordered av-off",
+        "Different rooms visited",
+        "Manual interaction pauses the demo",
+        "No browser exceptions"
+      ],
+      "status": "passed"
+    },
+    {
+      "project": "villa-gemini",
+      "device": "desktop",
+      "events": [
+        {
+          "at": 13199.40000000596,
+          "room": "salon",
+          "source": null,
+          "active": true,
+          "offApplied": null
+        },
+        {
+          "at": 22878.59999999404,
+          "room": null,
+          "source": "Spotify",
+          "active": true,
+          "offApplied": null
+        },
+        {
+          "at": 26194.5,
+          "room": null,
+          "source": "AirPlay 2",
+          "active": true,
+          "offApplied": null
+        },
+        {
+          "at": 29672.5,
+          "action": "volume-change",
+          "value": 63
+        },
+        {
+          "at": 29740.40000000596,
+          "action": "volume-change",
+          "value": 61
+        },
+        {
+          "at": 29803.30000001192,
+          "action": "volume-change",
+          "value": 60
+        },
+        {
+          "at": 29866.90000000596,
+          "action": "volume-change",
+          "value": 58
+        },
+        {
+          "at": 29930,
+          "action": "volume-change",
+          "value": 56
+        },
+        {
+          "at": 29984.5,
+          "action": "volume-change",
+          "value": 54
+        },
+        {
+          "at": 30042.09999999404,
+          "action": "volume-change",
+          "value": 52
+        },
+        {
+          "at": 30097.90000000596,
+          "action": "volume-change",
+          "value": 51
+        },
+        {
+          "at": 30160.59999999404,
+          "action": "volume-change",
+          "value": 49
+        },
+        {
+          "at": 30224.09999999404,
+          "action": "volume-change",
+          "value": 47
+        },
+        {
+          "at": 30288,
+          "action": "volume-change",
+          "value": 45
+        },
+        {
+          "at": 30345.09999999404,
+          "action": "volume-change",
+          "value": 43
+        },
+        {
+          "at": 30399.90000000596,
+          "action": "volume-change",
+          "value": 41
+        },
+        {
+          "at": 30463.30000001192,
+          "action": "volume-change",
+          "value": 40
+        },
+        {
+          "at": 30518.69999998808,
+          "action": "volume-change",
+          "value": 38
+        },
+        {
+          "at": 30573.80000001192,
+          "action": "volume-change",
+          "value": 36
+        },
+        {
+          "at": 30638,
+          "action": "volume-change",
+          "value": 34
+        },
+        {
+          "at": 30701.19999998808,
+          "action": "volume-change",
+          "value": 32
+        },
+        {
+          "at": 30760.90000000596,
+          "action": "volume-change",
+          "value": 31
+        },
+        {
+          "at": 30830.09999999404,
+          "action": "volume-change",
+          "value": 29
+        },
+        {
+          "at": 32975.30000001192,
+          "action": "av-off",
+          "room": null,
+          "source": null,
+          "active": false,
+          "offApplied": true
+        },
+        {
+          "at": 35100.69999998808,
+          "room": "chambre",
+          "source": null,
+          "active": true,
+          "offApplied": null
+        },
+        {
+          "at": 44785.40000000596,
+          "room": null,
+          "source": "Spotify",
+          "active": true,
+          "offApplied": null
+        },
+        {
+          "at": 48083.69999998808,
+          "room": null,
+          "source": "AirPlay 2",
+          "active": true,
+          "offApplied": null
+        },
+        {
+          "at": 51554.19999998808,
+          "action": "volume-change",
+          "value": 32
+        },
+        {
+          "at": 51611,
+          "action": "volume-change",
+          "value": 35
+        },
+        {
+          "at": 51668.69999998808,
+          "action": "volume-change",
+          "value": 39
+        },
+        {
+          "at": 51726.19999998808,
+          "action": "volume-change",
+          "value": 42
+        },
+        {
+          "at": 51792.19999998808,
+          "action": "volume-change",
+          "value": 45
+        },
+        {
+          "at": 51857.40000000596,
+          "action": "volume-change",
+          "value": 48
+        },
+        {
+          "at": 51923.69999998808,
+          "action": "volume-change",
+          "value": 51
+        },
+        {
+          "at": 51982.59999999404,
+          "action": "volume-change",
+          "value": 55
+        },
+        {
+          "at": 52047.5,
+          "action": "volume-change",
+          "value": 58
+        },
+        {
+          "at": 52101.5,
+          "action": "volume-change",
+          "value": 61
+        },
+        {
+          "at": 52162.40000000596,
+          "action": "volume-change",
+          "value": 64
+        },
+        {
+          "at": 52227.80000001192,
+          "action": "volume-change",
+          "value": 68
+        },
+        {
+          "at": 52294.90000000596,
+          "action": "volume-change",
+          "value": 71
+        },
+        {
+          "at": 52351.5,
+          "action": "volume-change",
+          "value": 74
+        },
+        {
+          "at": 52414,
+          "action": "volume-change",
+          "value": 77
+        },
+        {
+          "at": 52472.09999999404,
+          "action": "volume-change",
+          "value": 80
+        },
+        {
+          "at": 52525.30000001192,
+          "action": "volume-change",
+          "value": 84
+        },
+        {
+          "at": 52584.30000001192,
+          "action": "volume-change",
+          "value": 87
+        },
+        {
+          "at": 52647.5,
+          "action": "volume-change",
+          "value": 90
+        },
+        {
+          "at": 52711.5,
+          "action": "volume-change",
+          "value": 93
+        },
+        {
+          "at": 54871.90000000596,
+          "action": "av-off",
+          "room": null,
+          "source": null,
+          "active": false,
+          "offApplied": true
+        },
+        {
+          "at": 56978.09999999404,
+          "room": "cuisine",
+          "source": null,
+          "active": true,
+          "offApplied": null
+        },
+        {
+          "at": 66679.59999999404,
+          "room": null,
+          "source": "Spotify",
+          "active": true,
+          "offApplied": null
+        },
+        {
+          "at": 70008.69999998808,
+          "room": null,
+          "source": "AirPlay 2",
+          "active": true,
+          "offApplied": null
+        },
+        {
+          "at": 73482.30000001192,
+          "action": "volume-change",
+          "value": 90
+        },
+        {
+          "at": 73549.59999999404,
+          "action": "volume-change",
+          "value": 87
+        },
+        {
+          "at": 73625.80000001192,
+          "action": "volume-change",
+          "value": 84
+        },
+        {
+          "at": 73682.59999999404,
+          "action": "volume-change",
+          "value": 81
+        },
+        {
+          "at": 73742.09999999404,
+          "action": "volume-change",
+          "value": 78
+        },
+        {
+          "at": 73800.30000001192,
+          "action": "volume-change",
+          "value": 75
+        },
+        {
+          "at": 73865.69999998808,
+          "action": "volume-change",
+          "value": 72
+        },
+        {
+          "at": 73924.19999998808,
+          "action": "volume-change",
+          "value": 70
+        },
+        {
+          "at": 73989.80000001192,
+          "action": "volume-change",
+          "value": 67
+        },
+        {
+          "at": 74048.5,
+          "action": "volume-change",
+          "value": 64
+        },
+        {
+          "at": 74105.5,
+          "action": "volume-change",
+          "value": 61
+        },
+        {
+          "at": 74173.09999999404,
+          "action": "volume-change",
+          "value": 58
+        },
+        {
+          "at": 74232.80000001192,
+          "action": "volume-change",
+          "value": 55
+        },
+        {
+          "at": 74288.40000000596,
+          "action": "volume-change",
+          "value": 52
+        },
+        {
+          "at": 74340.90000000596,
+          "action": "volume-change",
+          "value": 49
+        },
+        {
+          "at": 74399.09999999404,
+          "action": "volume-change",
+          "value": 46
+        },
+        {
+          "at": 74456.5,
+          "action": "volume-change",
+          "value": 43
+        },
+        {
+          "at": 74523,
+          "action": "volume-change",
+          "value": 40
+        },
+        {
+          "at": 74583.5,
+          "action": "volume-change",
+          "value": 37
+        },
+        {
+          "at": 74661.80000001192,
+          "action": "volume-change",
+          "value": 34
+        },
+        {
+          "at": 76806.69999998808,
+          "action": "av-off",
+          "room": null,
+          "source": null,
+          "active": false,
+          "offApplied": true
+        }
+      ],
+      "errors": [],
+      "checks": [
+        "Three complete room demonstrations",
+        "Room 0 selects two different sources",
+        "Room 0 source feedback is active",
+        "Room 0 changes volume before OFF",
+        "Room 0 stops playback",
+        "Room 1 selects two different sources",
+        "Room 1 source feedback is active",
+        "Room 1 changes volume before OFF",
+        "Room 1 stops playback",
+        "Room 2 selects two different sources",
+        "Room 2 source feedback is active",
+        "Room 2 changes volume before OFF",
+        "Room 2 stops playback",
+        "Different rooms visited",
+        "Manual interaction pauses the demo",
+        "No browser exceptions"
+      ],
+      "status": "passed"
+    },
+    {
+      "project": "villa-leman",
+      "device": "tablet",
+      "events": [
+        {
+          "at": 15694.40000000596,
+          "room": "salon",
+          "source": null,
+          "active": true,
+          "offApplied": null
+        },
+        {
+          "at": 25757.100000023842,
+          "room": null,
+          "source": "Apple TVDune : deuxième partie",
+          "active": true,
+          "offApplied": null
+        },
+        {
+          "at": 29075.90000000596,
+          "room": null,
+          "source": "SpotifyPlaylist du soir",
+          "active": true,
+          "offApplied": null
+        },
+        {
+          "at": 32557.90000000596,
+          "action": "volume-change",
+          "value": 39
+        },
+        {
+          "at": 32626,
+          "action": "volume-change",
+          "value": 41
+        },
+        {
+          "at": 32690.20000001788,
+          "action": "volume-change",
+          "value": 42
+        },
+        {
+          "at": 32752.5,
+          "action": "volume-change",
+          "value": 43
+        },
+        {
+          "at": 32816.10000002384,
+          "action": "volume-change",
+          "value": 45
+        },
+        {
+          "at": 32880.20000001788,
+          "action": "volume-change",
+          "value": 46
+        },
+        {
+          "at": 32943.70000001788,
+          "action": "volume-change",
+          "value": 47
+        },
+        {
+          "at": 33007.30000001192,
+          "action": "volume-change",
+          "value": 49
+        },
+        {
+          "at": 33070.70000001788,
+          "action": "volume-change",
+          "value": 50
+        },
+        {
+          "at": 33138.40000000596,
+          "action": "volume-change",
+          "value": 52
+        },
+        {
+          "at": 33201.10000002384,
+          "action": "volume-change",
+          "value": 53
+        },
+        {
+          "at": 33265.5,
+          "action": "volume-change",
+          "value": 54
+        },
+        {
+          "at": 33328,
+          "action": "volume-change",
+          "value": 56
+        },
+        {
+          "at": 33393.80000001192,
+          "action": "volume-change",
+          "value": 57
+        },
+        {
+          "at": 33456.60000002384,
+          "action": "volume-change",
+          "value": 58
+        },
+        {
+          "at": 33522.5,
+          "action": "volume-change",
+          "value": 60
+        },
+        {
+          "at": 33583.90000000596,
+          "action": "volume-change",
+          "value": 61
+        },
+        {
+          "at": 33647.20000001788,
+          "action": "volume-change",
+          "value": 62
+        },
+        {
+          "at": 33711.70000001788,
+          "action": "volume-change",
+          "value": 64
+        },
+        {
+          "at": 33779.5,
+          "action": "volume-change",
+          "value": 65
+        },
+        {
+          "at": 35936,
+          "action": "av-off",
+          "room": null,
+          "source": null,
+          "active": false,
+          "offApplied": true
+        },
+        {
+          "at": 40574.20000001788,
+          "room": "cuisine",
+          "source": null,
+          "active": true,
+          "offApplied": null
+        },
+        {
+          "at": 50660,
+          "room": null,
+          "source": "Apple TVDune : deuxième partie",
+          "active": true,
+          "offApplied": null
+        },
+        {
+          "at": 53987.10000002384,
+          "room": null,
+          "source": "SpotifyPlaylist du soir",
+          "active": true,
+          "offApplied": null
+        },
+        {
+          "at": 57464,
+          "action": "volume-change",
+          "value": 63
+        },
+        {
+          "at": 57520.5,
+          "action": "volume-change",
+          "value": 61
+        },
+        {
+          "at": 57579.40000000596,
+          "action": "volume-change",
+          "value": 59
+        },
+        {
+          "at": 57638,
+          "action": "volume-change",
+          "value": 58
+        },
+        {
+          "at": 57695.60000002384,
+          "action": "volume-change",
+          "value": 56
+        },
+        {
+          "at": 57753.10000002384,
+          "action": "volume-change",
+          "value": 54
+        },
+        {
+          "at": 57820.40000000596,
+          "action": "volume-change",
+          "value": 52
+        },
+        {
+          "at": 57885.80000001192,
+          "action": "volume-change",
+          "value": 50
+        },
+        {
+          "at": 57942,
+          "action": "volume-change",
+          "value": 48
+        },
+        {
+          "at": 57999.10000002384,
+          "action": "volume-change",
+          "value": 47
+        },
+        {
+          "at": 58055.70000001788,
+          "action": "volume-change",
+          "value": 45
+        },
+        {
+          "at": 58115.30000001192,
+          "action": "volume-change",
+          "value": 43
+        },
+        {
+          "at": 58175.20000001788,
+          "action": "volume-change",
+          "value": 41
+        },
+        {
+          "at": 58230.60000002384,
+          "action": "volume-change",
+          "value": 39
+        },
+        {
+          "at": 58292.30000001192,
+          "action": "volume-change",
+          "value": 37
+        },
+        {
+          "at": 58353.5,
+          "action": "volume-change",
+          "value": 36
+        },
+        {
+          "at": 58409.5,
+          "action": "volume-change",
+          "value": 34
+        },
+        {
+          "at": 58468.10000002384,
+          "action": "volume-change",
+          "value": 32
+        },
+        {
+          "at": 58533.90000000596,
+          "action": "volume-change",
+          "value": 30
+        },
+        {
+          "at": 58600.20000001788,
+          "action": "volume-change",
+          "value": 28
+        },
+        {
+          "at": 60744.70000001788,
+          "action": "av-off",
+          "room": null,
+          "source": null,
+          "active": false,
+          "offApplied": true
+        },
+        {
+          "at": 65363.5,
+          "room": "bureau",
+          "source": null,
+          "active": true,
+          "offApplied": null
+        },
+        {
+          "at": 75387.5,
+          "room": null,
+          "source": "Apple TVDune : deuxième partie",
+          "active": true,
+          "offApplied": null
+        },
+        {
+          "at": 78702.40000000596,
+          "room": null,
+          "source": "SpotifyPlaylist du soir",
+          "active": true,
+          "offApplied": null
+        },
+        {
+          "at": 82195.5,
+          "action": "volume-change",
+          "value": 31
+        },
+        {
+          "at": 82252.5,
+          "action": "volume-change",
+          "value": 35
+        },
+        {
+          "at": 82312.30000001192,
+          "action": "volume-change",
+          "value": 38
+        },
+        {
+          "at": 82368.70000001788,
+          "action": "volume-change",
+          "value": 41
+        },
+        {
+          "at": 82427.90000000596,
+          "action": "volume-change",
+          "value": 45
+        },
+        {
+          "at": 82486.30000001192,
+          "action": "volume-change",
+          "value": 48
+        },
+        {
+          "at": 82547.40000000596,
+          "action": "volume-change",
+          "value": 51
+        },
+        {
+          "at": 82605.60000002384,
+          "action": "volume-change",
+          "value": 55
+        },
+        {
+          "at": 82664.40000000596,
+          "action": "volume-change",
+          "value": 58
+        },
+        {
+          "at": 82725.5,
+          "action": "volume-change",
+          "value": 61
+        },
+        {
+          "at": 82781.30000001192,
+          "action": "volume-change",
+          "value": 65
+        },
+        {
+          "at": 82835.70000001788,
+          "action": "volume-change",
+          "value": 68
+        },
+        {
+          "at": 82897.30000001192,
+          "action": "volume-change",
+          "value": 71
+        },
+        {
+          "at": 82950,
+          "action": "volume-change",
+          "value": 75
+        },
+        {
+          "at": 83006.80000001192,
+          "action": "volume-change",
+          "value": 78
+        },
+        {
+          "at": 83065.30000001192,
+          "action": "volume-change",
+          "value": 81
+        },
+        {
+          "at": 83122.5,
+          "action": "volume-change",
+          "value": 85
+        },
+        {
+          "at": 83181.60000002384,
+          "action": "volume-change",
+          "value": 88
+        },
+        {
+          "at": 83243.90000000596,
+          "action": "volume-change",
+          "value": 91
+        },
+        {
+          "at": 83305.60000002384,
+          "action": "volume-change",
+          "value": 95
+        },
+        {
+          "at": 85451.5,
+          "action": "av-off",
+          "room": null,
+          "source": null,
+          "active": false,
+          "offApplied": true
+        }
+      ],
+      "errors": [],
+      "checks": [
+        "Three complete room demonstrations",
+        "Room 0 selects two different sources",
+        "Room 0 source feedback is active",
+        "Room 0 changes volume before OFF",
+        "Room 0 stops playback",
+        "Room 1 selects two different sources",
+        "Room 1 source feedback is active",
+        "Room 1 changes volume before OFF",
+        "Room 1 stops playback",
+        "Room 2 selects two different sources",
+        "Room 2 source feedback is active",
+        "Room 2 changes volume before OFF",
+        "Room 2 stops playback",
+        "Different rooms visited",
+        "Manual interaction pauses the demo",
+        "No browser exceptions"
+      ],
+      "status": "passed"
+    },
+    {
+      "project": "appartement-carouge",
+      "device": "tablet",
+      "events": [
+        {
+          "at": 13220.5,
+          "action": "rooms",
+          "room": null,
+          "source": null,
+          "active": true,
+          "offApplied": null
+        },
+        {
+          "at": 15730.90000000596,
+          "room": "Salon",
+          "source": null,
+          "active": true,
+          "offApplied": null
+        },
+        {
+          "at": 25800.70000001788,
+          "room": null,
+          "source": "SpotifyPlaylist du soir",
+          "active": true,
+          "offApplied": null
+        },
+        {
+          "at": 29119.80000001192,
+          "room": null,
+          "source": "RadioCouleur 3",
+          "active": true,
+          "offApplied": null
+        },
+        {
+          "at": 32591.5,
+          "action": "volume-change",
+          "value": 42
+        },
+        {
+          "at": 32654.90000000596,
+          "action": "volume-change",
+          "value": 44
+        },
+        {
+          "at": 32718.5,
+          "action": "volume-change",
+          "value": 45
+        },
+        {
+          "at": 32781.30000001192,
+          "action": "volume-change",
+          "value": 47
+        },
+        {
+          "at": 32846.80000001192,
+          "action": "volume-change",
+          "value": 49
+        },
+        {
+          "at": 32907.59999999404,
+          "action": "volume-change",
+          "value": 51
+        },
+        {
+          "at": 32966.70000001788,
+          "action": "volume-change",
+          "value": 53
+        },
+        {
+          "at": 33033.5,
+          "action": "volume-change",
+          "value": 54
+        },
+        {
+          "at": 33103.30000001192,
+          "action": "volume-change",
+          "value": 56
+        },
+        {
+          "at": 33168.09999999404,
+          "action": "volume-change",
+          "value": 58
+        },
+        {
+          "at": 33229.5,
+          "action": "volume-change",
+          "value": 60
+        },
+        {
+          "at": 33292.90000000596,
+          "action": "volume-change",
+          "value": 62
+        },
+        {
+          "at": 33359,
+          "action": "volume-change",
+          "value": 64
+        },
+        {
+          "at": 33423.09999999404,
+          "action": "volume-change",
+          "value": 65
+        },
+        {
+          "at": 33481,
+          "action": "volume-change",
+          "value": 67
+        },
+        {
+          "at": 33548.90000000596,
+          "action": "volume-change",
+          "value": 69
+        },
+        {
+          "at": 33613.30000001192,
+          "action": "volume-change",
+          "value": 71
+        },
+        {
+          "at": 33668.30000001192,
+          "action": "volume-change",
+          "value": 73
+        },
+        {
+          "at": 33723,
+          "action": "volume-change",
+          "value": 74
+        },
+        {
+          "at": 33787.30000001192,
+          "action": "volume-change",
+          "value": 76
+        },
+        {
+          "at": 35941,
+          "action": "av-off",
+          "room": null,
+          "source": null,
+          "active": false,
+          "offApplied": true
+        },
+        {
+          "at": 38082.80000001192,
+          "action": "rooms",
+          "room": null,
+          "source": null,
+          "active": true,
+          "offApplied": null
+        },
+        {
+          "at": 40585.70000001788,
+          "room": "Cuisine",
+          "source": null,
+          "active": true,
+          "offApplied": null
+        },
+        {
+          "at": 50665.70000001788,
+          "room": null,
+          "source": "SpotifyPlaylist du soir",
+          "active": true,
+          "offApplied": null
+        },
+        {
+          "at": 53985.5,
+          "room": null,
+          "source": "RadioCouleur 3",
+          "active": true,
+          "offApplied": null
+        },
+        {
+          "at": 57460,
+          "action": "volume-change",
+          "value": 74
+        },
+        {
+          "at": 57516.59999999404,
+          "action": "volume-change",
+          "value": 72
+        },
+        {
+          "at": 57575.40000000596,
+          "action": "volume-change",
+          "value": 70
+        },
+        {
+          "at": 57634.30000001192,
+          "action": "volume-change",
+          "value": 67
+        },
+        {
+          "at": 57694.59999999404,
+          "action": "volume-change",
+          "value": 65
+        },
+        {
+          "at": 57749.40000000596,
+          "action": "volume-change",
+          "value": 63
+        },
+        {
+          "at": 57816.5,
+          "action": "volume-change",
+          "value": 61
+        },
+        {
+          "at": 57881.70000001788,
+          "action": "volume-change",
+          "value": 59
+        },
+        {
+          "at": 57953.40000000596,
+          "action": "volume-change",
+          "value": 57
+        },
+        {
+          "at": 58012.5,
+          "action": "volume-change",
+          "value": 55
+        },
+        {
+          "at": 58069.20000001788,
+          "action": "volume-change",
+          "value": 52
+        },
+        {
+          "at": 58129.30000001192,
+          "action": "volume-change",
+          "value": 50
+        },
+        {
+          "at": 58186.80000001192,
+          "action": "volume-change",
+          "value": 48
+        },
+        {
+          "at": 58242.90000000596,
+          "action": "volume-change",
+          "value": 46
+        },
+        {
+          "at": 58300.5,
+          "action": "volume-change",
+          "value": 44
+        },
+        {
+          "at": 58363.20000001788,
+          "action": "volume-change",
+          "value": 42
+        },
+        {
+          "at": 58423.5,
+          "action": "volume-change",
+          "value": 40
+        },
+        {
+          "at": 58480.80000001192,
+          "action": "volume-change",
+          "value": 37
+        },
+        {
+          "at": 58546.59999999404,
+          "action": "volume-change",
+          "value": 35
+        },
+        {
+          "at": 58604,
+          "action": "volume-change",
+          "value": 33
+        },
+        {
+          "at": 60756.40000000596,
+          "action": "av-off",
+          "room": null,
+          "source": null,
+          "active": false,
+          "offApplied": true
+        },
+        {
+          "at": 62874.30000001192,
+          "action": "rooms",
+          "room": null,
+          "source": null,
+          "active": true,
+          "offApplied": null
+        },
+        {
+          "at": 65412.09999999404,
+          "room": "Chambre parents",
+          "source": null,
+          "active": true,
+          "offApplied": null
+        },
+        {
+          "at": 75432.09999999404,
+          "room": null,
+          "source": "SpotifyPlaylist du soir",
+          "active": true,
+          "offApplied": null
+        },
+        {
+          "at": 78765.80000001192,
+          "room": null,
+          "source": "RadioCouleur 3",
+          "active": true,
+          "offApplied": null
+        },
+        {
+          "at": 82224.30000001192,
+          "action": "volume-change",
+          "value": 35
+        },
+        {
+          "at": 82290.59999999404,
+          "action": "volume-change",
+          "value": 38
+        },
+        {
+          "at": 82355.20000001788,
+          "action": "volume-change",
+          "value": 40
+        },
+        {
+          "at": 82415.40000000596,
+          "action": "volume-change",
+          "value": 43
+        },
+        {
+          "at": 82483,
+          "action": "volume-change",
+          "value": 45
+        },
+        {
+          "at": 82535.20000001788,
+          "action": "volume-change",
+          "value": 47
+        },
+        {
+          "at": 82593.59999999404,
+          "action": "volume-change",
+          "value": 50
+        },
+        {
+          "at": 82646.5,
+          "action": "volume-change",
+          "value": 52
+        },
+        {
+          "at": 82702.70000001788,
+          "action": "volume-change",
+          "value": 55
+        },
+        {
+          "at": 82764.70000001788,
+          "action": "volume-change",
+          "value": 57
+        },
+        {
+          "at": 82819.59999999404,
+          "action": "volume-change",
+          "value": 59
+        },
+        {
+          "at": 82877.59999999404,
+          "action": "volume-change",
+          "value": 62
+        },
+        {
+          "at": 82943.30000001192,
+          "action": "volume-change",
+          "value": 64
+        },
+        {
+          "at": 83002.90000000596,
+          "action": "volume-change",
+          "value": 67
+        },
+        {
+          "at": 83061.80000001192,
+          "action": "volume-change",
+          "value": 69
+        },
+        {
+          "at": 83119.09999999404,
+          "action": "volume-change",
+          "value": 71
+        },
+        {
+          "at": 83177.59999999404,
+          "action": "volume-change",
+          "value": 74
+        },
+        {
+          "at": 83233.80000001192,
+          "action": "volume-change",
+          "value": 76
+        },
+        {
+          "at": 83292.70000001788,
+          "action": "volume-change",
+          "value": 79
+        },
+        {
+          "at": 83350.90000000596,
+          "action": "volume-change",
+          "value": 81
+        },
+        {
+          "at": 85507.5,
+          "action": "av-off",
+          "room": null,
+          "source": null,
+          "active": false,
+          "offApplied": true
+        }
+      ],
+      "errors": [],
+      "checks": [
+        "Three complete room demonstrations",
+        "Room 0 selects two different sources",
+        "Room 0 source feedback is active",
+        "Room 0 changes volume before OFF",
+        "Room 0 stops playback",
+        "Room 1 selects two different sources",
+        "Room 1 source feedback is active",
+        "Room 1 changes volume before OFF",
+        "Room 1 stops playback",
+        "Room 2 selects two different sources",
+        "Room 2 source feedback is active",
+        "Room 2 changes volume before OFF",
+        "Room 2 stops playback",
+        "Different rooms visited",
+        "Manual interaction pauses the demo",
+        "No browser exceptions"
+      ],
+      "status": "passed"
+    }
+  ]
+}

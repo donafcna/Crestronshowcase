@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { runVillaTour } from "./villaTour";
+import { runOrderedDemo } from "./orderedDemo";
 
 // ----------------------------------------------------------------------------
 // Démo automatique d'une interface.
@@ -14,19 +15,15 @@ import { runVillaTour } from "./villaTour";
 // Fonctionne aussi bien avec les simulateurs React qu'avec une interface CH5
 // réelle embarquée dans une iframe de même origine (ch5-button, onclick…).
 //
-// Aucune connaissance du GUI n'est nécessaire : les éléments cliquables sont
-// découverts dans le DOM. Un élément peut être exclu avec l'attribut
-// `data-demo-ignore`, et un conteneur de pièces forcé avec `data-demo-nav`.
+// Les parcours ordonnés sont définis dans villaTour et orderedDemo. Les
+// attributs data-demo-action/source/room identifient les commandes des
+// simulateurs ; les autres interfaces sont reconnues selon leurs capacités.
 // ----------------------------------------------------------------------------
 
 export const TIMING = {
   startDelay: 1800, // attente après l'affichage d'un GUI avant de commencer
-  afterRoom: 2400, // pause après un changement de pièce
   travel: 650, // durée du déplacement du curseur
   press: 160, // temps entre l'arrivée du curseur et le clic
-  afterAction: 1900, // pause après chaque action
-  actionsPerRoom: [4, 6], // nombre d'actions par pièce (min, max)
-  maxRooms: 6, // pièces visitées au maximum par GUI
   slider: 1000, // durée d'un glissement de fader
   hold: 260, // maintien de l'appui avant de faire glisser un fader
 };
@@ -84,8 +81,12 @@ const isVisible = (raw, win) => {
   // Un fader peut être une piste de 3 px de haut : on tolère une dimension
   // fine pour les curseurs, pas pour les boutons.
   const isSliderEl = (raw.tagName === "INPUT" && raw.type === "range") || raw.tagName === "CH5-SLIDER";
-  if (Math.max(r.width, r.height) < 10) return false;
-  if (!isSliderEl && Math.min(r.width, r.height) < 10) return false;
+  // Use CSS size before the chassis scale: a valid 44 px control may appear
+  // much smaller on a reduced desktop / tablet preview.
+  if (r.width <= 0 || r.height <= 0) return false;
+  const width = el.offsetWidth || r.width, height = el.offsetHeight || r.height;
+  if (Math.max(width, height) < 10) return false;
+  if (!isSliderEl && Math.min(width, height) < 10) return false;
   const cs = win.getComputedStyle(el);
   if (cs.visibility === "hidden" || cs.display === "none" || Number(cs.opacity) === 0) return false;
   if (cs.pointerEvents === "none") return false;
@@ -101,7 +102,9 @@ const isCovered = (raw, doc) => {
   const r = el.getBoundingClientRect();
   const top = doc.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2);
   if (!top) return true;
-  return !(el === top || el.contains(top) || top.contains(el));
+  // A clipping ancestor (for example the bezel) can contain the target in the
+  // DOM while hiding it on screen. Only the target or its children count.
+  return !(el === top || el.contains(top));
 };
 
 // Bouton déjà actif / sélectionné (pièce courante, scène en cours, source en
@@ -301,17 +304,6 @@ const setRangeValue = (input, value, win) => {
   input.dispatchEvent(new win.Event("change", { bubbles: true }));
 };
 
-const shuffle = (arr) => {
-  const a = arr.slice();
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
-};
-
-const randomBetween = ([min, max]) => min + Math.floor(Math.random() * (max - min + 1));
-
 export const useAutoDemo = ({ enabled, running, stageRef, guiKey, onCycleEnd, onUserActivity, villaDevice, villaSessionRef }) => {
   const [cursor, setCursor] = useState({ x: -100, y: -100, visible: false, pulse: 0, pressed: false });
   const tokenRef = useRef(null);
@@ -448,7 +440,15 @@ export const useAutoDemo = ({ enabled, running, stageRef, guiKey, onCycleEnd, on
             : { x: tr.left + tr.width * targetPct, y: from.y };
           setCursor((c) => ({ ...c, pulse: c.pulse + 1, pressed: true }));
           await sleep(TIMING.hold, token);
+          const join = el.getAttribute("sendeventonchange");
+          // CH5 ignores some synthetic drags. In the showcase, publish the same
+          // analog join as the real fader so its feedback and the 3D volume agree.
           await dragPointer(handle, from, to, gui, 20, token, (x, y) => {
+            if (gui.win.Villa?.ready && join) {
+              const ratio = Math.max(0, Math.min(1, vertical ? (tr.bottom - y) / tr.height : (x - tr.left) / tr.width));
+              const min = Number(el.getAttribute("min") || 0), max = Number(el.getAttribute("max") || 65535);
+              gui.win.CrComLib.publishEvent("n", join, Math.round(min + ratio * (max - min)));
+            }
             const p = toPagePoint(x, y, gui);
             setCursor((c) => ({ ...c, x: p.x, y: p.y }));
           });
@@ -487,64 +487,13 @@ export const useAutoDemo = ({ enabled, running, stageRef, guiKey, onCycleEnd, on
       }
 
       if (villaDevice) {
-        const complete = await runVillaTour({ gui, device: villaDevice, sessionRef: villaSessionRef, token, sleep, moveTo, act, collect, setCursor });
+        const complete = await runVillaTour({ gui, device: villaDevice, sessionRef: villaSessionRef, token, sleep, moveTo, act, setCursor, visible: (el, g) => isVisible(el, g.win) && !isCovered(el, g.doc) });
         if (complete && !token.cancelled) onCycleEndRef.current?.();
         return;
       }
-      const { nav } = collect(gui);
-      // Sans liste de pièces détectée : deux séries d'actions sur le même écran.
-      const rooms = nav.length ? nav.slice(0, TIMING.maxRooms) : [null, null];
-
-      for (const room of rooms) {
-        if (token.cancelled) return;
-        if (room && room.isConnected && !isAlreadyActive(room)) {
-          const ok = await moveTo(room, gui);
-          if (token.cancelled) return;
-          if (ok) {
-            await act(room, gui);
-            await sleep(TIMING.afterRoom, token);
-            if (token.cancelled) return;
-          }
-        }
-        // Actions dans la pièce : la liste est recalculée avant chaque action
-        // (un clic peut ouvrir une fenêtre, changer d'onglet…). Un fader est
-        // montré en priorité s'il y en a un, puis des boutons variés.
-        const count = randomBetween(TIMING.actionsPerRoom);
-        const used = new Set();
-        let lastParent = null;
-        let sliderDone = false;
-        for (let k = 0; k < count; k++) {
-          if (token.cancelled) return;
-          const fresh = collect(gui);
-          const navSet = new Set(fresh.nav);
-          const candidates = fresh.actions.filter((el) => !navSet.has(el) && !used.has(el));
-          if (!candidates.length) break;
-          const isSlider = (el) => (el.tagName === "INPUT" && el.type === "range") || el.tagName === "CH5-SLIDER";
-          let el = null;
-          if (!sliderDone && k >= 1) {
-            const sliders = candidates.filter(isSlider);
-            if (sliders.length) el = sliders[Math.floor(Math.random() * sliders.length)];
-          }
-          if (!el) {
-            const pool = shuffle(candidates.filter((c) => !isSlider(c) || sliderDone));
-            el = pool.find((c) => c.parentElement !== lastParent) || pool[0] || candidates[0];
-          }
-          used.add(el);
-          lastParent = el.parentElement;
-          if (isSlider(el)) sliderDone = true;
-          if (!el.isConnected || !isVisible(el, gui.win) || isCovered(el, gui.doc) || isAlreadyActive(el)) continue;
-          const ok = await moveTo(el, gui);
-          if (token.cancelled) return;
-          if (!ok) continue;
-          await act(el, gui);
-          await sleep(TIMING.afterAction, token);
-        }
-      }
-      if (!token.cancelled) {
-        setCursor((c) => ({ ...c, visible: false }));
-        await sleep(600, token);
-        if (!token.cancelled) onCycleEndRef.current?.();
-      }
+      const complete = await runOrderedDemo({ gui, token, sleep, moveTo, act,
+        visible: (el, g) => isVisible(el, g.win) && !isCovered(el, g.doc) });
+      if (complete && !token.cancelled) onCycleEndRef.current?.();
     };
 
     run().catch((err) => console.warn("Auto-demo stopped", err));

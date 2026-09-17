@@ -1,0 +1,8 @@
+{
+  "checks": [
+    "OFF basement remains readable with all fixtures off",
+    "No browser exceptions"
+  ],
+  "errors": [],
+  "status": "passed"
+}

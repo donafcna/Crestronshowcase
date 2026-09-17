@@ -1,0 +1,1084 @@
+{
+  "base": "http://127.0.0.1:4211",
+  "events": [
+    {
+      "at": 7938.300000011921,
+      "device": "phone",
+      "id": "room",
+      "room": 4,
+      "seconds": 3.835200000017881
+    },
+    {
+      "at": 10786.800000011921,
+      "device": "phone",
+      "id": "nav-lights",
+      "room": 4,
+      "scene": "51",
+      "volume": 24000,
+      "source": 2,
+      "shades": {
+        "volet": {
+          "pos": 0,
+          "target": 0
+        },
+        "store": {
+          "pos": 0,
+          "target": 0
+        },
+        "rideau": {
+          "pos": 0,
+          "target": 0
+        }
+      },
+      "seconds": 6.68390000000596
+    },
+    {
+      "at": 13054.800000011921,
+      "device": "phone",
+      "id": "pressDigital(63)",
+      "room": 4,
+      "scene": "51",
+      "volume": 24000,
+      "source": 2,
+      "shades": {
+        "volet": {
+          "pos": 0,
+          "target": 1
+        },
+        "store": {
+          "pos": 0,
+          "target": 0
+        },
+        "rideau": {
+          "pos": 0,
+          "target": 0
+        }
+      },
+      "seconds": 8.951800000011922
+    },
+    {
+      "at": 14205.09999999404,
+      "device": "phone",
+      "id": "pressDigital(66)",
+      "room": 4,
+      "scene": "51",
+      "volume": 24000,
+      "source": 2,
+      "shades": {
+        "volet": {
+          "pos": 0.28792499999701976,
+          "target": 1
+        },
+        "store": {
+          "pos": 0,
+          "target": 0
+        },
+        "rideau": {
+          "pos": 0,
+          "target": 1
+        }
+      },
+      "seconds": 10.102
+    },
+    {
+      "at": 15336.09999999404,
+      "device": "phone",
+      "id": "›",
+      "room": 4,
+      "scene": "51",
+      "volume": 24000,
+      "source": 2,
+      "shades": {
+        "volet": {
+          "pos": 0.55435000000149,
+          "target": 1
+        },
+        "store": {
+          "pos": 0,
+          "target": 0
+        },
+        "rideau": {
+          "pos": 0.2664250000044703,
+          "target": 1
+        }
+      },
+      "seconds": 11.233100000023843
+    },
+    {
+      "at": 16453.5,
+      "device": "phone",
+      "id": "pressDigital(69)",
+      "room": 4,
+      "scene": "51",
+      "volume": 24000,
+      "source": 2,
+      "shades": {
+        "volet": {
+          "pos": 0.8501000000014897,
+          "target": 1
+        },
+        "store": {
+          "pos": 0,
+          "target": 1
+        },
+        "rideau": {
+          "pos": 0.5621750000044701,
+          "target": 1
+        }
+      },
+      "seconds": 12.35040000000596
+    },
+    {
+      "at": 21378.30000001192,
+      "device": "phone",
+      "id": "scene-btn-52",
+      "room": 4,
+      "scene": "52",
+      "volume": 24000,
+      "source": 2,
+      "shades": {
+        "volet": {
+          "pos": 1,
+          "target": 1
+        },
+        "store": {
+          "pos": 1,
+          "target": 1
+        },
+        "rideau": {
+          "pos": 1,
+          "target": 1
+        }
+      },
+      "seconds": 17.27540000000596
+    },
+    {
+      "at": 25735.70000001788,
+      "device": "phone",
+      "id": "‹",
+      "room": 4,
+      "scene": "52",
+      "volume": 24000,
+      "source": 2,
+      "shades": {
+        "volet": {
+          "pos": 1,
+          "target": 1
+        },
+        "store": {
+          "pos": 1,
+          "target": 1
+        },
+        "rideau": {
+          "pos": 1,
+          "target": 1
+        }
+      },
+      "seconds": 21.63270000001788
+    },
+    {
+      "at": 26801.20000001788,
+      "device": "phone",
+      "id": "pressDigital(61)",
+      "room": 4,
+      "scene": "52",
+      "volume": 24000,
+      "source": 2,
+      "shades": {
+        "volet": {
+          "pos": 0.9954249999970197,
+          "target": 0
+        },
+        "store": {
+          "pos": 1,
+          "target": 1
+        },
+        "rideau": {
+          "pos": 1,
+          "target": 1
+        }
+      },
+      "seconds": 22.698100000023842
+    },
+    {
+      "at": 27921.90000000596,
+      "device": "phone",
+      "id": "pressDigital(64)",
+      "room": 4,
+      "scene": "52",
+      "volume": 24000,
+      "source": 2,
+      "shades": {
+        "volet": {
+          "pos": 0.7164499999955297,
+          "target": 0
+        },
+        "store": {
+          "pos": 1,
+          "target": 1
+        },
+        "rideau": {
+          "pos": 1,
+          "target": 0
+        }
+      },
+      "seconds": 23.81890000000596
+    },
+    {
+      "at": 29052.59999999404,
+      "device": "phone",
+      "id": "›",
+      "room": 4,
+      "scene": "52",
+      "volume": 24000,
+      "source": 2,
+      "shades": {
+        "volet": {
+          "pos": 0.43337499999999995,
+          "target": 0
+        },
+        "store": {
+          "pos": 1,
+          "target": 1
+        },
+        "rideau": {
+          "pos": 0.7169250000044699,
+          "target": 0
+        }
+      },
+      "seconds": 24.94970000001788
+    },
+    {
+      "at": 30168.80000001192,
+      "device": "phone",
+      "id": "pressDigital(67)",
+      "room": 4,
+      "scene": "52",
+      "volume": 24000,
+      "source": 2,
+      "shades": {
+        "volet": {
+          "pos": 0.15404999999701996,
+          "target": 0
+        },
+        "store": {
+          "pos": 0.9975749999955297,
+          "target": 0
+        },
+        "rideau": {
+          "pos": 0.4376000000014899,
+          "target": 0
+        }
+      },
+      "seconds": 26.06590000000596
+    },
+    {
+      "at": 35013.80000001192,
+      "device": "phone",
+      "id": "nav-hvac",
+      "room": 4,
+      "scene": "52",
+      "volume": 24000,
+      "source": 2,
+      "shades": {
+        "volet": {
+          "pos": 0,
+          "target": 0
+        },
+        "store": {
+          "pos": 0,
+          "target": 0
+        },
+        "rideau": {
+          "pos": 0,
+          "target": 0
+        }
+      },
+      "seconds": 30.910700000017883
+    },
+    {
+      "at": 37656.20000001788,
+      "device": "phone",
+      "id": "nav-audio",
+      "room": 4,
+      "scene": "52",
+      "volume": 24000,
+      "source": 2,
+      "shades": {
+        "volet": {
+          "pos": 0,
+          "target": 0
+        },
+        "store": {
+          "pos": 0,
+          "target": 0
+        },
+        "rideau": {
+          "pos": 0,
+          "target": 0
+        }
+      },
+      "seconds": 33.55310000002384
+    },
+    {
+      "at": 39417.30000001192,
+      "device": "phone",
+      "id": "source-btn-1",
+      "room": 4,
+      "scene": "52",
+      "volume": 24000,
+      "source": 1,
+      "shades": {
+        "volet": {
+          "pos": 0,
+          "target": 0
+        },
+        "store": {
+          "pos": 0,
+          "target": 0
+        },
+        "rideau": {
+          "pos": 0,
+          "target": 0
+        }
+      },
+      "seconds": 35.31440000000596
+    },
+    {
+      "at": 42170.59999999404,
+      "device": "phone",
+      "id": "source-btn-4",
+      "room": 4,
+      "scene": "52",
+      "volume": 24000,
+      "source": 4,
+      "shades": {
+        "volet": {
+          "pos": 0,
+          "target": 0
+        },
+        "store": {
+          "pos": 0,
+          "target": 0
+        },
+        "rideau": {
+          "pos": 0,
+          "target": 0
+        }
+      },
+      "seconds": 38.06770000001788
+    },
+    {
+      "at": 48189.30000001192,
+      "device": "phone",
+      "id": "power-off-btn-mobile",
+      "room": 4,
+      "scene": "52",
+      "volume": 42991,
+      "source": 0,
+      "shades": {
+        "volet": {
+          "pos": 0,
+          "target": 0
+        },
+        "store": {
+          "pos": 0,
+          "target": 0
+        },
+        "rideau": {
+          "pos": 0,
+          "target": 0
+        }
+      },
+      "seconds": 44.08640000000596
+    },
+    {
+      "at": 50037.5,
+      "device": "phone",
+      "id": "room",
+      "room": 3,
+      "seconds": 45.93440000000596
+    },
+    {
+      "at": 52486.90000000596,
+      "device": "phone",
+      "id": "nav-lights",
+      "room": 3,
+      "scene": "52",
+      "volume": 28000,
+      "source": 3,
+      "shades": {
+        "volet": {
+          "pos": 0,
+          "target": 0
+        },
+        "store": {
+          "pos": 0,
+          "target": 0
+        },
+        "rideau": {
+          "pos": 1,
+          "target": 1
+        },
+        "banne": {
+          "pos": 0,
+          "target": 0
+        }
+      },
+      "seconds": 48.38390000000596
+    },
+    {
+      "at": 54254.30000001192,
+      "device": "phone",
+      "id": "pressDigital(63)",
+      "room": 3,
+      "scene": "52",
+      "volume": 28000,
+      "source": 3,
+      "shades": {
+        "volet": {
+          "pos": 0,
+          "target": 1
+        },
+        "store": {
+          "pos": 0,
+          "target": 0
+        },
+        "rideau": {
+          "pos": 1,
+          "target": 1
+        },
+        "banne": {
+          "pos": 0,
+          "target": 0
+        }
+      },
+      "seconds": 50.15130000001192
+    },
+    {
+      "at": 55386.09999999404,
+      "device": "phone",
+      "id": "pressDigital(66)",
+      "room": 3,
+      "scene": "52",
+      "volume": 28000,
+      "source": 3,
+      "shades": {
+        "volet": {
+          "pos": 0.30794999999552963,
+          "target": 1
+        },
+        "store": {
+          "pos": 0,
+          "target": 0
+        },
+        "rideau": {
+          "pos": 1,
+          "target": 1
+        },
+        "banne": {
+          "pos": 0,
+          "target": 0
+        }
+      },
+      "seconds": 51.283
+    },
+    {
+      "at": 56537.30000001192,
+      "device": "phone",
+      "id": "›",
+      "room": 3,
+      "scene": "52",
+      "volume": 28000,
+      "source": 3,
+      "shades": {
+        "volet": {
+          "pos": 0.5704499999955295,
+          "target": 1
+        },
+        "store": {
+          "pos": 0,
+          "target": 0
+        },
+        "rideau": {
+          "pos": 1,
+          "target": 1
+        },
+        "banne": {
+          "pos": 0,
+          "target": 0
+        }
+      },
+      "seconds": 52.43420000001788
+    },
+    {
+      "at": 57651.59999999404,
+      "device": "phone",
+      "id": "pressDigital(69)",
+      "room": 3,
+      "scene": "52",
+      "volume": 28000,
+      "source": 3,
+      "shades": {
+        "volet": {
+          "pos": 0.8744499999955291,
+          "target": 1
+        },
+        "store": {
+          "pos": 0,
+          "target": 1
+        },
+        "rideau": {
+          "pos": 1,
+          "target": 1
+        },
+        "banne": {
+          "pos": 0,
+          "target": 1
+        }
+      },
+      "seconds": 53.54860000002384
+    },
+    {
+      "at": 62576.09999999404,
+      "device": "phone",
+      "id": "scene-btn-54",
+      "room": 3,
+      "scene": "54",
+      "volume": 28000,
+      "source": 3,
+      "shades": {
+        "volet": {
+          "pos": 1,
+          "target": 1
+        },
+        "store": {
+          "pos": 1,
+          "target": 1
+        },
+        "rideau": {
+          "pos": 1,
+          "target": 1
+        },
+        "banne": {
+          "pos": 1,
+          "target": 1
+        }
+      },
+      "seconds": 58.47310000002384
+    },
+    {
+      "at": 66936.40000000596,
+      "device": "phone",
+      "id": "scene-btn-52",
+      "room": 3,
+      "scene": "52",
+      "volume": 28000,
+      "source": 3,
+      "shades": {
+        "volet": {
+          "pos": 1,
+          "target": 1
+        },
+        "store": {
+          "pos": 1,
+          "target": 1
+        },
+        "rideau": {
+          "pos": 1,
+          "target": 1
+        },
+        "banne": {
+          "pos": 1,
+          "target": 1
+        }
+      },
+      "seconds": 62.83340000000596
+    },
+    {
+      "at": 71284.40000000596,
+      "device": "phone",
+      "id": "nav-hvac",
+      "room": 3,
+      "scene": "52",
+      "volume": 28000,
+      "source": 3,
+      "shades": {
+        "volet": {
+          "pos": 1,
+          "target": 1
+        },
+        "store": {
+          "pos": 1,
+          "target": 1
+        },
+        "rideau": {
+          "pos": 1,
+          "target": 1
+        },
+        "banne": {
+          "pos": 1,
+          "target": 1
+        }
+      },
+      "seconds": 67.18130000001192
+    },
+    {
+      "at": 73935.5,
+      "device": "phone",
+      "id": "nav-audio",
+      "room": 3,
+      "scene": "52",
+      "volume": 28000,
+      "source": 3,
+      "shades": {
+        "volet": {
+          "pos": 1,
+          "target": 1
+        },
+        "store": {
+          "pos": 1,
+          "target": 1
+        },
+        "rideau": {
+          "pos": 1,
+          "target": 1
+        },
+        "banne": {
+          "pos": 1,
+          "target": 1
+        }
+      },
+      "seconds": 69.8325
+    },
+    {
+      "at": 75719.70000001788,
+      "device": "phone",
+      "id": "source-btn-1",
+      "room": 3,
+      "scene": "52",
+      "volume": 28000,
+      "source": 1,
+      "shades": {
+        "volet": {
+          "pos": 1,
+          "target": 1
+        },
+        "store": {
+          "pos": 1,
+          "target": 1
+        },
+        "rideau": {
+          "pos": 1,
+          "target": 1
+        },
+        "banne": {
+          "pos": 1,
+          "target": 1
+        }
+      },
+      "seconds": 71.61670000001789
+    },
+    {
+      "at": 78470,
+      "device": "phone",
+      "id": "source-btn-4",
+      "room": 3,
+      "scene": "52",
+      "volume": 28000,
+      "source": 4,
+      "shades": {
+        "volet": {
+          "pos": 1,
+          "target": 1
+        },
+        "store": {
+          "pos": 1,
+          "target": 1
+        },
+        "rideau": {
+          "pos": 1,
+          "target": 1
+        },
+        "banne": {
+          "pos": 1,
+          "target": 1
+        }
+      },
+      "seconds": 74.367
+    },
+    {
+      "at": 84502.5,
+      "device": "phone",
+      "id": "power-off-btn-mobile",
+      "room": 3,
+      "scene": "52",
+      "volume": 42991,
+      "source": 0,
+      "shades": {
+        "volet": {
+          "pos": 1,
+          "target": 1
+        },
+        "store": {
+          "pos": 1,
+          "target": 1
+        },
+        "rideau": {
+          "pos": 1,
+          "target": 1
+        },
+        "banne": {
+          "pos": 1,
+          "target": 1
+        }
+      },
+      "seconds": 80.39940000000595
+    },
+    {
+      "at": 87308.70000001788,
+      "device": "wallpanel",
+      "id": "room-btn-1",
+      "room": 1,
+      "scene": "51",
+      "volume": 32768,
+      "source": "151"
+    },
+    {
+      "at": 87309.09999999404,
+      "device": "wallpanel",
+      "id": "room-btn-1",
+      "room": 1,
+      "scene": "51",
+      "volume": 32768,
+      "source": "151"
+    },
+    {
+      "at": 90065.20000001788,
+      "device": "wallpanel",
+      "id": "tab-lights-btn",
+      "room": 1,
+      "scene": "51",
+      "volume": 32768,
+      "source": "151"
+    },
+    {
+      "at": 91815,
+      "device": "wallpanel",
+      "id": "showWellnessPanel('hvac')",
+      "room": 1,
+      "scene": "51",
+      "volume": 32768,
+      "source": "151"
+    },
+    {
+      "at": 96098.80000001192,
+      "device": "wallpanel",
+      "id": "151",
+      "room": 1,
+      "scene": "51",
+      "volume": 32768,
+      "source": "151"
+    },
+    {
+      "at": 96100.09999999404,
+      "device": "wallpanel",
+      "id": "151",
+      "room": 1,
+      "scene": "51",
+      "volume": 32768,
+      "source": "151"
+    },
+    {
+      "at": 98867.59999999404,
+      "device": "wallpanel",
+      "id": "154",
+      "room": 1,
+      "scene": "51",
+      "volume": 32768,
+      "source": "154"
+    },
+    {
+      "at": 98869,
+      "device": "wallpanel",
+      "id": "154",
+      "room": 1,
+      "scene": "51",
+      "volume": 32768,
+      "source": "154"
+    },
+    {
+      "at": 104852,
+      "device": "wallpanel",
+      "id": "200",
+      "room": 1,
+      "scene": "51",
+      "volume": 42991,
+      "source": "0"
+    },
+    {
+      "at": 104852.20000001788,
+      "device": "wallpanel",
+      "id": "200",
+      "room": 1,
+      "scene": "51",
+      "volume": 42991,
+      "source": "0"
+    },
+    {
+      "at": 111084.80000001192,
+      "device": "phone",
+      "id": "room",
+      "room": 5,
+      "seconds": 106.98170000001788
+    },
+    {
+      "at": 113523.09999999404,
+      "device": "phone",
+      "id": "nav-lights",
+      "room": 5,
+      "scene": "51",
+      "volume": 18000,
+      "source": 0,
+      "shades": {
+        "volet": {
+          "pos": 0,
+          "target": 0
+        },
+        "store": {
+          "pos": 0,
+          "target": 0
+        },
+        "rideau": {
+          "pos": 0,
+          "target": 0
+        }
+      },
+      "seconds": 109.42020000001789
+    },
+    {
+      "at": 115289.5,
+      "device": "phone",
+      "id": "pressDigital(63)",
+      "room": 5,
+      "scene": "51",
+      "volume": 18000,
+      "source": 0,
+      "shades": {
+        "volet": {
+          "pos": 0,
+          "target": 1
+        },
+        "store": {
+          "pos": 0,
+          "target": 0
+        },
+        "rideau": {
+          "pos": 0,
+          "target": 0
+        }
+      },
+      "seconds": 111.18660000002384
+    },
+    {
+      "at": 116402.09999999404,
+      "device": "phone",
+      "id": "pressDigital(66)",
+      "room": 5,
+      "scene": "51",
+      "volume": 18000,
+      "source": 0,
+      "shades": {
+        "volet": {
+          "pos": 0.28104999999701974,
+          "target": 1
+        },
+        "store": {
+          "pos": 0,
+          "target": 0
+        },
+        "rideau": {
+          "pos": 0.04245000000298023,
+          "target": 1
+        }
+      },
+      "seconds": 112.299
+    },
+    {
+      "at": 117524.40000000596,
+      "device": "phone",
+      "id": "›",
+      "room": 5,
+      "scene": "51",
+      "volume": 18000,
+      "source": 0,
+      "shades": {
+        "volet": {
+          "pos": 0.5586499999985096,
+          "target": 1
+        },
+        "store": {
+          "pos": 0,
+          "target": 0
+        },
+        "rideau": {
+          "pos": 0.32005000000447026,
+          "target": 1
+        }
+      },
+      "seconds": 113.42140000000596
+    },
+    {
+      "at": 118659.70000001788,
+      "device": "phone",
+      "id": "pressDigital(69)",
+      "room": 5,
+      "scene": "51",
+      "volume": 18000,
+      "source": 0,
+      "shades": {
+        "volet": {
+          "pos": 0.8423499999940394,
+          "target": 1
+        },
+        "store": {
+          "pos": 0,
+          "target": 1
+        },
+        "rideau": {
+          "pos": 0.6037499999999999,
+          "target": 1
+        }
+      },
+      "seconds": 114.55670000001788
+    },
+    {
+      "at": 123489.80000001192,
+      "device": "phone",
+      "id": "scene-btn-54",
+      "room": 5,
+      "scene": "54",
+      "volume": 18000,
+      "source": 0,
+      "shades": {
+        "volet": {
+          "pos": 1,
+          "target": 1
+        },
+        "store": {
+          "pos": 1,
+          "target": 1
+        },
+        "rideau": {
+          "pos": 1,
+          "target": 1
+        }
+      },
+      "seconds": 119.38670000001788
+    },
+    {
+      "at": 127855.09999999404,
+      "device": "phone",
+      "id": "scene-btn-52",
+      "room": 5,
+      "scene": "52",
+      "volume": 18000,
+      "source": 0,
+      "shades": {
+        "volet": {
+          "pos": 1,
+          "target": 1
+        },
+        "store": {
+          "pos": 1,
+          "target": 1
+        },
+        "rideau": {
+          "pos": 1,
+          "target": 1
+        }
+      },
+      "seconds": 123.752
+    },
+    {
+      "at": 132186.80000001192,
+      "device": "phone",
+      "id": "nav-hvac",
+      "room": 5,
+      "scene": "52",
+      "volume": 18000,
+      "source": 0,
+      "shades": {
+        "volet": {
+          "pos": 1,
+          "target": 1
+        },
+        "store": {
+          "pos": 1,
+          "target": 1
+        },
+        "rideau": {
+          "pos": 1,
+          "target": 1
+        }
+      },
+      "seconds": 128.08380000001193
+    }
+  ],
+  "checks": [
+    "Residential starts Smartphone",
+    "Phone to TSW to phone loop completes",
+    "Visits use different rooms",
+    "Room 4 ordered nav-lights",
+    "Room 4 ordered scene-btn-52",
+    "Room 4 ordered nav-hvac",
+    "Room 4 ordered nav-audio",
+    "Room 4 ordered source-btn-1",
+    "Room 4 ordered source-btn-4",
+    "Room 4 ordered power-off-btn-mobile",
+    "Room 4 sources really change",
+    "Room 4 volume really changes",
+    "Room 4 motors closed before Cinema",
+    "Day reopens every motor after Cinema",
+    "Room 3 ordered nav-lights",
+    "Room 3 ordered scene-btn-52",
+    "Room 3 ordered nav-hvac",
+    "Room 3 ordered nav-audio",
+    "Room 3 ordered source-btn-1",
+    "Room 3 ordered source-btn-4",
+    "Room 3 ordered power-off-btn-mobile",
+    "Room 3 sources really change",
+    "Room 3 volume really changes",
+    "Room 3 motors closed before Cinema",
+    "Night Total then Cinema with complete fade",
+    "Day and night variants both demonstrated",
+    "TSW real action tab-lights-btn",
+    "TSW real action 151",
+    "TSW real action 154",
+    "TSW real action 200",
+    "Manual input immediately stops synthetic actions",
+    "OFF leaves commanded fixtures off",
+    "Cutaway keeps a minimum visible fill",
+    "No new browser errors"
+  ],
+  "errors": [],
+  "legacyErrors": [
+    "CH5: La bibliothèque WebXPanel n'est pas chargée.",
+    "Error: <path> attribute d: Expected number, \"… 8.2 3 21.4 11.7l43.3 75zM256 33…\"."
+  ],
+  "devices": [
+    {
+      "device": "phone",
+      "at": 4301.0999999940395
+    },
+    {
+      "device": "wallpanel",
+      "at": 85682.70000001788
+    },
+    {
+      "device": "phone",
+      "at": 106555.30000001192
+    }
+  ],
+  "status": "passed"
+}

@@ -279,16 +279,19 @@
     });
     return snapshot;
   }
-  function applyDemoAmbience(night) {
+  function applyDemoAmbience(night, exceptRoom) {
     if (window.villaConfigEmbedded?.meta?.mode !== 'showcase') return {};
     Object.keys(rooms).forEach(function (id) {
+      if (Number(id) === Number(exceptRoom)) return;
       var r = rooms[id];
       r.scene = night ? '52' : '51'; // CINÉMA: low, varied circuits; OFF by day
       r.circuits = SCENE_PRESETS[r.scene].slice();
       r.curtainClosed = !!night;
     });
     publishScenes(rooms[activeRoom]); publishCircuits(rooms[activeRoom]); updateGlobalLights();
-    return demoRooms();
+    var snapshot = demoRooms();
+    if (exceptRoom != null) delete snapshot[exceptRoom];
+    return snapshot;
   }
 
   function applyStoresScene(sceneId) {

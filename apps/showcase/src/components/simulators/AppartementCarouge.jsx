@@ -155,7 +155,7 @@ export const AppartementCarouge = ({ deviceType, clientName }) => {
     <div className={`ac-transport ${big ? "big" : ""}`}>
       <div className="ac-tbtns">
         <button onClick={() => setSource(SOURCES[(SOURCES.findIndex((s) => s.id === source) + 3) % 4].id)}><Icon name="SkipBack" size={big ? 22 : 18} /></button>
-        <button className="ac-play" onClick={() => setPlaying((p) => !p)}><Icon name={playing ? "Pause" : "Play"} size={big ? 26 : 20} /></button>
+        <button className="ac-play" data-demo-action={playing ? "av-off" : undefined} onClick={() => setPlaying((p) => !p)}><Icon name={playing ? "Pause" : "Play"} size={big ? 26 : 20} /></button>
         <button onClick={() => setSource(SOURCES[(SOURCES.findIndex((s) => s.id === source) + 1) % 4].id)}><Icon name="SkipForward" size={big ? 22 : 18} /></button>
       </div>
       <div className="ac-vol"><Icon name="Volume2" size={16} /><input type="range" min="0" max="100" value={volume} onChange={(e) => setVolume(Number(e.target.value))} style={{ "--val": `${volume}%` }} /><b>{volume}</b></div>
@@ -169,7 +169,7 @@ export const AppartementCarouge = ({ deviceType, clientName }) => {
         <div role="button" tabIndex={0} className="ac-tile media wide" onClick={() => setTab("media")}>
           <div className="ac-tile-head"><span><Icon name="Music" size={20} /> {t("media")}</span><em>{room ? name(room) : ""} · {src.label}</em></div>
           <div className="ac-tile-body"><b>{src.track}</b><span>{playing ? t("playing") : t("paused")} · {src.sub}</span></div>
-          <div className="ac-tile-foot" onClick={(e) => e.stopPropagation()}><Transport /></div>
+          <div className="ac-tile-foot" onClick={(e) => e.stopPropagation()}>{Transport({ big:false })}</div>
         </div>
         <div role="button" tabIndex={0} className="ac-tile lights" onClick={() => setTab("lights")}>
           <div className="ac-tile-head"><span><Icon name="Lightbulb" size={20} /> {t("lights")}</span></div>
@@ -200,7 +200,7 @@ export const AppartementCarouge = ({ deviceType, clientName }) => {
           <div className="ac-tile-body"><b>{t(activeRoutine)}</b><span>{t("running")} · {routines.find((r) => r.id === activeRoutine)?.time || "—"}</span></div>
         </div>
       </div>
-      <RoomsBar />
+      {RoomsBar()}
     </div>
   );
 
@@ -211,7 +211,7 @@ export const AppartementCarouge = ({ deviceType, clientName }) => {
         <div className="ac-panel media">
           <div className="ac-tile-head"><span><Icon name="Music" size={20} /> {src.label}</span><em>{playing ? t("playing") : t("paused")}</em></div>
           <div className="ac-now"><b>{src.track}</b><span>{src.sub}</span></div>
-          <Transport big />
+          {Transport({ big:true })}
         </div>
         <div className="ac-stack">
           <div className="ac-panel dark"><span className="ac-label">{t("sources")}</span>
@@ -322,9 +322,9 @@ export const AppartementCarouge = ({ deviceType, clientName }) => {
 
   return (
     <div className={`gemini-ui-root carouge-ui ${deviceType}`}>
-      {!isPhone && <nav className="ac-nav">{NAV.map((n) => <button key={n.id} className={`${n.id} ${tab === n.id ? "active" : ""}`} onClick={() => setTab(n.id)}><Icon name={n.icon} size={21} /><span>{n.label}</span></button>)}</nav>}
+      {!isPhone && <nav className="ac-nav">{NAV.map((n) => <button key={n.id} data-demo-action={n.id === "home" ? "rooms" : undefined} className={`${n.id} ${tab === n.id ? "active" : ""}`} onClick={() => setTab(n.id)}><Icon name={n.icon} size={21} /><span>{n.label}</span></button>)}</nav>}
       <main className="ac-main">{PAGES[tab]()}</main>
-      {isPhone && <nav className="ac-tabbar">{NAV.filter((n) => n.id !== "routines").map((n) => <button key={n.id} className={`${n.id} ${tab === n.id ? "active" : ""}`} onClick={() => setTab(n.id)}><Icon name={n.icon} size={20} /><span>{n.label}</span></button>)}</nav>}
+      {isPhone && <nav className="ac-tabbar">{NAV.filter((n) => n.id !== "routines").map((n) => <button key={n.id} data-demo-action={n.id === "home" ? "rooms" : undefined} className={`${n.id} ${tab === n.id ? "active" : ""}`} onClick={() => setTab(n.id)}><Icon name={n.icon} size={20} /><span>{n.label}</span></button>)}</nav>}
     </div>
   );
 };

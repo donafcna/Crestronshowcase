@@ -817,9 +817,11 @@ export function createPlan3D(opts) {
         var dayF = dayCur < .0001 ? 0 : dayCur;
         var indoors = activeRoom && !activeRoom.ext, natural = dayF * (indoors ? INTERIOR_DAY : 1);
         var bounce = lampAvg * .5, sky = DAY.hemi * natural;
-        hemi.intensity = sky + bounce;
+        // Presentation fill keeps the cutaway legible even OFF in a windowless basement.
+        // It is not a fixture: all commanded lights and their feedback remain truly OFF.
+        hemi.intensity = Math.max(.32, sky + bounce);
         hemi.color.copy(skyBounce).lerp(warmBounce, bounce / Math.max(.0001, sky + bounce));
-        sun.intensity = DAY.sun * natural; fill.intensity = DAY.fill * natural;
+        sun.intensity = DAY.sun * natural; fill.intensity = Math.max(.18, DAY.fill * natural);
         if (activeRoom && activeRoom.win && !activeRoom.ext) {
             var wn = activeRoom.win, gw = wn.group;
             winLight.position.copy(gw.localToWorld(new THREE.Vector3(wn.x, wn.y + 1.4, -3.2)));
@@ -913,7 +915,7 @@ export function createPlan3D(opts) {
     /* ---------- API publique ---------- */
     var API = {
         setRoom: setRoom,
-        version: '2026-09-17-tour-1',
+        version: '2026-09-17-journey-1',
         holdOverview: function (held) { overviewHeld = !!held; },
         applyDemoAmbience: function (snapshot) {
             Object.entries(snapshot).forEach(function ([id, state]) {
@@ -927,7 +929,7 @@ export function createPlan3D(opts) {
         overview: overview,
         click: clickPlan,
         focusSelected: function () { if (!selectedRoom || activeRoom === selectedRoom) return; focusRoom(selectedRoom); },
-        navigation: function () { return { phase: phase, walls: envelope.opacity, explosion: explosion, camera: camState.pos.toArray(), target: camState.tgt.toArray(), moving: !!tween, lamps: roomLights.map(function (l) { return l.intensity; }), day: dayCur }; },
+        navigation: function () { return { phase: phase, walls: envelope.opacity, explosion: explosion, camera: camState.pos.toArray(), target: camState.tgt.toArray(), moving: !!tween, lamps: roomLights.map(function (l) { return l.intensity; }), day: dayCur, presentationFill: { hemi:hemi.intensity, fill:fill.intensity } }; },
         roomPoint: function (id) { var R = ROOMS[id]; if (!R) return null; var v = R.group.localToWorld(new THREE.Vector3(R.cfg.w * .6, .1, R.cfg.d * .8)).project(camera); return { x: (v.x + 1) * canvas.clientWidth / 2, y: (1 - v.y) * canvas.clientHeight / 2 }; },
         selectedRoom: function () { return selectedRoom && selectedRoom.id; },
         metrics: function () { var sorted = frames.slice().sort(function (a,b) { return a-b; }); return { frames: frames.length, renderedFrames:renderedFrames, medianMs: sorted[Math.floor(sorted.length / 2)] || 0, p95Ms: sorted[Math.floor(sorted.length * .95)] || 0, pixelRatio: renderer.getPixelRatio(), drawCalls: renderer.info.render.calls, triangles: renderer.info.render.triangles, zone: win, tv3D:tvStage?.metrics() }; },
@@ -1018,7 +1020,7 @@ export function createPlan3D(opts) {
             Object.values(ROOMS).forEach(function (R) { shadeScene(R, id === 404 ? 1 : id === 406 ? 2 : 4); });
             return true;
         }
-        if (SHADE_JOINS[id]) { shadeCmd(selectedRoom, SHADE_JOINS[id][0], SHADE_JOINS[id][1]); return true; }
+        if (SHADE_JOINS[id]) { shadeCmd(selectedRoom, SHADE_JOINS[id][0], SHADE_JOINS[id][1]); if (SHADE_JOINS[id][0] === 'store') shadeCmd(selectedRoom, 'banne', SHADE_JOINS[id][1]); return true; }
         if (id >= 201 && id <= 204) { shadeScene(selectedRoom, id - 200); return true; }
         if (id >= 81 && id <= 98) { var m = Math.floor((id - 81) / 3) + 1, c = ['up', 'stop', 'down'][(id - 81) % 3]; if (selectedRoom) shadeCmd(selectedRoom, motorFamily(selectedRoom, m), c); return true; }
         return false;

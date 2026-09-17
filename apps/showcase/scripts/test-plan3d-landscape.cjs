@@ -8,7 +8,7 @@ fs.mkdirSync(out,{recursive:true});
  page.on('pageerror',e=>report.errors.push(e.message));page.on('console',m=>{if(m.type()==='error')report.errors.push(m.text());});
  const keepAlive=setInterval(()=>page.locator('.device-stage').click({position:{x:5,y:5},timeout:700}).catch(()=>{}),5000);
  try{
-  await page.goto(base+'/interfaces/residentiel/villa-gemini-frequencetv/phone');await require('./helpers/villa-manual.cjs').pauseVillaTour(page);await page.waitForFunction(()=>window.__plan3d?.version==='2026-09-17-tour-1'&&__plan3d.metrics().renderedFrames>0);
+  await page.goto(base+'/interfaces/residentiel/villa-gemini-frequencetv/phone');await require('./helpers/villa-manual.cjs').pauseVillaTour(page);await page.waitForFunction(()=>window.__plan3d?.version==='2026-09-17-journey-1'&&__plan3d.metrics().renderedFrames>0);
   report.firstObservedFrameMs=await page.evaluate(()=>performance.now());await page.waitForFunction(()=>__plan3d.navigation().phase==='room');
   const gui=page.frames().find(f=>f.url().includes('/showcases/'));
   for(const mode of ['normal','scene']){

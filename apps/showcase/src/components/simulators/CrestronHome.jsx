@@ -171,7 +171,7 @@ const DISPLAYS = [
 
 const SOURCES = [
   { id: "tv", label: "TV / IPTV", icon: "Tv" },
-  { id: "stream", label: "Box streaming", icon: "Cast" },
+  { id: "stream", label: "Apple TV", icon: "Cast" },
   { id: "bluray", label: "Lecteur Blu-ray", icon: "Disc" },
   { id: "pc", label: "PC / Présentation", icon: "Monitor" },
   { id: "cam", label: "Vidéosurveillance", icon: "Camera" },
@@ -262,6 +262,7 @@ export const CrestronHome = ({ deviceType = "tablet", clientName }) => {
   // ---- État simulé -------------------------------------------------------
   const [theme, setTheme] = useState("light");
   const [tab, setTab] = useState("home");
+  const [videoVolumes, setVideoVolumes] = useState({ d1:35, d2:35, d3:35, d4:35 });
   const [openRoom, setOpenRoom] = useState(null);
   const [sheet, setSheet] = useState(null); // { type, roomId }
   const [filter, setFilter] = useState("all");
@@ -467,7 +468,10 @@ export const CrestronHome = ({ deviceType = "tablet", clientName }) => {
   const patchClimate = (roomId, patch) =>
     setClimate((p) => ({ ...p, [roomId]: { ...p[roomId], ...patch } }));
 
-  const openSheet = (type, roomId = null) => setSheet({ type, roomId });
+  const openSheet = (type, roomId = null) => {
+    if (type === "video" && roomId) setVideoTarget(({ living:"d1", cinema:"d3", master:"d4" })[roomId] || "d1");
+    setSheet({ type, roomId });
+  };
   const closeSheet = () => setSheet(null);
 
   const sheetRoom = sheet?.roomId ? ROOMS.find((r) => r.id === sheet.roomId) : null;
@@ -640,6 +644,7 @@ export const CrestronHome = ({ deviceType = "tablet", clientName }) => {
                     <div
                       key={r.id}
                       className="ch-room-card"
+                      data-demo-room={r.id} data-demo-av={r.video}
                       style={{ backgroundImage: `url(${r.img})` }}
                       onClick={() => {
                         setOpenRoom(r.id);
@@ -719,7 +724,7 @@ export const CrestronHome = ({ deviceType = "tablet", clientName }) => {
                       {on > 0 ? `${on} ${on > 1 ? t("lights_on_count_p") : t("lights_on_count")}` : t("off")}
                     </span>
                   </div>
-                  <button className="ch-iconbtn ghost" onClick={() => openSheet("lights", room.id)} aria-label={t("lights")}>
+                  <button className="ch-iconbtn ghost" data-demo-action="lights" onClick={() => openSheet("lights", room.id)} aria-label={t("lights")}>
                     {icon("Sliders", 17)}
                   </button>
                 </div>
@@ -776,7 +781,7 @@ export const CrestronHome = ({ deviceType = "tablet", clientName }) => {
               <div className="ch-thermo-card span2">
                 <button
                   className="ch-thermo-top"
-                  onClick={() => openSheet("climate", room.id)}
+                  data-demo-action="hvac" onClick={() => openSheet("climate", room.id)}
                   style={{ width: "100%", textAlign: "left" }}
                 >
                   <span className="ch-dial-mini">
@@ -856,7 +861,7 @@ export const CrestronHome = ({ deviceType = "tablet", clientName }) => {
             )}
 
             {room.video && (
-              <button className="ch-svc" onClick={() => openSheet("video", room.id)}>
+              <button className="ch-svc" data-demo-action="av" onClick={() => openSheet("video", room.id)}>
                 <div className="ch-svc-head">
                   <div>
                     <h4>{t("video")}</h4>
@@ -881,7 +886,7 @@ export const CrestronHome = ({ deviceType = "tablet", clientName }) => {
         <h3>{title}</h3>
         {sub && <p>{sub}</p>}
       </div>
-      <button className="ch-iconbtn" onClick={closeSheet} aria-label={t("close")}>
+      <button className="ch-iconbtn" data-demo-action="close" onClick={closeSheet} aria-label={t("close")}>
         {icon("X", 18)}
       </button>
     </div>
@@ -1149,6 +1154,7 @@ export const CrestronHome = ({ deviceType = "tablet", clientName }) => {
               <button
                 key={s.id}
                 className={`ch-row ${target.source === s.id ? "on" : ""}`}
+                data-demo-source={s.id === "stream" ? "apple" : s.id === "tv" ? "iptv" : s.id}
                 onClick={() => setDisplays((p) => ({ ...p, [videoTarget]: { on: true, source: s.id } }))}
               >
                 {icon(s.icon, 20, target.source === s.id ? "ch-ic-violet" : "ch-ic-muted")}
@@ -1158,6 +1164,22 @@ export const CrestronHome = ({ deviceType = "tablet", clientName }) => {
                 {target.source === s.id && icon("Check", 18, "ch-ic-violet")}
               </button>
             ))}
+          </div>
+
+          <div className="ch-section" style={{ padding: "12px 0" }}>
+            <div style={{ display:"flex", alignItems:"center", gap:12 }}>
+              {icon("Volume2", 18)}
+              <span>{t("volume")}</span>
+              <input data-demo-action="volume" type="range" min="0" max="100"
+                aria-label={t("volume")} value={videoVolumes[videoTarget] ?? 35}
+                onChange={e => setVideoVolumes(v => ({ ...v, [videoTarget]:Number(e.target.value) }))}
+                style={{ flex:1, minWidth:0, minHeight:44, accentColor:"var(--ch-violet)" }} />
+              <b>{videoVolumes[videoTarget] ?? 35}</b>
+              <button className="ch-iconbtn" data-demo-action="av-off" aria-label={t("off")}
+                onClick={() => setDisplays(p => ({ ...p, [videoTarget]:{ on:false, source:null } }))}>
+                {icon("Power", 18)}
+              </button>
+            </div>
           </div>
 
           {target.on && target.source === "tv" && (
@@ -1422,6 +1444,7 @@ export const CrestronHome = ({ deviceType = "tablet", clientName }) => {
         </button>
         <button
           className={`ch-tab ${tab === "rooms" ? "on" : ""}`}
+          data-demo-action="rooms"
           onClick={() => {
             setTab("rooms");
             setOpenRoom(null);

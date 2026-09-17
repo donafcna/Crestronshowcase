@@ -195,7 +195,7 @@ export const VillaLeman = ({ deviceType, clientName }) => {
   const renderRooms = () => (
     <div className="vl-page vl-rooms">
       <div className="vl-room-list" data-demo-nav>
-        {rooms.map((r) => <button key={r.id} className={selected === r.id ? "active" : ""} onClick={() => setSelected(r.id)}>{name(r)}{r.light > 0 && <i />}</button>)}
+        {rooms.map((r) => <button key={r.id} data-demo-room={r.id} className={selected === r.id ? "active" : ""} onClick={() => setSelected(r.id)}>{name(r)}{r.light > 0 && <i />}</button>)}
       </div>
       {room && (
         <div className="vl-room-detail" style={{ "--tint": room.tint }}>
@@ -288,7 +288,7 @@ export const VillaLeman = ({ deviceType, clientName }) => {
           <em>{src.artist}</em>
           <div className="vl-transport">
             <button onClick={() => setSource(SOURCES[(SOURCES.findIndex((s) => s.id === source) + SOURCES.length - 1) % SOURCES.length].id)}><Icon name="SkipBack" size={20} /></button>
-            <button className="vl-play" onClick={() => setPlaying((p) => !p)}><Icon name={playing ? "Pause" : "Play"} size={24} /></button>
+            <button className="vl-play" data-demo-action={playing ? "av-off" : undefined} onClick={() => setPlaying((p) => !p)}><Icon name={playing ? "Pause" : "Play"} size={24} /></button>
             <button onClick={() => setSource(SOURCES[(SOURCES.findIndex((s) => s.id === source) + 1) % SOURCES.length].id)}><Icon name="SkipForward" size={20} /></button>
           </div>
           <div className="vl-volume">
