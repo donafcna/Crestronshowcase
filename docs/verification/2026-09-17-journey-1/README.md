@@ -1,6 +1,6 @@
 # Recette des parcours guidés — 17 septembre 2026
 
-Lot journey-1, site Showcase uniquement. Validation locale réalisée sur ce laptop, version Vercel à vérifier après publication.
+Lot journey-1, site Showcase uniquement. Validation locale réalisée sur ce laptop, publication Vercel vérifiée ci-dessous.
 
 - `results.json` : 34 contrôles Villa Crans (jour/nuit, moteurs, sources, volume réellement transmis, cycle Smartphone/TSW et priorité manuelle).
 - `react/results.json` : 122 contrôles sur cinq parcours (trois pièces chacun). Deux supports FTV Home, Villa Nyon desktop, Villa Léman tablette, Appartement Carouge tablette.
@@ -14,3 +14,6 @@ Le cycle complet remplace l'ancien changement de pièce toutes les cinq secondes
 Aucune nouvelle ressource 3D ou vidéo, aucune sortie sonore. FTV Home : thèmes clair/sombre existants ; verre dépoli non disponible. Les commandes CH5 sources, configurations physiques et programmes SIMPL ne sont pas modifiés. Les modifications locales matérielles préexistantes sont exclues de ce commit.
 
 Le lot F1 est seulement noté dans la [TODO Showcase](../../../apps/showcase/docs/TODO-SHOWCASE.md).
+
+
+Publication vérifiée : **74cd4a41**, main → Vercel. Quatre ressources publiques identiques aux octets Git ; **34 contrôles Villa Crans et 122 contrôles React réussis sur le site public**, soit 156. Cycle jour/nuit, deux passages Smartphone et TSW, sources et volume réels, arrêt A/V, priorité manuelle et minimum de visibilité confirmés. Aucun nouveau défaut navigateur ; messages préexistants du TSW séparés. Preuves `production/`, `production-react/` et `production-assets.json` dans `docs/verification/2026-09-17-journey-1/`. Aucun matériel déployé. La TODO F1 est enregistrée sans réalisation.

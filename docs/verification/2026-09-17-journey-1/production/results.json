@@ -1,0 +1,1156 @@
+{
+  "base": "https://crestrongui.vercel.app",
+  "events": [
+    {
+      "at": 8806.5,
+      "device": "phone",
+      "id": "room",
+      "room": 4,
+      "seconds": 3.8255
+    },
+    {
+      "at": 11519.40000000596,
+      "device": "phone",
+      "id": "nav-lights",
+      "room": 4,
+      "scene": "51",
+      "volume": 24000,
+      "source": 2,
+      "shades": {
+        "volet": {
+          "pos": 0,
+          "target": 0
+        },
+        "store": {
+          "pos": 0,
+          "target": 0
+        },
+        "rideau": {
+          "pos": 0,
+          "target": 0
+        }
+      },
+      "seconds": 6.538400000005961
+    },
+    {
+      "at": 13750.300000011921,
+      "device": "phone",
+      "id": "pressDigital(63)",
+      "room": 4,
+      "scene": "51",
+      "volume": 24000,
+      "source": 2,
+      "shades": {
+        "volet": {
+          "pos": 0,
+          "target": 1
+        },
+        "store": {
+          "pos": 0,
+          "target": 0
+        },
+        "rideau": {
+          "pos": 0,
+          "target": 0
+        }
+      },
+      "seconds": 8.76940000000596
+    },
+    {
+      "at": 14882,
+      "device": "phone",
+      "id": "pressDigital(66)",
+      "room": 4,
+      "scene": "51",
+      "volume": 24000,
+      "source": 2,
+      "shades": {
+        "volet": {
+          "pos": 0.28342499999701976,
+          "target": 1
+        },
+        "store": {
+          "pos": 0,
+          "target": 0
+        },
+        "rideau": {
+          "pos": 0.004625,
+          "target": 1
+        }
+      },
+      "seconds": 9.90109999999404
+    },
+    {
+      "at": 16013.800000011921,
+      "device": "phone",
+      "id": "›",
+      "room": 4,
+      "scene": "51",
+      "volume": 24000,
+      "source": 2,
+      "shades": {
+        "volet": {
+          "pos": 0.5596499999985097,
+          "target": 1
+        },
+        "store": {
+          "pos": 0,
+          "target": 0
+        },
+        "rideau": {
+          "pos": 0.28085000000149,
+          "target": 1
+        }
+      },
+      "seconds": 11.033
+    },
+    {
+      "at": 17112.69999998808,
+      "device": "phone",
+      "id": "pressDigital(69)",
+      "room": 4,
+      "scene": "51",
+      "volume": 24000,
+      "source": 2,
+      "shades": {
+        "volet": {
+          "pos": 0.8386749999970193,
+          "target": 1
+        },
+        "store": {
+          "pos": 0,
+          "target": 1
+        },
+        "rideau": {
+          "pos": 0.5598749999999996,
+          "target": 1
+        }
+      },
+      "seconds": 12.132
+    },
+    {
+      "at": 21931.5,
+      "device": "phone",
+      "id": "scene-btn-52",
+      "room": 4,
+      "scene": "52",
+      "volume": 24000,
+      "source": 2,
+      "shades": {
+        "volet": {
+          "pos": 1,
+          "target": 1
+        },
+        "store": {
+          "pos": 1,
+          "target": 1
+        },
+        "rideau": {
+          "pos": 1,
+          "target": 1
+        }
+      },
+      "seconds": 16.95069999998808
+    },
+    {
+      "at": 26280.5,
+      "device": "phone",
+      "id": "‹",
+      "room": 4,
+      "scene": "52",
+      "volume": 24000,
+      "source": 2,
+      "shades": {
+        "volet": {
+          "pos": 1,
+          "target": 1
+        },
+        "store": {
+          "pos": 1,
+          "target": 1
+        },
+        "rideau": {
+          "pos": 1,
+          "target": 1
+        }
+      },
+      "seconds": 21.29969999998808
+    },
+    {
+      "at": 27317.40000000596,
+      "device": "phone",
+      "id": "pressDigital(61)",
+      "room": 4,
+      "scene": "52",
+      "volume": 24000,
+      "source": 2,
+      "shades": {
+        "volet": {
+          "pos": 1,
+          "target": 0
+        },
+        "store": {
+          "pos": 1,
+          "target": 1
+        },
+        "rideau": {
+          "pos": 1,
+          "target": 1
+        }
+      },
+      "seconds": 22.3365
+    },
+    {
+      "at": 28438.5,
+      "device": "phone",
+      "id": "pressDigital(64)",
+      "room": 4,
+      "scene": "52",
+      "volume": 24000,
+      "source": 2,
+      "shades": {
+        "volet": {
+          "pos": 0.71985000000149,
+          "target": 0
+        },
+        "store": {
+          "pos": 1,
+          "target": 1
+        },
+        "rideau": {
+          "pos": 1,
+          "target": 0
+        }
+      },
+      "seconds": 23.45769999998808
+    },
+    {
+      "at": 29582.19999998808,
+      "device": "phone",
+      "id": "›",
+      "room": 4,
+      "scene": "52",
+      "volume": 24000,
+      "source": 2,
+      "shades": {
+        "volet": {
+          "pos": 0.45017499999701954,
+          "target": 0
+        },
+        "store": {
+          "pos": 1,
+          "target": 1
+        },
+        "rideau": {
+          "pos": 0.7303249999955295,
+          "target": 0
+        }
+      },
+      "seconds": 24.60140000000596
+    },
+    {
+      "at": 30681.19999998808,
+      "device": "phone",
+      "id": "pressDigital(67)",
+      "room": 4,
+      "scene": "52",
+      "volume": 24000,
+      "source": 2,
+      "shades": {
+        "volet": {
+          "pos": 0.15854999999701969,
+          "target": 0
+        },
+        "store": {
+          "pos": 0.9964249999970197,
+          "target": 0
+        },
+        "rideau": {
+          "pos": 0.43869999999552967,
+          "target": 0
+        }
+      },
+      "seconds": 25.70019999998808
+    },
+    {
+      "at": 35592.30000001192,
+      "device": "phone",
+      "id": "nav-hvac",
+      "room": 4,
+      "scene": "52",
+      "volume": 24000,
+      "source": 2,
+      "shades": {
+        "volet": {
+          "pos": 0,
+          "target": 0
+        },
+        "store": {
+          "pos": 0,
+          "target": 0
+        },
+        "rideau": {
+          "pos": 0,
+          "target": 0
+        }
+      },
+      "seconds": 30.61130000001192
+    },
+    {
+      "at": 38234.19999998808,
+      "device": "phone",
+      "id": "nav-audio",
+      "room": 4,
+      "scene": "52",
+      "volume": 24000,
+      "source": 2,
+      "shades": {
+        "volet": {
+          "pos": 0,
+          "target": 0
+        },
+        "store": {
+          "pos": 0,
+          "target": 0
+        },
+        "rideau": {
+          "pos": 0,
+          "target": 0
+        }
+      },
+      "seconds": 33.25319999998808
+    },
+    {
+      "at": 39986,
+      "device": "phone",
+      "id": "source-btn-1",
+      "room": 4,
+      "scene": "52",
+      "volume": 24000,
+      "source": 1,
+      "shades": {
+        "volet": {
+          "pos": 0,
+          "target": 0
+        },
+        "store": {
+          "pos": 0,
+          "target": 0
+        },
+        "rideau": {
+          "pos": 0,
+          "target": 0
+        }
+      },
+      "seconds": 35.005
+    },
+    {
+      "at": 42735.19999998808,
+      "device": "phone",
+      "id": "source-btn-4",
+      "room": 4,
+      "scene": "52",
+      "volume": 24000,
+      "source": 4,
+      "shades": {
+        "volet": {
+          "pos": 0,
+          "target": 0
+        },
+        "store": {
+          "pos": 0,
+          "target": 0
+        },
+        "rideau": {
+          "pos": 0,
+          "target": 0
+        }
+      },
+      "seconds": 37.75419999998808
+    },
+    {
+      "at": 48661.90000000596,
+      "device": "phone",
+      "id": "power-off-btn-mobile",
+      "room": 4,
+      "scene": "52",
+      "volume": 42991,
+      "source": 0,
+      "shades": {
+        "volet": {
+          "pos": 0,
+          "target": 0
+        },
+        "store": {
+          "pos": 0,
+          "target": 0
+        },
+        "rideau": {
+          "pos": 0,
+          "target": 0
+        }
+      },
+      "seconds": 43.68109999999404
+    },
+    {
+      "at": 50501.80000001192,
+      "device": "phone",
+      "id": "room",
+      "room": 3,
+      "seconds": 45.520800000011924
+    },
+    {
+      "at": 52936.90000000596,
+      "device": "phone",
+      "id": "nav-lights",
+      "room": 3,
+      "scene": "52",
+      "volume": 28000,
+      "source": 3,
+      "shades": {
+        "volet": {
+          "pos": 0,
+          "target": 0
+        },
+        "store": {
+          "pos": 0,
+          "target": 0
+        },
+        "rideau": {
+          "pos": 1,
+          "target": 1
+        },
+        "banne": {
+          "pos": 0,
+          "target": 0
+        }
+      },
+      "seconds": 47.95590000000596
+    },
+    {
+      "at": 54715.30000001192,
+      "device": "phone",
+      "id": "pressDigital(63)",
+      "room": 3,
+      "scene": "52",
+      "volume": 28000,
+      "source": 3,
+      "shades": {
+        "volet": {
+          "pos": 0,
+          "target": 1
+        },
+        "store": {
+          "pos": 0,
+          "target": 0
+        },
+        "rideau": {
+          "pos": 1,
+          "target": 1
+        },
+        "banne": {
+          "pos": 0,
+          "target": 0
+        }
+      },
+      "seconds": 49.73480000001192
+    },
+    {
+      "at": 55842.69999998808,
+      "device": "phone",
+      "id": "pressDigital(66)",
+      "room": 3,
+      "scene": "52",
+      "volume": 28000,
+      "source": 3,
+      "shades": {
+        "volet": {
+          "pos": 0.2991999999955297,
+          "target": 1
+        },
+        "store": {
+          "pos": 0,
+          "target": 0
+        },
+        "rideau": {
+          "pos": 1,
+          "target": 1
+        },
+        "banne": {
+          "pos": 0,
+          "target": 0
+        }
+      },
+      "seconds": 50.86180000001192
+    },
+    {
+      "at": 56974.09999999404,
+      "device": "phone",
+      "id": "›",
+      "room": 3,
+      "scene": "52",
+      "volume": 28000,
+      "source": 3,
+      "shades": {
+        "volet": {
+          "pos": 0.5778500000014898,
+          "target": 1
+        },
+        "store": {
+          "pos": 0,
+          "target": 0
+        },
+        "rideau": {
+          "pos": 1,
+          "target": 1
+        },
+        "banne": {
+          "pos": 0,
+          "target": 0
+        }
+      },
+      "seconds": 51.99309999999404
+    },
+    {
+      "at": 58070.5,
+      "device": "phone",
+      "id": "pressDigital(69)",
+      "room": 3,
+      "scene": "52",
+      "volume": 28000,
+      "source": 3,
+      "shades": {
+        "volet": {
+          "pos": 0.8584249999970194,
+          "target": 1
+        },
+        "store": {
+          "pos": 0.004449999995529651,
+          "target": 1
+        },
+        "rideau": {
+          "pos": 1,
+          "target": 1
+        },
+        "banne": {
+          "pos": 0.004449999995529651,
+          "target": 1
+        }
+      },
+      "seconds": 53.08959999999404
+    },
+    {
+      "at": 62892.40000000596,
+      "device": "phone",
+      "id": "scene-btn-54",
+      "room": 3,
+      "scene": "54",
+      "volume": 28000,
+      "source": 3,
+      "shades": {
+        "volet": {
+          "pos": 1,
+          "target": 1
+        },
+        "store": {
+          "pos": 1,
+          "target": 1
+        },
+        "rideau": {
+          "pos": 1,
+          "target": 1
+        },
+        "banne": {
+          "pos": 1,
+          "target": 1
+        }
+      },
+      "seconds": 57.91140000000596
+    },
+    {
+      "at": 67231.09999999404,
+      "device": "phone",
+      "id": "scene-btn-52",
+      "room": 3,
+      "scene": "52",
+      "volume": 28000,
+      "source": 3,
+      "shades": {
+        "volet": {
+          "pos": 1,
+          "target": 1
+        },
+        "store": {
+          "pos": 1,
+          "target": 1
+        },
+        "rideau": {
+          "pos": 1,
+          "target": 1
+        },
+        "banne": {
+          "pos": 1,
+          "target": 1
+        }
+      },
+      "seconds": 62.25009999999404
+    },
+    {
+      "at": 71594.19999998808,
+      "device": "phone",
+      "id": "nav-hvac",
+      "room": 3,
+      "scene": "52",
+      "volume": 28000,
+      "source": 3,
+      "shades": {
+        "volet": {
+          "pos": 1,
+          "target": 1
+        },
+        "store": {
+          "pos": 1,
+          "target": 1
+        },
+        "rideau": {
+          "pos": 1,
+          "target": 1
+        },
+        "banne": {
+          "pos": 1,
+          "target": 1
+        }
+      },
+      "seconds": 66.61330000001192
+    },
+    {
+      "at": 74253.19999998808,
+      "device": "phone",
+      "id": "nav-audio",
+      "room": 3,
+      "scene": "52",
+      "volume": 28000,
+      "source": 3,
+      "shades": {
+        "volet": {
+          "pos": 1,
+          "target": 1
+        },
+        "store": {
+          "pos": 1,
+          "target": 1
+        },
+        "rideau": {
+          "pos": 1,
+          "target": 1
+        },
+        "banne": {
+          "pos": 1,
+          "target": 1
+        }
+      },
+      "seconds": 69.27219999998808
+    },
+    {
+      "at": 76005.80000001192,
+      "device": "phone",
+      "id": "source-btn-1",
+      "room": 3,
+      "scene": "52",
+      "volume": 28000,
+      "source": 1,
+      "shades": {
+        "volet": {
+          "pos": 1,
+          "target": 1
+        },
+        "store": {
+          "pos": 1,
+          "target": 1
+        },
+        "rideau": {
+          "pos": 1,
+          "target": 1
+        },
+        "banne": {
+          "pos": 1,
+          "target": 1
+        }
+      },
+      "seconds": 71.02490000000596
+    },
+    {
+      "at": 78756.30000001192,
+      "device": "phone",
+      "id": "source-btn-4",
+      "room": 3,
+      "scene": "52",
+      "volume": 28000,
+      "source": 4,
+      "shades": {
+        "volet": {
+          "pos": 1,
+          "target": 1
+        },
+        "store": {
+          "pos": 1,
+          "target": 1
+        },
+        "rideau": {
+          "pos": 1,
+          "target": 1
+        },
+        "banne": {
+          "pos": 1,
+          "target": 1
+        }
+      },
+      "seconds": 73.77559999999404
+    },
+    {
+      "at": 84720.90000000596,
+      "device": "phone",
+      "id": "power-off-btn-mobile",
+      "room": 3,
+      "scene": "52",
+      "volume": 42991,
+      "source": 0,
+      "shades": {
+        "volet": {
+          "pos": 1,
+          "target": 1
+        },
+        "store": {
+          "pos": 1,
+          "target": 1
+        },
+        "rideau": {
+          "pos": 1,
+          "target": 1
+        },
+        "banne": {
+          "pos": 1,
+          "target": 1
+        }
+      },
+      "seconds": 79.74
+    },
+    {
+      "at": 87689.80000001192,
+      "device": "wallpanel",
+      "id": "room-btn-1",
+      "room": 1,
+      "scene": "51",
+      "volume": 32768,
+      "source": "151"
+    },
+    {
+      "at": 87690.19999998808,
+      "device": "wallpanel",
+      "id": "room-btn-1",
+      "room": 1,
+      "scene": "51",
+      "volume": 32768,
+      "source": "151"
+    },
+    {
+      "at": 90434.59999999404,
+      "device": "wallpanel",
+      "id": "tab-lights-btn",
+      "room": 1,
+      "scene": "51",
+      "volume": 32768,
+      "source": "151"
+    },
+    {
+      "at": 92179.90000000596,
+      "device": "wallpanel",
+      "id": "showWellnessPanel('hvac')",
+      "room": 1,
+      "scene": "51",
+      "volume": 32768,
+      "source": "151"
+    },
+    {
+      "at": 96449.80000001192,
+      "device": "wallpanel",
+      "id": "151",
+      "room": 1,
+      "scene": "51",
+      "volume": 32768,
+      "source": "151"
+    },
+    {
+      "at": 96449.90000000596,
+      "device": "wallpanel",
+      "id": "151",
+      "room": 1,
+      "scene": "51",
+      "volume": 32768,
+      "source": "151"
+    },
+    {
+      "at": 99199,
+      "device": "wallpanel",
+      "id": "154",
+      "room": 1,
+      "scene": "51",
+      "volume": 32768,
+      "source": "154"
+    },
+    {
+      "at": 99199.30000001192,
+      "device": "wallpanel",
+      "id": "154",
+      "room": 1,
+      "scene": "51",
+      "volume": 32768,
+      "source": "154"
+    },
+    {
+      "at": 105180.80000001192,
+      "device": "wallpanel",
+      "id": "200",
+      "room": 1,
+      "scene": "51",
+      "volume": 42991,
+      "source": "0"
+    },
+    {
+      "at": 105180.90000000596,
+      "device": "wallpanel",
+      "id": "200",
+      "room": 1,
+      "scene": "51",
+      "volume": 42991,
+      "source": "0"
+    },
+    {
+      "at": 111608.80000001192,
+      "device": "phone",
+      "id": "room",
+      "room": 5,
+      "seconds": 106.62780000001192
+    },
+    {
+      "at": 114037.80000001192,
+      "device": "phone",
+      "id": "nav-lights",
+      "room": 5,
+      "scene": "51",
+      "volume": 18000,
+      "source": 0,
+      "shades": {
+        "volet": {
+          "pos": 0,
+          "target": 0
+        },
+        "store": {
+          "pos": 0,
+          "target": 0
+        },
+        "rideau": {
+          "pos": 0,
+          "target": 0
+        }
+      },
+      "seconds": 109.057
+    },
+    {
+      "at": 115787.69999998808,
+      "device": "phone",
+      "id": "pressDigital(63)",
+      "room": 5,
+      "scene": "51",
+      "volume": 18000,
+      "source": 0,
+      "shades": {
+        "volet": {
+          "pos": 0,
+          "target": 1
+        },
+        "store": {
+          "pos": 0,
+          "target": 0
+        },
+        "rideau": {
+          "pos": 0,
+          "target": 0
+        }
+      },
+      "seconds": 110.80680000001192
+    },
+    {
+      "at": 116937.69999998808,
+      "device": "phone",
+      "id": "pressDigital(66)",
+      "room": 5,
+      "scene": "51",
+      "volume": 18000,
+      "source": 0,
+      "shades": {
+        "volet": {
+          "pos": 0.28760000000148994,
+          "target": 1
+        },
+        "store": {
+          "pos": 0,
+          "target": 0
+        },
+        "rideau": {
+          "pos": 0,
+          "target": 1
+        }
+      },
+      "seconds": 111.95680000001192
+    },
+    {
+      "at": 118062.69999998808,
+      "device": "phone",
+      "id": "›",
+      "room": 5,
+      "scene": "51",
+      "volume": 18000,
+      "source": 0,
+      "shades": {
+        "volet": {
+          "pos": 0.5714750000014898,
+          "target": 1
+        },
+        "store": {
+          "pos": 0,
+          "target": 0
+        },
+        "rideau": {
+          "pos": 0.2838749999999999,
+          "target": 1
+        }
+      },
+      "seconds": 113.08169999998807
+    },
+    {
+      "at": 119151.69999998808,
+      "device": "phone",
+      "id": "pressDigital(69)",
+      "room": 5,
+      "scene": "51",
+      "volume": 18000,
+      "source": 0,
+      "shades": {
+        "volet": {
+          "pos": 0.8434250000044698,
+          "target": 1
+        },
+        "store": {
+          "pos": 0.004350000001490116,
+          "target": 1
+        },
+        "rideau": {
+          "pos": 0.5558250000029799,
+          "target": 1
+        }
+      },
+      "seconds": 114.17080000001192
+    },
+    {
+      "at": 123982.5,
+      "device": "phone",
+      "id": "scene-btn-52",
+      "room": 5,
+      "scene": "52",
+      "volume": 18000,
+      "source": 0,
+      "shades": {
+        "volet": {
+          "pos": 1,
+          "target": 1
+        },
+        "store": {
+          "pos": 1,
+          "target": 1
+        },
+        "rideau": {
+          "pos": 1,
+          "target": 1
+        }
+      },
+      "seconds": 119.00159999999404
+    },
+    {
+      "at": 128332.69999998808,
+      "device": "phone",
+      "id": "‹",
+      "room": 5,
+      "scene": "52",
+      "volume": 18000,
+      "source": 0,
+      "shades": {
+        "volet": {
+          "pos": 1,
+          "target": 1
+        },
+        "store": {
+          "pos": 1,
+          "target": 1
+        },
+        "rideau": {
+          "pos": 1,
+          "target": 1
+        }
+      },
+      "seconds": 123.35180000001192
+    },
+    {
+      "at": 129382.40000000596,
+      "device": "phone",
+      "id": "pressDigital(61)",
+      "room": 5,
+      "scene": "52",
+      "volume": 18000,
+      "source": 0,
+      "shades": {
+        "volet": {
+          "pos": 0.996125,
+          "target": 0
+        },
+        "store": {
+          "pos": 1,
+          "target": 1
+        },
+        "rideau": {
+          "pos": 1,
+          "target": 1
+        }
+      },
+      "seconds": 124.4015
+    },
+    {
+      "at": 130499.90000000596,
+      "device": "phone",
+      "id": "pressDigital(64)",
+      "room": 5,
+      "scene": "52",
+      "volume": 18000,
+      "source": 0,
+      "shades": {
+        "volet": {
+          "pos": 0.7148750000000003,
+          "target": 0
+        },
+        "store": {
+          "pos": 1,
+          "target": 1
+        },
+        "rideau": {
+          "pos": 0.9956500000059605,
+          "target": 0
+        }
+      },
+      "seconds": 125.51890000000596
+    },
+    {
+      "at": 131633.40000000596,
+      "device": "phone",
+      "id": "›",
+      "room": 5,
+      "scene": "52",
+      "volume": 18000,
+      "source": 0,
+      "shades": {
+        "volet": {
+          "pos": 0.4318750000000005,
+          "target": 0
+        },
+        "store": {
+          "pos": 1,
+          "target": 1
+        },
+        "rideau": {
+          "pos": 0.7126500000059606,
+          "target": 0
+        }
+      },
+      "seconds": 126.6525
+    },
+    {
+      "at": 132716.80000001192,
+      "device": "phone",
+      "id": "pressDigital(67)",
+      "room": 5,
+      "scene": "52",
+      "volume": 18000,
+      "source": 0,
+      "shades": {
+        "volet": {
+          "pos": 0.1614749999940402,
+          "target": 0
+        },
+        "store": {
+          "pos": 1,
+          "target": 0
+        },
+        "rideau": {
+          "pos": 0.44225000000000053,
+          "target": 0
+        }
+      },
+      "seconds": 127.73590000000596
+    }
+  ],
+  "checks": [
+    "Residential starts Smartphone",
+    "Phone to TSW to phone loop completes",
+    "Visits use different rooms",
+    "Room 4 ordered nav-lights",
+    "Room 4 ordered scene-btn-52",
+    "Room 4 ordered nav-hvac",
+    "Room 4 ordered nav-audio",
+    "Room 4 ordered source-btn-1",
+    "Room 4 ordered source-btn-4",
+    "Room 4 ordered power-off-btn-mobile",
+    "Room 4 sources really change",
+    "Room 4 volume really changes",
+    "Room 4 motors closed before Cinema",
+    "Day reopens every motor after Cinema",
+    "Room 3 ordered nav-lights",
+    "Room 3 ordered scene-btn-52",
+    "Room 3 ordered nav-hvac",
+    "Room 3 ordered nav-audio",
+    "Room 3 ordered source-btn-1",
+    "Room 3 ordered source-btn-4",
+    "Room 3 ordered power-off-btn-mobile",
+    "Room 3 sources really change",
+    "Room 3 volume really changes",
+    "Room 3 motors closed before Cinema",
+    "Night Total then Cinema with complete fade",
+    "Day and night variants both demonstrated",
+    "TSW real action tab-lights-btn",
+    "TSW real action 151",
+    "TSW real action 154",
+    "TSW real action 200",
+    "Manual input immediately stops synthetic actions",
+    "OFF leaves commanded fixtures off",
+    "Cutaway keeps a minimum visible fill",
+    "No new browser errors"
+  ],
+  "errors": [],
+  "legacyErrors": [
+    "CH5: La bibliothèque WebXPanel n'est pas chargée.",
+    "Error: <path> attribute d: Expected number, \"… 8.2 3 21.4 11.7l43.3 75zM256 33…\"."
+  ],
+  "devices": [
+    {
+      "device": "phone",
+      "at": 5267.5999999940395
+    },
+    {
+      "device": "wallpanel",
+      "at": 85881.40000000596
+    },
+    {
+      "device": "phone",
+      "at": 107041.09999999404
+    }
+  ],
+  "status": "passed"
+}

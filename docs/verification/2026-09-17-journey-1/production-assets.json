@@ -1,0 +1,25 @@
+{
+  "commit": "74cd4a41652ed731073b9550187ff7543715818f",
+  "checks": [
+    {
+      "file": "plan3d/plan3d.js",
+      "status": 200,
+      "sha256": "c7f22fd269db63c81b974392a03856f444df48671b5c422eaac8d3d66cd3306a"
+    },
+    {
+      "file": "showcases/villa-gemini-frequencetv/js/local-feedback.js",
+      "status": 200,
+      "sha256": "d58c2ecfccab184ed0ba81cdb13575467a0b4bce1a04ae48806957efa585fdc0"
+    },
+    {
+      "file": "sheets/crestron-home/09-feuille-video.png",
+      "status": 200,
+      "sha256": "c2a63b62597c0564fd48b493d74f555cc0337b94542063bbd2c4d0882c8fc92b"
+    },
+    {
+      "file": "sheets/villa-gemini/11-iphone-audio.png",
+      "status": 200,
+      "sha256": "71e451a2f3227f8ec6612893aafea88a8a16929dcd5600d806a45e638a0b3a73"
+    }
+  ]
+}
