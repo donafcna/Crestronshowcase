@@ -30,12 +30,12 @@ ROOT = Path(__file__).resolve().parent.parent
 DEST = ROOT / "public" / "showcases" / "villa-gemini-frequencetv"
 
 ROOM_NAMES = ["Salon", "Cuisine", "Salle à manger", "Suite parentale", "Chambre 1", "Chambre 2",
-              "Bureau", "Home Cinéma", "Chambre 3", "Suite invités", "Terrasse & Jardin",
-              "Piscine & Spa", "Sauna & Hammam", "Pool House", "Garage & Ateliers", "Simulateur de golf", "Local technique"]
+              "Bureau", "Home Cinéma", "Chambre 3", "Suite invités", "Pool House",
+              "Piscine & Spa", "Sauna & Hammam", "Bar & Lounge", "Garage & Ateliers", "Simulateur de golf", "Local technique"]
 ROOM_ICONS = {"Salon": "🛋️", "Cuisine": "🍳", "Salle à manger": "🍽️", "Suite parentale": "🛏️",
               "Chambre 1": "🛏️", "Chambre 2": "🛏️", "Bureau": "💼", "Home Cinéma": "🎬",
-              "Chambre 3": "🛏️", "Suite invités": "🚪", "Terrasse & Jardin": "🌿",
-              "Piscine & Spa": "🏊", "Sauna & Hammam": "🧖", "Pool House": "🏖️",
+              "Chambre 3": "🛏️", "Suite invités": "🚪", "Pool House": "🏖️",
+              "Piscine & Spa": "🏊", "Sauna & Hammam": "🧖", "Bar & Lounge": "🍸",
               "Garage & Ateliers": "🚗"}
 SCENES = ["OFF", "CINÉMA", "REPAS", "TOTAL"]
 SOURCES = [{"id": 1, "nom": "APPLE TV"}, {"id": 2, "nom": "SKY Q"}, {"id": 3, "nom": "SWISSCOM TV"},

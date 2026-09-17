@@ -15,7 +15,7 @@
 import * as THREE from './vendor/three.module.min.js';
 import { createInteriors } from './interiors.js?v=2026-09-17-rooms-1';
 import { buildLandscape } from './landscape.js?v=2026-09-17-valley-1';
-import { createEstate } from './estate.js?v=2026-09-16-estate-2';
+import { createEstate } from './estate.js?v=2026-09-17-lighting-1';
 import { enrichRoom } from './room-features.js?v=2026-09-17-audio-1';
 import { furnishSpecialRoom } from './special-rooms.js?v=2026-09-17-rooms-1';
 import { createTVStage } from './tv-stage.js?v=2026-09-17-stadiums-1';
@@ -66,7 +66,10 @@ export function createPlan3D(opts) {
     sunE.shadow.mapSize.set(2048,2048); sunE.shadow.bias=-.0004; sunE.shadow.normalBias=.045;
     Object.assign(sunE.shadow.camera,{left:-30,right:30,top:30,bottom:-30,near:1,far:90});
     var fillE = new THREE.DirectionalLight(0x9fb8ff, 0.5); fillE.position.set(-20, 12, -14); scene.add(fillE);
-    var DAY = { hemi: 0.9, sun: 1.45, fill: 0.45 };                     // lumière du jour pleine, dans les pièces
+    var DAY = { hemi: 0.9, sun: 1.45, fill: 0.45 };
+    // A cutaway is still an enclosed interior: daylight enters through its glazing,
+    // not through the removed ceiling. Leave exposure headroom for electric lights.
+    var INTERIOR_DAY = .32, skyBounce = new THREE.Color(0xe6eeff), warmBounce = new THREE.Color(0xffe1bd);
     var hemi = new THREE.HemisphereLight(0xe6eeff, 0x3a3326, DAY.hemi); sceneR.add(hemi);
     var sun = new THREE.DirectionalLight(0xfff1dc, DAY.sun); sun.position.set(18, 30, 10); sceneR.add(sun);
     sceneR.add(sun.target); sun.castShadow = true; sun.shadow.mapSize.set(1024, 1024);
@@ -809,13 +812,16 @@ export function createPlan3D(opts) {
         var dayT = (activeRoom ? daylight(activeRoom) : 1) * environmentDay, lampAvg = activeRoom ? activeRoom.renderLevels.reduce(function(a,b){return a+b;},0) / 5 : 0;
         dayCur += (dayT - dayCur) * Math.min(1, dt * 4);
         var dayF = dayCur < .0001 ? 0 : dayCur;
-        hemi.intensity = DAY.hemi * dayF + lampAvg * 0.5 * (1 - dayCur); hemi.color.setHex(dayCur > 0.5 ? 0xe6eeff : 0xffe1bd);
-        sun.intensity = DAY.sun * dayF; fill.intensity = DAY.fill * dayF;
+        var indoors = activeRoom && !activeRoom.ext, natural = dayF * (indoors ? INTERIOR_DAY : 1);
+        var bounce = lampAvg * .5, sky = DAY.hemi * natural;
+        hemi.intensity = sky + bounce;
+        hemi.color.copy(skyBounce).lerp(warmBounce, bounce / Math.max(.0001, sky + bounce));
+        sun.intensity = DAY.sun * natural; fill.intensity = DAY.fill * natural;
         if (activeRoom && activeRoom.win && !activeRoom.ext) {
             var wn = activeRoom.win, gw = wn.group;
             winLight.position.copy(gw.localToWorld(new THREE.Vector3(wn.x, wn.y + 1.4, -3.2)));
             winLight.target.position.copy(gw.localToWorld(new THREE.Vector3(wn.x, 0, wn.depth * 0.55)));
-            winLight.intensity = 90 * dayCur; activeRoom.shaft.material.opacity = 0.16 * dayCur;
+            winLight.intensity = 32 * dayF; activeRoom.shaft.material.opacity = 0.1 * dayF;
         } else winLight.intensity = 0;
         // lampes réelles sur la pièce active
         roomLights.forEach(function (l) { l.intensity = 0; });
@@ -895,7 +901,7 @@ export function createPlan3D(opts) {
     /* ---------- API publique ---------- */
     var API = {
         setRoom: setRoom,
-        version: '2026-09-17-audio-1',
+        version: '2026-09-17-lighting-1',
         overview: overview,
         click: clickPlan,
         focusSelected: function () { if (!selectedRoom || activeRoom === selectedRoom) return; focusRoom(selectedRoom); },
@@ -903,7 +909,7 @@ export function createPlan3D(opts) {
         roomPoint: function (id) { var R = ROOMS[id]; if (!R) return null; var v = R.group.localToWorld(new THREE.Vector3(R.cfg.w * .6, .1, R.cfg.d * .8)).project(camera); return { x: (v.x + 1) * canvas.clientWidth / 2, y: (1 - v.y) * canvas.clientHeight / 2 }; },
         selectedRoom: function () { return selectedRoom && selectedRoom.id; },
         metrics: function () { var sorted = frames.slice().sort(function (a,b) { return a-b; }); return { frames: frames.length, renderedFrames:renderedFrames, medianMs: sorted[Math.floor(sorted.length / 2)] || 0, p95Ms: sorted[Math.floor(sorted.length * .95)] || 0, pixelRatio: renderer.getPixelRatio(), drawCalls: renderer.info.render.calls, triangles: renderer.info.render.triangles, zone: win, tv3D:tvStage?.metrics() }; },
-        environment: function(){return {day:environmentDay,seconds:idle,cycleSeconds:environmentCycle,landscape:landscape?.metrics};},
+        environment: function(){return {day:environmentDay,seconds:idle,cycleSeconds:environmentCycle,landscape:landscape?.metrics,facade:envelope.lighting()};},
         setDay: function(value){fixedDay=value===null?null:Math.max(0,Math.min(1,value));},
         setCircuit: function (roomId, idx, level) { var R = ROOMS[roomId]; if (!R) return; R.levels[idx] = Math.max(0, Math.min(1, level)); targetLights(R); },
         setVideoSource: function (roomId, n) { var R = ROOMS[roomId]; if (R) setTv(R, n); },

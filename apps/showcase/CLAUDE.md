@@ -114,3 +114,8 @@ Deux lacs alimentent les ruisseaux ; eau et relief partagent le profil de valley
 ## 17/09/2026 — audio-1
 
 Ondes ×2, diamètre lié au volume audible (a52 AV / a254 musique). Initialisation source=5 corrigée en musique active dans le feedback local ; Suite invités/terrasse/piscine concernées. Enceintes des suites dégagées, Wellness/garage/golf équipés : 32 enceintes, 15 pièces. Cuisine et local technique sans enceintes. 263 contrôles locaux, build/lint réussis ; détails et preuves dans README et docs/plan3d.md. Aucun changement des programmes matériels.
+
+
+## 17/09/2026 — lighting-1
+
+Scènes mieux distinctes en journée : lumière naturelle intérieure rééquilibrée, rebond des lampes conservé, fondu 3 s et occultations inchangés. 54 appliques de façade à double faisceau, allumage crépusculaire ; un seul maillage de projection. Showcase : pièce 11 Pool House, pièce 14 Bar & Lounge (choix utilisateur), génération depuis sync-villa-crans.py. Aucun changement au JSON physique ni aux programmes matériels. Recettes test-scene-contrast.cjs, test-room-labels.cjs et test-plan3d-lighting.cjs ; preuves et mesures dans README et docs/plan3d.md.

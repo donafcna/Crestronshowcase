@@ -10,7 +10,7 @@ fs.mkdirSync(out,{recursive:true});
  const keep=setInterval(()=>page.locator('.device-stage').click({position:{x:5,y:5},timeout:700}).catch(()=>{}),4000);
  try{
   await page.goto(base+'/interfaces/residentiel/villa-gemini-frequencetv/phone');await page.waitForFunction(()=>window.__plan3d?.navigation().phase==='room');
-  check('Expected renderer version',await page.evaluate(()=>__plan3d.version)===(baseline?'2026-09-17-valley-1':'2026-09-17-audio-1'));
+  check('Expected renderer version',await page.evaluate(()=>__plan3d.version)===(baseline?'2026-09-17-valley-1':'2026-09-17-lighting-1'));
   const gui=page.frames().find(f=>f.url().includes('/showcases/'));
   await page.locator('.btn-exit-fullscreen-device-corner').click();await gui.locator('[data-i18n="tab_source"]').click();
   const room=async id=>{await gui.locator('#room-select').selectOption(String(id));await page.waitForFunction(id=>__plan3d.activeRoom()===id,id);await page.evaluate(()=>__plan3d.jump());await page.waitForTimeout(120);};

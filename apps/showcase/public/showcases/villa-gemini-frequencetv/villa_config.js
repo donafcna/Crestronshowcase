@@ -1130,8 +1130,8 @@ window.villaConfigEmbedded = {
     },
     {
       "id": 11,
-      "nom": "Terrasse & Jardin",
-      "icone": "🌿",
+      "nom": "Pool House",
+      "icone": "🏖️",
       "intersystem": true,
       "pilotages": {
         "eclairages": {
@@ -1437,8 +1437,8 @@ window.villaConfigEmbedded = {
     },
     {
       "id": 14,
-      "nom": "Pool House",
-      "icone": "🏖️",
+      "nom": "Bar & Lounge",
+      "icone": "🍸",
       "intersystem": true,
       "pilotages": {
         "eclairages": {

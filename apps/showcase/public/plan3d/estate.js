@@ -3,7 +3,8 @@ import * as T from './vendor/three.module.min.js';
 // Assembled architecture and landscape; deterministic, local, batched geometry.
 export function createEstate(scene, rooms, kit, renderer) {
   const group=new T.Group(),garden=new T.Group();group.name='Alpine residence';garden.name='Estate landscape';scene.add(group,garden);
-  let opacity=1,disposed=false;
+  let opacity=1,disposed=false,nightLevel=0;
+  const wallLights=[];
   const A=kit.materials,rand=kit.random,facadeMaterials=new Set(),textures=new Set(),geometries=new Map();
   const material=(color,roughness=.65,extra={})=>new T.MeshStandardMaterial({color,roughness,...extra});
   const loader=new T.TextureLoader();
@@ -38,6 +39,11 @@ export function createEstate(scene, rooms, kit, renderer) {
   const ball=(p,m,x,y,z,r,ry=r,rz=r)=>mesh(p,m,sphere,x,y,z,r,ry,rz);
   const cyl=(p,m,x,y,z,r,h)=>mesh(p,m,cylinder,x,y,z,r,h,r);
   function line(p,m,a,b,r){const start=new T.Vector3(...a),end=new T.Vector3(...b),o=cyl(p,m,...start.clone().add(end).multiplyScalar(.5).toArray(),r,start.distanceTo(end));o.quaternion.setFromUnitVectors(new T.Vector3(0,1,0),end.sub(start).normalize());return o;}
+  function sconce(parent,x,y,z,rotation=0){
+    const q=new T.Group();q.position.set(x,y,z);q.rotation.y=rotation;parent.add(q);wallLights.push(q);
+    box(q,F.bronze,0,0,-.052,.22,.44,.06);box(q,F.metal,0,0,0,.19,.4,.16);
+    for(const side of [-1,1])box(q,F.glow,0,side*.205,.005,.14,.018,.1);
+  }
   function elevation(x,y,z,length,side=false){
     const g=new T.Group();g.position.set(x,y,z);if(side)g.rotation.y=Math.PI/2;group.add(g);
     box(g,F.stone,length/2,1.5,0,length,3,.28);
@@ -45,8 +51,10 @@ export function createEstate(scene, rooms, kit, renderer) {
     for(let i=0;i<bays;i++){
       const cx=(i+.5)*bay;box(g,F.metal,cx,1.52,.18,bay-.38,2.64,.12);box(g,F.glass,cx,1.52,.251,bay-.51,2.49,.014);
       for(const k of [-1,0,1])box(g,F.bronze,cx+k*(bay-.48)/2,1.52,.278,.045,2.54,.05);
-      box(g,F.stone,i*bay,1.5,.34,.24,3,.64);box(g,F.glow,cx,2.87,.31,bay-.66,.018,.025);
+      box(g,F.stone,i*bay,1.5,.34,.64,3,.64);box(g,F.glow,cx,2.87,.31,bay-.66,.018,.025);
+      sconce(g,i*bay,1.75,.76);
     }
+    box(g,F.stone,length,1.5,.34,.64,3,.64);sconce(g,length,1.75,.76);
   }
   function railing(x,y,z,length,side=false){
     const g=new T.Group();g.position.set(x,y,z);if(side)g.rotation.y=Math.PI/2;group.add(g);
@@ -57,6 +65,9 @@ export function createEstate(scene, rooms, kit, renderer) {
     const y=level*3.6;box(group,F.lime,x+w/2,y-.16,z+d/2,w+.9,.32,d+.9);
     box(group,F.stone,x+w/2,y+1.5,z-.15,w,3,.3);box(group,F.stone,x-.15,y+1.5,z+d/2,.3,3,d);
     elevation(x,y,z+d,w);elevation(x+w,y,z+d,d,true);
+    // Opaque north/west walls also have real fixtures, clear of the windows.
+    for(let dx=2;dx<w;dx+=5)sconce(group,x+dx,y+1.75,z-.4,Math.PI);
+    for(let dz=2;dz<d;dz+=4)sconce(group,x-.4,y+1.75,z+dz,-Math.PI/2);
     const wing=level===1&&z===6,roofZ=z+d/2+(wing?.5:0),roofDepth=d+(wing?0:1);
     box(group,F.roof,x+w/2,y+3.35,roofZ,w+1,.26,roofDepth);
     box(group,F.wood,x+w/2,y+3.17,z+d+.42,w+1,.12,.16);box(group,F.glow,x+w/2,y+3.12,z+d+.35,w+.5,.018,.02);
@@ -74,6 +85,8 @@ export function createEstate(scene, rooms, kit, renderer) {
   box(group,F.stone,12.2,5.2,6.22,.85,10.4,.55);
   box(group,F.stone,17,1.5,11.78,2.7,3,.34);
   box(group,F.bronze,12.2,10.43,6.22,.92,.07,.64);
+  sconce(group,17,1.75,12.05);
+  for(const y of [5.35,8.95])sconce(group,12.2,y,6.595);
   // Outdoor lounges animate the inhabited terraces without adding live lights.
   function lounge(x,y,z){
     box(group,F.wood,x,y+.23,z,2.7,.36,.85);box(group,F.white,x,y+.47,z,2.58,.13,.76);
@@ -105,9 +118,6 @@ awning(10,6.48,6.5,5.3,2.4);awning(15.5,6.48,6.5,4.8,2.4);
   for(const x of [20,25])for(const z of [-.2,5.7])box(group,F.wood,x,1.4,z,.17,2.8,.17);
   for(let i=0;i<25;i++)box(group,F.wood,22.5,2.85,-.35+i*.26,5.7,.15,.095);
   box(group,F.white,22.5,2.98,1.6,5.3,.045,3.9);volume(26,0,4,6,0);
-  for(const [x,y,z] of [[.2,1.9,11.77],[6.3,1.9,11.77],[12.1,1.9,11.77],[18.5,1.9,11.77],[.15,5.5,11.77],[6.4,5.5,11.77],[.15,9.1,6.37],[12.1,9.1,6.37]]){
-    box(group,F.metal,x,y,z,.17,.31,.16);box(group,F.glow,x,y-.16,z,.12,.018,.12);box(group,F.glow,x,y+.16,z,.12,.018,.12);
-  }
   // Arrival court, terraces and lawn occupy separate, deliberate garden zones.
   // Keep the vehicle ramp genuinely open through the ground slab.
   box(garden,lime,3.15,-.51,17.25,19.3,.24,43.5);
@@ -172,9 +182,8 @@ awning(10,6.48,6.5,5.3,2.4);awning(15.5,6.48,6.5,4.8,2.4);
   // Separate pedestrian approach and planting, clear of the car route.
   box(garden,grass,3,-.365,28,14,.035,15);box(garden,grass,24.5,-.365,28,10,.035,15);
   for(let z=21;z<39;z+=1.1)box(garden,lime,9.8,-.36,z,2,.03,1.05);
-  // Architectural downlights and camera brackets on ground-floor facades.
+  // Camera brackets on ground-floor facades, independent of the sconces.
   for(const x of [.45,6.1,12.2,18.1]){
-    box(group,F.metal,x,2.14,11.72,.17,.36,.16);box(group,F.glow,x,2.33,11.72,.14,.02,.14);box(group,F.glow,x,1.95,11.72,.14,.02,.14);
     box(group,F.metal,x,2.66,11.75,.06,.08,.38);const housing=box(group,F.white,x,2.59,11.98,.25,.12,.16);housing.rotation.y=.35;ball(group,F.metal,x+.06,2.59,12.07,.044);
   }
   // Tall four-corner camera portals: cantilever arms keep lenses clear of plants.
@@ -190,10 +199,27 @@ awning(10,6.48,6.5,5.3,2.4);awning(15.5,6.48,6.5,4.8,2.4);
     box(garden,black,x,.03,z,.09,.8,.09);box(garden,glow,x,.44,z,.13,.035,.13);
     const halo=new T.Mesh(new T.PlaneGeometry(3,3),poolGlow);halo.rotation.x=-Math.PI/2;halo.position.set(x,-.325,z);garden.add(halo);
   }
-  const facadeGlow=new T.MeshBasicMaterial({map:glowTexture,color:0xffd494,transparent:true,opacity:0,depthWrite:false,blending:T.AdditiveBlending});
-  for(const x of [.45,6.1,12.2,18.1]){
-    const halo=new T.Mesh(new T.PlaneGeometry(1.4,2.3),facadeGlow);halo.position.set(x,1.4,11.91);group.add(halo);
+  // Warm up/down wall wash on stone, consolidated into one draw call.
+  // No extra live lights/shadow maps and no external image downloads.
+  const washCanvas=document.createElement('canvas');washCanvas.width=64;washCanvas.height=128;
+  const wc=washCanvas.getContext('2d');
+  for(let y=0;y<128;y++){
+    const t=y/127,width=3+28*t,alpha=(1-t)*.86,fade=wc.createLinearGradient(32-width,0,32+width,0);
+    fade.addColorStop(0,'rgba(255,255,255,0)');fade.addColorStop(.22,`rgba(255,255,255,${alpha*.6})`);
+    fade.addColorStop(.5,`rgba(255,255,255,${alpha})`);fade.addColorStop(.78,`rgba(255,255,255,${alpha*.6})`);fade.addColorStop(1,'rgba(255,255,255,0)');wc.fillStyle=fade;wc.fillRect(0,y,64,1);
   }
+  const washTexture=new T.CanvasTexture(washCanvas);textures.add(washTexture);
+  const facadeGlow=new T.MeshBasicMaterial({map:washTexture,color:0xffdca2,transparent:true,opacity:0,depthWrite:false,blending:T.AdditiveBlending});
+  facadeGlow.color.multiplyScalar(2.2);
+  const washPositions=[],washUV=[];group.updateMatrixWorld(true);
+  for(const q of wallLights)for(const direction of [-1,1]){
+    const length=direction>0?.97:1.43,geometry=new T.PlaneGeometry(.62,length).toNonIndexed();
+    if(direction>0)geometry.rotateZ(Math.PI);
+    geometry.translate(0,direction*(.21+length/2),-.087);geometry.applyMatrix4(q.matrixWorld);
+    washPositions.push(...geometry.attributes.position.array);washUV.push(...geometry.attributes.uv.array);geometry.dispose();
+  }
+  const washGeometry=new T.BufferGeometry();washGeometry.setAttribute('position',new T.Float32BufferAttribute(washPositions,3));washGeometry.setAttribute('uv',new T.Float32BufferAttribute(washUV,2));
+  const wallWash=new T.Mesh(washGeometry,facadeGlow);wallWash.name='Facade up-down wall wash';group.add(wallWash);
   const poolLight=material(0x94dded,.35,{emissive:0x35baff,emissiveIntensity:0});
   for(const z of [7.78,12.02])box(garden,glow,24,.43,z,6.9,.022,.026);
   for(const x of [20.63,27.37])box(garden,glow,x,.43,9.9,.026,.022,4.25);
@@ -218,8 +244,9 @@ awning(10,6.48,6.5,5.3,2.4);awning(15.5,6.48,6.5,4.8,2.4);
   }
   const bounds=new T.Box3(new T.Vector3(-6.5,-3.8,-4.5),new T.Vector3(31.5,11.5,39.5));
   return {group,garden,bounds,get opacity(){return opacity;},
-    setOpacity(v){opacity=Math.max(0,Math.min(1,v));group.visible=opacity>.001;for(const m of facadeMaterials){const transparent=m.userData.baseTransparent||opacity<.999;if(m.transparent!==transparent){m.transparent=transparent;m.needsUpdate=true;}m.opacity=opacity*m.userData.baseOpacity;m.depthWrite=!transparent;}},
-    setNight(night){glow.emissiveIntensity=night*3;F.glow.emissiveIntensity=night*3;poolLight.emissiveIntensity=night*4;poolGlow.opacity=night;facadeGlow.opacity=night*.8;if(poolNight)poolNight.emissiveIntensity=.05+night*1.4;},
-    dispose(){disposed=true;environment.dispose();textures.forEach(t=>t.dispose());geometries.forEach(g=>g.dispose());sphere.dispose();cylinder.dispose();}
+    setOpacity(v){opacity=Math.max(0,Math.min(1,v));group.visible=opacity>.001;facadeGlow.opacity=nightLevel*opacity;for(const m of facadeMaterials){const transparent=m.userData.baseTransparent||opacity<.999;if(m.transparent!==transparent){m.transparent=transparent;m.needsUpdate=true;}m.opacity=opacity*m.userData.baseOpacity;m.depthWrite=!transparent;}},
+    setNight(night){nightLevel=night;glow.emissiveIntensity=night*3;F.glow.emissiveIntensity=night*3;poolLight.emissiveIntensity=night*4;poolGlow.opacity=night;facadeGlow.opacity=night*opacity;if(poolNight)poolNight.emissiveIntensity=.05+night*1.4;},
+    lighting(){return {sconces:wallLights.length,washDrawCalls:1,intensity:facadeGlow.opacity};},
+    dispose(){disposed=true;environment.dispose();textures.forEach(t=>t.dispose());geometries.forEach(g=>g.dispose());sphere.dispose();cylinder.dispose();washGeometry.dispose();facadeGlow.dispose();}
   };
 }
