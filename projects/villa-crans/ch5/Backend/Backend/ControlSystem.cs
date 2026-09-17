@@ -2129,7 +2129,8 @@ namespace VillaFrequenceTvAutomation
                 string path = string.Format("/user/preset_cfg_{0}.json", presetName);
                 if (!System.IO.File.Exists(path))
                 {
-                    CrestronConsole.PrintLine("PRESETS: Configuration file '{0}' not found. Falling back to default preset logic.", path);
+                    // 17.09.2026 : repli normal tant qu'aucun preset n'a été enregistré depuis la dalle (s420) -> trace, pas un message permanent.
+                    Trace("PRESETS: Configuration file '{0}' not found. Falling back to default preset logic.", path);
                     return false;
                 }
                 
@@ -2138,7 +2139,7 @@ namespace VillaFrequenceTvAutomation
                 var data = payload["data"] as Newtonsoft.Json.Linq.JObject;
                 if (data == null)
                 {
-                    CrestronConsole.PrintLine("PRESETS: Configuration data is null in '{0}'. Falling back to default preset logic.", path);
+                    Trace("PRESETS: Configuration data is null in '{0}'. Falling back to default preset logic.", path);
                     return false;
                 }
                 

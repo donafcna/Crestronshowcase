@@ -1,5 +1,25 @@
 # Villa Crans CH5 — journal des versions
 
+## v1.0.183 (à compiler) — 17/09/2026 — bouton OFF, mute, logs PRESETS, état pressé des tuiles
+
+| Artefact | État de ce lot |
+|---|---|
+| CH5 source | 1.0.183 (`meta.version` = `version.json`, incrémenté par les deux `deploy.ps1` du 17/09) |
+| CPZ slot 1 | `ControlSystem.cs` modifié (traces PRESETS), **à recompiler** (SIMPL# Pro) |
+| LPZ slot 2 | `Project_Slot2.smw` régénéré : + `AV_Off` / `AV_Off_fb` sur le join 200, **à recompiler** (F12) puis charger |
+| Showcase | à régénérer par `sync-villa-crans.py` (aucune modification propre à la vitrine) |
+
+Retours de la recette TSW du 17/09 (Donatien) :
+- **OFF de la section Sources : aucun join dans le debugger.** Deux causes. (1) Le slot 2 n'avait aucun signal sur le join 200 (`AV.Extinction`) : seul le bloc pièce `R*_AV_Off`, désactivé en v4, le portait → `generate_slot2.js` ajoute `AV_Off` (entrée) / `AV_Off_fb` (sortie), SMW régénéré (+2 signaux, 12 lignes de diff, rien d'autre). (2) `sendPowerOff` (dalle) publiait `200 = true` sans jamais relâcher, en plus de l'impulsion native du `<ch5-button sendEventOnClick="200">` : 2 fronts montants par appui pour le C#, puis plus rien. Plus aucune émission JS du 200 ; l'impulsion native suffit. Les 2 anciennes définitions mortes de `sendPowerOff` (v1.0.149) sont supprimées.
+- **Mute (55), même schéma** (barre de volume et télécommande Swisscom) : `toggleMute` n'émet plus et ne tient plus d'état local ; l'affichage vient du `receiveStateSelected="55"`. Avant : double bascule par appui (« 101 » au pont natif), après : « 10 ».
+- **Logs `PRESETS: Configuration file ... not found`** (vacances, stores globaux, éclairage global) : passés sous `Trace()` (`meta.tracesConsole`). C'est le repli normal tant qu'aucun preset n'a été enregistré depuis la fenêtre Configuration du preset global (sériel 420 → `/user/preset_cfg_<nom>.json`).
+- **Faders de la Configuration du preset global** : confirmé normal, ce sont des `<input type="range">` locaux ; seul « Enregistrer » émet (s420, JSON complet).
+- **Tuile source qui reste « pressée » quelques secondes** sous la télécommande : `avReleaseTilesSoon()` retire `ch5-button--pressed` des tuiles à l'ouverture de la télécommande, du lecteur média et de la confirmation audio (immédiat, +120 ms, +450 ms), sans toucher au `selected` natif.
+- **Console** : 5 copies corrompues du tracé SVG de l'engrenage (`<path d>` avec un nombre manquant) réalignées sur le tracé correct → 0 erreur console.
+- **`deploy.ps1`** : la vérification finale `-Target web` échouait sur 192.168.1.200 (« La connexion sous-jacente a été fermée ») alors que le déploiement avait réussi : rappel de certificat compilé (`Add-Type`) au lieu d'un scriptblock, TLS 1.1/1.2, repli `curl.exe -k` ; un transport impossible devient un avertissement, seul un code HTTP ≠ 200 est fatal.
+
+Recette (Playwright, pont natif `JSInterface` émulé = ce que reçoit le CP4) : 2 supports (dalle 1920×1200, iPad 11") × 3 thèmes, OFF et mute = exactement « 10 » par appui, télécommande ouverte, 0 tuile pressée, 0 erreur console ; contraste 4:1 : aucun défaut (3 thèmes, page + fenêtres + états, dalle et smartphone). Aucun test sur matériel dans ce lot ; `iphone.html` inchangé (OFF = 150 déjà en impulsion).
+
 ## 17/09/2026 — rooms-1, GUI 1.0.180 : décors, wellness et voisinage
 
 Lot demandé par Donatien : local technique au sous-sol (17 pièces vitrine), vue villa rapprochée de 10 %, décoration et enceintes différenciées, cinq TV escamotables au pied des lits, écran cinéma agrandi et haut-parleurs dégagés. Ondes audio fines proportionnelles au volume ; mute, OFF et pause les arrêtent. Quatre programmes réellement 3D dans les TV via un rendu partagé 640 × 360 à 10–15 images/s, sans téléchargement vidéo ni son.

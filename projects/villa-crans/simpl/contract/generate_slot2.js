@@ -109,6 +109,10 @@ aout(62,'Sauna_Setpoint_Cmd#');aout(63,'Hammam_Humidity_Cmd#');
 // Scènes 51-54 : déjà câblées dans la base (Lighting_Scene1..4 + fb)
 // Mute (55)
 din(55, 'Audio_Mute'); dout(55, 'Audio_Mute_fb');
+// Extinction A/V (200, AV.Extinction) : bouton OFF de la dalle. Manquait dans toutes les generations
+// (seul le bloc piece R*_AV_Off, desactive en v4, le portait) : l'appui n'apparaissait pas dans le
+// debugger (17.09.2026). L'iPhone emet 150 (Source_Select_0), deja cable.
+din(200, 'AV_Off'); dout(200, 'AV_Off_fb');
 // Stores groupés de la pièce active (61-69) — EN SORTIE : le slot 2 REÇOIT les appuis
 // de la dalle (miroir du slot 1) pour piloter les moteurs réels. (Correctif : ces
 // signaux étaient auparavant câblés à tort en entrée.)
