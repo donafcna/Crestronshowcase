@@ -1,0 +1,21 @@
+{
+  "commit": "a62b6a0387e580d7488da1a4415bc7a1cfe8d92e",
+  "assets": [
+    {
+      "file": "plan3d/plan3d.js",
+      "status": 200,
+      "bytes": 91880,
+      "actual": "1dbf56e9498bd30521ceba98ce01a70c66aab561899fa80792f98199e3713289",
+      "expected": "1dbf56e9498bd30521ceba98ce01a70c66aab561899fa80792f98199e3713289",
+      "matches": true
+    },
+    {
+      "file": "plan3d/interiors.js",
+      "status": 200,
+      "bytes": 24952,
+      "actual": "55a2022466e8157c4eb064560d32b06238ce64f1fc34f4e50a624bc7e4dba23f",
+      "expected": "55a2022466e8157c4eb064560d32b06238ce64f1fc34f4e50a624bc7e4dba23f",
+      "matches": true
+    }
+  ]
+}

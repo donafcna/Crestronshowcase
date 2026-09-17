@@ -1,0 +1,57 @@
+{
+  "importedOn": "2026-09-16",
+  "sourceArchive": "C:\\Users\\donat\\Desktop\\docs-md.zip",
+  "sourceArchiveSha256": "DEB38B199BDD2822439DF623311AF57ECE6CAFBDCDDC85A8CF50D29A4B67B819",
+  "sourceArchiveBytes": 24846,
+  "note": "Copies exactes des 8 documents Claude. État historique principalement au 11 septembre ; comparer aux sources actuelles avant utilisation.",
+  "files": [
+    {
+      "sourceEntry": "docs-md/claude_00-etat-actuel.md",
+      "file": "claude_00-etat-actuel.md",
+      "bytes": 4100,
+      "sha256": "4D3BA7BF3665691BBF07B3A7328DC38D3C1A58C410C1F9647023248C14FD77E7"
+    },
+    {
+      "sourceEntry": "docs-md/claude_10-architecture-et-pieges.md",
+      "file": "claude_10-architecture-et-pieges.md",
+      "bytes": 9969,
+      "sha256": "38A91CA909BA1EA446739B6934808E06123C1817D25F915C45743C91A53B12D0"
+    },
+    {
+      "sourceEntry": "docs-md/claude_20-interfaces.md",
+      "file": "claude_20-interfaces.md",
+      "bytes": 3610,
+      "sha256": "97F4757AB56D4AADB6666A70800642DAC8352560CBBBDF2A1A9373C008A92442"
+    },
+    {
+      "sourceEntry": "docs-md/claude_30-protocole-travail.md",
+      "file": "claude_30-protocole-travail.md",
+      "bytes": 3365,
+      "sha256": "D69B670B452A05CB72351588496207C289B38E361108C1914D090095D7514D6B"
+    },
+    {
+      "sourceEntry": "docs-md/claude_40-references-ui.md",
+      "file": "claude_40-references-ui.md",
+      "bytes": 2051,
+      "sha256": "9CA02CB40482557929BB9D8ABF2DC17D310D88115CB7489AB42853755D8F2142"
+    },
+    {
+      "sourceEntry": "docs-md/claude_50-usage-marketing.md",
+      "file": "claude_50-usage-marketing.md",
+      "bytes": 5548,
+      "sha256": "E735FB4F394D6C28DFC8C7B802B7C19B14AB98B11464E69148E8FB2CF3056CE9"
+    },
+    {
+      "sourceEntry": "docs-md/claude_memoire-crestron-showcase.md",
+      "file": "claude_memoire-crestron-showcase.md",
+      "bytes": 9923,
+      "sha256": "CD93A300D30306E152869FD180AD8A7C0BE38508016B092EE94FA4FC92869EDE"
+    },
+    {
+      "sourceEntry": "docs-md/claude_memoire-villacrans-ch5.md",
+      "file": "claude_memoire-villacrans-ch5.md",
+      "bytes": 7552,
+      "sha256": "A3C6E8938DADE82FA6984F09E3AFC283BCA373D7EBEBEDC429D9B04469963A64"
+    }
+  ]
+}

@@ -17,3 +17,6 @@ obj/
 # ---- Divers ----
 .vercel
 .DS_Store
+
+# Captures et sorties temporaires ; preuves sélectionnées dans docs/verification/
+/Claude outputs/

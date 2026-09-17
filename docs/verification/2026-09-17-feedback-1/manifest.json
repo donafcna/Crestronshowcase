@@ -1,0 +1,59 @@
+{
+  "functionalCommit": "a62b6a0387e580d7488da1a4415bc7a1cfe8d92e",
+  "files": [
+    {
+      "file": "production-scenes-tv.json",
+      "source": "Claude outputs/room-feedback/production/results.json",
+      "bytes": 36873,
+      "sha256": "bda9ed5be983a0c0b34cab728e39a31896d061e673ff081e80eec20aa37ffd40"
+    },
+    {
+      "file": "production-assets.json",
+      "source": "Claude outputs/room-feedback/production-assets.json",
+      "bytes": 643,
+      "sha256": "c582a48406f0ad184adaa66c4e83433577ddb7e4b16af36eb3a6601e776e6462"
+    },
+    {
+      "file": "production-audio.json",
+      "source": "Claude outputs/room-feedback/public-motion.json",
+      "bytes": 392,
+      "sha256": "cf636c8c8fa0a189cb4c8ddde2b9b87045ccf85e1c22125776f9234c314ecf44"
+    },
+    {
+      "file": "local-audio.json",
+      "source": "Claude outputs/room-feedback/audio/results.json",
+      "bytes": 78612,
+      "sha256": "9137a5a8440c713c00d16759bc0141f274dee259d4a2183f24522fee0eb2668c"
+    },
+    {
+      "file": "local-fades.json",
+      "source": "Claude outputs/room-feedback/fades/lighting-results.json",
+      "bytes": 21657,
+      "sha256": "7b37c3e4311b278c328979f5621dd02d45e41ab8483bd99dd9983ec7b8131cb0"
+    },
+    {
+      "file": "local-tv-wide.json",
+      "source": "Claude outputs/room-feedback/wide/results.json",
+      "bytes": 3399,
+      "sha256": "44148acee6792d9fd5564c3305d958e5ee5edb2b615867af311be54c12da5675"
+    },
+    {
+      "file": "local-tv-normal.json",
+      "source": "Claude outputs/room-feedback/normal-dense/results.json",
+      "bytes": 2624,
+      "sha256": "4628cabc5270e405f805f628a93dd3b535ababaa3540bc3631fedfbbfb7168d0"
+    },
+    {
+      "file": "planche-avant-apres.png",
+      "source": "Claude outputs/room-feedback/planche-avant-apres.png",
+      "bytes": 1394187,
+      "sha256": "fe28e8905d3b328390668f6ca6fc54c74b87e0867c362a951b52e4ab4069cc02"
+    },
+    {
+      "file": "ondes-audio.webm",
+      "source": "Claude outputs/room-feedback/ondes-audio.webm",
+      "bytes": 1512968,
+      "sha256": "b90dbd4257e26b33293227470611795c53fed7c76de44c66622da954d3c1f645"
+    }
+  ]
+}

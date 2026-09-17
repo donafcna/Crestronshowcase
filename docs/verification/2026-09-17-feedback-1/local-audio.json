@@ -1,0 +1,2696 @@
+{
+  "base": "http://127.0.0.1:4211",
+  "baseline": false,
+  "checks": [
+    "Expected renderer version",
+    "Initial music and waves in room 10",
+    "Initial music and waves in room 11",
+    "Initial music and waves in room 12",
+    "All 17 rooms audited",
+    "Salon video on every speaker",
+    "Salon diameter rises with AV volume",
+    "Salon enlarged waves remain subtle",
+    "Salon every wave expands and fades visibly",
+    "Salon AV zero stops waves",
+    "Salon mute stops all speakers",
+    "Salon unmute resumes",
+    "Salon video source 152",
+    "Salon video source 153",
+    "Salon video source 154",
+    "Salon music volume drives every speaker",
+    "Salon music zero stops waves",
+    "Salon music mute stops waves",
+    "Salon returns to video sound",
+    "Salon pause stops waves",
+    "Salon play resumes waves",
+    "Salon at least one wave is not hidden by furniture",
+    "Salon OFF stops all speakers",
+    "Cuisine intentionally has no speakers",
+    "Salle à manger video on every speaker",
+    "Salle à manger diameter rises with AV volume",
+    "Salle à manger enlarged waves remain subtle",
+    "Salle à manger every wave expands and fades visibly",
+    "Salle à manger AV zero stops waves",
+    "Salle à manger mute stops all speakers",
+    "Salle à manger unmute resumes",
+    "Salle à manger video source 152",
+    "Salle à manger video source 153",
+    "Salle à manger video source 154",
+    "Salle à manger music volume drives every speaker",
+    "Salle à manger music zero stops waves",
+    "Salle à manger music mute stops waves",
+    "Salle à manger returns to video sound",
+    "Salle à manger pause stops waves",
+    "Salle à manger play resumes waves",
+    "Salle à manger at least one wave is not hidden by furniture",
+    "Salle à manger OFF stops all speakers",
+    "Suite parentale video on every speaker",
+    "Suite parentale diameter rises with AV volume",
+    "Suite parentale enlarged waves remain subtle",
+    "Suite parentale every wave expands and fades visibly",
+    "Suite parentale AV zero stops waves",
+    "Suite parentale mute stops all speakers",
+    "Suite parentale unmute resumes",
+    "Suite parentale video source 152",
+    "Suite parentale video source 153",
+    "Suite parentale video source 154",
+    "Suite parentale music volume drives every speaker",
+    "Suite parentale music zero stops waves",
+    "Suite parentale music mute stops waves",
+    "Suite parentale returns to video sound",
+    "Suite parentale pause stops waves",
+    "Suite parentale play resumes waves",
+    "Suite parentale at least one wave is not hidden by furniture",
+    "Suite parentale both waves clear of furniture",
+    "Suite parentale OFF stops all speakers",
+    "Chambre 1 video on every speaker",
+    "Chambre 1 diameter rises with AV volume",
+    "Chambre 1 enlarged waves remain subtle",
+    "Chambre 1 every wave expands and fades visibly",
+    "Chambre 1 AV zero stops waves",
+    "Chambre 1 mute stops all speakers",
+    "Chambre 1 unmute resumes",
+    "Chambre 1 video source 152",
+    "Chambre 1 video source 153",
+    "Chambre 1 video source 154",
+    "Chambre 1 music volume drives every speaker",
+    "Chambre 1 music zero stops waves",
+    "Chambre 1 music mute stops waves",
+    "Chambre 1 returns to video sound",
+    "Chambre 1 pause stops waves",
+    "Chambre 1 play resumes waves",
+    "Chambre 1 at least one wave is not hidden by furniture",
+    "Chambre 1 OFF stops all speakers",
+    "Chambre 2 video on every speaker",
+    "Chambre 2 diameter rises with AV volume",
+    "Chambre 2 enlarged waves remain subtle",
+    "Chambre 2 every wave expands and fades visibly",
+    "Chambre 2 AV zero stops waves",
+    "Chambre 2 mute stops all speakers",
+    "Chambre 2 unmute resumes",
+    "Chambre 2 video source 152",
+    "Chambre 2 video source 153",
+    "Chambre 2 video source 154",
+    "Chambre 2 music volume drives every speaker",
+    "Chambre 2 music zero stops waves",
+    "Chambre 2 music mute stops waves",
+    "Chambre 2 returns to video sound",
+    "Chambre 2 pause stops waves",
+    "Chambre 2 play resumes waves",
+    "Chambre 2 at least one wave is not hidden by furniture",
+    "Chambre 2 OFF stops all speakers",
+    "Bureau video on every speaker",
+    "Bureau diameter rises with AV volume",
+    "Bureau enlarged waves remain subtle",
+    "Bureau every wave expands and fades visibly",
+    "Bureau AV zero stops waves",
+    "Bureau mute stops all speakers",
+    "Bureau unmute resumes",
+    "Bureau video source 152",
+    "Bureau video source 153",
+    "Bureau video source 154",
+    "Bureau music volume drives every speaker",
+    "Bureau music zero stops waves",
+    "Bureau music mute stops waves",
+    "Bureau returns to video sound",
+    "Bureau pause stops waves",
+    "Bureau play resumes waves",
+    "Bureau at least one wave is not hidden by furniture",
+    "Bureau OFF stops all speakers",
+    "Home Cinéma video on every speaker",
+    "Home Cinéma diameter rises with AV volume",
+    "Home Cinéma enlarged waves remain subtle",
+    "Home Cinéma every wave expands and fades visibly",
+    "Home Cinéma AV zero stops waves",
+    "Home Cinéma mute stops all speakers",
+    "Home Cinéma unmute resumes",
+    "Home Cinéma video source 152",
+    "Home Cinéma video source 153",
+    "Home Cinéma video source 154",
+    "Home Cinéma music volume drives every speaker",
+    "Home Cinéma music zero stops waves",
+    "Home Cinéma music mute stops waves",
+    "Home Cinéma returns to video sound",
+    "Home Cinéma pause stops waves",
+    "Home Cinéma play resumes waves",
+    "Home Cinéma at least one wave is not hidden by furniture",
+    "Home Cinéma OFF stops all speakers",
+    "Chambre 3 video on every speaker",
+    "Chambre 3 diameter rises with AV volume",
+    "Chambre 3 enlarged waves remain subtle",
+    "Chambre 3 every wave expands and fades visibly",
+    "Chambre 3 AV zero stops waves",
+    "Chambre 3 mute stops all speakers",
+    "Chambre 3 unmute resumes",
+    "Chambre 3 video source 152",
+    "Chambre 3 video source 153",
+    "Chambre 3 video source 154",
+    "Chambre 3 music volume drives every speaker",
+    "Chambre 3 music zero stops waves",
+    "Chambre 3 music mute stops waves",
+    "Chambre 3 returns to video sound",
+    "Chambre 3 pause stops waves",
+    "Chambre 3 play resumes waves",
+    "Chambre 3 at least one wave is not hidden by furniture",
+    "Chambre 3 OFF stops all speakers",
+    "Suite invités video on every speaker",
+    "Suite invités diameter rises with AV volume",
+    "Suite invités enlarged waves remain subtle",
+    "Suite invités every wave expands and fades visibly",
+    "Suite invités AV zero stops waves",
+    "Suite invités mute stops all speakers",
+    "Suite invités unmute resumes",
+    "Suite invités video source 152",
+    "Suite invités video source 153",
+    "Suite invités video source 154",
+    "Suite invités music volume drives every speaker",
+    "Suite invités music zero stops waves",
+    "Suite invités music mute stops waves",
+    "Suite invités returns to video sound",
+    "Suite invités pause stops waves",
+    "Suite invités play resumes waves",
+    "Suite invités at least one wave is not hidden by furniture",
+    "Suite invités both waves clear of furniture",
+    "Suite invités OFF stops all speakers",
+    "Pool House video on every speaker",
+    "Pool House diameter rises with AV volume",
+    "Pool House enlarged waves remain subtle",
+    "Pool House every wave expands and fades visibly",
+    "Pool House AV zero stops waves",
+    "Pool House mute stops all speakers",
+    "Pool House unmute resumes",
+    "Pool House video source 152",
+    "Pool House video source 153",
+    "Pool House video source 154",
+    "Pool House music volume drives every speaker",
+    "Pool House music zero stops waves",
+    "Pool House music mute stops waves",
+    "Pool House returns to video sound",
+    "Pool House at least one wave is not hidden by furniture",
+    "Pool House OFF stops all speakers",
+    "Piscine & Spa video on every speaker",
+    "Piscine & Spa diameter rises with AV volume",
+    "Piscine & Spa enlarged waves remain subtle",
+    "Piscine & Spa every wave expands and fades visibly",
+    "Piscine & Spa AV zero stops waves",
+    "Piscine & Spa mute stops all speakers",
+    "Piscine & Spa unmute resumes",
+    "Piscine & Spa video source 152",
+    "Piscine & Spa video source 153",
+    "Piscine & Spa video source 154",
+    "Piscine & Spa music volume drives every speaker",
+    "Piscine & Spa music zero stops waves",
+    "Piscine & Spa music mute stops waves",
+    "Piscine & Spa returns to video sound",
+    "Piscine & Spa at least one wave is not hidden by furniture",
+    "Piscine & Spa OFF stops all speakers",
+    "Sauna & Hammam video on every speaker",
+    "Sauna & Hammam diameter rises with AV volume",
+    "Sauna & Hammam enlarged waves remain subtle",
+    "Sauna & Hammam every wave expands and fades visibly",
+    "Sauna & Hammam AV zero stops waves",
+    "Sauna & Hammam mute stops all speakers",
+    "Sauna & Hammam unmute resumes",
+    "Sauna & Hammam video source 152",
+    "Sauna & Hammam video source 153",
+    "Sauna & Hammam video source 154",
+    "Sauna & Hammam music volume drives every speaker",
+    "Sauna & Hammam music zero stops waves",
+    "Sauna & Hammam music mute stops waves",
+    "Sauna & Hammam returns to video sound",
+    "Sauna & Hammam at least one wave is not hidden by furniture",
+    "Sauna & Hammam OFF stops all speakers",
+    "Bar & Lounge video on every speaker",
+    "Bar & Lounge diameter rises with AV volume",
+    "Bar & Lounge enlarged waves remain subtle",
+    "Bar & Lounge every wave expands and fades visibly",
+    "Bar & Lounge AV zero stops waves",
+    "Bar & Lounge mute stops all speakers",
+    "Bar & Lounge unmute resumes",
+    "Bar & Lounge video source 152",
+    "Bar & Lounge video source 153",
+    "Bar & Lounge video source 154",
+    "Bar & Lounge music volume drives every speaker",
+    "Bar & Lounge music zero stops waves",
+    "Bar & Lounge music mute stops waves",
+    "Bar & Lounge returns to video sound",
+    "Bar & Lounge pause stops waves",
+    "Bar & Lounge play resumes waves",
+    "Bar & Lounge at least one wave is not hidden by furniture",
+    "Bar & Lounge OFF stops all speakers",
+    "Garage & Ateliers video on every speaker",
+    "Garage & Ateliers diameter rises with AV volume",
+    "Garage & Ateliers enlarged waves remain subtle",
+    "Garage & Ateliers every wave expands and fades visibly",
+    "Garage & Ateliers AV zero stops waves",
+    "Garage & Ateliers mute stops all speakers",
+    "Garage & Ateliers unmute resumes",
+    "Garage & Ateliers video source 152",
+    "Garage & Ateliers video source 153",
+    "Garage & Ateliers video source 154",
+    "Garage & Ateliers music volume drives every speaker",
+    "Garage & Ateliers music zero stops waves",
+    "Garage & Ateliers music mute stops waves",
+    "Garage & Ateliers returns to video sound",
+    "Garage & Ateliers at least one wave is not hidden by furniture",
+    "Garage & Ateliers OFF stops all speakers",
+    "Simulateur de golf video on every speaker",
+    "Simulateur de golf diameter rises with AV volume",
+    "Simulateur de golf enlarged waves remain subtle",
+    "Simulateur de golf every wave expands and fades visibly",
+    "Simulateur de golf AV zero stops waves",
+    "Simulateur de golf mute stops all speakers",
+    "Simulateur de golf unmute resumes",
+    "Simulateur de golf video source 152",
+    "Simulateur de golf video source 153",
+    "Simulateur de golf video source 154",
+    "Simulateur de golf music volume drives every speaker",
+    "Simulateur de golf music zero stops waves",
+    "Simulateur de golf music mute stops waves",
+    "Simulateur de golf returns to video sound",
+    "Simulateur de golf at least one wave is not hidden by furniture",
+    "Simulateur de golf OFF stops all speakers",
+    "Local technique intentionally has no speakers",
+    "Guest suite retains its own volumes and mute",
+    "No JavaScript or shader errors in 3D",
+    "Normal dark waves active",
+    "Normal light waves active",
+    "Normal glass waves active",
+    "Normal mode has no JavaScript or shader errors",
+    "tablet retains video background",
+    "tablet initial music feedback in all affected rooms",
+    "wallpanel retains video background",
+    "wallpanel initial music feedback in all affected rooms",
+    "Other supports have no new errors"
+  ],
+  "rooms": [
+    {
+      "id": 1,
+      "type": "salon",
+      "name": "Salon",
+      "count": 5,
+      "tv": true,
+      "low": {
+        "audio": {
+          "source": 1,
+          "music": false,
+          "mute": false,
+          "volume": 0.061036087586785685,
+          "mediaVolume": 0.5000076295109483,
+          "paused": false
+        },
+        "speakers": [
+          {
+            "kind": "front",
+            "visible": true,
+            "diameter": 0.39035070933677285,
+            "scale": 2.098659727617058,
+            "opacity": 0.16975151919464018,
+            "minScale": 1.2663591439594695,
+            "minOpacity": 0.002599906032235384
+          },
+          {
+            "kind": "rear",
+            "visible": true,
+            "diameter": 0.38988638698341144,
+            "scale": 2.096163370878556,
+            "opacity": 0.16976291929520856,
+            "minScale": 1.263336846883745,
+            "minOpacity": 0.0006845122485194806
+          },
+          {
+            "kind": "front",
+            "visible": true,
+            "diameter": 0.3910361755249918,
+            "scale": 2.102345029704257,
+            "opacity": 0.16976340084726874,
+            "minScale": 1.2701496341078446,
+            "minOpacity": 0.0008976409656784791
+          },
+          {
+            "kind": "rear",
+            "visible": true,
+            "diameter": 0.3905229407202686,
+            "scale": 2.099585702797143,
+            "opacity": 0.16974717266020026,
+            "minScale": 1.2673903072007306,
+            "minOpacity": 0.002646364371382209
+          },
+          {
+            "kind": "subwoofer",
+            "visible": true,
+            "diameter": 0.721543473827134,
+            "scale": 2.0975100983346917,
+            "opacity": 0.16976173274674872,
+            "minScale": 1.2642102280332421,
+            "minOpacity": 0.0012380410290527037
+          }
+        ],
+        "frames": 93
+      },
+      "high": {
+        "audio": {
+          "source": 1,
+          "music": false,
+          "mute": false,
+          "volume": 0.9155413138017853,
+          "mediaVolume": 0.5000076295109483,
+          "paused": false
+        },
+        "speakers": [
+          {
+            "kind": "front",
+            "visible": true,
+            "diameter": 0.6571613766507405,
+            "scale": 3.53312568091796,
+            "opacity": 0.30645682840756616,
+            "minScale": 2.1790186770269098,
+            "minOpacity": 0.015759814984852006
+          },
+          {
+            "kind": "rear",
+            "visible": true,
+            "diameter": 0.6590720258539204,
+            "scale": 3.5433979884619378,
+            "opacity": 0.3063581446452857,
+            "minScale": 2.1355001285397606,
+            "minOpacity": 0.001115427950249955
+          },
+          {
+            "kind": "front",
+            "visible": true,
+            "diameter": 0.6611976606572539,
+            "scale": 3.554826132565881,
+            "opacity": 0.30648131805475576,
+            "minScale": 2.145861346557765,
+            "minOpacity": 0.0010789547316477283
+          },
+          {
+            "kind": "rear",
+            "visible": true,
+            "diameter": 0.6601646608312257,
+            "scale": 3.5492723700603532,
+            "opacity": 0.306447470652449,
+            "minScale": 2.142619257225183,
+            "minOpacity": 0.004837784548776169
+          },
+          {
+            "kind": "subwoofer",
+            "visible": true,
+            "diameter": 1.219375638351121,
+            "scale": 3.5446966231137234,
+            "opacity": 0.30647801545001135,
+            "minScale": 2.1371544052201905,
+            "minOpacity": 0.0022350971536942714
+          }
+        ],
+        "frames": 97
+      },
+      "musicLow": {
+        "audio": {
+          "source": 4,
+          "music": true,
+          "mute": false,
+          "volume": 0.9155413138017853,
+          "mediaVolume": 0.061036087586785685,
+          "paused": false
+        },
+        "speakers": [
+          {
+            "kind": "front",
+            "visible": true,
+            "diameter": 0.3904191867675106,
+            "scale": 2.099027885846831,
+            "opacity": 0.16975151919464038,
+            "minScale": 1.2658332036222322,
+            "minOpacity": 0.0022666060091027264
+          },
+          {
+            "kind": "rear",
+            "visible": true,
+            "diameter": 0.3899157344553922,
+            "scale": 2.0963211529859795,
+            "opacity": 0.1697651744721044,
+            "minScale": 1.2631790647762942,
+            "minOpacity": 0.0005845126491223922
+          },
+          {
+            "kind": "front",
+            "visible": true,
+            "diameter": 0.3912122603510584,
+            "scale": 2.1032917223175183,
+            "opacity": 0.16976460142067734,
+            "minScale": 1.2697288818474566,
+            "minOpacity": 0.00029764321994220003
+          },
+          {
+            "kind": "rear",
+            "visible": true,
+            "diameter": 0.3906109831332981,
+            "scale": 2.1000590491037534,
+            "opacity": 0.1697435582781344,
+            "minScale": 1.266916960909741,
+            "minOpacity": 0.0023463959591919006
+          },
+          {
+            "kind": "subwoofer",
+            "visible": true,
+            "diameter": 0.7213082733061613,
+            "scale": 2.0968263758900036,
+            "opacity": 0.16976280093150814,
+            "minScale": 1.2637894757571673,
+            "minOpacity": 0.0009713792442469265
+          }
+        ],
+        "frames": 97
+      },
+      "musicHigh": {
+        "audio": {
+          "source": 4,
+          "music": true,
+          "mute": false,
+          "volume": 0.9155413138017853,
+          "mediaVolume": 0.9155413138017853,
+          "paused": false
+        },
+        "speakers": [
+          {
+            "kind": "front",
+            "visible": true,
+            "diameter": 0.6598900400748545,
+            "scale": 3.5477959143809383,
+            "opacity": 0.30645766141069947,
+            "minScale": 2.1406982490165882,
+            "minOpacity": 0.004633568363052967
+          },
+          {
+            "kind": "rear",
+            "visible": true,
+            "diameter": 0.6591051005601106,
+            "scale": 3.5435758094629604,
+            "opacity": 0.30648333768832947,
+            "minScale": 2.1355001285397073,
+            "minOpacity": 0.001115427950214037
+          },
+          {
+            "kind": "front",
+            "visible": true,
+            "diameter": 0.661181123304144,
+            "scale": 3.5547372220652904,
+            "opacity": 0.3064816657898586,
+            "minScale": 2.146039167585284,
+            "minOpacity": 0.0011391328391996748
+          },
+          {
+            "kind": "rear",
+            "visible": true,
+            "diameter": 0.6600488993496577,
+            "scale": 3.5486499965035363,
+            "opacity": 0.3064521315268042,
+            "minScale": 2.1421747046959423,
+            "minOpacity": 0.005258976912226317
+          },
+          {
+            "kind": "subwoofer",
+            "visible": true,
+            "diameter": 1.219345053138915,
+            "scale": 3.5446077126131246,
+            "opacity": 0.3064815929965647,
+            "minScale": 2.137776778750383,
+            "minOpacity": 0.002656333237293136
+          }
+        ],
+        "frames": 93
+      },
+      "visibility": [
+        {
+          "kind": "front",
+          "clear": 16,
+          "total": 16
+        },
+        {
+          "kind": "rear",
+          "clear": 13,
+          "total": 16
+        },
+        {
+          "kind": "front",
+          "clear": 16,
+          "total": 16
+        },
+        {
+          "kind": "rear",
+          "clear": 15,
+          "total": 16
+        },
+        {
+          "kind": "subwoofer",
+          "clear": 11,
+          "total": 16
+        }
+      ],
+      "status": "passed"
+    },
+    {
+      "id": 2,
+      "type": "cuisine",
+      "name": "Cuisine",
+      "count": 0,
+      "tv": true,
+      "status": "not-applicable"
+    },
+    {
+      "id": 3,
+      "type": "repas",
+      "name": "Salle à manger",
+      "count": 2,
+      "tv": true,
+      "low": {
+        "audio": {
+          "source": 1,
+          "music": false,
+          "mute": false,
+          "volume": 0.061036087586785685,
+          "mediaVolume": 0.4272526131074998,
+          "paused": false
+        },
+        "speakers": [
+          {
+            "kind": "front",
+            "visible": true,
+            "diameter": 0.38854094863345984,
+            "scale": 2.0889298313626874,
+            "opacity": 0.16975658163885685,
+            "minScale": 1.2907101815635078,
+            "minOpacity": 0.00939522525635139
+          },
+          {
+            "kind": "front",
+            "visible": true,
+            "diameter": 0.38963204223398906,
+            "scale": 2.0947959259891884,
+            "opacity": 0.1697656342421972,
+            "minScale": 1.262442748301012,
+            "minOpacity": 0.00011784574760480193
+          }
+        ],
+        "frames": 96
+      },
+      "high": {
+        "audio": {
+          "source": 1,
+          "music": false,
+          "mute": false,
+          "volume": 0.9155413138017853,
+          "mediaVolume": 0.4272526131074998,
+          "paused": false
+        },
+        "speakers": [
+          {
+            "kind": "front",
+            "visible": true,
+            "diameter": 0.6594435315115766,
+            "scale": 3.5453953307074015,
+            "opacity": 0.30647299825212926,
+            "minScale": 2.138831128372772,
+            "minOpacity": 0.0033699283625955216
+          },
+          {
+            "kind": "front",
+            "visible": true,
+            "diameter": 0.6586751293499319,
+            "scale": 3.5412641362899566,
+            "opacity": 0.306486536365322,
+            "minScale": 2.174265109052602,
+            "minOpacity": 0.010256391826699495
+          }
+        ],
+        "frames": 98
+      },
+      "musicLow": {
+        "audio": {
+          "source": 4,
+          "music": true,
+          "mute": false,
+          "volume": 0.9155413138017853,
+          "mediaVolume": 0.061036087586785685,
+          "paused": false
+        },
+        "speakers": [
+          {
+            "kind": "front",
+            "visible": true,
+            "diameter": 0.3885018186746962,
+            "scale": 2.088719455240302,
+            "opacity": 0.1697594384894653,
+            "minScale": 1.2825055123059075,
+            "minOpacity": 0.009528351722419174
+          },
+          {
+            "kind": "front",
+            "visible": true,
+            "diameter": 0.39129506558028576,
+            "scale": 2.1037369117219664,
+            "opacity": 0.16976577330739087,
+            "minScale": 1.2711207638651794,
+            "minOpacity": 0.000015487972036758714
+          }
+        ],
+        "frames": 97
+      },
+      "musicHigh": {
+        "audio": {
+          "source": 4,
+          "music": true,
+          "mute": false,
+          "volume": 0.9155413138017853,
+          "mediaVolume": 0.9155413138017853,
+          "paused": false
+        },
+        "speakers": [
+          {
+            "kind": "front",
+            "visible": true,
+            "diameter": 0.6594766062177674,
+            "scale": 3.545573151708427,
+            "opacity": 0.30646741528141375,
+            "minScale": 2.1380309338148895,
+            "minOpacity": 0.0028283495728175937
+          },
+          {
+            "kind": "front",
+            "visible": true,
+            "diameter": 0.6585759052263945,
+            "scale": 3.5407306732601858,
+            "opacity": 0.30648649244396375,
+            "minScale": 2.134255381426089,
+            "minOpacity": 0.00027293128224032927
+          }
+        ],
+        "frames": 98
+      },
+      "visibility": [
+        {
+          "kind": "front",
+          "clear": 16,
+          "total": 16
+        },
+        {
+          "kind": "front",
+          "clear": 16,
+          "total": 16
+        }
+      ],
+      "status": "passed"
+    },
+    {
+      "id": 4,
+      "type": "suite",
+      "name": "Suite parentale",
+      "count": 2,
+      "tv": true,
+      "low": {
+        "audio": {
+          "source": 1,
+          "music": false,
+          "mute": false,
+          "volume": 0.061036087586785685,
+          "mediaVolume": 0.3662165255207141,
+          "paused": false
+        },
+        "speakers": [
+          {
+            "kind": "corner",
+            "visible": true,
+            "diameter": 0.38997897470525245,
+            "scale": 2.0966611543293143,
+            "opacity": 0.16976176521476602,
+            "minScale": 1.2644657587329036,
+            "minOpacity": 0.0013999882523577883
+          },
+          {
+            "kind": "corner",
+            "visible": true,
+            "diameter": 0.3911189807542283,
+            "scale": 2.1027902191087544,
+            "opacity": 0.16976488689075564,
+            "minScale": 1.2695955368841556,
+            "minOpacity": 0.0006154883996499938
+          }
+        ],
+        "frames": 96
+      },
+      "high": {
+        "audio": {
+          "source": 1,
+          "music": false,
+          "mute": false,
+          "volume": 0.9155413138017853,
+          "mediaVolume": 0.3662165255207141,
+          "paused": false
+        },
+        "speakers": [
+          {
+            "kind": "corner",
+            "visible": true,
+            "diameter": 0.6594269941584983,
+            "scale": 3.54530642020698,
+            "opacity": 0.30647517237054345,
+            "minScale": 2.1365194552264377,
+            "minOpacity": 0.0018053446975045873
+          },
+          {
+            "kind": "corner",
+            "visible": true,
+            "diameter": 0.6613541807098486,
+            "scale": 3.5556676382249925,
+            "opacity": 0.3064855391073595,
+            "minScale": 2.147236315273095,
+            "minOpacity": 0.000509389021712917
+          }
+        ],
+        "frames": 96
+      },
+      "musicLow": {
+        "audio": {
+          "source": 4,
+          "music": true,
+          "mute": false,
+          "volume": 0.9155413138017853,
+          "mediaVolume": 0.061036087586785685,
+          "paused": false
+        },
+        "speakers": [
+          {
+            "kind": "corner",
+            "visible": true,
+            "diameter": 0.39001810466402387,
+            "scale": 2.0968715304517414,
+            "opacity": 0.16976356180739055,
+            "minScale": 1.2638346303345782,
+            "minOpacity": 0.0009999971605113092
+          },
+          {
+            "kind": "corner",
+            "visible": true,
+            "diameter": 0.3862570830900391,
+            "scale": 2.076650984355049,
+            "opacity": 0.16976453415559847,
+            "minScale": 1.2765905433755889,
+            "minOpacity": 0.009080203849348777
+          }
+        ],
+        "frames": 94
+      },
+      "musicHigh": {
+        "audio": {
+          "source": 4,
+          "music": true,
+          "mute": false,
+          "volume": 0.9155413138017853,
+          "mediaVolume": 0.9155413138017853,
+          "paused": false
+        },
+        "speakers": [
+          {
+            "kind": "corner",
+            "visible": true,
+            "diameter": 0.6591789338472417,
+            "scale": 3.543972762619579,
+            "opacity": 0.3064826164016792,
+            "minScale": 2.136875097228731,
+            "minOpacity": 0.002046053946343369
+          },
+          {
+            "kind": "corner",
+            "visible": true,
+            "diameter": 0.6612053445270477,
+            "scale": 3.554867443693805,
+            "opacity": 0.30648388821046385,
+            "minScale": 2.1466139417429786,
+            "minOpacity": 0.0010509937286871632
+          }
+        ],
+        "frames": 95
+      },
+      "visibility": [
+        {
+          "kind": "corner",
+          "clear": 16,
+          "total": 16
+        },
+        {
+          "kind": "corner",
+          "clear": 16,
+          "total": 16
+        }
+      ],
+      "status": "passed"
+    },
+    {
+      "id": 5,
+      "type": "chambre",
+      "name": "Chambre 1",
+      "count": 2,
+      "tv": true,
+      "low": {
+        "audio": {
+          "source": 1,
+          "music": false,
+          "mute": false,
+          "volume": 0.061036087586785685,
+          "mediaVolume": 0.2746623941405356,
+          "paused": false
+        },
+        "speakers": [
+          {
+            "kind": "corner",
+            "visible": true,
+            "diameter": 0.38975397742786,
+            "scale": 2.0954514915476343,
+            "opacity": 0.16976503770152337,
+            "minScale": 1.2623619973842084,
+            "minOpacity": 0.00006666684805571325
+          },
+          {
+            "kind": "corner",
+            "visible": true,
+            "diameter": 0.3908059410667159,
+            "scale": 2.101107210036107,
+            "opacity": 0.1697590096882093,
+            "minScale": 1.2691747846083052,
+            "minOpacity": 0.0016821320345657045
+          }
+        ],
+        "frames": 96
+      },
+      "high": {
+        "audio": {
+          "source": 1,
+          "music": false,
+          "mute": false,
+          "volume": 0.9155413138017853,
+          "mediaVolume": 0.2746623941405356,
+          "paused": false
+        },
+        "speakers": [
+          {
+            "kind": "corner",
+            "visible": true,
+            "diameter": 0.6588812614717723,
+            "scale": 3.5423723735041523,
+            "opacity": 0.30648561175505296,
+            "minScale": 2.134919066111158,
+            "minOpacity": 0.0007221413692689778
+          },
+          {
+            "kind": "corner",
+            "visible": true,
+            "diameter": 0.6606265371291649,
+            "scale": 3.551755575963252,
+            "opacity": 0.3064733001949053,
+            "minScale": 2.145013552627552,
+            "minOpacity": 0.0031571876476767335
+          }
+        ],
+        "frames": 96
+      },
+      "musicLow": {
+        "audio": {
+          "source": 4,
+          "music": true,
+          "mute": false,
+          "volume": 0.9155413138017853,
+          "mediaVolume": 0.061036087586785685,
+          "paused": false
+        },
+        "speakers": [
+          {
+            "kind": "corner",
+            "visible": true,
+            "diameter": 0.389656152525158,
+            "scale": 2.094925551210527,
+            "opacity": 0.16976576092387166,
+            "minScale": 1.2625723735223546,
+            "minOpacity": 0.00020000053268760522
+          },
+          {
+            "kind": "corner",
+            "visible": true,
+            "diameter": 0.39087441849747817,
+            "scale": 2.1014753682660117,
+            "opacity": 0.1697587088535733,
+            "minScale": 1.2687014383017918,
+            "minOpacity": 0.0014488079551743139
+          }
+        ],
+        "frames": 98
+      },
+      "musicHigh": {
+        "audio": {
+          "source": 4,
+          "music": true,
+          "mute": false,
+          "volume": 0.9155413138017853,
+          "mediaVolume": 0.9155413138017853,
+          "paused": false
+        },
+        "speakers": [
+          {
+            "kind": "corner",
+            "visible": true,
+            "diameter": 0.6589143361779988,
+            "scale": 3.54255019450537,
+            "opacity": 0.30648613165958116,
+            "minScale": 2.135274708139949,
+            "minOpacity": 0.0009628544780639279
+          },
+          {
+            "kind": "corner",
+            "visible": true,
+            "diameter": 0.6609242095047048,
+            "scale": 3.553355965079058,
+            "opacity": 0.30647385512236064,
+            "minScale": 2.1443022685704043,
+            "minOpacity": 0.0020740145576509605
+          }
+        ],
+        "frames": 93
+      },
+      "visibility": [
+        {
+          "kind": "corner",
+          "clear": 7,
+          "total": 16
+        },
+        {
+          "kind": "corner",
+          "clear": 16,
+          "total": 16
+        }
+      ],
+      "status": "passed"
+    },
+    {
+      "id": 6,
+      "type": "chambre",
+      "name": "Chambre 2",
+      "count": 2,
+      "tv": true,
+      "low": {
+        "audio": {
+          "source": 1,
+          "music": false,
+          "mute": false,
+          "volume": 0.061036087586785685,
+          "mediaVolume": 0.2746623941405356,
+          "paused": false
+        },
+        "speakers": [
+          {
+            "kind": "corner",
+            "visible": true,
+            "diameter": 0.3847746898786695,
+            "scale": 2.0686811283799433,
+            "opacity": 0.16976556457382458,
+            "minScale": 1.2691992217682955,
+            "minOpacity": 0.004399520379685817
+          },
+          {
+            "kind": "corner",
+            "visible": true,
+            "diameter": 0.390766811105074,
+            "scale": 2.1008968338982474,
+            "opacity": 0.16975710650956838,
+            "minScale": 1.2687014383018338,
+            "minOpacity": 0.0018154586855811303
+          }
+        ],
+        "frames": 96
+      },
+      "high": {
+        "audio": {
+          "source": 1,
+          "music": false,
+          "mute": false,
+          "volume": 0.9155413138017853,
+          "mediaVolume": 0.2746623941405356,
+          "paused": false
+        },
+        "speakers": [
+          {
+            "kind": "corner",
+            "visible": true,
+            "diameter": 0.658947410889151,
+            "scale": 3.54272801553307,
+            "opacity": 0.3064865570362054,
+            "minScale": 2.1347412450838568,
+            "minOpacity": 0.0006017846298114613
+          },
+          {
+            "kind": "corner",
+            "visible": true,
+            "diameter": 0.6608580600873994,
+            "scale": 3.5530003230505347,
+            "opacity": 0.3064733001949076,
+            "minScale": 2.143946626568384,
+            "minOpacity": 0.0023147224059026235
+          }
+        ],
+        "frames": 97
+      },
+      "musicLow": {
+        "audio": {
+          "source": 4,
+          "music": true,
+          "mute": false,
+          "volume": 0.9155413138017853,
+          "mediaVolume": 0.061036087586785685,
+          "paused": false
+        },
+        "speakers": [
+          {
+            "kind": "corner",
+            "visible": true,
+            "diameter": 0.3896854999942572,
+            "scale": 2.0950833333024583,
+            "opacity": 0.16976572165387,
+            "minScale": 1.262572373522522,
+            "minOpacity": 0.00020000053279371318
+          },
+          {
+            "kind": "corner",
+            "visible": true,
+            "diameter": 0.3908352885358369,
+            "scale": 2.101264992128155,
+            "opacity": 0.16975870885357452,
+            "minScale": 1.268491062179607,
+            "minOpacity": 0.0015821363680569216
+          }
+        ],
+        "frames": 96
+      },
+      "musicHigh": {
+        "audio": {
+          "source": 4,
+          "music": true,
+          "mute": false,
+          "volume": 0.9155413138017853,
+          "mediaVolume": 0.9155413138017853,
+          "paused": false
+        },
+        "speakers": [
+          {
+            "kind": "corner",
+            "visible": true,
+            "diameter": 0.6614776260613251,
+            "scale": 3.55633132291035,
+            "opacity": 0.3064865156801405,
+            "minScale": 2.149233657546005,
+            "minOpacity": 0.00006017853651320327
+          },
+          {
+            "kind": "corner",
+            "visible": true,
+            "diameter": 0.6605934624230438,
+            "scale": 3.5515777549626013,
+            "opacity": 0.3064727334521107,
+            "minScale": 2.144302268570677,
+            "minOpacity": 0.0032775380180403184
+          }
+        ],
+        "frames": 94
+      },
+      "visibility": [
+        {
+          "kind": "corner",
+          "clear": 9,
+          "total": 16
+        },
+        {
+          "kind": "corner",
+          "clear": 16,
+          "total": 16
+        }
+      ],
+      "status": "passed"
+    },
+    {
+      "id": 7,
+      "type": "bureau",
+      "name": "Bureau",
+      "count": 1,
+      "tv": true,
+      "low": {
+        "audio": {
+          "source": 1,
+          "music": false,
+          "mute": false,
+          "volume": 0.061036087586785685,
+          "mediaVolume": 0.39673456931410694,
+          "paused": false
+        },
+        "speakers": [
+          {
+            "kind": "corner",
+            "visible": true,
+            "diameter": 0.3912115684790681,
+            "scale": 2.103288002575635,
+            "opacity": 0.16976565620380613,
+            "minScale": 1.2704088845345614,
+            "minOpacity": 0.0003000007415363824
+          }
+        ],
+        "frames": 96
+      },
+      "high": {
+        "audio": {
+          "source": 1,
+          "music": false,
+          "mute": false,
+          "volume": 0.9155413138017853,
+          "mediaVolume": 0.39673456931410694,
+          "paused": false
+        },
+        "speakers": [
+          {
+            "kind": "corner",
+            "visible": true,
+            "diameter": 0.6612295657500056,
+            "scale": 3.5549976653226105,
+            "opacity": 0.3064857594550385,
+            "minScale": 2.1470998054004284,
+            "minOpacity": 0.0009628545310580606
+          }
+        ],
+        "frames": 95
+      },
+      "musicLow": {
+        "audio": {
+          "source": 4,
+          "music": true,
+          "mute": false,
+          "volume": 0.9155413138017853,
+          "mediaVolume": 0.061036087586785685,
+          "paused": false
+        },
+        "speakers": [
+          {
+            "kind": "corner",
+            "visible": true,
+            "diameter": 0.38787573929383645,
+            "scale": 2.085353437063637,
+            "opacity": 0.16976556457377842,
+            "minScale": 1.288711608276138,
+            "minOpacity": 0.011657520139321422
+          }
+        ],
+        "frames": 92
+      },
+      "musicHigh": {
+        "audio": {
+          "source": 4,
+          "music": true,
+          "mute": false,
+          "volume": 0.9155413138017853,
+          "mediaVolume": 0.9155413138017853,
+          "paused": false
+        },
+        "speakers": [
+          {
+            "kind": "corner",
+            "visible": true,
+            "diameter": 0.6613453272315256,
+            "scale": 3.55562003887917,
+            "opacity": 0.30648639751987905,
+            "minScale": 2.1476332684299564,
+            "minOpacity": 0.0005416062860388351
+          }
+        ],
+        "frames": 95
+      },
+      "visibility": [
+        {
+          "kind": "corner",
+          "clear": 16,
+          "total": 16
+        }
+      ],
+      "status": "passed"
+    },
+    {
+      "id": 8,
+      "type": "cinema",
+      "name": "Home Cinéma",
+      "count": 7,
+      "tv": true,
+      "low": {
+        "audio": {
+          "source": 1,
+          "music": false,
+          "mute": false,
+          "volume": 0.061036087586785685,
+          "mediaVolume": 0.6103608758678569,
+          "paused": false
+        },
+        "speakers": [
+          {
+            "kind": "center",
+            "visible": true,
+            "diameter": 0.2522746459099138,
+            "scale": 2.102288715915948,
+            "opacity": 0.16976320837864017,
+            "minScale": 1.269567379997982,
+            "minOpacity": 0.0009333314117286619
+          },
+          {
+            "kind": "front",
+            "visible": true,
+            "diameter": 0.39045377141459275,
+            "scale": 2.0992138248096386,
+            "opacity": 0.16974510979793714,
+            "minScale": 1.2670710232594844,
+            "minOpacity": 0.0028820246612627854
+          },
+          {
+            "kind": "surround",
+            "visible": true,
+            "diameter": 0.3900383615125952,
+            "scale": 2.096980438239759,
+            "opacity": 0.16976025397294214,
+            "minScale": 1.263996132137509,
+            "minOpacity": 0.001102352991910769
+          },
+          {
+            "kind": "rear",
+            "visible": true,
+            "diameter": 0.39114902009250224,
+            "scale": 2.1029517209274315,
+            "opacity": 0.16976571083342631,
+            "minScale": 1.2698096327334178,
+            "minOpacity": 0.0005131311615559046
+          },
+          {
+            "kind": "front",
+            "visible": true,
+            "diameter": 0.3890021094134599,
+            "scale": 2.0914091903949457,
+            "opacity": 0.1697502576822014,
+            "minScale": 1.2923480360436737,
+            "minOpacity": 0.00782586710508996
+          },
+          {
+            "kind": "surround",
+            "visible": true,
+            "diameter": 0.3902105928960929,
+            "scale": 2.0979064134198544,
+            "opacity": 0.1697230048917147,
+            "minScale": 1.2656584237928465,
+            "minOpacity": 0.002155842168069345
+          },
+          {
+            "kind": "rear",
+            "visible": true,
+            "diameter": 0.3896093156783329,
+            "scale": 2.094673740206091,
+            "opacity": 0.16976575799918225,
+            "minScale": 1.262320562517919,
+            "minOpacity": 0.00004040595644990171
+          }
+        ],
+        "frames": 98
+      },
+      "high": {
+        "audio": {
+          "source": 1,
+          "music": false,
+          "mute": false,
+          "volume": 0.9155413138017853,
+          "mediaVolume": 0.6103608758678569,
+          "paused": false
+        },
+        "speakers": [
+          {
+            "kind": "center",
+            "visible": true,
+            "diameter": 0.4265570427952407,
+            "scale": 3.5546420232936726,
+            "opacity": 0.306482917708693,
+            "minScale": 2.145766147812588,
+            "minOpacity": 0.0012035670460149774
+          },
+          {
+            "kind": "front",
+            "visible": true,
+            "diameter": 0.6603123274005495,
+            "scale": 3.55006627634704,
+            "opacity": 0.3064511582762189,
+            "minScale": 2.141279311366503,
+            "minOpacity": 0.004300493960223377
+          },
+          {
+            "kind": "surround",
+            "visible": true,
+            "diameter": 0.6594447011153757,
+            "scale": 3.545401618899869,
+            "opacity": 0.3064816173202344,
+            "minScale": 2.1373259379766214,
+            "minOpacity": 0.0023511947484188877
+          },
+          {
+            "kind": "rear",
+            "visible": true,
+            "diameter": 0.6584778507066757,
+            "scale": 3.540203498422988,
+            "opacity": 0.30648555033007424,
+            "minScale": 2.1848517474449265,
+            "minOpacity": 0.01097384688693678
+          },
+          {
+            "kind": "front",
+            "visible": true,
+            "diameter": 0.6605207987395857,
+            "scale": 3.5511870899977724,
+            "opacity": 0.3057163916481807,
+            "minScale": 2.1436448721042347,
+            "minOpacity": 0.003541940719512967
+          },
+          {
+            "kind": "surround",
+            "visible": true,
+            "diameter": 0.6597193218717418,
+            "scale": 3.5468780745792565,
+            "opacity": 0.3064714377383392,
+            "minScale": 2.139335856685729,
+            "minOpacity": 0.0037115276660776627
+          },
+          {
+            "kind": "rear",
+            "visible": true,
+            "diameter": 0.6605385057013307,
+            "scale": 3.5512822887168314,
+            "opacity": 0.3064861088299623,
+            "minScale": 2.134315557209863,
+            "minOpacity": 0.0003136608565618502
+          }
+        ],
+        "frames": 97
+      },
+      "musicLow": {
+        "audio": {
+          "source": 4,
+          "music": true,
+          "mute": false,
+          "volume": 0.9155413138017853,
+          "mediaVolume": 0.061036087586785685,
+          "paused": false
+        },
+        "speakers": [
+          {
+            "kind": "center",
+            "visible": true,
+            "diameter": 0.2522241556386593,
+            "scale": 2.101867963655494,
+            "opacity": 0.16976302184700562,
+            "minScale": 1.2691992217524384,
+            "minOpacity": 0.001199993568852274
+          },
+          {
+            "kind": "front",
+            "visible": true,
+            "diameter": 0.39051246635562725,
+            "scale": 2.0995293890087487,
+            "opacity": 0.16974352012336896,
+            "minScale": 1.266492488875917,
+            "minOpacity": 0.0026820509411233434
+          },
+          {
+            "kind": "surround",
+            "visible": true,
+            "diameter": 0.38997966657152616,
+            "scale": 2.096664874040463,
+            "opacity": 0.1697626147832036,
+            "minScale": 1.2642065082754372,
+            "minOpacity": 0.0012356835562871492
+          },
+          {
+            "kind": "rear",
+            "visible": true,
+            "diameter": 0.391129455113108,
+            "scale": 2.102846532866172,
+            "opacity": 0.16976466680977503,
+            "minScale": 1.2704933551779998,
+            "minOpacity": 0.0005797976753807246
+          },
+          {
+            "kind": "front",
+            "visible": true,
+            "diameter": 0.3906553502700558,
+            "scale": 2.1002975820970744,
+            "opacity": 0.1697515802296203,
+            "minScale": 1.2674184640560007,
+            "minOpacity": 0.0021952303023819084
+          },
+          {
+            "kind": "surround",
+            "visible": true,
+            "diameter": 0.3900736380316768,
+            "scale": 2.097170096944499,
+            "opacity": 0.16975953121803294,
+            "minScale": 1.2652376715323745,
+            "minOpacity": 0.0018891936723321949
+          },
+          {
+            "kind": "rear",
+            "visible": true,
+            "diameter": 0.3896484456399898,
+            "scale": 2.0948841163440313,
+            "opacity": 0.169765763553928,
+            "minScale": 1.2770994859906986,
+            "minOpacity": 0.005625247562352732
+          }
+        ],
+        "frames": 97
+      },
+      "musicHigh": {
+        "audio": {
+          "source": 4,
+          "music": true,
+          "mute": false,
+          "volume": 0.9155413138017853,
+          "mediaVolume": 0.9155413138017853,
+          "paused": false
+        },
+        "speakers": [
+          {
+            "kind": "center",
+            "visible": true,
+            "diameter": 0.4264610194482821,
+            "scale": 3.553841828735684,
+            "opacity": 0.30648375073524053,
+            "minScale": 2.1455883267848574,
+            "minOpacity": 0.0017451672591682211
+          },
+          {
+            "kind": "front",
+            "visible": true,
+            "diameter": 0.6602957900474249,
+            "scale": 3.5499773658463707,
+            "opacity": 0.306447402605048,
+            "minScale": 2.1411014903652856,
+            "minOpacity": 0.004360666454203325
+          },
+          {
+            "kind": "surround",
+            "visible": true,
+            "diameter": 0.6591966408040693,
+            "scale": 3.5440679613122006,
+            "opacity": 0.3064584249084408,
+            "minScale": 2.137503758977566,
+            "minOpacity": 0.002471548025533814
+          },
+          {
+            "kind": "rear",
+            "visible": true,
+            "diameter": 0.6611569020665493,
+            "scale": 3.5546070003577923,
+            "opacity": 0.3064863686763028,
+            "minScale": 2.1468869614631787,
+            "minOpacity": 0.0012272719089619418
+          },
+          {
+            "kind": "front",
+            "visible": true,
+            "diameter": 0.6602892757813794,
+            "scale": 3.549942342910642,
+            "opacity": 0.30645940550343237,
+            "minScale": 2.1418666619873936,
+            "minOpacity": 0.004384369090913744
+          },
+          {
+            "kind": "surround",
+            "visible": true,
+            "diameter": 0.6595539483308407,
+            "scale": 3.545988969520649,
+            "opacity": 0.30647083304203826,
+            "minScale": 2.1383578411000808,
+            "minOpacity": 0.0030496044923826455
+          },
+          {
+            "kind": "rear",
+            "visible": true,
+            "diameter": 0.6586697846925725,
+            "scale": 3.541235401572971,
+            "opacity": 0.3064865492490277,
+            "minScale": 2.1341377361821228,
+            "minOpacity": 0.00019330387724197687
+          }
+        ],
+        "frames": 97
+      },
+      "visibility": [
+        {
+          "kind": "center",
+          "clear": 11,
+          "total": 16
+        },
+        {
+          "kind": "front",
+          "clear": 16,
+          "total": 16
+        },
+        {
+          "kind": "surround",
+          "clear": 16,
+          "total": 16
+        },
+        {
+          "kind": "rear",
+          "clear": 11,
+          "total": 16
+        },
+        {
+          "kind": "front",
+          "clear": 16,
+          "total": 16
+        },
+        {
+          "kind": "surround",
+          "clear": 13,
+          "total": 16
+        },
+        {
+          "kind": "rear",
+          "clear": 13,
+          "total": 16
+        }
+      ],
+      "status": "passed"
+    },
+    {
+      "id": 9,
+      "type": "chambre",
+      "name": "Chambre 3",
+      "count": 2,
+      "tv": true,
+      "low": {
+        "audio": {
+          "source": 1,
+          "music": false,
+          "mute": false,
+          "volume": 0.061036087586785685,
+          "mediaVolume": 0.2746623941405356,
+          "paused": false
+        },
+        "speakers": [
+          {
+            "kind": "corner",
+            "visible": true,
+            "diameter": 0.3910452661426122,
+            "scale": 2.102393903992539,
+            "opacity": 0.16976320837869377,
+            "minScale": 1.2691466277373127,
+            "minOpacity": 0.0008666654796435456
+          },
+          {
+            "kind": "corner",
+            "visible": true,
+            "diameter": 0.39055159632017683,
+            "scale": 2.099739765162241,
+            "opacity": 0.16974562660122341,
+            "minScale": 1.2664924888913733,
+            "minOpacity": 0.0025487330293839055
+          }
+        ],
+        "frames": 98
+      },
+      "high": {
+        "audio": {
+          "source": 1,
+          "music": false,
+          "mute": false,
+          "volume": 0.9155413138017853,
+          "mediaVolume": 0.2746623941405356,
+          "paused": false
+        },
+        "speakers": [
+          {
+            "kind": "corner",
+            "visible": true,
+            "diameter": 0.6609484307323806,
+            "scale": 3.5534861867332292,
+            "opacity": 0.30648348487570093,
+            "minScale": 2.147010894899132,
+            "minOpacity": 0.001985876800443068
+          },
+          {
+            "kind": "corner",
+            "visible": true,
+            "diameter": 0.6603123274053944,
+            "scale": 3.550066276373088,
+            "opacity": 0.30644244219027145,
+            "minScale": 2.1411904008655003,
+            "minOpacity": 0.004300493942594442
+          }
+        ],
+        "frames": 95
+      },
+      "musicLow": {
+        "audio": {
+          "source": 4,
+          "music": true,
+          "mute": false,
+          "volume": 0.9155413138017853,
+          "mediaVolume": 0.061036087586785685,
+          "paused": false
+        },
+        "speakers": [
+          {
+            "kind": "corner",
+            "visible": true,
+            "diameter": 0.3909767887118538,
+            "scale": 2.102025745762655,
+            "opacity": 0.16976282877047322,
+            "minScale": 1.269409597905865,
+            "minOpacity": 0.0010999955655527688
+          },
+          {
+            "kind": "corner",
+            "visible": true,
+            "diameter": 0.3904831188865069,
+            "scale": 2.0993716069167037,
+            "opacity": 0.16974405655922015,
+            "minScale": 1.2665976769524838,
+            "minOpacity": 0.0027510664384445354
+          }
+        ],
+        "frames": 98
+      },
+      "musicHigh": {
+        "audio": {
+          "source": 4,
+          "music": true,
+          "mute": false,
+          "volume": 0.9155413138017853,
+          "mediaVolume": 0.9155413138017853,
+          "paused": false
+        },
+        "speakers": [
+          {
+            "kind": "corner",
+            "visible": true,
+            "diameter": 0.6609484307323562,
+            "scale": 3.553486186733098,
+            "opacity": 0.3062503201376974,
+            "minScale": 2.146121789840646,
+            "minOpacity": 0.00198587680053208
+          },
+          {
+            "kind": "corner",
+            "visible": true,
+            "diameter": 0.6572198421884046,
+            "scale": 3.533440011765616,
+            "opacity": 0.3064453841061942,
+            "minScale": 2.2105405954179056,
+            "minOpacity": 0.015547339845089157
+          }
+        ],
+        "frames": 88
+      },
+      "visibility": [
+        {
+          "kind": "corner",
+          "clear": 11,
+          "total": 16
+        },
+        {
+          "kind": "corner",
+          "clear": 16,
+          "total": 16
+        }
+      ],
+      "status": "passed"
+    },
+    {
+      "id": 10,
+      "type": "suite",
+      "name": "Suite invités",
+      "count": 2,
+      "tv": true,
+      "low": {
+        "audio": {
+          "source": 1,
+          "music": false,
+          "mute": false,
+          "volume": 0.061036087586785685,
+          "mediaVolume": 0.33569848172732125,
+          "paused": false
+        },
+        "speakers": [
+          {
+            "kind": "corner",
+            "visible": true,
+            "diameter": 0.3909963536912159,
+            "scale": 2.1021309338237413,
+            "opacity": 0.16976153286880935,
+            "minScale": 1.2691466277371632,
+            "minOpacity": 0.0010333300223986993
+          },
+          {
+            "kind": "corner",
+            "visible": true,
+            "diameter": 0.3904537714174254,
+            "scale": 2.0992138248248677,
+            "opacity": 0.1697461009875975,
+            "minScale": 1.2665450829218121,
+            "minOpacity": 0.0027177373328203494
+          }
+        ],
+        "frames": 94
+      },
+      "high": {
+        "audio": {
+          "source": 1,
+          "music": false,
+          "mute": false,
+          "volume": 0.9155413138017853,
+          "mediaVolume": 0.33569848172732125,
+          "paused": false
+        },
+        "speakers": [
+          {
+            "kind": "corner",
+            "visible": true,
+            "diameter": 0.6610807295620486,
+            "scale": 3.554197470763702,
+            "opacity": 0.3064761885358264,
+            "minScale": 2.1450548637810436,
+            "minOpacity": 0.0015044566240844802
+          },
+          {
+            "kind": "corner",
+            "visible": true,
+            "diameter": 0.6599981176767226,
+            "scale": 3.5483769767565727,
+            "opacity": 0.30644923763602994,
+            "minScale": 2.1405680273349286,
+            "minOpacity": 0.004545438536643067
+          }
+        ],
+        "frames": 98
+      },
+      "musicLow": {
+        "audio": {
+          "source": 4,
+          "music": true,
+          "mute": false,
+          "volume": 0.9155413138017853,
+          "mediaVolume": 0.061036087586785685,
+          "paused": false
+        },
+        "speakers": [
+          {
+            "kind": "corner",
+            "visible": true,
+            "diameter": 0.39089852878847886,
+            "scale": 2.1016049934864456,
+            "opacity": 0.16976199101552852,
+            "minScale": 1.2983363164530484,
+            "minOpacity": 0.0013666559592257716
+          },
+          {
+            "kind": "corner",
+            "visible": true,
+            "diameter": 0.3904635539071025,
+            "scale": 2.09926641885539,
+            "opacity": 0.169553916218211,
+            "minScale": 1.2663873008299522,
+            "minOpacity": 0.0026177493925222876
+          }
+        ],
+        "frames": 97
+      },
+      "musicHigh": {
+        "audio": {
+          "source": 4,
+          "music": true,
+          "mute": false,
+          "volume": 0.9155413138017853,
+          "mediaVolume": 0.9155413138017853,
+          "paused": false
+        },
+        "speakers": [
+          {
+            "kind": "corner",
+            "visible": true,
+            "diameter": 0.6610641922089334,
+            "scale": 3.554108560263083,
+            "opacity": 0.3064766788952828,
+            "minScale": 2.1960894941099163,
+            "minOpacity": 0.0015646343713358133
+          },
+          {
+            "kind": "corner",
+            "visible": true,
+            "diameter": 0.6602131032768598,
+            "scale": 3.5495328133164503,
+            "opacity": 0.30644030136954814,
+            "minScale": 2.1406569378353653,
+            "minOpacity": 0.004605610331607273
+          }
+        ],
+        "frames": 95
+      },
+      "visibility": [
+        {
+          "kind": "corner",
+          "clear": 16,
+          "total": 16
+        },
+        {
+          "kind": "corner",
+          "clear": 16,
+          "total": 16
+        }
+      ],
+      "status": "passed"
+    },
+    {
+      "id": 11,
+      "type": "terrasse",
+      "name": "Pool House",
+      "count": 1,
+      "tv": false,
+      "low": {
+        "audio": {
+          "source": 1,
+          "music": false,
+          "mute": false,
+          "volume": 0.061036087586785685,
+          "mediaVolume": 0.45777065690089264,
+          "paused": false
+        },
+        "speakers": [
+          {
+            "kind": "outdoor",
+            "visible": true,
+            "diameter": 0.3908985287884589,
+            "scale": 2.101604993486338,
+            "opacity": 0.16976199101552816,
+            "minScale": 1.269251815798172,
+            "minOpacity": 0.0013666559592939228
+          }
+        ],
+        "frames": 99
+      },
+      "high": {
+        "audio": {
+          "source": 1,
+          "music": false,
+          "mute": false,
+          "volume": 0.9155413138017853,
+          "mediaVolume": 0.45777065690089264,
+          "paused": false
+        },
+        "speakers": [
+          {
+            "kind": "outdoor",
+            "visible": true,
+            "diameter": 0.660832669250729,
+            "scale": 3.5528638131759624,
+            "opacity": 0.30647355950449,
+            "minScale": 2.145054863780821,
+            "minOpacity": 0.002407115496577027
+          }
+        ],
+        "frames": 94
+      },
+      "musicLow": {
+        "audio": {
+          "source": 4,
+          "music": true,
+          "mute": false,
+          "volume": 0.9155413138017853,
+          "mediaVolume": 0.061036087586785685,
+          "paused": false
+        },
+        "speakers": [
+          {
+            "kind": "outdoor",
+            "visible": true,
+            "diameter": 0.3909474412398107,
+            "scale": 2.1018679636548963,
+            "opacity": 0.16976053803742294,
+            "minScale": 1.2689888456295062,
+            "minOpacity": 0.001199993569231256
+          }
+        ],
+        "frames": 96
+      },
+      "musicHigh": {
+        "audio": {
+          "source": 4,
+          "music": true,
+          "mute": false,
+          "volume": 0.9155413138017853,
+          "mediaVolume": 0.9155413138017853,
+          "paused": false
+        },
+        "speakers": [
+          {
+            "kind": "outdoor",
+            "visible": true,
+            "diameter": 0.6608657439618361,
+            "scale": 3.55304163420342,
+            "opacity": 0.3064780790798874,
+            "minScale": 2.144788132252583,
+            "minOpacity": 0.0022867620050954175
+          }
+        ],
+        "frames": 95
+      },
+      "visibility": [
+        {
+          "kind": "outdoor",
+          "clear": 10,
+          "total": 16
+        }
+      ],
+      "status": "passed"
+    },
+    {
+      "id": 12,
+      "type": "piscine",
+      "name": "Piscine & Spa",
+      "count": 1,
+      "tv": false,
+      "low": {
+        "audio": {
+          "source": 1,
+          "music": false,
+          "mute": false,
+          "volume": 0.061036087586785685,
+          "mediaVolume": 0.39673456931410694,
+          "paused": false
+        },
+        "speakers": [
+          {
+            "kind": "outdoor",
+            "visible": true,
+            "diameter": 0.3908985287884456,
+            "scale": 2.1016049934862666,
+            "opacity": 0.16975972319348917,
+            "minScale": 1.2687258754608044,
+            "minOpacity": 0.0013666559593394577
+          }
+        ],
+        "frames": 98
+      },
+      "high": {
+        "audio": {
+          "source": 1,
+          "music": false,
+          "mute": false,
+          "volume": 0.9155413138017853,
+          "mediaVolume": 0.39673456931410694,
+          "paused": false
+        },
+        "speakers": [
+          {
+            "kind": "outdoor",
+            "visible": true,
+            "diameter": 0.6608326692506613,
+            "scale": 3.5528638131755983,
+            "opacity": 0.30647242518324724,
+            "minScale": 2.1441657587220924,
+            "minOpacity": 0.0024071154968233733
+          }
+        ],
+        "frames": 97
+      },
+      "musicLow": {
+        "audio": {
+          "source": 4,
+          "music": true,
+          "mute": false,
+          "volume": 0.9155413138017853,
+          "mediaVolume": 0.061036087586785685,
+          "paused": false
+        },
+        "speakers": [
+          {
+            "kind": "outdoor",
+            "visible": true,
+            "diameter": 0.39082026886798105,
+            "scale": 2.1011842412257047,
+            "opacity": 0.16976176521455855,
+            "minScale": 1.268725875460721,
+            "minOpacity": 0.0016333129710076866
+          }
+        ],
+        "frames": 97
+      },
+      "musicHigh": {
+        "audio": {
+          "source": 4,
+          "music": true,
+          "mute": false,
+          "volume": 0.9155413138017853,
+          "mediaVolume": 0.9155413138017853,
+          "paused": false
+        },
+        "speakers": [
+          {
+            "kind": "outdoor",
+            "visible": true,
+            "diameter": 0.6606672957097903,
+            "scale": 3.5519747081171524,
+            "opacity": 0.30647299825161456,
+            "minScale": 2.144521400724143,
+            "minOpacity": 0.0030088769615592
+          }
+        ],
+        "frames": 91
+      },
+      "visibility": [
+        {
+          "kind": "outdoor",
+          "clear": 13,
+          "total": 16
+        }
+      ],
+      "status": "passed"
+    },
+    {
+      "id": 13,
+      "type": "sauna",
+      "name": "Sauna & Hammam",
+      "count": 1,
+      "tv": false,
+      "low": {
+        "audio": {
+          "source": 1,
+          "music": false,
+          "mute": false,
+          "volume": 0.061036087586785685,
+          "mediaVolume": 0.18310826276035705,
+          "paused": false
+        },
+        "speakers": [
+          {
+            "kind": "wellness",
+            "visible": true,
+            "diameter": 0.3859681536905474,
+            "scale": 2.075097600486814,
+            "opacity": 0.16976027296756493,
+            "minScale": 1.283084046657471,
+            "minOpacity": 0.013186742294275081
+          }
+        ],
+        "frames": 93
+      },
+      "high": {
+        "audio": {
+          "source": 1,
+          "music": false,
+          "mute": false,
+          "volume": 0.9155413138017853,
+          "mediaVolume": 0.18310826276035705,
+          "paused": false
+        },
+        "speakers": [
+          {
+            "kind": "wellness",
+            "visible": true,
+            "diameter": 0.660832669250635,
+            "scale": 3.552863813175457,
+            "opacity": 0.3064780790797514,
+            "minScale": 2.145588326783523,
+            "minOpacity": 0.002407115496919054
+          }
+        ],
+        "frames": 97
+      },
+      "musicLow": {
+        "audio": {
+          "source": 4,
+          "music": true,
+          "mute": false,
+          "volume": 0.9155413138017853,
+          "mediaVolume": 0.061036087586785685,
+          "paused": false
+        },
+        "speakers": [
+          {
+            "kind": "wellness",
+            "visible": true,
+            "diameter": 0.3912017859862502,
+            "scale": 2.103235408528227,
+            "opacity": 0.1697607965624767,
+            "minScale": 1.2684103112456937,
+            "minOpacity": 0.00033333412394541477
+          }
+        ],
+        "frames": 92
+      },
+      "musicHigh": {
+        "audio": {
+          "source": 4,
+          "music": true,
+          "mute": false,
+          "volume": 0.9155413138017853,
+          "mediaVolume": 0.9155413138017853,
+          "paused": false
+        },
+        "speakers": [
+          {
+            "kind": "wellness",
+            "visible": true,
+            "diameter": 0.6608161318974936,
+            "scale": 3.5527749026746966,
+            "opacity": 0.30647937292312455,
+            "minScale": 2.1450548637535904,
+            "minOpacity": 0.002467292095839686
+          }
+        ],
+        "frames": 93
+      },
+      "visibility": [
+        {
+          "kind": "wellness",
+          "clear": 16,
+          "total": 16
+        }
+      ],
+      "status": "passed"
+    },
+    {
+      "id": 14,
+      "type": "poolhouse",
+      "name": "Bar & Lounge",
+      "count": 1,
+      "tv": true,
+      "low": {
+        "audio": {
+          "source": 1,
+          "music": false,
+          "mute": false,
+          "volume": 0.061036087586785685,
+          "mediaVolume": 0.5188067444876784,
+          "paused": false
+        },
+        "speakers": [
+          {
+            "kind": "outdoor",
+            "visible": true,
+            "diameter": 0.39085939882669407,
+            "scale": 2.1013946173478177,
+            "opacity": 0.1697622102715045,
+            "minScale": 1.2684629052761143,
+            "minOpacity": 0.0014999849329829283
+          }
+        ],
+        "frames": 95
+      },
+      "high": {
+        "audio": {
+          "source": 1,
+          "music": false,
+          "mute": false,
+          "volume": 0.9155413138017853,
+          "mediaVolume": 0.5188067444876784,
+          "paused": false
+        },
+        "speakers": [
+          {
+            "kind": "outdoor",
+            "visible": true,
+            "diameter": 0.6608161318974447,
+            "scale": 3.5527749026744337,
+            "opacity": 0.306484902794859,
+            "minScale": 2.1448770427522517,
+            "minOpacity": 0.002467292096017572
+          }
+        ],
+        "frames": 95
+      },
+      "musicLow": {
+        "audio": {
+          "source": 4,
+          "music": true,
+          "mute": false,
+          "volume": 0.9155413138017853,
+          "mediaVolume": 0.061036087586785685,
+          "paused": false
+        },
+        "speakers": [
+          {
+            "kind": "outdoor",
+            "visible": true,
+            "diameter": 0.390800703885624,
+            "scale": 2.101079053148516,
+            "opacity": 0.16975943848920214,
+            "minScale": 1.2682525291537023,
+            "minOpacity": 0.0016999766275680468
+          }
+        ],
+        "frames": 93
+      },
+      "musicHigh": {
+        "audio": {
+          "source": 4,
+          "music": true,
+          "mute": false,
+          "volume": 0.9155413138017853,
+          "mediaVolume": 0.9155413138017853,
+          "paused": false
+        },
+        "speakers": [
+          {
+            "kind": "outdoor",
+            "visible": true,
+            "diameter": 0.660634220998563,
+            "scale": 3.551796887089048,
+            "opacity": 0.3064780790797489,
+            "minScale": 2.144699221724693,
+            "minOpacity": 0.003129227947835443
+          }
+        ],
+        "frames": 96
+      },
+      "visibility": [
+        {
+          "kind": "outdoor",
+          "clear": 16,
+          "total": 16
+        }
+      ],
+      "status": "passed"
+    },
+    {
+      "id": 15,
+      "type": "garage",
+      "name": "Garage & Ateliers",
+      "count": 1,
+      "tv": false,
+      "low": {
+        "audio": {
+          "source": 1,
+          "music": false,
+          "mute": false,
+          "volume": 0.061036087586785685,
+          "mediaVolume": 0.15259021896696423,
+          "paused": false
+        },
+        "speakers": [
+          {
+            "kind": "workshop",
+            "visible": true,
+            "diameter": 0.39083005135466325,
+            "scale": 2.101236835240125,
+            "opacity": 0.16975692524504538,
+            "minScale": 1.268673281413929,
+            "minOpacity": 0.0015999810629515549
+          }
+        ],
+        "frames": 95
+      },
+      "high": {
+        "audio": {
+          "source": 1,
+          "music": false,
+          "mute": false,
+          "volume": 0.9155413138017853,
+          "mediaVolume": 0.15259021896696423,
+          "paused": false
+        },
+        "speakers": [
+          {
+            "kind": "workshop",
+            "visible": true,
+            "diameter": 0.6606176836453915,
+            "scale": 3.5517079765881263,
+            "opacity": 0.3064712435999253,
+            "minScale": 2.1442546691951163,
+            "minOpacity": 0.0031894032522845023
+          }
+        ],
+        "frames": 94
+      },
+      "musicLow": {
+        "audio": {
+          "source": 4,
+          "music": true,
+          "mute": false,
+          "volume": 0.9155413138017853,
+          "mediaVolume": 0.061036087586785685,
+          "paused": false
+        },
+        "speakers": [
+          {
+            "kind": "workshop",
+            "visible": true,
+            "diameter": 0.3908691813162945,
+            "scale": 2.1014472113779274,
+            "opacity": 0.16975791679694524,
+            "minScale": 1.2683577172144958,
+            "minOpacity": 0.00146665277595654
+          }
+        ],
+        "frames": 94
+      },
+      "musicHigh": {
+        "audio": {
+          "source": 4,
+          "music": true,
+          "mute": false,
+          "volume": 0.9155413138017853,
+          "mediaVolume": 0.9155413138017853,
+          "paused": false
+        },
+        "speakers": [
+          {
+            "kind": "workshop",
+            "visible": true,
+            "diameter": 0.6607334451268908,
+            "scale": 3.552330350144574,
+            "opacity": 0.30647299825143726,
+            "minScale": 2.1439879376931996,
+            "minOpacity": 0.0027681736350299063
+          }
+        ],
+        "frames": 94
+      },
+      "visibility": [
+        {
+          "kind": "workshop",
+          "clear": 12,
+          "total": 16
+        }
+      ],
+      "status": "passed"
+    },
+    {
+      "id": 16,
+      "type": "golf",
+      "name": "Simulateur de golf",
+      "count": 2,
+      "tv": false,
+      "low": {
+        "audio": {
+          "source": 1,
+          "music": false,
+          "mute": false,
+          "volume": 0.061036087586785685,
+          "mediaVolume": 0.30518043793392846,
+          "paused": false
+        },
+        "speakers": [
+          {
+            "kind": "front",
+            "visible": true,
+            "diameter": 0.39080070388552396,
+            "scale": 2.1010790531479784,
+            "opacity": 0.1697562314871744,
+            "minScale": 1.2684103112449285,
+            "minOpacity": 0.0016999766279090992
+          },
+          {
+            "kind": "front",
+            "visible": true,
+            "diameter": 0.39032659903955796,
+            "scale": 2.098530102363215,
+            "opacity": 0.16975494110717004,
+            "minScale": 1.2660191425832725,
+            "minOpacity": 0.002384440705678125
+          }
+        ],
+        "frames": 98
+      },
+      "high": {
+        "audio": {
+          "source": 1,
+          "music": false,
+          "mute": false,
+          "volume": 0.9155413138017853,
+          "mediaVolume": 0.30518043793392846,
+          "paused": false
+        },
+        "speakers": [
+          {
+            "kind": "front",
+            "visible": true,
+            "diameter": 0.6605846089390937,
+            "scale": 3.551530155586525,
+            "opacity": 0.3064667358738002,
+            "minScale": 2.1437212061648805,
+            "minOpacity": 0.003309753489814032
+          },
+          {
+            "kind": "front",
+            "visible": true,
+            "diameter": 0.6597004453008198,
+            "scale": 3.546776587638816,
+            "opacity": 0.30646636728983095,
+            "minScale": 2.1386119961885375,
+            "minOpacity": 0.003221618727358676
+          }
+        ],
+        "frames": 98
+      },
+      "musicLow": {
+        "audio": {
+          "source": 4,
+          "music": true,
+          "mute": false,
+          "volume": 0.9155413138017853,
+          "mediaVolume": 0.061036087586785685,
+          "paused": false
+        },
+        "speakers": [
+          {
+            "kind": "front",
+            "visible": true,
+            "diameter": 0.3909376587470007,
+            "scale": 2.1018153696075306,
+            "opacity": 0.1697562314871743,
+            "minScale": 1.2683577172143286,
+            "minOpacity": 0.001233326153564766
+          },
+          {
+            "kind": "front",
+            "visible": true,
+            "diameter": 0.39119724067437694,
+            "scale": 2.103210971367618,
+            "opacity": 0.16975040299026786,
+            "minScale": 1.2650198559393888,
+            "minOpacity": 0.00034882205525798833
+          }
+        ],
+        "frames": 94
+      },
+      "musicHigh": {
+        "audio": {
+          "source": 4,
+          "music": true,
+          "mute": false,
+          "volume": 0.9155413138017853,
+          "mediaVolume": 0.9155413138017853,
+          "paused": false
+        },
+        "speakers": [
+          {
+            "kind": "front",
+            "visible": true,
+            "diameter": 0.6607499824799232,
+            "scale": 3.5524192606447484,
+            "opacity": 0.3064751723699085,
+            "minScale": 2.144610311223104,
+            "minOpacity": 0.0027079975353151947
+          },
+          {
+            "kind": "front",
+            "visible": true,
+            "diameter": 0.6598492814836273,
+            "scale": 3.5475767821700392,
+            "opacity": 0.30606721700903095,
+            "minScale": 2.1400345642765117,
+            "minOpacity": 0.004184404130230871
+          }
+        ],
+        "frames": 92
+      },
+      "visibility": [
+        {
+          "kind": "front",
+          "clear": 9,
+          "total": 16
+        },
+        {
+          "kind": "front",
+          "clear": 16,
+          "total": 16
+        }
+      ],
+      "status": "passed"
+    },
+    {
+      "id": 17,
+      "type": "technique",
+      "name": "Local technique",
+      "count": 0,
+      "tv": false,
+      "status": "not-applicable"
+    }
+  ],
+  "errors": [],
+  "initial": [
+    {
+      "id": 10,
+      "audio": {
+        "source": 0,
+        "music": true,
+        "mute": false,
+        "volume": 0.33569848172732125,
+        "mediaVolume": 0.33569848172732125,
+        "paused": false
+      },
+      "speakers": [
+        {
+          "kind": "corner",
+          "visible": true,
+          "diameter": 0.40430987665155893,
+          "scale": 2.173709014255693,
+          "opacity": 0.2001664272240635
+        },
+        {
+          "kind": "corner",
+          "visible": true,
+          "diameter": 0.4256177633734782,
+          "scale": 2.2882675450186998,
+          "opacity": 0.16235674784086127
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "audio": {
+        "source": 0,
+        "music": true,
+        "mute": false,
+        "volume": 0.45777065690089264,
+        "mediaVolume": 0.45777065690089264,
+        "paused": false
+      },
+      "speakers": [
+        {
+          "kind": "outdoor",
+          "visible": true,
+          "diameter": 0.4582900680933853,
+          "scale": 2.463925097276265,
+          "opacity": 0.18102367404150008
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "audio": {
+        "source": 0,
+        "music": true,
+        "mute": false,
+        "volume": 0.39673456931410694,
+        "mediaVolume": 0.39673456931410694,
+        "paused": false
+      },
+      "speakers": [
+        {
+          "kind": "outdoor",
+          "visible": true,
+          "diameter": 0.4598528782086343,
+          "scale": 2.4723273021969585,
+          "opacity": 0.12499534196240725
+        }
+      ]
+    }
+  ],
+  "reference": {
+    "audio": {
+      "source": 1,
+      "music": false,
+      "mute": false,
+      "volume": 0.9155413138017853,
+      "mediaVolume": 0.33569848172732125,
+      "paused": false
+    },
+    "speakers": [
+      {
+        "kind": "corner",
+        "visible": true,
+        "diameter": 0.5959731665340087,
+        "scale": 3.2041568093226274,
+        "opacity": 0.21509574310755358
+      },
+      {
+        "kind": "corner",
+        "visible": true,
+        "diameter": 0.6254515849959172,
+        "scale": 3.3626429300855767,
+        "opacity": 0.1271902918698792
+      }
+    ]
+  },
+  "performance": {
+    "fps": 56.82384607749845,
+    "metrics": {
+      "frames": 180,
+      "renderedFrames": 9754,
+      "medianMs": 24.266666666750098,
+      "p95Ms": 32.29999999998836,
+      "pixelRatio": 1.5,
+      "drawCalls": 115,
+      "triangles": 198778,
+      "zone": {
+        "x": 421.9111022949219,
+        "y": 70,
+        "w": 610.0888977050781,
+        "h": 706
+      },
+      "tv3D": {
+        "mode": "3d",
+        "version": "stadiums-1",
+        "width": 640,
+        "height": 360,
+        "programmes": 4,
+        "draws": 1448,
+        "currentKind": "film",
+        "venues": {
+          "race": {
+            "stands": 4,
+            "spectators": 650,
+            "staticDrawCalls": 3,
+            "instances": 3244
+          },
+          "football": {
+            "stands": 4,
+            "spectators": 1060,
+            "staticDrawCalls": 3,
+            "instances": 4836
+          },
+          "tennis": {
+            "stands": 4,
+            "spectators": 620,
+            "staticDrawCalls": 3,
+            "instances": 2864
+          }
+        }
+      }
+    }
+  },
+  "status": "passed",
+  "otherSupportErrors": [
+    "CH5: La bibliothèque WebXPanel n'est pas chargée.",
+    "Error: <path> attribute d: Expected number, \"… 8.2 3 21.4 11.7l43.3 75zM256 33…\".",
+    "CH5: La bibliothèque WebXPanel n'est pas chargée.",
+    "Error: <path> attribute d: Expected number, \"… 8.2 3 21.4 11.7l43.3 75zM256 33…\"."
+  ]
+}

@@ -1,0 +1,1904 @@
+{
+  "base": "https://crestrongui.vercel.app",
+  "baseline": false,
+  "viewport": {
+    "width": 1280,
+    "height": 800
+  },
+  "mode": "scene",
+  "checks": [
+    "Room 1 scene 51 1/0 follows feedback",
+    "Room 1 scene 52 1/0 follows feedback",
+    "Room 1 scene 53 1/0 follows feedback",
+    "Room 1 scene 54 1/0 follows feedback",
+    "Room 1 four distinct scenes 1/0",
+    "Room 1 scene 51 0/0 follows feedback",
+    "Room 1 scene 52 0/0 follows feedback",
+    "Room 1 scene 53 0/0 follows feedback",
+    "Room 1 scene 54 0/0 follows feedback",
+    "Room 1 four distinct scenes 0/0",
+    "Room 1 OFF is dark 0/0",
+    "Room 1 scene 51 1/1 follows feedback",
+    "Room 1 scene 52 1/1 follows feedback",
+    "Room 1 scene 53 1/1 follows feedback",
+    "Room 1 scene 54 1/1 follows feedback",
+    "Room 1 four distinct scenes 1/1",
+    "Room 1 OFF is dark 1/1",
+    "Room 1 scene 51 0/1 follows feedback",
+    "Room 1 scene 52 0/1 follows feedback",
+    "Room 1 scene 53 0/1 follows feedback",
+    "Room 1 scene 54 0/1 follows feedback",
+    "Room 1 four distinct scenes 0/1",
+    "Room 1 OFF is dark 0/1",
+    "Room 4 scene 51 1/0 follows feedback",
+    "Room 4 scene 52 1/0 follows feedback",
+    "Room 4 scene 53 1/0 follows feedback",
+    "Room 4 scene 54 1/0 follows feedback",
+    "Room 4 four distinct scenes 1/0",
+    "Room 4 scene 51 0/0 follows feedback",
+    "Room 4 scene 52 0/0 follows feedback",
+    "Room 4 scene 53 0/0 follows feedback",
+    "Room 4 scene 54 0/0 follows feedback",
+    "Room 4 four distinct scenes 0/0",
+    "Room 4 OFF is dark 0/0",
+    "Room 4 scene 51 1/1 follows feedback",
+    "Room 4 scene 52 1/1 follows feedback",
+    "Room 4 scene 53 1/1 follows feedback",
+    "Room 4 scene 54 1/1 follows feedback",
+    "Room 4 four distinct scenes 1/1",
+    "Room 4 OFF is dark 1/1",
+    "Room 4 scene 51 0/1 follows feedback",
+    "Room 4 scene 52 0/1 follows feedback",
+    "Room 4 scene 53 0/1 follows feedback",
+    "Room 4 scene 54 0/1 follows feedback",
+    "Room 4 four distinct scenes 0/1",
+    "Room 4 OFF is dark 0/1",
+    "TV 1 unobstructed, shades 0",
+    "TV 1 unobstructed, shades 1",
+    "TV 2 unobstructed, shades 0",
+    "TV 2 unobstructed, shades 1",
+    "TV 3 unobstructed, shades 0",
+    "TV 3 unobstructed, shades 1",
+    "TV 4 unobstructed, shades 0",
+    "TV 4 unobstructed, shades 1",
+    "TV 5 unobstructed, shades 0",
+    "TV 5 unobstructed, shades 1",
+    "TV 6 unobstructed, shades 0",
+    "TV 6 unobstructed, shades 1",
+    "TV 7 unobstructed, shades 0",
+    "TV 7 unobstructed, shades 1",
+    "TV 8 unobstructed, shades 0",
+    "TV 8 unobstructed, shades 1",
+    "TV 9 unobstructed, shades 0",
+    "TV 9 unobstructed, shades 1",
+    "TV 10 unobstructed, shades 0",
+    "TV 10 unobstructed, shades 1",
+    "TV 14 unobstructed, shades 0",
+    "TV 14 unobstructed, shades 1",
+    "No JavaScript or shader errors"
+  ],
+  "lighting": [
+    {
+      "id": 1,
+      "day": 1,
+      "closed": 0,
+      "join": 51,
+      "mean": 0.2809006392164256,
+      "state": {
+        "levels": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "displayed": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "off": true,
+        "navigation": {
+          "phase": "room",
+          "walls": 0,
+          "explosion": 1,
+          "camera": [
+            13.408586690164995,
+            16.45822891140812,
+            20.27788893784374
+          ],
+          "target": [
+            5,
+            8.4,
+            2.7600000000000002
+          ],
+          "moving": false,
+          "lamps": [
+            0,
+            0
+          ],
+          "day": 1
+        }
+      },
+      "feedback": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 1,
+      "day": 1,
+      "closed": 0,
+      "join": 52,
+      "mean": 0.3644527946576406,
+      "state": {
+        "levels": [
+          0.11999694819562066,
+          0,
+          0.30000762951094834,
+          0.2500038147554742,
+          0
+        ],
+        "displayed": [
+          0.11999694819562066,
+          0,
+          0.30000762951094834,
+          0.2500038147554742,
+          0
+        ],
+        "off": false,
+        "navigation": {
+          "phase": "room",
+          "walls": 0,
+          "explosion": 1,
+          "camera": [
+            13.408586690164995,
+            16.45822891140812,
+            20.27788893784374
+          ],
+          "target": [
+            5,
+            8.4,
+            2.7600000000000002
+          ],
+          "moving": false,
+          "lamps": [
+            12.924979018844892,
+            4.080073243305105
+          ],
+          "day": 1
+        }
+      },
+      "feedback": [
+        7864,
+        0,
+        19661,
+        16384,
+        0
+      ]
+    },
+    {
+      "id": 1,
+      "day": 1,
+      "closed": 0,
+      "join": 53,
+      "mean": 0.47048562575640407,
+      "state": {
+        "levels": [
+          0.5499961852445259,
+          0.8,
+          0.4500038147554742,
+          0.30000762951094834,
+          0
+        ],
+        "displayed": [
+          0.5499961852445259,
+          0.8,
+          0.4500038147554742,
+          0.30000762951094834,
+          0
+        ],
+        "off": false,
+        "navigation": {
+          "phase": "room",
+          "walls": 0,
+          "explosion": 1,
+          "camera": [
+            13.408586690164995,
+            16.45822891140812,
+            20.27788893784374
+          ],
+          "target": [
+            5,
+            8.4,
+            2.7600000000000002
+          ],
+          "moving": false,
+          "lamps": [
+            39.324895094224466,
+            29.220105287251087
+          ],
+          "day": 1
+        }
+      },
+      "feedback": [
+        36044,
+        52428,
+        29491,
+        19661,
+        0
+      ]
+    },
+    {
+      "id": 1,
+      "day": 1,
+      "closed": 0,
+      "join": 54,
+      "mean": 0.5341695365869317,
+      "state": {
+        "levels": [
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "displayed": [
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "off": false,
+        "navigation": {
+          "phase": "room",
+          "walls": 0,
+          "explosion": 1,
+          "camera": [
+            13.408586690164995,
+            16.45822891140812,
+            20.27788893784374
+          ],
+          "target": [
+            5,
+            8.4,
+            2.7600000000000002
+          ],
+          "moving": false,
+          "lamps": [
+            79.75000000000001,
+            53.1
+          ],
+          "day": 1
+        }
+      },
+      "feedback": [
+        65535,
+        65535,
+        65535,
+        65535,
+        65535
+      ]
+    },
+    {
+      "id": 1,
+      "day": 0,
+      "closed": 0,
+      "join": 51,
+      "mean": 0.00796031419585309,
+      "state": {
+        "levels": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "displayed": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "off": true,
+        "navigation": {
+          "phase": "room",
+          "walls": 0,
+          "explosion": 1,
+          "camera": [
+            13.408586690164995,
+            16.45822891140812,
+            20.27788893784374
+          ],
+          "target": [
+            5,
+            8.4,
+            2.7600000000000002
+          ],
+          "moving": false,
+          "lamps": [
+            0,
+            0
+          ],
+          "day": 1.027258451085184e-10
+        }
+      },
+      "feedback": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 1,
+      "day": 0,
+      "closed": 0,
+      "join": 52,
+      "mean": 0.1372680478668525,
+      "state": {
+        "levels": [
+          0.11999694819562066,
+          0,
+          0.30000762951094834,
+          0.2500038147554742,
+          0
+        ],
+        "displayed": [
+          0.11999694819562066,
+          0,
+          0.30000762951094834,
+          0.2500038147554742,
+          0
+        ],
+        "off": false,
+        "navigation": {
+          "phase": "room",
+          "walls": 0,
+          "explosion": 1,
+          "camera": [
+            13.408586690164995,
+            16.45822891140812,
+            20.27788893784374
+          ],
+          "target": [
+            5,
+            8.4,
+            2.7600000000000002
+          ],
+          "moving": false,
+          "lamps": [
+            12.924979018844892,
+            4.080073243305105
+          ],
+          "day": 1.5522158235334903e-17
+        }
+      },
+      "feedback": [
+        7864,
+        0,
+        19661,
+        16384,
+        0
+      ]
+    },
+    {
+      "id": 1,
+      "day": 0,
+      "closed": 0,
+      "join": 53,
+      "mean": 0.29016352425231506,
+      "state": {
+        "levels": [
+          0.5499961852445259,
+          0.8,
+          0.4500038147554742,
+          0.30000762951094834,
+          0
+        ],
+        "displayed": [
+          0.5499961852445259,
+          0.8,
+          0.4500038147554742,
+          0.30000762951094834,
+          0
+        ],
+        "off": false,
+        "navigation": {
+          "phase": "room",
+          "walls": 0,
+          "explosion": 1,
+          "camera": [
+            13.408586690164995,
+            16.45822891140812,
+            20.27788893784374
+          ],
+          "target": [
+            5,
+            8.4,
+            2.7600000000000002
+          ],
+          "moving": false,
+          "lamps": [
+            39.324895094224466,
+            29.220105287251087
+          ],
+          "day": 1.8909065502327894e-24
+        }
+      },
+      "feedback": [
+        36044,
+        52428,
+        29491,
+        19661,
+        0
+      ]
+    },
+    {
+      "id": 1,
+      "day": 0,
+      "closed": 0,
+      "join": 54,
+      "mean": 0.37641523035430363,
+      "state": {
+        "levels": [
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "displayed": [
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "off": false,
+        "navigation": {
+          "phase": "room",
+          "walls": 0,
+          "explosion": 1,
+          "camera": [
+            13.408586690164995,
+            16.45822891140812,
+            20.27788893784374
+          ],
+          "target": [
+            5,
+            8.4,
+            2.7600000000000002
+          ],
+          "moving": false,
+          "lamps": [
+            79.75000000000001,
+            53.1
+          ],
+          "day": 2.4079092534485695e-31
+        }
+      },
+      "feedback": [
+        65535,
+        65535,
+        65535,
+        65535,
+        65535
+      ]
+    },
+    {
+      "id": 1,
+      "day": 1,
+      "closed": 1,
+      "join": 51,
+      "mean": 0.1117849912891846,
+      "state": {
+        "levels": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "displayed": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "off": true,
+        "navigation": {
+          "phase": "room",
+          "walls": 0,
+          "explosion": 1,
+          "camera": [
+            13.408586690164995,
+            16.45822891140812,
+            20.27788893784374
+          ],
+          "target": [
+            5,
+            8.4,
+            2.7600000000000002
+          ],
+          "moving": false,
+          "lamps": [
+            0,
+            0
+          ],
+          "day": 1.3988515397213183e-41
+        }
+      },
+      "feedback": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 1,
+      "day": 1,
+      "closed": 1,
+      "join": 52,
+      "mean": 0.24215281492919927,
+      "state": {
+        "levels": [
+          0.11999694819562066,
+          0,
+          0.30000762951094834,
+          0.2500038147554742,
+          0
+        ],
+        "displayed": [
+          0.11999694819562066,
+          0,
+          0.30000762951094834,
+          0.2500038147554742,
+          0
+        ],
+        "off": false,
+        "navigation": {
+          "phase": "room",
+          "walls": 0,
+          "explosion": 1,
+          "camera": [
+            13.408586690164995,
+            16.45822891140812,
+            20.27788893784374
+          ],
+          "target": [
+            5,
+            8.4,
+            2.7600000000000002
+          ],
+          "moving": false,
+          "lamps": [
+            12.924979018844892,
+            4.080073243305105
+          ],
+          "day": 6.199417254563322e-49
+        }
+      },
+      "feedback": [
+        7864,
+        0,
+        19661,
+        16384,
+        0
+      ]
+    },
+    {
+      "id": 1,
+      "day": 1,
+      "closed": 1,
+      "join": 53,
+      "mean": 0.3982006286479505,
+      "state": {
+        "levels": [
+          0.5499961852445259,
+          0.8,
+          0.4500038147554742,
+          0.30000762951094834,
+          0
+        ],
+        "displayed": [
+          0.5499961852445259,
+          0.8,
+          0.4500038147554742,
+          0.30000762951094834,
+          0
+        ],
+        "off": false,
+        "navigation": {
+          "phase": "room",
+          "walls": 0,
+          "explosion": 1,
+          "camera": [
+            13.408586690164995,
+            16.45822891140812,
+            20.27788893784374
+          ],
+          "target": [
+            5,
+            8.4,
+            2.7600000000000002
+          ],
+          "moving": false,
+          "lamps": [
+            39.324895094224466,
+            29.220105287251087
+          ],
+          "day": 2.3197942235712434e-56
+        }
+      },
+      "feedback": [
+        36044,
+        52428,
+        29491,
+        19661,
+        0
+      ]
+    },
+    {
+      "id": 1,
+      "day": 1,
+      "closed": 1,
+      "join": 54,
+      "mean": 0.4874892701880952,
+      "state": {
+        "levels": [
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "displayed": [
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "off": false,
+        "navigation": {
+          "phase": "room",
+          "walls": 0,
+          "explosion": 1,
+          "camera": [
+            13.408586690164995,
+            16.45822891140812,
+            20.27788893784374
+          ],
+          "target": [
+            5,
+            8.4,
+            2.7600000000000002
+          ],
+          "moving": false,
+          "lamps": [
+            79.75000000000001,
+            53.1
+          ],
+          "day": 7.07339836703913e-64
+        }
+      },
+      "feedback": [
+        65535,
+        65535,
+        65535,
+        65535,
+        65535
+      ]
+    },
+    {
+      "id": 1,
+      "day": 0,
+      "closed": 1,
+      "join": 51,
+      "mean": 0.007810265465363509,
+      "state": {
+        "levels": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "displayed": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "off": true,
+        "navigation": {
+          "phase": "room",
+          "walls": 0,
+          "explosion": 1,
+          "camera": [
+            13.408586690164995,
+            16.45822891140812,
+            20.27788893784374
+          ],
+          "target": [
+            5,
+            8.4,
+            2.7600000000000002
+          ],
+          "moving": false,
+          "lamps": [
+            0,
+            0
+          ],
+          "day": 7.162546309553912e-74
+        }
+      },
+      "feedback": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 1,
+      "day": 0,
+      "closed": 1,
+      "join": 52,
+      "mean": 0.13819734611826368,
+      "state": {
+        "levels": [
+          0.11999694819562066,
+          0,
+          0.30000762951094834,
+          0.2500038147554742,
+          0
+        ],
+        "displayed": [
+          0.11999694819562066,
+          0,
+          0.30000762951094834,
+          0.2500038147554742,
+          0
+        ],
+        "off": false,
+        "navigation": {
+          "phase": "room",
+          "walls": 0,
+          "explosion": 1,
+          "camera": [
+            13.408586690164995,
+            16.45822891140812,
+            20.27788893784374
+          ],
+          "target": [
+            5,
+            8.4,
+            2.7600000000000002
+          ],
+          "moving": false,
+          "lamps": [
+            12.924979018844892,
+            4.080073243305105
+          ],
+          "day": 1.1106620723850209e-80
+        }
+      },
+      "feedback": [
+        7864,
+        0,
+        19661,
+        16384,
+        0
+      ]
+    },
+    {
+      "id": 1,
+      "day": 0,
+      "closed": 1,
+      "join": 53,
+      "mean": 0.2942462052437539,
+      "state": {
+        "levels": [
+          0.5499961852445259,
+          0.8,
+          0.4500038147554742,
+          0.30000762951094834,
+          0
+        ],
+        "displayed": [
+          0.5499961852445259,
+          0.8,
+          0.4500038147554742,
+          0.30000762951094834,
+          0
+        ],
+        "off": false,
+        "navigation": {
+          "phase": "room",
+          "walls": 0,
+          "explosion": 1,
+          "camera": [
+            13.408586690164995,
+            16.45822891140812,
+            20.27788893784374
+          ],
+          "target": [
+            5,
+            8.4,
+            2.7600000000000002
+          ],
+          "moving": false,
+          "lamps": [
+            39.324895094224466,
+            29.220105287251087
+          ],
+          "day": 1.3891758376696525e-87
+        }
+      },
+      "feedback": [
+        36044,
+        52428,
+        29491,
+        19661,
+        0
+      ]
+    },
+    {
+      "id": 1,
+      "day": 0,
+      "closed": 1,
+      "join": 54,
+      "mean": 0.3835385888907294,
+      "state": {
+        "levels": [
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "displayed": [
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "off": false,
+        "navigation": {
+          "phase": "room",
+          "walls": 0,
+          "explosion": 1,
+          "camera": [
+            13.408586690164995,
+            16.45822891140812,
+            20.27788893784374
+          ],
+          "target": [
+            5,
+            8.4,
+            2.7600000000000002
+          ],
+          "moving": false,
+          "lamps": [
+            79.75000000000001,
+            53.1
+          ],
+          "day": 1.8195991615643284e-94
+        }
+      },
+      "feedback": [
+        65535,
+        65535,
+        65535,
+        65535,
+        65535
+      ]
+    },
+    {
+      "id": 4,
+      "day": 1,
+      "closed": 0,
+      "join": 51,
+      "mean": 0.2732661693000666,
+      "state": {
+        "levels": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "displayed": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "off": true,
+        "navigation": {
+          "phase": "room",
+          "walls": 0,
+          "explosion": 1,
+          "camera": [
+            9.653015040920685,
+            21.73622274754899,
+            16.09961466858476
+          ],
+          "target": [
+            3.25,
+            15.6,
+            2.7600000000000002
+          ],
+          "moving": false,
+          "lamps": [
+            0,
+            0
+          ],
+          "day": 0.9999999999571384
+        }
+      },
+      "feedback": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 4,
+      "day": 1,
+      "closed": 0,
+      "join": 52,
+      "mean": 0.4157474252316809,
+      "state": {
+        "levels": [
+          0.11999694819562066,
+          0,
+          0.30000762951094834,
+          0.2500038147554742,
+          0
+        ],
+        "displayed": [
+          0.11999694819562066,
+          0,
+          0.30000762951094834,
+          0.2500038147554742,
+          0
+        ],
+        "off": false,
+        "navigation": {
+          "phase": "room",
+          "walls": 0,
+          "explosion": 1,
+          "camera": [
+            9.653015040920685,
+            21.73622274754899,
+            16.09961466858476
+          ],
+          "target": [
+            3.25,
+            15.6,
+            2.7600000000000002
+          ],
+          "moving": false,
+          "lamps": [
+            12.924979018844892,
+            4.080073243305105
+          ],
+          "day": 1
+        }
+      },
+      "feedback": [
+        7864,
+        0,
+        19661,
+        16384,
+        0
+      ]
+    },
+    {
+      "id": 4,
+      "day": 1,
+      "closed": 0,
+      "join": 53,
+      "mean": 0.5511416654968417,
+      "state": {
+        "levels": [
+          0.5499961852445259,
+          0.8,
+          0.4500038147554742,
+          0.30000762951094834,
+          0
+        ],
+        "displayed": [
+          0.5499961852445259,
+          0.8,
+          0.4500038147554742,
+          0.30000762951094834,
+          0
+        ],
+        "off": false,
+        "navigation": {
+          "phase": "room",
+          "walls": 0,
+          "explosion": 1,
+          "camera": [
+            9.653015040920685,
+            21.73622274754899,
+            16.09961466858476
+          ],
+          "target": [
+            3.25,
+            15.6,
+            2.7600000000000002
+          ],
+          "moving": false,
+          "lamps": [
+            39.324895094224466,
+            29.220105287251087
+          ],
+          "day": 1
+        }
+      },
+      "feedback": [
+        36044,
+        52428,
+        29491,
+        19661,
+        0
+      ]
+    },
+    {
+      "id": 4,
+      "day": 1,
+      "closed": 0,
+      "join": 54,
+      "mean": 0.6226827106784555,
+      "state": {
+        "levels": [
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "displayed": [
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "off": false,
+        "navigation": {
+          "phase": "room",
+          "walls": 0,
+          "explosion": 1,
+          "camera": [
+            9.653015040920685,
+            21.73622274754899,
+            16.09961466858476
+          ],
+          "target": [
+            3.25,
+            15.6,
+            2.7600000000000002
+          ],
+          "moving": false,
+          "lamps": [
+            79.75000000000001,
+            53.1
+          ],
+          "day": 1
+        }
+      },
+      "feedback": [
+        65535,
+        65535,
+        65535,
+        65535,
+        65535
+      ]
+    },
+    {
+      "id": 4,
+      "day": 0,
+      "closed": 0,
+      "join": 51,
+      "mean": 0.0026697875101948437,
+      "state": {
+        "levels": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "displayed": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "off": true,
+        "navigation": {
+          "phase": "room",
+          "walls": 0,
+          "explosion": 1,
+          "camera": [
+            9.653015040920685,
+            21.73622274754899,
+            16.09961466858476
+          ],
+          "target": [
+            3.25,
+            15.6,
+            2.7600000000000002
+          ],
+          "moving": false,
+          "lamps": [
+            0,
+            0
+          ],
+          "day": 1.5097189739222757e-10
+        }
+      },
+      "feedback": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 4,
+      "day": 0,
+      "closed": 0,
+      "join": 52,
+      "mean": 0.252943323212915,
+      "state": {
+        "levels": [
+          0.11999694819562066,
+          0,
+          0.30000762951094834,
+          0.2500038147554742,
+          0
+        ],
+        "displayed": [
+          0.11999694819562066,
+          0,
+          0.30000762951094834,
+          0.2500038147554742,
+          0
+        ],
+        "off": false,
+        "navigation": {
+          "phase": "room",
+          "walls": 0,
+          "explosion": 1,
+          "camera": [
+            9.653015040920685,
+            21.73622274754899,
+            16.09961466858476
+          ],
+          "target": [
+            3.25,
+            15.6,
+            2.7600000000000002
+          ],
+          "moving": false,
+          "lamps": [
+            12.924979018844892,
+            4.080073243305105
+          ],
+          "day": 2.2077944775640088e-17
+        }
+      },
+      "feedback": [
+        7864,
+        0,
+        19661,
+        16384,
+        0
+      ]
+    },
+    {
+      "id": 4,
+      "day": 0,
+      "closed": 0,
+      "join": 53,
+      "mean": 0.44586783400070396,
+      "state": {
+        "levels": [
+          0.5499961852445259,
+          0.8,
+          0.4500038147554742,
+          0.30000762951094834,
+          0
+        ],
+        "displayed": [
+          0.5499961852445259,
+          0.8,
+          0.4500038147554742,
+          0.30000762951094834,
+          0
+        ],
+        "off": false,
+        "navigation": {
+          "phase": "room",
+          "walls": 0,
+          "explosion": 1,
+          "camera": [
+            9.653015040920685,
+            21.73622274754899,
+            16.09961466858476
+          ],
+          "target": [
+            3.25,
+            15.6,
+            2.7600000000000002
+          ],
+          "moving": false,
+          "lamps": [
+            39.324895094224466,
+            29.220105287251087
+          ],
+          "day": 3.533945394185489e-24
+        }
+      },
+      "feedback": [
+        36044,
+        52428,
+        29491,
+        19661,
+        0
+      ]
+    },
+    {
+      "id": 4,
+      "day": 0,
+      "closed": 0,
+      "join": 54,
+      "mean": 0.5376381439759108,
+      "state": {
+        "levels": [
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "displayed": [
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "off": false,
+        "navigation": {
+          "phase": "room",
+          "walls": 0,
+          "explosion": 1,
+          "camera": [
+            9.653015040920685,
+            21.73622274754899,
+            16.09961466858476
+          ],
+          "target": [
+            3.25,
+            15.6,
+            2.7600000000000002
+          ],
+          "moving": false,
+          "lamps": [
+            79.75000000000001,
+            53.1
+          ],
+          "day": 5.1203506142682935e-31
+        }
+      },
+      "feedback": [
+        65535,
+        65535,
+        65535,
+        65535,
+        65535
+      ]
+    },
+    {
+      "id": 4,
+      "day": 1,
+      "closed": 1,
+      "join": 51,
+      "mean": 0.03971717652904858,
+      "state": {
+        "levels": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "displayed": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "off": true,
+        "navigation": {
+          "phase": "room",
+          "walls": 0,
+          "explosion": 1,
+          "camera": [
+            9.653015040920685,
+            21.73622274754899,
+            16.09961466858476
+          ],
+          "target": [
+            3.25,
+            15.6,
+            2.7600000000000002
+          ],
+          "moving": false,
+          "lamps": [
+            0,
+            0
+          ],
+          "day": 4.5460617293070063e-41
+        }
+      },
+      "feedback": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 4,
+      "day": 1,
+      "closed": 1,
+      "join": 52,
+      "mean": 0.2891961008042955,
+      "state": {
+        "levels": [
+          0.11999694819562066,
+          0,
+          0.30000762951094834,
+          0.2500038147554742,
+          0
+        ],
+        "displayed": [
+          0.11999694819562066,
+          0,
+          0.30000762951094834,
+          0.2500038147554742,
+          0
+        ],
+        "off": false,
+        "navigation": {
+          "phase": "room",
+          "walls": 0,
+          "explosion": 1,
+          "camera": [
+            9.653015040920685,
+            21.73622274754899,
+            16.09961466858476
+          ],
+          "target": [
+            3.25,
+            15.6,
+            2.7600000000000002
+          ],
+          "moving": false,
+          "lamps": [
+            12.924979018844892,
+            4.080073243305105
+          ],
+          "day": 4.159461314242991e-48
+        }
+      },
+      "feedback": [
+        7864,
+        0,
+        19661,
+        16384,
+        0
+      ]
+    },
+    {
+      "id": 4,
+      "day": 1,
+      "closed": 1,
+      "join": 53,
+      "mean": 0.4893148247531004,
+      "state": {
+        "levels": [
+          0.5499961852445259,
+          0.8,
+          0.4500038147554742,
+          0.30000762951094834,
+          0
+        ],
+        "displayed": [
+          0.5499961852445259,
+          0.8,
+          0.4500038147554742,
+          0.30000762951094834,
+          0
+        ],
+        "off": false,
+        "navigation": {
+          "phase": "room",
+          "walls": 0,
+          "explosion": 1,
+          "camera": [
+            9.653015040920685,
+            21.73622274754899,
+            16.09961466858476
+          ],
+          "target": [
+            3.25,
+            15.6,
+            2.7600000000000002
+          ],
+          "moving": false,
+          "lamps": [
+            39.324895094224466,
+            29.220105287251087
+          ],
+          "day": 3.281090322219665e-55
+        }
+      },
+      "feedback": [
+        36044,
+        52428,
+        29491,
+        19661,
+        0
+      ]
+    },
+    {
+      "id": 4,
+      "day": 1,
+      "closed": 1,
+      "join": 54,
+      "mean": 0.5871087126874192,
+      "state": {
+        "levels": [
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "displayed": [
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "off": false,
+        "navigation": {
+          "phase": "room",
+          "walls": 0,
+          "explosion": 1,
+          "camera": [
+            9.653015040920685,
+            21.73622274754899,
+            16.09961466858476
+          ],
+          "target": [
+            3.25,
+            15.6,
+            2.7600000000000002
+          ],
+          "moving": false,
+          "lamps": [
+            79.75000000000001,
+            53.1
+          ],
+          "day": 3.285120811215021e-62
+        }
+      },
+      "feedback": [
+        65535,
+        65535,
+        65535,
+        65535,
+        65535
+      ]
+    },
+    {
+      "id": 4,
+      "day": 0,
+      "closed": 1,
+      "join": 51,
+      "mean": 0.00243087350062236,
+      "state": {
+        "levels": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "displayed": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "off": true,
+        "navigation": {
+          "phase": "room",
+          "walls": 0,
+          "explosion": 1,
+          "camera": [
+            9.653015040920685,
+            21.73622274754899,
+            16.09961466858476
+          ],
+          "target": [
+            3.25,
+            15.6,
+            2.7600000000000002
+          ],
+          "moving": false,
+          "lamps": [
+            0,
+            0
+          ],
+          "day": 4.1649327108213524e-72
+        }
+      },
+      "feedback": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 4,
+      "day": 0,
+      "closed": 1,
+      "join": 52,
+      "mean": 0.2518884546095946,
+      "state": {
+        "levels": [
+          0.11999694819562066,
+          0,
+          0.30000762951094834,
+          0.2500038147554742,
+          0
+        ],
+        "displayed": [
+          0.11999694819562066,
+          0,
+          0.30000762951094834,
+          0.2500038147554742,
+          0
+        ],
+        "off": false,
+        "navigation": {
+          "phase": "room",
+          "walls": 0,
+          "explosion": 1,
+          "camera": [
+            9.653015040920685,
+            21.73622274754899,
+            16.09961466858476
+          ],
+          "target": [
+            3.25,
+            15.6,
+            2.7600000000000002
+          ],
+          "moving": false,
+          "lamps": [
+            12.924979018844892,
+            4.080073243305105
+          ],
+          "day": 7.161809580650154e-79
+        }
+      },
+      "feedback": [
+        7864,
+        0,
+        19661,
+        16384,
+        0
+      ]
+    },
+    {
+      "id": 4,
+      "day": 0,
+      "closed": 1,
+      "join": 53,
+      "mean": 0.45201613132633445,
+      "state": {
+        "levels": [
+          0.5499961852445259,
+          0.8,
+          0.4500038147554742,
+          0.30000762951094834,
+          0
+        ],
+        "displayed": [
+          0.5499961852445259,
+          0.8,
+          0.4500038147554742,
+          0.30000762951094834,
+          0
+        ],
+        "off": false,
+        "navigation": {
+          "phase": "room",
+          "walls": 0,
+          "explosion": 1,
+          "camera": [
+            9.653015040920685,
+            21.73622274754899,
+            16.09961466858476
+          ],
+          "target": [
+            3.25,
+            15.6,
+            2.7600000000000002
+          ],
+          "moving": false,
+          "lamps": [
+            39.324895094224466,
+            29.220105287251087
+          ],
+          "day": 9.764959037070685e-86
+        }
+      },
+      "feedback": [
+        36044,
+        52428,
+        29491,
+        19661,
+        0
+      ]
+    },
+    {
+      "id": 4,
+      "day": 0,
+      "closed": 1,
+      "join": 54,
+      "mean": 0.5497934684229332,
+      "state": {
+        "levels": [
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "displayed": [
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "off": false,
+        "navigation": {
+          "phase": "room",
+          "walls": 0,
+          "explosion": 1,
+          "camera": [
+            9.653015040920685,
+            21.73622274754899,
+            16.09961466858476
+          ],
+          "target": [
+            3.25,
+            15.6,
+            2.7600000000000002
+          ],
+          "moving": false,
+          "lamps": [
+            79.75000000000001,
+            53.1
+          ],
+          "day": 1.2904963714672467e-92
+        }
+      },
+      "feedback": [
+        65535,
+        65535,
+        65535,
+        65535,
+        65535
+      ]
+    }
+  ],
+  "screens": [
+    {
+      "id": 1,
+      "closed": 0,
+      "clear": 273,
+      "total": 273,
+      "blocked": []
+    },
+    {
+      "id": 1,
+      "closed": 1,
+      "clear": 273,
+      "total": 273,
+      "blocked": []
+    },
+    {
+      "id": 2,
+      "closed": 0,
+      "clear": 273,
+      "total": 273,
+      "blocked": []
+    },
+    {
+      "id": 2,
+      "closed": 1,
+      "clear": 273,
+      "total": 273,
+      "blocked": []
+    },
+    {
+      "id": 3,
+      "closed": 0,
+      "clear": 273,
+      "total": 273,
+      "blocked": []
+    },
+    {
+      "id": 3,
+      "closed": 1,
+      "clear": 273,
+      "total": 273,
+      "blocked": []
+    },
+    {
+      "id": 4,
+      "closed": 0,
+      "clear": 273,
+      "total": 273,
+      "blocked": []
+    },
+    {
+      "id": 4,
+      "closed": 1,
+      "clear": 273,
+      "total": 273,
+      "blocked": []
+    },
+    {
+      "id": 5,
+      "closed": 0,
+      "clear": 273,
+      "total": 273,
+      "blocked": []
+    },
+    {
+      "id": 5,
+      "closed": 1,
+      "clear": 273,
+      "total": 273,
+      "blocked": []
+    },
+    {
+      "id": 6,
+      "closed": 0,
+      "clear": 273,
+      "total": 273,
+      "blocked": []
+    },
+    {
+      "id": 6,
+      "closed": 1,
+      "clear": 273,
+      "total": 273,
+      "blocked": []
+    },
+    {
+      "id": 7,
+      "closed": 0,
+      "clear": 273,
+      "total": 273,
+      "blocked": []
+    },
+    {
+      "id": 7,
+      "closed": 1,
+      "clear": 273,
+      "total": 273,
+      "blocked": []
+    },
+    {
+      "id": 8,
+      "closed": 0,
+      "clear": 273,
+      "total": 273,
+      "blocked": []
+    },
+    {
+      "id": 8,
+      "closed": 1,
+      "clear": 273,
+      "total": 273,
+      "blocked": []
+    },
+    {
+      "id": 9,
+      "closed": 0,
+      "clear": 273,
+      "total": 273,
+      "blocked": []
+    },
+    {
+      "id": 9,
+      "closed": 1,
+      "clear": 273,
+      "total": 273,
+      "blocked": []
+    },
+    {
+      "id": 10,
+      "closed": 0,
+      "clear": 273,
+      "total": 273,
+      "blocked": []
+    },
+    {
+      "id": 10,
+      "closed": 1,
+      "clear": 273,
+      "total": 273,
+      "blocked": []
+    },
+    {
+      "id": 14,
+      "closed": 0,
+      "clear": 273,
+      "total": 273,
+      "blocked": []
+    },
+    {
+      "id": 14,
+      "closed": 1,
+      "clear": 273,
+      "total": 273,
+      "blocked": []
+    }
+  ],
+  "errors": [],
+  "status": "passed"
+}

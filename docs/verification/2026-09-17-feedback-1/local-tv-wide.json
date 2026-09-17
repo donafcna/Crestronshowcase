@@ -1,0 +1,193 @@
+{
+  "base": "http://127.0.0.1:4211",
+  "baseline": false,
+  "viewport": {
+    "width": 1920,
+    "height": 1080
+  },
+  "mode": "scene",
+  "checks": [
+    "TV 1 unobstructed, shades 0",
+    "TV 1 unobstructed, shades 1",
+    "TV 2 unobstructed, shades 0",
+    "TV 2 unobstructed, shades 1",
+    "TV 3 unobstructed, shades 0",
+    "TV 3 unobstructed, shades 1",
+    "TV 4 unobstructed, shades 0",
+    "TV 4 unobstructed, shades 1",
+    "TV 5 unobstructed, shades 0",
+    "TV 5 unobstructed, shades 1",
+    "TV 6 unobstructed, shades 0",
+    "TV 6 unobstructed, shades 1",
+    "TV 7 unobstructed, shades 0",
+    "TV 7 unobstructed, shades 1",
+    "TV 8 unobstructed, shades 0",
+    "TV 8 unobstructed, shades 1",
+    "TV 9 unobstructed, shades 0",
+    "TV 9 unobstructed, shades 1",
+    "TV 10 unobstructed, shades 0",
+    "TV 10 unobstructed, shades 1",
+    "TV 14 unobstructed, shades 0",
+    "TV 14 unobstructed, shades 1",
+    "No JavaScript or shader errors"
+  ],
+  "lighting": [],
+  "screens": [
+    {
+      "id": 1,
+      "closed": 0,
+      "clear": 273,
+      "total": 273,
+      "blocked": []
+    },
+    {
+      "id": 1,
+      "closed": 1,
+      "clear": 273,
+      "total": 273,
+      "blocked": []
+    },
+    {
+      "id": 2,
+      "closed": 0,
+      "clear": 273,
+      "total": 273,
+      "blocked": []
+    },
+    {
+      "id": 2,
+      "closed": 1,
+      "clear": 273,
+      "total": 273,
+      "blocked": []
+    },
+    {
+      "id": 3,
+      "closed": 0,
+      "clear": 273,
+      "total": 273,
+      "blocked": []
+    },
+    {
+      "id": 3,
+      "closed": 1,
+      "clear": 273,
+      "total": 273,
+      "blocked": []
+    },
+    {
+      "id": 4,
+      "closed": 0,
+      "clear": 273,
+      "total": 273,
+      "blocked": []
+    },
+    {
+      "id": 4,
+      "closed": 1,
+      "clear": 273,
+      "total": 273,
+      "blocked": []
+    },
+    {
+      "id": 5,
+      "closed": 0,
+      "clear": 273,
+      "total": 273,
+      "blocked": []
+    },
+    {
+      "id": 5,
+      "closed": 1,
+      "clear": 273,
+      "total": 273,
+      "blocked": []
+    },
+    {
+      "id": 6,
+      "closed": 0,
+      "clear": 273,
+      "total": 273,
+      "blocked": []
+    },
+    {
+      "id": 6,
+      "closed": 1,
+      "clear": 273,
+      "total": 273,
+      "blocked": []
+    },
+    {
+      "id": 7,
+      "closed": 0,
+      "clear": 273,
+      "total": 273,
+      "blocked": []
+    },
+    {
+      "id": 7,
+      "closed": 1,
+      "clear": 273,
+      "total": 273,
+      "blocked": []
+    },
+    {
+      "id": 8,
+      "closed": 0,
+      "clear": 273,
+      "total": 273,
+      "blocked": []
+    },
+    {
+      "id": 8,
+      "closed": 1,
+      "clear": 273,
+      "total": 273,
+      "blocked": []
+    },
+    {
+      "id": 9,
+      "closed": 0,
+      "clear": 273,
+      "total": 273,
+      "blocked": []
+    },
+    {
+      "id": 9,
+      "closed": 1,
+      "clear": 273,
+      "total": 273,
+      "blocked": []
+    },
+    {
+      "id": 10,
+      "closed": 0,
+      "clear": 273,
+      "total": 273,
+      "blocked": []
+    },
+    {
+      "id": 10,
+      "closed": 1,
+      "clear": 273,
+      "total": 273,
+      "blocked": []
+    },
+    {
+      "id": 14,
+      "closed": 0,
+      "clear": 273,
+      "total": 273,
+      "blocked": []
+    },
+    {
+      "id": 14,
+      "closed": 1,
+      "clear": 273,
+      "total": 273,
+      "blocked": []
+    }
+  ],
+  "errors": [],
+  "status": "passed"
+}

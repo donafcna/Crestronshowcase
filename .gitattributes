@@ -1,0 +1,3 @@
+# Preserve the original bytes of archived references and test evidence.
+docs/reprise-codex/2026-09-16/claude_*.md -text
+docs/verification/2026-09-17-feedback-1/*.json -text
