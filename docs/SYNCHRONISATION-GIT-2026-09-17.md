@@ -28,3 +28,12 @@ Aucun changement de branche de travail, aucune remise à zéro et aucun écrasem
 Dépendances, builds, CH5Z/CPZ/LPZ, résultats internes de compilation SIMPL, archives ZIP dupliquées, QR générés et dates de build ne sont pas ajoutés par cette sauvegarde des sources. Les sorties temporaires `Claude outputs/` (environ 1,6 Go, essentiellement essais et captures intermédiaires) sont exclues par `.gitignore`. Les preuves utiles sont copiées dans `docs/verification/` avec contrôle SHA-256 ; aucun original local n'est supprimé.
 
 Cette sauvegarde couvre les sources, consignes, contexte et preuves sélectionnées ; ce n'est pas une image intégrale du disque ni une mise en service matérielle.
+
+
+## 17/09/2026 — sauvegarde complète avant pause demandée par Donatien
+
+Pause explicite en attendant le rétablissement du quota de tokens. Dernier lot site publié et vérifié : `74cd4a41`, preuves `f0cee4d9` (156 contrôles publics réussis). La demande F1 reste uniquement en TODO ; aucun nouveau travail à lancer pendant cette pause.
+
+Tous les écarts suivis et fichiers nouveaux non ignorés du dépôt sont sauvegardés dans `backup/crestron-local-2026-09-17`, commit `0ca2b6c47d948466cbb8829ee77f6d7dd1e5f988`, poussé et vérifié. Cet instantané inclut cette fois le CH5Z local, les QR et dates/versions générés déjà suivis, le document backend C#, les autosauvegardes SIMPL et les suppressions locales. Il conserve aussi l'historique de la sauvegarde précédente. Aucune validation ni mise en service matérielle n'est impliquée.
+
+Le dossier de travail reste sur main ; ses écarts matériels restent visibles et leur contenu est désormais enregistré dans la branche de sauvegarde. Ne pas les effacer ni les confondre avec de nouveaux travaux à effectuer. Les dépendances et fichiers temporaires ignorés restent locaux ; sources et preuves utiles sont sur GitHub.
