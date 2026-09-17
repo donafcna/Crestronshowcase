@@ -1,11 +1,11 @@
 {
-  "genere": "2026-09-06T15:54:04.298Z",
+  "genere": "2026-09-15T14:11:25.608Z",
   "base": "https://192.168.1.200/villaftv/index.html",
   "ipidBase": "0x10",
   "pieces": [
     {
       "id": 1,
-      "nom": "Salle de Jeux",
+      "nom": "Salle de jeux",
       "icone": "🎮",
       "ipId": "0x11",
       "url": "https://192.168.1.200/villaftv/index.html?ipId=0x11&room=1",
@@ -14,7 +14,7 @@
     },
     {
       "id": 2,
-      "nom": "Chambre Maman",
+      "nom": "Chambre maman",
       "icone": "🛏️",
       "ipId": "0x12",
       "url": "https://192.168.1.200/villaftv/index.html?ipId=0x12&room=2",
@@ -23,7 +23,7 @@
     },
     {
       "id": 3,
-      "nom": "Chambre Papa",
+      "nom": "Chambre papa",
       "icone": "🛏️",
       "ipId": "0x13",
       "url": "https://192.168.1.200/villaftv/index.html?ipId=0x13&room=3",
@@ -41,7 +41,7 @@
     },
     {
       "id": 5,
-      "nom": "Chambre Amis",
+      "nom": "Chambre amis",
       "icone": "🛏️",
       "ipId": "0x15",
       "url": "https://192.168.1.200/villaftv/index.html?ipId=0x15&room=5",
@@ -68,7 +68,7 @@
     },
     {
       "id": 8,
-      "nom": "Home Cinéma",
+      "nom": "Home cinéma",
       "icone": "🎬",
       "ipId": "0x18",
       "url": "https://192.168.1.200/villaftv/index.html?ipId=0x18&room=8",
@@ -86,7 +86,7 @@
     },
     {
       "id": 10,
-      "nom": "Suite Invités",
+      "nom": "Suite invités",
       "icone": "🚪",
       "ipId": "0x1A",
       "url": "https://192.168.1.200/villaftv/index.html?ipId=0x1A&room=10",
@@ -95,7 +95,7 @@
     },
     {
       "id": 11,
-      "nom": "Terrasse & Jardin",
+      "nom": "Terrasse & jardin",
       "icone": "🌿",
       "ipId": "0x1B",
       "url": "https://192.168.1.200/villaftv/index.html?ipId=0x1B&room=11",
@@ -104,7 +104,7 @@
     },
     {
       "id": 12,
-      "nom": "Piscine & Spa",
+      "nom": "Piscine & spa",
       "icone": "🏊",
       "ipId": "0x1C",
       "url": "https://192.168.1.200/villaftv/index.html?ipId=0x1C&room=12",
@@ -113,7 +113,7 @@
     },
     {
       "id": 13,
-      "nom": "Sauna & Hammam",
+      "nom": "Sauna & hammam",
       "icone": "🧖",
       "ipId": "0x1D",
       "url": "https://192.168.1.200/villaftv/index.html?ipId=0x1D&room=13",
@@ -122,7 +122,7 @@
     },
     {
       "id": 14,
-      "nom": "Pool House",
+      "nom": "Pool house",
       "icone": "🏖️",
       "ipId": "0x1E",
       "url": "https://192.168.1.200/villaftv/index.html?ipId=0x1E&room=14",
@@ -131,7 +131,7 @@
     },
     {
       "id": 15,
-      "nom": "Garage & Ateliers",
+      "nom": "Garage & ateliers",
       "icone": "🚗",
       "ipId": "0x1F",
       "url": "https://192.168.1.200/villaftv/index.html?ipId=0x1F&room=15",

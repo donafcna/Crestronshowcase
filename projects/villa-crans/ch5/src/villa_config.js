@@ -3628,4 +3628,5 @@ window.villaConfigEmbedded = {
       "youtubeRecherche": "football highlights"
     }
   }
-};
+}
+;
