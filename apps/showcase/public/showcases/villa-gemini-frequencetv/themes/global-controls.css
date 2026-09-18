@@ -73,3 +73,13 @@ body#app-body #global-control-overlay button[onclick*="Global"] {
     min-width: 44px !important;
     min-height: 44px !important;
 }
+
+/* Smartphone (lot traductions 18.09.2026) : trois scénarios par ligne, libellés longs en DE / ES
+   (« FROSTSCHUTZ », « ALLE SCHLIESSEN ») — marges internes et corps réduits au niveau du composant,
+   jamais de libellé tronqué. Dalle, iPad et XPanel gardent 0.85rem. */
+@media (max-width: 480px) {
+    body#app-body #global-control-overlay ch5-button[customClass~="global-command"] .cb-btn {
+        padding: 0 3px !important;
+        font-size: 0.8rem !important;
+    }
+}

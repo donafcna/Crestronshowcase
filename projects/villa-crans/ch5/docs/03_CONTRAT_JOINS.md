@@ -1,5 +1,21 @@
 # 03 — Contrat de joins v3
 
+## Extension scènes d'éclairage + 20 circuits — v4.1 du 18/09/2026
+
+**Pourquoi.** Les scènes enregistrées (💾 / appui long) vivaient dans le `localStorage` de l'écran : invisibles des autres supports, perdues au reset, et au rappel le C# ne repositionnait plus les circuits dès que le slot 2 avait remonté un niveau (« le slot 2 fait foi »). Le C# devient le dépositaire des scènes.
+
+| Signal | Type / join | Sens | Rôle |
+|---|---|---|---|
+| `Scenes.Enregistrement` | sériel **421** (global) | GUI → C# | `{"piece":n,"scene":1..4,"circuits":[20 niveaux 0-65535]}` ; le C# écrit `/user/scenes_<pièce>.json`. **Jamais recopié vers le slot 2.** |
+| `Scenes.Memorisee` | digitaux **421-424** (global) | C# → GUI | scène 1..4 mémorisée pour la pièce affichée par cet écran (marqueur 💾). Posé par le C#, pas par le slot 2. |
+| `Eclairage.Circuit` | analogiques **71-90** (global) | ↔ | 20 circuits (10 avant). Routage v4 inchangé : a10 puis bloc pièce `+71..+90`. |
+| `Rxx_Circuit_N_fb#` | bloc pièce a`+71..+90` | C# → slot 2 | niveau imposé (scène ou curseur) : c'est ce que le gradateur doit suivre |
+| `Rxx_Circuit_N_Actual#` | bloc pièce a`+71..+90` | slot 2 → C# | niveau réel remonté par le gradateur |
+| `Rxx_Lighting_SceneN_fb` | bloc pièce d`+21..+24` | C# → slot 2 | **état tenu** de la scène active de la pièce (le global `Lighting_SceneN_fb` reste une impulsion de commande avec a10) |
+| `Rxx_Lighting_SceneN_Actual` | bloc pièce d`+21..+24` | slot 2 → C# | scène imposée par le slot 2 (clavier), facultatif |
+
+Règles C# : au rappel explicite d'une scène (bouton du GUI ou `_Actual` du slot 2), les niveaux sont **imposés** : scène mémorisée d'abord, sinon table `niveaux` du `villa_config.json`. « Le slot 2 fait foi » ne s'applique plus qu'au démarrage. Une scène enregistrée devient la scène active de la pièce. Générateur : bloc éclairage câblé pour chaque pièce `intersystem` dont `eclairages.actif` n'est pas `false`, sur `circuits.nombre` circuits (20 max). Limites : 30 pièces inchangé (blocs de 100 joins) ; le JSON accepte désormais **20 circuits par pièce**. Les positions de moteurs ne font plus partie des scènes (elles n'atteignaient jamais le matériel).
+
 ## Extension wellness v4 — 17/09/2026
 
 Sauna/hammam : d620–627 ; a/s62–65. Cibles et mesures indépendantes du HVAC, sorties de pièce a+34..37 et s+44..47 (s+34 HVAC préservé). Détails : `projects/villa-crans/ch5/docs/WELLNESS-2026-09-17.md`. Générer une copie SMW puis compiler le LPZ avant recette Debugger. Aucun déploiement matériel réalisé.
@@ -107,17 +123,20 @@ Direction : *entrée* (→) = panel/slot 2 → slot 1 · *sortie* (←) = slot 1
 | 250 | `Config.Resync` | → | Demande de (ré)envoi de la configuration |
 | 261 | `Systeme.MuteDalle` | ↔ | Mute du volume matériel de la dalle TSW |
 | 301-312 | `Alarme.Partition` | ↔ | Partitions 1..4, triplets Armer/Partiel/Désarmer (301,302,303 = partition 1) |
-| 401 | `Global.Eclairage.ToutAllumer` | → | |
-| 402 | `Global.Eclairage.ToutEteindre` | → | |
-| 403 | `Global.Eclairage.ModeEco` | → | |
-| 404 | `Global.Stores.ToutOuvrir` | → | |
-| 405 | `Global.Stores.ToutFermer` | → | |
+| 401 | `Global.Eclairage.ToutAllumer` | ↔ | Retour d'état posé par le C# (sélection globale, v4 17/09) |
+| 402 | `Global.Eclairage.ToutEteindre` | ↔ | idem |
+| 403 | `Global.Eclairage.ModeEco` | ↔ | idem |
+| 404 | `Global.Stores.ToutOuvrir` | ↔ | idem |
+| 405 | `Global.Stores.ToutFermer` | ↔ | idem |
 | 406 | `Global.Stores.PositionInter` | → | ⚠️ implémenté à vide côté C# (log seul) |
-| 407 | `Global.CVC.Confort` | → | |
-| 408 | `Global.CVC.Nuit` | → | |
-| 409 | `Global.CVC.HorsGel` | → | |
+| 407 | `Global.CVC.Confort` | ↔ | idem |
+| 408 | `Global.CVC.Nuit` | ↔ | idem |
+| 409 | `Global.CVC.HorsGel` | ↔ | idem |
 | 410 | `Global.Vacances.Activer` | ↔ | |
 | 411 | `Global.Vacances.Desactiver` | ↔ | |
+
+
+> **Feedback des commandes globales (17/09/2026)** : les joins 401-405 et 407-409 n'avaient aucune entrée ; les boutons de la fenêtre Contrôle global ne restaient donc jamais verts. Le C# est la source de ce retour d'état (une seule commande retenue par famille, effacée par une action locale). Le slot 2 n'a rien à câbler pour cela.
 | 211-220 | `AV.Telecommande.AppleTV` | → | Apple TV : up, down, left, right, select, back, home, play/pause, rew, fwd |
 | 500-527 | `AV.Telecommande.SkyQ` | → | Sky Q, 28 touches (offsets ci-dessous) |
 | 530-557 | `AV.Telecommande.IPTV` | → | Box IPTV, mêmes offsets que Sky Q |
@@ -222,7 +241,7 @@ l'utilise pas (il passe par un join global, voir § 4).
 | +52 | `Piece.<id>.AV.Volume` | ↔ | 52 (0..65535) | 1052 | 2452 |
 | +53 | `Piece.<id>.AV.SourceAudio` | ← | 53 (0 = off, 1..4 = audio vidéo, 5 = musique) | 1053 | 2453 |
 | +54 | `Piece.<id>.Media.Volume` | ↔ | 254 (0..65535) | 1054 | 2454 |
-| +71..+80 | `Piece.<id>.Eclairage.Circuit` | ↔ | 71-80 (circuits 1..10) | 1071-1080 | 2471-2480 |
+| +71..+90 | `Piece.<id>.Eclairage.Circuit` | ↔ | 71-90 (circuits 1..20, v4.1) | 1071-1090 | 2471-2490 |
 
 ### Sériels
 
@@ -308,7 +327,7 @@ Pour chaque join **logique** écrit dans le HTML :
 | ana 51 | `AV.SourceActive` | analogique partagé | → **base+51** |
 | ana 52 | `AV.Volume` | analogique partagé | → **base+52** |
 | ana 53 | `AV.SourceAudio` | analogique partagé | → **base+53** |
-| ana 71-80 | `Eclairage.Circuit` 1..10 | analogiques partagés | → **base+71..+80** |
+| ana 71-90 | `Eclairage.Circuit` 1..20 (v4.1) | analogiques partagés | → **base+71..+90** |
 | ana 240, 250, 260 | `Systeme.*` / `Config.ChunkAck` | global | **inchangé** (global) |
 | ana 254 | `Media.Volume` | émis par le GUI, **hors contrat** | → **base+54**, entré au contrat |
 | ser 10 | `Piece.Nom` | nom de la pièce active | → **base+10** (nom du bloc de la pièce affichée) |

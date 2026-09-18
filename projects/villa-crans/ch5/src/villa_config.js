@@ -2,10 +2,10 @@ window.villaConfigEmbedded = {
   "meta": {
     "projet": "Villa Crans",
     "integrateur": "Fréquence TV",
-    "version": "1.0.183",
+    "version": "1.0.186",
     "mode": "deploiement",
     "modeDescription": "'deploiement' = GUI livré chez le client : les feedbacks viennent du CP4 (C# slot 1 + SIMPL slot 2) via js/webxpanel.js / CrComLib, aucune simulation. 'showcase' = copie pour le site crestrongui.vercel.app : posé UNIQUEMENT par scripts/sync-villa-crans.py du dépôt Crestronshowcase, feedbacks simulés dans le navigateur (js/local-feedback.js), curseur de démo géré par le site (jamais par le GUI). Ne jamais mettre 'showcase' ici. Voir docs/08_WORKFLOW_SHOWCASE.md.",
-    "tracesConsole": false,
+    "tracesConsole": true,
     "tracesConsoleDescription": "false = le programme du slot 1 n'affiche en console que ses messages de diagnostic (démarrage, configuration, EISC, arrivée d'un périphérique, erreurs) et la GUI ne recopie plus ses console.log sur le sériel 100. Passer à true pour retrouver la trace complète des actions utilisateur pendant une mise au point ; un progreset suffit, aucune recompilation.",
     "dateModification": "2026-09-17",
     "langueReference": "fr",
@@ -21,7 +21,7 @@ window.villaConfigEmbedded = {
       "2) L'envoyer dans la conversation Claude qui complète la section 'traductions' pour toutes les langues du GUI.",
       "3) Le déployer sur le CP4 (deploy.ps1 le copie dans /user/villa_config.json).",
       "4) Au démarrage, le CP4 lit ce fichier et le transmet au CH5 qui modèle le GUI en conséquence.",
-      "RÈGLES : maximum 4 scènes d'éclairage par pièce. Maximum 10 circuits par pièce. Maximum 6 moteurs par pièce.",
+      "RÈGLES : maximum 4 scènes d'éclairage par pièce. Maximum 20 circuits par pièce. Maximum 6 moteurs par pièce.",
       "Un nom laissé vide (\"\") reprend le nom par défaut indiqué dans 'valeursParDefaut'.",
       "Un pilotage avec \"actif\": false masque toute la section correspondante dans le GUI pour cette pièce.",
       "ICONES : chaque piece a un champ icone (emoji affiche dans le menu de gauche). Choisir dans valeursParDefaut.iconesDisponibles et copier-coller."
@@ -2479,7 +2479,7 @@ window.villaConfigEmbedded = {
     }
   },
   "contrat": {
-    "version": "v4 (15.09.2026) — joins de pilotage globaux, routage SIMPL par buffers",
+    "version": "v4.1 (18.09.2026) — scènes d'éclairage mémorisées par le C#, 20 circuits par pièce, sur la base v4 (15.09.2026 : joins de pilotage globaux, routage SIMPL par buffers)",
     "alarme": {
       "description": "Centrale d'alarme de la villa. Le code de reference n'est plus code en dur ni dans le JavaScript du panel ni dans le C# : le GUI envoie la saisie sur le serial 43, le C# la relaie telle quelle a l'EISC du slot 2 (serial 43) et attend le verdict de la vraie centrale (digital 44 = accepte, 45 = refuse). Si le slot 2 ne repond pas dans le delai ci-dessous, le C# tranche localement avec codeParDefaut.",
       "codeParDefaut": "1234",
@@ -2543,7 +2543,7 @@ window.villaConfigEmbedded = {
         "nombre": 4,
         "direction": "bidirectionnel",
         "eiscJoinDebut": 51,
-        "description": "Scenes d'eclairage 1..4 de la piece active + feedback (v2, ex-21-24)"
+        "description": "Scenes d'eclairage 1..4 de la piece active + feedback (v2, ex-21-24) — v4.1 : appui = impulsion vers le slot 2 (Lighting_SceneN_fb) ; l'état tenu est pousse par le C# sur le bloc piece +21..+24 (Rxx_Lighting_SceneN_fb) et aux ecrans sur 51-54"
       },
       {
         "contractName": "Eclairage.NiveauMaster",
@@ -2662,10 +2662,10 @@ window.villaConfigEmbedded = {
         "contractName": "Eclairage.Circuit",
         "type": "analog",
         "joinDebut": 71,
-        "nombre": 10,
+        "nombre": 20,
         "direction": "bidirectionnel",
         "eiscJoinDebut": 71,
-        "description": "Niveau des circuits d'éclairage 1..10 de la pièce active"
+        "description": "Niveau des circuits 1..20 de la pièce affichée (joins 71-90, contrat v4.1) ; routé sur le bloc pièce +71..+90"
       },
       {
         "contractName": "Moteur.Commande",
@@ -2870,6 +2870,21 @@ window.villaConfigEmbedded = {
         "direction": "entree",
         "eiscJoin": 420,
         "description": "Payload JSON de sauvegarde des presets globaux"
+      },
+      {
+        "contractName": "Scenes.Enregistrement",
+        "type": "serial",
+        "join": 421,
+        "direction": "entree",
+        "description": "v4.1 : 💾 / appui long sur une scene : le GUI envoie {\"piece\":n,\"scene\":1..4,\"circuits\":[20 niveaux 0-65535]} ; le C# l'enregistre dans /user/scenes_<piece>.json (jamais recopie vers le slot 2)"
+      },
+      {
+        "contractName": "Scenes.Memorisee",
+        "type": "digital",
+        "joinDebut": 421,
+        "nombre": 4,
+        "direction": "sortie",
+        "description": "v4.1 : scene 1..4 memorisee pour la piece affichee par l'ecran (marqueur 💾 du bouton) ; pose par le C#, pas par le slot 2"
       },
       {
         "contractName": "Systeme.PieceActiveDalle",
@@ -3211,7 +3226,7 @@ window.villaConfigEmbedded = {
           "offsetDebut": 21,
           "nombre": 4,
           "direction": "bidirectionnel",
-          "description": "Scènes éclairage 1..4 : commande depuis le slot 2 + feedback"
+          "description": "Scenes eclairage 1..4 : Rxx_Lighting_SceneN_fb = etat tenu par le C# (scene active) ; Rxx_Lighting_SceneN = scene imposee par le slot 2 (clavier)"
         },
         {
           "contractName": "Piece.<id>.CVC.ConsignePlus",
@@ -3298,9 +3313,9 @@ window.villaConfigEmbedded = {
           "contractName": "Piece.<id>.Eclairage.Circuit",
           "type": "analog",
           "offsetDebut": 71,
-          "nombre": 10,
+          "nombre": 20,
           "direction": "bidirectionnel",
-          "description": "Niveau des circuits 1..10"
+          "description": "Niveau des circuits 1..20 (v4.1). Rxx_Circuit_N_fb# = niveau impose par le C# (scene, curseur) ; Rxx_Circuit_N# = niveau reel remonte par le slot 2"
         },
         {
           "contractName": "Piece.<id>.CVC.TempActuelle",
@@ -3628,4 +3643,5 @@ window.villaConfigEmbedded = {
       "youtubeRecherche": "football highlights"
     }
   }
-};
+}
+;

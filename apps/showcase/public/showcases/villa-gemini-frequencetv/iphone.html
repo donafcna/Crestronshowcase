@@ -825,13 +825,13 @@
         </div>
         <div class="alarm-row" style="display: flex; gap: 8px; justify-content: space-between; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 10px; margin-top: 8px;">
             <button onclick="window.openAlarmModal()" style="flex: 1; height: 36px; background: rgba(239, 68, 68, 0.15); border: 1px solid #ef4444; color: #fca5a5; border-radius: 8px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px; font-size: 0.8rem; outline: none;">
-                🚨 Alarme
+                🚨 <span data-i18n="alarm">Alarme</span>
             </button>
             <button onclick="window.openCamerasModal()" style="flex: 1; height: 36px; background: rgba(59, 130, 246, 0.15); border: 1px solid #3b82f6; color: #93c5fd; border-radius: 8px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px; font-size: 0.8rem; outline: none;">
-                📷 Caméras
+                📷 <span data-i18n="cameras">Caméras</span>
             </button>
             <button onclick="window.openGlobalControlModal()" style="flex: 1; height: 36px; background: rgba(16, 185, 129, 0.15); border: 1px solid #10b981; color: #a7f3d0; border-radius: 8px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px; font-size: 0.8rem; outline: none;">
-                🌐 Global
+                🌐 <span data-i18n="global">Global</span>
             </button>
         </div>
     </div>
@@ -876,7 +876,7 @@
             <!-- Stores Rapides -->
             <div id="iphone-shades-rows" style="display: flex; flex-direction: column; gap: 6px;">
                 <div class="shade-control-row">
-                    <span class="shade-label">Volets Ext.</span>
+                    <span class="shade-label" data-tname="Volets Ext.">Volets Ext.</span>
                     <div style="display: flex; gap: 6px;">
                         <button class="shade-btn-mobile" onclick="pressDigital(61)">▲</button>
                         <button class="shade-btn-mobile" onclick="pressDigital(62)">■</button>
@@ -884,7 +884,7 @@
                     </div>
                 </div>
                 <div class="shade-control-row">
-                    <span class="shade-label">Rideaux</span>
+                    <span class="shade-label" data-tname="Rideaux">Rideaux</span>
                     <div style="display: flex; gap: 6px;">
                         <button class="shade-btn-mobile" onclick="pressDigital(64)">▲</button>
                         <button class="shade-btn-mobile" onclick="pressDigital(65)">■</button>
@@ -932,7 +932,7 @@
 
                 <!-- État de chauffe/clim -->
                 <div id="hvac-status" class="hvac-mode-val" style="background-color: rgba(255,255,255,0.03); border: 1px solid var(--border-color); padding: 8px 20px; border-radius: 20px; font-weight: bold; font-size: 0.95rem; text-transform: uppercase;">
-                    <span data-ch5-textcontent="33">--</span>
+                    <span>--</span>
                 </div>
 
                 <div class="hvac-controls" aria-label="Marche et ventilation">
@@ -940,7 +940,7 @@
                         <ch5-button label="ON" customClass="hvac-command" sendEventOnClick="610" receiveStateSelected="610" data-join="610"></ch5-button>
                         <ch5-button label="OFF" customClass="hvac-command" sendEventOnClick="611" receiveStateSelected="611" data-join="611"></ch5-button>
                     </div>
-                    <div class="hvac-caption">Ventilation</div>
+                    <div class="hvac-caption" data-i18n="ventilation">Ventilation</div>
                     <div class="hvac-row">
                         <ch5-button label="AUTO" customClass="hvac-command" sendEventOnClick="612" receiveStateSelected="612" data-join="612"></ch5-button>
                         <ch5-button label="1" customClass="hvac-command" sendEventOnClick="613" receiveStateSelected="613" data-join="613"></ch5-button>
@@ -1013,7 +1013,7 @@
                 <svg viewBox="0 0 352 512" style="width: 18px; height: 18px; fill: #eab308;"><path d="M176 0C78.8 0 0 78.8 0 176c0 53.2 23.3 101 60.1 133.9C90.2 338.2 112 379.7 112 424v16c0 17.7 14.3 32 32 32h64c17.7 0 32-14.3 32-32v-16c0-44.3 21.8-85.8 51.9-114.1C328.7 277 352 229.2 352 176 352 78.8 273.2 0 176 0zm74.8 285.5c-30.6 28.7-50.8 69.1-50.8 122.5v16h-48v-16c0-53.4-20.2-93.8-50.8-122.5C70.1 257.5 48 219.7 48 176c0-70.6 57.4-128 128-128s128 57.4 128 128c0 43.7-22.1 81.5-53.2 109.5z"/></svg>
                 <span data-i18n="circuits_title">Éclairages :</span> <span id="lights-room-title" style="color: #ffffff; margin-left: 5px;">Salon</span>
             </h3>
-            <button onclick="closeCircuitsModal()" style="height: 32px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 6px; cursor: pointer; font-weight: bold; padding: 0 10px; font-size: 0.8rem;" data-i18n="close">FERMER</button>
+            <button onclick="closeCircuitsModal()" style="height: 32px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 6px; cursor: pointer; font-weight: bold; padding: 0 10px; font-size: 0.8rem;" data-i18n="close_upper">FERMER</button>
         </div>
         <div id="circuits-container" class="overlay-content" style="flex: 1; overflow-y: auto; max-height: calc(100% - 150px);">
             <!-- Rempli dynamiquement -->
@@ -1036,7 +1036,7 @@
                 <svg viewBox="0 0 512 512" style="width: 18px; height: 18px; fill: #00b4c5;"><path d="M0 64C0 28.7 28.7 0 64 0H448c35.3 0 64 28.7 64 64V448c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V64zm64 64V224H224V128H64zm0 160V384H224V288H64zm384-160H288V224H448V128zm0 160H288V384H448V288z"/></svg>
                 <span data-i18n="motors_title">Stores :</span> <span id="motors-room-title" style="color: #ffffff; margin-left: 5px;">Salon</span>
             </h3>
-            <button onclick="closeMotorsModal()" style="height: 32px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 6px; cursor: pointer; font-weight: bold; padding: 0 10px; font-size: 0.8rem;" data-i18n="close">FERMER</button>
+            <button onclick="closeMotorsModal()" style="height: 32px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 6px; cursor: pointer; font-weight: bold; padding: 0 10px; font-size: 0.8rem;" data-i18n="close_upper">FERMER</button>
         </div>
         <div id="motors-container" class="overlay-content" style="flex: 1; overflow-y: auto; max-height: calc(100% - 175px);">
             <!-- Rempli dynamiquement -->
@@ -1236,7 +1236,7 @@
                     <span class="status-text" style="color: inherit;">Déconnecté</span>
                 </span>
             </div>
-            <button onclick="closeSettingsModal()" style="height: 32px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 6px; cursor: pointer; font-weight: bold; padding: 0 10px; font-size: 0.8rem;" data-i18n="close">FERMER</button>
+            <button onclick="closeSettingsModal()" style="height: 32px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 6px; cursor: pointer; font-weight: bold; padding: 0 10px; font-size: 0.8rem;" data-i18n="close_upper">FERMER</button>
         </div>
         <div class="overlay-content" style="gap: 15px;">
             <div>
@@ -1266,7 +1266,7 @@
             <h3 style="display: flex; align-items: center; gap: 8px; color: #f43f5e; margin: 0; font-size: 1.1rem; text-transform: uppercase;">
                 🔒 Admin Simplifié
             </h3>
-            <button onclick="closeAdminModal()" style="height: 32px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 6px; cursor: pointer; font-weight: bold; padding: 0 10px; font-size: 0.8rem;">FERMER</button>
+            <button onclick="closeAdminModal()" style="height: 32px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 6px; cursor: pointer; font-weight: bold; padding: 0 10px; font-size: 0.8rem;" data-i18n="close_upper">FERMER</button>
         </div>
         <div class="overlay-content" style="gap: 15px; overflow-y: auto;">
             <!-- Infos CPZ & CH5Z -->
@@ -1320,7 +1320,7 @@
             <h3 style="display: flex; align-items: center; gap: 8px; color: #8b5cf6; margin: 0; font-size: 1.1rem; text-transform: uppercase;">
                 ⚙️ <span id="source-control-title" style="color: inherit;">Source</span>
             </h3>
-            <button onclick="closeSourceControlModal()" style="height: 30px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 6px; cursor: pointer; font-weight: bold; padding: 0 10px; font-size: 0.8rem;">FERMER</button>
+            <button onclick="closeSourceControlModal()" style="height: 30px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 6px; cursor: pointer; font-weight: bold; padding: 0 10px; font-size: 0.8rem;" data-i18n="close_upper">FERMER</button>
         </div>
         <!-- Télécommande décodeur (Sky Q / Swisscom TV / IPTV) : LIVE·DVR·GUIDE·INFO·LAST, BACK·MENU·EXIT, D-pad, PG±, CH±, transport, couleurs -->
         <div id="remote-standard-layout" class="rc-layout" style="display: flex; align-items: center; justify-content: center; width: 100%; flex: 1; min-height: 0px;"><div class="rc-inner" style="display: flex; flex-direction: column; gap:21px; align-items: center;">
@@ -1448,7 +1448,7 @@
             <h3 style="display: flex; align-items: center; gap: 8px; color: #c084fc; margin: 0; font-size: 1.1rem; text-transform: uppercase;">
                 🎵 Musique
             </h3>
-            <button onclick="closeMediaPlayerModal()" style="height: 30px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 6px; cursor: pointer; font-weight: bold; padding: 0 10px; font-size: 0.8rem;">FERMER</button>
+            <button onclick="closeMediaPlayerModal()" style="height: 30px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 6px; cursor: pointer; font-weight: bold; padding: 0 10px; font-size: 0.8rem;" data-i18n="close_upper">FERMER</button>
         </div>
         
         <div style="display: flex; flex-direction: column; gap: 15px; align-items: center; width: 100%;">
@@ -1480,12 +1480,7 @@
                 <ch5-button label="⏯️" customClass="scene-btn" style="width: 60px; height: 42px;" sendEventOnClick="251" data-join="251"></ch5-button>
                 <ch5-button label="⏭️" customClass="scene-btn" style="width: 48px; height: 38px;" sendEventOnClick="252" data-join="252"></ch5-button>
             </div>
-            
-            <!-- Volume Slider -->
-            <div style="width: 100%; display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.02); padding: 8px 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); box-sizing: border-box;">
-                <span style="font-weight: bold; font-size: 0.8rem; color: var(--text-secondary); white-space: nowrap;">Vol :</span>
-                <ch5-slider class="volume-slider-mobile" min="0" max="65535" sendEventOnChange="254" receiveStateValue="254" style="flex: 1; margin: 0; padding: 0; height: 20px;" data-cjoin="254" data-vjoin="254"></ch5-slider>
-            </div>
+                <!-- 18.09.2026 : curseur « Volume musique » (join 254) retiré, doublon du volume de la pièce -->
         </div>
     </div>
 
@@ -1493,14 +1488,14 @@
     <div id="alarm-overlay" class="custom-overlay-panel" style="width: 96% !important; max-width: 440px !important; height: auto !important; max-height: 92% !important; padding: 15px; box-sizing: border-box;">
         <div class="overlay-header" style="margin-bottom: 12px;">
             <h3 style="display: flex; align-items: center; gap: 8px; color: #ef4444; margin: 0; font-size: 1.1rem; text-transform: uppercase;">
-                🚨 Sécurité
+                🚨 <span data-i18n="security_title">Sécurité</span>
             </h3>
-            <button onclick="closeAlarmModal()" style="height: 30px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 6px; cursor: pointer; font-weight: bold; padding: 0 10px; font-size: 0.8rem;">FERMER</button>
+            <button onclick="closeAlarmModal()" style="height: 30px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 6px; cursor: pointer; font-weight: bold; padding: 0 10px; font-size: 0.8rem;" data-i18n="close_upper">FERMER</button>
         </div>
         
         <!-- ÉCRAN 1: Clavier -->
         <div id="alarm-keypad-screen" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; width: 100%;">
-            <p style="margin: 0; font-size: 0.85rem; color: #94a3b8; font-weight: bold; text-align: center;">Entrez le code d'administration :</p>
+            <p style="margin: 0; font-size: 0.85rem; color: #94a3b8; font-weight: bold; text-align: center;" data-i18n="admin_code_prompt">Entrez le code d'administration :</p>
             <div id="alarm-code-box" style="background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; width: 240px; height: 62px; display: flex; align-items: center; justify-content: center; font-size: 2rem; font-family: monospace; letter-spacing: 6px; color: white;">
                 <span id="alarm-code-display"></span>
             </div>
@@ -1536,8 +1531,8 @@
                         <span id="alarm-part-1-status" style="font-size: 0.7rem; font-weight: bold; padding: 1px 6px; border-radius: 3px; background: rgba(16,185,129,0.1); color: #10b981;">DESACTIVÉE</span>
                     </div>
                     <div style="display: flex; gap: 4px;">
-                        <ch5-button label="ACTIVER" customClass="alarm-btn" sendEventOnClick="301" receiveStateSelected="301" style="height: 32px; flex: 1;" data-join="301" data-rjoin="301"></ch5-button>
-                        <ch5-button label="PARTIEL" customClass="alarm-btn" sendEventOnClick="302" receiveStateSelected="302" style="height: 32px; flex: 1;" data-join="302" data-rjoin="302"></ch5-button>
+                        <ch5-button label="ACTIVER" data-i18n="activate" customClass="alarm-btn" sendEventOnClick="301" receiveStateSelected="301" style="height: 32px; flex: 1;" data-join="301" data-rjoin="301"></ch5-button>
+                        <ch5-button label="PARTIEL" data-i18n="partial" customClass="alarm-btn" sendEventOnClick="302" receiveStateSelected="302" style="height: 32px; flex: 1;" data-join="302" data-rjoin="302"></ch5-button>
                         <ch5-button label="OFF" customClass="alarm-btn" sendEventOnClick="303" receiveStateSelected="303" style="height: 32px; flex: 1.2;" data-join="303" data-rjoin="303"></ch5-button>
                     </div>
                 </div>
@@ -1547,8 +1542,8 @@
                         <span id="alarm-part-2-status" style="font-size: 0.7rem; font-weight: bold; padding: 1px 6px; border-radius: 3px; background: rgba(16,185,129,0.1); color: #10b981;">DESACTIVÉE</span>
                     </div>
                     <div style="display: flex; gap: 4px;">
-                        <ch5-button label="ACTIVER" customClass="alarm-btn" sendEventOnClick="304" receiveStateSelected="304" style="height: 32px; flex: 1;" data-join="304" data-rjoin="304"></ch5-button>
-                        <ch5-button label="PARTIEL" customClass="alarm-btn" sendEventOnClick="305" receiveStateSelected="305" style="height: 32px; flex: 1;" data-join="305" data-rjoin="305"></ch5-button>
+                        <ch5-button label="ACTIVER" data-i18n="activate" customClass="alarm-btn" sendEventOnClick="304" receiveStateSelected="304" style="height: 32px; flex: 1;" data-join="304" data-rjoin="304"></ch5-button>
+                        <ch5-button label="PARTIEL" data-i18n="partial" customClass="alarm-btn" sendEventOnClick="305" receiveStateSelected="305" style="height: 32px; flex: 1;" data-join="305" data-rjoin="305"></ch5-button>
                         <ch5-button label="OFF" customClass="alarm-btn" sendEventOnClick="306" receiveStateSelected="306" style="height: 32px; flex: 1.2;" data-join="306" data-rjoin="306"></ch5-button>
                     </div>
                 </div>
@@ -1558,8 +1553,8 @@
                         <span id="alarm-part-3-status" style="font-size: 0.7rem; font-weight: bold; padding: 1px 6px; border-radius: 3px; background: rgba(16,185,129,0.1); color: #10b981;">DESACTIVÉE</span>
                     </div>
                     <div style="display: flex; gap: 4px;">
-                        <ch5-button label="ACTIVER" customClass="alarm-btn" sendEventOnClick="307" receiveStateSelected="307" style="height: 32px; flex: 1;" data-join="307" data-rjoin="307"></ch5-button>
-                        <ch5-button label="PARTIEL" customClass="alarm-btn" sendEventOnClick="308" receiveStateSelected="308" style="height: 32px; flex: 1;" data-join="308" data-rjoin="308"></ch5-button>
+                        <ch5-button label="ACTIVER" data-i18n="activate" customClass="alarm-btn" sendEventOnClick="307" receiveStateSelected="307" style="height: 32px; flex: 1;" data-join="307" data-rjoin="307"></ch5-button>
+                        <ch5-button label="PARTIEL" data-i18n="partial" customClass="alarm-btn" sendEventOnClick="308" receiveStateSelected="308" style="height: 32px; flex: 1;" data-join="308" data-rjoin="308"></ch5-button>
                         <ch5-button label="OFF" customClass="alarm-btn" sendEventOnClick="309" receiveStateSelected="309" style="height: 32px; flex: 1.2;" data-join="309" data-rjoin="309"></ch5-button>
                     </div>
                 </div>
@@ -1569,8 +1564,8 @@
                         <span id="alarm-part-4-status" style="font-size: 0.7rem; font-weight: bold; padding: 1px 6px; border-radius: 3px; background: rgba(16,185,129,0.1); color: #10b981;">DESACTIVÉE</span>
                     </div>
                     <div style="display: flex; gap: 4px;">
-                        <ch5-button label="ACTIVER" customClass="alarm-btn" sendEventOnClick="310" receiveStateSelected="310" style="height: 32px; flex: 1;" data-join="310" data-rjoin="310"></ch5-button>
-                        <ch5-button label="PARTIEL" customClass="alarm-btn" sendEventOnClick="311" receiveStateSelected="311" style="height: 32px; flex: 1;" data-join="311" data-rjoin="311"></ch5-button>
+                        <ch5-button label="ACTIVER" data-i18n="activate" customClass="alarm-btn" sendEventOnClick="310" receiveStateSelected="310" style="height: 32px; flex: 1;" data-join="310" data-rjoin="310"></ch5-button>
+                        <ch5-button label="PARTIEL" data-i18n="partial" customClass="alarm-btn" sendEventOnClick="311" receiveStateSelected="311" style="height: 32px; flex: 1;" data-join="311" data-rjoin="311"></ch5-button>
                         <ch5-button label="OFF" customClass="alarm-btn" sendEventOnClick="312" receiveStateSelected="312" style="height: 32px; flex: 1.2;" data-join="312" data-rjoin="312"></ch5-button>
                     </div>
                 </div>
@@ -1582,9 +1577,9 @@
     <div id="cameras-overlay" class="custom-overlay-panel" style="width: 96% !important; max-width: 440px !important; height: auto !important; max-height: 92% !important; padding: 15px; box-sizing: border-box; display: none; flex-direction: column;">
         <div class="overlay-header" style="margin-bottom: 12px;">
             <h3 style="display: flex; align-items: center; gap: 8px; color: #3b82f6; margin: 0; font-size: 1.1rem; text-transform: uppercase;">
-                📷 Caméras
+                📷 <span data-i18n="cameras">Caméras</span>
             </h3>
-            <button onclick="closeCamerasModal()" style="height: 30px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 6px; cursor: pointer; font-weight: bold; padding: 0 10px; font-size: 0.8rem;">FERMER</button>
+            <button onclick="closeCamerasModal()" style="height: 30px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 6px; cursor: pointer; font-weight: bold; padding: 0 10px; font-size: 0.8rem;" data-i18n="close_upper">FERMER</button>
         </div>
         
         <!-- Mosaïque de caméras empilées (défilement vertical sur iPhone) -->
@@ -1597,56 +1592,56 @@
     <div id="global-control-overlay" class="custom-overlay-panel" style="width: 96% !important; max-width: 440px !important; height: auto !important; max-height: 92% !important; padding: 15px; box-sizing: border-box; display: none; flex-direction: column;">
         <div class="overlay-header" style="margin-bottom: 12px;">
             <h3 style="display: flex; align-items: center; gap: 8px; color: #10b981; margin: 0; font-size: 1.1rem; text-transform: uppercase;">
-                🌐 Centralisation
+                🌐 <span data-i18n="central_title">Centralisation</span>
             </h3>
-            <button onclick="closeGlobalControlModal()" style="height: 30px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 6px; cursor: pointer; font-weight: bold; padding: 0 10px; font-size: 0.8rem;">FERMER</button>
+            <button onclick="closeGlobalControlModal()" style="height: 30px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 6px; cursor: pointer; font-weight: bold; padding: 0 10px; font-size: 0.8rem;" data-i18n="close_upper">FERMER</button>
         </div>
         
         <div style="display: flex; flex-direction: column; gap: 12px; overflow-y: auto; flex: 1; padding-right: 2px;">
             <!-- Éclairage Global -->
             <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 8px; padding: 10px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-                    <h4 style="margin: 0; font-size: 0.85rem; color: #eab308;">💡 Éclairage global</h4>
+                    <h4 style="margin: 0; font-size: 0.85rem; color: #eab308;">💡 <span data-i18n="global_lights">Éclairage global</span></h4>
                     <button onclick="window.openGlobalPresetCustomizer('lighting')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; cursor: pointer; outline: none; font-size: 0.75rem;"><svg class="gear-icon" viewBox="0 0 512 512" aria-hidden="true"><path d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6l-43.3 75c-3.2 8.7-12.2 13.9-21.4 11.7l-56.4-13.6c-15.6 12-33 21.6-51.7 28.5l-11.9 57.3c-2 9.7-10.5 16.7-20.5 16.7H220.4c-10 0-18.5-7-20.5-16.7l-11.9-57.3c-18.7-6.9-36.1-16.4-51.7-28.5l-56.4 13.6c-9.2 2.2-18.2-3-21.4-11.7l-43.3-75c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4c-1.1-8.3-1.7-16.8-1.7-25.4s.6-17.1 1.7-25.4L21.6 191.2c-6.9-6.2-9.6-15.9-6.4-24.6l43.3-75c3.2-8.7 12.2-13.9 21.4-11.7l56.4 13.6c15.6-12 33-21.6 51.7-28.5l11.9-57.3c2-9.7 10.5-16.7 20.5-16.7h72.8c10 0 18.5 7 20.5 16.7l11.9 57.3c18.7 6.9 36.1 16.4 51.7 28.5l56.4-13.6c9.2-2.2 18.2 3 21.4 11.7l43.3 75zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"/></svg></button>
                 </div>
                 <div style="display: flex; gap: 4px;">
-                    <ch5-button label="TOUT ALLUMER" customClass="scene-btn global-command" style="height: 32px; flex: 1;" sendEventOnClick="401" receiveStateSelected="401" data-rjoin="401" data-join="401"></ch5-button>
-                    <ch5-button label="MODE ÉCO" customClass="scene-btn global-command" style="height: 32px; flex: 1;" sendEventOnClick="403" receiveStateSelected="403" data-rjoin="403" data-join="403"></ch5-button>
-                    <ch5-button label="TOUT ÉTEINDRE" customClass="scene-btn global-command" style="height: 32px; flex: 1.2;" sendEventOnClick="402" receiveStateSelected="402" data-rjoin="402" data-join="402"></ch5-button>
+                    <ch5-button label="TOUT ALLUMER" data-i18n="all_on" customClass="scene-btn global-command" style="height: 32px; flex: 1;" sendEventOnClick="401" receiveStateSelected="401" data-rjoin="401" data-join="401"></ch5-button>
+                    <ch5-button label="MODE ÉCO" data-i18n="eco_mode" customClass="scene-btn global-command" style="height: 32px; flex: 1;" sendEventOnClick="403" receiveStateSelected="403" data-rjoin="403" data-join="403"></ch5-button>
+                    <ch5-button label="TOUT ÉTEINDRE" data-i18n="all_off" customClass="scene-btn global-command" style="height: 32px; flex: 1.2;" sendEventOnClick="402" receiveStateSelected="402" data-rjoin="402" data-join="402"></ch5-button>
                 </div>
             </div>
             <!-- Stores Globaux -->
             <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 8px; padding: 10px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-                    <h4 style="margin: 0; font-size: 0.85rem; color: #00b4c5;">↕️ Stores globaux</h4>
+                    <h4 style="margin: 0; font-size: 0.85rem; color: #00b4c5;">↕️ <span data-i18n="global_shades">Stores globaux</span></h4>
                     <button onclick="window.openGlobalPresetCustomizer('shades')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; cursor: pointer; outline: none; font-size: 0.75rem;"><svg class="gear-icon" viewBox="0 0 512 512" aria-hidden="true"><path d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6l-43.3 75c-3.2 8.7-12.2 13.9-21.4 11.7l-56.4-13.6c-15.6 12-33 21.6-51.7 28.5l-11.9 57.3c-2 9.7-10.5 16.7-20.5 16.7H220.4c-10 0-18.5-7-20.5-16.7l-11.9-57.3c-18.7-6.9-36.1-16.4-51.7-28.5l-56.4 13.6c-9.2 2.2-18.2-3-21.4-11.7l-43.3-75c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4c-1.1-8.3-1.7-16.8-1.7-25.4s.6-17.1 1.7-25.4L21.6 191.2c-6.9-6.2-9.6-15.9-6.4-24.6l43.3-75c3.2-8.7 12.2-13.9 21.4-11.7l56.4 13.6c15.6-12 33-21.6 51.7-28.5l11.9-57.3c2-9.7 10.5-16.7 20.5-16.7h72.8c10 0 18.5 7 20.5 16.7l11.9 57.3c18.7 6.9 36.1 16.4 51.7 28.5l56.4-13.6c9.2-2.2 18.2 3 21.4 11.7l43.3 75zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"/></svg></button>
                 </div>
                 <div style="display: flex; gap: 4px;">
-                    <ch5-button label="TOUT OUVRIR" customClass="scene-btn global-command" style="height: 32px; flex: 1;" sendEventOnClick="404" receiveStateSelected="404" data-rjoin="404" data-join="404"></ch5-button>
-                    <ch5-button label="TOUT FERMER" customClass="scene-btn global-command" style="height: 32px; flex: 1;" sendEventOnClick="405" receiveStateSelected="405" data-rjoin="405" data-join="405"></ch5-button>
+                    <ch5-button label="TOUT OUVRIR" data-i18n="open_all" customClass="scene-btn global-command" style="height: 32px; flex: 1;" sendEventOnClick="404" receiveStateSelected="404" data-rjoin="404" data-join="404"></ch5-button>
+                    <ch5-button label="TOUT FERMER" data-i18n="close_all" customClass="scene-btn global-command" style="height: 32px; flex: 1;" sendEventOnClick="405" receiveStateSelected="405" data-rjoin="405" data-join="405"></ch5-button>
                 </div>
             </div>
             <!-- CVC Global -->
             <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 8px; padding: 10px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-                    <h4 style="margin: 0; font-size: 0.85rem; color: #10b981;">❄️ Climatisation globale</h4>
+                    <h4 style="margin: 0; font-size: 0.85rem; color: #10b981;">❄️ <span data-i18n="global_hvac">Climatisation globale</span></h4>
                     <button onclick="window.openGlobalPresetCustomizer('hvac')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; cursor: pointer; outline: none; font-size: 0.75rem;"><svg class="gear-icon" viewBox="0 0 512 512" aria-hidden="true"><path d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6l-43.3 75c-3.2 8.7-12.2 13.9-21.4 11.7l-56.4-13.6c-15.6 12-33 21.6-51.7 28.5l-11.9 57.3c-2 9.7-10.5 16.7-20.5 16.7H220.4c-10 0-18.5-7-20.5-16.7l-11.9-57.3c-18.7-6.9-36.1-16.4-51.7-28.5l-56.4 13.6c-9.2 2.2-18.2-3-21.4-11.7l-43.3-75c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4c-1.1-8.3-1.7-16.8-1.7-25.4s.6-17.1 1.7-25.4L21.6 191.2c-6.9-6.2-9.6-15.9-6.4-24.6l43.3-75c3.2-8.7 12.2-13.9 21.4-11.7l56.4 13.6c15.6-12 33-21.6 51.7-28.5l11.9-57.3c2-9.7 10.5-16.7 20.5-16.7h72.8c10 0 18.5 7 20.5 16.7l11.9 57.3c18.7 6.9 36.1 16.4 51.7 28.5l56.4-13.6c9.2-2.2 18.2 3 21.4 11.7l43.3 75zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"/></svg></button>
                 </div>
                 <div style="display: flex; gap: 4px;">
-                    <ch5-button label="CONFORT" customClass="scene-btn global-command" style="height: 32px; flex: 1;" sendEventOnClick="407" receiveStateSelected="407" data-rjoin="407" data-join="407"></ch5-button>
-                    <ch5-button label="NUIT" customClass="scene-btn global-command" style="height: 32px; flex: 1;" sendEventOnClick="408" receiveStateSelected="408" data-rjoin="408" data-join="408"></ch5-button>
-                    <ch5-button label="HORS GEL" customClass="scene-btn global-command" style="height: 32px; flex: 1;" sendEventOnClick="409" receiveStateSelected="409" data-rjoin="409" data-join="409"></ch5-button>
+                    <ch5-button label="CONFORT" data-i18n="comfort" customClass="scene-btn global-command" style="height: 32px; flex: 1;" sendEventOnClick="407" receiveStateSelected="407" data-rjoin="407" data-join="407"></ch5-button>
+                    <ch5-button label="NUIT" data-i18n="night" customClass="scene-btn global-command" style="height: 32px; flex: 1;" sendEventOnClick="408" receiveStateSelected="408" data-rjoin="408" data-join="408"></ch5-button>
+                    <ch5-button label="HORS GEL" data-i18n="frost_guard" customClass="scene-btn global-command" style="height: 32px; flex: 1;" sendEventOnClick="409" receiveStateSelected="409" data-rjoin="409" data-join="409"></ch5-button>
                 </div>
             </div>
             <!-- Vacances -->
             <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 8px; padding: 10px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-                    <h4 style="margin: 0; font-size: 0.85rem; color: #fb7185;">✈️ Mode vacances</h4>
+                    <h4 style="margin: 0; font-size: 0.85rem; color: #fb7185;">✈️ <span data-i18n="vacation_mode">Mode vacances</span></h4>
                     <button onclick="window.openGlobalPresetCustomizer('vacation')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; cursor: pointer; outline: none; font-size: 0.75rem;"><svg class="gear-icon" viewBox="0 0 512 512" aria-hidden="true"><path d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6l-43.3 75c-3.2 8.7-12.2 13.9-21.4 11.7l-56.4-13.6c-15.6 12-33 21.6-51.7 28.5l-11.9 57.3c-2 9.7-10.5 16.7-20.5 16.7H220.4c-10 0-18.5-7-20.5-16.7l-11.9-57.3c-18.7-6.9-36.1-16.4-51.7-28.5l-56.4 13.6c-9.2 2.2-18.2-3-21.4-11.7l-43.3-75c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4c-1.1-8.3-1.7-16.8-1.7-25.4s.6-17.1 1.7-25.4L21.6 191.2c-6.9-6.2-9.6-15.9-6.4-24.6l43.3-75c3.2-8.7 12.2-13.9 21.4-11.7l56.4 13.6c15.6-12 33-21.6 51.7-28.5l11.9-57.3c2-9.7 10.5-16.7 20.5-16.7h72.8c10 0 18.5 7 20.5 16.7l11.9 57.3c18.7 6.9 36.1 16.4 51.7 28.5l56.4-13.6c9.2-2.2 18.2 3 21.4 11.7l43.3 75zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"/></svg></button>
                 </div>
                 <div style="display: flex; gap: 4px;">
-                    <ch5-button label="ACTIVER" customClass="scene-btn global-command" style="height: 32px; flex: 1;" sendEventOnClick="410" receiveStateSelected="410" data-join="410" data-rjoin="410"></ch5-button>
-                    <ch5-button label="DÉSACTIVER" customClass="scene-btn global-command" style="height: 32px; flex: 1.5;" sendEventOnClick="411" receiveStateSelected="411" data-join="411" data-rjoin="411"></ch5-button>
+                    <ch5-button label="ACTIVER" data-i18n="activate" customClass="scene-btn global-command" style="height: 32px; flex: 1;" sendEventOnClick="410" receiveStateSelected="410" data-join="410" data-rjoin="410"></ch5-button>
+                    <ch5-button label="DÉSACTIVER" data-i18n="deactivate" customClass="scene-btn global-command" style="height: 32px; flex: 1.5;" sendEventOnClick="411" receiveStateSelected="411" data-join="411" data-rjoin="411"></ch5-button>
                 </div>
             </div>
         </div>
@@ -1712,7 +1707,42 @@
                     weather_wind: "Vent",
                     weather_humidity: "Humidité",
                     news_title: "Actualités",
-                    video_title: "Vidéo domotique"
+                    video_title: "Vidéo domotique",
+                    alarm: "Alarme",
+                    cameras: "Caméras",
+                    global: "Global",
+                    security_title: "Sécurité",
+                    ventilation: "Ventilation",
+                    central_title: "Centralisation",
+                    global_lights: "Éclairage global",
+                    global_shades: "Stores globaux",
+                    global_hvac: "Climatisation globale",
+                    vacation_mode: "Mode vacances",
+                    all_on: "TOUT ALLUMER",
+                    all_off: "TOUT ÉTEINDRE",
+                    eco_mode: "MODE ÉCO",
+                    open_all: "TOUT OUVRIR",
+                    close_all: "TOUT FERMER",
+                    comfort: "CONFORT",
+                    night: "NUIT",
+                    frost_guard: "HORS GEL",
+                    activate: "ACTIVER",
+                    deactivate: "DÉSACTIVER",
+                    partial: "PARTIEL",
+                    close_upper: "FERMER",
+                    admin_code_prompt: "Entrez le code d'administration :",
+                    hvac_heat: "CHAUFFAGE",
+                    hvac_cool: "CLIMATISATION",
+                    hvac_off: "ARRÊT",
+                    preset_config_title: "Configuration du preset global",
+                    preset_select: "Sélectionnez le preset à configurer :",
+                    save_upper: "SAUVEGARDER",
+                    cancel_upper: "ANNULER",
+                    include: "Inclure",
+                    scene_saved_short: "enregistrée",
+                    scene_recalled_short: "rappelée",
+                    scene_activated_short: "activée",
+                    music_upper: "MUSIQUE"
                 },
                 en: {
                     audio_confirm_title: "Audio source",
@@ -1746,7 +1776,42 @@
                     weather_wind: "Wind",
                     weather_humidity: "Humidity",
                     news_title: "News",
-                    video_title: "Automation Video"
+                    video_title: "Automation Video",
+                    alarm: "Alarm",
+                    cameras: "Cameras",
+                    global: "Global",
+                    security_title: "Security",
+                    ventilation: "Fan",
+                    central_title: "Central control",
+                    global_lights: "Global lighting",
+                    global_shades: "Global shades",
+                    global_hvac: "Global climate",
+                    vacation_mode: "Vacation mode",
+                    all_on: "ALL ON",
+                    all_off: "ALL OFF",
+                    eco_mode: "ECO MODE",
+                    open_all: "OPEN ALL",
+                    close_all: "CLOSE ALL",
+                    comfort: "COMFORT",
+                    night: "NIGHT",
+                    frost_guard: "FROST GUARD",
+                    activate: "ACTIVATE",
+                    deactivate: "DEACTIVATE",
+                    partial: "PARTIAL",
+                    close_upper: "CLOSE",
+                    admin_code_prompt: "Enter the administration code:",
+                    hvac_heat: "HEATING",
+                    hvac_cool: "COOLING",
+                    hvac_off: "OFF",
+                    preset_config_title: "Global preset configuration",
+                    preset_select: "Select the preset to configure:",
+                    save_upper: "SAVE",
+                    cancel_upper: "CANCEL",
+                    include: "Include",
+                    scene_saved_short: "saved",
+                    scene_recalled_short: "recalled",
+                    scene_activated_short: "activated",
+                    music_upper: "MUSIC"
                 },
                 es: {
                     audio_confirm_title: "Fuente de audio",
@@ -1780,7 +1845,42 @@
                     weather_wind: "Viento",
                     weather_humidity: "Humedad",
                     news_title: "Noticias",
-                    video_title: "Video Domótico"
+                    video_title: "Video Domótico",
+                    alarm: "Alarma",
+                    cameras: "Cámaras",
+                    global: "Global",
+                    security_title: "Seguridad",
+                    ventilation: "Ventilación",
+                    central_title: "Centralización",
+                    global_lights: "Iluminación global",
+                    global_shades: "Persianas globales",
+                    global_hvac: "Climatización global",
+                    vacation_mode: "Modo vacaciones",
+                    all_on: "TODO ENCENDIDO",
+                    all_off: "TODO APAGADO",
+                    eco_mode: "MODO ECO",
+                    open_all: "ABRIR TODO",
+                    close_all: "CERRAR TODO",
+                    comfort: "CONFORT",
+                    night: "NOCHE",
+                    frost_guard: "ANTIHIELO",
+                    activate: "ACTIVAR",
+                    deactivate: "DESACTIVAR",
+                    partial: "PARCIAL",
+                    close_upper: "CERRAR",
+                    admin_code_prompt: "Introduzca el código de administración:",
+                    hvac_heat: "CALEFACCIÓN",
+                    hvac_cool: "REFRIGERACIÓN",
+                    hvac_off: "PARADA",
+                    preset_config_title: "Configuración del preset global",
+                    preset_select: "Seleccione el preset a configurar:",
+                    save_upper: "GUARDAR",
+                    cancel_upper: "CANCELAR",
+                    include: "Incluir",
+                    scene_saved_short: "guardada",
+                    scene_recalled_short: "recuperada",
+                    scene_activated_short: "activada",
+                    music_upper: "MÚSICA"
                 },
                 de: {
                     audio_confirm_title: "Audioquelle",
@@ -1814,7 +1914,42 @@
                     weather_wind: "Wind",
                     weather_humidity: "Feuchtigkeit",
                     news_title: "News",
-                    video_title: "Smart Home Video"
+                    video_title: "Smart Home Video",
+                    alarm: "Alarm",
+                    cameras: "Kameras",
+                    global: "Global",
+                    security_title: "Sicherheit",
+                    ventilation: "Lüftung",
+                    central_title: "Zentralsteuerung",
+                    global_lights: "Globale Beleuchtung",
+                    global_shades: "Globale Beschattung",
+                    global_hvac: "Globale Klimatisierung",
+                    vacation_mode: "Urlaubsmodus",
+                    all_on: "ALLES EIN",
+                    all_off: "ALLES AUS",
+                    eco_mode: "ECO-MODUS",
+                    open_all: "ALLE ÖFFNEN",
+                    close_all: "ALLE SCHLIESSEN",
+                    comfort: "KOMFORT",
+                    night: "NACHT",
+                    frost_guard: "FROSTSCHUTZ",
+                    activate: "AKTIVIEREN",
+                    deactivate: "DEAKTIVIEREN",
+                    partial: "TEILWEISE",
+                    close_upper: "SCHLIESSEN",
+                    admin_code_prompt: "Administrationscode eingeben:",
+                    hvac_heat: "HEIZEN",
+                    hvac_cool: "KÜHLEN",
+                    hvac_off: "AUS",
+                    preset_config_title: "Konfiguration des globalen Presets",
+                    preset_select: "Preset zum Konfigurieren wählen:",
+                    save_upper: "SPEICHERN",
+                    cancel_upper: "ABBRECHEN",
+                    include: "Einschließen",
+                    scene_saved_short: "gespeichert",
+                    scene_recalled_short: "abgerufen",
+                    scene_activated_short: "aktiviert",
+                    music_upper: "MUSIK"
                 },
                 ru: {
                     audio_confirm_title: "Источник звука",
@@ -1848,7 +1983,42 @@
                     weather_wind: "Ветер",
                     weather_humidity: "Влажность",
                     news_title: "Новости",
-                    video_title: "Видеонаблюдение"
+                    video_title: "Видеонаблюдение",
+                    alarm: "Сигнализация",
+                    cameras: "Камеры",
+                    global: "Общее",
+                    security_title: "Безопасность",
+                    ventilation: "Вентиляция",
+                    central_title: "Централизация",
+                    global_lights: "Общее освещение",
+                    global_shades: "Общие шторы",
+                    global_hvac: "Общий климат",
+                    vacation_mode: "Режим отпуска",
+                    all_on: "ВСЁ ВКЛ",
+                    all_off: "ВСЁ ВЫКЛ",
+                    eco_mode: "ЭКО-РЕЖИМ",
+                    open_all: "ОТКРЫТЬ ВСЁ",
+                    close_all: "ЗАКРЫТЬ ВСЁ",
+                    comfort: "КОМФОРТ",
+                    night: "НОЧЬ",
+                    frost_guard: "АНТИЗАМЕРЗАНИЕ",
+                    activate: "ВКЛЮЧИТЬ",
+                    deactivate: "ВЫКЛЮЧИТЬ",
+                    partial: "ЧАСТИЧНО",
+                    close_upper: "ЗАКРЫТЬ",
+                    admin_code_prompt: "Введите код администратора:",
+                    hvac_heat: "ОБОГРЕВ",
+                    hvac_cool: "ОХЛАЖДЕНИЕ",
+                    hvac_off: "ВЫКЛ",
+                    preset_config_title: "Настройка общего пресета",
+                    preset_select: "Выберите пресет для настройки:",
+                    save_upper: "СОХРАНИТЬ",
+                    cancel_upper: "ОТМЕНА",
+                    include: "Включить",
+                    scene_saved_short: "сохранена",
+                    scene_recalled_short: "вызвана",
+                    scene_activated_short: "активирована",
+                    music_upper: "МУЗЫКА"
                 }
             };
 
@@ -2116,8 +2286,25 @@
                 if (selectEl) selectEl.value = lang;
             }
 
+            // Texte d'une clé du dictionnaire dans la langue courante (repli : français, puis la clé)
+            window.villaI18n = function (key) {
+                const d = translations[currentLang] || translations['fr'];
+                return (d && d[key]) || translations['fr'][key] || key;
+            };
+            // Le C# envoie le mode CVC en français sur le sériel 33 (ARRÊT / CHAUFFAGE / CLIMATISATION) :
+            // traduit à l'affichage, jamais côté processeur.
+            window.villaHvacModeText = function (v) {
+                const raw = String(v || '').trim().toUpperCase();
+                const map = { 'CHAUFFAGE': 'hvac_heat', 'CLIMATISATION': 'hvac_cool', 'ARRÊT': 'hvac_off', 'ARRET': 'hvac_off' };
+                return map[raw] ? window.villaI18n(map[raw]) : raw;
+            };
+
             window.changeLanguage = function(lang) {
                 applyLanguage(lang);
+                if (window._villaHvacModeRaw !== undefined) {
+                    const statusEl = document.getElementById('hvac-status');
+                    if (statusEl) statusEl.innerText = window.villaHvacModeText(window._villaHvacModeRaw);
+                }
                 // Si une villa_config est chargée, reconstruire le GUI avec les noms traduits
                 if (window.villaConfig && typeof window.villaRebuildUI === 'function') {
                     window.villaRebuildUI();
@@ -2904,6 +3091,19 @@
                 } catch (e) {}
                 applyPilotageVisibility(roomId);
                 if(window.refreshWellnessControls)window.refreshWellnessControls(roomId);
+                // Noms des scènes d'éclairage de la pièce (villa_config, traduits) — même règle que index.html
+                if (window.villaConfig) {
+                    const piece = (window.villaConfig.pieces || []).find(p => p.id === roomId);
+                    const sc = piece && piece.pilotages && piece.pilotages.eclairages && piece.pilotages.eclairages.scenes;
+                    const defScenes = (window.villaConfig.valeursParDefaut || {}).scenesEclairage || ["OFF", "CINÉMA", "REPAS", "TOTAL"];
+                    for (let s = 1; s <= 4; s++) {
+                        const nomScene = (sc && sc.noms && sc.noms[s - 1] && sc.noms[s - 1] !== '') ? sc.noms[s - 1] : (defScenes[s - 1] || ('Scène ' + s));
+                        const label = window.villaTranslateName ? window.villaTranslateName(nomScene) : nomScene;
+                        const b = document.getElementById('scene-btn-' + (50 + s));
+                        if (b) b.textContent = label;
+                        document.querySelectorAll('ch5-button[customClass~="scene-btn"][data-join="' + (50 + s) + '"]').forEach(btn => btn.setAttribute('label', label));
+                    }
+                }
                 const roomObj = config.rooms.find(r => r.id === roomId);
                 const roomName = roomObj ? roomObj.name : ("Pièce " + roomId);
 
@@ -3123,6 +3323,11 @@
                 let vcfgTotal = 0;
                 window.villaConfig = null;
 
+                // Textes fixes traduits par la table villa_config (data-tname = clé française)
+                window.villaApplyTNames = function () {
+                    document.querySelectorAll('[data-tname]').forEach(el => { el.textContent = villaTName(el.getAttribute('data-tname')); });
+                };
+
                 function villaTName(name) {
                     const vc = window.villaConfig;
                     if (!vc || !name) return name;
@@ -3136,6 +3341,7 @@
                 function rebuildFromVillaConfig() {
                     const vc = window.villaConfig;
                     if (!vc || typeof generateDynamicUI !== 'function') return;
+                    window.villaApplyTNames();
                     const defs = vc.valeursParDefaut || {};
                     const legacy = { rooms: [], sources: [], roomMotors: {}, roomCircuits: {}, circuits: [] };
                     (vc.sourcesAudioVideo || []).forEach(s => legacy.sources.push({ id: s.id, name: villaTName(s.nom) }));
@@ -3143,7 +3349,7 @@
                         legacy.rooms.push({ id: p.id, name: villaTName(p.nom) });
                         const pil = p.pilotages || {};
                         const ecl = pil.eclairages || {};
-                        const nbC = Math.min((ecl.circuits && ecl.circuits.nombre) || 4, 10);
+                        const nbC = Math.min((ecl.circuits && ecl.circuits.nombre) || 4, 20); // contrat v4.1 : 20 circuits (joins 71-90)
                         const nomsC = (ecl.circuits && ecl.circuits.noms) || [];
                         const defC = defs.circuits || [];
                         const circuits = [];
@@ -3445,8 +3651,9 @@
 
                 // HVAC Status Mode feedback
                 CrComLib.subscribeState('s', '33', (value) => {
+                    window._villaHvacModeRaw = value;
                     const statusEl = document.getElementById('hvac-status');
-                    if (statusEl) statusEl.innerText = value.toUpperCase();
+                    if (statusEl) statusEl.innerText = window.villaHvacModeText(value);
                 });
             }
 
@@ -3649,8 +3856,8 @@
            440 px / 92 % directement dans le HTML, le reste est réglé ici. */
         .custom-overlay-panel { padding: 18px !important; }
         .custom-overlay-panel .overlay-header { padding-bottom: 12px !important; margin-bottom: 14px !important; }
-        .custom-overlay-panel .overlay-header h3 { font-size: 1.3rem !important; }
-        .custom-overlay-panel .overlay-header button { height: 44px !important; font-size: 0.95rem !important; padding: 0 16px !important; }
+        .custom-overlay-panel .overlay-header h3 { font-size: clamp(0.9rem, 4vw, 1.3rem) !important; min-width: 0 !important; flex: 1 1 auto !important; line-height: 1.15 !important; white-space: normal !important; flex-wrap: wrap !important; }
+        .custom-overlay-panel .overlay-header button { height: 44px !important; font-size: 0.95rem !important; padding: 0 12px !important; flex: 0 0 auto !important; white-space: nowrap !important; }
         .custom-overlay-panel h4 { font-size: 1.05rem !important; }
         .custom-overlay-panel p, .custom-overlay-panel label, .custom-overlay-panel select { font-size: 1.05rem !important; }
         .custom-overlay-panel select { min-height: 48px !important; padding: 0 12px !important; }
@@ -3801,8 +4008,8 @@
     <script>
     /* ======================= Confort mobile (14.09.2026) =======================
        1. Icônes de moteurs animées, identiques à la dalle (ouverture / fermeture).
-       2. Scènes mémorisées par appui long, mêmes clés localStorage que la dalle
-          (villa_scene_<pièce>_<n>), donc même format d'un support à l'autre.
+       2. Scènes mémorisées par appui long : envoyées au C# (sériel 421, contrat v4.1),
+          marqueur « mémorisée » reçu sur les digitaux 421-424 — même mémoire que la dalle.
        Aucune dépendance au code existant : tout passe par le DOM et CrComLib.
        ========================================================================= */
     (function () {
@@ -3954,15 +4161,17 @@
         var SCENE_JOINS = { 51: 1, 52: 2, 53: 3, 54: 4 };
         var levels = {};
 
-        function sceneKey(idx, room) { return 'villa_scene_' + (room || roomId()) + '_' + idx; }
-        function loadScene(idx, room) {
-            try { var raw = localStorage.getItem(sceneKey(idx, room)); return raw ? JSON.parse(raw) : null; } catch (e) { return null; }
-        }
+        // Contrat v4.1 (18.09.2026) : scènes mémorisées par le C# (sériel 421 à l'enregistrement,
+        // digitaux 421-424 = « mémorisée » pour la pièce affichée). Plus de localStorage.
+        var SCENE_SAVE_SERIAL = '421', SCENE_SAVED_BASE = 420;
+        var savedMarks = { 1: false, 2: false, 3: false, 4: false };
+        function loadScene(idx) { return savedMarks[idx] ? { scene: idx } : null; }
         function readLights() {
             var out = {};
             document.querySelectorAll('#circuits-container ch5-slider[sendEventOnChange]').forEach(function (s) {
                 var j = s.getAttribute('sendEventOnChange');
-                var v = levels[j];
+                var live = parseInt(s.value, 10);                     // position réelle du curseur (réglage en cours)
+                var v = !isNaN(live) ? live : levels[j];
                 if (v === undefined) { v = parseInt(s.getAttribute('value'), 10); }
                 if (!isNaN(v) && v !== undefined) out[j] = v;
             });
@@ -3981,27 +4190,37 @@
             });
         }
         function saveScene(idx, snap) {
-            var data = { room: roomId(), scene: idx, lights: snap, ts: Date.now() };
-            try { localStorage.setItem(sceneKey(idx), JSON.stringify(data)); }
-            catch (e) { console.warn('Scène non enregistrée', e); }
-            refreshMarks();
-            toast('💾 ' + sceneName(idx) + ' enregistrée');
+            // Charge utile compacte (le CP4 tronque un sériel à 119 caractères) : circuits affichés, en pour-cent.
+            var circuits = [];
+            for (var j = 71; j <= 90; j++) circuits.push(snap[String(j)] !== undefined ? Math.round(Math.max(0, Math.min(65535, Number(snap[String(j)]) || 0)) * 100 / 65535) : null);
+            while (circuits.length && circuits[circuits.length - 1] === null) circuits.pop();
+            publish('s', SCENE_SAVE_SERIAL, JSON.stringify({ p: Number(roomId()), s: idx, c: circuits }));
+            toast('💾 ' + sceneName(idx) + ' ' + (window.villaI18n ? window.villaI18n('scene_saved_short') : 'enregistrée'));
         }
         function recallScene(idx) {
-            var data = loadScene(idx);
-            if (!data || !data.lights) return;
-            Object.keys(data.lights).forEach(function (j) {
-                var v = Number(data.lights[j]) || 0;
-                levels[j] = v;
-                document.querySelectorAll('ch5-slider[sendEventOnChange="' + j + '"]').forEach(function (s) { s.setAttribute('value', String(v)); });
-                publish('n', j, v);
-            });
-            toast('✔ ' + sceneName(idx) + ' rappelée');
+            // Le join 51-54 est déjà parti : le C# applique la scène et repousse les niveaux.
+            toast('✔ ' + sceneName(idx) + ' ' + (window.villaI18n ? window.villaI18n(savedMarks[idx] ? 'scene_recalled_short' : 'scene_activated_short') : (savedMarks[idx] ? 'rappelée' : 'activée')));
         }
+        (function watchSavedMarks() {
+            if (typeof CrComLib === 'undefined') { setTimeout(watchSavedMarks, 400); return; }
+            for (var sc = 1; sc <= 4; sc++) (function (idx) {
+                try { CrComLib.subscribeState('b', String(SCENE_SAVED_BASE + idx), function (v) { savedMarks[idx] = !!v; refreshMarks(); }); } catch (e) { }
+            })(sc);
+        })();
 
         // Appui long = enregistrement ; appui court = comportement normal (le join part déjà) + rappel des niveaux
         var press = { timer: null, saved: false, snap: null, idx: 0 };
         function cancel() { if (press.timer) clearTimeout(press.timer); press.timer = null; }
+        // iOS (Safari, app Crestron ONE) : l'appui long déclenche le menu contextuel / la sélection de texte et
+        // envoie pointercancel avant les 900 ms → la scène était rappelée (clic) au lieu d'être enregistrée.
+        document.addEventListener('contextmenu', function (ev) {
+            if (ev.target && ev.target.closest && ev.target.closest('.scene-btn-mobile[id^="scene-btn-"]')) ev.preventDefault();
+        }, true);
+        (function () {
+            var st = document.createElement('style');
+            st.textContent = '.scene-btn-mobile{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none;touch-action:manipulation}';
+            document.head.appendChild(st);
+        })();
         document.addEventListener('pointerdown', function (ev) {
             var b = ev.target && ev.target.closest ? ev.target.closest('.scene-btn-mobile[id^="scene-btn-"]') : null;
             if (!b) return;
@@ -4023,7 +4242,7 @@
         document.addEventListener('click', function (ev) {
             var b = ev.target && ev.target.closest ? ev.target.closest('.scene-btn-mobile[id^="scene-btn-"]') : null;
             if (!b) return;
-            if (press.saved) { press.saved = false; return; }
+            if (press.saved) { press.saved = false; ev.stopImmediatePropagation(); ev.preventDefault(); return; }
             var idx = SCENE_JOINS[b.id.replace('scene-btn-', '')];
             if (idx) setTimeout(function () { recallScene(idx); }, 150);
         }, true);

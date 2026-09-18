@@ -21,6 +21,10 @@
         document.querySelectorAll('[data-wellness-tab]').forEach(function (b) {
             b.hidden = !(cfg && cfg[b.dataset.wellnessTab] && cfg[b.dataset.wellnessTab].actif);
         });
+        document.querySelectorAll('.climate-tabs').forEach(function (tabs) {
+            var visibles = tabs.querySelectorAll('[data-climate-tab]:not([hidden])').length;
+            tabs.classList.toggle('climate-tabs--single', visibles < 2);
+        });
         document.querySelectorAll('[data-wellness-range]').forEach(function (el) {
             var section = cfg && cfg[el.dataset.wellnessRange];
             if (section) el.textContent = section.min + '–' + section.max + (el.dataset.wellnessRange === 'sauna' ? ' °C' : ' %');

@@ -14,7 +14,7 @@
  *   Piece.Select 11-40 (join = 10 + id), Piece.Active analog 10, Piece.Nom serial 10,
  *   Eclairage.Scene 51-54, AV.Mute 55, CVC.ConsignePlus/Moins 49/50,
  *   Meteo.EasterEgg 56, AV.Source.Select 150-155 (150 = OFF), AV.SourceActive
- *   analog 51, AV.Volume analog 52, Eclairage.Circuit analog 71-80,
+ *   analog 51, AV.Volume analog 52, Eclairage.Circuit analog 71-90 (v4.1 : 20 circuits),
  *   Stores.Scene 201-204, Alarme.Partition 301-312, Global.* 401-411.
  *
  * API :
@@ -56,7 +56,9 @@
     POWER_OFF: "200",       // b : extinction globale
     STORES_SCENES: ["201", "202", "203", "204"], // b : scènes de stores + feedback
     MEDIA_VOLUME: "254",       // n : position lecteur média
-    CIRCUITS: ["71", "72", "73", "74", "75", "76", "77", "78", "79", "80"], // n : gradateurs 0..65535
+    CIRCUITS: ["71","72","73","74","75","76","77","78","79","80","81","82","83","84","85","86","87","88","89","90"], // n : gradateurs 0..65535 (v4.1 : 20 circuits)
+    SCENE_SAVE: "421",            // s : {piece, scene, circuits[]} envoyé par 💾 / appui long (v4.1)
+    SCENE_SAVED: ["421", "422", "423", "424"], // b : scène 1..4 mémorisée pour la pièce affichée (v4.1)
     DALLE_VOLUME: "260",    // n : volume matériel de la dalle (0-100)
     DALLE_MUTE: "261",      // b : mute matériel de la dalle
     ALARM_PARTITIONS: [
@@ -81,12 +83,13 @@
   var pct = function (p) { return Math.round((FULL * p) / 100); };
   var LEGACY_MUTE_JOIN = "201"; // le GUI publie encore 201 (mute v1) en même temps que 55
 
-  // Presets d'éclairage des scènes (10 circuits max par pièce)
+  // Presets d'éclairage des scènes (20 circuits max par pièce, v4.1)
+  function pad20(a) { while (a.length < 20) a.push(0); return a; }
   var SCENE_PRESETS = {
-    "51": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    "52": [pct(12), 0, pct(30), pct(25), 0, 0, 0, 0, 0, 0],
-    "53": [pct(55), pct(80), pct(45), pct(30), 0, pct(100), 0, 0, 0, 0],
-    "54": [FULL, FULL, FULL, FULL, FULL, FULL, FULL, FULL, FULL, FULL],
+    "51": pad20([]),
+    "52": pad20([pct(12), 0, pct(30), pct(25)]),
+    "53": pad20([pct(55), pct(80), pct(45), pct(30), 0, pct(100)]),
+    "54": SIG.CIRCUITS.map(function () { return FULL; }),
   };
 
   /* ------------------------------------------------------------------ */
@@ -236,6 +239,7 @@
     set("n", SIG.MEDIA_VOLUME, r.mediaVolume);
     set("b", SIG.MUTE, r.mute);
     publishScenes(r);
+    publishSavedMarks(id);   // v4.1 : marqueurs 💾 de la pièce affichée
     publishCircuits(r);
     SIG.STORES_SCENES.forEach(function (s) { set("b", s, s === r.storesScene); });
   }
@@ -249,21 +253,33 @@
     publishRoom(id);
   }
 
-  // Scène mémorisée depuis le GUI (appui long / 💾) : même clé localStorage que le module VillaUX
-  function savedScene(roomId, sceneId) {
-    try {
-      var raw = localStorage.getItem("villa_scene_" + roomId + "_" + (Number(sceneId) - 50));
-      var data = raw ? JSON.parse(raw) : null;
-      return data && data.lights ? data.lights : null;
-    } catch (e) { return null; }
+  // Scènes mémorisées (v4.1) : le GUI envoie le sériel 421, le moteur joue le rôle du C# du CP4
+  // (mémoire par pièce, marqueurs 421-424 pour la pièce affichée). Rien dans le localStorage.
+  var userScenes = {};   // roomId -> { "51": [20 niveaux], ... }
+  function savedScene(roomId, sceneId) { return (userScenes[roomId] && userScenes[roomId][sceneId]) || null; }
+  function publishSavedMarks(roomId) {
+    SIG.SCENE_SAVED.forEach(function (j, i) { set("b", j, !!savedScene(roomId, SIG.SCENES[i])); });
+  }
+  function saveScene(payload) {
+    var data; try { data = JSON.parse(payload); } catch (e) { return; }
+    var compact = data && Array.isArray(data.c);   // format compact {p, s, c[pour-cent]} (v4.1)
+    var roomId = Number(data && (compact ? data.p : data.piece)) || activeRoom, idx = Number(data && (compact ? data.s : data.scene));
+    var list = compact ? data.c : (data && data.circuits);
+    if (!(idx >= 1 && idx <= 4) || !rooms[roomId] || !Array.isArray(list)) return;
+    var sceneId = SIG.SCENES[idx - 1], r = rooms[roomId];
+    var levels = SIG.CIRCUITS.map(function (c, i) { return list[i] !== undefined && list[i] !== null ? (compact ? Math.round(Number(list[i]) * 655.35) : Number(list[i]) || 0) : r.circuits[i]; });
+    if (!userScenes[roomId]) userScenes[roomId] = {};
+    userScenes[roomId][sceneId] = levels;
+    r.scene = sceneId; r.circuits = levels.slice();
+    if (roomId === activeRoom) { publishScenes(r); publishCircuits(r); publishSavedMarks(roomId); }
+    updateGlobalLights();
   }
 
   function applyScene(sceneId) {
     var r = rooms[activeRoom];
     r.scene = sceneId;
-    r.circuits = SCENE_PRESETS[sceneId].slice();
     var saved = savedScene(activeRoom, sceneId);
-    if (saved) SIG.CIRCUITS.forEach(function (c, idx) { if (saved[c] !== undefined) r.circuits[idx] = Number(saved[c]) || 0; });
+    r.circuits = (saved || SCENE_PRESETS[sceneId]).slice();
     publishScenes(r);
     publishCircuits(r);
     updateGlobalLights();
@@ -549,7 +565,7 @@
       if (value === true || value === "true" || value === 1 || value === "1") press(id);
     };
     P.sendIntegerToNative = function (id, value) { setAnalog(id, value); };
-    P.sendStringToNative = function (id, value) { set("s", id, value); };
+    P.sendStringToNative = function (id, value) { if (String(id) === SIG.SCENE_SAVE) return saveScene(value); set("s", id, value); };
     P.sendObjectToNative = function (id, value) {
       // <ch5-button> émet un objet { repeatdigital: true|false } (appui maintenu)
       if (value && typeof value === "object" && "repeatdigital" in value) {

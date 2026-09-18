@@ -1,5 +1,21 @@
 # VillaCrans — contexte pour Claude (lire en premier, économise les tokens)
 
+## 18/09/2026 (nuit) — traductions complètes + appui long iPhone (à compiler : dalle, web, mobile ; pas poussé)
+- Deux mécanismes de traduction : (1) textes fixes = `data-i18n="clé"` + dictionnaires `translations` (fr/en/es/de/ru) dans chaque HTML, `window.villaI18n(clé)` en JS ; (2) noms venant de `villa_config.json` (pièces, scènes, sources, circuits, moteurs) = table `traductions.<lang>[texte FR]` via `villaTranslateName()` ; texte fixe à traduire par cette table = `data-tname`. **Tout nouveau libellé passe par l'un des deux, jamais en dur** ; le mode CVC du sériel 33 (FR côté C#) se traduit à l'affichage (`villaHvacModeText`), jamais `data-ch5-textcontent` sur un texte traduit.
+- Contrôle : inventaire Playwright des textes identiques FR/EN/ES/DE + batterie (en-têtes de fenêtres : sortie, chevauchement, rognage) en 3 thèmes × 4 langues × 3 supports. iPhone : appui long fiabilisé (iOS annulait le pointer : `touch-callout`, `user-select`, `contextmenu`) ; en-têtes `clamp()` + retour à la ligne ; `global-controls.css` : point de rupture 480 px.
+- Restent en français par choix : noms de test des circuits, caméras de démo (liste codée dans les deux HTML), options techniques du preset global ; emoji des boutons Alarme / Caméras / Global de l'iPhone conservés (lot SVG séparé).
+
+## 18/09/2026 (soir) — contrat v4.1 : scènes mémorisées par le C#, 20 circuits (v1.0.191 : CH5 TSW + XPanel et CPZ chargés, validés ; LPZ à charger ; pas encore poussé)
+- Scènes : 💾 → sériel 421 `{p,s,c[%]}` (compact : circuits affichés seulement, niveaux en %) → `/user/scenes_<pièce>.json` ; rappel = bouton 51-54 seul, le C# impose les niveaux (scène mémorisée > table `niveaux` du JSON ; « le slot 2 fait foi » seulement au démarrage) ; marqueurs 💾 = d421-424 par écran/pièce. Plus aucun `localStorage` de scène (dalle, iPhone, showcase `local-feedback.js` simule le C#).
+- 20 circuits : joins 71-90, `MaxCircuits` C#, bloc pièce a+71..+90, `MAX_CIRCUITS` générateur. SMW régénéré : bloc éclairage par pièce (`Rxx_Lighting_SceneN_fb` tenu / `_Actual`, `Rxx_Circuit_N_fb#` / `_Actual#`), convention identique aux blocs CVC/wellness.
+- GUI : presets rideaux en texte (XPanel/TSW/iPhone) + repli sans `mask` ; volume du lecteur média retiré ; HVAC flex ; − / + sans transition de `visibility`.
+- Règle apprise : **le CP4 tronque à 119 caractères tout sériel émis par un écran** (octet `0xFD`, vu en recette) → charge utile compacte, jamais de JSON long des panneaux vers le C# ; sur une ligne partagée, jamais de largeur fixe (flex + minimum) ; ne jamais animer `visibility` (`transition: all` interdit sur un élément masqué par `setVis`) ; les fichiers HTML du dépôt sont en CRLF, les écrire tels quels.
+
+## 18/09/2026 — HVAC dalle/tablette + feedback Contrôle global (v1.0.186)
+- Fenêtre HVAC (`index.html`, `room-controls.css`) : consigne à gauche, ON/OFF à sa droite, « Ventilation » en ligne avec AUTO/1/2/3 ; trait sous l'onglet seulement s'il y a plusieurs onglets (`climate-tabs--single`, posé par `wellness-controls.js`). Nouvelle disposition active seulement si `contrat.cvcEtendu.actif`. `iphone.html` inchangé.
+- Contrôle global : les joins 401-405 / 407-409 n'avaient aucune entrée C# (seuls 410/411). `ControlSystem.cs` : `_global*Selection` par famille, `PushGlobalSelectionFeedback` dans `UpdateScreenStateForPanel`, `ClearGlobalSelection` sur action locale. Contrat 03 : 401-409 passés en ↔. **CPZ à recompiler**, sinon boutons gris.
+- Déployé : TSW (1.0.185) et Web XPanel CP4 .1.200 (1.0.186), 14 QR. Showcase : mêmes 4 fichiers recopiés (`sync-villa-crans.py` donnerait le même résultat). Pas de push.
+
 ## 17/09/2026 — feuille de route (conversation vocale ChatGPT ; détail : docs du projet Cowork 00, 10, 30, 60)
 - Nom : **Crans-Montana**, jamais « Grand Montana » ; « Villa Gemini » = même projet.
 - Étapes : V1 stable → bêta Alexandre (chaque blocage = à simplifier ou à passer dans `villa_config.json`) → « Core Fréquence TV » réutilisable → toutes les GUI du showcase au niveau Villa Crans → livrable client. Horizon 1–2 mois.
@@ -9,31 +25,13 @@
 - Session « Work » ChatGPT lancée le 17.09 à 10 h 21 : résultat inconnu, à vérifier.
 
 ## 17/09/2026 (soir) — lot 1.0.183 : OFF, mute, logs PRESETS, tuiles pressées (détail : CHANGELOG)
-Retours TSW de Donatien. Règles apprises, à ne pas recasser :
-- **Un `<ch5-button sendEventOnClick="N">` émet SEUL l'impulsion** (`repeatdigital` true/false via le pont natif, hors
-  `CrComLib.publishEvent`). Ne jamais doubler par un `publishEvent('b',N,true)` dans son `onclick` : 2 fronts montants par
-  appui, et un `true` jamais relâché bloque les appuis suivants. `sendPowerOff` (200) et `toggleMute` (55) n'émettent
-  plus rien ; l'état vient du `receiveStateSelected`.
-- **Un join sans nom dans le slot 2 est invisible au debugger** : vérifier `generate_slot2.js` avant de chercher côté
-  GUI/C#. Le 200 (`AV.Extinction`) n'y existait pas → `AV_Off` / `AV_Off_fb` ajoutés, `Project_Slot2.smw` régénéré.
-- Logs C# de repli (« preset not found ») → `Trace()`, jamais `CrestronConsole.PrintLine` inconditionnel.
-- Faders de « Configuration du preset global » = `<input type="range">` locaux ; émission uniquement à « Enregistrer »
-  (s420 JSON → `/user/preset_cfg_<nom>.json`). Normal qu'aucun analogique ne remonte.
-- Fenêtre ouverte pendant l'appui → `avReleaseTilesSoon()` relâche `ch5-button--pressed` des tuiles sources.
-- `deploy.ps1 -Target web` : vérification finale robuste (rappel de certificat compilé `Add-Type`, repli `curl.exe -k`) ;
-  un scriptblock PowerShell en `ServerCertificateValidationCallback` = « connexion sous-jacente fermée ».
-- Recette locale : `node tools/recette-off-sources.mjs http://localhost:4179 apres <dossier>` (pont `JSInterface` émulé
-  = ce que reçoit le CP4, « 10 » attendu par appui) + `tools/check_contrast_dom.mjs --root … --min 4`.
-- Réseau de Donatien : **CP4 192.168.1.200, TSW 192.168.1.16** ; banc bureau CP4 192.168.3.109.
-- Réserve : `iphone.html` `toggleMute` (télécommandes) publie un niveau 55 hors `<ch5-button>` ; `deploy.ps1` a
-  incrémenté `version.json` deux fois le 17/09 (1.0.182 sans build valide, 1.0.183) → `meta.version` = 1.0.183.
+- **Un `<ch5-button sendEventOnClick="N">` émet SEUL l'impulsion** : jamais de `publishEvent('b',N,true)` en plus dans son `onclick` (2 fronts, `true` jamais relâché). `sendPowerOff` (200) et `toggleMute` (55) n'émettent plus ; l'état vient du `receiveStateSelected`.
+- **Un join sans nom dans le slot 2 est invisible au debugger** : vérifier `generate_slot2.js` d'abord. Logs de repli C# → `Trace()`. Faders du preset global = `<input type="range">` locaux, émission à « Enregistrer » (s420). `avReleaseTilesSoon()` relâche les tuiles sources.
+- `deploy.ps1 -Target web` : rappel de certificat compilé + repli `curl.exe -k`. Recette : `node tools/recette-off-sources.mjs http://localhost:4179 apres <dossier>` + `tools/check_contrast_dom.mjs --root … --min 4`.
+- Réseau de Donatien : **CP4 192.168.1.200, TSW 192.168.1.16** ; banc bureau CP4 192.168.3.109. iPhone : IP-ID 0x06 par défaut **non enregistré** → passer par les QR (`?ipId=0x1N&room=N`, 0x11-0x1E) sinon hors ligne. Réserve : `iphone.html` `toggleMute` publie un niveau 55 hors `<ch5-button>`.
 
-## 17/09/2026 — rooms-1, GUI 1.0.180 : décors, wellness et voisinage
-Lot demandé par Donatien : local technique au sous-sol (17 pièces vitrine), vue villa rapprochée de 10 %, décoration et enceintes différenciées, cinq TV escamotables au pied des lits, écran cinéma agrandi et haut-parleurs dégagés. Ondes audio fines proportionnelles au volume ; mute, OFF et pause les arrêtent. Quatre programmes réellement 3D dans les TV via un rendu partagé 640 × 360 à 10–15 images/s, sans téléchargement vidéo ni son.
-Sous-sol entièrement sans fenêtres. Wellness : deux cabines cloisonnées sauna/hammam, carrelage, douche, vasque ; coupe architecturale des plafonds pour voir l’intérieur, vapeur seulement lorsque le hammam fonctionne. Garage atelier avec deux silhouettes sportives distinctes, carrosseries courbes, roues et détails. Route devant le portail, ponts, sentiers, champs, deux ruisseaux, allées d’arbres, voisins et chalets éloignés des clôtures. Décor fixe regroupé par matériau, aucun nouveau modèle distant. Rendu enrichi mais stylisé, pas photographique.
-GUI commune : onglets HVAC/Sauna/Hammam, ON/OFF indépendants, cibles sauna 60–100 °C et humidité hammam 90–100 %, plages dans le JSON ; HVAC normal 16–28 °C. Pas de ventilation sauna/hammam ni de température hammam. Joins d620–627, a/s62–65, C# WellnessState, entrées/sorties EISC nommées dans le générateur SIMPL. Détails et recette Debugger : `projects/villa-crans/ch5/docs/WELLNESS-2026-09-17.md`. Le correctif parallèle de routage inter-écrans dans ControlSystem est préservé et ses 22 scénarios simulés revérifiés ; les autres changements d’industrialisation restent hors publication de ce lot.
-Vérifications locales : 36 combinaisons HVAC (555 assertions), 36 combinaisons wellness et retours natifs sans simulateur (632 assertions), 53 tests C#/JSON/SMW wellness et 76 HVAC, 40 contrôles pièces/TV, 27 navigation, 23 fondu, 24 villa, cinq nouveaux contrôles 3D wellness/garage. Matrice 3D supports/thèmes/modes réussie ; audit page/modales/états à 4:1 réussi. Cycle jour/nuit 30/10/30/10 s revérifié. Environ 52–54 images/s mesurées localement à 1280×800, DPR 1,5, rendu GPU. Les performances dépendent de l’appareil et de la connexion.
-CH5Z assemblé et CPZ compilé (assembly 1.0.180.0), copie SMW préparée ; **LPZ non compilé, aucun matériel déployé ou vérifié**. Mesures wellness physiques inconnues tant qu’aucun driver ne les fournit. Le dossier `Claude outputs/room-revision/livraison` et les planches avant/après consignent le résultat ; ne pas assimiler la version du site à celle installée sur CP4/TSW.
+## 17/09/2026 — rooms-1, GUI 1.0.180 : décors, wellness et voisinage (détail : CHANGELOG)
+Local technique au sous-sol (17 pièces vitrine), **sous-sol sans fenêtres**, wellness sauna/hammam cloisonné, garage, voisinage et paysage ; 4 programmes TV 3D partagés 640×360, ondes audio selon le volume. GUI : onglets HVAC/Sauna/Hammam, ON/OFF indépendants, sauna 60–100 °C, hammam 90–100 %, HVAC 16–28 °C ; joins d620–627, a/s62–65, C# `WellnessState`, EISC nommés (`docs/WELLNESS-2026-09-17.md`). CH5Z + CPZ 1.0.180.0 compilés, LPZ non compilé, rien déployé dans ce lot. Preuves : `Claude outputs/room-revision/livraison`.
 
 ## Lots précédents (détail : CHANGELOG)
 - 16/09 estate-2, GUI 1.0.179 : sous-sol cinéma/sauna/hammam/garage/golf, ondes audio, TV animées, jardin, cycle jour/nuit ; HVAC ON/OFF + Auto/1/2/3 (joins 610–615, a61, `docs/HVAC-2026-09-16.md`). LPZ non compilé, CPZ bloqué par Windows (`MSB3441`), aucun déploiement matériel.
@@ -43,8 +41,8 @@ CH5Z assemblé et CPZ compilé (assembly 1.0.180.0), copie SMW préparée ; **LP
 Quatre versions à tenir alignées, ici et en tête de chaque entrée du CHANGELOG.
 | Artefact | Version | Compilation |
 |---|---|---|
-| CH5 `.ch5z` (TSW + XPanel) | source 1.0.183 ; installé : 1.0.181 rapporté | `deploy.ps1 -Target web` (CP4 192.168.1.200) / `-Target tsw -TswHost 192.168.1.16` — incrémente `version.json` à chaque build |
-| CPZ slot 1 (C#) | 1.0.180.0 installé ; source modifiée 17/09 soir | **à recompiler** SIMPL# Pro + `deploy.ps1 -Target cp4` |
+| CH5 `.ch5z` (TSW + XPanel) | **1.0.186** installé le 18.09 (TSW .1.16 = 1.0.185, XPanel CP4 .1.200 = 1.0.186 ; `meta.version` = 1.0.186) | `deploy.ps1 -Target web` (CP4 192.168.1.200) / `-Target tsw -TswHost 192.168.1.16` — incrémente `version.json` à chaque build |
+| CPZ slot 1 (C#) | 1.0.180.0 installé ; source modifiée 17/09 soir + feedback global 401-409 (18/09) | **à recompiler** SIMPL# Pro + `deploy.ps1 -Target cp4` |
 | LPZ slot 2 (SIMPL) | 1.0.181 compilé 17/09 16:25 ; SMW régénéré depuis (+`AV_Off`) | **à recompiler** (F12 sur `Project_Slot2.smw`) puis charger |
 | Showcase Vercel | lot du 16.09 | `sync-villa-crans.py` puis push `main` → Vercel |
 
@@ -84,7 +82,7 @@ scènes, consigne, vacances, partitions ; le slot 2 pilote le matériel réel.
   le même lot ; seules les dimensions se règlent par support. Boutons ronds, jamais ovales ; aucune
   cible < 40 px.
 - Télécommandes : Apple TV = Menu + croix (211-220) ; Sky Q / IPTV (500 / 530 + index) et Swisscom (560 + index) en 3 zones rectangulaires ; `fitRemoteLayout` (jamais hors cadre) ; pas de bordure bleue CH5 sur `#source-control-overlay`.
-- Sources : vidéo 151-154 en interlock, Musique 155 indépendante (badge audio), 156 = retour audio vidéo ; premier appui = activation + télécommande ; scènes mémorisées (appui long, `localStorage villa_scene_<pièce>_<n>`) ; bandeau « État de la villa ».
+- Sources : vidéo 151-154 en interlock, Musique 155 indépendante (badge audio), 156 = retour audio vidéo ; premier appui = activation + télécommande ; scènes mémorisées par le C# (v4.1, plus de `localStorage`) ; bandeau « État de la villa ».
 - Modales Contrôle global / presets / caméras / sécurité : 94 % du GUI, fond quasi opaque, textes ≥ 1,1 rem. Réglages : 640 px dalle/tablette, 440 px smartphone.
 - Thèmes : Sombre, Clair, Verre dépoli (Cyberpunk retiré), `<body id="app-body">` obligatoire.
   - Verre dépoli (réglage v1.0.167) : `--container-bg: rgba(15,23,42,.34)` + `--blur-val: blur(18px) saturate(1.8) brightness(0.40)`. La version « voile blanc 0.10 / brightness 0.5 » du site vitrine est plus jolie mais fait tomber 33 textes sous 4:1 — ne pas la rétroporter telle quelle.
@@ -95,9 +93,9 @@ scènes, consigne, vacances, partitions ; le slot 2 pilote le matériel réel.
 - **Logos des boutons de source : une seule couche (v1.0.168).** Le logo est l'`<img class="src-overlay-img">`, frère du `ch5-button`, mis à l'échelle par CSS (`.logo-active` 1,7 ; `.logo-mono` 1,28 + `filter: invert(1)` en Clair). Fonds CSS de logo neutralisés dans `<style id="logo-source-couche-unique">` — ne jamais rajouter de `background-image` sur `.src-*`. L'état est lu sur le châssis (`ch5-button:not([selected="true"]) ~ .src-overlay-img`). Une ligne CSS cassée vers la ligne 1452 (`ch5-button.src-iptv { ... }utf8,<svg …`) avale encore le bloc suivant.
 - **Aucun son** : `playFunnySound` neutralisée, `playSynthSound` supprimée (11.09.2026).
 - **Le debugger ne montre que des signaux (13.09).** Émission sur changement uniquement (`SetBool` / `SetUShort` / `SetString` ; exceptions : impulsions, code d'alarme, `_forcePush`). Traces C# et `console.log` (s100) sous `meta.tracesConsole` (`progreset` pour relire).
-- **Scènes d'éclairage → circuits (13.09).** `pieces[].pilotages.eclairages.scenes.niveaux` (0-65535 par circuit) ; **le slot 2 fait foi** dès qu'un niveau remonte sur +71..+80 (`_circuitFromSlot2`). Démarrage scène 1.
+- **Scènes d'éclairage → circuits (13.09).** `pieces[].pilotages.eclairages.scenes.niveaux` (0-65535 par circuit) ; **le slot 2 fait foi** dès qu'un niveau remonte sur +71..+90 (`_circuitFromSlot2`) — sauf rappel explicite ou scène mémorisée (v4.1). Démarrage scène 1.
 ## GUI smartphone — agrandissement (14.09.2026)
-Styles `mobile-xl` (fin de `<body>`), `mobile-ux` (moteurs animés, scènes `villa_scene_<pièce>_<n>`, MutationObserver), blocs `mobile-lot-0915/0916` ; cibles ≥ 44 px, repli `@media (max-height: 700px)`. Entête = pièces + engrenage.
+Styles `mobile-xl` (fin de `<body>`), `mobile-ux` (moteurs animés, MutationObserver), blocs `mobile-lot-0915/0916` ; cibles ≥ 44 px, repli `@media (max-height: 700px)`. Entête = pièces + engrenage.
 Pièges : un style en ligne `!important` ne se reprend pas en CSS (le retirer du HTML) ; `ch5-button` → `width/height:100%` sur `> div` et `.cb-btn` ; `min-width:0` en grille ; les `customStyle` de `#source-control-overlay` sont `!important` un par un, ne pas les « nettoyer ».
 ## Lot smartphone 15-16.09.2026 — logique audio/vidéo et pièges CH5
 - **Un seul point d'entrée pour les sources : `window.avSelect(join)`** (IIFE `AV`, identique dalle / iPhone) :
@@ -142,8 +140,8 @@ La démo automatique démarre désormais sur **tous les supports** (elle était 
 5. Banc bureau : CP4 `192.168.3.109`, SFTP `FTV`, `-CP4Host <ip>` ; `-SkipContrast` / `-SkipBuild` ; `-ExecutionPolicy Bypass`.
 
 ## Reste à faire
-1. Recompiler CPZ (routage v4 + traces) → `deploy.ps1 -Target cp4` ; LPZ : F12 sur `Project_Slot2.smw` (+`AV_Off`) et
-   charger ; CH5 : `deploy.ps1 -Target web` (CP4 .1.200) et `-Target tsw -TswHost 192.168.1.16`.
+1. LPZ v4.1 : F12 sur `Project_Slot2.smw` et charger, puis recette Debugger (`Rxx_Circuit_N_fb#` au rappel). Push Git du lot
+   (showcase recopié, non poussé — attendre le GO). iPhone : app Crestron One bloquée sur « connecting » (IP-ID / type de device à vérifier).
 2. Recette matérielle du lot 1.0.183 : OFF → `AV_Off_fb` ↑↓, mute → une bascule par appui, zéro ligne PRESETS, tuile
    relâchée sous la télécommande ; deux supports sur deux pièces (a10 avant chaque commande) ; joins de télécommande.
 3. Supprimer les 2010 signaux `R*_` du SMW ; chaîne d'alarme s43 / d44-46 ; `docs/03_CONTRAT_JOINS.md` en v4.

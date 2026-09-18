@@ -43,7 +43,8 @@ namespace VillaFrequenceTvAutomation
             AudioVolume = 25000;
             MediaVolume = 25000;                        // v3 : lecteur média indépendant du volume A/V
             IsAudioMuted = false;
-            CircuitLevels = new ushort[10] { 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768, 32768 };
+            CircuitLevels = new ushort[ControlSystem.MaxCircuits];   // contrat v4.1 : 20 circuits (joins 71-90)
+            for (int i = 0; i < CircuitLevels.Length; i++) CircuitLevels[i] = 32768;
             ActiveStoreScene = 204;
             PartitionStates = new ushort[4] { 0, 0, 0, 0 };
         }
@@ -56,7 +57,25 @@ namespace VillaFrequenceTvAutomation
         private Dictionary<int, RoomState> _roomsRegistry;
         private Dictionary<uint, int> _activeRoomPerDevice = new Dictionary<uint, int>();
         private bool _globalAlarmArmedState = false;
+        /// <summary>Contrat v4.1 (18.09.2026) : 20 circuits d'éclairage par pièce, joins 71-90 (offsets +71..+90).</summary>
+        public const int MaxCircuits = 20;
+        /// <summary>
+        /// Contrat v4.1 (18.09.2026) : scènes d'éclairage enregistrées depuis le GUI (sériel 421,
+        /// JSON {piece, scene, circuits[]}) et conservées sur le processeur dans /user/scenes_<pièce>.json.
+        /// Prioritaires sur la table 'niveaux' du villa_config.json. Retour « mémorisée » : digitaux 421-424.
+        /// </summary>
+        private const uint SceneSaveSerialJoin = 421;
+        private const uint SceneSavedDigitalBase = 420;   // 421..424
+        private Dictionary<int, ushort[][]> _userScenes = new Dictionary<int, ushort[][]>();
         private bool _vacationModeActive = false;
+
+        // v4 (17.09.2026) : mémorisation de la dernière commande globale retenue par famille.
+        // Les joins 401-409 n'avaient aucun retour d'état : le bouton repassait au gris dès le
+        // relâchement. Le C# est la source du feedback, comme pour le mode vacances (410/411).
+        // 0 = aucune sélection.
+        private ushort _globalLightSelection = 0;   // 401 / 402 / 403
+        private ushort _globalShadeSelection = 0;   // 404 / 405
+        private ushort _globalHvacSelection = 0;    // 407 / 408 / 409
         private string _cpzFileName = "villaftv.cpz";
         private string _cpzCompileDate = "Inconnue";
         private Dictionary<uint, string> _validationDates = new Dictionary<uint, string>();
@@ -412,13 +431,15 @@ namespace VillaFrequenceTvAutomation
                     RegisterUserInterface(new XpanelForHtml5(qrIpId, this));
                 }
 
-                // 4. Déclaration et instanciation de l'iPad sur l'IP ID 0x05 (Crestron Go / Crestron App)
-                var ipad = new CrestronApp(0x05, this);
+                // 4. iPad sur l'IP ID 0x05 : app Crestron ONE (projet CH5 "villaftv" chargé par `ch5-cli deploy -t mobile`).
+                //    Classe CrestronOne, pas CrestronApp : CrestronApp = « Smart Graphics for Mobile Device », l'app
+                //    Crestron ONE restait alors sur « connecting » (vu le 18.09.2026, ipt -t).
+                var ipad = new CrestronOne(0x05, this);
                 ipad.ParameterProjectName.Value = "villaftv";
                 RegisterUserInterface(ipad);
 
-                // 5. Déclaration et instanciation de l'iPhone 17 sur l'IP ID 0x06 (Crestron Go mobile)
-                var iphone = new CrestronApp(0x06, this);
+                // 5. iPhone sur l'IP ID 0x06 : app Crestron ONE, même projet.
+                var iphone = new CrestronOne(0x06, this);
                 iphone.ParameterProjectName.Value = "villaftv";
                 RegisterUserInterface(iphone);
 
@@ -860,6 +881,34 @@ namespace VillaFrequenceTvAutomation
         // v3 : BroadcastFeedbackToRoom a disparu, remplacée par PushRoomFeedback (même rôle, mais
         // écriture sur le bloc de la pièce pour tous les périphériques).
 
+        /// <summary>
+        /// v4 : oublie la commande globale retenue pour une famille, quand une action locale
+        /// (scène de pièce, store, consigne) rend cette sélection fausse.
+        /// </summary>
+        private void ClearGlobalSelection(bool lights = false, bool shades = false, bool hvac = false)
+        {
+            if (lights) _globalLightSelection = 0;
+            if (shades) _globalShadeSelection = 0;
+            if (hvac) _globalHvacSelection = 0;
+        }
+
+        /// <summary>
+        /// v4 : retour d'état des commandes globales (fenêtre Contrôle global).
+        /// Une seule commande reste sélectionnée par famille : éclairage (401-403),
+        /// stores (404-405) et CVC (407-409). Le join 406 n'a pas d'action, donc pas d'état.
+        /// </summary>
+        private void PushGlobalSelectionFeedback(BasicTriList panel)
+        {
+            SetBool(panel, 401, _globalLightSelection == 401);
+            SetBool(panel, 402, _globalLightSelection == 402);
+            SetBool(panel, 403, _globalLightSelection == 403);
+            SetBool(panel, 404, _globalShadeSelection == 404);
+            SetBool(panel, 405, _globalShadeSelection == 405);
+            SetBool(panel, 407, _globalHvacSelection == 407);
+            SetBool(panel, 408, _globalHvacSelection == 408);
+            SetBool(panel, 409, _globalHvacSelection == 409);
+        }
+
         private void BroadcastFeedbackToAll()
         {
             // Partie globale de l'écran (nom de pièce, sélection, alarme centrale, vacances...)
@@ -919,7 +968,7 @@ namespace VillaFrequenceTvAutomation
         /// </summary>
         private void LoadSceneCircuitLevels(int roomId, Newtonsoft.Json.Linq.JToken piece)
         {
-            _circuitFromSlot2[roomId] = new bool[10];
+            _circuitFromSlot2[roomId] = new bool[MaxCircuits];
             try
             {
                 Newtonsoft.Json.Linq.JToken eclairages =
@@ -954,27 +1003,135 @@ namespace VillaFrequenceTvAutomation
             }
         }
 
+        private static string UserScenesPath(int roomId) { return string.Format("/user/scenes_{0}.json", roomId); }
+
+        /// <summary>v4.1 : relit les scènes enregistrées d'une pièce (fichier absent = aucune scène mémorisée).</summary>
+        private void LoadUserScenes(int roomId)
+        {
+            try
+            {
+                string path = UserScenesPath(roomId);
+                if (!System.IO.File.Exists(path)) return;
+                var doc = Newtonsoft.Json.Linq.JObject.Parse(System.IO.File.ReadAllText(path));
+                var scenes = doc["scenes"] as Newtonsoft.Json.Linq.JObject;
+                if (scenes == null) return;
+                ushort[][] table = new ushort[4][];
+                foreach (var prop in scenes.Properties())
+                {
+                    int idx;
+                    if (!int.TryParse(prop.Name, out idx) || idx < 1 || idx > 4) continue;
+                    var arr = prop.Value as Newtonsoft.Json.Linq.JArray;
+                    if (arr == null) continue;
+                    ushort[] vals = new ushort[MaxCircuits];
+                    for (int i = 0; i < MaxCircuits && i < arr.Count; i++)
+                    {
+                        int v = (int)arr[i]; if (v < 0) v = 0; if (v > 65535) v = 65535;
+                        vals[i] = (ushort)v;
+                    }
+                    table[idx - 1] = vals;
+                }
+                _userScenes[roomId] = table;
+                Trace("SCENES: pièce {0} : scènes mémorisées relues depuis {1}.", roomId, path);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Notice("SCENES: fichier de scènes illisible pour la pièce {0} : {1}", roomId, ex.Message);
+            }
+        }
+
+        /// <summary>v4.1 : sériel 421 reçu d'un écran : {"piece":n,"scene":1..4,"circuits":[...]}.</summary>
+        private void SaveUserScene(BasicTriList sourceDevice, string jsonPayload)
+        {
+            try
+            {
+                Trace("SCENES: sériel 421 reçu ({0} caractères).", jsonPayload == null ? 0 : jsonPayload.Length);
+                var payload = Newtonsoft.Json.Linq.JObject.Parse(jsonPayload);
+                // Format compact v4.1 : {"p":piece,"s":scene,"c":[pour-cent...]} (un sériel venant d'une dalle
+                // est tronqué à 119 caractères par le CP4). Le format long {"piece","scene","circuits":[0-65535]}
+                // reste accepté.
+                bool compact = payload["c"] != null;
+                int roomId = payload["p"] != null ? (int)payload["p"] : payload["piece"] != null ? (int)payload["piece"] : 0;
+                int sceneIdx = payload["s"] != null ? (int)payload["s"] : payload["scene"] != null ? (int)payload["scene"] : 0;
+                var arr = (compact ? payload["c"] : payload["circuits"]) as Newtonsoft.Json.Linq.JArray;
+                if (roomId < 1 || _roomsRegistry == null || !_roomsRegistry.ContainsKey(roomId) || sceneIdx < 1 || sceneIdx > 4 || arr == null)
+                {
+                    ErrorLog.Error("SCENES: charge utile refusée sur le sériel 421 (pièce {0}, scène {1}).", roomId, sceneIdx);
+                    return;
+                }
+                RoomState room = _roomsRegistry[roomId];
+                ushort[] vals = new ushort[MaxCircuits];
+                for (int i = 0; i < MaxCircuits; i++)
+                {
+                    // Un circuit absent de la charge utile garde le niveau connu de la pièce.
+                    int v;
+                    if (i < arr.Count && arr[i] != null && arr[i].Type != Newtonsoft.Json.Linq.JTokenType.Null)
+                        v = compact ? (int)Math.Round((int)arr[i] * 655.35) : (int)arr[i];
+                    else
+                        v = room.CircuitLevels[i];
+                    if (v < 0) v = 0; if (v > 65535) v = 65535;
+                    vals[i] = (ushort)v;
+                }
+                if (!_userScenes.ContainsKey(roomId)) _userScenes[roomId] = new ushort[4][];
+                _userScenes[roomId][sceneIdx - 1] = vals;
+
+                var doc = new Newtonsoft.Json.Linq.JObject();
+                doc["piece"] = roomId;
+                doc["version"] = "v4.1";
+                var scenes = new Newtonsoft.Json.Linq.JObject();
+                for (int sc = 0; sc < 4; sc++)
+                    if (_userScenes[roomId][sc] != null) scenes[(sc + 1).ToString()] = new Newtonsoft.Json.Linq.JArray(_userScenes[roomId][sc]);
+                doc["scenes"] = scenes;
+                System.IO.File.WriteAllText(UserScenesPath(roomId), doc.ToString(Newtonsoft.Json.Formatting.None));
+
+                // Les niveaux enregistrés sont ceux affichés : la scène devient la scène active.
+                room.ActiveScene = (ushort)sceneIdx;
+                for (int i = 0; i < MaxCircuits; i++) room.CircuitLevels[i] = vals[i];
+                ClearGlobalSelection(lights: true);
+                Trace("SCENES: pièce {0}, scène {1} enregistrée par l'IP-ID {2:X2} ({3}).", roomId, sceneIdx,
+                    sourceDevice != null ? sourceDevice.ID : 0, UserScenesPath(roomId));
+                PushRoomFeedback(roomId);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Error("SCENES: enregistrement impossible : {0}", ex.Message);
+                CrestronConsole.PrintLine("SCENES: enregistrement impossible : {0}", ex.Message);
+            }
+        }
+
+        /// <summary>v4.1 : digitaux 421-424 = « scène mémorisée » pour la pièce affichée par cet écran.</summary>
+        private void PushSceneSavedMarks(BasicTriList panel, int roomId)
+        {
+            ushort[][] table = _userScenes.ContainsKey(roomId) ? _userScenes[roomId] : null;
+            for (uint sc = 1; sc <= 4; sc++)
+                SetBool(panel, SceneSavedDigitalBase + sc, table != null && table[sc - 1] != null);
+        }
+
         /// <summary>
-        /// Applique à une pièce les niveaux de circuits de la scène demandée. Le slot 2 fait foi :
-        /// un circuit dont le niveau réel a déjà été remonté par le slot 2 n'est plus repositionné
-        /// par la table, qui ne sert que tant que le système d'éclairage n'a rien dit.
+        /// Applique à une pièce les niveaux de circuits de la scène demandée : d'abord la scène
+        /// enregistrée depuis le GUI (/user/scenes_&lt;pièce&gt;.json), sinon la table 'niveaux' du
+        /// villa_config.json (valeurs de départ).
         /// </summary>
-        private void ApplySceneCircuitLevels(int roomId, int sceneIdx)
+        private void ApplySceneCircuitLevels(int roomId, int sceneIdx) { ApplySceneCircuitLevels(roomId, sceneIdx, false); }
+
+        /// <param name="rappelExplicite">v4.1 : vrai quand l'utilisateur a demandé la scène (bouton du GUI ou
+        /// slot 2) : les niveaux sont imposés même si le slot 2 a déjà remonté un niveau réel. Faux au
+        /// démarrage, où « le slot 2 fait foi » reste la règle.</param>
+        private void ApplySceneCircuitLevels(int roomId, int sceneIdx, bool rappelExplicite)
         {
             if (_roomsRegistry == null || !_roomsRegistry.ContainsKey(roomId)) return;
-            if (!_sceneCircuitLevels.ContainsKey(roomId)) return;
-
-            ushort[][] parScene = _sceneCircuitLevels[roomId];
-            if (sceneIdx < 1 || sceneIdx > parScene.Length) return;
-            ushort[] niveaux = parScene[sceneIdx - 1];
+            if (sceneIdx < 1 || sceneIdx > 4) return;
+            ushort[] niveaux = null;
+            if (_userScenes.ContainsKey(roomId) && _userScenes[roomId][sceneIdx - 1] != null)
+                niveaux = _userScenes[roomId][sceneIdx - 1];
+            else if (_sceneCircuitLevels.ContainsKey(roomId) && sceneIdx <= _sceneCircuitLevels[roomId].Length)
+                niveaux = _sceneCircuitLevels[roomId][sceneIdx - 1];
             if (niveaux == null) return;
-
             RoomState room = _roomsRegistry[roomId];
             bool[] duSlot2 = _circuitFromSlot2.ContainsKey(roomId) ? _circuitFromSlot2[roomId] : null;
             int n = Math.Min(niveaux.Length, room.CircuitLevels.Length);
             for (int i = 0; i < n; i++)
             {
-                if (duSlot2 != null && duSlot2[i]) continue;   // le slot 2 détient la vérité
+                if (!rappelExplicite && duSlot2 != null && duSlot2[i]) continue;   // démarrage : le slot 2 détient la vérité
                 room.CircuitLevels[i] = niveaux[i];
             }
         }
@@ -1025,6 +1182,7 @@ namespace VillaFrequenceTvAutomation
 
                         // Niveaux de circuits par scène + état initial sur la scène 1
                         LoadSceneCircuitLevels(id, piece);
+                        LoadUserScenes(id);                                   // v4.1
                         ApplySceneCircuitLevels(id, _roomsRegistry[id].ActiveScene);
                     }
                     catch (Exception exPiece)
@@ -1145,7 +1303,7 @@ namespace VillaFrequenceTvAutomation
                     SetUShort(dev, b + 52, room.AudioVolume);
                     SetUShort(dev, b + 53, room.MusicAudio ? (ushort)5 : room.ActiveVideoSource); // source audio
                     SetUShort(dev, b + 54, room.MediaVolume); // v3 : Media.Volume (join logique 254)
-                    for (uint i = 0; i < 10; i++)
+                    for (uint i = 0; i < MaxCircuits; i++)
                         SetUShort(dev, b + 71 + i, room.CircuitLevels[i]);
 
                     // Serials : nom (+10), temp actuelle (+32), mode (+33), consigne texte (+34)
@@ -1235,15 +1393,24 @@ namespace VillaFrequenceTvAutomation
             // il n'y a plus d'écho à fabriquer ici (c'est lui qui laissait les joins moteurs hauts).
             if ((offset >= 1 && offset <= 9) || (offset >= 58 && offset <= 78))
             {
+                // v4 : un mouvement de store dans une pièce invalide la commande globale retenue.
+                if (offset >= 1 && offset <= 9) ClearGlobalSelection(shades: true);
                 Trace("MOTEURS/MEDIA: impulsion offset {0} pièce {1} relayée au slot 2.", offset, roomId);
+                if (offset >= 1 && offset <= 9) BroadcastFeedbackToAll();
                 return;
             }
+
+            // v4 : une action locale sort la villa du preset global correspondant (même logique
+            // que la simulation du showcase, qui recalcule la sélection à chaque changement).
+            if (offset >= 21 && offset <= 24) ClearGlobalSelection(lights: true);
+            else if (offset >= 41 && offset <= 44) ClearGlobalSelection(shades: true);
+            else if (offset == 35 || offset == 36) ClearGlobalSelection(hvac: true);
 
             if (offset >= 21 && offset <= 24)          // Scènes d'éclairage 1..4 (joins logiques 51-54)
             {
                 uint sceneIdx = offset - 20;
                 room.ActiveScene = (ushort)sceneIdx;
-                ApplySceneCircuitLevels(roomId, (int)sceneIdx);
+                ApplySceneCircuitLevels(roomId, (int)sceneIdx, true);   // v4.1 : rappel explicite, niveaux imposés
             }
             else if (offset == 35)                      // Consigne + (join logique 49)
                 room.TargetTemperature = (ushort)Math.Min(280, room.TargetTemperature + 5);
@@ -1300,7 +1467,7 @@ namespace VillaFrequenceTvAutomation
             RoomState room = _roomsRegistry[roomId];
 
             // L'analogique +21 (Lighting_Master) n'existe plus dans le contrat (13.09.2026).
-            if (offset == 31) { if (val < 160 || val > 280) return; room.TargetTemperature = val; } // HVAC, never the sauna circuit
+            if (offset == 31) { if (val < 160 || val > 280) return; room.TargetTemperature = val; if (sourceDevice != _eisc) ClearGlobalSelection(hvac: true); } // HVAC, never the sauna circuit
             else if (offset == 32) room.CurrentTemperature = val;            // v4 : température mesurée, envoyée par le slot 2 (x10)
             else if (offset >= 34 && offset <= 37) { if ((offset >= 36 && sourceDevice != _eisc) || !room.Wellness.SetValue(offset, val)) return; }
             else if (offset == 33) { if (!room.Hvac.SetFan(val)) return; } // fan, never the measured temperature (+32)
@@ -1314,8 +1481,10 @@ namespace VillaFrequenceTvAutomation
                 DispatchAudioRouting(roomId);
             }
             else if (offset == 54) room.MediaVolume = val;                   // v3 : Media.Volume (join logique 254)
-            else if (offset >= 71 && offset <= 80)                            // joins logiques 71-80
+            else if (offset >= 71 && offset < 71 + MaxCircuits)               // joins logiques 71-90 (v4.1 : 20 circuits)
             {
+                // v4 : un circuit réglé depuis le GUI sort la villa du preset d'éclairage global.
+                if (sourceDevice != _eisc) ClearGlobalSelection(lights: true);
                 room.CircuitLevels[offset - 71] = val;
                 // Un niveau venu du slot 2 est le niveau réel du circuit : à partir de là, la table
                 // de scènes du villa_config.json ne le réimpose plus (cf. ApplySceneCircuitLevels).
@@ -1513,6 +1682,10 @@ namespace VillaFrequenceTvAutomation
                     {
                         SavePresetConfig(args.Sig.StringValue);
                     }
+                    else if (joinNumber == SceneSaveSerialJoin && currentDevice != _eisc)
+                    {
+                        SaveUserScene(currentDevice, args.Sig.StringValue);   // v4.1 : 💾 / appui long d'une scène
+                    }
                     break;
             }
         }
@@ -1546,7 +1719,8 @@ namespace VillaFrequenceTvAutomation
         private static readonly Dictionary<ushort, uint> V4AnalogOffsets = new Dictionary<ushort, uint>
         {
             { 31, 31 }, { 61, 33 }, { 62, 34 }, { 63, 35 }, { 51, 51 }, { 52, 52 }, { 53, 53 }, { 254, 54 },
-            { 71, 71 }, { 72, 72 }, { 73, 73 }, { 74, 74 }, { 75, 75 }, { 76, 76 }, { 77, 77 }, { 78, 78 }, { 79, 79 }, { 80, 80 }
+            { 71, 71 }, { 72, 72 }, { 73, 73 }, { 74, 74 }, { 75, 75 }, { 76, 76 }, { 77, 77 }, { 78, 78 }, { 79, 79 }, { 80, 80 },
+            { 81, 81 }, { 82, 82 }, { 83, 83 }, { 84, 84 }, { 85, 85 }, { 86, 86 }, { 87, 87 }, { 88, 88 }, { 89, 89 }, { 90, 90 }   // v4.1 : circuits 11-20
         };
 
         /// <summary>v4 : vrai si le join digital global a été routé vers la pièce affichée par ce panel.</summary>
@@ -1673,53 +1847,60 @@ namespace VillaFrequenceTvAutomation
                 // Commandes globales de la maison (joins 401 à 411)
                 case 401:
                     Trace("GLOBAL: Éclairage Global - Tout Allumer demandé.");
+                    _globalLightSelection = 401;
                     if (!ApplyPreset("light_all"))
                     {
                         foreach (var rm in _roomsRegistry.Values)
                         {
                             rm.LightLevel1 = 65535;
-                            for (int i = 0; i < 10; i++) rm.CircuitLevels[i] = 65535; // P1-3 : 10 circuits, pas 6
+                            for (int i = 0; i < MaxCircuits; i++) rm.CircuitLevels[i] = 65535; // P1-3 : 10 circuits, pas 6
                         }
-                        BroadcastFeedbackToAll();
                     }
+                    BroadcastFeedbackToAll();  // v4 : pousse aussi la sélection globale (401-409)
                     break;
 
                 case 402:
                     Trace("GLOBAL: Éclairage Global - Tout Éteindre demandé.");
+                    _globalLightSelection = 402;
                     if (!ApplyPreset("light_off"))
                     {
                         foreach (var rm in _roomsRegistry.Values)
                         {
                             rm.LightLevel1 = 0;
-                            for (int i = 0; i < 10; i++) rm.CircuitLevels[i] = 0; // P1-3 : 10 circuits, pas 6
+                            for (int i = 0; i < MaxCircuits; i++) rm.CircuitLevels[i] = 0; // P1-3 : 10 circuits, pas 6
                         }
-                        BroadcastFeedbackToAll();
                     }
+                    BroadcastFeedbackToAll();  // v4 : pousse aussi la sélection globale (401-409)
                     break;
 
                 case 403:
                     Trace("GLOBAL: Éclairage Global - Mode Éco demandé.");
+                    _globalLightSelection = 403;
                     if (!ApplyPreset("light_eco"))
                     {
                         foreach (var rm in _roomsRegistry.Values)
                         {
                             rm.LightLevel1 = 32768;
-                            for (int i = 0; i < 10; i++) rm.CircuitLevels[i] = 32768;
+                            for (int i = 0; i < MaxCircuits; i++) rm.CircuitLevels[i] = 32768;
                         }
-                        BroadcastFeedbackToAll();
                     }
+                    BroadcastFeedbackToAll();  // v4 : pousse aussi la sélection globale (401-409)
                     break;
 
                 case 404:
                     Trace("GLOBAL: Stores Globaux - Tout Ouvrir demandé.");
+                    _globalShadeSelection = 404;
                     if (!ApplyPreset("shade_open"))
                         PulseAllMotorsInAllRooms(true);   // v3 / P1-2 : impulsion propre sur le bloc de CHAQUE pièce
+                    BroadcastFeedbackToAll();  // v4 : pousse aussi la sélection globale (401-409)
                     break;
 
                 case 405:
                     Trace("GLOBAL: Stores Globaux - Tout Fermer demandé.");
+                    _globalShadeSelection = 405;
                     if (!ApplyPreset("shade_close"))
                         PulseAllMotorsInAllRooms(false);  // v3 / P1-2 : idem, et remise à false garantie
+                    BroadcastFeedbackToAll();  // v4 : pousse aussi la sélection globale (401-409)
                     break;
 
                 case 406:
@@ -1728,29 +1909,32 @@ namespace VillaFrequenceTvAutomation
 
                 case 407:
                     Trace("GLOBAL: Climatisation - Mode Confort demandé.");
+                    _globalHvacSelection = 407;
                     if (!ApplyPreset("hvac_confort"))
                     {
                         foreach (var rm in _roomsRegistry.Values) { rm.TargetTemperature = 210; rm.Hvac.Enabled = true; }
-                        BroadcastFeedbackToAll();
                     }
+                    BroadcastFeedbackToAll();  // v4 : pousse aussi la sélection globale (401-409)
                     break;
 
                 case 408:
                     Trace("GLOBAL: Climatisation - Mode Nuit demandé.");
+                    _globalHvacSelection = 408;
                     if (!ApplyPreset("hvac_nuit"))
                     {
                         foreach (var rm in _roomsRegistry.Values) { rm.TargetTemperature = 180; rm.Hvac.Enabled = true; }
-                        BroadcastFeedbackToAll();
                     }
+                    BroadcastFeedbackToAll();  // v4 : pousse aussi la sélection globale (401-409)
                     break;
 
                 case 409:
                     Trace("GLOBAL: Climatisation - Mode Hors Gel demandé.");
+                    _globalHvacSelection = 409;
                     if (!ApplyPreset("hvac_horsgel"))
                     {
                         foreach (var rm in _roomsRegistry.Values) { rm.TargetTemperature = 120; rm.Hvac.Enabled = true; }
-                        BroadcastFeedbackToAll();
                     }
+                    BroadcastFeedbackToAll();  // v4 : pousse aussi la sélection globale (401-409)
                     break;
 
                 case 410:
@@ -1763,7 +1947,7 @@ namespace VillaFrequenceTvAutomation
                             rm.TargetTemperature = 120;
                             rm.Hvac.Enabled = true;
                             rm.LightLevel1 = 0;
-                            for (int i = 0; i < 10; i++) rm.CircuitLevels[i] = 0; // P1-3 : 10 circuits, pas 6
+                            for (int i = 0; i < MaxCircuits; i++) rm.CircuitLevels[i] = 0; // P1-3 : 10 circuits, pas 6
                         }
                         PulseAllMotorsInAllRooms(false);  // v3 / P1-2 : fermeture propre, joins remis à false
                     }
@@ -1905,7 +2089,7 @@ namespace VillaFrequenceTvAutomation
             SetUShort(panel, 31, room.TargetTemperature);
 
             // Envoyer le niveau des 10 circuits d'éclairage
-            for (uint i = 0; i < 10; i++)
+            for (uint i = 0; i < MaxCircuits; i++)
             {
                 SetUShort(panel, 71 + i, room.CircuitLevels[i]);
             }
@@ -1929,6 +2113,11 @@ namespace VillaFrequenceTvAutomation
             // Envoyer le feedback du mode vacances global (410 / 411)
             SetBool(panel, 410, _vacationModeActive);
             SetBool(panel, 411, !_vacationModeActive);
+
+            // v4 : feedback des commandes globales éclairage / stores / CVC (401-409).
+            PushGlobalSelectionFeedback(panel);
+            // v4.1 : scènes mémorisées de la pièce affichée (421-424).
+            PushSceneSavedMarks(panel, roomId);
 
             double convertedTemp = (double)room.CurrentTemperature / 10.0;
             SetString(panel, 32, convertedTemp.ToString("F1"));
@@ -2129,8 +2318,7 @@ namespace VillaFrequenceTvAutomation
                 string path = string.Format("/user/preset_cfg_{0}.json", presetName);
                 if (!System.IO.File.Exists(path))
                 {
-                    // 17.09.2026 : repli normal tant qu'aucun preset n'a été enregistré depuis la dalle (s420) -> trace, pas un message permanent.
-                    Trace("PRESETS: Configuration file '{0}' not found. Falling back to default preset logic.", path);
+                    CrestronConsole.PrintLine("PRESETS: Configuration file '{0}' not found. Falling back to default preset logic.", path);
                     return false;
                 }
                 
@@ -2139,7 +2327,7 @@ namespace VillaFrequenceTvAutomation
                 var data = payload["data"] as Newtonsoft.Json.Linq.JObject;
                 if (data == null)
                 {
-                    Trace("PRESETS: Configuration data is null in '{0}'. Falling back to default preset logic.", path);
+                    CrestronConsole.PrintLine("PRESETS: Configuration data is null in '{0}'. Falling back to default preset logic.", path);
                     return false;
                 }
                 
@@ -2160,7 +2348,7 @@ namespace VillaFrequenceTvAutomation
                                 foreach (var circuitProp in circuitsObj.Properties())
                                 {
                                     int circuitId;
-                                    if (int.TryParse(circuitProp.Name, out circuitId) && circuitId >= 71 && circuitId <= 80)
+                                    if (int.TryParse(circuitProp.Name, out circuitId) && circuitId >= 71 && circuitId < 71 + MaxCircuits)
                                     {
                                         ushort val = (ushort)circuitProp.Value;
                                         roomState.CircuitLevels[circuitId - 71] = val;
@@ -2242,7 +2430,7 @@ namespace VillaFrequenceTvAutomation
                             foreach (var rm in _roomsRegistry.Values)
                             {
                                 rm.LightLevel1 = 0;
-                                for (int i = 0; i < 10; i++) rm.CircuitLevels[i] = 0; // P1-3 : 10 circuits, pas 6
+                                for (int i = 0; i < MaxCircuits; i++) rm.CircuitLevels[i] = 0; // P1-3 : 10 circuits, pas 6
                             }
                         }
                     }

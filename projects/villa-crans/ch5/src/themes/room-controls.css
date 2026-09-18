@@ -5,7 +5,9 @@ body#app-body .curtain-open .cb-btn,body#app-body .curtain-close .cb-btn,
 body#app-body .curtain-open .btn-curtain-open,body#app-body .curtain-close .btn-curtain-close { background-image:none!important; }
 .curtain-open .ch5-button--label,.curtain-close .ch5-button--label,
 .curtain-open label,.curtain-close label { visibility:hidden!important; }
-.curtain-open::after,.curtain-close::after { content:'';position:absolute;inset:0;margin:auto;width:29px;height:24px;pointer-events:none;background:var(--text-primary,#f1f5f9);mask:var(--curtain-arrow) center/contain no-repeat; }
+.curtain-open::after,.curtain-close::after { content:'';position:absolute;inset:0;margin:auto;width:29px;height:24px;pointer-events:none;background:var(--text-primary,#f1f5f9);-webkit-mask:var(--curtain-arrow) center/contain no-repeat;mask:var(--curtain-arrow) center/contain no-repeat; }
+/* Sans prise en charge de mask (navigateur de la TSW) : pas de carré blanc, on retombe sur le libellé. */
+@supports not ((mask:url()) or (-webkit-mask:url())) { .curtain-open::after,.curtain-close::after { content:none; } .curtain-open .ch5-button--label,.curtain-close .ch5-button--label,.curtain-open label,.curtain-close label { visibility:visible!important; } body#app-body .curtain-open,body#app-body .curtain-close { font-size:inherit!important; } }
 .curtain-open { --curtain-arrow:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 32'%3E%3Cpath d='M15 2 1 16l14 14V20h10v10l14-14L25 2v10H15z'/%3E%3C/svg%3E"); }
 .curtain-close { --curtain-arrow:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 32'%3E%3Cpath d='m1 2 14 14L1 30V20H0v-8h1zm38 0L25 16l14 14V20h1v-8h-1z'/%3E%3C/svg%3E"); }
 .hvac-controls { display:none; }
@@ -26,18 +28,39 @@ html.hvac-extended #card-cvc .hvac-mode-val { font-size:1rem!important; }
 html.hvac-extended #card-cvc .climate-hvac > p { margin:7px 0 0!important; }
 html.hvac-extended #card-cvc .climate-hvac > div:nth-of-type(2) { margin-top:5px!important; }
 
-/* Sur une dalle 1280x800 et une tablette, partager une ligne pour les six
-   commandes préserve les cibles tactiles après l'ajout des onglets Wellness. */
+/* Mise en page HVAC du 17.09.2026 (dalle, tablette, XPanel) :
+   consigne alignée à gauche avec ON/OFF à sa droite sur la même ligne,
+   puis « Ventilation » à gauche des vitesses, également sur une seule ligne.
+   Le smartphone (iphone.html) garde sa mise en page compacte. */
+html.hvac-extended #card-cvc .climate-hvac .hvac-setpoint-line { display:flex;align-items:center;gap:10px;flex-wrap:nowrap;min-width:0;width:100%; }
+html.hvac-extended #card-cvc .climate-hvac .hvac-setpoint { justify-content:flex-start!important;flex:none;gap:8px!important;margin-top:6px!important; }
+html.hvac-extended #card-cvc .climate-hvac .hvac-setpoint #consigne-val { min-width:64px!important;font-size:1.8rem!important; }
+html.hvac-extended #card-cvc .climate-hvac .hvac-setpoint .consigne-temp-val + .consigne-temp-val { margin-left:-6px!important; }
+/* ON/OFF prennent la place restante et se resserrent avec la carte (TSW 1280x800 : la carte est plus etroite que sur XPanel). */
+html.hvac-extended #card-cvc .climate-hvac .hvac-power { display:flex;flex:1 1 0;min-width:0;margin:6px 0 0;max-width:none;width:auto; }
+html.hvac-extended #card-cvc .climate-hvac .hvac-power .hvac-row { width:100%;gap:6px;justify-content:flex-start; }
+html.hvac-extended #card-cvc .climate-hvac .hvac-power ch5-button { flex:1 1 0;min-width:52px;max-width:104px; }
+html.hvac-extended #card-cvc .climate-hvac .hvac-fan { display:flex;align-items:center;gap:10px;margin:10px 0 0;max-width:none;width:100%;min-width:0; }
+html.hvac-extended #card-cvc .climate-hvac .hvac-fan .hvac-caption { flex:none;white-space:nowrap; }
+html.hvac-extended #card-cvc .climate-hvac .hvac-fan .hvac-row { flex:1;min-width:0;gap:6px; }
+
+/* Sur une dalle 1280x800 et une tablette, garder des cibles tactiles confortables
+   après l'ajout des onglets Wellness. */
 @media (max-height: 900px) {
   body#app-body #card-cvc .climate-tabs { margin-bottom: 4px; }
   html.hvac-extended #card-cvc .climate-hvac > p { margin-top: 4px!important; }
   body#app-body #card-cvc .temp-adjust-btn,
   body#app-body #card-cvc .temp-adjust-btn .cb-btn { width: 48px!important; height: 48px!important; min-width: 48px!important; min-height: 48px!important; }
-  html.hvac-extended #card-cvc .climate-hvac > .hvac-controls {
-    grid-template-columns: 1fr 2fr;
-    gap: 4px 10px;
-  }
-  #card-cvc .climate-hvac .hvac-caption { grid-column: 2; grid-row: 1; }
-  #card-cvc .climate-hvac .hvac-row:first-child { grid-column: 1; grid-row: 2; }
-  #card-cvc .climate-hvac .hvac-row:last-child { grid-column: 2; grid-row: 2; }
+  html.hvac-extended #card-cvc .climate-hvac .hvac-setpoint-line { gap:8px; }
+  html.hvac-extended #card-cvc .climate-hvac .hvac-fan { margin-top:6px; }
 }
+
+/* 18.09.2026 — changement de pièce : la carte HVAC est masquée par `visibility:hidden` (setVis).
+   Les boutons − / + portent `transition: all`, ce qui anime aussi `visibility` : ils restaient
+   affichés après le reste de la carte. On n'anime jamais visibility, et tout ce que contient
+   une carte masquée disparaît sans transition. */
+body#app-body #card-cvc ch5-button[customClass~="temp-adjust-btn"],
+body#app-body #card-cvc ch5-button[customClass~="temp-adjust-btn"] button,
+body#app-body #card-cvc ch5-button[customClass~="temp-adjust-btn"] .ch5-button,
+body#app-body #card-cvc ch5-button[customClass~="temp-adjust-btn"] .cb-btn { transition-property:background-color,border-color,transform,box-shadow!important; }
+body#app-body #card-cvc[style*="hidden"], body#app-body #card-cvc[style*="hidden"] * { transition:none!important; }

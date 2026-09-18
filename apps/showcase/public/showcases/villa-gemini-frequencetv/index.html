@@ -4275,25 +4275,30 @@ body#app-body.theme-light ch5-button[customClass~="scene-btn"]:not([selected="tr
                         <p style="margin: 0; color: var(--text-secondary);" data-i18n="temp_mode">Mode Actif :</p>
                         <!-- Reçoit le mode (String Join 33) "CHAUFFAGE" ou "CLIMATISATION" -->
                         <div class="hvac-mode-val" style="font-weight: bold; font-size: 1.2rem; margin-top: 10px;">
-                            <span id="hvac-mode-val" data-ch5-textcontent="33">--</span>
+                            <span id="hvac-mode-val">--</span>
                         </div>
                     </div>
                 </div>
                 <p style="margin: 15px 0 5px 0; color: var(--text-primary); font-size: 1.1rem; font-weight: 500;" data-i18n="temp_requested">Consigne Demandée :</p>
                 <!-- Ajustement de la consigne par boutons +/- (Analog Join 31) -->
-                <div style="display: flex; align-items: center; justify-content: center; gap: 15px; margin-top: 10px;">
+                <div class="hvac-setpoint-line">
+                <div class="temp-container hvac-setpoint" style="display: flex; align-items: center; justify-content: center; gap: 15px; margin-top: 10px;">
                     <ch5-button label="-" customClass="temp-adjust-btn" sendEventOnClick="50" data-join="50"></ch5-button>
                     <span id="consigne-val" class="consigne-temp-val" data-ch5-textcontent="34" style="font-size: 2rem; font-weight: bold; min-width: 80px; text-align: center;">--.-</span>
                     <span class="consigne-temp-val" style="font-size: 1.2rem; margin-left: -10px; font-weight: bold;">°C</span>
                     <ch5-button label="+" customClass="temp-adjust-btn" sendEventOnClick="49" data-join="49"></ch5-button>
                 </div>
 
-                <div class="hvac-controls" aria-label="Marche et ventilation">
+                <div class="hvac-controls hvac-power" aria-label="Marche">
                     <div class="hvac-row">
                         <ch5-button label="ON" customClass="hvac-command" sendEventOnClick="610" receiveStateSelected="610" data-join="610"></ch5-button>
                         <ch5-button label="OFF" customClass="hvac-command" sendEventOnClick="611" receiveStateSelected="611" data-join="611"></ch5-button>
                     </div>
-                    <div class="hvac-caption">Ventilation</div>
+                </div>
+                </div>
+
+                <div class="hvac-controls hvac-fan" aria-label="Ventilation">
+                    <div class="hvac-caption" data-i18n="ventilation">Ventilation</div>
                     <div class="hvac-row">
                         <ch5-button label="AUTO" customClass="hvac-command" sendEventOnClick="612" receiveStateSelected="612" data-join="612"></ch5-button>
                         <ch5-button label="1" customClass="hvac-command" sendEventOnClick="613" receiveStateSelected="613" data-join="613"></ch5-button>
@@ -4337,7 +4342,7 @@ body#app-body.theme-light ch5-button[customClass~="scene-btn"]:not([selected="tr
                             
                         <div style="height: 14px; min-height: 14px; max-height: 14px; flex-shrink: 0;"></div>
                         <button class="shades-config-cog" onclick="window.openSourceControlModal('appletv')" style="cursor: pointer; display: flex; align-items: center; justify-content: center; width: 100%; height: 26px; border-radius: 6px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); transition: all 0.2s ease; padding: 0; outline: none; z-index: 100; position: relative;">
-                            <svg class="gear-icon" viewBox="0 0 512 512"><path d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6l-43.3 75c-3.2 8.7-12.2 13.9-21.4 11.7l-56.4-13.6c-15.6 12-33 21.6-51.7 28.5l-11.9 57.3c-2 9.7-10.5 16.7-20.5 16.7H220.4c-10 0-18.5-7-20.5-16.7l-11.9-57.3c-18.7-6.9-36.1-16.4-51.7-28.5l-56.4 13.6c-9.2 2.2-18.2-3-21.4-11.7l-43.3-75c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4c-1.1-8.3-1.7-16.8-1.7-25.4s.6-17.1 1.7-25.4L21.6 191.2c-6.9-6.2-9.6-15.9-6.4-24.6l43.3-75c3.2-8.7 12.2-13.9 21.4-11.7l56.4 13.6c15.6-12 33-21.6 51.7-28.5l11.9-57.3c2-9.7 10.5-16.7 20.5-16.7h72.8c10 0 18.5 7 20.5 16.7l11.9 57.3c18.7 6.9 36.1 16.4 51.7-28.5l56.4-13.6c9.2-2.2 8.2 3 21.4 11.7l43.3 75zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"/></svg>
+                            <svg class="gear-icon" viewBox="0 0 512 512"><path d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6l-43.3 75c-3.2 8.7-12.2 13.9-21.4 11.7l-56.4-13.6c-15.6 12-33 21.6-51.7 28.5l-11.9 57.3c-2 9.7-10.5 16.7-20.5 16.7H220.4c-10 0-18.5-7-20.5-16.7l-11.9-57.3c-18.7-6.9-36.1-16.4-51.7-28.5l-56.4 13.6c-9.2 2.2-18.2-3-21.4-11.7l-43.3-75c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4c-1.1-8.3-1.7-16.8-1.7-25.4s.6-17.1 1.7-25.4L21.6 191.2c-6.9-6.2-9.6-15.9-6.4-24.6l43.3-75c3.2-8.7 12.2-13.9 21.4-11.7l56.4 13.6c15.6-12 33-21.6 51.7-28.5l11.9-57.3c2-9.7 10.5-16.7 20.5-16.7h72.8c10 0 18.5 7 20.5 16.7l11.9 57.3c18.7 6.9 36.1 16.4 51.7 28.5l56.4-13.6c9.2-2.2 18.2 3 21.4 11.7l43.3 75zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"/></svg>
                         </button>
                     </div>
                     <!-- SKY Q -->
@@ -4348,7 +4353,7 @@ body#app-body.theme-light ch5-button[customClass~="scene-btn"]:not([selected="tr
                             
                         <div style="height: 14px; min-height: 14px; max-height: 14px; flex-shrink: 0;"></div>
                         <button class="shades-config-cog" onclick="window.openSourceControlModal('skyq')" style="cursor: pointer; display: flex; align-items: center; justify-content: center; width: 100%; height: 26px; border-radius: 6px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); transition: all 0.2s ease; padding: 0; outline: none; z-index: 100; position: relative;">
-                            <svg class="gear-icon" viewBox="0 0 512 512"><path d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6l-43.3 75c-3.2 8.7-12.2 13.9-21.4 11.7l-56.4-13.6c-15.6 12-33 21.6-51.7 28.5l-11.9 57.3c-2 9.7-10.5 16.7-20.5 16.7H220.4c-10 0-18.5-7-20.5-16.7l-11.9-57.3c-18.7-6.9-36.1-16.4-51.7-28.5l-56.4 13.6c-9.2 2.2-18.2-3-21.4-11.7l-43.3-75c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4c-1.1-8.3-1.7-16.8-1.7-25.4s.6-17.1 1.7-25.4L21.6 191.2c-6.9-6.2-9.6-15.9-6.4-24.6l43.3-75c3.2-8.7 12.2-13.9 21.4-11.7l56.4 13.6c15.6-12 33-21.6 51.7-28.5l11.9-57.3c2-9.7 10.5-16.7 20.5-16.7h72.8c10 0 18.5 7 20.5 16.7l11.9 57.3c18.7 6.9 36.1 16.4 51.7-28.5l56.4-13.6c9.2-2.2 8.2 3 21.4 11.7l43.3 75zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"/></svg>
+                            <svg class="gear-icon" viewBox="0 0 512 512"><path d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6l-43.3 75c-3.2 8.7-12.2 13.9-21.4 11.7l-56.4-13.6c-15.6 12-33 21.6-51.7 28.5l-11.9 57.3c-2 9.7-10.5 16.7-20.5 16.7H220.4c-10 0-18.5-7-20.5-16.7l-11.9-57.3c-18.7-6.9-36.1-16.4-51.7-28.5l-56.4 13.6c-9.2 2.2-18.2-3-21.4-11.7l-43.3-75c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4c-1.1-8.3-1.7-16.8-1.7-25.4s.6-17.1 1.7-25.4L21.6 191.2c-6.9-6.2-9.6-15.9-6.4-24.6l43.3-75c3.2-8.7 12.2-13.9 21.4-11.7l56.4 13.6c15.6-12 33-21.6 51.7-28.5l11.9-57.3c2-9.7 10.5-16.7 20.5-16.7h72.8c10 0 18.5 7 20.5 16.7l11.9 57.3c18.7 6.9 36.1 16.4 51.7 28.5l56.4-13.6c9.2-2.2 18.2 3 21.4 11.7l43.3 75zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"/></svg>
                         </button>
                     </div>
                     <!-- SWISSCOM -->
@@ -4359,7 +4364,7 @@ body#app-body.theme-light ch5-button[customClass~="scene-btn"]:not([selected="tr
                             
                         <div style="height: 14px; min-height: 14px; max-height: 14px; flex-shrink: 0;"></div>
                         <button class="shades-config-cog" onclick="window.openSourceControlModal('swisscom')" style="cursor: pointer; display: flex; align-items: center; justify-content: center; width: 100%; height: 26px; border-radius: 6px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); transition: all 0.2s ease; padding: 0; outline: none; z-index: 100; position: relative;">
-                            <svg class="gear-icon" viewBox="0 0 512 512"><path d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6l-43.3 75c-3.2 8.7-12.2 13.9-21.4 11.7l-56.4-13.6c-15.6 12-33 21.6-51.7 28.5l-11.9 57.3c-2 9.7-10.5 16.7-20.5 16.7H220.4c-10 0-18.5-7-20.5-16.7l-11.9-57.3c-18.7-6.9-36.1-16.4-51.7-28.5l-56.4 13.6c-9.2 2.2-18.2-3-21.4-11.7l-43.3-75c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4c-1.1-8.3-1.7-16.8-1.7-25.4s.6-17.1 1.7-25.4L21.6 191.2c-6.9-6.2-9.6-15.9-6.4-24.6l43.3-75c3.2-8.7 12.2-13.9 21.4-11.7l56.4 13.6c15.6-12 33-21.6 51.7-28.5l11.9-57.3c2-9.7 10.5-16.7 20.5-16.7h72.8c10 0 18.5 7 20.5 16.7l11.9 57.3c18.7 6.9 36.1 16.4 51.7-28.5l56.4-13.6c9.2-2.2 8.2 3 21.4 11.7l43.3 75zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"/></svg>
+                            <svg class="gear-icon" viewBox="0 0 512 512"><path d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6l-43.3 75c-3.2 8.7-12.2 13.9-21.4 11.7l-56.4-13.6c-15.6 12-33 21.6-51.7 28.5l-11.9 57.3c-2 9.7-10.5 16.7-20.5 16.7H220.4c-10 0-18.5-7-20.5-16.7l-11.9-57.3c-18.7-6.9-36.1-16.4-51.7-28.5l-56.4 13.6c-9.2 2.2-18.2-3-21.4-11.7l-43.3-75c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4c-1.1-8.3-1.7-16.8-1.7-25.4s.6-17.1 1.7-25.4L21.6 191.2c-6.9-6.2-9.6-15.9-6.4-24.6l43.3-75c3.2-8.7 12.2-13.9 21.4-11.7l56.4 13.6c15.6-12 33-21.6 51.7-28.5l11.9-57.3c2-9.7 10.5-16.7 20.5-16.7h72.8c10 0 18.5 7 20.5 16.7l11.9 57.3c18.7 6.9 36.1 16.4 51.7 28.5l56.4-13.6c9.2-2.2 18.2 3 21.4 11.7l43.3 75zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"/></svg>
                         </button>
                     </div>
                     <!-- IPTV -->
@@ -4370,17 +4375,17 @@ body#app-body.theme-light ch5-button[customClass~="scene-btn"]:not([selected="tr
                             
                         <div style="height: 14px; min-height: 14px; max-height: 14px; flex-shrink: 0;"></div>
                         <button class="shades-config-cog" onclick="window.openSourceControlModal('iptv')" style="cursor: pointer; display: flex; align-items: center; justify-content: center; width: 100%; height: 26px; border-radius: 6px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); transition: all 0.2s ease; padding: 0; outline: none; z-index: 100; position: relative;">
-                            <svg class="gear-icon" viewBox="0 0 512 512"><path d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6l-43.3 75c-3.2 8.7-12.2 13.9-21.4 11.7l-56.4-13.6c-15.6 12-33 21.6-51.7 28.5l-11.9 57.3c-2 9.7-10.5 16.7-20.5 16.7H220.4c-10 0-18.5-7-20.5-16.7l-11.9-57.3c-18.7-6.9-36.1-16.4-51.7-28.5l-56.4 13.6c-9.2 2.2-18.2-3-21.4-11.7l-43.3-75c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4c-1.1-8.3-1.7-16.8-1.7-25.4s.6-17.1 1.7-25.4L21.6 191.2c-6.9-6.2-9.6-15.9-6.4-24.6l43.3-75c3.2-8.7 12.2-13.9 21.4-11.7l56.4 13.6c15.6-12 33-21.6 51.7-28.5l11.9-57.3c2-9.7 10.5-16.7 20.5-16.7h72.8c10 0 18.5 7 20.5 16.7l11.9 57.3c18.7 6.9 36.1 16.4 51.7-28.5l56.4-13.6c9.2-2.2 8.2 3 21.4 11.7l43.3 75zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"/></svg>
+                            <svg class="gear-icon" viewBox="0 0 512 512"><path d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6l-43.3 75c-3.2 8.7-12.2 13.9-21.4 11.7l-56.4-13.6c-15.6 12-33 21.6-51.7 28.5l-11.9 57.3c-2 9.7-10.5 16.7-20.5 16.7H220.4c-10 0-18.5-7-20.5-16.7l-11.9-57.3c-18.7-6.9-36.1-16.4-51.7-28.5l-56.4 13.6c-9.2 2.2-18.2-3-21.4-11.7l-43.3-75c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4c-1.1-8.3-1.7-16.8-1.7-25.4s.6-17.1 1.7-25.4L21.6 191.2c-6.9-6.2-9.6-15.9-6.4-24.6l43.3-75c3.2-8.7 12.2-13.9 21.4-11.7l56.4 13.6c15.6-12 33-21.6 51.7-28.5l11.9-57.3c2-9.7 10.5-16.7 20.5-16.7h72.8c10 0 18.5 7 20.5 16.7l11.9 57.3c18.7 6.9 36.1 16.4 51.7 28.5l56.4-13.6c9.2-2.2 18.2 3 21.4 11.7l43.3 75zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"/></svg>
                         </button>
                     </div>
                     <!-- MUSIQUE -->
                     <div style="display: flex; flex-direction: column; align-items: stretch; flex: 1; min-width: 0; height: 144px; position: relative;">
                         <div id="src-badge-155" class="tv-live-badge" style="display: none;"><div class="tv-equalizer-mini"><span></span><span></span><span></span><span></span></div></div>
-                        <ch5-button label="MUSIQUE" customClass="source-btn my-source-btn src-musique" customStyle="width: 100%; height: 104px; margin: 0;" sendEventOnClick="155" receiveStateSelected="155" onclick="window.selectSourceSim('155')"  data-join="155" data-rjoin="155"></ch5-button>
+                        <ch5-button label="MUSIQUE" data-i18n="music_upper" customClass="source-btn my-source-btn src-musique" customStyle="width: 100%; height: 104px; margin: 0;" sendEventOnClick="155" receiveStateSelected="155" onclick="window.selectSourceSim('155')"  data-join="155" data-rjoin="155"></ch5-button>
                         <img id="src-img-155" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiBmaWxsPSIjZWFiMzA4Ij48cGF0aCBkPSJNNDk5LjEgNi4zYzguMSA2IDEyLjkgMTUuNiAxMi45IDI1Ljd2NzJjMCAxMy42LTguNiAyNS42LTIxLjQgMzAuMWwtMTYwIDU2QzMyNC43IDE5Mi4yIDMyMCAxOTguOCAzMjAgMjA2LjNWMzg0YzAgMzUuMy0zNS44IDY0LTgwIDY0cy04MC0yOC43LTgwLTY0IDM1LjgtNjQgODAtNjRjMTIuNyAwIDI0LjcgMi45IDM1LjIgOC4xVjEyOGMwLTEzLjYgOC42LTI1LjYgMjEuNC0zMC4xbDE2MC01NmM0LjctMS42IDkuNy0yLjQgMTQuNy0yLjQgOS4xIDAgMTcuOSAzLjIgMjQuOSA4LjV6Ii8+PC9zdmc+" class="src-overlay-img" style="position: absolute; top: 16px; left: 50%; transform: translateX(-50%); width: 34px; height: 34px; pointer-events: none; z-index: 999999; transition: all 0.2s ease; filter: none;">
                         <div style="height: 14px; min-height: 14px; max-height: 14px; flex-shrink: 0;"></div>
                         <button class="shades-config-cog" onclick="window.openSourceControlModal('musique')" style="cursor: pointer; display: flex; align-items: center; justify-content: center; width: 100%; height: 26px; border-radius: 6px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); transition: all 0.2s ease; padding: 0; outline: none; z-index: 100; position: relative;">
-                            <svg class="gear-icon" viewBox="0 0 512 512"><path d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6l-43.3 75c-3.2 8.7-12.2 13.9-21.4 11.7l-56.4-13.6c-15.6 12-33 21.6-51.7 28.5l-11.9 57.3c-2 9.7-10.5 16.7-20.5 16.7H220.4c-10 0-18.5-7-20.5-16.7l-11.9-57.3c-18.7-6.9-36.1-16.4-51.7-28.5l-56.4 13.6c-9.2 2.2-18.2-3-21.4-11.7l-43.3-75c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4c-1.1-8.3-1.7-16.8-1.7-25.4s.6-17.1 1.7-25.4L21.6 191.2c-6.9-6.2-9.6-15.9-6.4-24.6l43.3-75c3.2-8.7 12.2-13.9 21.4-11.7l56.4 13.6c15.6-12 33-21.6 51.7-28.5l11.9-57.3c2-9.7 10.5-16.7 20.5-16.7h72.8c10 0 18.5 7 20.5 16.7l11.9 57.3c18.7 6.9 36.1 16.4 51.7-28.5l56.4-13.6c9.2 8.2 3 21.4 11.7l43.3 75zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"/></svg>
+                            <svg class="gear-icon" viewBox="0 0 512 512"><path d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6l-43.3 75c-3.2 8.7-12.2 13.9-21.4 11.7l-56.4-13.6c-15.6 12-33 21.6-51.7 28.5l-11.9 57.3c-2 9.7-10.5 16.7-20.5 16.7H220.4c-10 0-18.5-7-20.5-16.7l-11.9-57.3c-18.7-6.9-36.1-16.4-51.7-28.5l-56.4 13.6c-9.2 2.2-18.2-3-21.4-11.7l-43.3-75c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4c-1.1-8.3-1.7-16.8-1.7-25.4s.6-17.1 1.7-25.4L21.6 191.2c-6.9-6.2-9.6-15.9-6.4-24.6l43.3-75c3.2-8.7 12.2-13.9 21.4-11.7l56.4 13.6c15.6-12 33-21.6 51.7-28.5l11.9-57.3c2-9.7 10.5-16.7 20.5-16.7h72.8c10 0 18.5 7 20.5 16.7l11.9 57.3c18.7 6.9 36.1 16.4 51.7 28.5l56.4-13.6c9.2-2.2 18.2 3 21.4 11.7l43.3 75zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"/></svg>
                         </button>
                     </div>
                 </div>
@@ -4839,12 +4844,7 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
                     <ch5-button label="⏯️" customClass="scene-btn" style="width: 70px; height: 50px;" sendEventOnClick="251" data-join="251"></ch5-button>
                     <ch5-button label="⏭️" customClass="scene-btn" style="width: 55px; height: 45px;" sendEventOnClick="252" data-join="252"></ch5-button>
                 </div>
-                
-                <!-- Volume Dédié Source Audio -->
-                <div style="display: flex; align-items: center; gap: 15px; background: rgba(255,255,255,0.02); padding: 10px 15px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.05); margin-top: 10px;">
-                    <span style="font-weight: bold; font-size: 0.85rem; color: var(--text-secondary); white-space: nowrap;"><span data-i18n="media_volume">Volume musique :</span></span>
-                    <ch5-slider class="volume-slider" min="0" max="65535" sendEventOnChange="254" receiveStateValue="254" style="flex: 1; margin: 0; padding: 0;" data-cjoin="254" data-vjoin="254"></ch5-slider>
-                </div>
+                <!-- 18.09.2026 : curseur « Volume musique » (join 254) retiré, doublon du volume de la pièce -->
             </div>
         </div>
     </div>
@@ -5047,18 +5047,18 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
     <div id="global-preset-custom-overlay" class="custom-overlay-panel" style="width: 80%; height: 85%; background-color: rgba(22, 25, 32, 0.98); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); border-radius: 16px; border: 1px solid rgba(255, 255, 255, 0.1); color: white; padding: 25px; box-sizing: border-box; display: none; z-index: 1100;">
         <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; margin-bottom: 20px;">
             <h2 style="margin: 0; border: none; padding: 0; color: #10b981; font-size: 1.5rem; text-transform: uppercase; display: flex; align-items: center; gap: 10px;">
-                ⚙️ Configuration du preset global
+                ⚙️ <span data-i18n="preset_config_title">Configuration du preset global</span>
             </h2>
             <div style="display: flex; gap: 10px;">
-                <button onclick="window.saveGlobalPresetConfig()" style="height: 35px; background: #047857; border: 1px solid rgba(4,120,87,0.35); color: #ffffff; border-radius: 6px; cursor: pointer; font-weight: bold; padding: 0 15px; font-size: 0.85rem; border: none;">SAUVEGARDER</button>
-                <button onclick="window.closeGlobalPresetCustomizer()" style="height: 35px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 6px; cursor: pointer; font-weight: bold; padding: 0 15px; font-size: 0.85rem; border: none;">ANNULER</button>
+                <button onclick="window.saveGlobalPresetConfig()" style="height: 35px; background: #047857; border: 1px solid rgba(4,120,87,0.35); color: #ffffff; border-radius: 6px; cursor: pointer; font-weight: bold; padding: 0 15px; font-size: 0.85rem; border: none;" data-i18n="save_upper">SAUVEGARDER</button>
+                <button onclick="window.closeGlobalPresetCustomizer()" style="height: 35px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 6px; cursor: pointer; font-weight: bold; padding: 0 15px; font-size: 0.85rem; border: none;" data-i18n="cancel_upper">ANNULER</button>
             </div>
         </div>
         
         <!-- Sélection du sous-preset (masquée en Mode Vacances : on y arrive par l'engrenage
              de la carte, le preset est deja choisi — 16.09.2026) -->
         <div id="customizer-preset-picker" style="margin-bottom: 20px; display: flex; align-items: center; gap: 15px;">
-            <span style="font-weight: bold; color: #94a3b8; font-size: 0.95rem;">Sélectionnez le preset à configurer :</span>
+            <span style="font-weight: bold; color: #94a3b8; font-size: 0.95rem;" data-i18n="preset_select">Sélectionnez le preset à configurer :</span>
             <select id="customizer-preset-select" onchange="window.renderCustomizerFields()" style="background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.15); color: white; border-radius: 6px; padding: 6px 12px; font-size: 0.9rem; outline: none; min-width: 200px;"></select>
         </div>
         
@@ -5139,6 +5139,41 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
                 theme_glass: "Verre dépoli ❄️",
                 active_piece: "PIÈCE ACTIVE :",
                 alarm_title: "Alarme globale :",
+                alarm: "Alarme",
+                cameras: "Caméras",
+                global: "Global",
+                security_title: "Sécurité",
+                ventilation: "Ventilation",
+                central_title: "Centralisation",
+                global_lights: "Éclairage global",
+                global_shades: "Stores globaux",
+                global_hvac: "Climatisation globale",
+                vacation_mode: "Mode vacances",
+                all_on: "TOUT ALLUMER",
+                all_off: "TOUT ÉTEINDRE",
+                eco_mode: "MODE ÉCO",
+                open_all: "TOUT OUVRIR",
+                close_all: "TOUT FERMER",
+                comfort: "CONFORT",
+                night: "NUIT",
+                frost_guard: "HORS GEL",
+                activate: "ACTIVER",
+                deactivate: "DÉSACTIVER",
+                partial: "PARTIEL",
+                close_upper: "FERMER",
+                admin_code_prompt: "Entrez le code d'administration :",
+                hvac_heat: "CHAUFFAGE",
+                hvac_cool: "CLIMATISATION",
+                hvac_off: "ARRÊT",
+                preset_config_title: "Configuration du preset global",
+                preset_select: "Sélectionnez le preset à configurer :",
+                save_upper: "SAUVEGARDER",
+                cancel_upper: "ANNULER",
+                include: "Inclure",
+                scene_saved_short: "enregistrée",
+                scene_recalled_short: "rappelée",
+                scene_activated_short: "activée",
+                music_upper: "MUSIQUE",
                 alarm_arm: "ARMER",
                 alarm_disarm: "DÉSARMER",
                 temp_title: "HVAC",
@@ -5210,6 +5245,41 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
                 theme_glass: "Frosted glass ❄️",
                 active_piece: "ACTIVE ROOM:",
                 alarm_title: "Global alarm:",
+                alarm: "Alarm",
+                cameras: "Cameras",
+                global: "Global",
+                security_title: "Security",
+                ventilation: "Fan",
+                central_title: "Central control",
+                global_lights: "Global lighting",
+                global_shades: "Global shades",
+                global_hvac: "Global climate",
+                vacation_mode: "Vacation mode",
+                all_on: "ALL ON",
+                all_off: "ALL OFF",
+                eco_mode: "ECO MODE",
+                open_all: "OPEN ALL",
+                close_all: "CLOSE ALL",
+                comfort: "COMFORT",
+                night: "NIGHT",
+                frost_guard: "FROST GUARD",
+                activate: "ACTIVATE",
+                deactivate: "DEACTIVATE",
+                partial: "PARTIAL",
+                close_upper: "CLOSE",
+                admin_code_prompt: "Enter the administration code:",
+                hvac_heat: "HEATING",
+                hvac_cool: "COOLING",
+                hvac_off: "OFF",
+                preset_config_title: "Global preset configuration",
+                preset_select: "Select the preset to configure:",
+                save_upper: "SAVE",
+                cancel_upper: "CANCEL",
+                include: "Include",
+                scene_saved_short: "saved",
+                scene_recalled_short: "recalled",
+                scene_activated_short: "activated",
+                music_upper: "MUSIC",
                 alarm_arm: "ARM",
                 alarm_disarm: "DISARM",
                 temp_title: "HVAC",
@@ -5281,6 +5351,41 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
                 theme_glass: "Cristal esmerilado ❄️",
                 active_piece: "HABITACIÓN ACTIVA:",
                 alarm_title: "Alarma global:",
+                alarm: "Alarma",
+                cameras: "Cámaras",
+                global: "Global",
+                security_title: "Seguridad",
+                ventilation: "Ventilación",
+                central_title: "Centralización",
+                global_lights: "Iluminación global",
+                global_shades: "Persianas globales",
+                global_hvac: "Climatización global",
+                vacation_mode: "Modo vacaciones",
+                all_on: "TODO ENCENDIDO",
+                all_off: "TODO APAGADO",
+                eco_mode: "MODO ECO",
+                open_all: "ABRIR TODO",
+                close_all: "CERRAR TODO",
+                comfort: "CONFORT",
+                night: "NOCHE",
+                frost_guard: "ANTIHIELO",
+                activate: "ACTIVAR",
+                deactivate: "DESACTIVAR",
+                partial: "PARCIAL",
+                close_upper: "CERRAR",
+                admin_code_prompt: "Introduzca el código de administración:",
+                hvac_heat: "CALEFACCIÓN",
+                hvac_cool: "REFRIGERACIÓN",
+                hvac_off: "PARADA",
+                preset_config_title: "Configuración del preset global",
+                preset_select: "Seleccione el preset a configurar:",
+                save_upper: "GUARDAR",
+                cancel_upper: "CANCELAR",
+                include: "Incluir",
+                scene_saved_short: "guardada",
+                scene_recalled_short: "recuperada",
+                scene_activated_short: "activada",
+                music_upper: "MÚSICA",
                 alarm_arm: "ARMAR",
                 alarm_disarm: "DESARMAR",
                 temp_title: "HVAC",
@@ -5352,6 +5457,41 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
                 theme_glass: "Milchglas ❄️",
                 active_piece: "AKTIVER RAUM:",
                 alarm_title: "Globaler Alarm:",
+                alarm: "Alarm",
+                cameras: "Kameras",
+                global: "Global",
+                security_title: "Sicherheit",
+                ventilation: "Lüftung",
+                central_title: "Zentralsteuerung",
+                global_lights: "Globale Beleuchtung",
+                global_shades: "Globale Beschattung",
+                global_hvac: "Globale Klimatisierung",
+                vacation_mode: "Urlaubsmodus",
+                all_on: "ALLES EIN",
+                all_off: "ALLES AUS",
+                eco_mode: "ECO-MODUS",
+                open_all: "ALLE ÖFFNEN",
+                close_all: "ALLE SCHLIESSEN",
+                comfort: "KOMFORT",
+                night: "NACHT",
+                frost_guard: "FROSTSCHUTZ",
+                activate: "AKTIVIEREN",
+                deactivate: "DEAKTIVIEREN",
+                partial: "TEILWEISE",
+                close_upper: "SCHLIESSEN",
+                admin_code_prompt: "Administrationscode eingeben:",
+                hvac_heat: "HEIZEN",
+                hvac_cool: "KÜHLEN",
+                hvac_off: "AUS",
+                preset_config_title: "Konfiguration des globalen Presets",
+                preset_select: "Preset zum Konfigurieren wählen:",
+                save_upper: "SPEICHERN",
+                cancel_upper: "ABBRECHEN",
+                include: "Einschließen",
+                scene_saved_short: "gespeichert",
+                scene_recalled_short: "abgerufen",
+                scene_activated_short: "aktiviert",
+                music_upper: "MUSIK",
                 alarm_arm: "SCHARFSCHALTEN",
                 alarm_disarm: "DEAKTIVIEREN",
                 temp_title: "HVAC",
@@ -5423,6 +5563,41 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
                 theme_glass: "Матовое стекло ❄️",
                 active_piece: "АКТИВНАЯ КОМНАТА :",
                 alarm_title: "Общая сигнализация:",
+                alarm: "Сигнализация",
+                cameras: "Камеры",
+                global: "Общее",
+                security_title: "Безопасность",
+                ventilation: "Вентиляция",
+                central_title: "Централизация",
+                global_lights: "Общее освещение",
+                global_shades: "Общие шторы",
+                global_hvac: "Общий климат",
+                vacation_mode: "Режим отпуска",
+                all_on: "ВСЁ ВКЛ",
+                all_off: "ВСЁ ВЫКЛ",
+                eco_mode: "ЭКО-РЕЖИМ",
+                open_all: "ОТКРЫТЬ ВСЁ",
+                close_all: "ЗАКРЫТЬ ВСЁ",
+                comfort: "КОМФОРТ",
+                night: "НОЧЬ",
+                frost_guard: "АНТИЗАМЕРЗАНИЕ",
+                activate: "ВКЛЮЧИТЬ",
+                deactivate: "ВЫКЛЮЧИТЬ",
+                partial: "ЧАСТИЧНО",
+                close_upper: "ЗАКРЫТЬ",
+                admin_code_prompt: "Введите код администратора:",
+                hvac_heat: "ОБОГРЕВ",
+                hvac_cool: "ОХЛАЖДЕНИЕ",
+                hvac_off: "ВЫКЛ",
+                preset_config_title: "Настройка общего пресета",
+                preset_select: "Выберите пресет для настройки:",
+                save_upper: "СОХРАНИТЬ",
+                cancel_upper: "ОТМЕНА",
+                include: "Включить",
+                scene_saved_short: "сохранена",
+                scene_recalled_short: "вызвана",
+                scene_activated_short: "активирована",
+                music_upper: "МУЗЫКА",
                 alarm_arm: "ОХРАНА",
                 alarm_disarm: "СНЯТЬ",
                 temp_title: "HVAC",
@@ -5741,8 +5916,25 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
             });
         }
 
+        // Texte d'une clé du dictionnaire dans la langue courante (repli : français, puis la clé)
+        window.villaI18n = function (key) {
+            const d = translations[currentLang] || translations['fr'];
+            return (d && d[key]) || translations['fr'][key] || key;
+        };
+        // Le C# envoie le mode CVC en français sur le sériel 33 (ARRÊT / CHAUFFAGE / CLIMATISATION) :
+        // traduit à l'affichage, jamais côté processeur.
+        window.villaHvacModeText = function (v) {
+            const raw = String(v || '').trim().toUpperCase();
+            const map = { 'CHAUFFAGE': 'hvac_heat', 'CLIMATISATION': 'hvac_cool', 'ARRÊT': 'hvac_off', 'ARRET': 'hvac_off' };
+            return map[raw] ? window.villaI18n(map[raw]) : String(v || '');
+        };
+                    
         window.changeLanguage = function(lang) {
             applyLanguage(lang);
+            if (window._villaHvacModeRaw !== undefined) {
+                const el = document.getElementById('hvac-mode-val');
+                if (el) el.innerText = window.villaHvacModeText(window._villaHvacModeRaw);
+            }
             // Si une villa_config est chargée, reconstruire le GUI avec les noms traduits
             if (window.villaConfig && typeof window.villaRebuildUI === 'function') {
                 window.villaRebuildUI();
@@ -5862,47 +6054,6 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
 
         
         // Global Power Off & Modal Helpers (v1.0.149)
-        
-        // Global Power Off & Unselect All Sources (v1.0.149)
-        window.sendPowerOff = function() {
-            console.log("POWER OFF PRESSED: Unselecting all sources...");
-            
-            // 1. Send Crestron Join 200 pulse to C# processor
-            if (window.CrComLib) {
-                window.CrComLib.publishEvent('b', '200', true);
-                setTimeout(function() {
-                    window.CrComLib.publishEvent('b', '200', false);
-                }, 200);
-
-                // 2. Clear all 5 source digital joins (151-155)
-                ['151', '152', '153', '154', '155'].forEach(function(j) {
-                    window.CrComLib.publishEvent('b', j, false);
-                });
-            }
-
-            // 3. Unselect all source button elements in DOM
-            ['151', '152', '153', '154', '155'].forEach(function(j) {
-                const btns = document.querySelectorAll('ch5-button[data-rjoin="' + j + '"], .source-btn');
-                btns.forEach(function(btn) {
-                    if (btn.getAttribute('receiveStateSelected') === j || btn.className.includes(getSourceClassSuffix(j))) {
-                        btn.removeAttribute('selected');
-                        btn.classList.remove('ch5-button--selected');
-                        const innerBtn = btn.querySelector('button') || btn.querySelector('.cb-btn');
-                        if (innerBtn) {
-                            innerBtn.classList.remove('ch5-button--selected');
-                            innerBtn.removeAttribute('selected');
-                            innerBtn.style.backgroundColor = 'rgba(26, 26, 36, 0.9)';
-                            innerBtn.style.border = '1px solid transparent';
-                        }
-                    }
-                });
-            });
-
-            // 4. Reset all logo image overlays to unselected state
-            if (window.updateLogoOverlays) {
-                window.updateLogoOverlays(null);
-            }
-        };
 
         function getSourceClassSuffix(j) {
             if (j === '151') return 'src-appletv';
@@ -6624,7 +6775,7 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
                     { id: 8, name: "Home cinéma" }
                 ];
                 
-                roomsList.forEach(room => {
+                roomsList.forEach(room => { room.name = window.villaTranslateName ? window.villaTranslateName(room.name) : room.name;
                     const roomDiv = document.createElement('div');
                     roomDiv.style = "background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 8px; padding: 12px; margin-bottom: 12px;";
                     
@@ -6687,7 +6838,7 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
                         
                         const chkLabel = document.createElement('label');
                         chkLabel.htmlFor = chk.id;
-                        chkLabel.innerText = "Inclure";
+                        chkLabel.innerText = window.villaI18n ? window.villaI18n('include') : "Inclure";
                         controls.appendChild(chkLabel);
                         
                         const currentVal = isIncluded ? Math.round((savedConfig[room.id][c.id] / 65535) * 100) : (subPreset === 'light_all' ? 100 : (subPreset === 'light_eco' ? 50 : 0));
@@ -6729,7 +6880,7 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
                     { id: 8, name: "Home cinéma" }
                 ];
                 
-                roomsList.forEach(room => {
+                roomsList.forEach(room => { room.name = window.villaTranslateName ? window.villaTranslateName(room.name) : room.name;
                     const roomDiv = document.createElement('div');
                     roomDiv.style = "background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 8px; padding: 12px; margin-bottom: 12px;";
                     
@@ -6762,7 +6913,7 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
                         
                         const chkLabel = document.createElement('label');
                         chkLabel.htmlFor = chk.id;
-                        chkLabel.innerText = "Inclure";
+                        chkLabel.innerText = window.villaI18n ? window.villaI18n('include') : "Inclure";
                         controls.appendChild(chkLabel);
                         
                         row.appendChild(controls);
@@ -6783,7 +6934,7 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
                     { id: 8, name: "Home cinéma" }
                 ];
                 
-                roomsList.forEach(room => {
+                roomsList.forEach(room => { room.name = window.villaTranslateName ? window.villaTranslateName(room.name) : room.name;
                     const row = document.createElement('div');
                     row.style = "background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 8px; padding: 12px; margin-bottom: 8px; display: flex; align-items: center; justify-content: space-between; gap: 15px;";
                     
@@ -6804,7 +6955,7 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
                     
                     const chkLabel = document.createElement('label');
                     chkLabel.htmlFor = chk.id;
-                    chkLabel.innerText = "Inclure";
+                    chkLabel.innerText = window.villaI18n ? window.villaI18n('include') : "Inclure";
                     controls.appendChild(chkLabel);
                     
                     const valInput = document.createElement('input');
@@ -6868,7 +7019,7 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
                 ];
                 
                 const gridContainer = lightBox.querySelector('#vacation-rooms-grid');
-                roomsList.forEach(r => {
+                roomsList.forEach(r => { r.name = window.villaTranslateName ? window.villaTranslateName(r.name) : r.name;
                     const item = document.createElement('div');
                     item.style = "display: flex; align-items: center; justify-content: space-between; background: rgba(0,0,0,0.3); padding: 8px 12px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.05); font-size: 0.85rem;";
                     const isChecked = savedConfig.rooms ? (savedConfig.rooms.indexOf(r.id) !== -1) : true;
@@ -7719,7 +7870,7 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
 
                     // Circuits d'éclairage (max 10, noms par défaut si vides)
                     const ecl = pil.eclairages || {};
-                    const nbC = Math.min((ecl.circuits && ecl.circuits.nombre) || 4, 10);
+                    const nbC = Math.min((ecl.circuits && ecl.circuits.nombre) || 4, 20); // contrat v4.1 : 20 circuits (joins 71-90)
                     const nomsC = (ecl.circuits && ecl.circuits.noms) || [];
                     const defC = defs.circuits || [];
                     const circuits = [];
@@ -9670,11 +9821,13 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
 
                 // HVAC Mode (String Join 33)
                 CrComLib.subscribeState('s', '33', (value) => {
+                    window._villaHvacModeRaw = value;
+                    const shown = window.villaHvacModeText ? window.villaHvacModeText(value) : value;
                     const el = document.getElementById('hvac-mode-val');
-                    if (el) el.innerText = value;
+                    if (el) el.innerText = shown;
                     
                     const gridEl = document.getElementById(`room-grid-${activeRoomId}-hvacMode`);
-                    if (gridEl) gridEl.innerText = value;
+                    if (gridEl) gridEl.innerText = shown;
                 });
 
                 // Source active (Analog Join 51)
@@ -9902,13 +10055,13 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
         };
 
         window.toggleMute = function() {
-            window.isMuted = !window.isMuted;
-            console.log("TOGGLE MUTE PRESSED:", window.isMuted);
-            if (window.CrComLib) {
-                // (v1.0.166) plus d'émission du join 201 : en contrat v2 c'est Stores.Scene 1 ; le mute est le 55 seul
-                window.CrComLib.publishEvent('b', '55', window.isMuted);
-            }
-            window.updateMuteUI(window.isMuted);
+            // 17.09.2026 : même correctif que le bouton OFF. Les deux boutons mute (barre de volume et
+            // télécommande Swisscom) sont des <ch5-button sendEventOnClick="55"> : l'impulsion part
+            // nativement (appui = true, relâchement = false) et le C# bascule le mute sur le front
+            // montant. L'ancien publishEvent('b','55',isMuted) ajoutait un 2e front montant par appui
+            // (double bascule) et un état local qui divergeait du join. L'affichage vient du
+            // receiveStateSelected="55" et de l'abonnement CrComLib ci-dessous, jamais d'un état local.
+            console.log("TOGGLE MUTE PRESSED (impulsion native 55)");
         };
 
         window.updatePowerOffUI = function(isOff) {
@@ -9931,24 +10084,6 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
             });
         };
 
-        window.sendPowerOff = function() {
-            console.log("POWER OFF PRESSED: Powering down & turning button RED...");
-            window.updatePowerOffUI(true);
-            if (window.updateLogoOverlays) window.updateLogoOverlays(null);
-            
-            // Clear source selections
-            if (window.selectSourceSim) {
-                window.selectSourceSim(null);
-            }
-            
-            if (window.CrComLib) {
-                window.CrComLib.publishEvent('b', '200', true);
-                // (v1.0.166) plus d'émission du join 50 : en contrat v2 c'est CVC.ConsigneMoins ; l'extinction est le 200 seul
-                ['151', '152', '153', '154', '155'].forEach(function(j) {
-                    window.CrComLib.publishEvent('b', j, false);
-                });
-            }
-        };
 
         // Subscribe to Crestron Mute & Power OFF Joins
         if (window.CrComLib) {
@@ -10077,9 +10212,13 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
             // 3. Highlight Power OFF button RED
             window.updatePowerOffUI(true);
 
+            // 17.09.2026 : le join 200 (AV.Extinction) est une IMPULSION émise nativement par le
+            // <ch5-button sendEventOnClick="200"> (appui = true, relâchement = false), comme le mute 55.
+            // L'ancien publishEvent('b','200',true) ici ne relâchait jamais : CrComLib n'émet que les
+            // changements, donc dès le 2e appui plus rien ne partait, et le C# recevait deux fronts
+            // montants par appui (natif + JS). Plus aucune émission JS du 200 ; on ne remet à false que
+            // les joins de sélection locaux des tuiles.
             if (window.CrComLib) {
-                window.CrComLib.publishEvent('b', '200', true);
-                // (v1.0.166) plus d'émission du join 50 : en contrat v2 c'est CVC.ConsigneMoins ; l'extinction est le 200 seul
                 ['151', '152', '153', '154', '155'].forEach(function(j) {
                     window.CrComLib.publishEvent('b', j, false);
                 });
@@ -10181,7 +10320,9 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
     var SCENE_BASE = 50;            // scènes d'éclairage = joins SCENE_BASE+1 .. SCENE_BASE+4
     var LONG_PRESS_MS = 1200;                   // maintien pour enregistrer une scène
     var CIRCUITS = [];
-    for (var c = 71; c <= 80; c++) CIRCUITS.push(String(c));
+    for (var c = 71; c <= 90; c++) CIRCUITS.push(String(c));   // contrat v4.1 : 20 circuits
+    var SCENE_SAVE_SERIAL = '421';              // Scenes.Enregistrement : JSON vers le C# (contrat v4.1)
+    var SCENE_SAVED_BASE = 420;                 // digitaux 421-424 : scène mémorisée (retour du C#)
     var SOURCE_REMOTE = { '151': 'appletv', '152': 'skyq', '153': 'swisscom', '154': 'iptv', '155': 'media' };
     var PARTITIONS = [['301', '302', '303'], ['304', '305', '306'], ['307', '308', '309'], ['310', '311', '312']];
     var STATUS_SERIALS = { doors: '111', power: '112' }; // hors contrat, optionnels (affichés seulement si renseignés)
@@ -10221,7 +10362,6 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
         if (n >= 51 && n <= 54) return n - 50;      // contrat v2
         return 0;
     }
-    function sceneKey(idx, room) { return 'villa_scene_' + (room || roomId()) + '_' + idx; }
     function sceneButtons(idx) {
         return document.querySelectorAll('ch5-button[customClass~="scene-btn"][data-join="' + (SCENE_BASE + idx) + '"]');
     }
@@ -10294,12 +10434,14 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
         });
         return out;
     }
-    VUX.loadScene = function (idx, room) {
-        try { var raw = localStorage.getItem(sceneKey(idx, room)); return raw ? JSON.parse(raw) : null; } catch (e) { return null; }
-    };
+    // Contrat v4.1 (18.09.2026) : les scènes ne vivent plus dans le localStorage de l'écran.
+    // Le C# les mémorise (/user/scenes_<pièce>.json) et renvoie « mémorisée » sur les digitaux 421-424
+    // pour la pièce affichée par cet écran. Même scène sur la dalle, l'iPad, le XPanel et l'iPhone.
+    var savedMarks = { 1: false, 2: false, 3: false, 4: false };
+    VUX.loadScene = function (idx) { return savedMarks[idx] ? { scene: idx } : null; };
     function refreshSavedMarks() {
         for (var idx = 1; idx <= 4; idx++) {
-            var saved = !!VUX.loadScene(idx);
+            var saved = !!savedMarks[idx];
             sceneButtons(idx).forEach(function (b) {
                 if (saved) b.setAttribute('data-saved', 'true'); else b.removeAttribute('data-saved');
             });
@@ -10308,35 +10450,36 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
     VUX.refreshSavedMarks = refreshSavedMarks;
 
     function snapshot() { return { lights: readLights(), blinds: readBlinds() }; }
+    // 💾 / appui long : les niveaux courants partent au C# (sériel 421), qui les enregistre et confirme.
     window.saveCurrentScene = function (ref, snap) {
         var idx = sceneIdx(ref);
         if (!idx) return;
         snap = snap || snapshot();
-        var data = { room: roomId(), scene: idx, lights: snap.lights, blinds: snap.blinds, ts: Date.now() };
-        try { localStorage.setItem(sceneKey(idx), JSON.stringify(data)); }
-        catch (e) { console.warn('VillaUX: enregistrement de la scène impossible', e); }
-        refreshSavedMarks();
+        // Charge utile compacte : le CP4 tronque un sériel venant de la dalle à 119 caractères.
+        // Seuls les circuits affichés (curseurs de la pièce), en pour-cent : 20 circuits = 99 caractères.
+        var circuits = [];
+        document.querySelectorAll('#circuits-container ch5-slider[sendEventOnChange]').forEach(function (sl) {
+            var j = sl.getAttribute('sendEventOnChange'), i = CIRCUITS.indexOf(j);
+            if (i < 0) return;
+            var v = snap.lights[j] !== undefined ? Number(snap.lights[j]) : (parseInt(sl.getAttribute('value'), 10) || 0);
+            circuits[i] = Math.round(Math.max(0, Math.min(65535, v || 0)) * 100 / 65535);
+        });
+        for (var i = 0; i < circuits.length; i++) if (circuits[i] === undefined) circuits[i] = null;
+        while (circuits.length && circuits[circuits.length - 1] === null) circuits.pop();
+        var data = { p: Number(roomId()), s: idx, c: circuits };
+        publish('s', SCENE_SAVE_SERIAL, JSON.stringify(data));
         toast('💾 ' + t('scene_saved', { scene: VUX.sceneName(idx) }));
     };
 
+    // Appui court : le <ch5-button> a déjà envoyé le join 51-54 ; le C# applique la scène (mémorisée,
+    // sinon table du villa_config.json) et repousse les niveaux. Rien à envoyer d'ici.
     VUX.recallScene = function (ref) {
         var idx = sceneIdx(ref);
         if (!idx) return;
-        var data = VUX.loadScene(idx);
-        if (!data) { toast('✔ ' + t('scene_activated', { scene: VUX.sceneName(idx) })); return; }
-        Object.keys(data.lights || {}).forEach(function (j) {
-            var v = Number(data.lights[j]) || 0;
-            levels[j] = v;
-            document.querySelectorAll('ch5-slider[data-vjoin="' + j + '"]').forEach(function (s) { s.setAttribute('value', String(v)); });
-            publish('n', j, v);   // le processeur (ou le moteur de démo) reprend les niveaux mémorisés
-        });
-        var blinds = data.blinds || {};
-        Object.keys(blinds).forEach(function (i) { VUX.setBlindPosition(Number(i), blinds[i]); });
-        syncGroupIcons(blinds);
-        toast('✔ ' + t('scene_recalled', { scene: VUX.sceneName(idx) }));
+        toast('✔ ' + t(savedMarks[idx] ? 'scene_recalled' : 'scene_activated', { scene: VUX.sceneName(idx) }));
     };
     window.applySceneLevels = function (ref) { VUX.recallScene(ref); };   // compatibilité ancien code
-    VUX.clearScene = function (ref) { var idx = sceneIdx(ref); try { localStorage.removeItem(sceneKey(idx)); } catch (e) {} refreshSavedMarks(); };
+    VUX.clearScene = function () { /* v4.1 : l'effacement d'une scène n'est pas exposé au GUI */ };
 
     // Appui simple = rappel (après l'envoi du join par le <ch5-button>) ; appui long = enregistrement
     var press = { btn: null, timer: null, saved: false, snap: null };
@@ -10436,6 +10579,9 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
         CIRCUITS.forEach(function (j) {
             L.subscribeState('n', j, function (v) { levels[j] = Number(v) || 0; if (levels[j]) feedbackSeen = true; });
         });
+        for (var sc = 1; sc <= 4; sc++) (function (idx) {
+            L.subscribeState('b', String(SCENE_SAVED_BASE + idx), function (v) { savedMarks[idx] = !!v; refreshSavedMarks(); });
+        })(sc);
         PARTITIONS.forEach(function (p, i) {
             ['armed', 'partial', 'disarmed'].forEach(function (mode, k) {
                 L.subscribeState('b', p[k], function (v) { if (v) { partState[i] = mode; feedbackSeen = true; renderStatus(); } });
@@ -10448,7 +10594,7 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
             });
         });
         L.subscribeState('s', '32', function (v) { hvac.temp = String(v || ''); if (hvac.temp) feedbackSeen = true; renderStatus(); });
-        L.subscribeState('s', '33', function (v) { hvac.mode = String(v || ''); renderStatus(); });
+        L.subscribeState('s', '33', function (v) { hvac.mode = window.villaHvacModeText ? window.villaHvacModeText(v) : String(v || ''); renderStatus(); });
         L.subscribeState('s', '34', function (v) { hvac.setpoint = String(v || ''); renderStatus(); });
         L.subscribeState('s', STATUS_SERIALS.doors, function (v) { extra.doors = String(v || ''); renderStatus(); });
         L.subscribeState('s', STATUS_SERIALS.power, function (v) { extra.power = String(v || ''); renderStatus(); });
@@ -10491,6 +10637,7 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
     }
     function avConfirmShow(videoJoin) {
         AV.pending = videoJoin;
+        if (typeof avReleaseTilesSoon === 'function') avReleaseTilesSoon();
         var b = document.getElementById('audio-confirm-backdrop'), o = document.getElementById('audio-confirm-overlay');
         if (b) b.style.display = 'block';
         if (o) o.style.display = 'block';
@@ -10537,9 +10684,24 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
     }
 
     var SOURCE_REMOTE = { '151': 'appletv', '152': 'skyq', '153': 'swisscom', '154': 'iptv', '155': 'media' };
+    // 17.09.2026 : quand une fenêtre (télécommande, lecteur, confirmation) s'ouvre PENDANT l'appui,
+    // le <ch5-button> de la tuile ne reçoit pas toujours son relâchement et garde l'état pressé
+    // (classe ch5-button--pressed) plusieurs secondes sous la fenêtre. On le relâche nous-mêmes,
+    // tout de suite puis après 120 / 450 ms (le touchend peut arriver après l'ouverture).
+    // Ne touche jamais au 'selected' natif (Rule of Gold : l'état vient du join).
+    function avReleaseTiles() {
+        var tiles = document.querySelectorAll('ch5-button[customClass~="source-btn"]');
+        Array.prototype.forEach.call(tiles, function (t) {
+            try { if (t.pressed) t.pressed = false; } catch (e) {}
+            t.classList.remove('ch5-button--pressed');
+            Array.prototype.forEach.call(t.querySelectorAll('.ch5-button--pressed'), function (i) { i.classList.remove('ch5-button--pressed'); });
+        });
+    }
+    function avReleaseTilesSoon() { avReleaseTiles(); setTimeout(avReleaseTiles, 120); setTimeout(avReleaseTiles, 450); }
     function avOpenRemote(join) {
         var ev = window.event; if (ev && ev.isTrusted === false) return;   // jamais pendant la démo automatique
         var kind = SOURCE_REMOTE[String(join)]; if (!kind) return;
+        avReleaseTilesSoon();
         if (kind === 'media') { if (typeof window.openMediaPlayerModal === 'function') window.openMediaPlayerModal(); return; }
         if (typeof window.openSourceControlModal === 'function') window.openSourceControlModal(kind);
     }

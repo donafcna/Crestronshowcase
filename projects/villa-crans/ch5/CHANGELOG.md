@@ -1,5 +1,58 @@
 # Villa Crans CH5 — journal des versions
 
+## (à compiler : CH5 dalle / web / mobile) — 18/09/2026 — traductions EN / ES / DE / RU complètes, appui long iPhone
+
+**Traductions (retour Donatien sur l'iPhone : « Salle de jeux », « Alarme », « Caméras », « Ventilation », « Cinéma » restaient en français).** Trois trous, corrigés au niveau du système :
+1. *Libellés fixes sans `data-i18n`* — `iphone.html` : Alarme, Caméras (×2), Global, Sécurité, Centralisation, Éclairage global / Stores globaux / Climatisation globale / Mode vacances, les 12 scénarios globaux (TOUT ALLUMER…HORS GEL, ACTIVER / DÉSACTIVER), partitions d'alarme (ACTIVER / PARTIEL), Ventilation, 9 boutons FERMER, invite du code d'administration ; `index.html` : Ventilation, fenêtre « Configuration du preset global » (titre, invite, SAUVEGARDER / ANNULER, « Inclure », noms de pièces via `villaTranslateName`), bouton MUSIQUE. 33 clés ajoutées aux 5 dictionnaires (fr / en / es / de / ru) des deux fichiers.
+2. *Noms de scènes en dur sur l'iPhone* — `updateActiveRoomUI` applique désormais les noms de `villa_config` traduits (`villaTranslateName`), même règle que la dalle ; toasts d'enregistrement / rappel traduits (`window.villaI18n`).
+3. *Table `villa_config.json → traductions`* — 11 entrées par langue ajoutées (Salle de jeux, Chambre maman / papa, Suite amis, Chambre amis, Terrasse & jardin, Garage & ateliers, MUSIQUE, Volets Ext., Rideaux, Jeux…). Restent volontairement sans traduction : noms de test des circuits (« Lustre Principal2 »…), caméras de démonstration (liste codée), options techniques du preset global (« Éclairage : Tout Allumer (401) »), marques (APPLE TV, SKY Q).
+Mode CVC : le C# envoie le sériel 33 en français (ARRÊT / CHAUFFAGE / CLIMATISATION) — traduit à l'affichage par `window.villaHvacModeText` (dalle, iPhone, bandeau État de la villa) ; l'attribut `data-ch5-textcontent="33"` est retiré des deux `<span>` (le binder CH5 réécrivait le texte brut). Groupes de moteurs fixes de l'iPhone (Volets Ext., Rideaux) : `data-tname` → table villa_config.
+Composants : `themes/global-controls.css` — `@media (max-width: 480px)` : scénarios globaux à 0.8rem / 3 px de marge (« FROSTSCHUTZ » tenait à 8 px près) ; `iphone.html` — en-têtes de fenêtres : titre `clamp(0.9rem, 4vw, 1.3rem)` qui passe à la ligne, bouton Fermer `flex: 0 0 auto` (« SCHLIESSEN » sortait de la fenêtre, « Schaltkreise : Spielzimmer » aussi, déjà avant ce lot).
+
+**Appui long iPhone (retour : « remet les niveaux d'avant »).** Dans Crestron ONE, iOS déclenche le menu contextuel / la sélection pendant l'appui et annule le pointer avant 900 ms : rien n'était enregistré et le clic de relâchement rappelait l'ancienne scène. `iphone.html` : `-webkit-touch-callout: none`, `user-select: none`, `touch-action: manipulation` et `contextmenu` neutralisé sur `.scene-btn-mobile` ; après un enregistrement, le clic de relâchement est bloqué (`stopImmediatePropagation`) ; l'instantané lit la position réelle du curseur (`slider.value`) avant le retour C#.
+
+Recette (Playwright, copie locale, moteur showcase) : 3 thèmes × 4 langues × {iPhone 16 Pro, dalle 1920×1200, iPad 11"} × {pièce, HVAC, Centralisation, Alarme, Caméras, Presets} = 36 combinaisons vertes (0 débordement, 0 chevauchement d'en-tête, 0 cible < 40 px, 0 scroll horizontal, 0 erreur console) ; inventaire automatique des textes identiques FR / EN / ES / DE avant → après : iPhone 51 → 24 (restants = mots identiques dans la langue, marques, caméras de démo), dalle 58 → 37 (idem + noms de test). Appui long simulé (touch 1,3 s) → sériel 421 seul, marqueur posé ; appui court → digital seul. Showcase régénéré par `sync-villa-crans.py` (fonctions du script). **Non poussé** (GO attendu).
+
+## v1.0.191 — 18/09/2026 — contrat v4.1 : scènes d'éclairage mémorisées par le C#, 20 circuits, corrections GUI (validé sur TSW et XPanel)
+
+| Artefact | État de ce lot |
+|---|---|
+| CH5 source | `src/index.html`, `src/iphone.html`, `src/js/room-controls.js` — compilé et déployé : TSW .1.16 et Web XPanel CP4 .1.200 (`deploy.ps1 -Target tsw` / `-Target web`) |
+| CPZ slot 1 | `ControlSystem.cs` (assembly **1.0.191.0**) : scènes utilisateur, 20 circuits, sériel 421, digitaux 421-424, feedback global 401-409 — compilé (Debug, `bin\Debug\Villaftv.cpz`) et chargé par `deploy.ps1 -Target cp4` |
+| LPZ slot 2 | `generate_slot2.js` v4.1 et `Project_Slot2.smw` régénéré (+240 signaux : bloc éclairage de 13 pièces, circuits globaux 11-20) — **F12 puis charger** (reste à faire) |
+| Config | `villa_config.json` : `contrat.version` v4.1, `Eclairage.Circuit` 20, `Scenes.Enregistrement` s421, `Scenes.Memorisee` d421-424, règle « 20 circuits par pièce » |
+| Showcase | `index.html`, `iphone.html`, `js/local-feedback.js` (mémoire de scènes simulée, 20 circuits), `js/room-controls.js` recopiés |
+
+**Scènes d'éclairage (retour Debugger de Donatien : niveaux immobiles au rappel, aucun join à l'enregistrement).** Cause : l'enregistrement restait dans le `localStorage` de l'écran et le C# refusait d'appliquer la table dès que le slot 2 avait remonté un niveau. Désormais : 💾 / appui long → sériel **421** `{p, s, c[]}` (pièce, scène, niveaux des circuits affichés en %) → le C# écrit `/user/scenes_<pièce>.json`, la scène devient active, les niveaux sont poussés aux écrans (a71-90) et au slot 2 (`Rxx_Circuit_N_fb#`) ; rappel = le `<ch5-button>` 51-54 seul, le C# applique (scène mémorisée > table JSON) en **imposant** les niveaux ; marqueur 💾 = digitaux **421-424** posés par le C# pour la pièce affichée. Même scène sur dalle, iPad, XPanel, iPhone ; survit au progreset. Les positions de moteurs ne font plus partie des scènes (elles n'atteignaient pas le matériel). État tenu de la scène pour le slot 2 : `Rxx_Lighting_SceneN_fb` (bloc +21..+24) ; le global `Lighting_SceneN_fb` reste l'impulsion de commande avec a10.
+
+**20 circuits par pièce** : joins 71-90 (GUI, C# `MaxCircuits`, table v4, générateur `MAX_CIRCUITS`), bloc pièce a+71..+90, JSON `circuits.nombre` ≤ 20. Aucun changement pour les projets à 4 ou 10 circuits.
+
+**GUI** : rideaux — presets « Tout ouvrir / Tout fermer » en texte sur XPanel/TSW (fenêtre Stores) **et** iPhone (presets par famille) ; `-webkit-mask` + repli texte quand `mask` n'est pas pris en charge (carré blanc de la TSW). Lecteur média : curseur « Volume musique » (a254) retiré, dalle et iPhone. HVAC : `− / + / ON / OFF` en `flex` avec minimum (plus de débordement sur la TSW) ; disparition instantanée des − / + au changement de pièce (`visibility` n'est plus animée).
+
+Recette (Playwright, copie locale, moteur showcase) : enregistrement d'une scène avec circuit 1 = 12345 → marqueur 💾 posé ; rappel scène 4 → 65535 ; rappel scène 3 → 12345 restauré ; pièce 2 sans marqueur ; retour pièce 1 → marqueur et niveaux ; 6 + 7 blocs script valides, 0 erreur console. `node generate_slot2.js` sur copie : 274 entrées / 516 sorties EISC, capacité respectée. C# non compilé ici (accolades et parenthèses équilibrées, API Newtonsoft déjà utilisée ailleurs).
+
+**Correction en recette réelle (CP4 .1.200)** : le premier essai a échoué — la console affichait `SCENES: sériel 421 reçu (120 caractères)` puis une erreur JSON en position 119 : **le CP4 tronque à 119 caractères tout sériel émis par un écran** (octet `0xFD` en fin de chaîne). Charge utile réduite à `{p,s,c}` avec les niveaux en pourcentage et seulement les circuits affichés (≈ 60 caractères pour 4 circuits, < 119 pour 20) ; le C# accepte encore l'ancien format long (`{piece, scene, circuits}`) et convertit les pourcentages (× 655,35). Validé : `/user/scenes_1.json` (133 octets) écrit depuis la TSW puis depuis le XPanel après `-Target web`, marqueur 💾 posé, rappel appliqué. Règle : **jamais de JSON long d'un écran vers le C#** ; dans l'autre sens (C# → écran) pas de limite rencontrée.
+
+**Recette Debugger restante (slot 2, après chargement du LPZ)** : 💾 → `Room_Selected#` inchangé, aucun join (le 421 n'est pas recopié : normal) ; rappel → `Lighting_SceneN_fb` impulsion + `Rxx_Lighting_SceneN_fb` tenu + `Rxx_Circuit_1..n_fb#` aux niveaux enregistrés ; scène enregistrée sur la dalle visible sur l'iPad ; progreset puis rappel.
+
+## v1.0.186 — 18/09/2026 — fenêtre HVAC dalle/tablette et feedback des commandes globales
+
+| Artefact | État de ce lot |
+|---|---|
+| CH5 source | `src/index.html`, `src/themes/room-controls.css`, `src/themes/wellness-controls.css`, `src/js/wellness-controls.js` — **compilé et déployé le 18/09** : TSW 192.168.1.16 (v1.0.185) puis Web XPanel CP4 192.168.1.200 (v1.0.186, 14 QR régénérés), contraste 3 thèmes OK ; `meta.version` aligné sur 1.0.186 |
+| CPZ slot 1 | `ControlSystem.cs` modifié (feedback global 401-409), **à recompiler** (SIMPL# Pro) |
+| LPZ slot 2 | inchangé |
+| Showcase | `index.html` + les 3 fichiers ci-dessus recopiés ; `sync-villa-crans.py` peut être relancé, le résultat est identique |
+
+Demandes de Donatien (17/09) :
+- **Trait blanc sous le titre HVAC** : il ne servait qu'à marquer l'onglet actif. Il ne s'affiche plus que si la pièce a plusieurs onglets (Sauna & Hammam). `wellness-controls.js` pose `climate-tabs--single` quand un seul onglet est visible, `wellness-controls.css` neutralise alors le soulignement.
+- **Mise en page de la fenêtre HVAC (dalle, tablette, XPanel)** : la consigne `− / valeur / +` est alignée à gauche, **ON** et **OFF** passent à sa droite sur la même ligne (`.hvac-setpoint-line`) ; le libellé **Ventilation** passe à gauche de AUTO / 1 / 2 / 3, également sur une seule ligne (`.hvac-fan`). L'ancienne grille `1fr 2fr` de la media query `max-height:900px` n'a plus lieu d'être, seules les cibles tactiles 48 px sont conservées. `iphone.html` n'est pas touché.
+- **Aucun retour d'état sur Éclairage global, Climatisation globale et Stores globaux** : le GUI émettait bien (front montant puis retombée), mais les joins 401-405 et 407-409 n'avaient **aucune entrée** côté C# — seuls 410/411 (vacances) en avaient une. `ControlSystem.cs` mémorise désormais la dernière commande retenue par famille (`_globalLightSelection`, `_globalShadeSelection`, `_globalHvacSelection`), la pousse à tous les écrans dans `UpdateScreenStateForPanel` (`PushGlobalSelectionFeedback`) et la diffuse après chaque commande globale. Une action locale annule la sélection correspondante (`ClearGlobalSelection`) : scène d'éclairage ou circuit réglé → éclairage, store ou scène de stores → stores, consigne ± ou analogique 31 → CVC. Même logique que la simulation du showcase, qui elle fonctionnait déjà.
+
+Vérifications (Playwright, copie locale du GUI servie en HTTP, feedback showcase) : dalle 1280×800, dalle 1920×1200 et iPad 11" × 3 thèmes (Sombre, Clair, Verre dépoli), pièce sans wellness (Salon) et pièce avec onglets (Sauna & Hammam) ; aucun scroll horizontal, aucune erreur console propre au GUI, cibles ≥ 44 px. Fenêtre Contrôle global : l'appui sur TOUT ALLUMER, TOUT OUVRIR et NUIT laisse bien le bouton vert et désélectionne les autres de la famille.
+
+**Reste à faire** : recompiler le CPZ (SIMPL# Pro) puis `deploy.ps1 -Target cp4` — sans lui, les boutons du Contrôle global restent gris ; push Git. Les QR codes portent encore les noms de test du `villa_config.json` (Chambre maman / papa…) : point 4 du « Reste à faire » de CONTEXTE-CLAUDE.
+
 ## v1.0.183 (à compiler) — 17/09/2026 — bouton OFF, mute, logs PRESETS, état pressé des tuiles
 
 | Artefact | État de ce lot |

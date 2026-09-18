@@ -180,8 +180,10 @@ ain(10, 'Room_Select#');
 // Source active (51) et volume (52)
 ain(51, 'Source_Active#'); aout(51, 'Source_Active_fb#');
 ain(52, 'Audio_Volume#'); aout(52, 'Audio_Volume_fb#');
-// Circuits d'éclairage 1..10 (71-80)
-for (let ci = 1; ci <= 10; ci++) {
+// Circuits d'éclairage 1..20 (71-90) — contrat v4.1 (18.09.2026) : 20 circuits par pièce.
+// Globaux = curseur de la pièce affichée (a10 posé avant), comme les autres pilotages v4.
+const MAX_CIRCUITS = 20;
+for (let ci = 1; ci <= MAX_CIRCUITS; ci++) {
   ain(70 + ci, 'Circuit_' + ci + '#');
   aout(70 + ci, 'Circuit_' + ci + '_fb#');
 }
@@ -239,7 +241,7 @@ for (let mo = 1; mo <= 6; mo++) {                                   // 81-98
 WELLNESS.forEach((name,i)=>OFF_D[11+i]=name);
 const OFF_A = { 34:'Sauna_Setpoint',35:'Hammam_Humidity_Setpoint',36:'Sauna_Temperature',37:'Hammam_Humidity', 31: 'HVAC_Setpoint', 33: 'HVAC_FanSpeed', 51: 'Source_Active',
                 52: 'Audio_Volume', 53: 'Source_Audio', 54: 'Media_Volume' };
-for (let ci = 1; ci <= 10; ci++) OFF_A[70 + ci] = 'Circuit_' + ci;  // 71-80
+for (let ci = 1; ci <= MAX_CIRCUITS; ci++) OFF_A[70 + ci] = 'Circuit_' + ci;  // 71-90 (v4.1)
 
 const OFF_S = { 44:'Sauna_Setpoint_Text',45:'Hammam_Setpoint_Text',46:'Sauna_Temperature_Text',47:'Hammam_Humidity_Text', 10: 'Room_Name', 32: 'HVAC_Temperature', 33: 'HVAC_Mode', 34: 'HVAC_Setpoint_Text' };
 
@@ -327,6 +329,29 @@ for(const p of villaCfg.pieces.filter(p=>p.actif!==false&&p.intersystem!==false&
   aout(b+34+i,R+name+'_fb#');ain(b+34+i,R+name+'_Actual#');sout(b+44+i,R+name+'_fb$');
  }
 }
+// --- Bloc ECLAIRAGE par piece (contrat v4.1, 18.09.2026) : scenes memorisees par le C# ---
+// Le C# tient l'etat des scenes et les niveaux des circuits ; le slot 2 les RECOIT (sorties, _fb)
+// pour piloter les gradateurs, et peut renvoyer le niveau reel (entree _Actual) ou imposer une scene
+// depuis un clavier (entree Rxx_Lighting_SceneN_Actual). Meme convention que les blocs CVC / wellness. Commande d'appui = impulsion globale Lighting_SceneN_fb + a10.
+const piecesEcl = (villaCfg.pieces || []).filter(p => p.intersystem !== false && p.actif !== false
+  && p.pilotages && p.pilotages.eclairages && p.pilotages.eclairages.actif !== false);
+let eclWired = 0;
+for (const p of piecesEcl) {
+  const b = roomBase(p.id), R = 'R' + String(p.id).padStart(2, '0') + '_';
+  const nbC = Math.min(MAX_CIRCUITS, Math.max(1, (p.pilotages.eclairages.circuits && p.pilotages.eclairages.circuits.nombre) || 4));
+  if (b + 70 + nbC > CAP.aIn || b + 70 + nbC > CAP.aOut || b + 24 > CAP.dIn || b + 24 > CAP.dOut) { skipped.push('piece ' + p.id + ' (eclairage hors capacite)'); continue; }
+  for (let n = 1; n <= 4; n++) {
+    dout(b + 20 + n, R + 'Lighting_Scene' + n + '_fb');   // etat tenu par le C# (scene active de la piece)
+    din(b + 20 + n, R + 'Lighting_Scene' + n + '_Actual'); // scene imposee par le slot 2 (clavier), facultatif
+  }
+  for (let ci = 1; ci <= nbC; ci++) {
+    aout(b + 70 + ci, R + 'Circuit_' + ci + '_fb#');      // niveau impose par le C# (scene, curseur) -> gradateur
+    ain(b + 70 + ci, R + 'Circuit_' + ci + '_Actual#');   // niveau reel remonte par le slot 2 (gradateur)
+  }
+  eclWired++;
+}
+console.log('Bloc eclairage par piece (v4.1) : ' + eclWired + ' piece(s) x (4 scenes tenues, circuits 1..n).');
+
 if (CAP.dOut < 627 || CAP.aOut < 63 || skipped.length) throw new Error('Capacite EISC insuffisante : aucun fichier ecrit. ' + skipped.join('; '));
 
 // --- 4. Réécriture du symbole EISC (H=21) ---
