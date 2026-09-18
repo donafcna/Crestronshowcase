@@ -1,5 +1,26 @@
 # Villa Crans CH5 — journal des versions
 
+## P1 Reprise — 18/09/2026 — contrat v4.1 documenté, config purgée, outillage Codex re-basé (pas de build, pas de push)
+
+| Artefact | État de ce lot |
+|---|---|
+| CH5 source | `meta.version` aligné sur `version.json` = **1.0.196** ; aucun HTML/JS/CSS modifié (lot traductions de la nuit toujours **à compiler**) |
+| CPZ slot 1 | inchangé (chargé 1.0.191.0 ; source `AssemblyInfo` 1.0.192.0) |
+| LPZ slot 2 | inchangé : `generate_slot2.js` relancé sur copie avec la config corrigée → **SMW identique**, `Project_Slot2.lpz` du 18/09 05:20 reste valable, recette Debugger à faire |
+| Showcase | `villa_config.json` / `.js` régénérés (`clean_config`) : mapping analog 81-90 + traductions, `1.0.196-showcase` ; **non poussé** |
+
+Archivage préalable : working tree de l'autre session (lots 1.0.186, 1.0.191, traductions) commité sur `main` (`f9804689`) et branche `backup/crestron-local-2026-09-18` poussée. Main reste **2 commits en avance** sur `origin/main`, non poussés (le push déploierait la vitrine).
+
+**`villa_config.json`** (source, puis copies `src/` et vitrine) : `blocsPiecesGui.mapping.analog` complété 81-90 (le C# `V4AnalogOffsets` et `MaxCircuits = 20` allaient déjà jusqu'à 90) ; `sourcesAudioVideo` renommées Apple TV / Sky Q / Swisscom / IPTV / MUSIQUE (libellés réels du GUI, en dur dans `index.html` l. 4337-4381 ; l'ancienne liste IPTV / Box pirate / Humax / Jukebox ne servait qu'à une table `legacy.sources` non affichée) ; noms de test purgés : pièce 1 REPAS2 → REPAS, TOTAL3 → TOTAL, pièce 2 et `valeursParDefaut.scenesEclairage` → OFF / AMBIANCE / REPAS / TOTAL ; 11 clés orphelines retirées des 4 tables `traductions` (dont « Chambre pour baiser », « Salle à baiser », « Salon2 »), `AMBIANCE` ajoutée (en/es/de/ru). `validate-config` : 0 défaut.
+
+**Docs contrat** : `docs/03_CONTRAT_JOINS.md` → « Contrat de joins v4.1 », §0 « Principe v4 » (joins globaux + a10, couche v3 désactivée, blocs pièce réservés au C# ↔ slot 2, feedback fourni par le C#), §1 / §5 / §6 marqués historiques, circuits 1..20 ; `simpl/contract/README_SLOT2.md` → `Project_Slot2`, section « État v4.1 » (entrées EISC mortes : `Source_Select_n`, `Source_AudioReturn`, `Audio_Mute`, `Motor_n_*`, `Shades_Scene_n`, `Media_Volume#`, `Circuit_n#`, `Room_Select#` entrant ; ce que le C# lit : 41/42, 44/45, 301-312, 410/411, `_Actual` par pièce ; offsets +41..57 / +81..92 poussés sans nom), section « logique à câbler » du 16.09 remplacée (elle demandait des interlocks slot 2 que le C# rend inutiles), 20 circuits, join max 2490 ; `docs/04_SIMPL_SLOT2.md` : bandeau historique.
+
+**`tools/quality` (session Work Codex du 17/09)** : `validate-config.mjs` circuits ≤ 20 ; `audit.mjs` lit `Project_Slot2.smw` (l'ancien `VillaCrans_Slot2.smw` est supprimé) ; `runtime-v4.json` re-basé : id `crans-montana-v4.1-gui1.0.196-csharp1.0.192.0`, contrat v4.1, 13 empreintes SHA-256 recalculées (9 sources avaient changé) ; `examples/villa-leman-pilot.json` réaligné (version, contrat) ; `prepare-beta-config.mjs` et `docs/industrialisation/*` : « Grand Montana » → « Crans-Montana ». **43/43 tests node verts** sur copie (`quality.test.mjs` 23, `compatibility.test.mjs` 20). Les rapports chiffrés des lots 0.1.0/0.2.0 restent hors dépôt.
+
+**Bêta Alexandre** : `docs/verification/2026-09-18-beta-alexandre/` (profil `banc-beta-alexandre` 1.0.196, 15 ids / 14 pièces actives, 0 défaut `--release`, README avec les commandes `prepare-project` → CH5Z → CPZ → LPZ) ; `docs/industrialisation/BETA-ALEXANDRE.md` : état du candidat mis à jour (1.0.180/181 obsolètes). Aucun binaire compilé, aucun matériel contacté.
+
+Non traité (Core, P2) : type de source paramétrable, noms EISC des offsets poussés par `PushRoomFeedback`, générateur lisant `signauxGlobaux`, commentaires C# périmés (l. 1791, 1854, 2089), 2010 `R*_` v3 du SMW.
+
 ## (à compiler : CH5 dalle / web / mobile) — 18/09/2026 — traductions EN / ES / DE / RU complètes, appui long iPhone
 
 **Traductions (retour Donatien sur l'iPhone : « Salle de jeux », « Alarme », « Caméras », « Ventilation », « Cinéma » restaient en français).** Trois trous, corrigés au niveau du système :

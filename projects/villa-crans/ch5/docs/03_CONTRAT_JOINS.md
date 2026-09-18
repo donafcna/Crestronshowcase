@@ -1,4 +1,4 @@
-# 03 — Contrat de joins v3
+# 03 — Contrat de joins v4.1
 
 ## Extension scènes d'éclairage + 20 circuits — v4.1 du 18/09/2026
 
@@ -26,12 +26,22 @@ Sauna/hammam : d620–627 ; a/s62–65. Cibles et mesures indépendantes du HVAC
 ON/OFF : d610/611 ; ventilation Auto/1/2/3 : d612–615 et a61 (0..3). Retours par pièce : digitaux +93..98, analogique +33 ; la température mesurée reste +32. Aucun bloc GUI v3 réactivé. Détails, sens des signaux et recette Debugger : `projects/villa-crans/ch5/docs/HVAC-2026-09-16.md` depuis la racine du dépôt.
 
 Référence unique. **Le GUI, le C# (slot 1) et le SIMPL (slot 2) doivent s'y conformer.**
-Source : `villa_config.json` → `contrat`. Version **3**, du 11.09.2026.
-Couche d'exécution côté GUI : `src/js/villa-joins.js`.
+Source : `villa_config.json` → `contrat`. Version **4.1**, du 18.09.2026 (v4 du 15.09.2026).
+
+## 0. Principe v4 (en vigueur depuis le 15.09.2026)
+
+- **Tous les joins de pilotage sont globaux et identiques dans toutes les pièces** (sources 150-156, télécommandes 211-600, scènes 51-54, stores 61-69, moteurs 81-98, scènes stores 201-204, circuits a71-90, HVAC, wellness, presets). Le C# (slot 1) route chaque appui vers la pièce affichée par l'écran émetteur (`_activeRoomPerDevice`, tables `V4DigitalOffsets` / `V4AnalogOffsets` = `contrat.blocsPiecesGui.mapping`) et pose `Room_Select#` (a10) sur l'EISC avant chaque recopie ; le slot 2 route sur a10 avec des buffers.
+- **La couche v3 de traduction par pièce (`src/js/villa-joins.js`) est désactivée** : `contrat.blocsPiecesGui.actif = false`. Ne pas la réactiver (elle reposait sur une réécriture d'attribut qui n'émettait pas). Les §1 et §5 ci-dessous sont conservés pour l'historique.
+- **Blocs pièce (≥ 1000)** : réservés aux échanges C# ↔ slot 2. Le générateur ne câble que trois blocs par pièce `intersystem` : CVC (+31..34, +93..98), wellness (+11..16, a+34..37, s+44..47), éclairage (+21..24 scènes tenues, a+71..90 circuits) ; convention `_fb` = ce que le slot 2 reçoit du C#, `_Actual` = ce qu'il renvoie. Les offsets +41..45, +50..57, +81..92, a+51..54, s+10 que `PushRoomFeedback` écrit aussi vers l'EISC n'ont pas de nom dans le générateur (le §6 est donc historique pour ces lignes).
+- **Le feedback des écrans vient du C#** (sources, scènes, presets 401-409, vacances, consigne, volumes) ; le slot 2 fournit l'alarme (41/42, 44/45, 301-312), le mode vacances 410/411 et les mesures `_Actual`. Détail : `simpl/contract/README_SLOT2.md`, « État v4.1 ».
+- Restent globaux par nature : pièces 11-40 / a10, alarme 41-48 + 301-312, presets 401-411 / s420, scènes s421 / d421-424, système s99-106, dig/ana 250, dalle a240/a260/d261, météo d56. Mute → 55. Digital 103 (`FormatIpTable`) : code mort toujours présent dans le C#.
+- Règle apprise le 18.09 : **le CP4 tronque à 119 caractères tout sériel émis par un écran** ; charge utile s421 compacte `{p,s,c[%]}`.
+
+Couche d'exécution côté GUI (historique v3) : `src/js/villa-joins.js`.
 
 ---
 
-## 1. Principe v3
+## 1. Historique — principe v3 (désactivé depuis le v4)
 
 Jusqu'au contrat v2, les 15 pièces partageaient **un seul jeu de joins de pilotage**, la
 pièce courante étant portée par l'analogique 10. Sur un panel unique cela fonctionne ; dès
@@ -296,7 +306,7 @@ Déclaré dans `contrat.blocsPiecesGui.exceptionsGlobales`. Ces joins ne figuren
 
 ---
 
-## 5. Migration v2 → v3
+## 5. Historique — migration v2 → v3
 
 Pour chaque join **logique** écrit dans le HTML :
 
@@ -343,7 +353,7 @@ appui sur un join partagé : le join le dit.
 
 ---
 
-## 6. Ce que le slot 2 doit implémenter
+## 6. Blocs pièce — tableau historique v3 (voir §0 pour ce qui est réellement généré en v4.1)
 
 Pour chaque pièce exposée (`"intersystem": true`), un bloc EISC de 100 joins à
 `base = 1000 + (id − 1) × 100`.
@@ -368,7 +378,7 @@ Pour chaque pièce exposée (`"intersystem": true`), un bloc EISC de 100 joins �
 | +31 | analog | Consigne CVC × 10 |
 | +52 | analog | Volume multimédia (0..65535) |
 | +54 | analog | Volume du lecteur média (0..65535) |
-| +71..+80 | analog | Niveau des circuits 1..10 |
+| +71..+90 | analog | Niveau des circuits 1..20 (v4.1) |
 
 ### Sorties du slot 2 (SIMPL → C# → panels)
 

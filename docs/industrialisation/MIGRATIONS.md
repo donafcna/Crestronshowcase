@@ -4,7 +4,7 @@ Audit du 17/09/2026 : 18 interfaces dans 8 secteurs, dont une GUI CH5 embarquée
 
 | Vague | Interfaces | Démonstration attendue |
 |---|---|---|
-| 0 | Grand Montana / Villa Crans-Montana | V1 gelée, bêta autonome, quatre artefacts traçables |
+| 0 | Villa Crans-Montana | V1 gelée, bêta autonome, quatre artefacts traçables |
 | 1 | Villa Léman, Home Cinéma Cologny | Deux projets adaptés par configuration, mêmes commandes/retours et composants communs |
 | 2 | Villa Nyon, Chalet Zermatt, Eaux-Vives, Carouge, FTV Home | Résidentiel sans divergence de logique ; traductions et thèmes cohérents |
 | 3 | Suite Palace Montreux, Palace Genève | Configurations invité/personnel et DND/MUR documentées ; retours par chambre |
@@ -29,4 +29,4 @@ Les styles sectoriels doivent rester reconnaissables. Généraliser la qualité 
 
 ## Avancement du pilote, lot 0.2.0
 
-Un profil Villa Léman à deux pièces a été préparé avec les sources Grand Montana inchangées : CH5Z assemblé, SMW généré depuis ce même JSON, chargement vérifié sur trois supports et trois thèmes. Il démontre la préparation par configuration ; il ne remplace pas le simulateur Villa Léman du catalogue et ne clôt pas sa migration. Le gel matériel de la V1 reste un préalable à la mise en service, mais cette préparation isolée permet de vérifier dès maintenant les limites de réutilisation. Voir `LOT-0.2.0.md`.
+Un profil Villa Léman à deux pièces a été préparé avec les sources Crans-Montana inchangées : CH5Z assemblé, SMW généré depuis ce même JSON, chargement vérifié sur trois supports et trois thèmes. Il démontre la préparation par configuration ; il ne remplace pas le simulateur Villa Léman du catalogue et ne clôt pas sa migration. Le gel matériel de la V1 reste un préalable à la mise en service, mais cette préparation isolée permet de vérifier dès maintenant les limites de réutilisation. Voir `LOT-0.2.0.md`.

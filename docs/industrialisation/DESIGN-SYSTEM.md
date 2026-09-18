@@ -1,4 +1,4 @@
-# Référence graphique et UX — Grand Montana
+# Référence graphique et UX — Crans-Montana
 
 Ce document capitalise les décisions existantes et les écarts observés. Il ne vaut pas validation graphique des 17 autres interfaces.
 

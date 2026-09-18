@@ -1,4 +1,6 @@
 # 04 — Programme SIMPL slot 2
+> **Document historique (v2/v3, 24.08.2026).** Le projet SIMPL s'appelle désormais `Project_Slot2.smw` (l'historique `VillaCrans_Slot2.*` a été supprimé le 17.09.2026) ; les blocs pièce v3 sont désactivés, le contrat en vigueur est le **v4.1** (20 circuits a71-90, scènes mémorisées par le C#). Référence à jour : `simpl/contract/README_SLOT2.md`, section « État v4.1 », et `docs/03_CONTRAT_JOINS.md`.
+
 
 Dossier : `C:\Users\donat\Desktop\VillaCrans SIMPL` (hors dépôt du GUI)
 Fichier principal : `VillaCrans_Slot2.smw` — dernière modification **24.08.2026 20:51**
@@ -71,7 +73,7 @@ pilotage matériel n'a encore été écrite. C'est exactement le bon état pour 
 | Consigne CVC | a31 | `HVAC_Setpoint` + `_fb` | ✅ |
 | Température actuelle | a32 (fb) | `HVAC_Temperature_fb` | ⚠️ voir §5 |
 | Source active / volume | a51 / a52 | `Source_Active#` / `Audio_Volume#` + `_fb#` | ✅ |
-| Circuits 1..10 | a71-80 | `Circuit_n#` + `_fb#` | ✅ |
+| Circuits 1..20 (v4.1 ; 1..10 avant le 18.09) | a71-90 | `Circuit_n#` + `_fb#` | ✅ |
 | Nom pièce | s10 | `Room_Selected$` | ✅ |
 | Temp / mode / consigne (texte) | s32/s33/s34 | `HVAC_Temperature_fb$`, `HVAC_Mode_fb$`, `HVAC_Setpoint_fb$` | ✅ |
 

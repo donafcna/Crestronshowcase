@@ -10,7 +10,7 @@ const out = process.argv[2];
 if (!out || fs.existsSync(out)) throw new Error('Indiquer un fichier de sortie neuf');
 const config = JSON.parse(fs.readFileSync(path.join(repo, 'projects/villa-crans/ch5/villa_config.json'), 'utf8'));
 const labels = JSON.parse(fs.readFileSync(path.join(repo, 'apps/showcase/public/showcases/villa-gemini-frequencetv/villa_config.json'), 'utf8'));
-config.meta.projet = 'Villa Grand Montana — bêta Alexandre';
+config.meta.projet = 'Villa Crans-Montana — bêta Alexandre';
 config.meta.mode = 'deploiement';
 config.meta.tracesConsole = false;
 config.meta.dateModification = new Date().toISOString().slice(0, 10);

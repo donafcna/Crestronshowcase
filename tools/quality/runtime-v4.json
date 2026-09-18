@@ -1,6 +1,6 @@
 {
-  "id": "grand-montana-v4-gui1.0.181-csharp1.0.180",
-  "sourceVersion": "1.0.181",
+  "id": "crans-montana-v4.1-gui1.0.196-csharp1.0.192.0",
+  "sourceVersion": "1.0.196",
   "qualification": "static-compatibility-only",
   "hashFormat": "sha256 UTF-8 with LF line endings",
   "hvacDefaults": {
@@ -164,6 +164,66 @@
         "direction": "bidirectionnel",
         "eiscJoinDebut": 71,
         "join": 80,
+        "type": "analog"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 71,
+        "join": 81,
+        "type": "analog"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 71,
+        "join": 82,
+        "type": "analog"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 71,
+        "join": 83,
+        "type": "analog"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 71,
+        "join": 84,
+        "type": "analog"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 71,
+        "join": 85,
+        "type": "analog"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 71,
+        "join": 86,
+        "type": "analog"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 71,
+        "join": 87,
+        "type": "analog"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 71,
+        "join": 88,
+        "type": "analog"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 71,
+        "join": 89,
+        "type": "analog"
+      },
+      {
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 71,
+        "join": 90,
         "type": "analog"
       },
       {
@@ -903,6 +963,26 @@
         "direction": "bidirectionnel",
         "eiscJoin": 411,
         "join": 411,
+        "type": "digital"
+      },
+      {
+        "direction": "sortie",
+        "join": 421,
+        "type": "digital"
+      },
+      {
+        "direction": "sortie",
+        "join": 422,
+        "type": "digital"
+      },
+      {
+        "direction": "sortie",
+        "join": 423,
+        "type": "digital"
+      },
+      {
+        "direction": "sortie",
+        "join": 424,
         "type": "digital"
       },
       {
@@ -1678,6 +1758,11 @@
         "eiscJoin": 420,
         "join": 420,
         "type": "serial"
+      },
+      {
+        "direction": "entree",
+        "join": 421,
+        "type": "serial"
       }
     ],
     "gui": {
@@ -1704,6 +1789,16 @@
           "78": 78,
           "79": 79,
           "80": 80,
+          "81": 81,
+          "82": 82,
+          "83": 83,
+          "84": 84,
+          "85": 85,
+          "86": 86,
+          "87": 87,
+          "88": 88,
+          "89": 89,
+          "90": 90,
           "254": 54
         },
         "digital": {
@@ -1891,6 +1986,56 @@
         {
           "direction": "bidirectionnel",
           "join": 80,
+          "type": "analog"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 81,
+          "type": "analog"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 82,
+          "type": "analog"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 83,
+          "type": "analog"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 84,
+          "type": "analog"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 85,
+          "type": "analog"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 86,
+          "type": "analog"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 87,
+          "type": "analog"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 88,
+          "type": "analog"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 89,
+          "type": "analog"
+        },
+        {
+          "direction": "bidirectionnel",
+          "join": 90,
           "type": "analog"
         },
         {
@@ -2311,7 +2456,7 @@
       ],
       "tailleBloc": 100
     },
-    "version": "v4",
+    "version": "v4.1",
     "wellness": {
       "actif": true,
       "hammam": {
@@ -2335,7 +2480,7 @@
   "files": [
     {
       "path": "projects/villa-crans/ch5/Backend/Backend/ControlSystem.cs",
-      "sha256": "6cadb4a115846e82287509b0a54c3de330acb351b2be3f2133645ad736b796b0"
+      "sha256": "229f31429b2d95b16f2c23f3e0a5de648daf5b0a09b02fbe1788f59d14a3bfc9"
     },
     {
       "path": "projects/villa-crans/ch5/Backend/Backend/HvacState.cs",
@@ -2347,11 +2492,11 @@
     },
     {
       "path": "projects/villa-crans/ch5/src/index.html",
-      "sha256": "3da12a6edc3c4d86dc82342ea1e17efbda6851e3a7fe6d6fa371875c54448307"
+      "sha256": "90538ce2f8bbe3c45960ae6b6d3bb288cce317c92cbdc52051dc53d229873e72"
     },
     {
       "path": "projects/villa-crans/ch5/src/iphone.html",
-      "sha256": "df5638dee70ceb1fcce444a5ed33cf6eabbd9210c0f454b016e2e68aec66119b"
+      "sha256": "9f780972f2745e4a5fa5a62869535c7da937c59148c83fa30015309be59a6ce8"
     },
     {
       "path": "projects/villa-crans/ch5/src/js/villa-joins.js",
@@ -2359,11 +2504,11 @@
     },
     {
       "path": "projects/villa-crans/ch5/src/js/room-controls.js",
-      "sha256": "d0abfffc03d0b9c2f53454a01afdfb84af578d80e3402718263d8c7663de48c1"
+      "sha256": "61842c3718bbdc426255abf1d1980071427debe78cc7e610b707ab8811dd8542"
     },
     {
       "path": "projects/villa-crans/ch5/src/js/wellness-controls.js",
-      "sha256": "f7ce625475710f963e9bdd23ffb624297774d5bad96440efcf4ee64ceba5d1a1"
+      "sha256": "1f7a0b0353d44fb818a7981e12293661f61a0b43ce12d6450906c3ca60575ee9"
     },
     {
       "path": "projects/villa-crans/ch5/src/js/webxpanel.js",
@@ -2371,20 +2516,21 @@
     },
     {
       "path": "projects/villa-crans/simpl/contract/generate_slot2.js",
-      "sha256": "ebb0196e5cb7b13ef5689e9b77736c9c01f3124d8b0882deb1b8076c0c0e3829"
+      "sha256": "bb97a0237705d8d1eb8ac54f180c5702f949b625c98896be9349887e743653f1"
     },
     {
       "path": "projects/villa-crans/ch5/src/themes/room-controls.css",
-      "sha256": "30248422cca7245a15785fb225e6434b6f8aed52e7c3c25968fb88a68c172132"
+      "sha256": "798b5b33d9e334f18a12a635e86a4d69b2e6f5f6b7cb615b13acf29de9163ad1"
     },
     {
       "path": "projects/villa-crans/ch5/src/themes/wellness-controls.css",
-      "sha256": "1beab3fd5a8540b4ee8003c765709ba152cbba74fc23fbc12a0164894d5cd6a7"
+      "sha256": "8d640c1d84d08f566575a24d1b4d9763dddb417aa1da41f59dabec4e859a0aeb"
     },
     {
       "path": "projects/villa-crans/ch5/src/themes/global-controls.css",
-      "sha256": "276d00b5ca8803b97494ad02180d7acd570a5a053570d66cc4e3a51505414e9d"
+      "sha256": "57559a64087b50f6865756af4a917791d2f9a2f1dce0572d3309b456cb955c4f"
     }
   ],
-  "backendAssemblyVersion": "1.0.180.0"
+  "backendAssemblyVersion": "1.0.192.0",
+  "note": "Profil re-basé le 18/09/2026 sur le contrat v4.1 (20 circuits, scènes mémorisées par le C#). CPZ chargé sur le CP4 : 1.0.191.0 ; source AssemblyInfo : 1.0.192.0. Empreintes = sources du working tree au 18/09 07:34, non qualifiées sur matériel."
 }

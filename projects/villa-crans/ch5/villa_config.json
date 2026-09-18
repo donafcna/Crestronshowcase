@@ -2,7 +2,7 @@
   "meta": {
     "projet": "Villa Crans",
     "integrateur": "Fréquence TV",
-    "version": "1.0.186",
+    "version": "1.0.196",
     "mode": "deploiement",
     "modeDescription": "'deploiement' = GUI livré chez le client : les feedbacks viennent du CP4 (C# slot 1 + SIMPL slot 2) via js/webxpanel.js / CrComLib, aucune simulation. 'showcase' = copie pour le site crestrongui.vercel.app : posé UNIQUEMENT par scripts/sync-villa-crans.py du dépôt Crestronshowcase, feedbacks simulés dans le navigateur (js/local-feedback.js), curseur de démo géré par le site (jamais par le GUI). Ne jamais mettre 'showcase' ici. Voir docs/08_WORKFLOW_SHOWCASE.md.",
     "tracesConsole": true,
@@ -52,9 +52,9 @@
     },
     "scenesEclairage": [
       "OFF",
-      "Sex",
-      "Baise",
-      "Alcool"
+      "AMBIANCE",
+      "REPAS",
+      "TOTAL"
     ],
     "circuits": [
       "Spots plafond",
@@ -103,19 +103,19 @@
   "sourcesAudioVideo": [
     {
       "id": 1,
-      "nom": "IPTV"
+      "nom": "Apple TV"
     },
     {
       "id": 2,
-      "nom": "Box pirate"
+      "nom": "Sky Q"
     },
     {
       "id": 3,
-      "nom": "Humax"
+      "nom": "Swisscom"
     },
     {
       "id": 4,
-      "nom": "Jukebox"
+      "nom": "IPTV"
     },
     {
       "id": 5,
@@ -171,8 +171,8 @@
             "noms": [
               "OFF",
               "CINÉMA",
-              "REPAS2",
-              "TOTAL3"
+              "REPAS",
+              "TOTAL"
             ],
             "niveaux": [
               [
@@ -323,7 +323,7 @@
             "noms": [
               "OFF",
               "Jeux",
-              "Baise",
+              "AMBIANCE",
               "TOTAL"
             ],
             "niveaux": [
@@ -2039,6 +2039,7 @@
   "traductions": {
     "en": {
       "Salon": "Living room",
+      "AMBIANCE": "AMBIANCE",
       "Cuisine": "Kitchen",
       "Salle à manger": "Dining room",
       "Suite parentale": "Master suite",
@@ -2134,17 +2135,6 @@
       "Éclairage porte sectionnelle": "Sectional door light",
       "Appliques entrée garage": "Garage entry sconces",
       "IPTV": "IPTV",
-      "Box pirate": "Pirate box",
-      "Humax": "Humax",
-      "Jukebox": "Jukebox",
-      "Sex": "Sex",
-      "Baise": "Fuck",
-      "Alcool": "Alcohol",
-      "Salon2": "Living room 2",
-      "REPAS2": "DINNER 2",
-      "TOTAL3": "FULL 3",
-      "Chambre pour baiser": "Fuck room",
-      "Salle à baiser": "Shagging room",
       "Suite bébé": "Baby suite",
       "Salle de jeux": "Games room",
       "Chambre maman": "Mum's bedroom",
@@ -2160,6 +2150,7 @@
     },
     "es": {
       "Salon": "Salón",
+      "AMBIANCE": "AMBIENTE",
       "Cuisine": "Cocina",
       "Salle à manger": "Comedor",
       "Suite parentale": "Suite principal",
@@ -2255,17 +2246,6 @@
       "Éclairage porte sectionnelle": "Luz puerta seccional",
       "Appliques entrée garage": "Apliques entrada garaje",
       "IPTV": "IPTV",
-      "Box pirate": "Caja pirata",
-      "Humax": "Humax",
-      "Jukebox": "Jukebox",
-      "Sex": "Sexo",
-      "Baise": "Follar",
-      "Alcool": "Alcohol",
-      "Salon2": "Salón 2",
-      "REPAS2": "COMIDA 2",
-      "TOTAL3": "TOTAL 3",
-      "Chambre pour baiser": "Cuarto de follar",
-      "Salle à baiser": "Sala de follar",
       "Suite bébé": "Suite del bebé",
       "Salle de jeux": "Sala de juegos",
       "Chambre maman": "Dormitorio de mamá",
@@ -2281,6 +2261,7 @@
     },
     "de": {
       "Salon": "Wohnzimmer",
+      "AMBIANCE": "AMBIENTE",
       "Cuisine": "Küche",
       "Salle à manger": "Esszimmer",
       "Suite parentale": "Elternsuite",
@@ -2376,17 +2357,6 @@
       "Éclairage porte sectionnelle": "Licht Sektionaltor",
       "Appliques entrée garage": "Wandleuchten Garageneinfahrt",
       "IPTV": "IPTV",
-      "Box pirate": "Piraten-Box",
-      "Humax": "Humax",
-      "Jukebox": "Jukebox",
-      "Sex": "Sex",
-      "Baise": "Fick",
-      "Alcool": "Alkohol",
-      "Salon2": "Wohnzimmer 2",
-      "REPAS2": "ESSEN 2",
-      "TOTAL3": "VOLL 3",
-      "Chambre pour baiser": "Fickzimmer",
-      "Salle à baiser": "Ficksalon",
       "Suite bébé": "Babysuite",
       "Salle de jeux": "Spielzimmer",
       "Chambre maman": "Schlafzimmer Mama",
@@ -2402,6 +2372,7 @@
     },
     "ru": {
       "Salon": "Гостиная",
+      "AMBIANCE": "АТМОСФЕРА",
       "Cuisine": "Кухня",
       "Salle à manger": "Столовая",
       "Suite parentale": "Хозяйская спальня",
@@ -2497,17 +2468,6 @@
       "Éclairage porte sectionnelle": "Свет секционных ворот",
       "Appliques entrée garage": "Бра въезда в гараж",
       "IPTV": "IPTV",
-      "Box pirate": "Пиратский бокс",
-      "Humax": "Humax",
-      "Jukebox": "Джукбокс",
-      "Sex": "Секс",
-      "Baise": "Трах",
-      "Alcool": "Алкоголь",
-      "Salon2": "Гостиная 2",
-      "REPAS2": "УЖИН 2",
-      "TOTAL3": "ПОЛНЫЙ 3",
-      "Chambre pour baiser": "Комната для траха",
-      "Salle à baiser": "Зал для траха",
       "Suite bébé": "Детская спальня",
       "Salle de jeux": "Игровая",
       "Chambre maman": "Спальня мамы",
@@ -3604,6 +3564,16 @@
           "78": 78,
           "79": 79,
           "80": 80,
+        "81": 81,
+        "82": 82,
+        "83": 83,
+        "84": 84,
+        "85": 85,
+        "86": 86,
+        "87": 87,
+        "88": 88,
+        "89": 89,
+        "90": 90,
           "61": 33,
           "62": 34,
           "63": 35,

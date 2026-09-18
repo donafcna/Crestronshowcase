@@ -2,7 +2,7 @@
 
 **Dernier lot : 0.2.0.** Voir `LOT-0.2.0.md` pour la préparation commune CH5/SIMPL, la compatibilité avec le socle C#, les supports du mode démo et le pilote Villa Léman. La recette matérielle reste à effectuer. Le reste de ce document décrit le lot initial 0.1.0.
 
-17 septembre 2026. Demande de Donatien : poursuivre « Papoter ensemble », prendre Villa Grand Montana comme flagship, stabiliser la V1 et préparer une bêta pour Alexandre avant généralisation. Le nom technique existant reste `villa-crans` / `villa-gemini-frequencetv` ; aucun renommage de joins, chemins ou projet matériel n'est implicite.
+17 septembre 2026. Demande de Donatien : poursuivre « Papoter ensemble », prendre Villa Crans-Montana comme flagship, stabiliser la V1 et préparer une bêta pour Alexandre avant généralisation. Le nom technique existant reste `villa-crans` / `villa-gemini-frequencetv` ; aucun renommage de joins, chemins ou projet matériel n'est implicite.
 
 ## Ce lot apporte
 

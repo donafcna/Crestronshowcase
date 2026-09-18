@@ -2,11 +2,11 @@
 
 Objectif : un programmeur Crestron qui connaît SIMPL doit pouvoir adapter une pièce et piloter son équipement sans modifier le CH5 ni le C#. La bêta mesure aussi les endroits où la documentation ou la configuration l'obligent encore à demander de l'aide.
 
-## État du candidat
+## État du candidat (mis à jour le 18/09/2026)
 
-GUI/config 1.0.180 ; profil `banc-beta-alexandre`, noms de démonstration propres, 15 identifiants conservés dont 14 pièces actives, activations de pilotages héritées de la configuration physique. La vitrine a ses propres pièces de démonstration ; ce profil ne copie pas sa topologie étendue.
+Le candidat 1.0.180/1.0.181 du 17/09 est **obsolète** : la source est passée au contrat **v4.1** (scènes mémorisées par le C#, 20 circuits, feedback des commandes globales 401-409, traductions complètes) — GUI 1.0.196, C# source 1.0.192.0 (1.0.191.0 chargé sur le CP4 de développement), SMW v4.1 régénéré, LPZ compilé le 18/09 sans recette matérielle. Le socle `tools/quality/runtime-v4.json` a été re-basé sur ces sources.
 
-CH5Z préparé et CPZ compilé. SMW généré dans un dossier séparé, 76 contrôles HVAC/C#/configuration/SIMPL réussis. **Le LPZ reste à compiler dans SIMPL Windows. Aucune installation sur CP4/TSW ni recette matérielle n'est revendiquée.** Le manifeste des fichiers fait foi, pas le seul numéro de version.
+Profil de banc régénéré : `docs/verification/2026-09-18-beta-alexandre/villa_config-beta-alexandre.json` (15 identifiants, 14 pièces actives, libellés de démonstration, repli alarme vide, 0 défaut en mode `--release`). Les étapes de préparation et de compilation restantes sont dans le `README.md` du même dossier. **Aucun CH5Z/CPZ/LPZ de ce profil n'est compilé ; aucune installation ni recette matérielle n'est revendiquée.** Le manifeste des fichiers fait foi, pas le seul numéro de version.
 
 Le repli local du code d'alarme est vide dans ce profil : un test positif nécessite le verdict du système relié au slot 2. La configuration de développement d'origine reste préservée.
 

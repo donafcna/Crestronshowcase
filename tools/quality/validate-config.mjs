@@ -45,7 +45,7 @@ export function validateConfig(c, { mode = 'deploiement', release = false } = {}
     for (const [key, control] of Object.entries(controls)) if (control?.actif !== undefined && typeof control.actif !== 'boolean') add(p + '.pilotages.' + key + '.actif', 'Booléen attendu');
     if (controls.eclairages) {
       const e = controls.eclairages, q = p + '.pilotages.eclairages';
-      countList(e.scenes, 4, 'noms', q + '.scenes'); countList(e.circuits, 10, 'noms', q + '.circuits');
+      countList(e.scenes, 4, 'noms', q + '.scenes'); countList(e.circuits, 20, 'noms', q + '.circuits');
       if (e.scenes?.niveaux !== undefined) {
         if (!Array.isArray(e.scenes.niveaux) || e.scenes.niveaux.length !== e.scenes.nombre) add(q + '.scenes.niveaux', 'Une ligne de niveaux par scène attendue');
         else e.scenes.niveaux.forEach((levels, n) => {

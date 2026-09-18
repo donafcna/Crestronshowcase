@@ -1,13 +1,13 @@
-window.villaConfigEmbedded = {
+{
   "meta": {
-    "projet": "Villa Crans",
+    "projet": "Villa Crans-Montana — bêta Alexandre",
     "integrateur": "Fréquence TV",
     "version": "1.0.196",
     "mode": "deploiement",
     "modeDescription": "'deploiement' = GUI livré chez le client : les feedbacks viennent du CP4 (C# slot 1 + SIMPL slot 2) via js/webxpanel.js / CrComLib, aucune simulation. 'showcase' = copie pour le site crestrongui.vercel.app : posé UNIQUEMENT par scripts/sync-villa-crans.py du dépôt Crestronshowcase, feedbacks simulés dans le navigateur (js/local-feedback.js), curseur de démo géré par le site (jamais par le GUI). Ne jamais mettre 'showcase' ici. Voir docs/08_WORKFLOW_SHOWCASE.md.",
-    "tracesConsole": true,
+    "tracesConsole": false,
     "tracesConsoleDescription": "false = le programme du slot 1 n'affiche en console que ses messages de diagnostic (démarrage, configuration, EISC, arrivée d'un périphérique, erreurs) et la GUI ne recopie plus ses console.log sur le sériel 100. Passer à true pour retrouver la trace complète des actions utilisateur pendant une mise au point ; un progreset suffit, aucune recompilation.",
-    "dateModification": "2026-09-17",
+    "dateModification": "2026-09-18",
     "langueReference": "fr",
     "languesDisponibles": [
       "fr",
@@ -17,15 +17,10 @@ window.villaConfigEmbedded = {
       "ru"
     ],
     "aide": [
-      "PROCESS ÉQUIPE FTV : 1) Remplir ce fichier (sections 'pieces', 'sourcesAudioVideo', 'scenesStores').",
-      "2) L'envoyer dans la conversation Claude qui complète la section 'traductions' pour toutes les langues du GUI.",
-      "3) Le déployer sur le CP4 (deploy.ps1 le copie dans /user/villa_config.json).",
-      "4) Au démarrage, le CP4 lit ce fichier et le transmet au CH5 qui modèle le GUI en conséquence.",
-      "RÈGLES : maximum 4 scènes d'éclairage par pièce. Maximum 20 circuits par pièce. Maximum 6 moteurs par pièce.",
-      "Un nom laissé vide (\"\") reprend le nom par défaut indiqué dans 'valeursParDefaut'.",
-      "Un pilotage avec \"actif\": false masque toute la section correspondante dans le GUI pour cette pièce.",
-      "ICONES : chaque piece a un champ icone (emoji affiche dans le menu de gauche). Choisir dans valeursParDefaut.iconesDisponibles et copier-coller."
-    ]
+      "Profil de banc : identifiants et activations hérités de la configuration physique, libellés de démonstration.",
+      "Ne pas installer sur un projet client avant recette CH5Z/CPZ/LPZ et vérification des appareils."
+    ],
+    "profil": "banc-beta-alexandre"
   },
   "valeursParDefaut": {
     "iconesDisponibles": {
@@ -52,7 +47,7 @@ window.villaConfigEmbedded = {
     },
     "scenesEclairage": [
       "OFF",
-      "AMBIANCE",
+      "CINÉMA",
       "REPAS",
       "TOTAL"
     ],
@@ -103,15 +98,15 @@ window.villaConfigEmbedded = {
   "sourcesAudioVideo": [
     {
       "id": 1,
-      "nom": "Apple TV"
+      "nom": "APPLE TV"
     },
     {
       "id": 2,
-      "nom": "Sky Q"
+      "nom": "SKY Q"
     },
     {
       "id": 3,
-      "nom": "Swisscom"
+      "nom": "SWISSCOM TV"
     },
     {
       "id": 4,
@@ -160,8 +155,8 @@ window.villaConfigEmbedded = {
   "pieces": [
     {
       "id": 1,
-      "nom": "Salle de jeux",
-      "icone": "🎮",
+      "nom": "Salon",
+      "icone": "🛋️",
       "intersystem": true,
       "pilotages": {
         "eclairages": {
@@ -229,16 +224,16 @@ window.villaConfigEmbedded = {
           "circuits": {
             "nombre": 10,
             "noms": [
-              "Spots plafond ouest",
-              "Lustre principal",
-              "Ruban LED corniche",
-              "Applique murale nord",
-              "Spots plafond Ouest2",
-              "Lustre Principal2",
-              "Ruban LED Corniche2",
-              "Applique murale Nord2",
-              "Ruban LED Corniche3",
-              "Applique murale Nord3"
+              "Spots & suspensions",
+              "Lampes d’ambiance",
+              "Corniches",
+              "Appliques murales",
+              "Bandeaux LED",
+              "Circuit 6",
+              "Circuit 7",
+              "Circuit 8",
+              "Circuit 9",
+              "Circuit 10"
             ]
           }
         },
@@ -312,8 +307,8 @@ window.villaConfigEmbedded = {
     },
     {
       "id": 2,
-      "nom": "Chambre maman",
-      "icone": "🛏️",
+      "nom": "Cuisine",
+      "icone": "🍳",
       "intersystem": true,
       "pilotages": {
         "eclairages": {
@@ -322,8 +317,8 @@ window.villaConfigEmbedded = {
             "nombre": 4,
             "noms": [
               "OFF",
-              "Jeux",
-              "AMBIANCE",
+              "CINÉMA",
+              "REPAS",
               "TOTAL"
             ],
             "niveaux": [
@@ -357,10 +352,10 @@ window.villaConfigEmbedded = {
           "circuits": {
             "nombre": 4,
             "noms": [
-              "Spots zone cuisson",
-              "Suspension îlot",
-              "LED plan de travail",
-              "Plafonnier central"
+              "Spots & suspensions",
+              "Lampes d’ambiance",
+              "Corniches",
+              "Appliques murales"
             ]
           }
         },
@@ -434,8 +429,8 @@ window.villaConfigEmbedded = {
     },
     {
       "id": 3,
-      "nom": "Chambre papa",
-      "icone": "🛏️",
+      "nom": "Salle à manger",
+      "icone": "🍽️",
       "intersystem": true,
       "pilotages": {
         "eclairages": {
@@ -479,10 +474,10 @@ window.villaConfigEmbedded = {
           "circuits": {
             "nombre": 4,
             "noms": [
-              "Lustre table repas",
-              "Spots plafond",
-              "Appliques buffet est",
-              "Ruban LED vaisselier"
+              "Spots & suspensions",
+              "Lampes d’ambiance",
+              "Corniches",
+              "Appliques murales"
             ]
           }
         },
@@ -556,8 +551,8 @@ window.villaConfigEmbedded = {
     },
     {
       "id": 4,
-      "nom": "Suite amis",
-      "icone": "🚪",
+      "nom": "Suite parentale",
+      "icone": "🛏️",
       "intersystem": true,
       "pilotages": {
         "eclairages": {
@@ -601,10 +596,10 @@ window.villaConfigEmbedded = {
           "circuits": {
             "nombre": 4,
             "noms": [
-              "Plafonnier suite",
-              "Liseuse lit gauche",
-              "Liseuse lit droite",
-              "Corniche LED tête de lit"
+              "Spots & suspensions",
+              "Lampes d’ambiance",
+              "Corniches",
+              "Appliques murales"
             ]
           }
         },
@@ -678,7 +673,7 @@ window.villaConfigEmbedded = {
     },
     {
       "id": 5,
-      "nom": "Chambre amis",
+      "nom": "Chambre 1",
       "icone": "🛏️",
       "intersystem": true,
       "pilotages": {
@@ -723,10 +718,10 @@ window.villaConfigEmbedded = {
           "circuits": {
             "nombre": 4,
             "noms": [
-              "Plafonnier chambre 1",
-              "Lampe bureau 1",
-              "Liseuse lit 1",
-              "Spots dressing 1"
+              "Spots & suspensions",
+              "Lampes d’ambiance",
+              "Corniches",
+              "Appliques murales"
             ]
           }
         },
@@ -845,10 +840,10 @@ window.villaConfigEmbedded = {
           "circuits": {
             "nombre": 4,
             "noms": [
-              "Plafonnier chambre 2",
-              "Lampe bureau 2",
-              "Liseuse lit 2",
-              "Spots dressing 2"
+              "Spots & suspensions",
+              "Lampes d’ambiance",
+              "Corniches",
+              "Appliques murales"
             ]
           }
         },
@@ -967,10 +962,10 @@ window.villaConfigEmbedded = {
           "circuits": {
             "nombre": 4,
             "noms": [
-              "Spots plafond bureau",
-              "Lampe bureau design",
-              "Ruban LED bibliothèque",
-              "Applique zone accueil"
+              "Spots & suspensions",
+              "Lampes d’ambiance",
+              "Corniches",
+              "Appliques murales"
             ]
           }
         },
@@ -1044,7 +1039,7 @@ window.villaConfigEmbedded = {
     },
     {
       "id": 8,
-      "nom": "Home cinéma",
+      "nom": "Home Cinéma",
       "icone": "🎬",
       "intersystem": true,
       "pilotages": {
@@ -1089,10 +1084,10 @@ window.villaConfigEmbedded = {
           "circuits": {
             "nombre": 4,
             "noms": [
-              "Nez de marche gradué",
-              "Appliques murales gauche",
-              "Appliques murales droite",
-              "Ruban LED écran"
+              "Spots & suspensions",
+              "Lampes d’ambiance",
+              "Corniches",
+              "Appliques murales"
             ]
           }
         },
@@ -1211,10 +1206,10 @@ window.villaConfigEmbedded = {
           "circuits": {
             "nombre": 4,
             "noms": [
-              "Plafonnier chambre 3",
-              "Lampe bureau 3",
-              "Liseuse lit 3",
-              "Spots dressing 3"
+              "Spots & suspensions",
+              "Lampes d’ambiance",
+              "Corniches",
+              "Appliques murales"
             ]
           }
         },
@@ -1333,10 +1328,10 @@ window.villaConfigEmbedded = {
           "circuits": {
             "nombre": 4,
             "noms": [
-              "Lustre suite invités",
-              "Liseuse invités",
-              "LED tête de lit",
-              "Spots dressing invités"
+              "Spots & suspensions",
+              "Lampes d’ambiance",
+              "Corniches",
+              "Appliques murales"
             ]
           }
         },
@@ -1410,8 +1405,8 @@ window.villaConfigEmbedded = {
     },
     {
       "id": 11,
-      "nom": "Terrasse & jardin",
-      "icone": "🌿",
+      "nom": "Pool House",
+      "icone": "🏖️",
       "intersystem": true,
       "pilotages": {
         "eclairages": {
@@ -1455,10 +1450,10 @@ window.villaConfigEmbedded = {
           "circuits": {
             "nombre": 4,
             "noms": [
-              "Projecteurs avant-toit",
-              "Appliques façade sud",
-              "Spots encastrés sol",
-              "Ruban LED Sous-Banc"
+              "Spots & suspensions",
+              "Lampes d’ambiance",
+              "Corniches",
+              "Appliques murales"
             ]
           }
         },
@@ -1532,7 +1527,7 @@ window.villaConfigEmbedded = {
     },
     {
       "id": 12,
-      "nom": "Piscine & spa",
+      "nom": "Piscine & Spa",
       "icone": "🏊",
       "intersystem": true,
       "pilotages": {
@@ -1577,10 +1572,10 @@ window.villaConfigEmbedded = {
           "circuits": {
             "nombre": 4,
             "noms": [
-              "Projecteurs subaquatiques",
-              "Spots plafond spa",
-              "Ruban LED margelle",
-              "Appliques ambiance plage"
+              "Spots & suspensions",
+              "Lampes d’ambiance",
+              "Corniches",
+              "Appliques murales"
             ]
           }
         },
@@ -1654,7 +1649,7 @@ window.villaConfigEmbedded = {
     },
     {
       "id": 13,
-      "nom": "Sauna & hammam",
+      "nom": "Sauna & Hammam",
       "icone": "🧖",
       "intersystem": true,
       "pilotages": {
@@ -1699,10 +1694,10 @@ window.villaConfigEmbedded = {
           "circuits": {
             "nombre": 4,
             "noms": [
-              "Plafonnier vapeur sauna",
-              "Ruban LED Sous-Banc sauna",
-              "Projecteurs hammam",
-              "Spots douche pluie"
+              "Spots & suspensions",
+              "Lampes d’ambiance",
+              "Corniches",
+              "Appliques murales"
             ]
           }
         },
@@ -1792,8 +1787,8 @@ window.villaConfigEmbedded = {
     },
     {
       "id": 14,
-      "nom": "Pool house",
-      "icone": "🏖️",
+      "nom": "Bar & Lounge",
+      "icone": "🍸",
       "intersystem": true,
       "pilotages": {
         "eclairages": {
@@ -1837,10 +1832,10 @@ window.villaConfigEmbedded = {
           "circuits": {
             "nombre": 4,
             "noms": [
-              "Suspensions bar pool house",
-              "Spots plafond salon d'Été",
-              "Ruban LED comptoir",
-              "Appliques terrasse pool house"
+              "Spots & suspensions",
+              "Lampes d’ambiance",
+              "Corniches",
+              "Appliques murales"
             ]
           }
         },
@@ -1914,7 +1909,7 @@ window.villaConfigEmbedded = {
     },
     {
       "id": 15,
-      "nom": "Garage & ateliers",
+      "nom": "Garage & Ateliers",
       "icone": "🚗",
       "intersystem": true,
       "pilotages": {
@@ -1959,10 +1954,10 @@ window.villaConfigEmbedded = {
           "circuits": {
             "nombre": 4,
             "noms": [
-              "Réglettes LED garage",
-              "Spots zone établi",
-              "Éclairage porte sectionnelle",
-              "Appliques entrée garage"
+              "Spots & suspensions",
+              "Lampes d’ambiance",
+              "Corniches",
+              "Appliques murales"
             ]
           }
         },
@@ -2136,17 +2131,14 @@ window.villaConfigEmbedded = {
       "Appliques entrée garage": "Garage entry sconces",
       "IPTV": "IPTV",
       "Suite bébé": "Baby suite",
-      "Salle de jeux": "Games room",
-      "Chambre maman": "Mum's bedroom",
-      "Chambre papa": "Dad's bedroom",
-      "Suite amis": "Friends' suite",
-      "Chambre amis": "Friends' bedroom",
       "Musique": "Music",
       "Volets Ext.": "Ext. shutters",
       "Rideaux": "Curtains",
       "Sauna": "Sauna",
       "Hammam": "Hammam",
-      "Jeux": "Games"
+      "APPLE TV": "APPLE TV",
+      "SKY Q": "SKY Q",
+      "SWISSCOM TV": "SWISSCOM TV"
     },
     "es": {
       "Salon": "Salón",
@@ -2247,17 +2239,14 @@ window.villaConfigEmbedded = {
       "Appliques entrée garage": "Apliques entrada garaje",
       "IPTV": "IPTV",
       "Suite bébé": "Suite del bebé",
-      "Salle de jeux": "Sala de juegos",
-      "Chambre maman": "Dormitorio de mamá",
-      "Chambre papa": "Dormitorio de papá",
-      "Suite amis": "Suite de amigos",
-      "Chambre amis": "Dormitorio de amigos",
       "Musique": "Música",
       "Volets Ext.": "Persianas ext.",
       "Rideaux": "Cortinas",
       "Sauna": "Sauna",
       "Hammam": "Hammam",
-      "Jeux": "Juegos"
+      "APPLE TV": "APPLE TV",
+      "SKY Q": "SKY Q",
+      "SWISSCOM TV": "SWISSCOM TV"
     },
     "de": {
       "Salon": "Wohnzimmer",
@@ -2358,17 +2347,14 @@ window.villaConfigEmbedded = {
       "Appliques entrée garage": "Wandleuchten Garageneinfahrt",
       "IPTV": "IPTV",
       "Suite bébé": "Babysuite",
-      "Salle de jeux": "Spielzimmer",
-      "Chambre maman": "Schlafzimmer Mama",
-      "Chambre papa": "Schlafzimmer Papa",
-      "Suite amis": "Freunde-Suite",
-      "Chambre amis": "Freundezimmer",
       "Musique": "Musik",
       "Volets Ext.": "Rollläden außen",
       "Rideaux": "Vorhänge",
       "Sauna": "Sauna",
       "Hammam": "Hamam",
-      "Jeux": "Spiele"
+      "APPLE TV": "APPLE TV",
+      "SKY Q": "SKY Q",
+      "SWISSCOM TV": "SWISSCOM TV"
     },
     "ru": {
       "Salon": "Гостиная",
@@ -2469,24 +2455,21 @@ window.villaConfigEmbedded = {
       "Appliques entrée garage": "Бра въезда в гараж",
       "IPTV": "IPTV",
       "Suite bébé": "Детская спальня",
-      "Salle de jeux": "Игровая",
-      "Chambre maman": "Спальня мамы",
-      "Chambre papa": "Спальня папы",
-      "Suite amis": "Сьют для друзей",
-      "Chambre amis": "Спальня для друзей",
       "Musique": "Музыка",
       "Volets Ext.": "Наружные ставни",
       "Rideaux": "Шторы",
       "Sauna": "Сауна",
       "Hammam": "Хаммам",
-      "Jeux": "Игры"
+      "APPLE TV": "APPLE TV",
+      "SKY Q": "SKY Q",
+      "SWISSCOM TV": "SWISSCOM TV"
     }
   },
   "contrat": {
     "version": "v4.1 (18.09.2026) — scènes d'éclairage mémorisées par le C#, 20 circuits par pièce, sur la base v4 (15.09.2026 : joins de pilotage globaux, routage SIMPL par buffers)",
     "alarme": {
       "description": "Centrale d'alarme de la villa. Le code de reference n'est plus code en dur ni dans le JavaScript du panel ni dans le C# : le GUI envoie la saisie sur le serial 43, le C# la relaie telle quelle a l'EISC du slot 2 (serial 43) et attend le verdict de la vraie centrale (digital 44 = accepte, 45 = refuse). Si le slot 2 ne repond pas dans le delai ci-dessous, le C# tranche localement avec codeParDefaut.",
-      "codeParDefaut": "1234",
+      "codeParDefaut": "",
       "delaiReponseCentraleMs": 1200,
       "note": "codeParDefaut n'est qu'un repli de mise en service : a changer sur site, ou a vider (\"\") pour refuser toute validation locale et n'accepter que le verdict de la centrale du slot 2."
     },
@@ -3484,6 +3467,13 @@ window.villaConfigEmbedded = {
       ],
       "mapping": {
         "digital": {
+          "49": 35,
+          "50": 36,
+          "51": 21,
+          "52": 22,
+          "53": 23,
+          "54": 24,
+          "55": 50,
           "61": 1,
           "62": 2,
           "63": 3,
@@ -3493,28 +3483,6 @@ window.villaConfigEmbedded = {
           "67": 7,
           "68": 8,
           "69": 9,
-          "51": 21,
-          "52": 22,
-          "53": 23,
-          "54": 24,
-          "49": 35,
-          "50": 36,
-          "201": 41,
-          "202": 42,
-          "203": 43,
-          "204": 44,
-          "200": 45,
-          "55": 50,
-          "150": 51,
-          "151": 52,
-          "152": 53,
-          "153": 54,
-          "154": 55,
-          "155": 56,
-          "156": 57,
-          "251": 58,
-          "252": 59,
-          "253": 60,
           "81": 61,
           "82": 62,
           "83": 63,
@@ -3533,6 +3501,21 @@ window.villaConfigEmbedded = {
           "96": 76,
           "97": 77,
           "98": 78,
+          "150": 51,
+          "151": 52,
+          "152": 53,
+          "153": 54,
+          "154": 55,
+          "155": 56,
+          "156": 57,
+          "200": 45,
+          "201": 41,
+          "202": 42,
+          "203": 43,
+          "204": 44,
+          "251": 58,
+          "252": 59,
+          "253": 60,
           "610": 93,
           "611": 94,
           "612": 95,
@@ -3553,7 +3536,11 @@ window.villaConfigEmbedded = {
           "51": 51,
           "52": 52,
           "53": 53,
-          "254": 54,
+          "61": 33,
+          "62": 34,
+          "63": 35,
+          "64": 36,
+          "65": 37,
           "71": 71,
           "72": 72,
           "73": 73,
@@ -3564,21 +3551,17 @@ window.villaConfigEmbedded = {
           "78": 78,
           "79": 79,
           "80": 80,
-        "81": 81,
-        "82": 82,
-        "83": 83,
-        "84": 84,
-        "85": 85,
-        "86": 86,
-        "87": 87,
-        "88": 88,
-        "89": 89,
-        "90": 90,
-          "61": 33,
-          "62": 34,
-          "63": 35,
-          "64": 36,
-          "65": 37
+          "81": 81,
+          "82": 82,
+          "83": 83,
+          "84": 84,
+          "85": 85,
+          "86": 86,
+          "87": 87,
+          "88": 88,
+          "89": 89,
+          "90": 90,
+          "254": 54
         },
         "serial": {
           "10": 10,
@@ -3658,4 +3641,3 @@ window.villaConfigEmbedded = {
     }
   }
 }
-;

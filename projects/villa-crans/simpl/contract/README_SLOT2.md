@@ -1,4 +1,16 @@
-# VillaCrans_Slot2.smw — programme SIMPL du slot 2
+# Project_Slot2.smw — programme SIMPL du slot 2 (contrat v4.1)
+
+## État v4.1 (18/09/2026) — ce que le slot 2 reçoit, ce qu'il doit renvoyer
+
+Lu dans `ControlSystem.cs` (routage v4 du 16.09, scènes mémorisées du 18.09) et `generate_slot2.js`. Fait foi sur les sections historiques plus bas.
+
+- **Joins globaux (< 1000)** : tous les pilotages (sources 150-156, télécommandes 211-600, scènes 51-54, stores 61-69, moteurs 81-98, scènes stores 201-204, HVAC 49/50/610-615, wellness 620-627, presets 401-411) arrivent au slot 2 en **impulsion** sur `X_fb`, précédée de `Room_Select#` (a10) = pièce affichée par l'écran émetteur. Le slot 2 route lui-même vers le matériel de cette pièce (buffers sur a10).
+- **Le feedback affiché vient du C#, pas du slot 2** : sources, musique, audio = vidéo, mute, scènes d'éclairage, scènes de stores, presets globaux 401-409, mode vacances 410/411, consigne, volumes. Le C# ignore les entrées EISC globales `Source_Select_n`, `Source_AudioReturn`, `Audio_Mute`, `Motor_n_*`, `Shades_Scene_n`, `Media_Volume#`, `Circuit_n#` et `Room_Select#` entrant : **ces entrées sont mortes**, ne pas y câbler d'interlock (doublon avec le C#, sans effet sur les écrans).
+- **Ce que le C# lit du slot 2** (entrées du symbole) : `Alarm_Arm/Disarm` (41/42), `Alarm_Code_OK/KO` (44/45), `Alarm_Part<n>_*` (301-312), `Global_Vacation_On/Off` (410/411), et par pièce les `_Actual` : `Rxx_HVAC_On_Actual`, `Rxx_HVAC_FanSpeed_Actual#`, `Rxx_HVAC_Setpoint#`, `Rxx_HVAC_Temperature#` (mesure × 10), `Rxx_Sauna/Hammam_*_Actual`, `Rxx_Circuit_N_Actual#` (niveau réel, 1..20), `Rxx_Lighting_SceneN_Actual` (scène imposée par un clavier, facultatif).
+- **Blocs pièce (≥ 1000)** : seuls trois blocs sont générés par pièce `intersystem` — CVC (+31..34, +93..98), wellness (+11..16, a+34..37, s+44..47) et éclairage (+21..24, a+71..90). Le C# pousse aussi vers l'EISC les offsets +41..45, +50..57, +81..92, a+51..54, s+10 de chaque pièce (`PushRoomFeedback`) : **sans nom dans le générateur, donc invisibles au debugger** — à nommer dans un prochain lot si le slot 2 doit s'en servir.
+- **Rôle du slot 2** : drivers réels derrière les `_fb` / `_Cmd` (gradateurs sur `Rxx_Circuit_N_fb#`, moteurs, IR/IP des télécommandes routées par a10 + `Source_Active#`, centrale d'alarme sur 43-46, thermostats, sauna/hammam), remontée des mesures `_Actual`, position intermédiaire des stores (406, vide côté C#). Rien d'autre.
+- **20 circuits par pièce** (a71-90, `MAX_CIRCUITS = 20`) ; `circuits.nombre` du JSON borne le câblage. Le `.smw` de base contient encore 2010 définitions `R01_..R15_` du v3, sans câblage : à nettoyer dans SIMPL Windows.
+- **Recette Debugger restante (LPZ v4.1 compilé le 18.09, jamais testé sur matériel)** : rappel de scène → `Lighting_SceneN_fb` impulsion + `Rxx_Lighting_SceneN_fb` tenu + `Rxx_Circuit_1..n_fb#` aux niveaux ; 💾 → aucun join (le sériel 421 n'est pas recopié) ; scène enregistrée sur la dalle visible sur l'iPad ; progreset puis rappel.
 
 ## Préparation par projet — outillage 0.2.0, 17/09/2026
 
@@ -13,8 +25,8 @@ Sauna/hammam : d620–627 ; a/s62–65. Cibles et mesures indépendantes du HVAC
 
 ON/OFF : d610/611 ; ventilation Auto/1/2/3 : d612–615 et a61 (0..3). Retours par pièce : digitaux +93..98, analogique +33 ; la température mesurée reste +32. Aucun bloc GUI v3 réactivé. Détails, sens des signaux et recette Debugger : `projects/villa-crans/ch5/docs/HVAC-2026-09-16.md` depuis la racine du dépôt.
 
-Généré par `contract/generate_slot2.js` à partir de `simpl-windows/VillaCrans_Slot2.smw`
-(modifié en place, une sauvegarde `VillaCrans_Slot2.backup-<horodatage>.smw` est écrite à
+Généré par `contract/generate_slot2.js` à partir de `simpl-windows/Project_Slot2.smw`
+(modifié en place, une sauvegarde `Project_Slot2.backup-<horodatage>.smw` est écrite à
 chaque exécution et remplace la précédente). **Fermer le projet dans SIMPL Windows avant de
 lancer le script.**
 
@@ -49,12 +61,10 @@ et flag `intersystem` de chacune.
 | Pièce active | a10 | `Room_Select#` / `Room_Selected#` |
 | Master éclairage / consigne | a21 / a31 | `Lighting_Master` / `HVAC_Setpoint` (+`_fb`) |
 | Source / volume | a51 / a52 | `Source_Active#` / `Audio_Volume#` (+`_fb#`) |
-| Circuits 1..10 | a71-80 | `Circuit_n#` (+`_fb#`) |
+| Circuits 1..20 | a71-90 | `Circuit_n#` (+`_fb#`) — entrée `Circuit_n#` morte, le niveau vient du C# |
 | Textes CVC / pièce | s10/32/33/34 | `Room_Selected$`, `HVAC_Temperature_fb$`, `HVAC_Mode_fb$`, `HVAC_Setpoint_fb$` |
 
-- **Blocs pièces (joins ≥ 1000)** — contrat v3, `joinPhysique = 1000 + (pieceId − 1) × 100 + offset`.
-  Les 69 offsets de `contrat.blocsPiecesGui.mapping` sont câblés pour chaque pièce exposée :
-  49 digitaux, 16 analogiques, 4 sériels.
+- **Blocs pièces (joins ≥ 1000)** — `joinPhysique = 1000 + (pieceId − 1) × 100 + offset`. **Historique v3** : le tableau ci-dessous décrit les 69 offsets du v3, dont les définitions `R01_..R15_` subsistent dans le `.smw` sans être câblées. Depuis le v4 seuls les blocs CVC, wellness et éclairage sont générés (voir « État v4.1 » en tête).
 
 | Offsets | Signaux (préfixe `R01_` … `R15_`) |
 |---|---|
@@ -69,7 +79,7 @@ et flag `intersystem` de chacune.
 | +58..+60 | `Media_PlayPause` / `Media_Next` / `Media_Prev` |
 | +61..+78 | `Motor_1..6_Up/Stop/Down` |
 | +21/+31/+51/+52/+53/+54 (analog) | `Lighting_Master#`, `HVAC_Setpoint#`, `Source_Active#`, `Audio_Volume#`, `Source_Audio#`, `Media_Volume#` |
-| +71..+80 (analog) | `Circuit_1..10#` |
+| +71..+90 (analog) | `Circuit_1..20#` |
 | +10/+32/+33/+34 (sériel) | `Room_Name$`, `HVAC_Temperature$`, `HVAC_Mode$`, `HVAC_Setpoint_Text$` |
 
 ## Convention de nommage — à lire avant d'ouvrir le debugger
@@ -83,27 +93,11 @@ et flag `intersystem` de chacune.
   d'un bouton serait trompeur.
 - Un appui sur « scène 2 » dans la pièce 7 fait donc monter **`R07_Lighting_Scene2`**.
 
-## Logique à câbler côté slot 2 — sans elle, la GUI n'a AUCUN feedback (constat TSW du 16.09.2026)
+## Ce que le slot 2 n'a PAS à câbler (corrigé le 18/09/2026)
 
-La GUI ne présume rien : un appui est une **impulsion de 80 ms** sur `X_fb`, et l'état affiché
-(fond violet, badge égaliseur, confirmation « musique ou vidéo », vert des boutons globaux)
-vient **uniquement** de l'entrée `X` renvoyée par le slot 2. Tant que rien n'est câblé, le
-debugger montre l'impulsion et la tablette ne change pas. À câbler :
+Cette section disait, après le constat TSW du 16.09, que l'état affiché venait « uniquement » du slot 2 et demandait des interlocks sur `Source_Select_1..4`, un toggle sur `Source_Select_5`, des interlocks sur les presets, le mode vacances et les scènes. **C'est périmé depuis le routage v4 côté C# (16.09 soir)** : le C# fournit lui-même le feedback des sources, de la musique, du retour audio, du mute, des scènes d'éclairage et de stores, des presets 401-409, du mode vacances et de la consigne (`RouteGlobalDigitalToActiveRoom`, `PushRoomFeedback`, `PushGlobalSelectionFeedback`). Les entrées EISC correspondantes ne sont pas lues. Seules exceptions encore lues : `Global_Vacation_On/Off` (410/411) et l'alarme (41/42, 44/45, 301-312).
 
-| Fonction | Reçu (`_fb`, impulsion) | À renvoyer (nom nu, maintenu) | Symbole SIMPL |
-|---|---|---|---|
-| Source vidéo | `Source_Select_1..4_fb` | `Source_Select_1..4` | **Interlock** 4 voies ; `Source_Select_0_fb` (tout éteindre) = *Clear* |
-| Musique sur les HP | `Source_Select_5_fb` | `Source_Select_5` | **Toggle** ; remis à 0 par `Source_AudioReturn_fb` (156) et par `Source_Select_0_fb` |
-| Audio = vidéo | `Source_AudioReturn_fb` | `Source_AudioReturn` | = NOT `Source_Select_5` |
-| Mode vacances | `Global_Vacation_On/Off` (410/411) | idem | **Interlock** 2 voies (les boutons ne se sélectionnent plus localement depuis le 16.09) |
-| Presets globaux | 401-403, 404-405, 407-409 | idem | **Interlock** par famille |
-| Consigne CVC ± | `HVAC_Setpoint_Up/Down` (49/50, reçus) | `HVAC_Setpoint` (a31) ± 5 (x10 : 0,5 °C) | Analog Increment / Decrement, borné |
-| Scènes d'éclairage | `Lighting_Scene1..4_fb` | `Lighting_Scene1..4` | **Interlock** |
-
-Sur la dalle, une source vidéo active (`Source_Select_N` = 1) donne le fond violet et le logo
-agrandi ; la source dont l'**audio** joue (`Source_Select_N` si musique = 0, sinon
-`Source_Select_5`) porte le badge égaliseur animé. La confirmation « la musique reste / l'audio
-suit la vidéo » n'apparaît que si `Source_Select_5` est à 1 quand on appuie sur une vidéo.
+Sur la dalle, une source vidéo active donne le fond violet et le logo agrandi ; la source dont l'audio joue porte le badge égaliseur animé ; la confirmation « la musique reste / l'audio suit la vidéo » n'apparaît que si la musique est active quand on appuie sur une vidéo. Tout cela est calculé par le C# à partir des appuis, puis poussé aux écrans.
 
 ## Dimensionnement du symbole EISC
 
@@ -111,15 +105,15 @@ Le script n'écrit pas les dimensions : il les lit et calibre ses offsets dessus
 (`analogIn = n1I + 1`, `analogOut = n1O`, `serieOut = n1O + n2I − 1`). Il refuse de câbler une
 pièce dont un join dépasse la capacité et la signale dans son rapport.
 
-Pour 15 pièces il faut au moins **2500 joins de chaque type** (le join le plus haut est 2480,
-pièce 15 offset +80). Le redimensionnement se fait **à la main dans SIMPL Windows** — double-clic
+Pour 15 pièces il faut au moins **2500 joins de chaque type** (le join le plus haut est 2490,
+pièce 15 offset +90). Le redimensionnement se fait **à la main dans SIMPL Windows** — double-clic
 sur le symbole *Ethernet Intersystem Communications (Packed)* — parce que SIMPL ré-indexe alors
 tous les signaux existants, ce qu'aucune édition du fichier ne sait faire de façon fiable.
 État au 12.09.2026 : `n1I=2732`, `n2I=2733`, soit 2732 digitaux, 2732 analogiques, 2552 sériels.
 
 ## Mise en service
 
-1. Ouvrir `simpl-windows/VillaCrans_Slot2.smw` dans SIMPL Windows, **Compile (F12)** → `.lpz`.
+1. Ouvrir `simpl-windows/Project_Slot2.smw` dans SIMPL Windows, **Compile (F12)** → `.lpz`.
 2. Charger le `.lpz` sur le **slot 2** du CP4 (Toolbox, ou l'interface web du CP4, section
    *Programs Slot Management*).
 3. L'EISC passe ONLINE dans `ipt -p:01` (entrée F0) dès que les deux programmes tournent.
