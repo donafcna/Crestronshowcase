@@ -1019,7 +1019,7 @@
             <!-- Rempli dynamiquement -->
         </div>
         <div style="padding: 10px 15px; border-top: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.2);">
-            <p style="margin: 0 0 8px 0; font-weight: bold; color: #eab308; font-size: 0.85rem; text-transform: uppercase;">Scénarios Éclairage :</p>
+            <p data-i18n="lighting_scenarios" style="margin: 0 0 8px 0; font-weight: bold; color: #eab308; font-size: 0.85rem; text-transform: uppercase;">Scénarios Éclairage :</p>
             <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px;">
                 <ch5-button label="TOTAL" customClass="scene-btn" style="height: 36px;" sendEventOnClick="54" receiveStateSelected="54" data-join="54" data-rjoin="54"></ch5-button>
                 <ch5-button label="REPAS" customClass="scene-btn" style="height: 36px;" sendEventOnClick="53" receiveStateSelected="53" data-join="53" data-rjoin="53"></ch5-button>
@@ -1697,6 +1697,7 @@
                     source_title: "Sources",
                     source_video: "Source active :",
                     circuits_title: "Circuits :",
+                    lighting_scenarios: "Scénarios Éclairage :",
                     motors_title: "Moteurs :",
                     tab_lights: "ÉCLAIRAGES",
                     tab_source: "Source",
@@ -1766,6 +1767,7 @@
                     source_title: "Sources",
                     source_video: "Active Source:",
                     circuits_title: "Circuits:",
+                    lighting_scenarios: "Lighting scenes:",
                     motors_title: "Motors:",
                     tab_lights: "LIGHTS",
                     tab_source: "Source",
@@ -1835,6 +1837,7 @@
                     source_title: "Fuentes",
                     source_video: "Fuente Activa:",
                     circuits_title: "Circuitos:",
+                    lighting_scenarios: "Escenas de iluminación:",
                     motors_title: "Motores:",
                     tab_lights: "LUCES",
                     tab_source: "Fuente",
@@ -1904,6 +1907,7 @@
                     source_title: "Audio- & Videoquelle",
                     source_video: "Aktive Quelle:",
                     circuits_title: "Schaltkreise:",
+                    lighting_scenarios: "Lichtszenen:",
                     motors_title: "Motoren:",
                     tab_lights: "LICHT",
                     tab_source: "Quelle",
@@ -1973,6 +1977,7 @@
                     source_title: "Источник аудио и видео",
                     source_video: "Активный источник :",
                     circuits_title: "Свет :",
+                    lighting_scenarios: "Сцены освещения :",
                     motors_title: "Моторы :",
                     tab_lights: "СВЕТ",
                     tab_source: "Источник",
@@ -4213,19 +4218,32 @@
         function cancel() { if (press.timer) clearTimeout(press.timer); press.timer = null; }
         // iOS (Safari, app Crestron ONE) : l'appui long déclenche le menu contextuel / la sélection de texte et
         // envoie pointercancel avant les 900 ms → la scène était rappelée (clic) au lieu d'être enregistrée.
+        // v4.2 (18.09.2026) : deux jeux de boutons de scène coexistent sur l'iPhone — les
+        // <button id="scene-btn-5x"> de la page principale et les <ch5-button customClass="scene-btn"
+        // data-join="5x"> de la fenêtre Circuits. C'est dans cette fenêtre qu'on règle les curseurs,
+        // donc c'est là qu'on enregistre : le gestionnaire couvre désormais les deux (la dalle le
+        // faisait déjà en lisant sendEventOnClick). Avant, l'appui long n'était écouté que sur la
+        // page principale et il ne se passait jamais rien dans la fenêtre Circuits.
+        var SCENE_SEL = '.scene-btn-mobile[id^="scene-btn-"], ch5-button[customClass~="scene-btn"]';
+        function sceneBtnOf(el) { return el && el.closest ? el.closest(SCENE_SEL) : null; }
+        function sceneIdxOf(el) {
+            var b = sceneBtnOf(el);
+            if (!b) return 0;
+            var join = b.id ? b.id.replace('scene-btn-', '') : (b.getAttribute('data-join') || b.getAttribute('sendEventOnClick'));
+            return SCENE_JOINS[join] || 0;
+        }
         document.addEventListener('contextmenu', function (ev) {
-            if (ev.target && ev.target.closest && ev.target.closest('.scene-btn-mobile[id^="scene-btn-"]')) ev.preventDefault();
+            if (sceneBtnOf(ev.target)) ev.preventDefault();
         }, true);
         (function () {
             var st = document.createElement('style');
-            st.textContent = '.scene-btn-mobile{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none;touch-action:manipulation}';
+            // customClass n'est pas recopié sur l'hôte : viser l'attribut, et le .cb-btn interne.
+            st.textContent = '.scene-btn-mobile,ch5-button[customClass~="scene-btn"],ch5-button[customClass~="scene-btn"] .cb-btn'
+                + '{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none;touch-action:manipulation}';
             document.head.appendChild(st);
         })();
         document.addEventListener('pointerdown', function (ev) {
-            var b = ev.target && ev.target.closest ? ev.target.closest('.scene-btn-mobile[id^="scene-btn-"]') : null;
-            if (!b) return;
-            var join = b.id.replace('scene-btn-', '');
-            var idx = SCENE_JOINS[join];
+            var idx = sceneIdxOf(ev.target);
             if (!idx) return;
             cancel();
             // Instantané pris AVANT que la scène ne parte : le processeur applique ses propres niveaux dès l'appui
@@ -4240,10 +4258,17 @@
             document.addEventListener(e, cancel, true);
         });
         document.addEventListener('click', function (ev) {
-            var b = ev.target && ev.target.closest ? ev.target.closest('.scene-btn-mobile[id^="scene-btn-"]') : null;
+            var b = sceneBtnOf(ev.target);
             if (!b) return;
-            if (press.saved) { press.saved = false; ev.stopImmediatePropagation(); ev.preventDefault(); return; }
-            var idx = SCENE_JOINS[b.id.replace('scene-btn-', '')];
+            // Le clic de relâchement suit l'enregistrement : il ne doit pas rappeler la scène.
+            // Sur un <button> de la page principale, bloquer aussi son onclick (pressDigital) ;
+            // un <ch5-button> émet son impulsion nativement, comme sur la dalle.
+            if (press.saved) {
+                press.saved = false;
+                if (!b.hasAttribute('sendEventOnClick')) { ev.stopImmediatePropagation(); ev.preventDefault(); }
+                return;
+            }
+            var idx = sceneIdxOf(ev.target);
             if (idx) setTimeout(function () { recallScene(idx); }, 150);
         }, true);
 

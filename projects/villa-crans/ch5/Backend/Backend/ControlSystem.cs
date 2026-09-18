@@ -1263,11 +1263,17 @@ namespace VillaFrequenceTvAutomation
                 RoomState room = _roomsRegistry[roomId];
                 uint b = RoomBlockStart(roomId);
 
-                // Panels (debugger virtuel compris) : TOUTES les pièces sont diffusées.
+                // v4.2 (18.09.2026) : les blocs de pièce (joins >= 1000) ne sont lus QUE par le
+                // slot 2. Depuis que 'blocsPiecesGui.actif' est faux, aucune GUI (dalle, iPad,
+                // XPanel, iPhone) ne référence un join à quatre chiffres : les leur envoyer
+                // coûtait environ 900 écritures inutiles par panel à chaque commande globale
+                // (BroadcastFeedbackToAll -> PushAllRoomsFeedback), ce qui retardait de plusieurs
+                // secondes le retour d'état des XPanel (iPhone en WiFi) sans rien changer à
+                // l'affichage. Les panels reçoivent l'instantané GLOBAL juste en dessous.
                 // EISC (slot 2) : uniquement les pièces avec 'intersystem': true (limite le debugger SIMPL).
-                foreach (var dev in _touchPanels)
+                if (_eisc != null && eiscEnabled)
                 {
-                    if (dev == _eisc && !eiscEnabled) continue;
+                    BasicTriList dev = _eisc;
                     // Digitals : scènes éclairage (+21..24), scènes stores (+41..44), mute (+50), source (+51..56)
                     for (uint s = 0; s < 4; s++)
                         SetBool(dev, b + 21 + s, room.ActiveScene == s + 1);

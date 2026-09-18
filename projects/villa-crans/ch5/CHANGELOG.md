@@ -1,5 +1,22 @@
 # Villa Crans CH5 — journal des versions
 
+## v4.2 — 18/09/2026 (soir) — appui long dans la fenetre Circuits, feedback des panels allege (a compiler : CH5 + CPZ)
+
+| Artefact | Etat de ce lot |
+|---|---|
+| CH5 source | `src/iphone.html` — **a recompiler** (`index.html` inchange : la dalle etait deja correcte) |
+| CPZ slot 1 | `ControlSystem.cs` + `AssemblyInfo` → **1.0.193.0**, **a recompiler** (SIMPL# Pro) |
+| LPZ slot 2 | inchange, `Project_Slot2.lpz` du 18/09 05:20 reste valable |
+| Showcase | `iphone.html` regenere par `patch_html` de `sync-villa-crans.py` ; **non pousse** |
+
+**1. L'appui long n'enregistrait jamais depuis la fenetre Circuits (retour Donatien : « toujours pas »).** Le gestionnaire iPhone n'ecoutait que `.scene-btn-mobile[id^="scene-btn-"]`, c'est-a-dire les 4 boutons de la **page principale** (l. 855-858). Les 4 boutons de la **fenetre Circuits** (l. 1021-1024) sont des `<ch5-button customClass="scene-btn" data-join="5x">` sans `id` ni cette classe : aucun `pointerdown` ne les ecoutait. Or c'est la qu'on regle les curseurs, donc la qu'on enregistre. Le correctif iOS du lot precedent (`touch-callout`, `contextmenu`, `stopImmediatePropagation`) etait juste, mais pose sur les mauvais boutons. Desormais un seul selecteur couvre les deux jeux (`SCENE_SEL`, `sceneBtnOf`, `sceneIdxOf`), comme la dalle qui lisait deja `sendEventOnClick`. Au relachement, le clic ne rappelle plus la scene ; l'impulsion native du `<ch5-button>` est conservee (elle ne l'est pas pour le `<button>` de la page principale, dont l'`onclick` est bloque).
+
+**2. Retour d'etat lent sur l'iPhone, immediat sur la TSW (fenetre Centralisation).** `PushRoomFeedback` ecrivait le bloc de chaque piece vers **tous** les peripheriques. Or **aucune GUI ne lit un join >= 1000** depuis que `contrat.blocsPiecesGui.actif` est faux (verifie par recherche sur `index.html` et `iphone.html` : zero occurrence d'un join a quatre chiffres). Chaque commande globale declenche `BroadcastFeedbackToAll` → `PushAllRoomsFeedback` : ~15 pieces x ~60 joins = **environ 900 ecritures inutiles par panel et par appui**. La TSW encaisse en CIP natif ; l'XPanel de l'iPhone, en websocket sur WiFi, serialise, d'ou les secondes. Le bloc de piece ne part plus que vers l'**EISC** (slot 2), seul a en avoir besoin pour les drivers ; l'instantane global vers les panels affichant la piece est inchange.
+
+**3. Libelle « Scenarios Eclairage : » de la fenetre Circuits** : sans `data-i18n`, il restait en francais dans les 4 autres langues. Cle `lighting_scenarios` ajoutee aux 5 dictionnaires. Les 4 boutons de scene de cette fenetre etaient deja alimentes par `villa_config` + `villaTranslateName` (l. 3101) : le « TOTAL / REPAS / CINEMA / OFF » en francais vu sur Vercel vient du build du 17.09 encore en ligne, pas de la source.
+
+Recette (Playwright, iPhone 16 Pro 393x852, moteur showcase, copie locale) : appui court dans la fenetre Circuits → 0 sequentiel 421 ; appui long (1,3 s) → `{"p":1,"s":4,"c":[12,0,30,25,0]}`, 32 caracteres (limite CP4 : 119) ; appui long page principale → scene 2 enregistree (non regresse) ; appui court page principale → 0 ; 0 erreur console. Aucun test sur materiel dans ce lot : la latence et l'appui long iOS restent a confirmer sur le CP4 et l'app Crestron One.
+
 ## Correctif 18/09/2026 (soir) — clé en double `Musique` qui bloquait `deploy.ps1`
 
 `deploy.ps1 -Target tsw` s'arrêtait après les contrôles de contraste : « villa_config.json invalide : le dictionnaire contient les clés en double MUSIQUE et Musique ». Cause : `ConvertFrom-Json` de PowerShell 5.1 compare les clés **sans tenir compte de la casse** ; les quatre tables `traductions` contenaient `MUSIQUE` (nom de la source id 5, ajouté par le lot traductions du 18/09) **et** `Musique`, héritée. `JSON.parse`, Python et le validateur acceptaient les deux. La clé `Musique` n'était référencée nulle part (ni HTML, ni `data-tname`, ni ailleurs dans le JSON) : supprimée des 4 langues, copies `src/` et vitrine régénérées. Aucun autre doublon de casse dans le fichier.
