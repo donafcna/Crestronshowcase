@@ -18,6 +18,18 @@ export function validateConfig(c, { mode = 'deploiement', release = false } = {}
   const integer = (n, lo, hi) => Number.isInteger(n) && n >= lo && n <= hi;
   if (!c || typeof c !== 'object' || Array.isArray(c)) return [{ path: '$', message: 'Objet JSON attendu', severity: 'error' }];
   if (c.meta?.mode !== mode) add('meta.mode', `Mode attendu : ${mode}`);
+  // PowerShell 5.1 (deploy.ps1 : ConvertFrom-Json) refuse deux clés d'un même objet qui ne
+  // diffèrent que par la casse : « MUSIQUE » et « Musique » dans traductions ont bloqué un
+  // déploiement le 18.09.2026. JSON.parse les accepte en silence, d'où ce contrôle.
+  for (const [lang, table] of Object.entries(c.traductions || {})) {
+    const seen = new Map();
+    for (const key of Object.keys(table || {})) {
+      const lower = key.toLowerCase();
+      if (seen.has(lower) && seen.get(lower) !== key) add(`traductions.${lang}`, `Clés en double à la casse près : « ${seen.get(lower)} » et « ${key} » (refusé par deploy.ps1)`);
+      else seen.set(lower, key);
+    }
+  }
+
   if (!/^\d+\.\d+\.\d+(?:-[\w.-]+)?$/.test(c.meta?.version || '')) add('meta.version', 'Version explicite requise');
   if (!/^v4\b/.test(c.contrat?.version || '')) add('contrat.version', 'Ce validateur cible le contrat v4');
   if (c.contrat?.blocsPiecesGui?.actif !== false) add('contrat.blocsPiecesGui.actif', 'La réécriture v3 des joins doit rester désactivée');

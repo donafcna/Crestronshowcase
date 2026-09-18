@@ -136,6 +136,7 @@ La démo automatique démarre désormais sur **tous les supports** (elle était 
 3. `ch5-cli deploy` exige `-p` (mot de passe SFTP demandé), sort en code 0 même en échec → la page est vérifiée.
 4. Node 23+ casse `ch5-cli` → `tools/ch5-compat.js` via `node --require`.
 5. Banc bureau : CP4 `192.168.3.109`, SFTP `FTV`, `-CP4Host <ip>` ; `-SkipContrast` / `-SkipBuild` ; `-ExecutionPolicy Bypass`.
+6. **Jamais deux clés d'un même objet JSON qui ne diffèrent que par la casse** (`MUSIQUE` / `Musique` dans `traductions`) : `ConvertFrom-Json` de PowerShell 5.1 refuse le fichier et `deploy.ps1` s'arrête avant le build, alors que `JSON.parse` et Python les acceptent en silence. Contrôlé désormais par `tools/quality/validate-config.mjs`.
 
 ## Reste à faire
 1. **Push de `main`** (2 commits locaux : archive + P1) → déploie la vitrine (traductions) sur Vercel ; vérifier en ligne ensuite. Attendre le GO de Donatien.

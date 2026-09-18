@@ -1,5 +1,11 @@
 # Villa Crans CH5 — journal des versions
 
+## Correctif 18/09/2026 (soir) — clé en double `Musique` qui bloquait `deploy.ps1`
+
+`deploy.ps1 -Target tsw` s'arrêtait après les contrôles de contraste : « villa_config.json invalide : le dictionnaire contient les clés en double MUSIQUE et Musique ». Cause : `ConvertFrom-Json` de PowerShell 5.1 compare les clés **sans tenir compte de la casse** ; les quatre tables `traductions` contenaient `MUSIQUE` (nom de la source id 5, ajouté par le lot traductions du 18/09) **et** `Musique`, héritée. `JSON.parse`, Python et le validateur acceptaient les deux. La clé `Musique` n'était référencée nulle part (ni HTML, ni `data-tname`, ni ailleurs dans le JSON) : supprimée des 4 langues, copies `src/` et vitrine régénérées. Aucun autre doublon de casse dans le fichier.
+
+Garde-fou : `tools/quality/validate-config.mjs` refuse désormais deux clés de `traductions` identiques à la casse près (43/43 tests toujours verts). Aucun build, aucun envoi par ce correctif.
+
 ## P1 Reprise — 18/09/2026 — contrat v4.1 documenté, config purgée, outillage Codex re-basé (pas de build, pas de push)
 
 | Artefact | État de ce lot |
