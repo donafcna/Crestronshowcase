@@ -109,6 +109,41 @@ namespace VillaFrequenceTvAutomation
             if (_tracesConsole) CrestronConsole.PrintLine(format, args);
         }
 
+        // --- Chrono de latence (meta.tracesLatence du villa_config.json, faux par defaut) ---
+        // v4.3 (19.09.2026) : mesure le trajet appui panel -> fin de la diffusion du retour d'etat.
+        // Une seule ligne est imprimee par appui, APRES la diffusion : l'impression console du CP4
+        // est bloquante, la mesurer depuis l'interieur de la diffusion fausserait le resultat.
+        // Lecture : dt = temps passe dans le programme, n = joins reellement ecrits (les valeurs
+        // inchangees ne sont pas reecrites). Un dt faible pendant un lag observe sur un panel
+        // disculpe le programme et designe le transport CIP vers ce panel.
+        private bool _tracesLatence = false;
+        private int _writeCount = 0;
+        private long _latRxTicks = 0;
+        private ushort _latRxJoin = 0;
+        private uint _latRxDevice = 0;
+
+        private static long NowMs()
+        {
+            return DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
+        }
+
+        private void LatMark(BasicTriList dev, ushort join)
+        {
+            if (!_tracesLatence) return;
+            _latRxTicks = NowMs();
+            _latRxJoin = join;
+            _latRxDevice = dev == null ? (uint)0 : dev.ID;
+            _writeCount = 0;
+        }
+
+        private void LatReport(string phase)
+        {
+            if (!_tracesLatence || _latRxTicks == 0) return;
+            CrestronConsole.PrintLine("[LAT] ip={0:X2} join={1} phase={2} n={3} dt={4}ms",
+                _latRxDevice, _latRxJoin, phase, _writeCount, NowMs() - _latRxTicks);
+            _latRxTicks = 0;
+        }
+
         // --- Émission sur changement de valeur uniquement ---
         // Réécrire un signal à sa valeur courante produit un front sur le lien CIP. Sur un bloc
         // pièce, où le même join est bidirectionnel, le slot 2 lit ce front comme un appui : une
@@ -118,23 +153,43 @@ namespace VillaFrequenceTvAutomation
         // (arrivée d'un périphérique), sans quoi un panel qui se reconnecte ne recevrait rien.
         private bool _forcePush = false;
 
+        // v4.3 (19.09.2026) : _forcePush etait global. La mise en ligne d'un seul peripherique
+        // declenchait donc, via PushAllRoomsFeedback, une reecriture inconditionnelle de tous les
+        // joins de TOUS les panels connectes - y compris ceux dont rien n'avait change. Le forcage
+        // est desormais porte par un peripherique cible : seul l'arrivant recoit son etat complet.
+        private BasicTriList _forcePushTarget = null;
+
+        private bool Force(BasicTriList dev)
+        {
+            return _forcePush && (_forcePushTarget == null || dev == _forcePushTarget);
+        }
+
         private void SetBool(BasicTriList dev, uint join, bool value)
         {
-            if (_forcePush || dev.BooleanInput[join].BoolValue != value)
+            if (Force(dev) || dev.BooleanInput[join].BoolValue != value)
+            {
                 dev.BooleanInput[join].BoolValue = value;
+                _writeCount++;
+            }
         }
 
         private void SetUShort(BasicTriList dev, uint join, ushort value)
         {
-            if (_forcePush || dev.UShortInput[join].UShortValue != value)
+            if (Force(dev) || dev.UShortInput[join].UShortValue != value)
+            {
                 dev.UShortInput[join].UShortValue = value;
+                _writeCount++;
+            }
         }
 
         private void SetString(BasicTriList dev, uint join, string value)
         {
             if (value == null) value = "";
-            if (_forcePush || dev.StringInput[join].StringValue != value)
+            if (Force(dev) || dev.StringInput[join].StringValue != value)
+            {
                 dev.StringInput[join].StringValue = value;
+                _writeCount++;
+            }
         }
 
         // --- Niveaux de circuits par scène d'éclairage ---
@@ -485,6 +540,11 @@ namespace VillaFrequenceTvAutomation
                 _tracesConsole = _villaConfig["meta"] != null
                                  && _villaConfig["meta"]["tracesConsole"] != null
                                  && (bool)_villaConfig["meta"]["tracesConsole"];
+
+                // Chrono de latence : independant des traces d'exploitation, faux par defaut.
+                _tracesLatence = _villaConfig["meta"] != null
+                                 && _villaConfig["meta"]["tracesLatence"] != null
+                                 && (bool)_villaConfig["meta"]["tracesLatence"];
 
                 // Transport minifié, découpé en chunks acquittés "VCFG|i|n|payload".
                 // Tout caractère non-ASCII est échappé en \uXXXX (notation JSON standard) :
@@ -842,6 +902,7 @@ namespace VillaFrequenceTvAutomation
                     }
                     // Rafraîchissement complet : un périphérique qui arrive doit recevoir tout
                     // son état, y compris les signaux dont la valeur n'a pas changé côté programme.
+                    _forcePushTarget = panel;   // v4.3 : les autres panels ne sont pas reecrits
                     _forcePush = true;
                     try
                     {
@@ -852,7 +913,7 @@ namespace VillaFrequenceTvAutomation
                         // arrivée (panel ou slot 2). Opération rare, coût négligeable.
                         PushAllRoomsFeedback();
                     }
-                    finally { _forcePush = false; }
+                    finally { _forcePush = false; _forcePushTarget = null; }
 
                     // Publie l'empreinte de la configuration : le panel demandera le transfert
                     // complet (Digital 250) uniquement si son cache diffère.
@@ -918,6 +979,7 @@ namespace VillaFrequenceTvAutomation
                     UpdateScreenStateForPanel(panel, _activeRoomPerDevice[panel.ID]);
             }
             PushAllRoomsFeedback();
+            LatReport("broadcast");
         }
 
         /// <summary>
@@ -1595,6 +1657,10 @@ namespace VillaFrequenceTvAutomation
         private void OnTouchPanelSignalReceived(BasicTriList currentDevice, SigEventArgs args)
         {
             ushort joinNumber = (ushort)args.Sig.Number;
+
+            // v4.3 : depart du chrono de latence (aucune impression ici, voir LatReport).
+            if (_tracesLatence && args.Sig.Type == eSigType.Bool && args.Sig.BoolValue)
+                LatMark(currentDevice, joinNumber);
 
             if (!_activeRoomPerDevice.ContainsKey(currentDevice.ID))
                 _activeRoomPerDevice[currentDevice.ID] = DefaultRoomForPanel(currentDevice.ID);
@@ -2324,7 +2390,9 @@ namespace VillaFrequenceTvAutomation
                 string path = string.Format("/user/preset_cfg_{0}.json", presetName);
                 if (!System.IO.File.Exists(path))
                 {
-                    CrestronConsole.PrintLine("PRESETS: Configuration file '{0}' not found. Falling back to default preset logic.", path);
+                    // v4.3 : impression console bloquante sur CP4, declenchee a CHAQUE commande
+                    // globale 401-411 quand aucun preset personnalise n'existe. Passee sous Trace().
+                    Trace("PRESETS: Configuration file '{0}' not found. Falling back to default preset logic.", path);
                     return false;
                 }
                 
@@ -2333,7 +2401,7 @@ namespace VillaFrequenceTvAutomation
                 var data = payload["data"] as Newtonsoft.Json.Linq.JObject;
                 if (data == null)
                 {
-                    CrestronConsole.PrintLine("PRESETS: Configuration data is null in '{0}'. Falling back to default preset logic.", path);
+                    Trace("PRESETS: Configuration data is null in '{0}'. Falling back to default preset logic.", path);
                     return false;
                 }
                 

@@ -2,12 +2,14 @@
   "meta": {
     "projet": "Villa Crans",
     "integrateur": "Fréquence TV",
-    "version": "1.0.196",
+    "version": "1.0.199",
     "mode": "deploiement",
     "modeDescription": "'deploiement' = GUI livré chez le client : les feedbacks viennent du CP4 (C# slot 1 + SIMPL slot 2) via js/webxpanel.js / CrComLib, aucune simulation. 'showcase' = copie pour le site crestrongui.vercel.app : posé UNIQUEMENT par scripts/sync-villa-crans.py du dépôt Crestronshowcase, feedbacks simulés dans le navigateur (js/local-feedback.js), curseur de démo géré par le site (jamais par le GUI). Ne jamais mettre 'showcase' ici. Voir docs/08_WORKFLOW_SHOWCASE.md.",
     "tracesConsole": false,
     "tracesConsoleDescription": "false = le programme du slot 1 n'affiche en console que ses messages de diagnostic (démarrage, configuration, EISC, arrivée d'un périphérique, erreurs) et la GUI ne recopie plus ses console.log sur le sériel 100. Passer à true pour retrouver la trace complète des actions utilisateur pendant une mise au point ; un progreset suffit, aucune recompilation.",
-    "dateModification": "2026-09-17",
+    "tracesLatence": false,
+    "tracesLatenceDescription": "false = aucune mesure. true = le slot 1 imprime une ligne [LAT] par appui (ip, join, nombre de joins reellement ecrits, duree passee dans le programme) et la GUI affiche en bas a gauche le delai appui -> retour d'etat. Sert a situer un retard de feedback : duree CP4 faible + delai GUI eleve = retard de transport CIP vers ce panel, hors du programme. Un progreset suffit, aucune recompilation. A remettre a false apres la mesure.",
+    "dateModification": "2026-09-19",
     "langueReference": "fr",
     "languesDisponibles": [
       "fr",

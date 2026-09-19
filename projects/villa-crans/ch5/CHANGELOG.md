@@ -1,5 +1,49 @@
 # Villa Crans CH5 — journal des versions
 
+## v4.3 — 19/09/2026 — lot « mesure » : chrono de latence, logs PRESETS, forcage cible (a compiler : CH5 + CPZ)
+
+| Artefact | Etat de ce lot |
+|---|---|
+| CH5 source | `src/iphone.html` — **a recompiler** (bloc overlay ajoute ; `index.html` inchange) |
+| CPZ slot 1 | `ControlSystem.cs` + `AssemblyInfo` → **1.0.194.0**, **a recompiler** (SIMPL# Pro) |
+| LPZ slot 2 | inchange |
+| Config | `villa_config.json` → `meta.version` 1.0.199, nouveau `meta.tracesLatence` (faux) |
+| Showcase | non concerne (drapeau inactif, aucun rendu modifie) |
+
+**Pourquoi ce lot ne corrige rien.** Les deux corrections du 18/09 (selecteur d'appui long, allegement de
+`PushRoomFeedback`) n'ont eu aucun effet sur le retard de feedback de l'iPhone. Deux diagnostics faux de suite :
+on arrete de corriger et on mesure. Le seul fait etabli par les captures de Donatien est que le retour d'etat est
+**immediat sur la TSW quand l'appui vient de l'iPhone** : le trajet iPhone → CP4 et le trajet CP4 → TSW sont donc
+rapides, et le retard est strictement **descendant vers l'IP-ID 06**. Ce lot instrumente ce trajet.
+
+**1. Chrono de latence des deux cotes, sous un drapeau unique `meta.tracesLatence` (faux par defaut).**
+Cote slot 1 : l'instant de reception d'un appui est memorise sans rien imprimer (l'impression console du CP4 est
+bloquante et fausserait la mesure), et une seule ligne part apres la diffusion —
+`[LAT] ip=xx join=nnn phase=broadcast n=<joins ecrits> dt=<ms>`. Cote GUI iPhone : un bandeau en bas a gauche
+affiche le delai appui → retour d'etat sur les joins 401-411 et 51-54, avec maximum, moyenne et nombre de mesures.
+Lecture croisee : `dt` faible cote CP4 **et** delai eleve cote GUI = retard de transport CIP vers ce panel, hors du
+programme. Un `progreset` suffit pour armer ou desarmer la mesure, aucune recompilation.
+
+**2. Les lignes `PRESETS: Configuration file ... not found` passent sous `Trace()`.** `ApplyPreset` est appele a
+**chaque** commande globale 401-411 ; tant qu'aucun preset personnalise n'existe dans `/user/`, chaque appui
+declenchait un `CrestronConsole.PrintLine` **bloquant**. C'est ce qui remplissait la console de Donatien (11 lignes
+pour 11 appuis). Le message reste disponible avec `meta.tracesConsole`.
+
+**3. `_forcePush` n'etait pas cible.** A la mise en ligne d'un seul peripherique, `_forcePush = true` restait vrai
+pendant `PushAllRoomsFeedback()` : **tous** les panels connectes recevaient une reecriture inconditionnelle de tous
+leurs joins, pas seulement l'arrivant. Le forcage est desormais porte par un peripherique (`_forcePushTarget`,
+lu par le helper partage `Force(dev)` des trois setters `SetBool` / `SetUShort` / `SetString`). Corrige au niveau du
+systeme, donc valable pour la dalle, l'iPad, les XPanel et l'EISC en meme temps.
+
+**Hors lot, volontairement.** Les boutons 💾 explicites de la fenetre Circuits corrigent l'appui long, pas le retard
+de feedback : les melanger a une mesure empecherait de savoir ce qui a agi. XPanel IP-ID 04 hors ligne : dossier
+separe.
+
+**Protocole de mesure.** Passer `meta.tracesLatence` a `true`, `progreset`, ouvrir la Console Web, lancer
+l'application iPhone, appuyer dans Centralisation jusqu'a reproduire le lag, relever les lignes `[LAT]` et le
+bandeau. Remettre `false` ensuite.
+
+
 ## v4.2 — 18/09/2026 (soir) — appui long dans la fenetre Circuits, feedback des panels allege (a compiler : CH5 + CPZ)
 
 | Artefact | Etat de ce lot |

@@ -4294,6 +4294,89 @@
     })();
     </script>
 
+    <!-- ================= LOT 19.09.2026 : chrono de latence (mesure) =================
+         Actif uniquement si villa_config.json porte meta.tracesLatence = true, le meme drapeau
+         que les traces [LAT] du slot 1. Mesure l'aller-retour appui -> retour d'etat sur les
+         joins de la Centralisation (401-411) et les scenes (51-54), cote GUI.
+         Lecture croisee avec la console : dt CP4 faible + dt GUI eleve = retard de transport
+         CIP vers ce panel, hors du programme.
+         Rien n'est cree tant que le drapeau est faux : cout nul en exploitation. -->
+    <script>
+    (function () {
+        'use strict';
+        var JOINS = [401, 402, 403, 404, 405, 407, 408, 409, 410, 411, 51, 52, 53, 54];
+        var t0 = {}, box = null, last = 0, worst = 0, n = 0, sum = 0;
+
+        function flagOn() {
+            var vc = window.villaConfig || window.villaConfigEmbedded;
+            return !!(vc && vc.meta && vc.meta.tracesLatence === true);
+        }
+
+        function render() {
+            if (!box) return;
+            var moy = n ? Math.round(sum / n) : 0;
+            box.textContent = 'LAT ' + last + ' ms  |  max ' + worst + '  |  moy ' + moy + '  |  n=' + n;
+            box.style.background = last > 800 ? 'rgba(239,68,68,0.92)'
+                                 : last > 250 ? 'rgba(234,179,8,0.92)'
+                                              : 'rgba(16,185,129,0.92)';
+        }
+
+        function makeBox() {
+            box = document.createElement('div');
+            box.id = 'lat-overlay';
+            box.style.cssText = 'position:fixed;left:8px;bottom:8px;z-index:99999;'
+                + 'font:600 11px/1.4 monospace;color:#0b1220;padding:4px 8px;border-radius:6px;'
+                + 'pointer-events:none;letter-spacing:.02em;box-shadow:0 2px 8px rgba(0,0,0,.4)';
+            document.body.appendChild(box);
+            render();
+        }
+
+        function arm(CrComLib) {
+            if (!flagOn()) return;
+            makeBox();
+
+            // Depart du chrono : le premier evenement de pointage sur un bouton portant le join.
+            ['pointerdown', 'touchstart', 'mousedown'].forEach(function (evt) {
+                document.addEventListener(evt, function (ev) {
+                    var el = ev.target && ev.target.closest ? ev.target.closest('[data-join]') : null;
+                    if (!el) return;
+                    var j = parseInt(el.getAttribute('data-join'), 10);
+                    if (JOINS.indexOf(j) === -1) return;
+                    if (t0[j]) return;                       // pointerdown + touchstart : un seul depart
+                    t0[j] = Date.now();
+                    setTimeout(function () { delete t0[j]; }, 10000);
+                }, true);
+            });
+
+            // Arrivee : front montant du meme join.
+            JOINS.forEach(function (j) {
+                try {
+                    CrComLib.subscribeState('b', String(j), function (v) {
+                        if (!v || !t0[j]) return;
+                        last = Date.now() - t0[j];
+                        delete t0[j];
+                        if (last > worst) worst = last;
+                        n++; sum += last;
+                        render();
+                        if (typeof console !== 'undefined')
+                            console.log('[LAT] join ' + j + ' : ' + last + ' ms');
+                    });
+                } catch (e) { }
+            });
+        }
+
+        // Le drapeau arrive avec la configuration : on reessaie tant qu'elle n'est pas la.
+        var tries = 0;
+        var timer = setInterval(function () {
+            tries++;
+            if (typeof CrComLib === 'undefined') { if (tries > 60) clearInterval(timer); return; }
+            if (!flagOn()) { if (tries > 60) clearInterval(timer); return; }
+            clearInterval(timer);
+            arm(CrComLib);
+        }, 500);
+    })();
+    </script>
+
     <!-- ================= LOT 15.09.2026 : ecran etroit ================= -->
     <style id="mobile-lot-0915">
         /* Fenetre ouverte : voile noir floute, et plus aucun clic ne passe derriere.
