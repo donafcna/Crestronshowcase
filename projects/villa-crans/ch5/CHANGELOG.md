@@ -1,5 +1,31 @@
 # Villa Crans CH5 — journal des versions
 
+## v4.3.1 — 19/09/2026 — le bandeau de latence ne s'armait jamais (a recompiler : CH5 seul)
+
+| Artefact | Etat de ce lot |
+|---|---|
+| CH5 source | `src/iphone.html` — **a recompiler** |
+| CPZ slot 1 | inchange, **1.0.194.0** deja en place sur le CP4 |
+| Config | `meta.version` 1.0.201 ; `meta.tracesLatence` reste `true`, description corrigee |
+
+**Le defaut.** Le bandeau n'apparaissait pas au lancement de l'application. Verification faite en ouvrant le
+bundle deploye : `iphone.html` contient bien le bloc, mais le `.ch5z` embarque aussi `villa_config.js`, fige au
+moment du build, avec `tracesLatence: false`. La GUI lit cette copie embarquee en premier (`villaConfigEmbedded`),
+puis le cache `localStorage` — lui aussi perime — et ne recoit la config du CP4 qu'apres le transfert complet par
+chunks seriels. Le code d'armement lisait donc `false`, et abandonnait definitivement au bout de 30 s. Pousser la
+config au CP4 n'y aurait rien change : le drapeau arrivait apres la fermeture de la fenetre d'ecoute.
+
+**La correction, au niveau du principe et non du symptome.** On ne rallonge pas le delai d'attente, on supprime la
+dependance : le bandeau s'arme desormais par un **geste** — 5 appuis sur le titre CENTRALISATION en moins de 3 s —
+memorise par appareil dans `localStorage`, survivant au relancement, coupe par le meme geste. Aucun transfert de
+configuration n'est requis, et l'etat ne peut pas fuir vers la vitrine puisqu'il est local a l'appareil.
+`meta.tracesLatence` ne gouverne plus que les traces `[LAT]` du slot 1 : un drapeau, un seul proprietaire.
+
+**Lecon consignee.** Un drapeau d'exploitation lu par la GUI ne peut pas venir de `villa_config` : trois sources
+concurrentes (copie embarquee dans le `.ch5z`, cache `localStorage`, transfert CP4) et seule la derniere est a
+jour. Tout ce qui doit agir des le lancement passe par un geste ou par le build, jamais par la config.
+
+
 ## v4.3 — 19/09/2026 — lot « mesure » : chrono de latence, logs PRESETS, forcage cible (a compiler : CH5 + CPZ)
 
 | Artefact | Etat de ce lot |
