@@ -25,6 +25,16 @@ configuration n'est requis, et l'etat ne peut pas fuir vers la vitrine puisqu'il
 concurrentes (copie embarquee dans le `.ch5z`, cache `localStorage`, transfert CP4) et seule la derniere est a
 jour. Tout ce qui doit agir des le lancement passe par un geste ou par le build, jamais par la config.
 
+**Deux defauts de plus, trouves apres le premier essai du geste (memes lot et version).**
+1. Le bandeau etait pose a `z-index: 99999` alors que la page monte a `1000001` : il etait bien cree, mais cache
+   derriere la fenetre Centralisation et son voile. Porte a `2000000`.
+2. Le geste ecoutait `click`. Dans une WKWebView iOS, un appui sur un element non cliquable - pas de gestionnaire,
+   pas de `cursor: pointer` - n'emet aucun `click`, et le titre CENTRALISATION est un `<span>` decoratif : le geste
+   ne partait jamais. Bascule sur `pointerdown` + `touchstart`, avec un garde-fou de 250 ms puisque les deux
+   evenements se suivent sur un meme appui.
+3. Ajout d'un retour visuel des le 2e appui (`LAT 2/5`, `3/5`...) : un geste silencieux qui echoue n'apprend rien
+   a celui qui le fait. Regle a retenir pour tout geste cache ajoute plus tard.
+
 
 ## v4.3 — 19/09/2026 — lot « mesure » : chrono de latence, logs PRESETS, forcage cible (a compiler : CH5 + CPZ)
 

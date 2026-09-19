@@ -4330,7 +4330,7 @@
             if (box) { box.style.display = ''; render(); return; }
             box = document.createElement('div');
             box.id = 'lat-overlay';
-            box.style.cssText = 'position:fixed;left:8px;bottom:8px;z-index:99999;'
+            box.style.cssText = 'position:fixed;left:8px;bottom:8px;z-index:2000000;'
                 + 'font:600 11px/1.4 monospace;color:#0b1220;padding:5px 9px;border-radius:6px;'
                 + 'pointer-events:none;letter-spacing:.02em;box-shadow:0 2px 8px rgba(0,0,0,.45)';
             document.body.appendChild(box);
@@ -4374,17 +4374,33 @@
         }
 
         // --- Geste d'armement : 5 appuis sur le titre CENTRALISATION en moins de 3 s ---
-        var taps = [];
-        document.addEventListener('click', function (ev) {
+        // On ecoute pointerdown ET touchstart, jamais 'click' : dans une WKWebView iOS, un appui
+        // sur un element non cliquable (pas de gestionnaire, pas de cursor:pointer) n'emet aucun
+        // 'click'. Le titre CENTRALISATION est un <span> decoratif : le geste ne partait jamais.
+        // Les deux evenements se suivent sur un meme appui, d'ou le garde-fou de 250 ms.
+        var taps = [], lastTap = 0, hintTimer = null;
+        function onTitleTap(ev) {
             // Cible large : le titre, son emoji et la marge du <h3> comptent tous.
             var h = ev.target && ev.target.closest ? ev.target.closest('h3') : null;
             var el = (h && h.querySelector('[data-i18n="central_title"]'))
                   || (ev.target.closest && ev.target.closest('[data-i18n="central_title"]'));
             if (!el) return;
             var now = Date.now();
+            if (now - lastTap < 250) return;      // pointerdown + touchstart : un seul appui
+            lastTap = now;
             taps.push(now);
             taps = taps.filter(function (t) { return now - t < 3000; });
+            // Retour visuel des le 2e appui : un geste silencieux qui echoue n'apprend rien.
+            if (taps.length >= 2 && taps.length < 5 && !armed) {
+                show();
+                box.textContent = 'LAT ' + taps.length + '/5';
+                box.style.background = 'rgba(59,130,246,0.95)';
+                clearTimeout(hintTimer);
+                hintTimer = setTimeout(hide, 1500);
+                return;
+            }
             if (taps.length < 5) return;
+            clearTimeout(hintTimer);
             taps = [];
             armed = !armed;
             store(armed);
@@ -4399,7 +4415,10 @@
                     setTimeout(hide, 900);
                 }
             }
-        }, true);
+        }
+        ['pointerdown', 'touchstart'].forEach(function (evt) {
+            document.addEventListener(evt, onTitleTap, true);
+        });
 
         // --- Reprise de l'etat memorise -------------------------------------------
         function boot() {
