@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 
 /** Shared, isolated GUI; keeps the showcase's existing device frame and routes. */
-export function LuxuryControl({ projectId, deviceType = 'wallpanel', onControl }) {
+export function LuxuryControl({ projectId, deviceType = 'wallpanel', background3D = false, onControl }) {
   const frame = useRef(null);
   useEffect(() => {
     const handle = event => {
@@ -17,7 +17,7 @@ export function LuxuryControl({ projectId, deviceType = 'wallpanel', onControl }
   }, [projectId, onControl]);
   return React.createElement('iframe', {
     ref: frame,
-    src: `/ftv-luxury/gui.html?project=${encodeURIComponent(projectId)}&device=${encodeURIComponent(deviceType)}`,
+    src: `/ftv-luxury/gui.html?project=${encodeURIComponent(projectId)}&device=${encodeURIComponent(deviceType)}${background3D ? '&background=1' : ''}`,
     title: projectId === 'yacht-monaco' ? 'Sunrays — commandes et visite 3D' : 'Boutique VCA — commandes et visite 3D',
     className: `ftv-luxury-interface ${deviceType}`,
     allow: 'fullscreen',

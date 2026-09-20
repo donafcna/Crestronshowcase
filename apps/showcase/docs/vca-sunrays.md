@@ -21,3 +21,11 @@ Build/lint réussis ; 117 états d’interface, 33 contrôles d’intégration e
 Les tests généraux du contrat passent 39/43 ; quatre échecs de version avec le socle 1.0.196 sont préexistants et les fichiers concernés ne sont pas modifiés. La CI du commit de départ était déjà en échec. Détails et comparaison : `docs/verification/2026-09-20-vca-sunrays/` à la racine.
 
 Le flux de publication est main → Vercel. Les preuves locales ne constituent pas une vérification publique ou une recette matérielle. Les anciennes notes de continuité sont conservées sans modification ; ce document rassemble la nouvelle entrée de suivi.
+
+## Correction du placement — 20 septembre 2026
+
+À la demande de Donatien, les modèles deviennent le fond des pages Smartphone, derrière le châssis, sur le même principe que Villa Crans. Le téléphone reste à gauche et la caméra utilise l’espace entre lui et la colonne des supports. Ce cadrage suit le redimensionnement et le Mode Scène.
+
+`LuxuryBackground.jsx` charge le modèle approuvé ; le GUI téléphone lui transmet les commandes via des messages contrôlant origine, source et projet. Aucun second modèle n’est chargé dans le châssis. La page Vue 3D du téléphone pilote les niveaux. La sélection des pièces, leurs éclairages et la molette restent synchronisés. Les versions sans fond conservent leur rendu intégré, notamment le lien de démonstration sur un vrai téléphone.
+
+43 contrôles et 50 états vérifiés, trois thèmes, deux modes, redimensionnement, contrôles bidirectionnels et modification effective des matériaux lumineux. Comparaison avant/après et preuves : `docs/verification/2026-09-20-luxury-background/` à la racine. Fiches FR/EN/DE et captures complétées. La logique interne de Villa Crans et les programmes matériels ne sont pas modifiés.

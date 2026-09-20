@@ -1,0 +1,5 @@
+.luxury-background-frame{position:absolute;inset:0;display:block;width:100%;height:100%;border:0;pointer-events:none}
+.luxury-background-loading{position:absolute;top:100px;left:50%;padding:10px 16px;border-radius:8px;background:#132c30;color:#fff;font-size:13px}
+.showcase-container:has(>.luxury-background) .workspace-device-sidebar :is(.demo-tool-btn,.device-vertical-btn:not(.active),.chassis-caption){background:#172b35!important;color:#fff;border-color:#657780}
+.showcase-container:has(>.luxury-background) :is(.demo-tool-btn,.device-vertical-btn){min-height:44px}
+.showcase-container:has(>.luxury-background) .btn-exit-fullscreen-device-corner{background:#172b35!important;color:#fff}

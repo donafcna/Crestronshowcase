@@ -4,6 +4,7 @@ import { useTranslation } from "../context/LanguageContext";
 import { projects, getDeviceById, getProjectText, getProjectName, getStatusLabel } from "../data/showcaseProjects";
 import { BackgroundVideo } from "./BackgroundVideo";
 import { Plan3DBackground, plan3dEnabled } from "./Plan3DBackground";
+import { LUXURY_MODELS } from "../ftv-luxury/modelProjects";
 import { useViewportMetrics } from "../hooks/useViewportMetrics";
 import { DeviceFrame } from "./DeviceFrame";
 import { DevMetrics } from "./DevMetrics";
@@ -357,12 +358,13 @@ const ShowcaseInner = ({ sectorId, projectId, device }) => {
   const displayTitle = clientName || getProjectName(activeProject, lang);
   const Simulator = getSimulator(activeProject);
   const simulatorType = viewportDevice === "wallpanel_hd" ? "wallpanel" : viewportDevice;
+  const plan3dOn = !guiFullscreen && plan3dEnabled(activeProject.id, viewportDevice, windowW);
 
   // Contenu de l'écran : simulateur React ou GUI embarquée. Servi à l'identique
   // dans le châssis et en plein écran GUI (/3), pour n'avoir qu'une source.
   const guiContent = activeProject.isInteractive ? (
     <Suspense fallback={<SimulatorFallback />}>
-      <Simulator deviceType={simulatorType} clientName={clientName} />
+      <Simulator deviceType={simulatorType} clientName={clientName} {...(LUXURY_MODELS[activeProject.id] ? { background3D: plan3dOn } : {})} />
     </Suspense>
   ) : embedSrc ? (
     <iframe
@@ -381,7 +383,6 @@ const ShowcaseInner = ({ sectorId, projectId, device }) => {
 
   // Plan 3D en fond de page à la place de la vidéo : seulement dans les cas listés (PLAN3D_RULES).
   // Le châssis est alors poussé à gauche pour laisser la pièce 3D visible entre lui et la colonne des boutons.
-  const plan3dOn = !guiFullscreen && plan3dEnabled(activeProject.id, viewportDevice, windowW);
   return (
     <div
       className={`showcase-container fade-in sector-${sectorId || "all"} ${isFullscreen ? "fullscreen-mode" : ""} ${plan3dOn ? "plan3d-on" : ""}`}

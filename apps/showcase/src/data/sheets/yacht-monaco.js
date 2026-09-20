@@ -55,6 +55,12 @@ export default {
             "Ouvre la page correspondante."
           ]
         ]
+      },
+      {
+        "title": "Smartphone et décor 3D",
+        "text": "Dans la page Smartphone du showcase, la modélisation occupe l’arrière-plan et le châssis reste à gauche. Choisir un espace ou régler son éclairage agit sur ce décor. La molette permet de revenir à la vue d’ensemble, puis à l’espace sélectionné.",
+        "image": "/sheets/yacht-monaco/06-background.png",
+        "buttons": []
       }
     ]
   },
@@ -113,6 +119,12 @@ export default {
             "Opens the corresponding page."
           ]
         ]
+      },
+      {
+        "title": "Smartphone and 3D background",
+        "text": "On the showcase Smartphone page, the model fills the background while the chassis stays on the left. Selecting a space or adjusting its lighting updates the scene. Use the wheel to switch to the overview and back to the selected space.",
+        "image": "/sheets/yacht-monaco/06-background.png",
+        "buttons": []
       }
     ]
   },
@@ -171,6 +183,12 @@ export default {
             "Öffnet die entsprechende Seite."
           ]
         ]
+      },
+      {
+        "title": "Smartphone und 3D-Hintergrund",
+        "text": "Auf der Smartphone-Seite des Showcases füllt das Modell den Hintergrund; der Geräterahmen bleibt links. Raumauswahl und Lichtsteuerung wirken auf diese Szene. Mit dem Mausrad wechseln Sie zur Gesamtansicht und zurück zum ausgewählten Raum.",
+        "image": "/sheets/yacht-monaco/06-background.png",
+        "buttons": []
       }
     ]
   }
