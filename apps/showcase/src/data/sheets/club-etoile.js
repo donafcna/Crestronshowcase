@@ -127,7 +127,7 @@ export default {
       {
         "title": "Smartphone et décor 3D",
         "image": "/ftv-luxury/venues/club-etoile.webp",
-        "text": "Le Smartphone ouvre les Espaces : RDC et deux étages, quatre salles par niveau, toilettes hommes et femmes, réception et escaliers. Vues Bâtiment, Étage et Salle ; ambiances et intensités indépendantes. Le club original avec piste, DJ, bar et lounge est conservé au RDC. Stroboscope sans clignotement.",
+        "text": "Trois niveaux avec une seule grande salle ouverte par étage. Chaque salle comprend un DJ avec platines et mixeur, quatre grandes colonnes d’enceintes aux coins, huit enceintes murales, vingt-quatre lyres DMX RGBW, trois boules à facettes, une piste et vingt-quatre barres LED. Scènes et intensité indépendantes par étage ; faisceaux mobiles, reflets et fumée simulée. Réception, escaliers et sanitaires conservés.",
         "buttons": []
       }
     ]
@@ -259,7 +259,7 @@ export default {
       {
         "title": "Smartphone and 3D setting",
         "image": "/ftv-luxury/venues/club-etoile.webp",
-        "text": "The Smartphone opens Spaces: ground floor and two upper levels, four rooms per level, male and female toilets, reception and stairs. Building, Floor and Room views with independent moods and levels. The original dance floor, DJ, bar and lounge remain on the ground floor. Strobe without flashing.",
+        "text": "Three levels with one large open hall per floor. Each hall has a DJ desk with decks and mixer, four giant corner speaker stacks, eight wall speakers, twenty-four RGBW DMX moving heads, three mirror balls, a dance floor and twenty-four LED bars. Independent scenes and intensity per floor; moving beams, reflections and simulated haze. Reception, stairs and toilets retained.",
         "buttons": []
       }
     ]
@@ -391,7 +391,7 @@ export default {
       {
         "title": "Smartphone und 3D-Umgebung",
         "image": "/ftv-luxury/venues/club-etoile.webp",
-        "text": "Das Smartphone startet mit Räume: Erdgeschoss und zwei Obergeschosse, je vier Räume, Herren- und Damentoiletten, Empfang und Treppen. Gebäude-, Etagen- und Raumansichten mit unabhängigen Lichtszenen. Der ursprüngliche Club bleibt im Erdgeschoss. Stroboskop ohne Blinken.",
+        "text": "Drei Ebenen mit je einem großen offenen Saal. Jeder Saal bietet ein DJ-Pult mit Plattenspielern und Mixer, vier große Ecklautsprechertürme, acht Wandlautsprecher, vierundzwanzig RGBW-DMX-Moving-Heads, drei Discokugeln, eine Tanzfläche und vierundzwanzig LED-Leisten. Unabhängige Szenen und Helligkeit je Etage; bewegte Lichtkegel, Reflexe und simulierter Nebel. Empfang, Treppen und Toiletten bleiben erhalten.",
         "buttons": []
       }
     ]

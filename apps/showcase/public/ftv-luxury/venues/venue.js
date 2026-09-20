@@ -61,53 +61,63 @@ if(!club){
  sign('LOUNGE',9,2.2,-12.6,3,.5);sign('BAR',-8,4,-12.6,3,.5);
 }
 
-const clubFloors=[],clubRooms=new Map();
+const clubFloors=[],clubRooms=new Map(),movingHeads=[],mirrorBalls=[];
 if(club){
- const original=new T.Group();original.name='Original club retained';while(model.children.length)original.add(model.children[0]);
- const definitions=[
- {"id":"original","floor":0,"name":"L’Étoile Original","color":"#985cff","style":"original","mood":"Piste lumineuse · DJ · Bar"},
- {"id":"garden","floor":0,"name":"Cocktail Garden","color":"#43cfab","style":"garden","mood":"Vert jade · Jardin lounge"},
- {"id":"disco","floor":0,"name":"Disco Studio","color":"#ed6bae","style":"disco","mood":"Rose · Boule à facettes"},
- {"id":"jazz","floor":0,"name":"Jazz Lounge","color":"#efb75c","style":"jazz","mood":"Ambre · Petite scène live"},
- {"id":"neon","floor":1,"name":"Neon Lab","color":"#34c5f4","style":"neon","mood":"Cyan · Arches lumineuses"},
- {"id":"latino","floor":1,"name":"Latino Club","color":"#f38347","style":"latino","mood":"Corail · Piste chaleureuse"},
- {"id":"house","floor":1,"name":"House Room","color":"#a27bfa","style":"house","mood":"Violet · Lignes en mouvement"},
- {"id":"velvet","floor":1,"name":"Velvet VIP","color":"#dd6890","style":"velvet","mood":"Framboise · Alcôves privées"},
- {"id":"sky","floor":2,"name":"Sky Lounge","color":"#69bdf0","style":"sky","mood":"Bleu glacier · Salon panoramique"},
- {"id":"aurora","floor":2,"name":"Aurora Room","color":"#60dfca","style":"aurora","mood":"Turquoise · Vagues lumineuses"},
- {"id":"retro","floor":2,"name":"Retro Arcade","color":"#eed05a","style":"retro","mood":"Or · Bornes et damier"},
- {"id":"private","floor":2,"name":"Private Suite","color":"#c6a7f0","style":"private","mood":"Lavande · Salon privatisable"}
-]
-;
- for(let f=0;f<3;f++){
- const floor=new T.Group();floor.name='Club level '+f;floor.position.y=f*9;model.add(floor);clubFloors.push(floor);
- const capture=fn=>{const before=new Set(model.children);fn();for(const child of [...model.children])if(!before.has(child))floor.add(child);};
- capture(()=>{
- box('Landing '+f,0,-.15,0,7,.3,34,M.floor);
- box(f===0?'Grand reception':'Central landing',0,0,0,7,.15,13,M.wood);
- if(f===0){box('Reception desk',0,1,7,4,2,1.2,M.black);sign('RÉCEPTION',0,2.6,7,4,.6);}
- // Two flights with a shared intermediate landing; each rises 9 m to the next level.
- if(f<2){for(let i=0;i<15;i++){box('Ascending stair flight',-1.7,i*.3, -3-i*.43,2.4,.3,.45,M.wood);box('Returning stair flight',1.7,4.5+i*.3,-9+i*.43,2.4,.3,.45,M.wood);}box('Stair intermediate landing',0,4.2,-9.7,6,.3,1.2,M.wood);}
- for(const [x,label] of [[-1.8,'WC Hommes'],[1.8,'WC Femmes']]){
- box(label+' floor',x,.02,13.5,3.3,.15,5,M.floor);box(label+' partition',x+1.6,1.5,13.5,.12,3,5,M.wall);box(label+' rear wall',x,1.5,16,3.3,3,.15,M.wall);sign(label,x,2.5,15.85,3,.5);
- for(const z of [12.5,14.6]){cylinder('Toilet bowl',x,.5,z,.4,.5,M.white);box('Toilet cistern',x,.95,z+.45,.7,.9,.25,M.white);}box('Washbasin',x,.9,11.4,1.5,.2,.6,M.white);
+ const original=new T.Group();original.name='Open dance hall';
+ const discarded=new Set([...beams,smoke]);
+ for(const child of [...model.children]){
+  if(discarded.has(child)||['Lighting truss','Moving head','Speaker stack','Speaker grille'].includes(child.name)||(child.position.z>8&&['Lounge banquette','Lounge back','Cocktail table','Table top'].includes(child.name)))model.remove(child);
+  else original.add(child);
  }
- });
- definitions.filter(r=>r.floor===f).forEach((r,i)=>{
- const g=new T.Group();g.name=r.name;g.position.set(i%2===0?-10:10,0,i<2?-8:8);floor.add(g);const mats=[];
- if(r.id==='original'){original.scale.setScalar(.48);g.add(original);mats.push(accent,...floorLights);}
- else{const old=new Set(model.children),glow=luminous(r.color,.8);mats.push(glow);
- box('Room floor',0,0,0,13,.2,15,M.floor);box('Room rear',0,1.6,-7.5,13,3.2,.15,M.wall);box('Room outer wall',i%2===0?-6.5:6.5,1.6,0,.15,3.2,15,M.wall);
- box('Illuminated dance floor',0,.13,0,7,.04,7,glow);box('DJ or live stage',0,.4,-5,7,.8,3,M.black);box('Bar',4,1,3,1.6,2,5,M.wood);
- for(const z of [0,4]){box('Sofa',-4,.55,z,2,1.1,2.8,M.seat);cylinder('Table',-2,.65,z,.5,.12,M.wood);}
- for(const x of [-4,0,4]){box('Ceiling light',x,4,-2,.35,.35,.35,glow);box('Light ribbon',x,3.7,-7.3,.1,.1,12,glow);}
- if(r.style==='disco'){const ball=new T.Mesh(new T.SphereGeometry(.7,12,8),material('#cbd5e7',.1,1));ball.name='Mirror ball';ball.position.set(0,3.7,0);model.add(ball);}
- if(r.style==='garden')for(const x of [-5,5]){cylinder('Planter',x,.45,-4,.5,.9,M.white);const tree=new T.Mesh(new T.SphereGeometry(.9,12,8),material('#326a51'));tree.position.set(x,1.8,-4);model.add(tree);}
- if(r.style==='retro')for(const x of [-4,-2,0,2]){box('Arcade cabinet',x,1.1,-5,1,2.2,1,M.black);box('Arcade display',x,1.55,-4.48,.8,.65,.02,glow);}
- sign(r.name,0,2.8,-7.35,10,.7,r.color);for(const o of [...model.children])if(!old.has(o))g.add(o);
+ beams.length=0;
+ const definitions=[{"id": "original", "floor": 0, "name": "L’Étoile · Grand Club", "color": "#ad63ff", "mood": "Violet · Scène DJ · Piste RGBW"}, {"id": "neon", "floor": 1, "name": "Neon · Electro Hall", "color": "#35ceef", "mood": "Cyan · Faisceaux croisés · DJ"}, {"id": "sky", "floor": 2, "name": "Sky · Disco Hall", "color": "#f085c6", "mood": "Rose & or · Boules à facettes · DJ"}];
+ const rgbw=['#ff426b','#46ed92','#559dff','#fff5df'];
+ for(const r of definitions){
+ const f=r.floor,floor=new T.Group(),g=original.clone(true);floor.name='Club level '+f;floor.position.y=f*9;model.add(floor);clubFloors.push(floor);g.name=r.name;floor.add(g);
+ const mats=[],roomBeams=[],roomHeads=[],balls=[],smokes=[];
+ const cloned=new Map();g.traverse(o=>{if(o.isMesh){o.castShadow=false;if(o.material.emissive&&o.material.emissiveIntensity>0){if(!cloned.has(o.material)){const m=o.material.clone();cloned.set(o.material,m);mats.push(m);}o.material=cloned.get(o.material);}}});
+ const capture=(parent,fn)=>{const before=new Set(model.children);fn();for(const child of [...model.children])if(!before.has(child)){child.castShadow=false;parent.add(child);}};
+ capture(g,()=>{
+ // Four 4.5 m PA towers, each with a double subwoofer and stacked drivers.
+ for(const x of [-9.5,9.5])for(const z of [-10.8,10.8]){
+ const tower=box('Giant corner speaker',x,2.25,z,1.7,4.5,1.45,M.black);tower.userData.kind='cornerSpeaker';
+ box('Dual subwoofer enclosure',x,.65,z,2.1,1.3,1.65,M.black);
+ for(const y of [.5,1.15,2,2.8,3.65,4.15]){const driver=cylinder('PA driver',x,y,z+(z>0?-.84:.84),y<1.3?.32:.45,.07,M.metal);driver.rotation.x=Math.PI/2;}
  }
- clubRooms.set(r.id,{group:g,floor:f,materials:mats});
+ for(const x of [-10.7,10.7])for(const z of [-6,-1,4,8]){
+ const speaker=box('Wall speaker',x,3.8,z,.55,1.15,.8,M.black);speaker.userData.kind='wallSpeaker';box('Wall speaker grille',x+(x>0?-.29:.29),3.8,z,.035,.95,.65,M.metal);
+ }
+ for(const z of [-5,0,5,10]){
+ box('DMX lighting truss',0,5.95,z,20,.13,.13,M.metal);
+ for(let k=0;k<6;k++){
+ const x=-8+k*3.2,color=rgbw[(k+Math.round(z/5)+f+8)%4],lens=luminous(color,1);mats.push(lens);
+ box('Lyre suspension',x,5.75,z,.55,.2,.55,M.black);
+ const head=new T.Group();head.name='DMX RGBW moving head';head.position.set(x,5.5,z);head.userData.floor=f;g.add(head);roomHeads.push(head);movingHeads.push(head);
+ const body=new T.Mesh(new T.BoxGeometry(.48,.6,.48),M.black);body.position.y=-.12;head.add(body);
+ const optic=new T.Mesh(new T.CylinderGeometry(.18,.18,.06,12),lens);optic.position.y=-.45;head.add(optic);
+ const beam=new T.Mesh(new T.ConeGeometry(.95,4.9,12,1,true),new T.MeshBasicMaterial({color,transparent:true,opacity:.065,depthWrite:false,side:T.DoubleSide}));beam.name='RGBW light beam';beam.position.y=-2.9;head.add(beam);beams.push(beam);roomBeams.push(beam);
+ }
+ }
+ for(const x of [-5,0,5]){
+ cylinder('Mirror ball cable',x,5.5,2,.018,.7,M.metal);
+ const ball=new T.Mesh(new T.SphereGeometry(.66,24,12).toNonIndexed(),new T.MeshStandardMaterial({color:'#d6e4f2',metalness:.9,roughness:.15,flatShading:true,emissive:r.color,emissiveIntensity:.13}));ball.name='Mirror ball';ball.position.set(x,4.75,2);model.add(ball);balls.push(ball);mirrorBalls.push(ball);
+ // Individual mirror tiles pick up alternating white and coloured highlights.
+ const tiles=new T.InstancedMesh(new T.BoxGeometry(.105,.105,.018),new T.MeshStandardMaterial({color:'#edf4ff',metalness:.75,roughness:.18,emissive:'#b8cbdf',emissiveIntensity:.18}),192);tiles.name='Mirror mosaic';const dummy=new T.Object3D();let n=0;
+ for(let row=1;row<=8;row++)for(let col=0;col<24;col++){const phi=row*Math.PI/9,theta=col*Math.PI/12;dummy.position.set(.67*Math.sin(phi)*Math.cos(theta),.67*Math.cos(phi),.67*Math.sin(phi)*Math.sin(theta));dummy.lookAt(dummy.position.clone().multiplyScalar(2));dummy.updateMatrix();tiles.setMatrixAt(n++,dummy.matrix);}ball.add(tiles);mats.push(ball.material,tiles.material);
+ }
+ for(const x of [-10.6,10.6])for(let i=0;i<12;i++){const led=luminous(rgbw[(i+f)%4],.7);mats.push(led);box('RGBW wall LED bar',x,1.3,-9+i*1.7,.07,1.8,.12,led);}
+ const dots=new T.InstancedMesh(new T.CircleGeometry(.09,6),new T.MeshBasicMaterial({color:r.color,transparent:true,opacity:.65,depthWrite:false}),64);dots.count=64;dots.name='Mirror ball light dots';const dummy=new T.Object3D();for(let i=0;i<64;i++){dummy.position.set(Math.sin(i*2.4)*4.7,.13,-3+((i*1.73)%12));dummy.rotation.x=-Math.PI/2;dummy.updateMatrix();dots.setMatrixAt(i,dummy.matrix);}model.add(dots);
+ for(let i=0;i<8;i++){const puff=new T.Mesh(new T.SphereGeometry(.75,10,6),new T.MeshBasicMaterial({color:r.color,transparent:true,opacity:.035,depthWrite:false}));puff.name='Haze';puff.position.set(-3+i*.8,.5+Math.sin(i)*.15,-4);puff.visible=false;model.add(puff);smokes.push(puff);}
  });
+ // Service annex beside the single open hall, without partitioning its dance floor.
+ capture(floor,()=>{
+ box('Reception and landing',15,-.08,0,7,.2,26,M.floor);
+ box('Landing balustrade',18.5,.6,-4,.1,1.2,15,M.metal);
+ if(f===0){box('Reception desk',15,1,1,3.5,2,1.5,M.wood);sign('RÉCEPTION',15,2.4,1,4,.5);}
+ if(f<2){for(let i=0;i<15;i++){box('Ascending stair',13.3,.15+i*.3,-3-i*.43,2.3,.3,.45,M.wood);box('Returning stair',16.5,4.65+i*.3,-9+i*.43,2.3,.3,.45,M.wood);}box('Stair landing',15,4.5,-9.7,6,.3,1.2,M.wood);}
+ for(const [x,label] of [[13.2,'WC Hommes'],[16.7,'WC Femmes']]){box(label+' floor',x,.05,9.5,3.3,.15,6,M.floor);box(label+' side',x+1.65,1.5,9.5,.12,3,6,M.wall);box(label+' rear',x,1.5,12.5,3.3,3,.12,M.wall);sign(label,x,2.5,12.4,3,.5);for(const z of [9,11]){cylinder('Toilet bowl',x,.5,z,.38,.5,M.white);box('Cistern',x,.95,z+.45,.7,.9,.25,M.white);}box('Washbasin',x,.9,7,1.5,.2,.6,M.white);}
+ });
+ clubRooms.set(r.id,{group:g,floor:f,materials:mats,beams:roomBeams,heads:roomHeads,balls,smokes,level:.75});
  }
 }
 
@@ -123,17 +133,22 @@ function frame(){const w=innerWidth,h=innerHeight,v=viewport||{x:0,y:0,w,h};rend
  }camera.position.copy(center).addScaledVector(dir,hi*zoom);camera.lookAt(center);camera.setViewOffset(v.w,v.h,-v.x,-v.y,w,h);camera.updateProjectionMatrix();}
 let lastSource='';function apply(s){
  if(club){
- const view=s.clubView||'building',floor=s.clubFloor||0,room=clubRooms.get(s.clubRoom||'original');
- clubFloors.forEach((g,i)=>{g.visible=view==='building'||i===floor;});
- clubRooms.forEach((r,id)=>{r.group.visible=view!=='room'||id===(s.clubRoom||'original');const setting=s.roomSettings?.[id]||{scene:'signature',level:75};r.materials.forEach(m=>m.emissiveIntensity=setting.scene==='off'?0:setting.level/100*(setting.scene==='party'?1.6:setting.scene==='calm'?.35:1));});
- fitObject=view==='room'?room.group:view==='floor'?clubFloors[floor]:model;frame();
- smoke.visible=!!s.smokeActive;accent.emissiveIntensity=s.strobeActive?1.7:.8;beams.forEach(b=>b.material.opacity=s.strobeActive?.1:.045);stageLight.intensity=s.strobeActive?130:80;floorLights.forEach(m=>m.emissiveIntensity=s.strobeActive?.9:.4)}
+ const floor=Math.max(0,Math.min(2,Number(s.clubFloor)||0)),fallback=[...clubRooms.values()].find(r=>r.floor===floor),room=clubRooms.get(s.clubRoom)||fallback,view=s.clubView||'building';
+ clubFloors.forEach((g,i)=>{g.visible=view==='building'||i===room.floor;});
+ clubRooms.forEach((r,id)=>{
+ r.group.visible=view!=='room'||r===room;const setting=s.roomSettings?.[id]||{scene:'signature',level:75};r.level=setting.scene==='off'?0:setting.level/100*(setting.scene==='party'?1.25:setting.scene==='calm'?.3:.8);
+ r.materials.forEach(m=>m.emissiveIntensity=r.level);r.beams.forEach(b=>b.material.opacity=r.level*(s.strobeActive?.11:.075));r.group.getObjectByName('Mirror ball light dots').material.opacity=r.level*.65;r.smokes.forEach(p=>p.visible=!!s.smokeActive&&r.level>0);
+ });
+ const nextFit=view==='room'?room.group:view==='floor'?clubFloors[room.floor]:model;if(fitObject!==nextFit){fitObject=nextFit;frame();}
+ smoke.visible=!!s.smokeActive;stageLight.intensity=80*room.level;stageLight.position.y=room.floor*9+5;fill.intensity=45*room.level;fill.position.y=room.floor*9+4;
+ }
+
  else{const d=s.dimmers||{faceSpots:85,backlights:60,audienceLights:40};stageLight.intensity=d.faceSpots*1.5;fill.intensity=d.audienceLights*1.5;accent.color.set(s.lightsColor||'#e6c997');accent.emissive.copy(accent.color);accent.emissiveIntensity=d.backlights/70;lightMat.emissiveIntensity=d.faceSpots/60;beams.forEach((b,i)=>{b.material.opacity=(i<2?d.faceSpots:d.audienceLights)/100*.09;b.material.color.set(s.lightsColor||'#ffe2a1')});screenMat.emissiveIntensity=(s.ledWallBrightness??90)/100;screenMat.color.setScalar((s.ledWallBrightness??90)/100);if(lastSource!==s.ledWallSource){lastSource=s.ledWallSource;drawScreen(lastSource)}}
  window.__venue.state=s;
 }
-window.__venue={scene,renderer,camera,model,apply,state:{},beams,smoke};
+window.__venue={scene,renderer,camera,model,apply,state:{},beams,smoke,clubFloors,clubRooms,movingHeads,mirrorBalls};
 window.addEventListener('message',e=>{if(e.origin!==location.origin||e.source!==parent||e.data?.channel!==channel||e.data.project!==project)return;const d=e.data;if(d.type==='hello')send('ready');if(d.type==='state'&&d.state)apply(d.state);if(d.type==='viewport'&&d.viewport&&Object.values(d.viewport).every(Number.isFinite)){viewport=d.viewport;frame()}if(d.type==='visibility')visible=!!d.visible;if(d.type==='zoom'){zoom=T.MathUtils.clamp(zoom+d.delta*.06,.75,1.3);frame()}});
 window.addEventListener('resize',frame);frame();
-let previous=0;function animate(t){requestAnimationFrame(animate);if(!visible||document.hidden||t-previous<33)return;previous=t;if(!matchMedia('(prefers-reduced-motion: reduce)').matches)beams.forEach((b,i)=>{b.rotation.z=Math.sin(t*.00035+i)*.12});renderer.render(scene,camera)}requestAnimationFrame(animate);send('ready');
+let previous=0;function animate(t){requestAnimationFrame(animate);if(!visible||document.hidden||t-previous<33)return;previous=t;if(!matchMedia('(prefers-reduced-motion: reduce)').matches){if(club){clubRooms.forEach(r=>{if(!r.level)return;r.heads.forEach((h,i)=>{h.rotation.z=Math.sin(t*.00045+i*.7+r.floor)*.24;h.rotation.x=Math.cos(t*.0003+i*.9)*.2;});r.balls.forEach(ball=>ball.rotation.y=t*.00015);});}else beams.forEach((b,i)=>{b.rotation.z=Math.sin(t*.00035+i)*.12});}renderer.render(scene,camera)}requestAnimationFrame(animate);send('ready');
 }catch(e){send('error');console.error(e)}
 })();
