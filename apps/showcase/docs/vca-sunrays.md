@@ -38,3 +38,8 @@ La dernière consigne remplace le rendu intégré sur dalle : les supports `wall
 La maquette Sunrays comprend deux passages latéraux continus sur chacun des cinq ponts. Largeur de démonstration 1,05 m ; pièces et mobilier reculés proportionnellement, pavillons resserrés, balisage nocturne. Les passages sont présents une seule fois dans l'export glTF. La disposition demeure conceptuelle, sans validation navale.
 
 214 contrôles dalles/géométrie/export et 43 contrôles Smartphone (50 états) réussis, build/lint réussis avec avertissements préexistants. Captures et fiches FR/EN/DE actualisées. Preuves : `docs/verification/2026-09-20-panels-passages/`. Aucun essai matériel ; aucune modification CH5/C#/SIMPL.
+
+
+## Mer Sunrays — 20 septembre 2026
+
+Mer animée autour de la coque : houle douce, rides fines, reflets du ciel et horizon adouci, adaptés aux trois ambiances. Animation suspendue en mouvement réduit et mer masquée en coupe. Géométrie à budget inchangé ; aucun FPS garanti. Contrôles ciblés réussis sans erreur de shader, build/lint réussis avec avertissements préexistants. Comparaison et résultats : `docs/verification/2026-09-20-sea/`. Les interfaces et programmes matériels ne changent pas.

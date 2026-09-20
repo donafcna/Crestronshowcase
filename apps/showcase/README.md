@@ -394,3 +394,8 @@ Publication vérifiée : **74cd4a41**, main → Vercel. Quatre ressources publiq
 Application des dernières consignes : retrait du modèle 3D des dalles VCA/Sunrays au profit de cartes de niveaux/espaces en HTML/CSS avec états lumineux ; maintien des scènes, circuits, musique et ambiances. La présentation Smartphone conserve son fond 3D synchronisé. Dix passages latéraux (bâbord/tribord sur cinq ponts) ajoutés à Sunrays, mobilier et pavillons reculés ; export glTF vérifié.
 
 214 contrôles dalles/géométrie/export, 43 contrôles de fond Smartphone sur 50 états, build et lint réussis. Trois thèmes, trois formats de dalle, modes normal/Scène Smartphone ; aucune exception JavaScript. Un débordement audio sur format compact a été corrigé et la matrice repassée. Captures, fiches FR/EN/DE et comparaison avant/après : `docs/verification/2026-09-20-panels-passages/`. Chromium logiciel ; pas de recette sur matériel physique. La géométrie est conceptuelle, pas un plan naval. Aucun changement CH5/C#/SIMPL.
+
+
+## Mer Sunrays — 20 septembre 2026
+
+Mer animée autour de la coque : houle douce, rides fines, reflets du ciel et horizon adouci, adaptés aux trois ambiances. Animation suspendue en mouvement réduit et mer masquée en coupe. Géométrie à budget inchangé ; aucun FPS garanti. Contrôles ciblés réussis sans erreur de shader, build/lint réussis avec avertissements préexistants. Comparaison et résultats : `docs/verification/2026-09-20-sea/`. Les interfaces et programmes matériels ne changent pas.

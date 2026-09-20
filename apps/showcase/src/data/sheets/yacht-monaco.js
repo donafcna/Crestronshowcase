@@ -73,6 +73,12 @@ export default {
         "text": "La maquette conceptuelle réserve deux passages continus, bâbord et tribord, sur chacun des cinq ponts. Les pièces et le mobilier sont reculés pour libérer ces circulations ; leur largeur de démonstration est de 1,05 m. Il ne s’agit pas d’un plan naval d’exécution.",
         "image": "/sheets/yacht-monaco/08-passages.png",
         "buttons": []
+      },
+      {
+        "title": "Mer animée",
+        "image": "/sheets/yacht-monaco/09-sea.webp",
+        "text": "Une houle douce et de petites rides animent les reflets du ciel autour de la coque. Le rendu suit les ambiances jour, coucher de soleil et nuit. Les mouvements réduits arrêtent l’animation.",
+        "buttons": []
       }
     ]
   },
@@ -149,6 +155,12 @@ export default {
         "text": "The conceptual model reserves continuous port and starboard passages on all five decks. Rooms and furnishings are inset to keep these routes clear; their demonstration width is 1.05 m. This is not an as-built naval plan.",
         "image": "/sheets/yacht-monaco/08-passages.png",
         "buttons": []
+      },
+      {
+        "title": "Animated sea",
+        "image": "/sheets/yacht-monaco/09-sea.webp",
+        "text": "Gentle swells and small ripples animate sky reflections around the hull. The sea follows day, sunset and night scenes. Reduced motion stops the animation.",
+        "buttons": []
       }
     ]
   },
@@ -224,6 +236,12 @@ export default {
         "title": "Seitliche Durchgänge auf allen fünf Decks",
         "text": "Das Konzeptmodell bietet durchgehende Backbord- und Steuerbordgänge auf allen fünf Decks. Räume und Möbel sind nach innen versetzt; die angenommene Gangbreite beträgt 1,05 m. Dies ist kein Ausführungsplan für den Schiffbau.",
         "image": "/sheets/yacht-monaco/08-passages.png",
+        "buttons": []
+      },
+      {
+        "title": "Animiertes Meer",
+        "image": "/sheets/yacht-monaco/09-sea.webp",
+        "text": "Sanfte Dünung und kleine Wellen bewegen die Himmelsreflexionen um den Rumpf. Das Meer folgt den Tag-, Sonnenuntergangs- und Nachtszenen. Bei reduzierter Bewegung stoppt die Animation.",
         "buttons": []
       }
     ]
