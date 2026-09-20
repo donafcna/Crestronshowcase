@@ -3,6 +3,9 @@ import { BackgroundVideo } from "./BackgroundVideo";
 import { LuxuryBackground } from "../ftv-luxury/LuxuryBackground";
 import { LUXURY_MODELS } from "../ftv-luxury/modelProjects";
 
+import { VenueBackground } from '../venues/VenueBackground';
+import { VENUE_PROJECTS } from '../venues/state';
+
 // A deployment changes the module URL, including its dependent assets.
 const PLAN3D_VERSION = "2026-09-17-journey-1";
 
@@ -20,11 +23,13 @@ export const PLAN3D_RULES = [
   { device: "phone" },                       // smartphone : toujours
 ];
 export const plan3dEnabled = (projectId, device, windowW) =>
-  !!(PLAN3D_PROJECTS[projectId] || LUXURY_MODELS[projectId]) &&
+  !!(PLAN3D_PROJECTS[projectId] || LUXURY_MODELS[projectId] || VENUE_PROJECTS[projectId]) &&
   PLAN3D_RULES.some((r) => (!r.device || r.device === device) &&
     (r.minWidth === undefined || windowW >= r.minWidth) && (r.maxWidth === undefined || windowW <= r.maxWidth));
 
-export const Plan3DBackground = (props) => LUXURY_MODELS[props.projectId]
+export const Plan3DBackground = (props) => VENUE_PROJECTS[props.projectId]
+  ? <VenueBackground {...props} />
+  : LUXURY_MODELS[props.projectId]
   ? <LuxuryBackground {...props} />
   : <VillaPlan3DBackground {...props} />;
 
@@ -118,3 +123,4 @@ const VillaPlan3DBackground = ({ projectId, stageRef, guiFrameRef, tourSessionRe
     </div>
   );
 };
+

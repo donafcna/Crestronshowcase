@@ -110,4 +110,10 @@ const concepts = [
   }
 ];
 const conceptById = new Map(concepts.map(project => [project.id, project]));
-export const projects = existingProjects.map(project => conceptById.get(project.id) || project);
+export const projects = existingProjects.map(project => {
+  const updated = conceptById.get(project.id) || project;
+  if (['yacht-monaco', 'boutique-hermes'].includes(project.id)) return { ...updated, defaultViewport: 'phone' };
+  if (['auditorium-richmond', 'club-etoile'].includes(project.id)) return { ...updated, devices: [...updated.devices, 'ios_phone'] };
+  return updated;
+});
+

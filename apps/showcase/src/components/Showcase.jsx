@@ -28,6 +28,7 @@ const VIEWPORT_IDS = ["phone", "tablet", "wallpanel", "wallpanel_hd", "desktop"]
 const VIEWPORT_ORDER = ["wallpanel", "wallpanel_hd", "desktop", "tablet", "phone"];
 // Premier support d'un projet dans cet ordre (à l'ouverture d'un projet).
 const firstViewportOf = (proj) => {
+  if (proj.defaultViewport) return proj.defaultViewport;
   const vps = proj.devices.map((id) => getDeviceById(id)?.viewport).filter(Boolean);
   return VIEWPORT_ORDER.find((v) => vps.includes(v)) || vps[0];
 };
@@ -115,7 +116,7 @@ const ShowcaseInner = ({ sectorId, projectId, device }) => {
   }, [activeProject]);
 
   const villaProject = activeProject.id === VILLA_PROJECT;
-  const defaultViewport = villaProject ? "phone" : projectViewports[0]?.viewport || "wallpanel";
+  const defaultViewport = villaProject ? "phone" : firstViewportOf(activeProject) || "wallpanel";
   const viewportDevice =
     device && VIEWPORT_IDS.includes(device) && projectViewports.some((d) => d.viewport === device)
       ? device
@@ -615,3 +616,4 @@ const ShowcaseInner = ({ sectorId, projectId, device }) => {
     </div>
   );
 };
+
