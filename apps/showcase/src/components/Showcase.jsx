@@ -1,7 +1,7 @@
 import React, { Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Icons as LucideIcons } from "../icons";
 import { useTranslation } from "../context/LanguageContext";
-import { projects, getDeviceById, getProjectText, getProjectName, getStatusLabel } from "../data/projects";
+import { projects, getDeviceById, getProjectText, getProjectName, getStatusLabel } from "../data/showcaseProjects";
 import { BackgroundVideo } from "./BackgroundVideo";
 import { Plan3DBackground, plan3dEnabled } from "./Plan3DBackground";
 import { useViewportMetrics } from "../hooks/useViewportMetrics";

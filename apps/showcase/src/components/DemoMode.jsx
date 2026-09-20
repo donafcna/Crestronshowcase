@@ -1,7 +1,7 @@
 import React, { Suspense, useState, useEffect, useCallback } from "react";
 import { Icons } from "../icons";
 import { useTranslation } from "../context/LanguageContext";
-import { projects, getProjectName } from "../data/projects";
+import { projects, getProjectName } from "../data/showcaseProjects";
 import "../demo.css";
 
 import { getSimulator } from "./simulatorRegistry";

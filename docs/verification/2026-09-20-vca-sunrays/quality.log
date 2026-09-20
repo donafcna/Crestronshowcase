@@ -1,0 +1,157 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> crestronshowcase@2.0.0 quality:test
+> node --test ../../tools/quality/quality.test.mjs ../../tools/quality/compatibility.test.mjs
+
+✖ socle examiné et configuration actuelle compatibles (42.641611ms)
+✖ noms, ordre des déclarations, description et profil de projet configurables (7.213823ms)
+✔ compatibilité refuse mapping de commande (5.065948ms)
+✔ compatibilité refuse direction de signal (4.977315ms)
+✔ compatibilité refuse nouveau signal (6.482547ms)
+✔ compatibilité refuse base des pièces (4.511318ms)
+✔ compatibilité refuse join HVAC étendu (5.490047ms)
+✔ compatibilité refuse adresse EISC différente (4.169818ms)
+✔ compatibilité refuse autre version GUI (5.068766ms)
+✔ compatibilité refuse identifiants de pièces discontinus (5.415042ms)
+✔ compatibilité refuse plage HVAC globale (4.068059ms)
+✔ compatibilité refuse plage HVAC par pièce (4.781307ms)
+✔ compatibilité refuse sauna sans hammam (4.747472ms)
+✔ compatibilité refuse pas wellness non pris en charge (4.101559ms)
+✔ compatibilité refuse consigne fractionnaire tronquée par C# (4.033886ms)
+✔ empreintes insensibles aux fins de ligne mais sensibles au code (3.0395ms)
+✔ configuration refusée avant toute copie de sources (11.733715ms)
+✔ SIMPL utilise le profil fourni et conserve le fichier de travail (572.186968ms)
+✔ téléphone/tablette limités au catalogue, dalle seule exclue (1.26124ms)
+✔ aucune GUI tablette chargée implicitement à la place du téléphone (0.178254ms)
+✔ configuration minimale valide (4.256927ms)
+✔ refus : identifiants pièces dupliqués (0.693422ms)
+✔ refus : nombre pièces dépassé (0.266364ms)
+✔ refus : type booléen erroné (0.316385ms)
+✔ refus : source inexistante (0.354231ms)
+✔ refus : trop de circuits (0.359399ms)
+✔ refus : niveau analogique hors plage (0.420131ms)
+✔ refus : table de niveaux incohérente (0.216398ms)
+✔ refus : pas CVC nul (0.199002ms)
+✔ refus : réactivation v3 (0.34754ms)
+✔ refus : collision de joins par plage (0.192259ms)
+✔ refus : miroir remappé sans support runtime (0.255101ms)
+✔ refus : mapping sans déclaration (0.122768ms)
+✔ refus : moteur inconnu (0.359866ms)
+✔ refus : mauvais mode (0.143354ms)
+✔ refus : signal null (0.216549ms)
+✔ les espaces de joins digital/analog sont distincts (0.188599ms)
+✔ profil client refuse un repli alarme sans exposer sa valeur (0.141941ms)
+✔ catalogue complet et GUI embarquée sans simulateur (0.487679ms)
+✔ oubli de simulateur détecté sans repli vers une autre villa (0.662939ms)
+✔ entrées dupliquées et simulateurs orphelins refusés (0.293621ms)
+✖ préparation injecte la config canonique sans modifier ni écraser les sources (33.362287ms)
+✖ une source vitrine ne peut être empaquetée comme déploiement (8.824063ms)
+ℹ tests 43
+ℹ suites 0
+ℹ pass 39
+ℹ fail 4
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 916.244068
+
+✖ failing tests:
+
+test at ../../tools/quality/compatibility.test.mjs:23:1
+✖ socle examiné et configuration actuelle compatibles (42.641611ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+
+  + [
+  +   {
+  +     message: 'Version différente du socle source 1.0.196',
+  +     path: 'meta.version',
+  +     severity: 'error'
+  +   }
+  + ]
+  - []
+
+      at TestContext.<anonymous> (file://<checkout>/tools/quality/compatibility.test.mjs:24:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ { path: 'meta.version', message: 'Version différente du socle source 1.0.196', severity: 'error' } ],
+    expected: [],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at ../../tools/quality/compatibility.test.mjs:27:1
+✖ noms, ordre des déclarations, description et profil de projet configurables (7.213823ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+
+  + [
+  +   {
+  +     message: 'Version différente du socle source 1.0.196',
+  +     path: 'meta.version',
+  +     severity: 'error'
+  +   }
+  + ]
+  - []
+
+      at TestContext.<anonymous> (file://<checkout>/tools/quality/compatibility.test.mjs:30:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ { path: 'meta.version', message: 'Version différente du socle source 1.0.196', severity: 'error' } ],
+    expected: [],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at ../../tools/quality/quality.test.mjs:46:1
+✖ préparation injecte la config canonique sans modifier ni écraser les sources (33.362287ms)
+  Error: Socle incompatible : [{"path":"meta.version","message":"Version différente du socle source 1.0.196","severity":"error"}]
+      at stageCh5 (file://<checkout>/tools/quality/stage-ch5.mjs:22:35)
+      at TestContext.<anonymous> (file://<checkout>/tools/quality/quality.test.mjs:55:13)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at ../../tools/quality/quality.test.mjs:64:1
+✖ une source vitrine ne peut être empaquetée comme déploiement (8.824063ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /simulation/. Input:
+
+  'Error: Socle incompatible : [{"path":"meta.version","message":"Version différente du socle source 1.0.196","severity":"error"}]'
+
+      at TestContext.<anonymous> (file://<checkout>/tools/quality/quality.test.mjs:70:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: Socle incompatible : [{"path":"meta.version","message":"Version différente du socle source 1.0.196","severity":"error"}]
+        at stageCh5 (file://<checkout>/tools/quality/stage-ch5.mjs:22:35)
+        at file://<checkout>/tools/quality/quality.test.mjs:70:23
+        at getActual (node:assert:611:5)
+        at strict.throws (node:assert:759:24)
+        at TestContext.<anonymous> (file://<checkout>/tools/quality/quality.test.mjs:70:10)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+        at Test.postRun (node:internal/test_runner/test:1522:19)
+        at Test.run (node:internal/test_runner/test:1447:12),
+    expected: /simulation/,
+    operator: 'throws',
+    diff: 'simple'
+  }

@@ -1,7 +1,7 @@
 import React from "react";
 import { Icons } from "../icons";
 import { useTranslation } from "../context/LanguageContext";
-import { projects, sectors, devices, getProjectText, getProjectName, getStatusLabel } from "../data/projects";
+import { projects, sectors, devices, getProjectText, getProjectName, getStatusLabel } from "../data/showcaseProjects";
 import { Link, buildShowcasePath } from "../router";
 
 export const Dashboard = () => {

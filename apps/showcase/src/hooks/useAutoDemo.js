@@ -333,6 +333,14 @@ export const useAutoDemo = ({ enabled, running, stageRef, guiKey, onCycleEnd, on
       if (e.target?.closest?.(".demo-toolbar")) return; // la barre d'outils gère elle-même
       onActivityRef.current?.();
     };
+    const embeddedActivity = (event) => {
+      const frame = stage.querySelector('.device-screen iframe.ftv-luxury-interface');
+      if (event.origin === window.location.origin && event.source === frame?.contentWindow
+          && event.data?.channel === 'ftv-luxury/v1' && event.data?.type === 'user-activity') {
+        onActivityRef.current?.();
+      }
+    };
+    window.addEventListener('message', embeddedActivity);
     const targets = [stage];
     const iframe = stage.querySelector(".device-screen iframe");
     let iframeDoc = null;
@@ -350,6 +358,7 @@ export const useAutoDemo = ({ enabled, running, stageRef, guiKey, onCycleEnd, on
       iframe.addEventListener("load", attachIframe);
     }
     return () => {
+      window.removeEventListener("message", embeddedActivity);
       targets.forEach((t) => ["pointerdown", "keydown", "wheel"].forEach((ev) => t.removeEventListener(ev, handler, true)));
       if (iframe) iframe.removeEventListener("load", attachIframe);
       try {

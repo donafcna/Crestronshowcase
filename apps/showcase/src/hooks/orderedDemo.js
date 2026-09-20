@@ -39,6 +39,26 @@ export async function runOrderedDemo({ gui, token, sleep, moveTo, act, visible }
     const heading = shown('h2,h3,h4,.card-title,.ap-ctrl-head,.vl-label').find(el => categories[name].test(text(el)));
     return perform(heading, 1400, false);
   };
+  // The luxury scenes use a native room selector and a same-origin GUI API.
+  if (gui.win.ftvGui) {
+    const api = gui.win.ftvGui;
+    for (const room of api.config.rooms.slice(0, 3)) {
+      if (token.cancelled) return false;
+      api.selectRoom(room.id);
+      await sleep(1400, token);
+      await menu('lights');
+      await perform(q('[data-preset]:not([aria-pressed="true"])'), 1600);
+      await menu('av');
+      const sources = () => shown('[data-demo-source]');
+      await perform(sources()[0], 1200);
+      await perform(sources()[1], 1200);
+      const play = q('[data-action="play"]');
+      if (play?.getAttribute('aria-pressed') !== 'true') await perform(play, 900);
+      await perform(q('[data-demo-action="volume"]'), 1000);
+      await perform(q('[data-demo-action="av-off"]'), 900);
+    }
+    return !token.cancelled;
+  }
   const roomSelector = '[data-demo-room], [data-demo-nav] button, .room-selector-btn, .room-nav-btn, .room-item, .room-btn, .room-button, .ap-room, .vl-room';
   const used = new Set();
   for (let visit = 0; visit < 3 && !token.cancelled; visit++) {

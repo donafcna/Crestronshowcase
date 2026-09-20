@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { Icons } from "../icons";
 import { useTranslation } from "../context/LanguageContext";
-import { projects, getDeviceById, getProjectText, getProjectName, getStatusLabel } from "../data/projects";
+import { projects, getDeviceById, getProjectText, getProjectName, getStatusLabel } from "../data/showcaseProjects";
 import { company, SITE_URL } from "../data/company";
 import { useDemoSettings } from "../hooks/useDemoSettings";
 import { Link, buildShowcasePath } from "../router";

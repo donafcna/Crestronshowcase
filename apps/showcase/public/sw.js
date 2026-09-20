@@ -5,7 +5,7 @@
  *  - cache-first pour les assets statiques locaux (icônes, svg, images)
  *  - jamais de cache pour les vidéos et hôtes externes (mixkit, unsplash)
  */
-const CACHE_NAME = "ftv-showcase-v3";
+const CACHE_NAME = "ftv-showcase-v4";
 
 self.addEventListener("install", (event) => {
   self.skipWaiting();
@@ -47,7 +47,7 @@ self.addEventListener("fetch", (event) => {
   // sinon un ancien config.js / local-feedback.js en cache casse la nouvelle page.
   const isShowcase = url.pathname.startsWith("/showcases/");
 
-  if (isDocument || isBundle || isShowcase) {
+  if (isDocument || isBundle || isShowcase || url.pathname.startsWith("/ftv-luxury/")) {
     // Network-first: fresh when online, cached fallback offline
     event.respondWith(
       fetch(req)
