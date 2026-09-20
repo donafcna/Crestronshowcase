@@ -12,7 +12,7 @@ export function VenueBackground({ projectId, stageRef }) {
       if(!loaded)return;
       const b=frame.getBoundingClientRect(),p=stage.querySelector('.phone-device-frame')?.getBoundingClientRect(),s=stage.querySelector('.workspace-device-sidebar')?.getBoundingClientRect();
       if(!p||!b.width||!b.height)return;
-      const x=p.right-b.left+24,y=100,w=(s?s.left-b.left-20:b.width-20)-x,h=b.height-y-35;
+      const x=p.right-b.left+4,y=100,w=(s?s.left-b.left-4:b.width-20)-x,h=b.height-y-35;
       send('viewport',{viewport:w>180?{x,y,w,h}:{x:0,y:90,w:b.width,h:b.height-100}});
     };
     const state=()=>send('state',{state:readVenue(projectId)||{}});

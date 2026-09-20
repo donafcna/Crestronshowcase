@@ -1,4 +1,4 @@
-// VCA / Sunrays: TSW HTML/CSS controls and showcase 3D.
+// Auralis / Asteria: TSW HTML/CSS controls and showcase 3D.
 export default {
   "fr": {
     "intro": "Concept de boutique sur deux niveaux avec hall, grand escalier et 14 salons. La sélection d’un espace et ses éclairages sont synchronisés avec le modèle 3D. Interface tactile pour dalle, iPad et iPhone ; commandes simulées, sans installation physique connectée. Sur la dalle TSW, les niveaux et espaces sont représentés en HTML/CSS, sans chargement du modèle 3D. Les cartes affichent le niveau moyen des circuits de l’espace ; scènes, musique et ambiances restent pilotables. La 3D accompagne la présentation Smartphone et reste disponible sur tablette.",

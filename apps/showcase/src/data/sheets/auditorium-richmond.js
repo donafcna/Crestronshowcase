@@ -162,7 +162,7 @@ export default {
       {
         "title": "Smartphone et décor 3D",
         "image": "/ftv-luxury/venues/auditorium-richmond.webp",
-        "text": "Version iPhone avec éclairage, caméras PTZ, mixage et mur LED. Une salle 3D à gradins accompagne le châssis ; scènes, circuits, couleur et source du mur LED sont synchronisés.",
+        "text": "Ouverture Smartphone par défaut. Auditorium 3D avec mur LED presque pleine largeur, faisceaux de plafond, enceintes aux quatre coins et enceintes latérales. Éclairage, couleur et contenu LED synchronisés avec les commandes.",
         "buttons": []
       }
     ]
@@ -329,7 +329,7 @@ export default {
       {
         "title": "Smartphone and 3D setting",
         "image": "/ftv-luxury/venues/auditorium-richmond.webp",
-        "text": "iPhone interface with lighting, PTZ cameras, mixing and LED wall controls. A tiered 3D auditorium accompanies the phone; scenes, lighting levels, colour and LED source are synchronised.",
+        "text": "Smartphone opens by default. 3D auditorium with a nearly full-width LED wall, ceiling beams, four corner speakers and side-wall speakers. Lighting, colour and LED content follow the controls.",
         "buttons": []
       }
     ]
@@ -496,7 +496,7 @@ export default {
       {
         "title": "Smartphone und 3D-Umgebung",
         "image": "/ftv-luxury/venues/auditorium-richmond.webp",
-        "text": "iPhone-Oberfläche für Licht, PTZ-Kameras, Audiomischung und LED-Wand. Ein 3D-Auditorium mit Sitzreihen begleitet das Smartphone; Szenen, Lichtwerte, Farbe und LED-Quelle werden synchronisiert.",
+        "text": "Standardansicht Smartphone. 3D-Auditorium mit fast wandbreiter LED-Wand, Deckenlichtkegeln, vier Ecklautsprechern und seitlichen Wandlautsprechern. Licht, Farbe und LED-Inhalt folgen der Bedienung.",
         "buttons": []
       }
     ]

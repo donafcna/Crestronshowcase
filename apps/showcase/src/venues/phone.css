@@ -4,3 +4,4 @@
 .venue-phone[data-theme="glass"],.theme-glass .venue-phone{--vp-bg:#182d3beF;--vp-card:#273f50ee;--vp-fg:#fff;--vp-muted:#cfdae4;--vp-line:#7c94a5;--vp-active:#d1edf0}
 
 .venue-phone header{position:relative}.venue-phone .venue-theme{position:absolute;right:0;top:-7px;font-size:10px;min-height:44px;padding:5px 8px}.venue-phone header .venue-eyebrow{display:block;padding-right:60px;font-size:9px}
+.club-floor-tabs,.club-view-tabs{display:flex;gap:6px}.club-floor-tabs button,.club-view-tabs button{flex:1;font-size:11px;padding:5px}.club-view-tabs{margin-top:7px}.club-room-choices button{font-size:11px;min-height:44px}.venue-phone .club-facilities{margin-bottom:0}.venue-phone:has(.club-floor-tabs) .venue-card{padding:11px}.venue-phone:has(.club-floor-tabs) .venue-card h2{margin-bottom:8px}

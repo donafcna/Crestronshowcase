@@ -18,7 +18,7 @@ export function LuxuryControl({ projectId, deviceType = 'wallpanel', background3
   return React.createElement('iframe', {
     ref: frame,
     src: `/ftv-luxury/gui.html?project=${encodeURIComponent(projectId)}&device=${encodeURIComponent(deviceType)}${background3D ? '&background=1' : ''}`,
-    title: `${projectId === 'yacht-monaco' ? 'Sunrays' : 'Boutique VCA'} — ${deviceType.startsWith('wallpanel') ? 'espaces et commandes' : 'commandes et visite 3D'}`,
+    title: `${projectId === 'yacht-monaco' ? 'Asteria' : 'Boutique Auralis'} — ${deviceType.startsWith('wallpanel') ? 'espaces et commandes' : 'commandes et visite 3D'}`,
     className: `ftv-luxury-interface ${deviceType}`,
     allow: 'fullscreen',
     style: { display: 'block', width: '100%', height: '100%', border: 0, background: '#0d201d' }

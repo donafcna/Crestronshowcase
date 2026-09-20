@@ -25,9 +25,9 @@ export function LuxuryBackground({ projectId, stageRef }) {
       const phone = stage.querySelector('.phone-device-frame')?.getBoundingClientRect();
       const side = stage.querySelector('.workspace-device-sidebar')?.getBoundingClientRect();
       if (!phone || !canvas.width || !canvas.height) return;
-      const x = phone.right - canvas.left + 34;
+      const x = phone.right - canvas.left + 4;
       const y = Math.max(90, phone.top - canvas.top + 12);
-      const w = (side ? side.left - canvas.left - 28 : canvas.width - 24) - x;
+      const w = (side ? side.left - canvas.left - 4 : canvas.width - 24) - x;
       const h = Math.min(canvas.height - y - 28, phone.height - 24);
       const viewport = w >= 220 && h >= 160 ? { x, y, w, h } : { x: 0, y: 80, w: canvas.width, h: Math.max(1, canvas.height - 80) };
       const signature = JSON.stringify([canvas.width, canvas.height, viewport]);
@@ -85,9 +85,10 @@ export function LuxuryBackground({ projectId, stageRef }) {
     <div className="plan3d-bg-container luxury-background" data-ready={ready}>
       <iframe key={projectId} ref={frameRef} className="luxury-background-frame"
         src={`/ftv-luxury/models/${LUXURY_MODELS[projectId]}.html?background=1`}
-        title={projectId === 'yacht-monaco' ? 'Sunrays — modèle 3D en arrière-plan' : 'Boutique VCA — modèle 3D en arrière-plan'}
+        title={projectId === 'yacht-monaco' ? 'Asteria — modèle 3D en arrière-plan' : 'Boutique Auralis — modèle 3D en arrière-plan'}
         tabIndex={-1} aria-hidden="true" />
       {!ready && <span className="luxury-background-loading" role="status">Chargement de la 3D…</span>}
     </div>
   );
 }
+

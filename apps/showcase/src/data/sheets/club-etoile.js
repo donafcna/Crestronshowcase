@@ -127,7 +127,7 @@ export default {
       {
         "title": "Smartphone et décor 3D",
         "image": "/ftv-luxury/venues/club-etoile.webp",
-        "text": "Version Smartphone avec onglets Climat, Audio et Ambiances. Décor 3D avec piste, cabine DJ, bar et salon ; les commandes fumée et éclairage modifient le rendu. Le stroboscope est représenté sans clignotement.",
+        "text": "Le Smartphone ouvre les Espaces : RDC et deux étages, quatre salles par niveau, toilettes hommes et femmes, réception et escaliers. Vues Bâtiment, Étage et Salle ; ambiances et intensités indépendantes. Le club original avec piste, DJ, bar et lounge est conservé au RDC. Stroboscope sans clignotement.",
         "buttons": []
       }
     ]
@@ -259,7 +259,7 @@ export default {
       {
         "title": "Smartphone and 3D setting",
         "image": "/ftv-luxury/venues/club-etoile.webp",
-        "text": "Smartphone interface with Climate, Audio and Mood tabs. A 3D dance floor, DJ booth, bar and lounge accompany the phone; smoke and lighting controls update the scene. Strobe is represented without flashing.",
+        "text": "The Smartphone opens Spaces: ground floor and two upper levels, four rooms per level, male and female toilets, reception and stairs. Building, Floor and Room views with independent moods and levels. The original dance floor, DJ, bar and lounge remain on the ground floor. Strobe without flashing.",
         "buttons": []
       }
     ]
@@ -391,7 +391,7 @@ export default {
       {
         "title": "Smartphone und 3D-Umgebung",
         "image": "/ftv-luxury/venues/club-etoile.webp",
-        "text": "Smartphone-Oberfläche mit Klima, Audio und Ambiente. 3D-Tanzfläche, DJ-Pult, Bar und Lounge; Nebel und Licht reagieren auf die Bedienung. Stroboskop ohne Blinken dargestellt.",
+        "text": "Das Smartphone startet mit Räume: Erdgeschoss und zwei Obergeschosse, je vier Räume, Herren- und Damentoiletten, Empfang und Treppen. Gebäude-, Etagen- und Raumansichten mit unabhängigen Lichtszenen. Der ursprüngliche Club bleibt im Erdgeschoss. Stroboskop ohne Blinken.",
         "buttons": []
       }
     ]

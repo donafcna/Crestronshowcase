@@ -1,4 +1,4 @@
-// VCA / Sunrays: TSW HTML/CSS controls and showcase 3D.
+// Auralis / Asteria: TSW HTML/CSS controls and showcase 3D.
 export default {
   "fr": {
     "intro": "Concept de superyacht avec silhouette extérieure affinée, salons, cabines et espaces de vie répartis sur cinq ponts. Les commandes d’éclairage par espace et les scènes globales modifient la 3D. Versions dalle, iPad, XPanel et iPhone ; simulation sans connexion à un yacht réel. Sur la dalle TSW, les niveaux et espaces sont représentés en HTML/CSS, sans chargement du modèle 3D. Les cartes affichent le niveau moyen des circuits de l’espace ; scènes, musique et ambiances restent pilotables. La 3D accompagne la présentation Smartphone et reste disponible sur tablette.",

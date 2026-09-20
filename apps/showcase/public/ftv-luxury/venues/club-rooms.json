@@ -1,0 +1,14 @@
+[
+ {"id":"original","floor":0,"name":"L’Étoile Original","color":"#985cff","style":"original","mood":"Piste lumineuse · DJ · Bar"},
+ {"id":"garden","floor":0,"name":"Cocktail Garden","color":"#43cfab","style":"garden","mood":"Vert jade · Jardin lounge"},
+ {"id":"disco","floor":0,"name":"Disco Studio","color":"#ed6bae","style":"disco","mood":"Rose · Boule à facettes"},
+ {"id":"jazz","floor":0,"name":"Jazz Lounge","color":"#efb75c","style":"jazz","mood":"Ambre · Petite scène live"},
+ {"id":"neon","floor":1,"name":"Neon Lab","color":"#34c5f4","style":"neon","mood":"Cyan · Arches lumineuses"},
+ {"id":"latino","floor":1,"name":"Latino Club","color":"#f38347","style":"latino","mood":"Corail · Piste chaleureuse"},
+ {"id":"house","floor":1,"name":"House Room","color":"#a27bfa","style":"house","mood":"Violet · Lignes en mouvement"},
+ {"id":"velvet","floor":1,"name":"Velvet VIP","color":"#dd6890","style":"velvet","mood":"Framboise · Alcôves privées"},
+ {"id":"sky","floor":2,"name":"Sky Lounge","color":"#69bdf0","style":"sky","mood":"Bleu glacier · Salon panoramique"},
+ {"id":"aurora","floor":2,"name":"Aurora Room","color":"#60dfca","style":"aurora","mood":"Turquoise · Vagues lumineuses"},
+ {"id":"retro","floor":2,"name":"Retro Arcade","color":"#eed05a","style":"retro","mood":"Or · Bornes et damier"},
+ {"id":"private","floor":2,"name":"Private Suite","color":"#c6a7f0","style":"private","mood":"Lavande · Salon privatisable"}
+]
