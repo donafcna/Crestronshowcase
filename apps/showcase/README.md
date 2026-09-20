@@ -387,3 +387,10 @@ Preuves et comparaison : `docs/verification/2026-09-17-journey-1/` à la racine 
 
 
 Publication vérifiée : **74cd4a41**, main → Vercel. Quatre ressources publiques identiques aux octets Git ; **34 contrôles Villa Crans et 122 contrôles React réussis sur le site public**, soit 156. Cycle jour/nuit, deux passages Smartphone et TSW, sources et volume réels, arrêt A/V, priorité manuelle et minimum de visibilité confirmés. Aucun nouveau défaut navigateur ; messages préexistants du TSW séparés. Preuves `production/`, `production-react/` et `production-assets.json` dans `docs/verification/2026-09-17-journey-1/`. Aucun matériel déployé. La TODO F1 est enregistrée sans réalisation.
+
+
+## 20/09/2026 — reprise maquette bijouterie : TSW HTML/CSS et passages yacht
+
+Application des dernières consignes : retrait du modèle 3D des dalles VCA/Sunrays au profit de cartes de niveaux/espaces en HTML/CSS avec états lumineux ; maintien des scènes, circuits, musique et ambiances. La présentation Smartphone conserve son fond 3D synchronisé. Dix passages latéraux (bâbord/tribord sur cinq ponts) ajoutés à Sunrays, mobilier et pavillons reculés ; export glTF vérifié.
+
+214 contrôles dalles/géométrie/export, 43 contrôles de fond Smartphone sur 50 états, build et lint réussis. Trois thèmes, trois formats de dalle, modes normal/Scène Smartphone ; aucune exception JavaScript. Un débordement audio sur format compact a été corrigé et la matrice repassée. Captures, fiches FR/EN/DE et comparaison avant/après : `docs/verification/2026-09-20-panels-passages/`. Chromium logiciel ; pas de recette sur matériel physique. La géométrie est conceptuelle, pas un plan naval. Aucun changement CH5/C#/SIMPL.

@@ -29,3 +29,12 @@ Le flux de publication est main → Vercel. Les preuves locales ne constituent p
 `LuxuryBackground.jsx` charge le modèle approuvé ; le GUI téléphone lui transmet les commandes via des messages contrôlant origine, source et projet. Aucun second modèle n’est chargé dans le châssis. La page Vue 3D du téléphone pilote les niveaux. La sélection des pièces, leurs éclairages et la molette restent synchronisés. Les versions sans fond conservent leur rendu intégré, notamment le lien de démonstration sur un vrai téléphone.
 
 43 contrôles et 50 états vérifiés, trois thèmes, deux modes, redimensionnement, contrôles bidirectionnels et modification effective des matériaux lumineux. Comparaison avant/après et preuves : `docs/verification/2026-09-20-luxury-background/` à la racine. Fiches FR/EN/DE et captures complétées. La logique interne de Villa Crans et les programmes matériels ne sont pas modifiés.
+
+
+## TSW sans 3D et passages Sunrays — 20 septembre 2026
+
+La dernière consigne remplace le rendu intégré sur dalle : les supports `wallpanel` et `wallpanel_hd` affichent désormais des cartes HTML/CSS des niveaux et espaces, sans charger de modèle ni Three.js. Les circuits, scènes, musique et ambiances restent disponibles. Le fond 3D Smartphone et le modèle intégré tablette/iPhone autonome sont conservés.
+
+La maquette Sunrays comprend deux passages latéraux continus sur chacun des cinq ponts. Largeur de démonstration 1,05 m ; pièces et mobilier reculés proportionnellement, pavillons resserrés, balisage nocturne. Les passages sont présents une seule fois dans l'export glTF. La disposition demeure conceptuelle, sans validation navale.
+
+214 contrôles dalles/géométrie/export et 43 contrôles Smartphone (50 états) réussis, build/lint réussis avec avertissements préexistants. Captures et fiches FR/EN/DE actualisées. Preuves : `docs/verification/2026-09-20-panels-passages/`. Aucun essai matériel ; aucune modification CH5/C#/SIMPL.

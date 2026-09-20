@@ -1,0 +1,580 @@
+{
+  "checks": [
+    {
+      "name": "boutique-hermes model is a sibling of the phone GUI",
+      "pass": true
+    },
+    {
+      "name": "boutique-hermes one model, no video background",
+      "pass": true
+    },
+    {
+      "name": "boutique-hermes phone delegates rendering",
+      "pass": true
+    },
+    {
+      "name": "boutique-hermes normal camera centre clear of controls",
+      "pass": true
+    },
+    {
+      "name": "boutique-hermes normal background visible during controls",
+      "pass": true
+    },
+    {
+      "name": "boutique-hermes scene camera centre clear of controls",
+      "pass": true
+    },
+    {
+      "name": "boutique-hermes scene background visible during controls",
+      "pass": true
+    },
+    {
+      "name": "boutique-hermes room selection reaches background",
+      "pass": true
+    },
+    {
+      "name": "boutique-hermes light control changes background materials",
+      "pass": true
+    },
+    {
+      "name": "boutique-hermes background selection reaches phone",
+      "pass": true
+    },
+    {
+      "name": "boutique-hermes floor controls reach background",
+      "pass": true
+    },
+    {
+      "name": "boutique-hermes complete overview restored",
+      "pass": true
+    },
+    {
+      "name": "boutique-hermes wheel overview and return to selected room",
+      "pass": true
+    },
+    {
+      "name": "boutique-hermes background gesture pauses automatic tour",
+      "pass": true
+    },
+    {
+      "name": "boutique-hermes responsive framing 1366",
+      "pass": true
+    },
+    {
+      "name": "boutique-hermes responsive framing 1906",
+      "pass": true
+    },
+    {
+      "name": "boutique-hermes wallpanel retains original placement",
+      "pass": true
+    },
+    {
+      "name": "boutique-hermes tablet retains original placement",
+      "pass": true
+    },
+    {
+      "name": "boutique-hermes standalone iPhone retains model",
+      "pass": true
+    },
+    {
+      "name": "yacht-monaco model is a sibling of the phone GUI",
+      "pass": true
+    },
+    {
+      "name": "yacht-monaco one model, no video background",
+      "pass": true
+    },
+    {
+      "name": "yacht-monaco phone delegates rendering",
+      "pass": true
+    },
+    {
+      "name": "yacht-monaco normal camera centre clear of controls",
+      "pass": true
+    },
+    {
+      "name": "yacht-monaco normal background visible during controls",
+      "pass": true
+    },
+    {
+      "name": "yacht-monaco scene camera centre clear of controls",
+      "pass": true
+    },
+    {
+      "name": "yacht-monaco scene background visible during controls",
+      "pass": true
+    },
+    {
+      "name": "yacht-monaco room selection reaches background",
+      "pass": true
+    },
+    {
+      "name": "yacht-monaco light control changes background materials",
+      "pass": true
+    },
+    {
+      "name": "yacht-monaco background selection reaches phone",
+      "pass": true
+    },
+    {
+      "name": "yacht-monaco floor controls reach background",
+      "pass": true
+    },
+    {
+      "name": "yacht-monaco complete overview restored",
+      "pass": true
+    },
+    {
+      "name": "yacht-monaco wheel overview and return to selected room",
+      "pass": true
+    },
+    {
+      "name": "yacht-monaco background gesture pauses automatic tour",
+      "pass": true
+    },
+    {
+      "name": "yacht-monaco responsive framing 1366",
+      "pass": true
+    },
+    {
+      "name": "yacht-monaco responsive framing 1906",
+      "pass": true
+    },
+    {
+      "name": "yacht-monaco wallpanel retains original placement",
+      "pass": true
+    },
+    {
+      "name": "yacht-monaco tablet retains original placement",
+      "pass": true
+    },
+    {
+      "name": "yacht-monaco desktop retains original placement",
+      "pass": true
+    },
+    {
+      "name": "yacht-monaco standalone iPhone retains model",
+      "pass": true
+    },
+    {
+      "name": "GUI text contrast >=4:1",
+      "pass": true
+    },
+    {
+      "name": "No GUI page overflow",
+      "pass": true
+    },
+    {
+      "name": "Touch targets >=40 CSS px",
+      "pass": true
+    },
+    {
+      "name": "No browser exceptions",
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "contrast": [],
+  "layouts": [
+    {
+      "id": "boutique-hermes",
+      "mode": "normal",
+      "theme": "dark",
+      "tab": "light",
+      "overflow": false,
+      "small": []
+    },
+    {
+      "id": "boutique-hermes",
+      "mode": "normal",
+      "theme": "dark",
+      "tab": "audio",
+      "overflow": false,
+      "small": []
+    },
+    {
+      "id": "boutique-hermes",
+      "mode": "normal",
+      "theme": "dark",
+      "tab": "ambience",
+      "overflow": false,
+      "small": []
+    },
+    {
+      "id": "boutique-hermes",
+      "mode": "normal",
+      "theme": "dark",
+      "tab": "model",
+      "overflow": false,
+      "small": []
+    },
+    {
+      "id": "boutique-hermes",
+      "mode": "normal",
+      "theme": "light",
+      "tab": "light",
+      "overflow": false,
+      "small": []
+    },
+    {
+      "id": "boutique-hermes",
+      "mode": "normal",
+      "theme": "light",
+      "tab": "audio",
+      "overflow": false,
+      "small": []
+    },
+    {
+      "id": "boutique-hermes",
+      "mode": "normal",
+      "theme": "light",
+      "tab": "ambience",
+      "overflow": false,
+      "small": []
+    },
+    {
+      "id": "boutique-hermes",
+      "mode": "normal",
+      "theme": "light",
+      "tab": "model",
+      "overflow": false,
+      "small": []
+    },
+    {
+      "id": "boutique-hermes",
+      "mode": "normal",
+      "theme": "glass",
+      "tab": "light",
+      "overflow": false,
+      "small": []
+    },
+    {
+      "id": "boutique-hermes",
+      "mode": "normal",
+      "theme": "glass",
+      "tab": "audio",
+      "overflow": false,
+      "small": []
+    },
+    {
+      "id": "boutique-hermes",
+      "mode": "normal",
+      "theme": "glass",
+      "tab": "ambience",
+      "overflow": false,
+      "small": []
+    },
+    {
+      "id": "boutique-hermes",
+      "mode": "normal",
+      "theme": "glass",
+      "tab": "model",
+      "overflow": false,
+      "small": []
+    },
+    {
+      "id": "boutique-hermes",
+      "mode": "scene",
+      "theme": "dark",
+      "tab": "light",
+      "overflow": false,
+      "small": []
+    },
+    {
+      "id": "boutique-hermes",
+      "mode": "scene",
+      "theme": "dark",
+      "tab": "audio",
+      "overflow": false,
+      "small": []
+    },
+    {
+      "id": "boutique-hermes",
+      "mode": "scene",
+      "theme": "dark",
+      "tab": "ambience",
+      "overflow": false,
+      "small": []
+    },
+    {
+      "id": "boutique-hermes",
+      "mode": "scene",
+      "theme": "dark",
+      "tab": "model",
+      "overflow": false,
+      "small": []
+    },
+    {
+      "id": "boutique-hermes",
+      "mode": "scene",
+      "theme": "light",
+      "tab": "light",
+      "overflow": false,
+      "small": []
+    },
+    {
+      "id": "boutique-hermes",
+      "mode": "scene",
+      "theme": "light",
+      "tab": "audio",
+      "overflow": false,
+      "small": []
+    },
+    {
+      "id": "boutique-hermes",
+      "mode": "scene",
+      "theme": "light",
+      "tab": "ambience",
+      "overflow": false,
+      "small": []
+    },
+    {
+      "id": "boutique-hermes",
+      "mode": "scene",
+      "theme": "light",
+      "tab": "model",
+      "overflow": false,
+      "small": []
+    },
+    {
+      "id": "boutique-hermes",
+      "mode": "scene",
+      "theme": "glass",
+      "tab": "light",
+      "overflow": false,
+      "small": []
+    },
+    {
+      "id": "boutique-hermes",
+      "mode": "scene",
+      "theme": "glass",
+      "tab": "audio",
+      "overflow": false,
+      "small": []
+    },
+    {
+      "id": "boutique-hermes",
+      "mode": "scene",
+      "theme": "glass",
+      "tab": "ambience",
+      "overflow": false,
+      "small": []
+    },
+    {
+      "id": "boutique-hermes",
+      "mode": "scene",
+      "theme": "glass",
+      "tab": "model",
+      "overflow": false,
+      "small": []
+    },
+    {
+      "id": "boutique-hermes",
+      "mode": "native-phone",
+      "theme": "dark",
+      "tab": "model",
+      "overflow": false,
+      "small": []
+    },
+    {
+      "id": "yacht-monaco",
+      "mode": "normal",
+      "theme": "dark",
+      "tab": "light",
+      "overflow": false,
+      "small": []
+    },
+    {
+      "id": "yacht-monaco",
+      "mode": "normal",
+      "theme": "dark",
+      "tab": "audio",
+      "overflow": false,
+      "small": []
+    },
+    {
+      "id": "yacht-monaco",
+      "mode": "normal",
+      "theme": "dark",
+      "tab": "ambience",
+      "overflow": false,
+      "small": []
+    },
+    {
+      "id": "yacht-monaco",
+      "mode": "normal",
+      "theme": "dark",
+      "tab": "model",
+      "overflow": false,
+      "small": []
+    },
+    {
+      "id": "yacht-monaco",
+      "mode": "normal",
+      "theme": "light",
+      "tab": "light",
+      "overflow": false,
+      "small": []
+    },
+    {
+      "id": "yacht-monaco",
+      "mode": "normal",
+      "theme": "light",
+      "tab": "audio",
+      "overflow": false,
+      "small": []
+    },
+    {
+      "id": "yacht-monaco",
+      "mode": "normal",
+      "theme": "light",
+      "tab": "ambience",
+      "overflow": false,
+      "small": []
+    },
+    {
+      "id": "yacht-monaco",
+      "mode": "normal",
+      "theme": "light",
+      "tab": "model",
+      "overflow": false,
+      "small": []
+    },
+    {
+      "id": "yacht-monaco",
+      "mode": "normal",
+      "theme": "glass",
+      "tab": "light",
+      "overflow": false,
+      "small": []
+    },
+    {
+      "id": "yacht-monaco",
+      "mode": "normal",
+      "theme": "glass",
+      "tab": "audio",
+      "overflow": false,
+      "small": []
+    },
+    {
+      "id": "yacht-monaco",
+      "mode": "normal",
+      "theme": "glass",
+      "tab": "ambience",
+      "overflow": false,
+      "small": []
+    },
+    {
+      "id": "yacht-monaco",
+      "mode": "normal",
+      "theme": "glass",
+      "tab": "model",
+      "overflow": false,
+      "small": []
+    },
+    {
+      "id": "yacht-monaco",
+      "mode": "scene",
+      "theme": "dark",
+      "tab": "light",
+      "overflow": false,
+      "small": []
+    },
+    {
+      "id": "yacht-monaco",
+      "mode": "scene",
+      "theme": "dark",
+      "tab": "audio",
+      "overflow": false,
+      "small": []
+    },
+    {
+      "id": "yacht-monaco",
+      "mode": "scene",
+      "theme": "dark",
+      "tab": "ambience",
+      "overflow": false,
+      "small": []
+    },
+    {
+      "id": "yacht-monaco",
+      "mode": "scene",
+      "theme": "dark",
+      "tab": "model",
+      "overflow": false,
+      "small": []
+    },
+    {
+      "id": "yacht-monaco",
+      "mode": "scene",
+      "theme": "light",
+      "tab": "light",
+      "overflow": false,
+      "small": []
+    },
+    {
+      "id": "yacht-monaco",
+      "mode": "scene",
+      "theme": "light",
+      "tab": "audio",
+      "overflow": false,
+      "small": []
+    },
+    {
+      "id": "yacht-monaco",
+      "mode": "scene",
+      "theme": "light",
+      "tab": "ambience",
+      "overflow": false,
+      "small": []
+    },
+    {
+      "id": "yacht-monaco",
+      "mode": "scene",
+      "theme": "light",
+      "tab": "model",
+      "overflow": false,
+      "small": []
+    },
+    {
+      "id": "yacht-monaco",
+      "mode": "scene",
+      "theme": "glass",
+      "tab": "light",
+      "overflow": false,
+      "small": []
+    },
+    {
+      "id": "yacht-monaco",
+      "mode": "scene",
+      "theme": "glass",
+      "tab": "audio",
+      "overflow": false,
+      "small": []
+    },
+    {
+      "id": "yacht-monaco",
+      "mode": "scene",
+      "theme": "glass",
+      "tab": "ambience",
+      "overflow": false,
+      "small": []
+    },
+    {
+      "id": "yacht-monaco",
+      "mode": "scene",
+      "theme": "glass",
+      "tab": "model",
+      "overflow": false,
+      "small": []
+    },
+    {
+      "id": "yacht-monaco",
+      "mode": "native-phone",
+      "theme": "dark",
+      "tab": "model",
+      "overflow": false,
+      "small": []
+    }
+  ]
+}

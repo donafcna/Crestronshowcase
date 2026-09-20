@@ -313,3 +313,8 @@ Le protocole Claude comprend un cadrage préalable pour les tâches >30 minutes 
 ## Entretien du contexte
 
 Conserver les huit exports et leur manifeste intacts. Mettre à jour ce point d'entrée, le contexte du périmètre et son journal à la fin des travaux significatifs. Distinguer systématiquement : demandé, écrit, testé, compilé, publié et vérifié sur matériel. Les résultats rapportés par Claude restent historiques tant qu'ils n'ont pas été reproduits.
+
+
+## 20/09/2026 — reprise « Maquette 3D bijouterie »
+
+Donatien a demandé de reprendre et continuer. Dernières consignes retrouvées : TSW-1070 en graphiques HTML/CSS sans modèle 3D ; passages bâbord et tribord du yacht de l'arrière vers l'avant à tous les niveaux. Réalisé dans le showcase VCA/Sunrays : cartes HTML/CSS sur dalle, fond 3D Smartphone conservé, dix passages conceptuels dégagés dans les coupes et inclus dans le glTF. 214 contrôles ciblés et 43 contrôles de fond Smartphone (50 états) réussis ; build/lint réussis avec avertissements préexistants. Documentation et preuves : `apps/showcase/docs/vca-sunrays.md`, `docs/verification/2026-09-20-panels-passages/`. Aucun matériel déployé.

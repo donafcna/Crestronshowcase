@@ -1,12 +1,12 @@
-// Updated from the VCA / Sunrays interactive 3D showcase.
+// VCA / Sunrays: TSW HTML/CSS controls and showcase 3D.
 export default {
   "fr": {
-    "intro": "Concept de superyacht avec silhouette extérieure affinée, salons, cabines et espaces de vie répartis sur cinq ponts. Les commandes d’éclairage par espace et les scènes globales modifient la 3D. Versions dalle, iPad, XPanel et iPhone ; simulation sans connexion à un yacht réel.",
+    "intro": "Concept de superyacht avec silhouette extérieure affinée, salons, cabines et espaces de vie répartis sur cinq ponts. Les commandes d’éclairage par espace et les scènes globales modifient la 3D. Versions dalle, iPad, XPanel et iPhone ; simulation sans connexion à un yacht réel. Sur la dalle TSW, les niveaux et espaces sont représentés en HTML/CSS, sans chargement du modèle 3D. Les cartes affichent le niveau moyen des circuits de l’espace ; scènes, musique et ambiances restent pilotables. La 3D accompagne la présentation Smartphone et reste disponible sur tablette.",
     "sections": [
       {
         "title": "Éclairage et scènes",
         "image": "/sheets/yacht-monaco/01-light.png",
-        "text": "Choisissez un espace, puis une scène globale ou les circuits individuels. Les niveaux se reflètent dans la vue 3D.",
+        "text": "Choisissez un espace, puis une scène globale ou les circuits individuels. Les niveaux se reflètent dans la vue 3D. Sur la dalle TSW, les niveaux et espaces sont représentés en HTML/CSS, sans chargement du modèle 3D. Les cartes affichent le niveau moyen des circuits de l’espace ; scènes, musique et ambiances restent pilotables. La 3D accompagne la présentation Smartphone et reste disponible sur tablette.",
         "buttons": [
           [
             "Espace sélectionné",
@@ -17,7 +17,7 @@ export default {
             "Scènes globales ou niveaux individuels, de 0 à 100 %."
           ],
           [
-            "Lumière / Musique / Ambiances / Vue 3D",
+            "Lumière / Musique / Ambiances / Espaces",
             "Ouvre la page correspondante."
           ],
           [
@@ -39,9 +39,9 @@ export default {
         "buttons": []
       },
       {
-        "title": "Exploration 3D",
+        "title": "Exploration 3D sur tablette",
         "image": "/sheets/yacht-monaco/04-3d.png",
-        "text": "Choisissez un niveau ou un pont, tournez le modèle et zoomez. La sélection dans la 3D met à jour l’espace piloté.",
+        "text": "Sur tablette, choisissez un niveau puis tournez ou zoomez le modèle. Sur la dalle TSW, utilisez les cartes des espaces.",
         "buttons": []
       },
       {
@@ -61,16 +61,28 @@ export default {
         "text": "Dans la page Smartphone du showcase, la modélisation occupe l’arrière-plan et le châssis reste à gauche. Choisir un espace ou régler son éclairage agit sur ce décor. La molette permet de revenir à la vue d’ensemble, puis à l’espace sélectionné.",
         "image": "/sheets/yacht-monaco/06-background.png",
         "buttons": []
+      },
+      {
+        "title": "Dalle TSW : espaces et commandes",
+        "text": "Sur la dalle TSW, les niveaux et espaces sont représentés en HTML/CSS, sans chargement du modèle 3D. Les cartes affichent le niveau moyen des circuits de l’espace ; scènes, musique et ambiances restent pilotables. La 3D accompagne la présentation Smartphone et reste disponible sur tablette.",
+        "image": "/sheets/yacht-monaco/07-panel.png",
+        "buttons": []
+      },
+      {
+        "title": "Passages latéraux sur les cinq ponts",
+        "text": "La maquette conceptuelle réserve deux passages continus, bâbord et tribord, sur chacun des cinq ponts. Les pièces et le mobilier sont reculés pour libérer ces circulations ; leur largeur de démonstration est de 1,05 m. Il ne s’agit pas d’un plan naval d’exécution.",
+        "image": "/sheets/yacht-monaco/08-passages.png",
+        "buttons": []
       }
     ]
   },
   "en": {
-    "intro": "Superyacht concept with a refined exterior silhouette, lounges, cabins and living spaces across five decks. Per-space lighting controls and global scenes update the 3D model. Wall panel, iPad, XPanel and iPhone layouts; simulation without a connection to a real yacht.",
+    "intro": "Superyacht concept with a refined exterior silhouette, lounges, cabins and living spaces across five decks. Per-space lighting controls and global scenes update the 3D model. Wall panel, iPad, XPanel and iPhone layouts; simulation without a connection to a real yacht. The TSW panel presents levels and spaces in HTML/CSS, without loading the 3D model. Cards display the average lighting circuit level for each space; scenes, music and ambience remain available. 3D accompanies the Smartphone showcase and remains available on tablets.",
     "sections": [
       {
         "title": "Lighting and scenes",
         "image": "/sheets/yacht-monaco/01-light.png",
-        "text": "Choose a space, then a global scene or individual lighting circuits. The levels are reflected in the 3D view.",
+        "text": "Choose a space, then a global scene or individual lighting circuits. The levels are reflected in the 3D view. The TSW panel presents levels and spaces in HTML/CSS, without loading the 3D model. Cards display the average lighting circuit level for each space; scenes, music and ambience remain available. 3D accompanies the Smartphone showcase and remains available on tablets.",
         "buttons": [
           [
             "Selected space",
@@ -81,7 +93,7 @@ export default {
             "Global scenes or individual levels from 0 to 100%."
           ],
           [
-            "Light / Music / Ambience / 3D",
+            "Light / Music / Ambience / Spaces",
             "Opens the corresponding page."
           ],
           [
@@ -103,9 +115,9 @@ export default {
         "buttons": []
       },
       {
-        "title": "3D exploration",
+        "title": "3D exploration on tablets",
         "image": "/sheets/yacht-monaco/04-3d.png",
-        "text": "Choose a level or deck, orbit and zoom. Selecting a space in 3D updates the controlled zone.",
+        "text": "On tablets, select a level and rotate or zoom the model. On the TSW panel, use the space cards.",
         "buttons": []
       },
       {
@@ -125,16 +137,28 @@ export default {
         "text": "On the showcase Smartphone page, the model fills the background while the chassis stays on the left. Selecting a space or adjusting its lighting updates the scene. Use the wheel to switch to the overview and back to the selected space.",
         "image": "/sheets/yacht-monaco/06-background.png",
         "buttons": []
+      },
+      {
+        "title": "TSW panel: spaces and controls",
+        "text": "The TSW panel presents levels and spaces in HTML/CSS, without loading the 3D model. Cards display the average lighting circuit level for each space; scenes, music and ambience remain available. 3D accompanies the Smartphone showcase and remains available on tablets.",
+        "image": "/sheets/yacht-monaco/07-panel.png",
+        "buttons": []
+      },
+      {
+        "title": "Side passages on all five decks",
+        "text": "The conceptual model reserves continuous port and starboard passages on all five decks. Rooms and furnishings are inset to keep these routes clear; their demonstration width is 1.05 m. This is not an as-built naval plan.",
+        "image": "/sheets/yacht-monaco/08-passages.png",
+        "buttons": []
       }
     ]
   },
   "de": {
-    "intro": "Superyachtkonzept mit schlanker Außenansicht, Salons, Kabinen und Aufenthaltsbereichen auf fünf Decks. Raumweise Lichtsteuerung und globale Szenen aktualisieren das 3D-Modell. Ansichten für Wandpanel, iPad, XPanel und iPhone; Simulation ohne Verbindung zu einer realen Yacht.",
+    "intro": "Superyachtkonzept mit schlanker Außenansicht, Salons, Kabinen und Aufenthaltsbereichen auf fünf Decks. Raumweise Lichtsteuerung und globale Szenen aktualisieren das 3D-Modell. Ansichten für Wandpanel, iPad, XPanel und iPhone; Simulation ohne Verbindung zu einer realen Yacht. Das TSW-Panel zeigt Ebenen und Räume mit HTML/CSS, ohne das 3D-Modell zu laden. Die Karten zeigen den Mittelwert der Lichtkreise je Raum; Szenen, Musik und Ambiente bleiben bedienbar. Die 3D-Ansicht begleitet den Smartphone-Showcase und bleibt auf Tablets verfügbar.",
     "sections": [
       {
         "title": "Beleuchtung und Szenen",
         "image": "/sheets/yacht-monaco/01-light.png",
-        "text": "Wählen Sie einen Raum, dann eine globale Szene oder einzelne Lichtkreise. Die Werte werden in der 3D-Ansicht dargestellt.",
+        "text": "Wählen Sie einen Raum, dann eine globale Szene oder einzelne Lichtkreise. Die Werte werden in der 3D-Ansicht dargestellt. Das TSW-Panel zeigt Ebenen und Räume mit HTML/CSS, ohne das 3D-Modell zu laden. Die Karten zeigen den Mittelwert der Lichtkreise je Raum; Szenen, Musik und Ambiente bleiben bedienbar. Die 3D-Ansicht begleitet den Smartphone-Showcase und bleibt auf Tablets verfügbar.",
         "buttons": [
           [
             "Raumauswahl",
@@ -145,7 +169,7 @@ export default {
             "Globale Szenen oder einzelne Werte von 0 bis 100 %."
           ],
           [
-            "Licht / Musik / Ambiente / 3D",
+            "Licht / Musik / Ambiente / Räume",
             "Öffnet die entsprechende Seite."
           ],
           [
@@ -167,9 +191,9 @@ export default {
         "buttons": []
       },
       {
-        "title": "3D-Erkundung",
+        "title": "3D-Erkundung auf Tablets",
         "image": "/sheets/yacht-monaco/04-3d.png",
-        "text": "Wählen Sie eine Ebene oder ein Deck, drehen und zoomen Sie das Modell. Die Raumauswahl in 3D aktualisiert den gesteuerten Bereich.",
+        "text": "Auf Tablets wählen Sie eine Ebene und drehen oder zoomen das Modell. Auf dem TSW-Panel verwenden Sie die Raumkarten.",
         "buttons": []
       },
       {
@@ -188,6 +212,18 @@ export default {
         "title": "Smartphone und 3D-Hintergrund",
         "text": "Auf der Smartphone-Seite des Showcases füllt das Modell den Hintergrund; der Geräterahmen bleibt links. Raumauswahl und Lichtsteuerung wirken auf diese Szene. Mit dem Mausrad wechseln Sie zur Gesamtansicht und zurück zum ausgewählten Raum.",
         "image": "/sheets/yacht-monaco/06-background.png",
+        "buttons": []
+      },
+      {
+        "title": "TSW-Panel: Räume und Steuerung",
+        "text": "Das TSW-Panel zeigt Ebenen und Räume mit HTML/CSS, ohne das 3D-Modell zu laden. Die Karten zeigen den Mittelwert der Lichtkreise je Raum; Szenen, Musik und Ambiente bleiben bedienbar. Die 3D-Ansicht begleitet den Smartphone-Showcase und bleibt auf Tablets verfügbar.",
+        "image": "/sheets/yacht-monaco/07-panel.png",
+        "buttons": []
+      },
+      {
+        "title": "Seitliche Durchgänge auf allen fünf Decks",
+        "text": "Das Konzeptmodell bietet durchgehende Backbord- und Steuerbordgänge auf allen fünf Decks. Räume und Möbel sind nach innen versetzt; die angenommene Gangbreite beträgt 1,05 m. Dies ist kein Ausführungsplan für den Schiffbau.",
+        "image": "/sheets/yacht-monaco/08-passages.png",
         "buttons": []
       }
     ]
