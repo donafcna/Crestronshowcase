@@ -1,4 +1,4 @@
-/* global desiredRadius */
+/* global desiredRadius, radius, desiredYaw, yaw, desiredPitch, pitch, target, desiredTarget, camera, scene */
 (async () => {
   'use strict';
   const api = window.__ftvModel;
@@ -7,10 +7,10 @@
   const channel = 'ftv-luxury/v1', isLocalFile = location.protocol === 'file:' || location.origin === 'null';
   const origin = isLocalFile ? '*' : location.origin;
   const send = (type, payload = {}) => parent.postMessage({ channel, project: api.project, type, ...payload }, origin);
+  const validViewport = v => v && ['x', 'y', 'w', 'h'].every(k => Number.isFinite(v[k])) && v.w > 0 && v.h > 0;
   let last = '', exteriorError = null;
   if (api.project === 'yacht-monaco') {
-    // Same orbit target and eased animation as native canvas zoom. Never invoke
-    // overview/select here: wheel zoom must not change the room, deck or lights.
+    // Manual wheel zoom remains eased and never changes the selected room.
     api.zoom = delta => {
       if (!Number.isFinite(delta) || delta === 0) return;
       const amount = Math.max(-600, Math.min(600, delta));
@@ -27,9 +27,32 @@
     } catch (error) {
       exteriorError = error.message; console.error('[Asteria exterior]', error);
     }
+    // A viewport message used to change desiredRadius only: the host exposed
+    // the default camera while it eased to that new distance. Initial entry
+    // now has its own request/render/ack handshake. Subsequent zoom is intact.
+    let pending = null, rendered = null;
+    api.present = (viewport, requestId) => {
+      if (!validViewport(viewport) || typeof requestId !== 'string' || requestId.length > 200) return;
+      api.viewport(viewport);
+      radius = desiredRadius; yaw = desiredYaw; pitch = desiredPitch; target.copy(desiredTarget);
+      camera.position.set(target.x + Math.sin(yaw) * Math.cos(pitch) * radius, target.y + Math.sin(pitch) * radius, target.z + Math.cos(yaw) * Math.cos(pitch) * radius);
+      camera.lookAt(target);
+      camera.setViewOffset(viewport.w, viewport.h, -viewport.x, -viewport.y, innerWidth, innerHeight);
+      camera.updateProjectionMatrix(); camera.updateMatrixWorld(true);
+      pending = { requestId, viewport: { ...viewport } };
+    };
+    const afterRender = scene.onAfterRender;
+    scene.onAfterRender = function (...args) {
+      afterRender?.apply(this, args);
+      if (!pending) return;
+      rendered = { ...pending, radius, desiredRadius, camera: camera.position.toArray() };
+      pending = null;
+      send('presentation-ready', rendered);
+    };
+    api.presentationState = () => ({ pending, rendered });
   }
   const ready = () => {
-    send('model-ready', { rooms: api.catalog, floors: api.floors, exterior: !!api.exteriorState && !exteriorError });
+    send('model-ready', { rooms: api.catalog, floors: api.floors, exterior: !!api.exteriorState && !exteriorError, presentation: typeof api.present === 'function' });
     if (api.exteriorState) send('exterior-state', api.exteriorState());
     if (exteriorError) send('model-error', { message: 'Éclairage extérieur indisponible : ' + exteriorError });
   };
@@ -43,7 +66,8 @@
     if (m?.channel !== channel || m.project !== api.project) return;
     try {
       switch (m.type) {
-        case 'viewport': if (m.viewport && ['x', 'y', 'w', 'h'].every(k => Number.isFinite(m.viewport[k])) && m.viewport.w > 0 && m.viewport.h > 0) api.viewport?.(m.viewport); break;
+        case 'present': api.present?.(m.viewport, m.requestId); break;
+        case 'viewport': if (validViewport(m.viewport)) api.viewport?.(m.viewport); break;
         case 'pick': if (Number.isFinite(m.x) && Number.isFinite(m.y)) api.pick?.(m.x, m.y); break;
         case 'visibility': window.__ftvPaused = m.visible === false; api.visibility?.(m.visible !== false); break;
         case 'resize': window.dispatchEvent(new Event('resize')); break;
