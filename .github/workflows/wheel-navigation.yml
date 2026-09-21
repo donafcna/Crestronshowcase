@@ -1,0 +1,48 @@
+name: Yacht and nightclub wheel navigation
+on:
+  pull_request:
+    paths:
+      - 'apps/showcase/src/utils/wheelNavigation.js'
+      - 'apps/showcase/src/ftv-luxury/LuxuryBackground.jsx'
+      - 'apps/showcase/src/venues/VenueBackground.jsx'
+      - 'apps/showcase/public/ftv-luxury/model-bridge.js'
+      - 'apps/showcase/scripts/test-wheel-*.mjs'
+      - '.github/workflows/wheel-navigation.yml'
+permissions:
+  contents: read
+jobs:
+  wheel-navigation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    defaults:
+      run:
+        working-directory: apps/showcase
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: apps/showcase/package-lock.json
+      - name: Unit wheel tests
+        run: node --test scripts/test-wheel-navigation.mjs
+      - run: npm ci
+      - run: npm run build
+      - name: Lint
+        run: npm run lint > /tmp/wheel-lint.log 2>&1 || { cat /tmp/wheel-lint.log; exit 1; }; tail -n 3 /tmp/wheel-lint.log
+      - name: Install isolated browser tooling
+        run: |
+          npm install --prefix "$RUNNER_TEMP/wheel-tools" --no-save playwright@1.57.0 > /tmp/wheel-tools.log 2>&1 || { cat /tmp/wheel-tools.log; exit 1; }
+          ln -s "$RUNNER_TEMP/wheel-tools/node_modules/playwright" node_modules/playwright
+          "$RUNNER_TEMP/wheel-tools/node_modules/.bin/playwright" install --with-deps chromium > /tmp/wheel-browser.log 2>&1 || { tail -n 50 /tmp/wheel-browser.log; exit 1; }
+      - name: Real host, iframe and camera tests
+        run: |
+          npm run preview -- --host 127.0.0.1 --port 4173 > /tmp/wheel-preview.log 2>&1 &
+          for i in $(seq 1 30); do curl -fsS http://127.0.0.1:4173/ >/dev/null && break; sleep 1; done
+          node scripts/test-wheel-browser.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: wheel-navigation-report
+          path: apps/showcase/test-results/wheel/
+          retention-days: 7
