@@ -127,7 +127,7 @@ export default {
       {
         "title": "Smartphone et décor 3D",
         "image": "/ftv-luxury/venues/club-etoile.webp",
-        "text": "Trois niveaux avec une seule grande salle ouverte par étage. Chaque salle comprend un DJ avec platines et mixeur, quatre grandes colonnes d’enceintes aux coins, huit enceintes murales, vingt-quatre lyres DMX RGBW, trois boules à facettes, une piste et vingt-quatre barres LED. Scènes et intensité indépendantes par étage ; faisceaux mobiles, reflets et fumée simulée. Réception, escaliers et sanitaires conservés.",
+        "text": "Trois niveaux avec une seule grande salle ouverte par étage. Chaque salle comprend un DJ avec platines et mixeur, quatre grandes colonnes d’enceintes aux coins, huit enceintes murales, vingt-quatre lyres DMX RGBW, trois boules à facettes, une piste et vingt-quatre barres LED. Scènes et intensité indépendantes par étage ; faisceaux mobiles, reflets et fumée simulée. Réception, escaliers et sanitaires conservés. Trois décors distincts : Studio 77 (or et velours disco), Neon Foundry (béton, acier et portiques cyan), Sky Garden (ivoire, jade, plantes et piste circulaire). Lyres actives par défaut : mouvements rapides et aléatoires visant la piste, désactivables dans Ambiances.",
         "buttons": []
       }
     ]
@@ -259,7 +259,7 @@ export default {
       {
         "title": "Smartphone and 3D setting",
         "image": "/ftv-luxury/venues/club-etoile.webp",
-        "text": "Three levels with one large open hall per floor. Each hall has a DJ desk with decks and mixer, four giant corner speaker stacks, eight wall speakers, twenty-four RGBW DMX moving heads, three mirror balls, a dance floor and twenty-four LED bars. Independent scenes and intensity per floor; moving beams, reflections and simulated haze. Reception, stairs and toilets retained.",
+        "text": "Three levels with one large open hall per floor. Each hall has a DJ desk with decks and mixer, four giant corner speaker stacks, eight wall speakers, twenty-four RGBW DMX moving heads, three mirror balls, a dance floor and twenty-four LED bars. Independent scenes and intensity per floor; moving beams, reflections and simulated haze. Reception, stairs and toilets retained. Three distinct settings: Studio 77 (gold and velvet disco), Neon Foundry (concrete, steel and cyan portals), Sky Garden (ivory, jade, plants and circular dance floor). Moving heads start automatically with fast random sweeps aimed at the dance floor; motion can be paused in Mood.",
         "buttons": []
       }
     ]
@@ -391,7 +391,7 @@ export default {
       {
         "title": "Smartphone und 3D-Umgebung",
         "image": "/ftv-luxury/venues/club-etoile.webp",
-        "text": "Drei Ebenen mit je einem großen offenen Saal. Jeder Saal bietet ein DJ-Pult mit Plattenspielern und Mixer, vier große Ecklautsprechertürme, acht Wandlautsprecher, vierundzwanzig RGBW-DMX-Moving-Heads, drei Discokugeln, eine Tanzfläche und vierundzwanzig LED-Leisten. Unabhängige Szenen und Helligkeit je Etage; bewegte Lichtkegel, Reflexe und simulierter Nebel. Empfang, Treppen und Toiletten bleiben erhalten.",
+        "text": "Drei Ebenen mit je einem großen offenen Saal. Jeder Saal bietet ein DJ-Pult mit Plattenspielern und Mixer, vier große Ecklautsprechertürme, acht Wandlautsprecher, vierundzwanzig RGBW-DMX-Moving-Heads, drei Discokugeln, eine Tanzfläche und vierundzwanzig LED-Leisten. Unabhängige Szenen und Helligkeit je Etage; bewegte Lichtkegel, Reflexe und simulierter Nebel. Empfang, Treppen und Toiletten bleiben erhalten. Drei unterschiedliche Dekors: Studio 77 (Gold und Samt), Neon Foundry (Beton, Stahl und Cyan-Portale), Sky Garden (Elfenbein, Jade, Pflanzen und runde Tanzfläche). Moving-Heads starten automatisch mit schnellen zufälligen Bewegungen zur Tanzfläche; unter Ambiente abschaltbar.",
         "buttons": []
       }
     ]

@@ -23,6 +23,7 @@ export const ClubEtoile = ({ deviceType }) => {
 
   const [smokeActive, setSmokeActive] = useState(false);
   const [strobeActive, setStrobeActive] = useState(false);
+  const [lyresActive, setLyresActive] = useState(true);
   const [strobeFreq, setStrobeFreq] = useState(8); // Hz
 
   const [timeString, setTimeString] = useState("");
@@ -70,13 +71,13 @@ export const ClubEtoile = ({ deviceType }) => {
     return <IconComp size={size} className={className} />;
   };
 
-  useVenueState('club-etoile', { crowdDensity, smokeActive, strobeActive, strobeFreq, dancefloorVolume, barVolume, clubFloor, clubRoom, clubView, roomSettings });
+  useVenueState('club-etoile', { crowdDensity, smokeActive, strobeActive, lyresActive, strobeFreq, dancefloorVolume, barVolume, clubFloor, clubRoom, clubView, roomSettings });
   const isPhone = deviceType === "phone";
   if (isPhone) return <VenuePhone name="L’Étoile Club" subtitle="3 niveaux · 3 grandes salles · DJ" active={activeTab} onTab={setActiveTab} tabs={[["spaces","Espaces","LayoutGrid"],["hvac","Climat","Wind"],["audio_limit","Audio","Volume2"],["effects","Ambiances","Sparkles"]]}>
     {activeTab==='spaces' && <ClubSpaces floor={clubFloor} onFloor={changeFloor} room={clubRoom} onRoom={changeRoom} view={clubView} onView={setClubView} settings={roomSettings[clubRoom]} onSettings={patch=>setRoomSettings(s=>({...s,[clubRoom]:{...s[clubRoom],...patch}}))}/>}
     {activeTab==='hvac' && <><Card title="Affluence"><Choices value={crowdDensity} onChange={setCrowdDensity} options={[["cozy","Calme"],["busy","Normal"],["packed","Forte affluence"]]}/></Card><Card title="Ventilation & climatisation"><p className="venue-readout">{targetTemp.toFixed(1)} °C</p><p className="venue-note">Consigne adaptée à l’affluence · CTA en ligne</p><Slider label="Extraction d’air" value={fanSpeed} onChange={setFanSpeed}/></Card><Card title="Fin de service"><button className="venue-toggle" onClick={()=>{setCrowdDensity('cozy');setSmokeActive(false);setStrobeActive(false);setDancefloorVolume(0);setBarVolume(0)}}>Éteindre le son et les effets</button></Card></>}
     {activeTab==='audio_limit' && <><Card title="Capteur acoustique · Simulation"><p className="venue-readout">{currentDb} dB</p><p className="venue-note">{limiterTripped?'Limiteur actif · seuil atteint':'Seuil du simulateur : 105 dB'}</p></Card><Card title="Volume par zone"><Slider label="Piste" value={dancefloorVolume} onChange={setDancefloorVolume}/><Slider label="Bar" value={barVolume} onChange={setBarVolume}/><p className="venue-note">Aucun son n’est diffusé.</p></Card></>}
-    {activeTab==='effects' && <><Card title="Effets scéniques"><Toggle label="Jet de fumée" value={smokeActive} onChange={setSmokeActive}/><Toggle label="Stroboscope" value={strobeActive} onChange={setStrobeActive}/><Slider label="Fréquence programmée" min={1} max={15} unit=" Hz" value={strobeFreq} onChange={setStrobeFreq}/><p className="venue-note">La 3D représente le stroboscope par une lumière continue.</p></Card><Card title="Scènes rapides"><Choices value={strobeActive?'party':'calm'} onChange={v=>{setStrobeActive(v==='party');setSmokeActive(v==='party')}} options={[["party","Soirée"],["calm","Calme"]]}/></Card></>}
+    {activeTab==='effects' && <><Card title="Effets scéniques"><Toggle label="Mouvement des lyres" value={lyresActive} onChange={setLyresActive}/><Toggle label="Jet de fumée" value={smokeActive} onChange={setSmokeActive}/><Toggle label="Stroboscope" value={strobeActive} onChange={setStrobeActive}/><Slider label="Fréquence programmée" min={1} max={15} unit=" Hz" value={strobeFreq} onChange={setStrobeFreq}/><p className="venue-note">La 3D représente le stroboscope par une lumière continue.</p></Card><Card title="Scènes rapides"><Choices value={strobeActive?'party':'calm'} onChange={v=>{setStrobeActive(v==='party');setSmokeActive(v==='party')}} options={[["party","Soirée"],["calm","Calme"]]}/></Card></>}
   </VenuePhone>;
 
   return (

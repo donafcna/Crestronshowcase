@@ -77,7 +77,7 @@ export default {
       {
         "title": "Mer animée",
         "image": "/sheets/yacht-monaco/09-sea.webp",
-        "text": "Une houle douce et de petites rides animent les reflets du ciel autour de la coque. Le rendu suit les ambiances jour, coucher de soleil et nuit. Les mouvements réduits arrêtent l’animation.",
+        "text": "Une houle douce et de petites rides animent les reflets du ciel autour de la coque. Les scènes du GUI modifient uniquement les éclairages du yacht ; la mer et le ciel conservent leur ambiance. Les mouvements réduits arrêtent l’animation.",
         "buttons": []
       }
     ]
@@ -159,7 +159,7 @@ export default {
       {
         "title": "Animated sea",
         "image": "/sheets/yacht-monaco/09-sea.webp",
-        "text": "Gentle swells and small ripples animate sky reflections around the hull. The sea follows day, sunset and night scenes. Reduced motion stops the animation.",
+        "text": "Gentle swells and small ripples animate sky reflections around the hull. GUI scenes change only the yacht lighting; the sea and sky keep their current ambience. Reduced motion stops the animation.",
         "buttons": []
       }
     ]
@@ -241,7 +241,7 @@ export default {
       {
         "title": "Animiertes Meer",
         "image": "/sheets/yacht-monaco/09-sea.webp",
-        "text": "Sanfte Dünung und kleine Wellen bewegen die Himmelsreflexionen um den Rumpf. Das Meer folgt den Tag-, Sonnenuntergangs- und Nachtszenen. Bei reduzierter Bewegung stoppt die Animation.",
+        "text": "Sanfte Dünung und kleine Wellen bewegen die Himmelsreflexionen um den Rumpf. GUI-Szenen ändern nur die Yachtbeleuchtung; Meer und Himmel behalten ihre Umgebung. Bei reduzierter Bewegung stoppt die Animation.",
         "buttons": []
       }
     ]

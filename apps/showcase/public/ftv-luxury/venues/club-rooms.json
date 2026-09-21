@@ -2,22 +2,22 @@
   {
     "id": "original",
     "floor": 0,
-    "name": "L’Étoile · Grand Club",
-    "color": "#ad63ff",
-    "mood": "Violet · Scène DJ · Piste RGBW"
+    "name": "Studio 77 · Disco",
+    "color": "#ffb54a",
+    "mood": "Or & velours · Piste rétro · DJ"
   },
   {
     "id": "neon",
     "floor": 1,
-    "name": "Neon · Electro Hall",
-    "color": "#35ceef",
-    "mood": "Cyan · Faisceaux croisés · DJ"
+    "name": "Neon Foundry · Electro",
+    "color": "#2ee7f2",
+    "mood": "Béton & acier · Portiques néon · DJ"
   },
   {
     "id": "sky",
     "floor": 2,
-    "name": "Sky · Disco Hall",
-    "color": "#f085c6",
-    "mood": "Rose & or · Boules à facettes · DJ"
+    "name": "Sky Garden · Panoramique",
+    "color": "#7fe0bb",
+    "mood": "Ivoire & jade · Piste ronde · DJ"
   }
 ]
