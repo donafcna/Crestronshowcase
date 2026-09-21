@@ -1,8 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import './background.css';
 import { LUXURY_MODELS } from './modelProjects';
+import { createWheelNavigation } from '../utils/wheelNavigation';
 const channel = 'ftv-luxury/v1';
-const commands = new Set(['hello', 'select', 'level', 'overview', 'scene', 'lighting', 'color', 'capture', 'visibility', 'resize', 'exterior']);
+const commands = new Set(['hello', 'select', 'level', 'overview', 'scene', 'lighting', 'color', 'capture', 'visibility', 'resize', 'exterior', 'zoom']);
 const controls = 'iframe,button,a,input,select,textarea,.workspace-device-sidebar,.phone-device-frame,.projects-strip';
 
 /** The approved model fills the page, while its camera reserves space for the phone. */
@@ -49,8 +50,14 @@ export function LuxuryBackground({ projectId, stageRef, tourSessionRef }) {
         frame.contentWindow?.postMessage({ ...command, channel, project: projectId }, origin);
       }
     };
+    const zoomWheel = createWheelNavigation(delta => send('zoom', { delta }), {
+      enabled: () => loaded && !document.hidden,
+      height: () => stage.clientHeight || innerHeight,
+    });
+    // Preserve the boutique's existing overview/room navigation. On the yacht,
+    // the wheel changes distance only; selection stays in the GUI.
     let lastWheel = 0, accumulated = 0;
-    const wheel = event => {
+    const wheel = projectId === 'yacht-monaco' ? zoomWheel : event => {
       if (!loaded || event.ctrlKey || event.metaKey || event.target.closest(controls) || Math.abs(event.deltaX) > Math.abs(event.deltaY)) return;
       event.preventDefault();
       if (Math.sign(accumulated) !== Math.sign(event.deltaY)) accumulated = 0;
@@ -76,6 +83,7 @@ export function LuxuryBackground({ projectId, stageRef, tourSessionRef }) {
     const timer = setInterval(layout, 300);
     hello();
     return () => {
+      zoomWheel.dispose();
       clearInterval(timer); observer.disconnect();
       window.removeEventListener('message', message);
       window.removeEventListener('resize', layout);

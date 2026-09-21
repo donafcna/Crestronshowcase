@@ -1,3 +1,4 @@
+/* global desiredRadius */
 (async () => {
   'use strict';
   const api = window.__ftvModel;
@@ -8,6 +9,13 @@
   const send = (type, payload = {}) => parent.postMessage({ channel, project: api.project, type, ...payload }, origin);
   let last = '', exteriorError = null;
   if (api.project === 'yacht-monaco') {
+    // Same orbit target and eased animation as native canvas zoom. Never invoke
+    // overview/select here: wheel zoom must not change the room, deck or lights.
+    api.zoom = delta => {
+      if (!Number.isFinite(delta) || delta === 0) return;
+      const amount = Math.max(-600, Math.min(600, delta));
+      desiredRadius = Math.max(4, Math.min(320, desiredRadius * Math.exp(amount * .0015)));
+    };
     try {
       for (const file of ['yacht-exterior-core.js', 'yacht-exterior.js', 'yacht-exterior-finalize.js']) {
         await new Promise((resolve, reject) => {
@@ -42,6 +50,7 @@
         case 'select': if (m.id === 'all' || m.id === 'hall' && api.project === 'boutique-hermes' || api.catalog.some(r => r.id === m.id)) api.select(m.id); break;
         case 'level': if (m.id === 'all' || api.floors.some(r => String(r.id) === String(m.id))) api.level(m.id); break;
         case 'overview': api.overview(); break;
+        case 'zoom': if (Number.isFinite(m.delta)) api.zoom?.(m.delta); break;
         case 'scene': api.scene(m.key); break;
         case 'lighting': if (m.values && typeof m.values === 'object') api.lighting(m.values, m.scope || 'all'); break;
         case 'color': api.color(m.value); break;
