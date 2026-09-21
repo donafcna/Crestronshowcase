@@ -1,0 +1,58 @@
+name: Asteria night render review
+on:
+  pull_request:
+    paths:
+      - 'apps/showcase/public/ftv-luxury/**'
+      - 'apps/showcase/scripts/test-yacht-night.mjs'
+      - '.github/workflows/asteria-night-review.yml'
+permissions:
+  contents: read
+jobs:
+  night-render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: apps/showcase
+    steps:
+      - uses: actions/checkout@v4
+      - name: Save exact public runtime for reproducible visual review
+        working-directory: .
+        run: |
+          mkdir -p /tmp/asteria-night-runtime
+          git archive --format=tar.gz HEAD apps/showcase/public/ftv-luxury apps/showcase/scripts apps/showcase/src/ftv-luxury AGENTS.md apps/showcase/CLAUDE.md apps/showcase/README.md > /tmp/asteria-night-runtime/runtime.tar.gz
+          git rev-parse HEAD > /tmp/asteria-night-runtime/revision.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: asteria-night-runtime
+          path: /tmp/asteria-night-runtime/
+          retention-days: 7
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: apps/showcase/package-lock.json
+      - run: npm ci
+      - run: node --test scripts/test-yacht-exterior.mjs
+      - run: npm run build
+      - name: Lint
+        run: npm run lint > /tmp/night-lint.log 2>&1 || { cat /tmp/night-lint.log; exit 1; }; tail -n 3 /tmp/night-lint.log
+      - name: Night render test
+        run: |
+          if [ -f scripts/test-yacht-night.mjs ]; then
+            npm install --prefix "$RUNNER_TEMP/night-tools" --no-save playwright@1.57.0
+            ln -s "$RUNNER_TEMP/night-tools/node_modules/playwright" node_modules/playwright
+            "$RUNNER_TEMP/night-tools/node_modules/.bin/playwright" install --with-deps chromium > /tmp/night-browser.log 2>&1
+            npm run preview -- --host 127.0.0.1 --port 4173 > /tmp/night-preview.log 2>&1 &
+            for i in $(seq 1 30); do curl -fsS http://127.0.0.1:4173/ftv-luxury/gui.html >/dev/null && break; sleep 1; done
+            node scripts/test-yacht-night.mjs
+          else
+            echo 'Runtime snapshot only: night fidelity test not yet added.'
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: asteria-night-render-review
+          path: apps/showcase/test-results/night/
+          retention-days: 7
+          if-no-files-found: ignore
