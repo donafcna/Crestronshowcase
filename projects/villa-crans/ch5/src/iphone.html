@@ -802,6 +802,7 @@
          quelques secondes. Le retour visuel vient des états CH5, jamais de cette surbrillance. -->
     <style id="touch-highlight">* { -webkit-tap-highlight-color: rgba(0, 0, 0, 0); }</style>
     <link rel="stylesheet" href="themes/global-controls.css">
+    <link rel="stylesheet" href="themes/alarm-controls.css">
 <link rel="stylesheet" href="themes/room-controls.css">
 <link rel="stylesheet" href="themes/wellness-controls.css">
 <script defer src="js/room-controls.js"></script>
@@ -1528,9 +1529,9 @@
                         <span id="alarm-part-1-status" style="font-size: 0.7rem; font-weight: bold; padding: 1px 6px; border-radius: 3px; background: rgba(16,185,129,0.1); color: #10b981;">DESACTIVÉE</span>
                     </div>
                     <div style="display: flex; gap: 4px;">
-                        <ch5-button label="ACTIVER" data-i18n="activate" customClass="alarm-btn" sendEventOnClick="301" receiveStateSelected="301" style="height: 32px; flex: 1;" data-join="301" data-rjoin="301"></ch5-button>
-                        <ch5-button label="PARTIEL" data-i18n="partial" customClass="alarm-btn" sendEventOnClick="302" receiveStateSelected="302" style="height: 32px; flex: 1;" data-join="302" data-rjoin="302"></ch5-button>
-                        <ch5-button label="OFF" customClass="alarm-btn" sendEventOnClick="303" receiveStateSelected="303" style="height: 32px; flex: 1.2;" data-join="303" data-rjoin="303"></ch5-button>
+                        <button id="alarm-part-btn-301" class="alarm-cmd-btn alarm-cmd-btn--armer" data-i18n="activate" data-join="301" style="flex: 1;" onclick="pressDigital(301)">ACTIVER</button>
+                        <button id="alarm-part-btn-302" class="alarm-cmd-btn alarm-cmd-btn--partiel" data-i18n="partial" data-join="302" style="flex: 1;" onclick="pressDigital(302)">PARTIEL</button>
+                        <button id="alarm-part-btn-303" class="alarm-cmd-btn alarm-cmd-btn--desarmer" data-join="303" style="flex: 1.2;" onclick="pressDigital(303)">OFF</button>
                     </div>
                 </div>
                 <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 6px; padding: 8px; display: flex; flex-direction: column; gap: 6px;">
@@ -1539,9 +1540,9 @@
                         <span id="alarm-part-2-status" style="font-size: 0.7rem; font-weight: bold; padding: 1px 6px; border-radius: 3px; background: rgba(16,185,129,0.1); color: #10b981;">DESACTIVÉE</span>
                     </div>
                     <div style="display: flex; gap: 4px;">
-                        <ch5-button label="ACTIVER" data-i18n="activate" customClass="alarm-btn" sendEventOnClick="304" receiveStateSelected="304" style="height: 32px; flex: 1;" data-join="304" data-rjoin="304"></ch5-button>
-                        <ch5-button label="PARTIEL" data-i18n="partial" customClass="alarm-btn" sendEventOnClick="305" receiveStateSelected="305" style="height: 32px; flex: 1;" data-join="305" data-rjoin="305"></ch5-button>
-                        <ch5-button label="OFF" customClass="alarm-btn" sendEventOnClick="306" receiveStateSelected="306" style="height: 32px; flex: 1.2;" data-join="306" data-rjoin="306"></ch5-button>
+                        <button id="alarm-part-btn-304" class="alarm-cmd-btn alarm-cmd-btn--armer" data-i18n="activate" data-join="304" style="flex: 1;" onclick="pressDigital(304)">ACTIVER</button>
+                        <button id="alarm-part-btn-305" class="alarm-cmd-btn alarm-cmd-btn--partiel" data-i18n="partial" data-join="305" style="flex: 1;" onclick="pressDigital(305)">PARTIEL</button>
+                        <button id="alarm-part-btn-306" class="alarm-cmd-btn alarm-cmd-btn--desarmer" data-join="306" style="flex: 1.2;" onclick="pressDigital(306)">OFF</button>
                     </div>
                 </div>
                 <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 6px; padding: 8px; display: flex; flex-direction: column; gap: 6px;">
@@ -1550,9 +1551,9 @@
                         <span id="alarm-part-3-status" style="font-size: 0.7rem; font-weight: bold; padding: 1px 6px; border-radius: 3px; background: rgba(16,185,129,0.1); color: #10b981;">DESACTIVÉE</span>
                     </div>
                     <div style="display: flex; gap: 4px;">
-                        <ch5-button label="ACTIVER" data-i18n="activate" customClass="alarm-btn" sendEventOnClick="307" receiveStateSelected="307" style="height: 32px; flex: 1;" data-join="307" data-rjoin="307"></ch5-button>
-                        <ch5-button label="PARTIEL" data-i18n="partial" customClass="alarm-btn" sendEventOnClick="308" receiveStateSelected="308" style="height: 32px; flex: 1;" data-join="308" data-rjoin="308"></ch5-button>
-                        <ch5-button label="OFF" customClass="alarm-btn" sendEventOnClick="309" receiveStateSelected="309" style="height: 32px; flex: 1.2;" data-join="309" data-rjoin="309"></ch5-button>
+                        <button id="alarm-part-btn-307" class="alarm-cmd-btn alarm-cmd-btn--armer" data-i18n="activate" data-join="307" style="flex: 1;" onclick="pressDigital(307)">ACTIVER</button>
+                        <button id="alarm-part-btn-308" class="alarm-cmd-btn alarm-cmd-btn--partiel" data-i18n="partial" data-join="308" style="flex: 1;" onclick="pressDigital(308)">PARTIEL</button>
+                        <button id="alarm-part-btn-309" class="alarm-cmd-btn alarm-cmd-btn--desarmer" data-join="309" style="flex: 1.2;" onclick="pressDigital(309)">OFF</button>
                     </div>
                 </div>
                 <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 6px; padding: 8px; display: flex; flex-direction: column; gap: 6px;">
@@ -1561,9 +1562,9 @@
                         <span id="alarm-part-4-status" style="font-size: 0.7rem; font-weight: bold; padding: 1px 6px; border-radius: 3px; background: rgba(16,185,129,0.1); color: #10b981;">DESACTIVÉE</span>
                     </div>
                     <div style="display: flex; gap: 4px;">
-                        <ch5-button label="ACTIVER" data-i18n="activate" customClass="alarm-btn" sendEventOnClick="310" receiveStateSelected="310" style="height: 32px; flex: 1;" data-join="310" data-rjoin="310"></ch5-button>
-                        <ch5-button label="PARTIEL" data-i18n="partial" customClass="alarm-btn" sendEventOnClick="311" receiveStateSelected="311" style="height: 32px; flex: 1;" data-join="311" data-rjoin="311"></ch5-button>
-                        <ch5-button label="OFF" customClass="alarm-btn" sendEventOnClick="312" receiveStateSelected="312" style="height: 32px; flex: 1.2;" data-join="312" data-rjoin="312"></ch5-button>
+                        <button id="alarm-part-btn-310" class="alarm-cmd-btn alarm-cmd-btn--armer" data-i18n="activate" data-join="310" style="flex: 1;" onclick="pressDigital(310)">ACTIVER</button>
+                        <button id="alarm-part-btn-311" class="alarm-cmd-btn alarm-cmd-btn--partiel" data-i18n="partial" data-join="311" style="flex: 1;" onclick="pressDigital(311)">PARTIEL</button>
+                        <button id="alarm-part-btn-312" class="alarm-cmd-btn alarm-cmd-btn--desarmer" data-join="312" style="flex: 1.2;" onclick="pressDigital(312)">OFF</button>
                     </div>
                 </div>
             </div>
@@ -3558,6 +3559,14 @@
                         toggleSelected('global-btn-' + join, value);
                     });
                 });
+
+                // v4.6 : partitions d'alarme (fenetre Securite) — meme chaine. Le texte d'etat des
+                // partitions suivait deja par subscribeState ; seul le <ch5-button> restait muet.
+                for (let join = 301; join <= 312; join++) {
+                    CrComLib.subscribeState('b', join.toString(), (value) => {
+                        toggleSelected('alarm-part-btn-' + join, value);
+                    });
+                }
 
                 // Alarme feedback
                 CrComLib.subscribeState('b', '41', (value) => {

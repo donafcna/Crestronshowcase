@@ -1,5 +1,40 @@
 # Villa Crans CH5 — journal des versions
 
+## v4.6 — 22/09/2026 — partitions d'alarme de l'iPhone en `<button>` ; cloture du retard Centralisation (a compiler : CH5 seul)
+
+| Artefact | Etat de ce lot |
+|---|---|
+| CH5 source | `src/iphone.html` + nouveau `src/themes/alarm-controls.css` — **a recompiler**, cibles web + tsw + **mobile** |
+| CPZ slot 1 | inchange, 1.0.195.0 (v4.5) en place |
+| Config | `meta.version` 1.0.205 ; `tracesConsole` et `tracesLatence` remis a `false` |
+| Batterie | Securite / partitions, iPhone 16 Pro, 3 themes, avant/apres : 6/6 VERT ; 12 jetons de contraste >= 4:1 verifies ; planche-contact fournie |
+
+**Cloture du retard Centralisation (v4.5 confirme par Donatien : « c'est enfin resolu »).** Cause : `PulseRoomDigital`
+envoyait 168 impulsions de bloc de piece a chaque ecran sur TOUT OUVRIR / TOUT FERMER. Chaine complete du diagnostic
+dans `claude/82-mesure-latence-iphone-2026-09-19.md`. Cinq hypotheses ecartees avant, dont trois testees sur une
+version qui n'avait jamais atteint le telephone (voir 22/09, cible `mobile`).
+
+**Nouveau defaut signale (iPhone seul) : boutons ACTIVER / PARTIEL / OFF des partitions sans retour d'appui ni etat
+selectionne, alors que le texte d'etat suit.** Le texte passe par `subscribeState` ; les boutons etaient des
+`<ch5-button customClass="alarm-btn">` sans aucune regle d'etat selectionne dans la page — la planche-contact
+« avant » le montre hors iPhone aussi : les trois boutons marques selectionnes ne se distinguent en rien en sombre
+et en verre. Sur Crestron One le composant n'affiche pas non plus l'appui.
+
+**Correction, meme methode que v4.4.** Les 12 boutons 301-312 deviennent
+`<button id="alarm-part-btn-NNN" class="alarm-cmd-btn alarm-cmd-btn--armer|partiel|desarmer" onclick="pressDigital(NNN)">`,
+`data-i18n` conserve ; 12 abonnements `subscribeState` → `toggleSelected`. Nouveau composant partage
+`themes/alarm-controls.css` : jetons `--alarm-{armer,partiel,desarmer}-{idle,active}-{bg,text,border}` par theme,
+etats repos / appui / selectionne / focus, media <= 480 px. `index.html` (dalle) inchange, il garde ses `<ch5-button>`
+et pourra consommer les memes jetons.
+
+**Decision par defaut (gout).** Les couleurs reprennent la semantique deja presente dans la page pour l'alarme
+principale (`.alarm-btn-mobile.armer` rouge, `.desarmer` vert) et celle du badge d'etat ; PARTIEL en ambre. Variante
+neutre (bleu uniforme comme avant, etat par bordure) disponible sur demande.
+
+**Reste en `<ch5-button>` sur l'iPhone** : scenes de la fenetre Circuits 51-54, CVC 610-615, wellness 620-625. Meme
+conversion des qu'un defaut y est constate, ou en lot groupe.
+
+
 ## v4.5 — 22/09/2026 — stores globaux : plus d'impulsions de bloc de piece vers les panels (a compiler : CPZ seul)
 
 | Artefact | Etat de ce lot |

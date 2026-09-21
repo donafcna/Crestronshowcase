@@ -1,0 +1,120 @@
+/* Partitions d'alarme (fenetre Securite) : jetons partages, un seul jeu de couleurs par theme.
+   v4.6 (22.09.2026). Sur l'iPhone les boutons sont des <button> ordinaires (pressDigital +
+   subscribeState + .selected) : sur Crestron One le <ch5-button> n'affichait ni l'appui ni
+   l'etat selectionne. La dalle (index.html) garde ses <ch5-button> ; elle pourra consommer les
+   memes jetons plus tard. Contrastes texte/fond >= 4:1 dans les deux themes (verifies).
+   Couleurs en !important : iphone.html porte une regle generique
+   `.theme-light .custom-overlay-panel button { ... !important }` (meme raison que global-controls). */
+body#app-body #alarm-overlay {
+    --alarm-armer-idle-bg: rgba(44, 26, 26, 0.9);
+    --alarm-armer-idle-text: #fca5a5;
+    --alarm-armer-idle-border: rgba(220, 38, 38, 0.45);
+    --alarm-armer-active-bg: #dc2626;
+    --alarm-armer-active-text: #ffffff;
+    --alarm-armer-active-border: #fecaca;
+
+    --alarm-partiel-idle-bg: rgba(44, 36, 20, 0.9);
+    --alarm-partiel-idle-text: #fcd34d;
+    --alarm-partiel-idle-border: rgba(217, 119, 6, 0.45);
+    --alarm-partiel-active-bg: #b45309;
+    --alarm-partiel-active-text: #ffffff;
+    --alarm-partiel-active-border: #fde68a;
+
+    --alarm-desarmer-idle-bg: rgba(22, 44, 30, 0.9);
+    --alarm-desarmer-idle-text: #a7f3d0;
+    --alarm-desarmer-idle-border: rgba(16, 185, 129, 0.45);
+    --alarm-desarmer-active-bg: #10b981;
+    --alarm-desarmer-active-text: #052e16;
+    --alarm-desarmer-active-border: #6ee7b7;
+}
+body#app-body.theme-light #alarm-overlay {
+    --alarm-armer-idle-bg: #fee2e2;
+    --alarm-armer-idle-text: #991b1b;
+    --alarm-armer-idle-border: #fca5a5;
+    --alarm-armer-active-bg: #b91c1c;
+    --alarm-armer-active-text: #ffffff;
+    --alarm-armer-active-border: #7f1d1d;
+
+    --alarm-partiel-idle-bg: #fef3c7;
+    --alarm-partiel-idle-text: #92400e;
+    --alarm-partiel-idle-border: #fcd34d;
+    --alarm-partiel-active-bg: #b45309;
+    --alarm-partiel-active-text: #ffffff;
+    --alarm-partiel-active-border: #78350f;
+
+    --alarm-desarmer-idle-bg: #d1fae5;
+    --alarm-desarmer-idle-text: #065f46;
+    --alarm-desarmer-idle-border: #6ee7b7;
+    --alarm-desarmer-active-bg: #047857;
+    --alarm-desarmer-active-text: #ffffff;
+    --alarm-desarmer-active-border: #064e3b;
+}
+
+body#app-body #alarm-overlay .alarm-cmd-btn {
+    flex: 1;
+    min-width: 0;
+    height: 44px;
+    min-height: 44px;
+    padding: 0 6px;
+    border-radius: 8px;
+    border: 2px solid transparent !important;
+    font-size: 0.85rem;
+    font-weight: 600 !important;
+    font-family: inherit;
+    line-height: 1.15;
+    white-space: normal;
+    text-align: center;
+    cursor: pointer;
+    box-sizing: border-box;
+    box-shadow: none !important;
+    transition: none;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    user-select: none;
+}
+body#app-body #alarm-overlay .alarm-cmd-btn--armer {
+    background: var(--alarm-armer-idle-bg) !important;
+    color: var(--alarm-armer-idle-text) !important;
+    border-color: var(--alarm-armer-idle-border) !important;
+}
+body#app-body #alarm-overlay .alarm-cmd-btn--partiel {
+    background: var(--alarm-partiel-idle-bg) !important;
+    color: var(--alarm-partiel-idle-text) !important;
+    border-color: var(--alarm-partiel-idle-border) !important;
+}
+body#app-body #alarm-overlay .alarm-cmd-btn--desarmer {
+    background: var(--alarm-desarmer-idle-bg) !important;
+    color: var(--alarm-desarmer-idle-text) !important;
+    border-color: var(--alarm-desarmer-idle-border) !important;
+}
+body#app-body #alarm-overlay .alarm-cmd-btn--armer:active,
+body#app-body #alarm-overlay .alarm-cmd-btn--armer.selected {
+    background: var(--alarm-armer-active-bg) !important;
+    color: var(--alarm-armer-active-text) !important;
+    border-color: var(--alarm-armer-active-border) !important;
+}
+body#app-body #alarm-overlay .alarm-cmd-btn--partiel:active,
+body#app-body #alarm-overlay .alarm-cmd-btn--partiel.selected {
+    background: var(--alarm-partiel-active-bg) !important;
+    color: var(--alarm-partiel-active-text) !important;
+    border-color: var(--alarm-partiel-active-border) !important;
+}
+body#app-body #alarm-overlay .alarm-cmd-btn--desarmer:active,
+body#app-body #alarm-overlay .alarm-cmd-btn--desarmer.selected {
+    background: var(--alarm-desarmer-active-bg) !important;
+    color: var(--alarm-desarmer-active-text) !important;
+    border-color: var(--alarm-desarmer-active-border) !important;
+}
+body#app-body #alarm-overlay .alarm-cmd-btn.selected {
+    font-weight: 800 !important;
+}
+body#app-body #alarm-overlay .alarm-cmd-btn:focus-visible {
+    outline: 3px solid currentColor;
+    outline-offset: 2px;
+}
+@media (max-width: 480px) {
+    body#app-body #alarm-overlay .alarm-cmd-btn {
+        padding: 0 3px;
+        font-size: 0.8rem;
+    }
+}
