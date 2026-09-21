@@ -27,7 +27,6 @@
     b.textContent='Extérieur · 40 circuits';b.setAttribute('aria-expanded',String(opened));
     (controls.querySelector('.section-header')||controls).appendChild(b);
   }
-  // Legacy GUI recreates its controls on zone changes and programmatic navigation.
   const observer=new MutationObserver(launcher);observer.observe(controls,{childList:true,subtree:true});
   function show(on){
     opened=on;panel.hidden=!on;app.classList.toggle('yacht-exterior-active',on);
@@ -35,13 +34,14 @@
     if(on){render();panel.querySelector('[data-exterior-close]').focus();}
     else controls.querySelector('[data-exterior-open]')?.focus();
   }
+  const circuitName=c=>c.id==='party_beams'?'Lyres · optiques de pont':c.name;
   function render(){
     const list=core.circuits.filter(c=>c.group===group), count=Math.ceil(list.length/pageSize);page=Math.max(0,Math.min(count-1,page));
     panel.innerHTML=`<div class="exterior-heading"><h2>Éclairage extérieur</h2><button type="button" data-exterior-close>Retour</button></div>
       <div class="exterior-mode"><label><input type="checkbox" data-exterior-auto ${current.automatic?'checked':''}> Auto jour / nuit</label><span data-exterior-phase></span></div>
       <div class="exterior-actions"><button type="button" data-exterior-preset="night">Tout allumer</button><button type="button" data-exterior-preset="off">Tout éteindre</button></div>
       <label class="exterior-group">Famille de circuits<select data-exterior-group>${Object.entries(core.groups).map(([id,name])=>`<option value="${id}" ${group===id?'selected':''}>${name}</option>`).join('')}</select></label>
-      <div class="exterior-sliders">${list.slice(page*pageSize,page*pageSize+pageSize).map(c=>`<div class="exterior-slider"><label for="exterior-${c.id}">${c.name}<output data-exterior-value="${c.id}">${current.levels[c.id]} %</output></label><input id="exterior-${c.id}" type="range" min="0" max="100" step="1" value="${current.levels[c.id]}" data-exterior-id="${c.id}" aria-label="${c.name}"></div>`).join('')}</div>
+      <div class="exterior-sliders">${list.slice(page*pageSize,page*pageSize+pageSize).map(c=>`<div class="exterior-slider"><label for="exterior-${c.id}">${circuitName(c)}<output data-exterior-value="${c.id}">${current.levels[c.id]} %</output></label><input id="exterior-${c.id}" type="range" min="0" max="100" step="1" value="${current.levels[c.id]}" data-exterior-id="${c.id}" aria-label="${circuitName(c)}"></div>`).join('')}</div>
       <div class="exterior-pages"><button type="button" data-exterior-page="-1" ${page===0?'disabled':''}>Précédent</button><span>${page+1} / ${count}</span><button type="button" data-exterior-page="1" ${page+1===count?'disabled':''}>Suivant</button></div>
       <p class="exterior-hint" data-exterior-status role="status"></p>`;
     refresh();
@@ -79,10 +79,17 @@
     current={...current,automatic:false,levels:{...current.levels,[id]:value}};refresh();command({action:'level',id,value});
   });
   panel.addEventListener('keydown',e=>{if(e.key==='Escape')show(false);});
-  // Only an intentional GUI preset, not startup state restoration, exits Auto.
+  // Only a real pointer/keyboard click on an interior preset may exit Auto.
+  // The automatic tour also calls applyPreset; it must not freeze exterior light.
+  let userPreset=null;
+  document.addEventListener('click',e=>{
+    const id=e.target.closest?.('[data-preset]')?.dataset.preset;
+    userPreset=e.isTrusted&&id?id:null;
+    setTimeout(()=>{userPreset=null;},0);
+  },true);
   window.addEventListener('ftv:control',e=>{
     if(e.detail?.project!==gui.config.project)return;
-    if(e.detail.name==='scene')command({action:'preset',key:e.detail.value});
+    if(e.detail.name==='scene'&&userPreset===e.detail.value)command({action:'preset',key:e.detail.value});
     if(gui.state.tab!=='light'&&opened)show(false);
   });
   window.addEventListener('message',e=>{

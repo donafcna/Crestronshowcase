@@ -17,7 +17,7 @@
       desiredRadius = Math.max(4, Math.min(320, desiredRadius * Math.exp(amount * .0015)));
     };
     try {
-      for (const file of ['yacht-exterior-core.js', 'yacht-exterior.js', 'yacht-exterior-finalize.js']) {
+      for (const file of ['yacht-exterior-core.js', 'yacht-exterior.js', 'yacht-exterior-finalize.js', 'yacht-night-finish.js']) {
         await new Promise((resolve, reject) => {
           const script = document.createElement('script'); script.src = new URL(file, base).href;
           script.onload = resolve; script.onerror = () => reject(new Error('Échec du chargement : ' + file)); document.head.appendChild(script);
