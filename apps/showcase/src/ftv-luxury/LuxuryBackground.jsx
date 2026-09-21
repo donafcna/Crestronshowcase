@@ -2,11 +2,11 @@ import React, { useEffect, useRef, useState } from 'react';
 import './background.css';
 import { LUXURY_MODELS } from './modelProjects';
 const channel = 'ftv-luxury/v1';
-const commands = new Set(['hello', 'select', 'level', 'overview', 'scene', 'lighting', 'color', 'capture', 'visibility', 'resize']);
+const commands = new Set(['hello', 'select', 'level', 'overview', 'scene', 'lighting', 'color', 'capture', 'visibility', 'resize', 'exterior']);
 const controls = 'iframe,button,a,input,select,textarea,.workspace-device-sidebar,.phone-device-frame,.projects-strip';
 
 /** The approved model fills the page, while its camera reserves space for the phone. */
-export function LuxuryBackground({ projectId, stageRef }) {
+export function LuxuryBackground({ projectId, stageRef, tourSessionRef }) {
   const frameRef = useRef(null);
   const [ready, setReady] = useState(false);
   useEffect(() => {
@@ -21,6 +21,9 @@ export function LuxuryBackground({ projectId, stageRef }) {
     let previous = '', loaded = false;
     const layout = () => {
       if (!loaded) return;
+      // Same presentation clock as Villa Crans; lighting presets cannot alter it.
+      const seconds = tourSessionRef?.current?.seconds?.();
+      if (projectId === 'yacht-monaco' && Number.isFinite(seconds) && seconds >= 0) send('environment-time', { seconds });
       const canvas = frame.getBoundingClientRect();
       const phone = stage.querySelector('.phone-device-frame')?.getBoundingClientRect();
       const side = stage.querySelector('.workspace-device-sidebar')?.getBoundingClientRect();
@@ -39,7 +42,7 @@ export function LuxuryBackground({ projectId, stageRef }) {
       if (data?.channel !== channel || data.project !== projectId) return;
       if (event.source === frame.contentWindow) {
         if (data.type === 'model-ready') { loaded = true; previous = ''; setReady(true); layout(); }
-        if (['model-ready', 'selection', 'model-error', 'user-activity'].includes(data.type)) relay(data);
+        if (['model-ready', 'selection', 'model-error', 'user-activity', 'exterior-state'].includes(data.type)) relay(data);
       } else if (event.source === gui()?.contentWindow && data.type === 'background-command') {
         const command = data.command;
         if (!commands.has(command?.type)) return;
@@ -80,7 +83,7 @@ export function LuxuryBackground({ projectId, stageRef }) {
       stage.removeEventListener('wheel', wheel);
       stage.removeEventListener('click', click);
     };
-  }, [projectId, stageRef]);
+  }, [projectId, stageRef, tourSessionRef]);
   return (
     <div className="plan3d-bg-container luxury-background" data-ready={ready}>
       <iframe key={projectId} ref={frameRef} className="luxury-background-frame"
@@ -91,4 +94,3 @@ export function LuxuryBackground({ projectId, stageRef }) {
     </div>
   );
 }
-
