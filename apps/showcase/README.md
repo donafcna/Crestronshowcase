@@ -387,3 +387,37 @@ Preuves et comparaison : `docs/verification/2026-09-17-journey-1/` à la racine 
 
 
 Publication vérifiée : **74cd4a41**, main → Vercel. Quatre ressources publiques identiques aux octets Git ; **34 contrôles Villa Crans et 122 contrôles React réussis sur le site public**, soit 156. Cycle jour/nuit, deux passages Smartphone et TSW, sources et volume réels, arrêt A/V, priorité manuelle et minimum de visibilité confirmés. Aucun nouveau défaut navigateur ; messages préexistants du TSW séparés. Preuves `production/`, `production-react/` et `production-assets.json` dans `docs/verification/2026-09-17-journey-1/`. Aucun matériel déployé. La TODO F1 est enregistrée sans réalisation.
+
+
+## 20/09/2026 — reprise maquette bijouterie : TSW HTML/CSS et passages yacht
+
+Application des dernières consignes : retrait du modèle 3D des dalles VCA/Sunrays au profit de cartes de niveaux/espaces en HTML/CSS avec états lumineux ; maintien des scènes, circuits, musique et ambiances. La présentation Smartphone conserve son fond 3D synchronisé. Dix passages latéraux (bâbord/tribord sur cinq ponts) ajoutés à Sunrays, mobilier et pavillons reculés ; export glTF vérifié.
+
+214 contrôles dalles/géométrie/export, 43 contrôles de fond Smartphone sur 50 états, build et lint réussis. Trois thèmes, trois formats de dalle, modes normal/Scène Smartphone ; aucune exception JavaScript. Un débordement audio sur format compact a été corrigé et la matrice repassée. Captures, fiches FR/EN/DE et comparaison avant/après : `docs/verification/2026-09-20-panels-passages/`. Chromium logiciel ; pas de recette sur matériel physique. La géométrie est conceptuelle, pas un plan naval. Aucun changement CH5/C#/SIMPL.
+
+
+## Mer Sunrays — 20 septembre 2026
+
+Mer animée autour de la coque : houle douce, rides fines, reflets du ciel et horizon adouci, adaptés aux trois ambiances. Animation suspendue en mouvement réduit et mer masquée en coupe. Géométrie à budget inchangé ; aucun FPS garanti. Contrôles ciblés réussis sans erreur de shader, build/lint réussis avec avertissements préexistants. Comparaison et résultats : `docs/verification/2026-09-20-sea/`. Les interfaces et programmes matériels ne changent pas.
+
+
+## Smartphone et lieux 3D — 21 septembre 2026
+
+Yacht Sunrays et Boutique VCA s’ouvrent sur Smartphone lors du choix du projet ou d’une URL sans support. Un lien explicitement ciblé vers une dalle reste respecté. Auditorium Richmond et Club L’Étoile proposent désormais Smartphone : commandes réparties en onglets, trois thèmes, arrière-plan 3D en coupe à côté du châssis. Auditorium : gradins, scène, pupitre, écran, enceintes et caméras ; club : piste, DJ, bar, lounge et éclairage. Les scènes/circuits/couleur/écran de l’auditorium et les effets lumineux/fumée du club actualisent le modèle. Aucun son, pas de clignotement du stroboscope dans la 3D.
+
+Les anciens supports conservent leur GUI. Les modèles sont conceptuels et la salle ne représente pas les 1000 sièges du projet commercial : 60 sièges schématiques pour garder un rendu léger. Aucun programme matériel modifié. Preuves et limites : `docs/verification/2026-09-21-venues/`. Fiches FR/EN/DE actualisées.
+
+
+### 21 septembre 2026 — fond 3D continu en Mode Scène
+Conférence et discothèque : le canvas adapte aussi sa largeur CSS lors du redimensionnement, supprimant la bande vide sous la colonne de droite. Logos et sélecteurs de support conservés. Vérification navigateur aux largeurs 1600 et 1280 px, aucune erreur JavaScript ; build et lint réussis (avertissements existants). Aucun écran de simulateur ni fiche projet modifié.
+
+
+## 21/09/2026 — Centralisation iPhone C1 : publication de la page
+
+Demande explicite de Donatien : publier sur Vercel la mise à jour fournie dans le paquet C1. La source commune `projects/villa-crans/ch5/src/iphone.html` reçoit le diagnostic `CENT-20260921-1`. Sa copie publique est régénérée par la fonction `patch_html` de `scripts/sync-villa-crans.py`, limitée à cette page pour conserver les autres évolutions déjà présentes. Seul le bloc de diagnostic change ; boutons natifs CH5, joins, styles, configuration de démonstration et moteur `local-feedback.js` conservés.
+
+La mesure démarre à la pression, conserve les retards jusqu’à 45 secondes, distingue callback/DOM/frame et exclut les appuis ambigus ou sur un état déjà actif. Le bandeau reste masqué par défaut, cinq appuis sur Centralisation pour l’afficher. En mode showcase, les diagnostics restent locaux : aucun envoi sur le sériel 100. Cette publication ne démontre pas la disparition du retard sur l’iPhone relié au CP4.
+
+Vérifications : build et lint réussis (avertissements existants), 14 tests du diagnostic réussis, syntaxe des scripts inline et identité des attributs des boutons contrôlées. La batterie générale donne 39/43, avec les quatre mêmes échecs sur le commit initial inchangé : configuration `meta.version=1.0.201` contre profil de qualification `1.0.196`. Le profil de qualification matériel n’a pas été assoupli pour publier la vitrine. Chromium se ferme par SIGSEGV avant le chargement ; aucun résultat de rendu, de contraste ou de recette Safari/iPhone n’est revendiqué. Les écrans de présentation et fiches commerciales ne changent pas. Preuves : `docs/verification/2026-09-21-centralisation-c1/` à la racine.
+
+Artefacts : source iPhone C1 et showcase mis à jour ; aucun CH5Z, CPZ ou LPZ compilé ou envoyé. Le C# C1 reste dans le paquet remis à Donatien et n’est pas ajouté au dépôt par cette publication du site. Le correctif matériel complet conserve son installation et sa recette séparées.

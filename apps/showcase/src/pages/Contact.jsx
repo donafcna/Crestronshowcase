@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Icons } from "../icons";
 import { useTranslation } from "../context/LanguageContext";
 import { company } from "../data/company";
-import { projects, sectors, getProjectName } from "../data/projects";
+import { projects, sectors, getProjectName } from "../data/showcaseProjects";
 import { useDemoSettings } from "../hooks/useDemoSettings";
 
 // Page contact / demande de démo. Sans back-end : le formulaire compose un

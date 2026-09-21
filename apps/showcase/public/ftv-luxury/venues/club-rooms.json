@@ -1,0 +1,23 @@
+[
+  {
+    "id": "original",
+    "floor": 0,
+    "name": "Studio 77 · Disco",
+    "color": "#ffb54a",
+    "mood": "Or & velours · Piste rétro · DJ"
+  },
+  {
+    "id": "neon",
+    "floor": 1,
+    "name": "Neon Foundry · Electro",
+    "color": "#2ee7f2",
+    "mood": "Béton & acier · Portiques néon · DJ"
+  },
+  {
+    "id": "sky",
+    "floor": 2,
+    "name": "Sky Garden · Panoramique",
+    "color": "#7fe0bb",
+    "mood": "Ivoire & jade · Piste ronde · DJ"
+  }
+]

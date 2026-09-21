@@ -45,6 +45,21 @@ mesurer l'effet sur les seuls boutons signales.
 `tracesConsole` ; a retirer au lot de nettoyage une fois la correction confirmee sur le telephone.
 
 
+> **Fusion du 21/09/2026.** Le lot « CENT-20260921-1 » ci-dessous (Codex) a ajoute a `src/iphone.html` un bloc de
+> diagnostic qui observe les `<ch5-button>` de la Centralisation. v4.4 remplace ces composants par des `<button>`
+> ordinaires ; le bloc n'a donc plus rien a observer et n'est pas conserve dans la source commune. Il reste dans
+> la copie publique `apps/showcase/.../iphone.html` jusqu'a la prochaine regeneration par `sync-villa-crans.py`.
+> Ses fichiers de verification (`docs/verification/2026-09-21-centralisation-c1/`) sont conserves tels quels.
+
+## 21/09/2026 — C1 : source iPhone synchronisée vers Vercel
+
+- Source CH5 iPhone : diagnostic C1 intégré, commandes et feedbacks natifs conservés ; CH5Z non compilé.
+- CPZ slot 1 : aucun changement du C# du dépôt, C1 matériel fourni dans le ZIP séparé ; aucune compilation ni installation.
+- LPZ slot 2 : inchangé.
+- Showcase : copie iPhone régénérée via le synchroniseur existant pour publication autorisée sur Vercel.
+
+Build/lint et 14 tests du diagnostic réussis. Rendu navigateur indisponible ; qualification générale 39/43, mêmes quatre échecs de version sur la référence inchangée. Détails et preuves dans le journal showcase et `docs/verification/2026-09-21-centralisation-c1/`.
+
 ## v4.3.1 — 19/09/2026 — le bandeau de latence ne s'armait jamais (a recompiler : CH5 seul)
 
 | Artefact | Etat de ce lot |

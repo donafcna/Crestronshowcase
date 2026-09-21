@@ -1,0 +1,201 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> crestronshowcase@2.0.0 lint
+> oxlint
+
+src/components/Plan3DBackground.jsx:12:14: warning react(only-export-components): Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components.
+src/components/Plan3DBackground.jsx:19:14: warning react(only-export-components): Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components.
+src/components/Plan3DBackground.jsx:22:14: warning react(only-export-components): Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components.
+public/showcases/villa-gemini-frequencetv/js/wellness-controls.js:15:87: warning eslint(no-unused-vars): Catch parameter '_' is caught but never used. help: Consider handling this error.
+scripts/check-contrast-dom.mjs:75:9: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+scripts/check-contrast-dom.mjs:86:9: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+scripts/test-hvac-controls.cjs:6:100: warning eslint(no-useless-escape): Unnecessary escape character '"' help: Replace `\"` with `"`.
+scripts/test-hvac-controls.cjs:6:106: warning eslint(no-useless-escape): Unnecessary escape character '"' help: Replace `\"` with `"`.
+scripts/test-hvac-controls.cjs:13:87: warning eslint(no-useless-escape): Unnecessary escape character '"' help: Replace `\"` with `"`.
+scripts/test-hvac-controls.cjs:13:93: warning eslint(no-useless-escape): Unnecessary escape character '"' help: Replace `\"` with `"`.
+scripts/test-hvac-controls.cjs:15:39: warning eslint(no-useless-escape): Unnecessary escape character '"' help: Replace `\"` with `"`.
+scripts/test-hvac-controls.cjs:15:45: warning eslint(no-useless-escape): Unnecessary escape character '"' help: Replace `\"` with `"`.
+scripts/test-hvac-controls.cjs:15:246: warning eslint(no-useless-escape): Unnecessary escape character '"' help: Replace `\"` with `"`.
+scripts/test-hvac-controls.cjs:15:252: warning eslint(no-useless-escape): Unnecessary escape character '"' help: Replace `\"` with `"`.
+scripts/test-hvac-controls.cjs:27:141: warning eslint(no-useless-escape): Unnecessary escape character '"' help: Replace `\"` with `"`.
+scripts/test-hvac-controls.cjs:27:147: warning eslint(no-useless-escape): Unnecessary escape character '"' help: Replace `\"` with `"`.
+scripts/test-hvac-controls.cjs:43:155: warning eslint(no-useless-escape): Unnecessary escape character '"' help: Replace `\"` with `"`.
+scripts/test-hvac-controls.cjs:43:161: warning eslint(no-useless-escape): Unnecessary escape character '"' help: Replace `\"` with `"`.
+src/components/DemoMode.jsx:17:14: warning react(only-export-components): Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components.
+src/components/DemoMode.jsx:33:14: warning react(only-export-components): Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components.
+src/components/simulators/ChaletZermatt.jsx:62:10: warning eslint(no-unused-vars): Variable 'joinLogs' is declared but never used. Unused variables should start with a '_'. help: Consider removing this declaration.
+src/router.jsx:25:14: warning react(only-export-components): Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components.
+src/router.jsx:46:14: warning react(only-export-components): Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components.
+src/router.jsx:108:14: warning react(only-export-components): Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components.
+src/context/FrameInfoContext.jsx:15:14: warning react(only-export-components): Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components.
+src/context/LanguageContext.jsx:65:14: warning react(only-export-components): Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components.
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:4: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:160: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:192: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:268: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:953: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:972: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:1918: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:2748: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:2761: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:3198: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:3392: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:3586: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:3761: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:4014: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:4187: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:4505: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:4772: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:4785: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:5935: warning react(no-this-in-sfc): Stateless functional components should not use `this` help: Use props and context directly as function parameters instead of accessing them through `this`
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:6117: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:6155: warning react(no-this-in-sfc): Stateless functional components should not use `this` help: Use props and context directly as function parameters instead of accessing them through `this`
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:6374: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:6428: warning react(no-this-in-sfc): Stateless functional components should not use `this` help: Use props and context directly as function parameters instead of accessing them through `this`
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:6474: warning react(no-this-in-sfc): Stateless functional components should not use `this` help: Use props and context directly as function parameters instead of accessing them through `this`
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:6515: warning react(no-this-in-sfc): Stateless functional components should not use `this` help: Use props and context directly as function parameters instead of accessing them through `this`
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:6675: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:6688: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:7471: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:8168: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:8207: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:8417: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:8460: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:8493: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:8556: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:8822: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:8874: warning eslint(no-sparse-arrays): Unexpected comma in middle of array help: remove the comma or insert `undefined`
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:9358: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:10055: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:10094: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:10304: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:10347: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:10380: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:10443: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:10540: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:10553: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:11035: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:12399: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:12508: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:12860: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:12918: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:12947: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:12986: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:13063: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:13137: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:13314: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:13696: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:13820: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:13997: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:14126: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:14180: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:14306: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:14424: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:14584: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:14806: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:15182: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:15217: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:15304: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:15390: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:15464: warning react(no-this-in-sfc): Stateless functional components should not use `this` help: Use props and context directly as function parameters instead of accessing them through `this`
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:15680: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:15811: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:16064: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:16598: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:16703: warning react(no-this-in-sfc): Stateless functional components should not use `this` help: Use props and context directly as function parameters instead of accessing them through `this`
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:16814: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:17121: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:17585: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:17598: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:18719: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:18781: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:20141: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:20522: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:20656: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:20717: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:20852: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:20962: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:21067: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:21173: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:21295: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:21359: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:21427: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:21501: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:21652: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:21786: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:22348: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:22420: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:22613: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:22869: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:23563: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:23693: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:24706: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:24998: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:25098: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:25456: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:25545: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:25888: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:26955: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:27382: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:29691: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:30011: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:31369: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:31625: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:31792: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:31878: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:31911: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:31969: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:32616: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:32969: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:33042: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:33213: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:33290: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:33429: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:34096: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:34262: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:34505: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:34750: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:34842: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:35082: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:35193: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:35546: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:35757: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:36165: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:36427: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:37798: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:37939: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:38083: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:38292: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:38557: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:38770: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:38930: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:39146: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:39325: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:39496: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:39744: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:40244: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:40594: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:41426: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:41836: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:42072: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:42259: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:42356: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:42675: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:42778: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:42981: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:43183: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/d4412f0cafef4f213591.worker.js:10:43538: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+public/showcases/villa-gemini-frequencetv/js/local-feedback.js:167:54: warning eslint(no-unused-vars): Catch parameter 'e' is caught but never used. help: Consider handling this error.
+public/showcases/villa-gemini-frequencetv/js/local-feedback.js:252:72: warning eslint(no-unused-vars): Catch parameter 'e' is caught but never used. help: Consider handling this error.
+public/showcases/villa-gemini-frequencetv/js/local-feedback.js:264:58: warning eslint(no-unused-vars): Catch parameter 'e' is caught but never used. help: Consider handling this error.
+public/showcases/villa-gemini-frequencetv/js/local-feedback.js:591:14: warning eslint(no-unused-vars): Catch parameter 'e' is caught but never used. help: Consider handling this error.
+public/showcases/villa-gemini-frequencetv/js/local-feedback.js:631:94: warning eslint(no-unused-vars): Catch parameter 'e' is caught but never used. help: Consider handling this error.
+src/components/simulators/HotelGeneva.jsx:239:31: warning eslint(no-unused-vars): Parameter 'deviceType' is declared but never used. Unused parameters should start with a '_'. help: Consider removing this parameter.
+public/showcases/villa-gemini-frequencetv/js/villa-joins.js:184:78: warning eslint(no-unused-vars): Catch parameter 'e' is caught but never used. help: Consider handling this error.
+public/showcases/villa-gemini-frequencetv/js/villa-joins.js:199:89: warning eslint(no-unused-vars): Catch parameter 'e' is caught but never used. help: Consider handling this error.
+public/showcases/villa-gemini-frequencetv/js/villa-joins.js:201:74: warning eslint(no-unused-vars): Catch parameter 'e' is caught but never used. help: Consider handling this error.
+public/showcases/villa-gemini-frequencetv/js/villa-joins.js:224:82: warning eslint(no-unused-vars): Catch parameter 'e' is caught but never used. help: Consider handling this error.
+public/showcases/villa-gemini-frequencetv/js/villa-joins.js:275:18: warning eslint(no-unused-vars): Catch parameter 'e' is caught but never used. help: Consider handling this error.
+public/showcases/villa-gemini-frequencetv/js/villa-joins.js:329:14: warning eslint(no-unused-vars): Catch parameter 'e' is caught but never used. help: Consider handling this error.
+src/components/Showcase.jsx:268:33: warning react-hooks(exhaustive-deps): React Hook useEffect has missing dependencies: 'guiFullscreen', and 'setGuiFullscreen' help: Either include it or remove the dependency array.
+public/plan3d/plan3d.js:1085:18: warning eslint(no-unused-vars): Catch parameter 'e' is caught but never used. help: Consider handling this error.

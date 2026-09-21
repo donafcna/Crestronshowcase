@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { VenuePhone, Card, Choices, Slider, Toggle } from '../../venues/VenuePhone';
+import { useVenueState } from '../../venues/state';
 import { Icons } from "../../icons";
 
 export const AuditoriumRichmond = ({ deviceType }) => {
@@ -78,7 +80,14 @@ export const AuditoriumRichmond = ({ deviceType }) => {
     });
   };
 
+  useVenueState('auditorium-richmond', { lightsColor, stageScene, dimmers, activeCam, camZoom, camPan, isRecording, ledWallSource, ledWallBrightness });
   const isPhone = deviceType === "phone";
+  if (isPhone) return <VenuePhone name="Auditorium Richmond" subtitle="Scène · Conférence · Régie" active={activeTab} onTab={setActiveTab} tabs={[["stage_lights","Lumière","Lightbulb"],["ptz_cameras","Caméras","Camera"],["audio_dante","Audio","Volume2"],["led_wall","Écran","Monitor"]]}>
+    {activeTab==='stage_lights' && <><Card title="Ambiance de la salle"><Choices value={stageScene} onChange={handleStageScene} options={[["speech","Conférence"],["debate","Débat"],["performance","Spectacle"],["off","Éteindre"]]}/></Card><Card title="Circuits d’éclairage">{[['faceSpots','Scène'],['backlights','Contre-jour'],['audienceLights','Public']].map(([id,label])=><Slider key={id} label={label} value={dimmers[id]} onChange={v=>setDimmers(p=>({...p,[id]:v}))}/>)}<label className="venue-note">Couleur de scène<input aria-label="Couleur de scène" type="color" value={lightsColor} onChange={e=>setLightsColor(e.target.value)}/></label></Card></>}
+    {activeTab==='ptz_cameras' && <><Card title="Caméras PTZ"><Choices value={activeCam} onChange={setActiveCam} options={[["cam1","Caméra 1"],["cam2","Caméra 2"],["cam3","Caméra 3"]]}/><Slider label="Zoom" min={1} max={20} unit="×" value={camZoom} onChange={setCamZoom}/><div className="venue-directions"><span/><button aria-label="Caméra haut" onClick={()=>adjustCam('up')}>{renderIcon('ArrowUp',18)}</button><span/><button aria-label="Caméra gauche" onClick={()=>adjustCam('left')}>{renderIcon('ArrowLeft',18)}</button><button onClick={()=>{setCamPan({x:0,y:0});setCamZoom(1)}}>Centre</button><button aria-label="Caméra droite" onClick={()=>adjustCam('right')}>{renderIcon('ArrowRight',18)}</button><span/><button aria-label="Caméra bas" onClick={()=>adjustCam('down')}>{renderIcon('ArrowDown',18)}</button></div><p className="venue-note">Pan {camPan.x}° · Tilt {camPan.y}°</p></Card><Card title="Captation"><Toggle label="Enregistrement simulé" value={isRecording} onChange={setIsRecording}/></Card></>}
+    {activeTab==='audio_dante' && <Card title="Mixage audio">{[['lecternMic','Pupitre'],['wirelessMics','Micros sans fil'],['auxInput','Auxiliaire']].map(([id,label])=><div key={id}><Slider label={label} value={audioFaders[id]} onChange={v=>setAudioFaders(p=>({...p,[id]:v}))}/><Toggle label={'Mute · '+label} value={audioMutes[id]} onChange={v=>setAudioMutes(p=>({...p,[id]:v}))}/></div>)}</Card>}
+    {activeTab==='led_wall' && <Card title="Mur LED"><Choices value={ledWallSource} onChange={setLedWallSource} options={[["pc_lectern","PC pupitre"],["regie_hdmi","HDMI régie"],["cam_feed","Caméra live"],["logo","Logo"]]}/><Slider label="Luminosité écran" min={10} value={ledWallBrightness} onChange={setLedWallBrightness}/><p className="venue-note">La source et la luminosité apparaissent dans la salle 3D.</p></Card>}
+  </VenuePhone>;
 
   return (
     <div className={`gemini-ui-root auditorium-richmond-ui cyberpunk-neon-theme ${deviceType}`}>
@@ -618,3 +627,4 @@ export const AuditoriumRichmond = ({ deviceType }) => {
     </div>
   );
 };
+

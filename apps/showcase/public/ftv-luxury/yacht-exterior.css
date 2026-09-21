@@ -1,0 +1,23 @@
+/* Same theme variables as the existing GUI; no changes outside the yacht. */
+#app.yacht .exterior-launcher{font:inherit;font-size:12px;min-height:44px;padding:8px 10px}
+#app.yacht .section-header:has(.exterior-launcher){flex-wrap:wrap;gap:8px}
+.yacht-exterior-panel[hidden]{display:none!important}
+#app.yacht-exterior-active #controls{display:none!important}
+#app.yacht .yacht-exterior-panel{min-width:0;min-height:0;max-height:100%;overflow:hidden;align-self:stretch;padding:12px;border:1px solid var(--line);border-radius:12px;background:var(--panel);color:var(--text);font-size:12px;display:flex;flex-direction:column;gap:10px}
+#app.yacht[data-theme=glass] .yacht-exterior-panel{backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
+#app.yacht .yacht-exterior-panel>*{flex-shrink:0}
+#app.yacht .yacht-exterior-panel button,#app.yacht .yacht-exterior-panel select{font:inherit;min-height:44px;padding:7px 9px}
+.exterior-heading,.exterior-actions,.exterior-pages{display:flex;align-items:center;justify-content:space-between;gap:7px}
+#app.yacht .exterior-heading h2{font-size:18px;line-height:1.2;margin:0}
+.exterior-mode{display:flex;flex-wrap:wrap;gap:6px;align-items:center;justify-content:space-between}
+.exterior-mode label{display:flex;align-items:center;gap:8px;min-height:44px}
+.exterior-mode input{width:22px;height:22px;accent-color:var(--accent)}
+.exterior-mode [data-exterior-phase]{font-size:11px;color:var(--muted)}
+.exterior-actions button{flex:1}.exterior-group{display:grid;gap:5px;color:var(--muted)}
+.exterior-group select{color:var(--text);background:var(--panel2);border:1px solid var(--line);border-radius:7px;max-width:100%;min-width:0;width:100%}
+.exterior-slider label{display:flex;align-items:baseline;justify-content:space-between;gap:6px;line-height:1.4;min-height:18px}
+.exterior-slider output{white-space:nowrap;color:var(--gold);min-width:35px;text-align:right}
+.exterior-slider input[type=range]{height:44px;width:100%;margin:0;accent-color:var(--accent)}
+.exterior-pages span{font-size:11px;white-space:nowrap}.exterior-pages button:disabled{cursor:default;opacity:.55}
+#app.yacht .exterior-hint{color:var(--muted);font-size:11px;line-height:1.45;margin:0}
+@media(max-width:650px){#app.yacht .yacht-exterior-panel{overflow:auto;scrollbar-width:thin;overscroll-behavior:contain;flex:1}#app.yacht .exterior-launcher{width:100%}}

@@ -1,0 +1,54 @@
+name: Asteria exterior review
+on:
+  pull_request:
+    paths:
+      - 'apps/showcase/public/ftv-luxury/**'
+      - 'apps/showcase/src/ftv-luxury/**'
+      - 'apps/showcase/scripts/test-yacht-*.mjs'
+      - '.github/workflows/asteria-review.yml'
+permissions:
+  contents: read
+jobs:
+  geometry-and-browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - name: Fetch the exact historical visual baseline
+        run: git fetch --no-tags --depth=1 origin 04ec427a6c509fe34e622dff14cbc3014a7aa440
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: apps/showcase/package-lock.json
+      - name: Unit geometry and lighting tests
+        run: node --test scripts/test-yacht-exterior.mjs
+        working-directory: apps/showcase
+      - run: npm ci
+        working-directory: apps/showcase
+      - run: npm run build
+        working-directory: apps/showcase
+      - name: Lint
+        run: npm run lint > /tmp/asteria-lint.log 2>&1 || { cat /tmp/asteria-lint.log; exit 1; }; tail -n 3 /tmp/asteria-lint.log
+        working-directory: apps/showcase
+      - name: Install isolated browser test tooling
+        run: |
+          npm install --prefix "$RUNNER_TEMP/asteria-tools" --no-save playwright@1.57.0 > /tmp/asteria-tools.log 2>&1 || { cat /tmp/asteria-tools.log; exit 1; }
+          ln -s "$RUNNER_TEMP/asteria-tools/node_modules/playwright" node_modules/playwright
+          "$RUNNER_TEMP/asteria-tools/node_modules/.bin/playwright" install --with-deps chromium > /tmp/asteria-browser.log 2>&1 || { tail -n 50 /tmp/asteria-browser.log; exit 1; }
+        working-directory: apps/showcase
+      - name: Real WebGL and GUI checks
+        run: |
+          npm run preview -- --host 127.0.0.1 --port 4173 > /tmp/asteria-preview.log 2>&1 &
+          for i in $(seq 1 30); do curl -fsS http://127.0.0.1:4173/ftv-luxury/gui.html >/dev/null && break; sleep 1; done
+          node scripts/test-yacht-browser.mjs
+        working-directory: apps/showcase
+      - name: Save real captures and test report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: asteria-exterior-review
+          retention-days: 7
+          path: apps/showcase/test-results/asteria/

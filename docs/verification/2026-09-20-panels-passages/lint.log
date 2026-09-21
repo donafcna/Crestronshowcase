@@ -1,0 +1,20 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> crestronshowcase@2.0.0 lint
+> oxlint
+
+src/router.jsx:25:14: warning react(only-export-components): Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components.
+src/router.jsx:46:14: warning react(only-export-components): Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components.
+src/router.jsx:108:14: warning react(only-export-components): Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components.
+src/context/FrameInfoContext.jsx:15:14: warning react(only-export-components): Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components.
+src/context/LanguageContext.jsx:65:14: warning react(only-export-components): Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components.
+src/components/Plan3DBackground.jsx:12:14: warning react(only-export-components): Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components.
+src/components/Plan3DBackground.jsx:19:14: warning react(only-export-components): Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components.
+src/components/Plan3DBackground.jsx:22:14: warning react(only-export-components): Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components.
+src/components/DemoMode.jsx:17:14: warning react(only-export-components): Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components.
+src/components/DemoMode.jsx:33:14: warning react(only-export-components): Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components.
+src/components/simulators/ChaletZermatt.jsx:62:10: warning eslint(no-unused-vars): Variable 'joinLogs' is declared but never used. Unused variables should start with a '_'. help: Consider removing this declaration.
+scripts/check-contrast-dom.mjs:75:9: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+scripts/check-contrast-dom.mjs:86:9: warning eslint(no-unused-expressions): Expected expression to be used help: Consider using this expression or removing it
+src/components/simulators/HotelGeneva.jsx:239:31: warning eslint(no-unused-vars): Parameter 'deviceType' is declared but never used. Unused parameters should start with a '_'. help: Consider removing this parameter.
+src/components/Showcase.jsx:268:33: warning react-hooks(exhaustive-deps): React Hook useEffect has missing dependencies: 'guiFullscreen', and 'setGuiFullscreen' help: Either include it or remove the dependency array.

@@ -1,7 +1,7 @@
-// Génère public/sitemap.xml à partir de src/data/projects.js — lancé
+// Génère public/sitemap.xml à partir de src/data/showcaseProjects.js — lancé
 // automatiquement avant chaque build (voir package.json "prebuild").
 import { writeFileSync } from 'node:fs';
-import { projects, sectors } from '../src/data/projects.js';
+import { projects, sectors } from '../src/data/showcaseProjects.js';
 import { SITE_URL } from '../src/data/company.js';
 
 const today = new Date().toISOString().slice(0, 10);

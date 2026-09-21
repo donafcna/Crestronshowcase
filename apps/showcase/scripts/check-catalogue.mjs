@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { projects, sectors, devices } from '../src/data/projects.js';
+import { projects, sectors, devices } from '../src/data/showcaseProjects.js';
 import { SIMULATORS, validateSimulatorRegistry } from '../src/components/simulatorRegistry.js';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');

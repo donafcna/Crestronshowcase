@@ -1,5 +1,9 @@
 # VillaCrans — contexte pour Claude (lire en premier, économise les tokens)
 
+## 21/09/2026 — source iPhone C1 et publication vitrine
+
+Le diagnostic `CENT-20260921-1` est intégré à `src/iphone.html`, puis synchronisé vers le showcase à la demande de Donatien. Aucun changement de commandes/joins/styles. Build site, lint et 14 tests du diagnostic réussis ; tests matériels et rendu iOS non effectués. Les 4 échecs de qualification générale existaient sur le commit initial (versions 1.0.201/1.0.196). C# C1 fourni dans le ZIP séparé, non intégré au dépôt dans ce lot web ; aucun CH5Z/CPZ/LPZ compilé ou déployé. Voir le journal showcase et `docs/verification/2026-09-21-centralisation-c1/`.
+
 ## 18/09/2026 (soir) — v4.2 : appui long fenêtre Circuits, feedback des panels allégé (à compiler : CH5 + CPZ 1.0.193.0)
 - **Deux jeux de boutons de scène sur l'iPhone** : `<button id="scene-btn-5x">` de la page principale ET `<ch5-button customClass="scene-btn" data-join="5x">` de la fenêtre Circuits. Tout gestionnaire de scène doit couvrir les deux (`SCENE_SEL` / `sceneBtnOf` / `sceneIdxOf`), comme la dalle qui lit `sendEventOnClick`. L'appui long n'était écouté que sur la page principale : il ne se passait rien là où l'on règle les curseurs.
 - **Aucune GUI ne lit un join ≥ 1000** depuis `blocsPiecesGui.actif=false` (vérifié par recherche sur les deux HTML). `PushRoomFeedback` n'envoie donc plus le bloc de pièce qu'à l'**EISC** : une commande globale écrivait ~900 joins inutiles par panel (`BroadcastFeedbackToAll` → `PushAllRoomsFeedback`), d'où des secondes de retard sur l'XPanel iPhone en WiFi. L'instantané global aux panels affichant la pièce est inchangé.

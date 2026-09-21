@@ -1,0 +1,61 @@
+{
+  "environment": "Node VM, horloge controlee, pas de materiel",
+  "results": [
+    {
+      "name": "Un retour de 20 secondes est conserve",
+      "status": "passed"
+    },
+    {
+      "name": "Un ancien timer ne supprime pas la mesure suivante",
+      "status": "passed"
+    },
+    {
+      "name": "Une commande deja selectionnee ne produit pas de fausse latence",
+      "status": "passed"
+    },
+    {
+      "name": "Les activations superposees sont exclues, meme avec retour tardif",
+      "status": "passed"
+    },
+    {
+      "name": "Un touch annule invalide la mesure sans l attribuer a un retour tardif",
+      "status": "passed"
+    },
+    {
+      "name": "Le retour avant relachement et click est mesure",
+      "status": "passed"
+    },
+    {
+      "name": "Le callback et la modification DOM sont mesures separement",
+      "status": "passed"
+    },
+    {
+      "name": "Un feedback sans mise a jour DOM est signale",
+      "status": "passed"
+    },
+    {
+      "name": "Le timeout est explicite et un retour tardif ne recree pas de mesure",
+      "status": "passed"
+    },
+    {
+      "name": "L arriere-plan interrompt une mesure",
+      "status": "passed"
+    },
+    {
+      "name": "La deconnexion interrompt une mesure",
+      "status": "passed"
+    },
+    {
+      "name": "Une reprise d abonnement partielle ne duplique pas les callbacks",
+      "status": "passed"
+    },
+    {
+      "name": "Aucune latence mesuree avant un etat initial connu",
+      "status": "passed"
+    },
+    {
+      "name": "La sonde n emet que des diagnostics courts sur le seriel 100",
+      "status": "passed"
+    }
+  ]
+}

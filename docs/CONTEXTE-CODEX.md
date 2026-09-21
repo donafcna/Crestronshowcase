@@ -313,3 +313,19 @@ Le protocole Claude comprend un cadrage préalable pour les tâches >30 minutes 
 ## Entretien du contexte
 
 Conserver les huit exports et leur manifeste intacts. Mettre à jour ce point d'entrée, le contexte du périmètre et son journal à la fin des travaux significatifs. Distinguer systématiquement : demandé, écrit, testé, compilé, publié et vérifié sur matériel. Les résultats rapportés par Claude restent historiques tant qu'ils n'ont pas été reproduits.
+
+
+## 20/09/2026 — reprise « Maquette 3D bijouterie »
+
+Donatien a demandé de reprendre et continuer. Dernières consignes retrouvées : TSW-1070 en graphiques HTML/CSS sans modèle 3D ; passages bâbord et tribord du yacht de l'arrière vers l'avant à tous les niveaux. Réalisé dans le showcase VCA/Sunrays : cartes HTML/CSS sur dalle, fond 3D Smartphone conservé, dix passages conceptuels dégagés dans les coupes et inclus dans le glTF. 214 contrôles ciblés et 43 contrôles de fond Smartphone (50 états) réussis ; build/lint réussis avec avertissements préexistants. Documentation et preuves : `apps/showcase/docs/vca-sunrays.md`, `docs/verification/2026-09-20-panels-passages/`. Aucun matériel déployé.
+
+
+## 21/09/2026 — reprise Centralisation iPhone et publication Vercel
+
+Demande explicite de Donatien : publier sur Vercel la mise à jour fournie dans le paquet C1. La source commune `projects/villa-crans/ch5/src/iphone.html` reçoit le diagnostic `CENT-20260921-1`. Sa copie publique est régénérée par la fonction `patch_html` de `scripts/sync-villa-crans.py`, limitée à cette page pour conserver les autres évolutions déjà présentes. Seul le bloc de diagnostic change ; boutons natifs CH5, joins, styles, configuration de démonstration et moteur `local-feedback.js` conservés.
+
+La mesure démarre à la pression, conserve les retards jusqu’à 45 secondes, distingue callback/DOM/frame et exclut les appuis ambigus ou sur un état déjà actif. Le bandeau reste masqué par défaut, cinq appuis sur Centralisation pour l’afficher. En mode showcase, les diagnostics restent locaux : aucun envoi sur le sériel 100. Cette publication ne démontre pas la disparition du retard sur l’iPhone relié au CP4.
+
+Vérifications : build et lint réussis (avertissements existants), 14 tests du diagnostic réussis, syntaxe des scripts inline et identité des attributs des boutons contrôlées. La batterie générale donne 39/43, avec les quatre mêmes échecs sur le commit initial inchangé : configuration `meta.version=1.0.201` contre profil de qualification `1.0.196`. Le profil de qualification matériel n’a pas été assoupli pour publier la vitrine. Chromium se ferme par SIGSEGV avant le chargement ; aucun résultat de rendu, de contraste ou de recette Safari/iPhone n’est revendiqué. Les écrans de présentation et fiches commerciales ne changent pas. Preuves : `docs/verification/2026-09-21-centralisation-c1/` à la racine.
+
+Artefacts : source iPhone C1 et showcase mis à jour ; aucun CH5Z, CPZ ou LPZ compilé ou envoyé. Le C# C1 reste dans le paquet remis à Donatien et n’est pas ajouté au dépôt par cette publication du site. Le correctif matériel complet conserve son installation et sa recette séparées.
