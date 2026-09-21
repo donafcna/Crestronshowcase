@@ -34,9 +34,20 @@ try {
   const yachtLink = () => page.locator('.sidebar-nav .sector-btn').filter({ hasText: /^Yacht$/i });
   async function begin() { await page.evaluate(() => { window.__entryTrace = []; window.__entryWatch = true; }); }
   async function verify(label) {
-    await page.waitForFunction(() => document.querySelector('.yacht-background')?.dataset.ready === 'true', null, { timeout: 90000 });
-    await page.waitForTimeout(1200);
-    const trace = await page.evaluate(() => { window.__entryWatch = false; return window.__entryTrace; });
+    let trace = [];
+    try {
+      await page.waitForFunction(() => document.querySelector('.yacht-background')?.dataset.ready === 'true', null, { timeout: 90000 });
+      // A host-ready message is not a sampled animation frame. Wait for actual
+      // visible samples spanning the original observation interval; retain every
+      // camera assertion instead of assuming CPU rendering fits in a fixed sleep.
+      await page.waitForFunction(() => {
+        const visible = window.__entryTrace.filter(sample => sample.visible);
+        return visible.length >= 3 && visible.at(-1).at - visible[0].at >= 1200;
+      }, null, { timeout: 30000, polling: 100 });
+    } finally {
+      trace = await page.evaluate(() => { window.__entryWatch = false; return window.__entryTrace; });
+      await writeFile(`${out}/${label}-trace.json`, JSON.stringify(trace, null, 2));
+    }
     const visible = trace.filter(t => t.visible), hidden = trace.filter(t => !t.visible);
     assert.ok(hidden.length > 0, label + ': pending frame must stay hidden');
     assert.ok(visible.length > 1, label + ': rendered frame must eventually be shown');
@@ -49,7 +60,6 @@ try {
     assert.ok(Math.abs(first.radius - last.radius) < .001, label + ': first framing equals final framing');
     assert.equal(await page.locator('.yacht-background .luxury-background-loading').count(), 0);
     report.entries.push({ label, hiddenFrames: hidden.length, visibleFrames: visible.length, firstRadius: first.radius, finalRadius: last.radius, firstCamera: first.camera, finalCamera: last.camera });
-    await writeFile(`${out}/${label}-trace.json`, JSON.stringify(trace, null, 2));
     report.checks.push(label + ': hidden until rendered, correct first camera, no subsequent automatic receding');
   }
   await page.goto(`${base}/contact?lang=fr`, { waitUntil: 'domcontentloaded' });
