@@ -1,5 +1,6 @@
 /* Asteria showcase: pure lighting/geometry data, shared by the model, GUI and tests.
- * Timing reference: public/plan3d/plan3d.js, updateEnvironment (30 / 10 / 30 / 10 s).
+ * Yacht-only timing: 10 s daylight + 10 s night, each including a 1 s closing fade.
+ * Villa Crans keeps its independent 30 / 10 / 30 / 10 s environment cycle.
  * This is a demonstration, not a navigation-light or electrical installation design.
  */
 (function (root) {
@@ -53,13 +54,16 @@
   }));
   const byId = Object.fromEntries(circuits.map(c => [c.id, c]));
   const groups = { signature: 'Signature & ponts', paths: 'Passages & escaliers', water: 'Eau & bien-être', hospitality: 'Terrasses & bar', party: 'Soirée & lyres' };
-  const timing = Object.freeze({ day: 30, dusk: 10, night: 30, dawn: 10, total: 80 });
+  // 9 s hold + 1 s transition per half: dinner at 10 s, cruise at 20 s.
+  const timing = Object.freeze({ day: 9, dusk: 1, night: 9, dawn: 1, total: 20 });
   const clamp = (value, min = 0, max = 100) => Math.max(min, Math.min(max, value));
   const ease = value => { const t = clamp(value, 0, 1); return t * t * (3 - 2 * t); };
   function cycle(seconds) {
-    const p = ((Number.isFinite(seconds) ? seconds : 0) % 80 + 80) % 80;
-    const stage = p < 30 ? 'day' : p < 40 ? 'dusk' : p < 70 ? 'night' : 'dawn';
-    const day = p < 30 ? 1 : p < 40 ? 1 - ease((p - 30) / 10) : p < 70 ? 0 : ease((p - 70) / 10);
+    const p = ((Number.isFinite(seconds) ? seconds : 0) % timing.total + timing.total) % timing.total;
+    const duskAt = timing.day, nightAt = duskAt + timing.dusk, dawnAt = nightAt + timing.night;
+    const stage = p < duskAt ? 'day' : p < nightAt ? 'dusk' : p < dawnAt ? 'night' : 'dawn';
+    const day = p < duskAt ? 1 : p < nightAt ? 1 - ease((p - duskAt) / timing.dusk)
+      : p < dawnAt ? 0 : ease((p - dawnAt) / timing.dawn);
     return { seconds: p, stage, day, night: 1 - day };
   }
   function preset(name) {

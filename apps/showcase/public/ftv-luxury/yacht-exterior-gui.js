@@ -57,7 +57,7 @@
     const stage={day:'Jour',dusk:'Crépuscule',night:'Nuit',dawn:'Aube'}[current.stage]||'Jour';
     panel.querySelector('[data-exterior-phase]').textContent=stage+' · '+(current.automatic?'Auto':'Manuel');
     panel.querySelector('[data-exterior-auto]').checked=current.automatic;
-    panel.querySelector('[data-exterior-status]').textContent=!ready?'Connexion à la scène 3D…':gui.panel2D?'Simulation locale · aucune installation connectée.':'Cycle 80 s · le réglage manuel reste actif jusqu’au retour en Auto.';
+    panel.querySelector('[data-exterior-status]').textContent=!ready?'Connexion à la scène 3D…':gui.panel2D?'Simulation locale · aucune installation connectée.':`Cycle ${core.timing.total} s · le réglage manuel reste actif jusqu’au retour en Auto.`;
     panel.querySelectorAll('[data-exterior-id]').forEach(el=>{
       const v=current.levels[el.dataset.exteriorId];if(document.activeElement!==el)el.value=v;
       panel.querySelector(`[data-exterior-value="${el.dataset.exteriorId}"]`).textContent=v+' %';el.disabled=!ready;

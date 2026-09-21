@@ -27,7 +27,7 @@ try{
   await page.goto(base+'/ftv-luxury/models/yacht.html');
   await page.waitForFunction(()=>!!window.__ftvYachtExterior?.finalized,null,{timeout:90000});
   await page.evaluate(()=>{window.__ftvPaused=true;});
-  for(const [name,time]of[['day',10],['dusk',35],['night',50],['dawn',75]]){
+  for(const [name,time]of[['day',2],['dusk',9.5],['night',15],['dawn',19.5]]){
     await modelCapture(page,'model-'+name,time);
     const info=await page.evaluate(()=>window.__ftvYachtExterior.inspect());
     assert.equal(info.circuits,40);assert.ok(Object.values(info.fixtures).every(n=>n>0));assert.equal(info.extraLights,6);

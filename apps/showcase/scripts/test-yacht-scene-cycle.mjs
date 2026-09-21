@@ -5,6 +5,8 @@ import vm from 'node:vm';
 const context = {};
 vm.runInNewContext(readFileSync(new URL('../public/ftv-luxury/yacht-scene-cycle.js', import.meta.url), 'utf8'), context);
 const create = context.FTV_YACHT_SCENE_CYCLE.create;
+vm.runInNewContext(readFileSync(new URL('../public/ftv-luxury/yacht-exterior-core.js', import.meta.url), 'utf8'), context);
+const environment = context.FTV_YACHT_EXTERIOR;
 const state = (stage, automatic = true) => ({ stage, automatic });
 function setup() { const calls = []; return { calls, cycle: create(p => calls.push(p)) }; }
 test('initial day/night aligns the GUI to cruise/dinner', () => {
@@ -12,10 +14,12 @@ test('initial day/night aligns the GUI to cruise/dinner', () => {
     const { calls, cycle } = setup(); cycle.update(state(stage)); assert.deepEqual(calls, [preset]);
   }
 });
-test('80-second cycle: once on entry to night and once on return to day', () => {
-  const { calls, cycle } = setup();
-  for (let t=0; t<=160; t+=.25) { const phase=t%80; cycle.update(state(phase<30?'day':phase<40?'dusk':phase<70?'night':'dawn')); }
-  assert.deepEqual(calls, ['cruise','dinner','cruise','dinner','cruise']);
+test('actual 20-second environment: scene commands at exact 10-second edges', () => {
+  const calls = []; let time = 0;
+  const cycle = create(preset => calls.push({time, preset}));
+  for (time=0; time<=40; time+=.125) cycle.update(state(environment.cycle(time).stage));
+  assert.deepEqual(calls, [{time:0,preset:'cruise'},{time:10,preset:'dinner'},
+    {time:20,preset:'cruise'},{time:30,preset:'dinner'},{time:40,preset:'cruise'}]);
 });
 test('dusk and dawn do not force a scene', () => {
   const { calls, cycle } = setup(); cycle.update(state('dusk')); cycle.update(state('dawn')); assert.deepEqual(calls, []);
