@@ -4,6 +4,13 @@ on:
     paths:
       - 'apps/showcase/public/ftv-luxury/**'
       - 'apps/showcase/scripts/test-yacht-night.mjs'
+      - 'apps/showcase/scripts/test-yacht-scene-cycle*.mjs'
+      - '.github/workflows/asteria-night-review.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'apps/showcase/public/ftv-luxury/**'
+      - 'apps/showcase/scripts/test-yacht-scene-cycle*.mjs'
       - '.github/workflows/asteria-night-review.yml'
 permissions:
   contents: read
@@ -33,26 +40,33 @@ jobs:
           cache: npm
           cache-dependency-path: apps/showcase/package-lock.json
       - run: npm ci
-      - run: node --test scripts/test-yacht-exterior.mjs
+      - run: node --test scripts/test-yacht-exterior.mjs scripts/test-yacht-scene-cycle.mjs
       - run: npm run build
       - name: Lint
         run: npm run lint > /tmp/night-lint.log 2>&1 || { cat /tmp/night-lint.log; exit 1; }; tail -n 3 /tmp/night-lint.log
-      - name: Night render test
+      - name: Night render and automatic scene tests
         run: |
-          if [ -f scripts/test-yacht-night.mjs ]; then
-            npm install --prefix "$RUNNER_TEMP/night-tools" --no-save playwright@1.57.0
-            ln -s "$RUNNER_TEMP/night-tools/node_modules/playwright" node_modules/playwright
-            "$RUNNER_TEMP/night-tools/node_modules/.bin/playwright" install --with-deps chromium > /tmp/night-browser.log 2>&1
-            npm run preview -- --host 127.0.0.1 --port 4173 > /tmp/night-preview.log 2>&1 &
-            for i in $(seq 1 30); do curl -fsS http://127.0.0.1:4173/ftv-luxury/gui.html >/dev/null && break; sleep 1; done
-            node scripts/test-yacht-night.mjs
-          else
-            echo 'Runtime snapshot only: night fidelity test not yet added.'
-          fi
+          npm install --prefix "$RUNNER_TEMP/night-tools" --no-save playwright@1.57.0
+          ln -s "$RUNNER_TEMP/night-tools/node_modules/playwright" node_modules/playwright
+          "$RUNNER_TEMP/night-tools/node_modules/.bin/playwright" install --with-deps chromium > /tmp/night-browser.log 2>&1
+          npm run preview -- --host 127.0.0.1 --port 4173 > /tmp/night-preview.log 2>&1 &
+          for i in $(seq 1 30); do curl -fsS http://127.0.0.1:4173/ftv-luxury/gui.html >/dev/null && break; sleep 1; done
+          node scripts/test-yacht-night.mjs
+          node scripts/test-yacht-scene-cycle-browser.mjs
+      - name: Verify Vercel production after the authorized main publication
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          node scripts/verify-yacht-production.mjs
+          mv test-results/scene-cycle test-results/scene-cycle-local
+          BASE_URL=https://crestrongui.vercel.app node scripts/test-yacht-scene-cycle-browser.mjs
+          mv test-results/scene-cycle test-results/scene-cycle-production
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: asteria-night-render-review
-          path: apps/showcase/test-results/night/
+          path: |
+            apps/showcase/test-results/night/
+            apps/showcase/test-results/scene-cycle*/
+            apps/showcase/test-results/yacht-production.json
           retention-days: 7
-          if-no-files-found: ignore
+          if-no-files-found: warn

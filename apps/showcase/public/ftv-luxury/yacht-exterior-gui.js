@@ -6,6 +6,7 @@
   const app=document.getElementById('app'), controls=document.getElementById('controls');
   const origin=location.origin==='null'?'*':location.origin, channel='ftv-luxury/v1';
   const simulation=core.createController();
+  const sceneCycle=window.FTV_YACHT_SCENE_CYCLE.create(preset=>gui.applyPreset(preset));
   let current=simulation.state(), opened=false, group='signature', page=0, pageSize=3, ready=gui.panel2D;
   const panel=document.createElement('section');
   panel.className='yacht-exterior-panel';panel.hidden=true;panel.setAttribute('aria-label','Circuits extérieurs du yacht');controls.after(panel);
@@ -50,6 +51,8 @@
     });
   }
   function refresh(){
+    // Follow the model's validated phase even when the exterior panel is closed.
+    if(ready)sceneCycle.update(current);
     if(!opened)return;
     const stage={day:'Jour',dusk:'Crépuscule',night:'Nuit',dawn:'Aube'}[current.stage]||'Jour';
     panel.querySelector('[data-exterior-phase]').textContent=stage+' · '+(current.automatic?'Auto':'Manuel');
@@ -96,7 +99,7 @@
     const source=gui.externalModel?parent:document.getElementById('model').contentWindow;
     if(e.source!==source||(origin!=='*'&&e.origin!==location.origin))return;
     const m=e.data;if(m?.channel!==channel||m.project!==gui.config.project)return;
-    if(m.type==='model-ready'){ready=!!m.exterior;refresh();}
+    if(m.type==='model-ready'){ready=!!m.exterior;}
     if(m.type==='exterior-state'&&typeof m.automatic==='boolean'&&m.levels&&core.circuits.every(c=>Number.isFinite(m.levels[c.id]))){
       ready=true;current={automatic:m.automatic,stage:m.stage,levels:Object.fromEntries(core.circuits.map(c=>[c.id,Math.max(0,Math.min(100,m.levels[c.id]))]))};refresh();
     }
