@@ -1,5 +1,50 @@
 # Villa Crans CH5 — journal des versions
 
+## v4.4 — 21/09/2026 — boutons Centralisation de l'iPhone sur la chaine qui marche (a compiler : CH5 seul)
+
+| Artefact | Etat de ce lot |
+|---|---|
+| CH5 source | `src/iphone.html` + `src/themes/global-controls.css` — **a recompiler** (`index.html` inchange) |
+| CPZ slot 1 | inchange, 1.0.194.0 en place |
+| Config | `meta.version` 1.0.202 ; `tracesConsole` et `tracesLatence` remis a `false` |
+| Showcase | a regenerer par `sync-villa-crans.py` (meme chaine que les scenes 51-54, deja en `<button>` sur la vitrine) |
+| Batterie | Centralisation, iPhone 16 Pro, 3 themes, avant/apres : 6/6 VERT (cibles >= 40 px, aucun debordement, aucun scroll H, aucune erreur console hors artefact WebXPanel hors runtime) ; planche-contact fournie |
+
+**Ce que la mesure avait etabli (v4.3).** Huit lignes `[LAT]` entre 12 et 84 ms cote CP4, `n=0` sur un appui
+dont le retour est pourtant arrive en retard, transfert de configuration termine au demarrage (ack 250 = 436) :
+ni le traitement, ni le volume, ni la config. Le retard etait strictement dans la chaine descendante vers
+l'iPhone, entre CrComLib et l'ecran.
+
+**La question de Donatien qui a tranche.** « Ne peut-on pas utiliser la meme chaine de transmission que celle des
+boutons qui fonctionnent tres bien ? » Sur l'iPhone, les boutons qui repondent instantanement (scenes 51-54 de la
+page principale, sources, alarme) sont des `<button>` ordinaires : `pressDigital()` a l'appui, `subscribeState()`
++ `toggleSelected()` au retour. Les dix boutons Centralisation (401-405, 407-411) etaient les seuls a passer par
+le composant `<ch5-button sendEventOnClick receiveStateSelected>` sur le meme join, dont le rendu est gere par
+la bibliotheque Crestron - et contre lequel une vingtaine de lignes de CSS se battaient deja. Sur la TSW ce
+composant est immediat ; sur l'iPhone il trainait de 5 a 20 s. On ne cherche plus pourquoi : on aligne.
+
+**Correction, au niveau du composant partage.**
+1. `iphone.html` : les dix `<ch5-button>` de la fenetre Centralisation deviennent
+   `<button id="global-btn-NNN" class="global-cmd-btn" data-join="NNN" onclick="pressDigital(NNN)">`, avec
+   `data-i18n` conserve (applyLanguage gere deja les deux balises). Dix abonnements `subscribeState` ajoutes a
+   cote de ceux des scenes, meme forme. 406 (stores a mi-course) n'a pas de bouton sur l'iPhone.
+2. `themes/global-controls.css` : regles `.global-cmd-btn` (repos, appui, selectionne, focus, media <= 480 px)
+   qui consomment les **memes jetons** `--global-idle-*` / `--global-active-*` que le `<ch5-button>` de la
+   dalle et de l'iPad. Un seul jeu de couleurs par theme, aucune couleur ecrite dans `iphone.html`.
+   Couleurs en `!important` : `iphone.html` porte une regle generique
+   `.theme-light .custom-overlay-panel button { ... !important }` qui ecrasait l'etat selectionne en theme
+   clair (repere sur la planche-contact, pas par la batterie : a ajouter au controle automatique).
+3. Autres interfaces utilisant le composant : `index.html` (dalle, iPad, XPanel) garde ses `<ch5-button>` et
+   ses regles, intactes - le composant y est immediat. Les nouvelles regles ne touchent que `.global-cmd-btn`.
+
+**Reste en `<ch5-button>` sur l'iPhone, a convertir si le meme retard y est constate :** partitions d'alarme
+301-312, scenes de la fenetre Circuits 51-54, CVC 610-615, wellness 620-625. Pas converti dans ce lot pour
+mesurer l'effet sur les seuls boutons signales.
+
+**Sonde de latence** (`[LAT-GUI]` sur le seriel 100, bandeau par geste) laissee en place, inactive sans
+`tracesConsole` ; a retirer au lot de nettoyage une fois la correction confirmee sur le telephone.
+
+
 ## v4.3.1 — 19/09/2026 — le bandeau de latence ne s'armait jamais (a recompiler : CH5 seul)
 
 | Artefact | Etat de ce lot |

@@ -65,6 +65,52 @@ body#app-body #global-control-overlay ch5-button[customClass~="global-command"] 
     font-weight: 800 !important;
     box-shadow: inset 0 -3px 0 var(--global-active-text) !important;
 }
+/* v4.4 (21.09.2026) : boutons Centralisation en <button> ordinaires sur l'iPhone.
+   Meme chaine que les scenes de la page principale (pressDigital + subscribeState + .selected),
+   memes jetons que le <ch5-button> ci-dessus : un seul jeu de couleurs par theme.
+   Couleurs en !important : iphone.html porte une regle generique
+   `.theme-light .custom-overlay-panel button { ... !important }` qui ecrasait l'etat
+   selectionne en theme clair - meme raison que pour les regles <ch5-button> ci-dessus. */
+body#app-body #global-control-overlay .global-cmd-btn {
+    flex: 1;
+    min-width: 0;
+    height: 48px;
+    min-height: 44px;
+    padding: 0 6px;
+    border-radius: 8px;
+    border: 2px solid var(--global-idle-border) !important;
+    background: var(--global-idle-bg) !important;
+    color: var(--global-idle-text) !important;
+    font-size: 0.85rem;
+    font-weight: 600 !important;
+    font-family: inherit;
+    line-height: 1.15;
+    white-space: normal;
+    text-align: center;
+    cursor: pointer;
+    box-sizing: border-box;
+    box-shadow: none !important;
+    transition: none;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    user-select: none;
+}
+body#app-body #global-control-overlay .global-cmd-btn:active {
+    background: var(--global-active-bg) !important;
+    color: var(--global-active-text) !important;
+    border-color: var(--global-active-border) !important;
+}
+body#app-body #global-control-overlay .global-cmd-btn.selected {
+    background: var(--global-active-bg) !important;
+    color: var(--global-active-text) !important;
+    border-color: var(--global-active-border) !important;
+    font-weight: 800 !important;
+    box-shadow: inset 0 -3px 0 var(--global-active-text) !important;
+}
+body#app-body #global-control-overlay .global-cmd-btn:focus-visible {
+    outline: 3px solid var(--global-active-border);
+    outline-offset: 2px;
+}
 body#app-body #global-control-overlay .cb-btn:focus-visible {
     outline: 3px solid var(--global-active-border);
     outline-offset: 2px;
@@ -81,5 +127,11 @@ body#app-body #global-control-overlay button[onclick*="Global"] {
     body#app-body #global-control-overlay ch5-button[customClass~="global-command"] .cb-btn {
         padding: 0 3px !important;
         font-size: 0.8rem !important;
+    }
+}
+@media (max-width: 480px) {
+    body#app-body #global-control-overlay .global-cmd-btn {
+        padding: 0 3px;
+        font-size: 0.8rem;
     }
 }

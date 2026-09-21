@@ -1602,9 +1602,9 @@
                     <button onclick="window.openGlobalPresetCustomizer('lighting')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; cursor: pointer; outline: none; font-size: 0.75rem;"><svg class="gear-icon" viewBox="0 0 512 512" aria-hidden="true"><path d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6l-43.3 75c-3.2 8.7-12.2 13.9-21.4 11.7l-56.4-13.6c-15.6 12-33 21.6-51.7 28.5l-11.9 57.3c-2 9.7-10.5 16.7-20.5 16.7H220.4c-10 0-18.5-7-20.5-16.7l-11.9-57.3c-18.7-6.9-36.1-16.4-51.7-28.5l-56.4 13.6c-9.2 2.2-18.2-3-21.4-11.7l-43.3-75c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4c-1.1-8.3-1.7-16.8-1.7-25.4s.6-17.1 1.7-25.4L21.6 191.2c-6.9-6.2-9.6-15.9-6.4-24.6l43.3-75c3.2-8.7 12.2-13.9 21.4-11.7l56.4 13.6c15.6-12 33-21.6 51.7-28.5l11.9-57.3c2-9.7 10.5-16.7 20.5-16.7h72.8c10 0 18.5 7 20.5 16.7l11.9 57.3c18.7 6.9 36.1 16.4 51.7 28.5l56.4-13.6c9.2-2.2 18.2 3 21.4 11.7l43.3 75zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"/></svg></button>
                 </div>
                 <div style="display: flex; gap: 4px;">
-                    <ch5-button label="TOUT ALLUMER" data-i18n="all_on" customClass="scene-btn global-command" style="height: 32px; flex: 1;" sendEventOnClick="401" receiveStateSelected="401" data-rjoin="401" data-join="401"></ch5-button>
-                    <ch5-button label="MODE ÉCO" data-i18n="eco_mode" customClass="scene-btn global-command" style="height: 32px; flex: 1;" sendEventOnClick="403" receiveStateSelected="403" data-rjoin="403" data-join="403"></ch5-button>
-                    <ch5-button label="TOUT ÉTEINDRE" data-i18n="all_off" customClass="scene-btn global-command" style="height: 32px; flex: 1.2;" sendEventOnClick="402" receiveStateSelected="402" data-rjoin="402" data-join="402"></ch5-button>
+                    <button id="global-btn-401" class="global-cmd-btn" data-i18n="all_on" data-join="401" style="flex: 1;" onclick="pressDigital(401)">TOUT ALLUMER</button>
+                    <button id="global-btn-403" class="global-cmd-btn" data-i18n="eco_mode" data-join="403" style="flex: 1;" onclick="pressDigital(403)">MODE ÉCO</button>
+                    <button id="global-btn-402" class="global-cmd-btn" data-i18n="all_off" data-join="402" style="flex: 1.2;" onclick="pressDigital(402)">TOUT ÉTEINDRE</button>
                 </div>
             </div>
             <!-- Stores Globaux -->
@@ -1614,8 +1614,8 @@
                     <button onclick="window.openGlobalPresetCustomizer('shades')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; cursor: pointer; outline: none; font-size: 0.75rem;"><svg class="gear-icon" viewBox="0 0 512 512" aria-hidden="true"><path d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6l-43.3 75c-3.2 8.7-12.2 13.9-21.4 11.7l-56.4-13.6c-15.6 12-33 21.6-51.7 28.5l-11.9 57.3c-2 9.7-10.5 16.7-20.5 16.7H220.4c-10 0-18.5-7-20.5-16.7l-11.9-57.3c-18.7-6.9-36.1-16.4-51.7-28.5l-56.4 13.6c-9.2 2.2-18.2-3-21.4-11.7l-43.3-75c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4c-1.1-8.3-1.7-16.8-1.7-25.4s.6-17.1 1.7-25.4L21.6 191.2c-6.9-6.2-9.6-15.9-6.4-24.6l43.3-75c3.2-8.7 12.2-13.9 21.4-11.7l56.4 13.6c15.6-12 33-21.6 51.7-28.5l11.9-57.3c2-9.7 10.5-16.7 20.5-16.7h72.8c10 0 18.5 7 20.5 16.7l11.9 57.3c18.7 6.9 36.1 16.4 51.7 28.5l56.4-13.6c9.2-2.2 18.2 3 21.4 11.7l43.3 75zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"/></svg></button>
                 </div>
                 <div style="display: flex; gap: 4px;">
-                    <ch5-button label="TOUT OUVRIR" data-i18n="open_all" customClass="scene-btn global-command" style="height: 32px; flex: 1;" sendEventOnClick="404" receiveStateSelected="404" data-rjoin="404" data-join="404"></ch5-button>
-                    <ch5-button label="TOUT FERMER" data-i18n="close_all" customClass="scene-btn global-command" style="height: 32px; flex: 1;" sendEventOnClick="405" receiveStateSelected="405" data-rjoin="405" data-join="405"></ch5-button>
+                    <button id="global-btn-404" class="global-cmd-btn" data-i18n="open_all" data-join="404" style="flex: 1;" onclick="pressDigital(404)">TOUT OUVRIR</button>
+                    <button id="global-btn-405" class="global-cmd-btn" data-i18n="close_all" data-join="405" style="flex: 1;" onclick="pressDigital(405)">TOUT FERMER</button>
                 </div>
             </div>
             <!-- CVC Global -->
@@ -1625,9 +1625,9 @@
                     <button onclick="window.openGlobalPresetCustomizer('hvac')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; cursor: pointer; outline: none; font-size: 0.75rem;"><svg class="gear-icon" viewBox="0 0 512 512" aria-hidden="true"><path d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6l-43.3 75c-3.2 8.7-12.2 13.9-21.4 11.7l-56.4-13.6c-15.6 12-33 21.6-51.7 28.5l-11.9 57.3c-2 9.7-10.5 16.7-20.5 16.7H220.4c-10 0-18.5-7-20.5-16.7l-11.9-57.3c-18.7-6.9-36.1-16.4-51.7-28.5l-56.4 13.6c-9.2 2.2-18.2-3-21.4-11.7l-43.3-75c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4c-1.1-8.3-1.7-16.8-1.7-25.4s.6-17.1 1.7-25.4L21.6 191.2c-6.9-6.2-9.6-15.9-6.4-24.6l43.3-75c3.2-8.7 12.2-13.9 21.4-11.7l56.4 13.6c15.6-12 33-21.6 51.7-28.5l11.9-57.3c2-9.7 10.5-16.7 20.5-16.7h72.8c10 0 18.5 7 20.5 16.7l11.9 57.3c18.7 6.9 36.1 16.4 51.7 28.5l56.4-13.6c9.2-2.2 18.2 3 21.4 11.7l43.3 75zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"/></svg></button>
                 </div>
                 <div style="display: flex; gap: 4px;">
-                    <ch5-button label="CONFORT" data-i18n="comfort" customClass="scene-btn global-command" style="height: 32px; flex: 1;" sendEventOnClick="407" receiveStateSelected="407" data-rjoin="407" data-join="407"></ch5-button>
-                    <ch5-button label="NUIT" data-i18n="night" customClass="scene-btn global-command" style="height: 32px; flex: 1;" sendEventOnClick="408" receiveStateSelected="408" data-rjoin="408" data-join="408"></ch5-button>
-                    <ch5-button label="HORS GEL" data-i18n="frost_guard" customClass="scene-btn global-command" style="height: 32px; flex: 1;" sendEventOnClick="409" receiveStateSelected="409" data-rjoin="409" data-join="409"></ch5-button>
+                    <button id="global-btn-407" class="global-cmd-btn" data-i18n="comfort" data-join="407" style="flex: 1;" onclick="pressDigital(407)">CONFORT</button>
+                    <button id="global-btn-408" class="global-cmd-btn" data-i18n="night" data-join="408" style="flex: 1;" onclick="pressDigital(408)">NUIT</button>
+                    <button id="global-btn-409" class="global-cmd-btn" data-i18n="frost_guard" data-join="409" style="flex: 1;" onclick="pressDigital(409)">HORS GEL</button>
                 </div>
             </div>
             <!-- Vacances -->
@@ -1637,8 +1637,8 @@
                     <button onclick="window.openGlobalPresetCustomizer('vacation')" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: white; border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; cursor: pointer; outline: none; font-size: 0.75rem;"><svg class="gear-icon" viewBox="0 0 512 512" aria-hidden="true"><path d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6l-43.3 75c-3.2 8.7-12.2 13.9-21.4 11.7l-56.4-13.6c-15.6 12-33 21.6-51.7 28.5l-11.9 57.3c-2 9.7-10.5 16.7-20.5 16.7H220.4c-10 0-18.5-7-20.5-16.7l-11.9-57.3c-18.7-6.9-36.1-16.4-51.7-28.5l-56.4 13.6c-9.2 2.2-18.2-3-21.4-11.7l-43.3-75c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4c-1.1-8.3-1.7-16.8-1.7-25.4s.6-17.1 1.7-25.4L21.6 191.2c-6.9-6.2-9.6-15.9-6.4-24.6l43.3-75c3.2-8.7 12.2-13.9 21.4-11.7l56.4 13.6c15.6-12 33-21.6 51.7-28.5l11.9-57.3c2-9.7 10.5-16.7 20.5-16.7h72.8c10 0 18.5 7 20.5 16.7l11.9 57.3c18.7 6.9 36.1 16.4 51.7 28.5l56.4-13.6c9.2-2.2 18.2 3 21.4 11.7l43.3 75zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"/></svg></button>
                 </div>
                 <div style="display: flex; gap: 4px;">
-                    <ch5-button label="ACTIVER" data-i18n="activate" customClass="scene-btn global-command" style="height: 32px; flex: 1;" sendEventOnClick="410" receiveStateSelected="410" data-join="410" data-rjoin="410"></ch5-button>
-                    <ch5-button label="DÉSACTIVER" data-i18n="deactivate" customClass="scene-btn global-command" style="height: 32px; flex: 1.5;" sendEventOnClick="411" receiveStateSelected="411" data-join="411" data-rjoin="411"></ch5-button>
+                    <button id="global-btn-410" class="global-cmd-btn" data-i18n="activate" data-join="410" style="flex: 1;" onclick="pressDigital(410)">ACTIVER</button>
+                    <button id="global-btn-411" class="global-cmd-btn" data-i18n="deactivate" data-join="411" style="flex: 1.5;" onclick="pressDigital(411)">DÉSACTIVER</button>
                 </div>
             </div>
         </div>
@@ -3551,6 +3551,14 @@
                     });
                 });
 
+                // v4.4 : commandes globales (Centralisation) — meme chaine que les scenes ci-dessus.
+                // 406 (stores a mi-course) n'a pas de bouton sur l'iPhone.
+                [401, 402, 403, 404, 405, 407, 408, 409, 410, 411].forEach(join => {
+                    CrComLib.subscribeState('b', join.toString(), (value) => {
+                        toggleSelected('global-btn-' + join, value);
+                    });
+                });
+
                 // Alarme feedback
                 CrComLib.subscribeState('b', '41', (value) => {
                     toggleSelected('alarm-btn-41', value);
@@ -4330,7 +4338,7 @@
             if (box) { box.style.display = ''; render(); return; }
             box = document.createElement('div');
             box.id = 'lat-overlay';
-            box.style.cssText = 'position:fixed;left:8px;bottom:8px;z-index:2000000;'
+            box.style.cssText = 'position:fixed;left:8px;bottom:8px;z-index:99999;'
                 + 'font:600 11px/1.4 monospace;color:#0b1220;padding:5px 9px;border-radius:6px;'
                 + 'pointer-events:none;letter-spacing:.02em;box-shadow:0 2px 8px rgba(0,0,0,.45)';
             document.body.appendChild(box);
@@ -4342,7 +4350,6 @@
         // Depart du chrono : premier evenement de pointage sur un bouton portant le join.
         ['pointerdown', 'touchstart', 'mousedown'].forEach(function (evt) {
             document.addEventListener(evt, function (ev) {
-                if (!armed) return;
                 var el = ev.target && ev.target.closest ? ev.target.closest('[data-join]') : null;
                 if (!el) return;
                 var j = parseInt(el.getAttribute('data-join'), 10);
@@ -4360,47 +4367,34 @@
             JOINS.forEach(function (j) {
                 try {
                     CrComLib.subscribeState('b', String(j), function (v) {
-                        if (!armed || !v || !t0[j]) return;
+                        if (!v || !t0[j]) return;
                         last = Date.now() - t0[j];
                         delete t0[j];
                         if (last > worst) worst = last;
                         n++; sum += last;
-                        render();
-                        if (typeof console !== 'undefined')
-                            console.log('[LAT] join ' + j + ' : ' + last + ' ms');
+                        if (armed) render();
+                        // Remontee au CP4 par le seriel 100, sans passer par meta.tracesConsole :
+                        // ce drapeau vit dans la copie de config embarquee dans le .ch5z, donc figee
+                        // au build. La mesure ne doit dependre ni de lui ni du bandeau.
+                        try { CrComLib.publishEvent('s', '100',
+                            '[LAT-GUI] join ' + j + ' : ' + last + ' ms'); } catch (e) { }
                     });
                 } catch (e) { subscribed = false; }
             });
         }
 
         // --- Geste d'armement : 5 appuis sur le titre CENTRALISATION en moins de 3 s ---
-        // On ecoute pointerdown ET touchstart, jamais 'click' : dans une WKWebView iOS, un appui
-        // sur un element non cliquable (pas de gestionnaire, pas de cursor:pointer) n'emet aucun
-        // 'click'. Le titre CENTRALISATION est un <span> decoratif : le geste ne partait jamais.
-        // Les deux evenements se suivent sur un meme appui, d'ou le garde-fou de 250 ms.
-        var taps = [], lastTap = 0, hintTimer = null;
-        function onTitleTap(ev) {
+        var taps = [];
+        document.addEventListener('click', function (ev) {
             // Cible large : le titre, son emoji et la marge du <h3> comptent tous.
             var h = ev.target && ev.target.closest ? ev.target.closest('h3') : null;
             var el = (h && h.querySelector('[data-i18n="central_title"]'))
                   || (ev.target.closest && ev.target.closest('[data-i18n="central_title"]'));
             if (!el) return;
             var now = Date.now();
-            if (now - lastTap < 250) return;      // pointerdown + touchstart : un seul appui
-            lastTap = now;
             taps.push(now);
             taps = taps.filter(function (t) { return now - t < 3000; });
-            // Retour visuel des le 2e appui : un geste silencieux qui echoue n'apprend rien.
-            if (taps.length >= 2 && taps.length < 5 && !armed) {
-                show();
-                box.textContent = 'LAT ' + taps.length + '/5';
-                box.style.background = 'rgba(59,130,246,0.95)';
-                clearTimeout(hintTimer);
-                hintTimer = setTimeout(hide, 1500);
-                return;
-            }
             if (taps.length < 5) return;
-            clearTimeout(hintTimer);
             taps = [];
             armed = !armed;
             store(armed);
@@ -4415,16 +4409,12 @@
                     setTimeout(hide, 900);
                 }
             }
-        }
-        ['pointerdown', 'touchstart'].forEach(function (evt) {
-            document.addEventListener(evt, onTitleTap, true);
-        });
+        }, true);
 
         // --- Reprise de l'etat memorise -------------------------------------------
         function boot() {
-            if (!stored()) return;
-            armed = true;
-            show();
+            armed = stored();
+            if (armed) show();
             subscribe();
             // CrComLib peut arriver apres nous : on reessaie sans limite de temps.
             if (!subscribed) {

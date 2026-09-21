@@ -2,13 +2,13 @@
   "meta": {
     "projet": "Villa Crans",
     "integrateur": "Fréquence TV",
-    "version": "1.0.200",
+    "version": "1.0.202",
     "mode": "deploiement",
     "modeDescription": "'deploiement' = GUI livré chez le client : les feedbacks viennent du CP4 (C# slot 1 + SIMPL slot 2) via js/webxpanel.js / CrComLib, aucune simulation. 'showcase' = copie pour le site crestrongui.vercel.app : posé UNIQUEMENT par scripts/sync-villa-crans.py du dépôt Crestronshowcase, feedbacks simulés dans le navigateur (js/local-feedback.js), curseur de démo géré par le site (jamais par le GUI). Ne jamais mettre 'showcase' ici. Voir docs/08_WORKFLOW_SHOWCASE.md.",
     "tracesConsole": false,
     "tracesConsoleDescription": "false = le programme du slot 1 n'affiche en console que ses messages de diagnostic (démarrage, configuration, EISC, arrivée d'un périphérique, erreurs) et la GUI ne recopie plus ses console.log sur le sériel 100. Passer à true pour retrouver la trace complète des actions utilisateur pendant une mise au point ; un progreset suffit, aucune recompilation.",
-    "tracesLatence": true,
-    "tracesLatenceDescription": "false = aucune mesure. true = le slot 1 imprime une ligne [LAT] par appui (ip, join, nombre de joins reellement ecrits, duree passee dans le programme) et la GUI affiche en bas a gauche le delai appui -> retour d'etat. Sert a situer un retard de feedback : duree CP4 faible + delai GUI eleve = retard de transport CIP vers ce panel, hors du programme. Un progreset suffit, aucune recompilation. A remettre a false apres la mesure.",
+    "tracesLatence": false,
+    "tracesLatenceDescription": "Gouverne UNIQUEMENT les traces [LAT] du programme du slot 1 : une ligne par appui (ip, join, nombre de joins reellement ecrits, duree passee dans le programme). Le bandeau de latence de la GUI ne depend PAS de ce drapeau : villa_config.js est embarque dans le .ch5z au moment du build et le cache localStorage sert une copie figee, un drapeau de config n'atteindrait la GUI qu'apres le transfert complet du CP4, ou jamais. La GUI s'arme par geste : 5 appuis sur le titre CENTRALISATION en moins de 3 s, memorise par appareil, meme geste pour couper. Cote slot 1 un progreset suffit, aucune recompilation. A remettre a false apres la mesure.",
     "dateModification": "2026-09-19",
     "langueReference": "fr",
     "languesDisponibles": [
