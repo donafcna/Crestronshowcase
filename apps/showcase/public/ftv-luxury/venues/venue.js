@@ -156,7 +156,7 @@ if(club){
 drawScreen('pc_lectern');
 // Fit the projected geometry to the usable viewport, with a 2% edge allowance.
 let fitObject=model;
-function frame(){const w=innerWidth,h=innerHeight,v=viewport||{x:0,y:0,w,h};renderer.setSize(w,h,false);camera.aspect=v.w/v.h;camera.clearViewOffset();
+function frame(){const w=innerWidth,h=innerHeight,v=viewport||{x:0,y:0,w,h};renderer.setSize(w,h);camera.aspect=v.w/v.h;camera.clearViewOffset();
  const bounds=new T.Box3().setFromObject(fitObject),center=bounds.getCenter(new T.Vector3());target.copy(center);
  const dir=new T.Vector3(30,28,37).normalize();let lo=1,hi=170;
  for(let i=0;i<22;i++){const distance=(lo+hi)/2;camera.position.copy(center).addScaledVector(dir,distance);camera.lookAt(center);camera.updateMatrixWorld();camera.updateProjectionMatrix();let extent=0;
