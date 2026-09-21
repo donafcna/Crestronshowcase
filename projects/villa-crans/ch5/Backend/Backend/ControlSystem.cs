@@ -1011,16 +1011,21 @@ namespace VillaFrequenceTvAutomation
         /// </summary>
         private void PulseRoomDigital(int roomId, uint offset)
         {
-            if (_touchPanels == null) return;
+            // v4.5 (22.09.2026) : les blocs de piece (joins >= 1000) ne sont lus QUE par le slot 2
+            // (contrat v4, blocsPiecesGui.actif = false), comme PushRoomFeedback depuis v4.2. Cette
+            // fonction, elle, ecrivait encore vers TOUS les panels : TOUT OUVRIR / TOUT FERMER
+            // envoyaient 168 impulsions (14 pieces x 6 moteurs x 2 fronts) sur des joins a quatre
+            // chiffres a chaque ecran, iPhone compris, AVANT le retour d'etat 404/405. Mesure sonde
+            // iPhone du 22.09 : eclairage global 170-985 ms, stores globaux jamais sous 10 s - les
+            // deux seules commandes qui passent par ici. Meme conclusion, independamment, dans le
+            // lot C1 (Codex, 21.09). Les deux fronts sont conserves pour le moteur cote SIMPL.
+            if (_eisc == null) return;
             if (_roomsRegistry == null || !_roomsRegistry.ContainsKey(roomId)) return;
             bool eiscEnabled = _roomEiscEnabled.ContainsKey(roomId) && _roomEiscEnabled[roomId];
+            if (!eiscEnabled) return;
             uint join = RoomBlockStart(roomId) + offset;
-            foreach (var dev in _touchPanels)
-            {
-                if (dev == _eisc && !eiscEnabled) continue;
-                dev.BooleanInput[join].BoolValue = true;
-                dev.BooleanInput[join].BoolValue = false;
-            }
+            _eisc.BooleanInput[join].BoolValue = true;
+            _eisc.BooleanInput[join].BoolValue = false;
         }
 
         /// <summary>

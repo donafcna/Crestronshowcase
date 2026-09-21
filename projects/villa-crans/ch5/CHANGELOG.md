@@ -1,5 +1,38 @@
 # Villa Crans CH5 — journal des versions
 
+## v4.5 — 22/09/2026 — stores globaux : plus d'impulsions de bloc de piece vers les panels (a compiler : CPZ seul)
+
+| Artefact | Etat de ce lot |
+|---|---|
+| CPZ slot 1 | `ControlSystem.cs` + `AssemblyInfo` → **1.0.195.0**, **a recompiler** (SIMPL# Pro) |
+| CH5 | inchange (1.0.204 = v4.4, en place sur TSW, web et Crestron One) |
+| Config | `tracesConsole` et `tracesLatence` a `true` pour la verification, a remettre a `false` ensuite |
+
+**La mesure qui tranche (premier test valide sur l'iPhone, 1.0.204 verifie dans Reglages).** Sonde `[LAT-GUI]`,
+delai appui → retour d'etat recu par CrComLib sur le telephone : 401 TOUT ALLUMER 985 ms puis 170 ms, 402 225 ms,
+403 175 ms — **404 TOUT OUVRIR et 405 TOUT FERMER : aucun retour sous 10 s** (fenetre de la sonde), retour visible
+a l'oeil vers 6 s et jusqu'a 20 s. Ce n'est pas « les commandes globales » : ce sont les deux commandes de stores.
+
+**Ce que ces deux commandes ont en propre.** `PulseAllMotorsInAllRooms` → `PulseRoomDigital`, qui ecrivait les
+impulsions moteur sur le bloc de CHAQUE piece vers TOUS les panels : 14 pieces × 6 moteurs × 2 fronts = **168
+ecritures inconditionnelles sur des joins a quatre chiffres vers l'iPhone**, avant le retour d'etat 404/405. Depuis
+le contrat v4 (`blocsPiecesGui.actif = false`) seul le slot 2 lit ces joins ; `PushRoomFeedback` avait ete corrige
+en v4.2, `PulseRoomDigital` non. Ces ecritures contournent `SetBool` : elles n'apparaissaient pas dans le compteur
+`n` de v4.3, d'ou des `n=20` trompeurs sur 404/405. Le lot C1 (Codex, 21.09, jamais compile) avait fait le meme
+diagnostic et la meme reecriture.
+
+**Correction.** `PulseRoomDigital` n'ecrit plus que sur l'EISC (les deux fronts conserves pour le moteur cote SIMPL).
+Aucune autre ecriture de bloc de piece vers un panel ne subsiste dans le C#.
+
+**Decisions par defaut.** Correctif applique sur la version committee (1.0.194.0, base connue) et non sur la version
+C1 du disque (109 lignes non commitees, instrumentation differente) ; la version C1 est sauvegardee dans
+`projects/villa-crans/_backups/ControlSystem_C1_2026-09-21.cs`. Sonde iPhone laissee a 10 s de fenetre (rallonger
+demanderait un rebuild CH5 + deploiement mobile : une variable a la fois).
+
+**Critere de reussite.** Sur l'iPhone, `[LAT-GUI] join 404` et `405` sous 1 s, comme l'eclairage global, sur une
+trentaine d'appuis alternes. Sinon le lot est un echec.
+
+
 ## 22/09/2026 — deploy.ps1 : cible `mobile` (Crestron One) et verification de la version servie
 
 **Le constat.** Version affichee dans Reglages sur l'iPhone : **1.0.196**, soit trois jours et six livraisons de retard,
