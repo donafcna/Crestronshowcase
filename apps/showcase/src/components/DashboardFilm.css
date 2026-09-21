@@ -1,0 +1,37 @@
+/* Film vitrine de l'accueil — remplace compteurs + bandeau « Réalisation en vedette » au-dessus de 900 px. */
+.dash-film {
+  position: relative;
+  flex: 0 0 auto;
+  width: 100%;
+  min-height: 240px;
+  aspect-ratio: 16 / 9;
+  max-height: 72vh;
+  padding: 0;
+  overflow: hidden;
+  background: #0b0d12;
+  border-radius: var(--border-radius-lg, 24px);
+}
+.dash-film-video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.dash-film-overlay {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: flex-start;
+  padding: 28px 32px;
+  background: linear-gradient(to top, rgba(8, 10, 14, 0.55), rgba(8, 10, 14, 0));
+  pointer-events: none;
+}
+.dash-film-cta {
+  pointer-events: auto;
+  min-height: 44px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .dash-film-overlay { padding-bottom: 64px; }
+}
