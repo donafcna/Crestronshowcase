@@ -34,8 +34,8 @@ try{
   if(!baseline){
    assert.equal(night.finish.edges,6);assert.equal(night.finish.removedAirCones,4);assert.equal(night.finish.additionalLights,0);checks.push('visible deck edges / no air cones / no extra lights');
    const previous=renders.find(r=>r.name==='before-night');assert.deepEqual(night.camera,previous.camera);assert.ok(night.warm>previous.warm*1.3,`Warm footprint ${night.warm} vs ${previous.warm}`);checks.push('same camera / increased warm lighting footprint');
-   for(const [label,t] of [['day',10],['dusk',35],['dawn',75]]){
-    const r=await capture(p,'after-'+label,t);if(t===10)assert.ok(Object.values(r.state.levels).every(v=>v===0));checks.push('cycle '+label);
+   for(const [label,t] of [['day',2],['dusk',9.5],['dawn',19.5]]){
+    const r=await capture(p,'after-'+label,t);if(label==='day')assert.ok(Object.values(r.state.levels).every(v=>v===0));checks.push('cycle '+label);
    }
    await p.evaluate(()=>window.__ftvModel.exterior({action:'preset',key:'off'}));
    const off=await capture(p,'after-night-exterior-off',50);assert.ok(Object.values(off.state.levels).every(v=>v===0));assert.ok(off.warm<night.warm);checks.push('manual OFF extinguishes circuit-driven surface light');

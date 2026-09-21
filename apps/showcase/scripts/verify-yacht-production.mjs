@@ -1,7 +1,7 @@
 import { readFile, mkdir, writeFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 const base='https://crestrongui.vercel.app';
-const files=['gui.html','gui.js','yacht-scene-cycle.js','yacht-exterior-gui.js','model-bridge.js','yacht-night-finish.js','sea.js'];
+const files=['gui.html','gui.js','yacht-exterior-core.js','yacht-scene-cycle.js','yacht-exterior-gui.js','model-bridge.js','yacht-night-finish.js','sea.js'];
 const hash=data=>createHash('sha256').update(data).digest('hex');
 const expected=Object.fromEntries(await Promise.all(files.map(async file=>[file,hash(await readFile(new URL('../public/ftv-luxury/'+file,import.meta.url)))])));
 const deadline=Date.now()+240000;let checks=[];

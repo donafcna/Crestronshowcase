@@ -20,13 +20,15 @@ function topology(indices){
   return {open:[...edges.values()].filter(e=>e.count===1).length,nonmanifold:[...edges.values()].filter(e=>e.count>2).length,inconsistent:[...edges.values()].filter(e=>e.count===2&&e.direction!==0).length};
 }
 test('40 unique independently switchable circuits',()=>{assert.equal(core.circuits.length,40);assert.equal(new Set(core.circuits.map(c=>c.id)).size,40);assert.ok(core.circuits.every(c=>c.night>0&&c.night<=100));});
-test('Villa Crans timing: day30 dusk10 night30 dawn10',()=>{
-  for(const [s,stage,day]of[[0,'day',1],[29.9,'day',1],[30,'dusk',1],[35,'dusk',.5],[40,'night',0],[69.9,'night',0],[70,'dawn',0],[75,'dawn',.5],[80,'day',1],[160,'day',1]]){assert.equal(core.cycle(s).stage,stage);assert.ok(Math.abs(core.cycle(s).day-day)<1e-8);}
+test('yacht 20-second cycle: two 10-second halves with included one-second fades',()=>{
+  assert.deepEqual(core.timing,{day:9,dusk:1,night:9,dawn:1,total:20});
+  assert.equal(core.timing.day+core.timing.dusk,10);assert.equal(core.timing.night+core.timing.dawn,10);
+  for(const [s,stage,day]of[[0,'day',1],[8.99,'day',1],[9,'dusk',1],[9.5,'dusk',.5],[10,'night',0],[18.99,'night',0],[19,'dawn',0],[19.5,'dawn',.5],[20,'day',1],[40,'day',1]]){assert.equal(core.cycle(s).stage,stage);assert.ok(Math.abs(core.cycle(s).day-day)<1e-8);}
 });
-test('all exterior circuits on at night, off by day',()=>{const c=core.createController();assert.ok(Object.values(c.tick(0)).every(n=>n===0));assert.ok(Object.values(c.tick(40)).every(n=>n>0));assert.ok(Object.values(c.tick(80)).every(n=>n===0));});
+test('all exterior circuits on at night, off by day',()=>{const c=core.createController();assert.ok(Object.values(c.tick(0)).every(n=>n===0));assert.ok(Object.values(c.tick(10)).every(n=>n>0));assert.ok(Object.values(c.tick(20)).every(n=>n===0));});
 test('manual edits survive render ticks until explicit Auto',()=>{const c=core.createController();c.tick(50);assert.equal(c.setLevel('underwater_port',0),true);assert.equal(c.tick(51).underwater_port,0);assert.ok(c.tick(51).underwater_starboard>0);assert.equal(c.state().automatic,false);c.setAutomatic(true);assert.equal(c.tick(52).underwater_port,100);});
 test('invalid numbers and unknown IDs cannot corrupt controller',()=>{const c=core.createController();assert.equal(c.setLevel('__proto__',20),false);assert.equal(c.setLevel('name_port',NaN),false);assert.equal(c.setLevel('name_port',Infinity),false);assert.equal(c.setAutomatic('yes'),false);assert.equal(c.setPreset('unknown'),false);c.setLevel('name_port',500);assert.equal(c.state().levels.name_port,100);c.setLevel('name_port',-10);assert.equal(c.state().levels.name_port,0);});
-test('lighting presets cannot change the environmental clock',()=>{const c=core.createController();c.tick(12);c.setPreset('night');assert.equal(c.state().stage,'day');assert.ok(Object.values(c.state().levels).every(n=>n>0));});
+test('lighting presets cannot change the environmental clock',()=>{const c=core.createController();c.tick(2);c.setPreset('night');assert.equal(c.state().stage,'day');assert.ok(Object.values(c.state().levels).every(n=>n>0));});
 test('real source hull is closed with consistent outward seams',()=>{const src=originalHull();assert.ok(topology(src.indices).open>0);const result=core.closeHull(src.positions,src.indices);assert.deepEqual(topology(result.indices),{open:0,nonmanifold:0,inconsistent:0});assert.deepEqual(Array.from(result.positions.slice(0,src.positions.length)),Array.from(src.positions));});
 test('closed source hull has finite nondegenerate triangles and positive signed volume',()=>{
   const src=originalHull(),r=core.closeHull(src.positions,src.indices),p=r.positions,idx=r.indices;let volume=0;

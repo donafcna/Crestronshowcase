@@ -16,6 +16,8 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 2
+      - name: Fetch the exact historical visual baseline
+        run: git fetch --no-tags --depth=1 origin 04ec427a6c509fe34e622dff14cbc3014a7aa440
       - uses: actions/setup-node@v4
         with:
           node-version: '24'

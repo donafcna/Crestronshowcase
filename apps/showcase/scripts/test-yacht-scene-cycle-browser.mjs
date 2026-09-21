@@ -29,27 +29,27 @@ try{
    await gui.waitForFunction(s=>window.ftvYachtExteriorGui.state.stage===s,stage,{polling:100});
    await page.waitForTimeout(100);
   }
-  await phase(10,'day');assert.equal(await gui.evaluate(()=>window.ftvGui.state.preset),'cruise');
+  await phase(2,'day');assert.equal(await gui.evaluate(()=>window.ftvGui.state.preset),'cruise');
   await gui.evaluate(()=>{window.__cycleCalls=[];window.ftvGui.selectRoom('11');});
   await page.waitForTimeout(150);
   const selection=await model.evaluate(()=>window.__ftvModel.state());
-  await phase(35,'dusk');assert.deepEqual(await gui.evaluate(()=>window.__cycleCalls),[]);
-  await phase(40,'night');
+  await phase(9.5,'dusk');assert.deepEqual(await gui.evaluate(()=>window.__cycleCalls),[]);
+  await phase(10,'night');
   assert.equal(await gui.evaluate(()=>window.ftvGui.state.preset),'dinner');
   assert.equal(await model.evaluate(()=>window.__ftvModel.exteriorState().automatic),true);
   assert.ok(Object.values(await model.evaluate(()=>window.__ftvModel.exteriorState().levels)).every(v=>v>0));
   assert.deepEqual(await model.evaluate(()=>window.__ftvModel.state()),selection);
   assert.equal(await gui.evaluate(()=>{const p=window.ftvGui.config.presets.find(p=>p.id==='dinner');return Object.values(window.ftvGui.state.zones).every(z=>Object.entries(p.values).every(([k,v])=>z.lights[k]===v));}),true);
   checks.push(kind+': night selects dinner on all zones, keeps selection and exterior Auto');
-  for(const t of [41,50,65])await phase(t,'night');
+  for(const t of [11,15,18])await phase(t,'night');
   assert.deepEqual(await gui.evaluate(()=>window.__cycleCalls),['dinner']);
-  await phase(75,'dawn');assert.deepEqual(await gui.evaluate(()=>window.__cycleCalls),['dinner']);
-  await phase(80,'day');assert.deepEqual(await gui.evaluate(()=>window.__cycleCalls),['dinner','cruise']);
+  await phase(19.5,'dawn');assert.deepEqual(await gui.evaluate(()=>window.__cycleCalls),['dinner']);
+  await phase(20,'day');assert.deepEqual(await gui.evaluate(()=>window.__cycleCalls),['dinner','cruise']);
   assert.ok(Object.values(await model.evaluate(()=>window.__ftvModel.exteriorState().levels)).every(v=>v===0));
   checks.push(kind+': no repeated calls, dusk/dawn untouched, daylight selects cruise');
   await gui.locator('[data-preset="sunset"]').click();await page.waitForTimeout(450);
   assert.equal(await model.evaluate(()=>window.__ftvModel.exteriorState().automatic),false);
-  await phase(120,'night');assert.equal(await gui.evaluate(()=>window.ftvGui.state.preset),'sunset');
+  await phase(30,'night');assert.equal(await gui.evaluate(()=>window.ftvGui.state.preset),'sunset');
   await gui.evaluate(()=>window.ftvYachtExteriorGui.show(true));
   await gui.locator('[data-exterior-auto]').check();
   await gui.waitForFunction(()=>window.ftvGui.state.preset==='dinner',null,{polling:100});
@@ -75,7 +75,7 @@ try{
  const page=await context.newPage();page.on('pageerror',e=>errors.push('TSW: '+e.message));
  await page.goto(base+'/ftv-luxury/gui.html?project=yacht-monaco&device=wallpanel_hd');
  await page.waitForFunction(()=>window.ftvYachtExteriorGui?.ready);
- for(const [ms,preset] of [[10000,'cruise'],[40000,'dinner'],[80000,'cruise']]){
+ for(const [ms,preset] of [[0,'cruise'],[9999,'cruise'],[10000,'dinner'],[19999,'dinner'],[20000,'cruise'],[30000,'dinner'],[40000,'cruise']]){
   await page.evaluate(t=>window.__advanceCycle(t),ms);
   assert.equal(await page.evaluate(()=>window.ftvGui.state.preset),preset);
  }
