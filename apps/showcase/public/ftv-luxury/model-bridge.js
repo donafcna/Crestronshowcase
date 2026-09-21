@@ -9,19 +9,19 @@
   let last = '', exteriorError = null;
   if (api.project === 'yacht-monaco') {
     try {
-      for (const file of ['yacht-exterior-core.js', 'yacht-exterior.js']) {
+      for (const file of ['yacht-exterior-core.js', 'yacht-exterior.js', 'yacht-exterior-finalize.js']) {
         await new Promise((resolve, reject) => {
           const script = document.createElement('script'); script.src = new URL(file, base).href;
           script.onload = resolve; script.onerror = () => reject(new Error('Échec du chargement : ' + file)); document.head.appendChild(script);
         });
       }
-      if (!api.exteriorState) throw new Error('L’extension extérieure n’a pas pu être initialisée.');
+      if (!api.exteriorState || !window.__ftvYachtExterior?.finalized) throw new Error('L’extension extérieure n’a pas pu être initialisée.');
     } catch (error) {
       exteriorError = error.message; console.error('[Asteria exterior]', error);
     }
   }
   const ready = () => {
-    send('model-ready', { rooms: api.catalog, floors: api.floors, exterior: !!api.exteriorState });
+    send('model-ready', { rooms: api.catalog, floors: api.floors, exterior: !!api.exteriorState && !exteriorError });
     if (api.exteriorState) send('exterior-state', api.exteriorState());
     if (exteriorError) send('model-error', { message: 'Éclairage extérieur indisponible : ' + exteriorError });
   };
@@ -37,7 +37,7 @@
       switch (m.type) {
         case 'viewport': if (m.viewport && ['x', 'y', 'w', 'h'].every(k => Number.isFinite(m.viewport[k])) && m.viewport.w > 0 && m.viewport.h > 0) api.viewport?.(m.viewport); break;
         case 'pick': if (Number.isFinite(m.x) && Number.isFinite(m.y)) api.pick?.(m.x, m.y); break;
-        case 'visibility': window.__ftvPaused = m.visible === false; break;
+        case 'visibility': window.__ftvPaused = m.visible === false; api.visibility?.(m.visible !== false); break;
         case 'resize': window.dispatchEvent(new Event('resize')); break;
         case 'select': if (m.id === 'all' || m.id === 'hall' && api.project === 'boutique-hermes' || api.catalog.some(r => r.id === m.id)) api.select(m.id); break;
         case 'level': if (m.id === 'all' || api.floors.some(r => String(r.id) === String(m.id))) api.level(m.id); break;
@@ -47,7 +47,7 @@
         case 'color': api.color(m.value); break;
         case 'capture': api.capture(); break;
         case 'environment-time': if (Number.isFinite(m.seconds) && m.seconds >= 0) api.environmentTime?.(m.seconds); break;
-        case 'exterior': api.exterior?.(m.command); break;
+        case 'exterior': if (!exteriorError) api.exterior?.(m.command); break;
         case 'hello': ready(); break;
         default: return;
       }
