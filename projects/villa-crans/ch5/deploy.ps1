@@ -4,6 +4,7 @@
 #   .\deploy.ps1 -Target tsw     -> uniquement la TSW
 #   .\deploy.ps1 -Target cp4     -> uniquement le CP4
 #   .\deploy.ps1 -Target web     -> Web XPanel sur le serveur web du CP4 (QR codes par piece) + regeneration des QR
+#   .\deploy.ps1 -Target mobile  -> projet pour l'application Crestron One (iPhone / iPad, IP-ID 05-06)
 #   .\deploy.ps1 -SkipBuild      -> sans recompiler l'archive CH5
 #   .\deploy.ps1 -SkipContrast   -> sans la garde de contraste (a n'utiliser que sur faux positif avere)
 #   .\deploy.ps1 -Target web -CP4Host 192.168.3.109  -> vise un autre processeur (banc de test du bureau)
@@ -13,7 +14,7 @@
 # Cle optionnelle dans deploy.secrets.psd1 -> CP4.WebAuthToken : jeton d'authentification passe dans les QR (?authtoken=).
 
 param(
-    [ValidateSet('all', 'tsw', 'cp4', 'config', 'web')]
+    [ValidateSet('all', 'tsw', 'cp4', 'config', 'web', 'mobile')]
     [string]$Target = 'all',
     [switch]$SkipBuild,
     [switch]$SkipContrast,
@@ -290,6 +291,30 @@ public static class FtvTrustAll {
     } else {
         Write-Host "  Web XPanel OK : $urlWeb" -ForegroundColor Green
     }
+    # 22.09.2026 : un code 200 ne prouve rien, une copie perimee repond 200 aussi. L'iPhone est
+    # reste trois jours sur 1.0.196 pendant que le script annoncait des deploiements reussis.
+    # On lit la version reellement servie et on la compare a celle qui vient d'etre construite.
+    $versionAttendue = (Get-Content (Join-Path $root 'version.json') -Raw | ConvertFrom-Json).version
+    $urlVersion = "https://$cibleWeb/villaftv/version.js"
+    $versionServie = $null
+    try {
+        [FtvTrustAll]::Install()
+        $versionServie = (Invoke-WebRequest -Uri $urlVersion -UseBasicParsing -TimeoutSec 20).Content
+    } catch { $versionServie = $null } finally { [FtvTrustAll]::Remove() }
+    if (-not $versionServie) {
+        $curl = Get-Command curl.exe -ErrorAction SilentlyContinue
+        if ($curl) { $versionServie = & $curl.Source -k -s --max-time 20 $urlVersion 2>$null }
+    }
+    if ($versionServie -match "v?(\d+\.\d+\.\d+)") {
+        $servie = $Matches[1]
+        if ($servie -eq $versionAttendue) {
+            Write-Host "  Version servie par le CP4 : $servie (= build)" -ForegroundColor Green
+        } else {
+            throw "Le CP4 sert encore la version $servie alors que le build est $versionAttendue : le deploiement web n'a pas pris (identifiants SFTP ?)."
+        }
+    } else {
+        Write-Warning "Version servie illisible ($urlVersion) : verifier a la main que le CP4 sert bien $versionAttendue."
+    }
     Write-Host "  GUI smartphone : https://$cibleWeb/villaftv/iphone.html" -ForegroundColor Green
 
     # QR codes par piece (tools/gen_qr.js -> qr\)
@@ -300,6 +325,25 @@ public static class FtvTrustAll {
     if ($LASTEXITCODE -ne 0) { Write-Host "  Attention : generation des QR codes en echec (npm install --save-dev qrcode ?)" -ForegroundColor Yellow }
     else { Write-Host "  QR codes regeneres : qr\index.html" -ForegroundColor Green }
     if ($Target -eq 'web') { Write-Host "Deploiement termine." -ForegroundColor Green; exit 0 }
+}
+
+# --- MOBILE : le meme .ch5z pour l'application Crestron One (iPhone IP-ID 06, iPad IP-ID 05) ---
+# 22.09.2026 : cette cible manquait. Les cibles tsw (PROJECTLOAD) et web (-t web) ne touchent pas le
+# projet que Crestron One telecharge depuis le processeur : l'iPhone est reste sur 1.0.196 pendant
+# six livraisons, et chaque test "sur l'iPhone" a en fait teste une version vieille de trois jours.
+if ($Target -in @('all', 'mobile')) {
+    $cibleMobile = if ($CP4Host) { $CP4Host } else { $S.CP4.Host }
+    Write-Host "[mobile] Deploiement du projet Crestron One sur le CP4 $cibleMobile..." -ForegroundColor Cyan
+    $ch5z = Join-Path $root 'dist\villaftv.ch5z'
+    if (-not (Test-Path $ch5z)) { throw "Archive introuvable : $ch5z" }
+    Write-Host "  Identifiants SFTP du processeur demandes ci-dessous." -ForegroundColor Yellow
+    Push-Location $root
+    try {
+        Invoke-Ch5Cli @('deploy', '-H', $cibleMobile, '-t', 'mobile', '-p', $ch5z)
+    } finally { Pop-Location }
+    Write-Host "  Projet mobile envoye. Sur l'iPhone : fermeture forcee de Crestron One puis relance ;" -ForegroundColor Green
+    Write-Host "  verifier dans Reglages que la version affichee est bien celle du build." -ForegroundColor Green
+    if ($Target -eq 'mobile') { Write-Host "Deploiement termine." -ForegroundColor Green; exit 0 }
 }
 
 # --- CONFIG SEULE : envoi de villa_config.json au CP4 + redemarrage du programme (sans recharger le cpz) ---

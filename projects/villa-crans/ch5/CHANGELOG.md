@@ -1,5 +1,31 @@
 # Villa Crans CH5 — journal des versions
 
+## 22/09/2026 — deploy.ps1 : cible `mobile` (Crestron One) et verification de la version servie
+
+**Le constat.** Version affichee dans Reglages sur l'iPhone : **1.0.196**, soit trois jours et six livraisons de retard,
+anterieure au tout premier correctif iPhone (v4.2 = 1.0.198). Aucun test « sur l'iPhone » depuis le 18/09 n'a teste
+autre chose que le 1.0.196 : bandeau absent, geste inerte, sonde muette, v4.4 « non concluant » — tous invalides.
+Les mesures cote CP4 (`[LAT]`, v4.3) restent valides : le CPZ, lui, etait bien deploye.
+
+**La cause.** `deploy.ps1` ne connaissait que `tsw` (PROJECTLOAD sur la dalle), `web` (`ch5-cli -t web`, XPanel et QR)
+et `cp4`. Le projet que **Crestron One** telecharge depuis le processeur se deploie avec `ch5-cli -t mobile` : cette
+cible n'existait pas. Le 1.0.196 avait ete pousse a la main une fois, jamais mis a jour. Par ailleurs la verification
+du deploiement web se contentait d'un code HTTP 200 sur `index.html` — qu'une copie perimee renvoie aussi.
+
+**Correction.**
+1. Nouvelle cible `-Target mobile` (incluse dans `all`) : `ch5-cli deploy -t mobile` vers le CP4, identifiants SFTP
+   demandes comme pour `web`.
+2. La cible `web` lit desormais `version.js` reellement servi par le CP4 et le compare a `version.json` : ecart =
+   erreur bloquante, plus jamais « Web XPanel OK » sur une copie perimee.
+
+**Regle de test consignee.** Toute procedure de test sur un support commence par la lecture de la version affichee
+par la GUI (Reglages) et sa comparaison avec `version.json`. Un test dont la version n'a pas ete relevee n'est pas
+un test.
+
+**Consequence.** Les lots v4.2 (appui long), v4.3 (bandeau/sonde) et v4.4 (boutons Centralisation en `<button>`)
+n'ont jamais tourne sur l'iPhone. Le test v4.4 est a refaire integralement sur le 1.0.204.
+
+
 ## v4.4 — 21/09/2026 — boutons Centralisation de l'iPhone sur la chaine qui marche (a compiler : CH5 seul)
 
 | Artefact | Etat de ce lot |
