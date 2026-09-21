@@ -1,5 +1,14 @@
 # Villa Crans CH5 — journal des versions
 
+## 21/09/2026 — C1 : source iPhone synchronisée vers Vercel
+
+- Source CH5 iPhone : diagnostic C1 intégré, commandes et feedbacks natifs conservés ; CH5Z non compilé.
+- CPZ slot 1 : aucun changement du C# du dépôt, C1 matériel fourni dans le ZIP séparé ; aucune compilation ni installation.
+- LPZ slot 2 : inchangé.
+- Showcase : copie iPhone régénérée via le synchroniseur existant pour publication autorisée sur Vercel.
+
+Build/lint et 14 tests du diagnostic réussis. Rendu navigateur indisponible ; qualification générale 39/43, mêmes quatre échecs de version sur la référence inchangée. Détails et preuves dans le journal showcase et `docs/verification/2026-09-21-centralisation-c1/`.
+
 ## v4.3.1 — 19/09/2026 — le bandeau de latence ne s'armait jamais (a recompiler : CH5 seul)
 
 | Artefact | Etat de ce lot |

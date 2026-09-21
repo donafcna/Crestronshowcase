@@ -1,0 +1,35 @@
+{
+  "base_commit": "04ec427a6c509fe34e622dff14cbc3014a7aa440",
+  "candidate": "CENT-20260921-1",
+  "build": "passed",
+  "lint": "passed with existing warnings",
+  "diagnostic_tests": {
+    "passed": 14,
+    "failed": 0
+  },
+  "general_quality_tests": {
+    "passed": 39,
+    "failed": 4,
+    "same_failures_on_unchanged_baseline": true,
+    "reason": "Configuration meta.version 1.0.201 differs from runtime profile 1.0.196"
+  },
+  "browser": "not run: Chromium exits with SIGSEGV before opening a page",
+  "hardware": "not compiled or deployed",
+  "files": [
+    {
+      "path": "projects/villa-crans/ch5/src/iphone.html",
+      "scripts_syntax_valid": 8,
+      "native_buttons_and_joins": "unchanged",
+      "sha256": "dca8481daa7c59ade75b9a5d5f376b3681ebc7e0184cab0a66eaa2b543de5249"
+    },
+    {
+      "path": "apps/showcase/public/showcases/villa-gemini-frequencetv/iphone.html",
+      "scripts_syntax_valid": 10,
+      "native_buttons_and_joins": "unchanged",
+      "sha256": "d01e2754498dbdf780861b344a8de945b2613d211bd93b8e2d1ba46a0be91ab0"
+    }
+  ],
+  "publication_parent": "dd52f42137c1413704864037963e0cf44682b207",
+  "build_after_upstream_merge": "passed",
+  "lint_after_upstream_merge": "passed with warnings"
+}

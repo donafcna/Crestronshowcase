@@ -410,3 +410,14 @@ Les anciens supports conservent leur GUI. Les modèles sont conceptuels et la sa
 
 ### 21 septembre 2026 — fond 3D continu en Mode Scène
 Conférence et discothèque : le canvas adapte aussi sa largeur CSS lors du redimensionnement, supprimant la bande vide sous la colonne de droite. Logos et sélecteurs de support conservés. Vérification navigateur aux largeurs 1600 et 1280 px, aucune erreur JavaScript ; build et lint réussis (avertissements existants). Aucun écran de simulateur ni fiche projet modifié.
+
+
+## 21/09/2026 — Centralisation iPhone C1 : publication de la page
+
+Demande explicite de Donatien : publier sur Vercel la mise à jour fournie dans le paquet C1. La source commune `projects/villa-crans/ch5/src/iphone.html` reçoit le diagnostic `CENT-20260921-1`. Sa copie publique est régénérée par la fonction `patch_html` de `scripts/sync-villa-crans.py`, limitée à cette page pour conserver les autres évolutions déjà présentes. Seul le bloc de diagnostic change ; boutons natifs CH5, joins, styles, configuration de démonstration et moteur `local-feedback.js` conservés.
+
+La mesure démarre à la pression, conserve les retards jusqu’à 45 secondes, distingue callback/DOM/frame et exclut les appuis ambigus ou sur un état déjà actif. Le bandeau reste masqué par défaut, cinq appuis sur Centralisation pour l’afficher. En mode showcase, les diagnostics restent locaux : aucun envoi sur le sériel 100. Cette publication ne démontre pas la disparition du retard sur l’iPhone relié au CP4.
+
+Vérifications : build et lint réussis (avertissements existants), 14 tests du diagnostic réussis, syntaxe des scripts inline et identité des attributs des boutons contrôlées. La batterie générale donne 39/43, avec les quatre mêmes échecs sur le commit initial inchangé : configuration `meta.version=1.0.201` contre profil de qualification `1.0.196`. Le profil de qualification matériel n’a pas été assoupli pour publier la vitrine. Chromium se ferme par SIGSEGV avant le chargement ; aucun résultat de rendu, de contraste ou de recette Safari/iPhone n’est revendiqué. Les écrans de présentation et fiches commerciales ne changent pas. Preuves : `docs/verification/2026-09-21-centralisation-c1/` à la racine.
+
+Artefacts : source iPhone C1 et showcase mis à jour ; aucun CH5Z, CPZ ou LPZ compilé ou envoyé. Le C# C1 reste dans le paquet remis à Donatien et n’est pas ajouté au dépôt par cette publication du site. Le correctif matériel complet conserve son installation et sa recette séparées.
