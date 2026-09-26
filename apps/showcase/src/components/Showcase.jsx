@@ -564,7 +564,7 @@ const ShowcaseInner = ({ sectorId, projectId, device }) => {
                 )}
               </div>
             )}
-            {activeProject.id === "hotel-brassus" && <HotelBrassusTools key={viewportDevice} guiFrameRef={guiFrameRef} />}
+            {activeProject.id === "hotel-brassus" && viewportDevice !== "phone" && <HotelBrassusTools key={viewportDevice} guiFrameRef={guiFrameRef} />}
             <div className="device-buttons-column">
               {projectViewports.map((dev) => (
                 <button

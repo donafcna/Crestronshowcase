@@ -58,3 +58,10 @@ Voir `docs/verification/2026-09-26-hotel-brassus/` pour résultats et captures.
 Tests matériel Crestron, Safari/iPad réel et étalonnage dimensionnel du bâtiment non réalisés.
 
 Le parcours automatique du catalogue est désactivé uniquement pour cette interface imbriquée (`autoDemo: false`) afin de ne pas interrompre les commandes.
+
+
+## 26/09/2026 — Hotel Brassus iPhone, vitrine 2.1.1
+
+Demande explicite : adaptation portrait et ouverture Hôtellerie sur Hotel Brassus / Smartphone avec maquette 3D. Dalle TSW, PC/XPanel et Tablette : GUI CH5 original et vidéo de fond. Adaptation dédiée `phone.html/css/js`, commandes locales sans transport matériel, sept espaces, trois thèmes Original/Clair/Sombre conservés, scènes/circuits, volume/sources/mute, stores avec arrêt et consigne. États conservés entre espaces durant la session. Cette adaptation web ne constitue pas un CH5Z livré au matériel. Source CH5 de l'hôtel et copie native inchangées.
+
+La maquette ouvre en vue globale, puis suit le niveau d'un espace sélectionné ou d'une commande d'éclairage. Éclairages synchronisés, molette de zoom, cadrage entre le téléphone et la colonne en modes normal/Scène. Les limites architecturales de la maquette restent celles documentées au lot 2.1.0. Aucun modèle 3D chargé en fond sur les trois grands supports.

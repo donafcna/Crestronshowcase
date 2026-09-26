@@ -1,6 +1,8 @@
 /* Plan-derived presentation geometry. Elevations and materials are interpretive.
  * Source mapping and coordinate convention: docs/hotel-brassus.md. */
 (() => {
+  const background=new URLSearchParams(location.search).has('background');let viewport=null;
+  if(background)document.body.classList.add('background');
   const T=window.THREE, canvas=document.getElementById('scene');
   let renderer;
   try {renderer=new T.WebGLRenderer({canvas,antialias:true,alpha:false});} catch {
@@ -9,7 +11,8 @@
   renderer.setPixelRatio(Math.min(devicePixelRatio,1.6));renderer.outputColorSpace=T.SRGBColorSpace;
   renderer.toneMapping=T.ACESFilmicToneMapping;renderer.toneMappingExposure=1.25;
   const scene=new T.Scene();scene.background=new T.Color('#263f46');scene.fog=new T.Fog('#263f46',105,260);
-  const camera=new T.PerspectiveCamera(38,1,.1,350),target=new T.Vector3(0,-1,0);
+  if(background){scene.fog.near=300;scene.fog.far=700;}
+  const camera=new T.PerspectiveCamera(38,1,.1,800),target=new T.Vector3(0,-1,0);
   const hemi=new T.HemisphereLight(0xdceaff,0x647356,2.5);scene.add(hemi);
   const sun=new T.DirectionalLight(0xffe2b9,3.3);sun.position.set(-30,60,35);scene.add(sun);
   const mats={};
@@ -73,9 +76,9 @@
   canvas.onpointerdown=e=>{drag={x:e.clientX,y:e.clientY};canvas.setPointerCapture(e.pointerId)};
   canvas.onpointermove=e=>{if(!drag)return;theta-=(e.clientX-drag.x)*.006;phi=Math.max(.22,Math.min(1.4,phi+(e.clientY-drag.y)*.004));drag={x:e.clientX,y:e.clientY};};canvas.onpointerup=canvas.onpointercancel=()=>{drag=null};
   canvas.addEventListener('wheel',e=>{e.preventDefault();radius=Math.max(24,Math.min(160,radius*Math.exp(e.deltaY*.001)));},{passive:false});
-  window.addEventListener('message',e=>{if(e.origin!==location.origin||e.source!==parent)return;const m=e.data;if(m?.channel==='hdh-view'&&typeof m.visible==='boolean')visible=m.visible;if(m?.channel==='hdh-demo'){const id={bar:'550',entrance:'450',restaurant:'350',salon:'350',pdr:'350',wellness:'250',seminar:'450'}[m.zone];if(id)levels[id].traverse(o=>{if(o.isMesh&&o.material===mats.glow){o.visible=m.level>0;}});}});
+  window.addEventListener('message',e=>{if(e.origin!==location.origin||e.source!==parent)return;const m=e.data;if(m?.channel==='hdh-view'){if(typeof m.visible==='boolean')visible=m.visible;if(m.viewport)viewport=m.viewport;if(Number.isFinite(m.zoom))radius=Math.max(40,Math.min(180,radius*Math.exp(m.zoom*.001)));}if(m?.channel==='hdh-demo'){const id={bar:'550',entrance:'450',restaurant:'350',salon:'350',pdr:'350',wellness:'250',seminar:'450'}[m.zone];if(background&&m.focus&&id&&m.zone!==window.HDH_ZONE){window.HDH_ZONE=m.zone;select(id)}if(id)levels[id].traverse(o=>{if(o.isMesh&&o.material===mats.glow){o.visible=m.level>0;}});}});
   window.addEventListener('keydown',e=>{if(e.key==='Escape')parent.postMessage({channel:'hdh-close'},location.origin)});
   let last=0;
-  function frame(now){requestAnimationFrame(frame);if(document.hidden||!visible)return;const w=canvas.clientWidth,h=canvas.clientHeight;if(!w||!h)return;if(canvas.width!==Math.round(w*renderer.getPixelRatio())||canvas.height!==Math.round(h*renderer.getPixelRatio())){renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();}if(auto&&!matchMedia('(prefers-reduced-motion: reduce)').matches)theta+=Math.min((now-last)/1000,.05)*.1;last=now;camera.position.set(target.x+radius*Math.sin(phi)*Math.sin(theta),target.y+radius*Math.cos(phi),target.z+radius*Math.sin(phi)*Math.cos(theta));camera.lookAt(target);renderer.render(scene,camera);}
-  requestAnimationFrame(frame);window.HDH_MODEL={levels,roofs,select,renderer,scene,camera};
+  function frame(now){requestAnimationFrame(frame);if(document.hidden||!visible)return;const w=canvas.clientWidth,h=canvas.clientHeight;if(!w||!h)return;if(canvas.width!==Math.round(w*renderer.getPixelRatio())||canvas.height!==Math.round(h*renderer.getPixelRatio())){renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();}if(auto&&!matchMedia('(prefers-reduced-motion: reduce)').matches)theta+=Math.min((now-last)/1000,.05)*.1;last=now;const distance=background&&viewport?radius*1.5/Math.min(1,viewport.w/viewport.h):radius;camera.position.set(target.x+distance*Math.sin(phi)*Math.sin(theta),target.y+distance*Math.cos(phi),target.z+distance*Math.sin(phi)*Math.cos(theta));camera.lookAt(target);if(background&&viewport){const v=viewport;camera.setViewOffset(v.w,v.h,-v.x,-v.y,w,h);camera.updateProjectionMatrix();}renderer.render(scene,camera);}
+  requestAnimationFrame(frame);window.HDH_MODEL={levels,roofs,select,renderer,scene,camera};parent.postMessage({channel:'hdh-ready'},location.origin);
 })();

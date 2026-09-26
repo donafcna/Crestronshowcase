@@ -312,9 +312,11 @@ export const projects = [
   "devices": [
     "crestron",
     "ios_tablet",
-    "xpanel"
+    "xpanel", "ios_phone"
   ],
   "isInteractive": false,
+  "defaultViewport": "phone",
+  "embedPhoneUrl": "/showcases/hotel-brassus/phone.html",
   "embedUrl": "/showcases/hotel-brassus/ch5/index.html?zone=bar&theme=actuel&nolock=1",
   "thumbnailUrl": "/sheets/hotel-brassus/01-gui.png",
   "year": "2026",

@@ -2,7 +2,7 @@
 // - Dalle tactile Crestron TSW-1070 : 1280 x 800 (WXGA natif, 16:10)
 // - PC Monitoring / Xpanel        : 1920 x 1080 (16:9)
 // - Tablette iPad (A16) 11"         : 1180 x 820 (paysage, 2360 x 1640 px natif)
-// - Smartphone iPhone 15/16 Pro    : 402 x 874 (portrait)
+// - Smartphone iPhone 18 Pro Max   : 440 x 956 (portrait)
 //
 // screenW/H = résolution native de l'écran (ce que la GUI doit remplir).
 // guiW/H = résolution de conception du canvas GUI. Egale à screenW/H pour
@@ -12,30 +12,31 @@
 // chassisW/H = boîtier complet (écran + bezel décoratif), taille de
 // conception FIXE — jamais recalculée depuis le contenu ou le viewport.
 export const DEVICES = {
+  // Apple FR, vérifié le 26/09/2026 : https://www.apple.com/fr/iphone-18-pro/specs/
   phone: {
     id: "phone",
     // Dimensions physiques du boîtier (mm) : « Taille réelle » = 96 px CSS par pouce
-    physicalW: 71.5,
-    physicalH: 149.6,
+    physicalW: 78,
+    physicalH: 163.4,
     // Caractéristiques réelles affichées dans la légende du châssis
-    model: "iPhone 16 Pro",
-    diagonalInches: 6.3,
-    nativeW: 2622,
-    nativeH: 1206,
+    model: "iPhone 18 Pro Max",
+    diagonalInches: 6.9,
+    nativeW: 2868,
+    nativeH: 1320,
     label: "Smartphone",
-    screenW: 402,
-    screenH: 874,
+    screenW: 440,
+    screenH: 956,
     // La GUI occupe l'écran hors zones réservées par iOS (barre d'état avec
     // Dynamic Island : 59 pt en haut, indicateur home : 34 pt en bas), comme
     // en mode démo plein écran sur un vrai iPhone.
-    guiW: 402,
-    guiH: 781,
+    guiW: 440,
+    guiH: 863,
     safeTop: 59,
     safeBottom: 34,
-    // Boîtier aux proportions d'un iPhone 16 Pro : bords de 24 px sur les
-    // côtés, 33 px en haut / bas (149,6 x 71,5 mm pour un écran de 402 x 874 pt).
-    chassisW: 450,
-    chassisH: 940,
+    // Boîtier aux proportions d'un iPhone 18 Pro Max : bords de 24 px sur les
+    // côtés, 33 px en haut / bas (163,4 x 78 mm pour un écran de 440 x 956 pt).
+    chassisW: 488,
+    chassisH: 1022,
   },
   tablet: {
     id: "tablet",

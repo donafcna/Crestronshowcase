@@ -148,3 +148,15 @@ Preuves et comparaison : `docs/verification/2026-09-17-journey-1/` à la racine 
 
 
 Publication vérifiée : **74cd4a41**, main → Vercel. Quatre ressources publiques identiques aux octets Git ; **34 contrôles Villa Crans et 122 contrôles React réussis sur le site public**, soit 156. Cycle jour/nuit, deux passages Smartphone et TSW, sources et volume réels, arrêt A/V, priorité manuelle et minimum de visibilité confirmés. Aucun nouveau défaut navigateur ; messages préexistants du TSW séparés. Preuves `production/`, `production-react/` et `production-assets.json` dans `docs/verification/2026-09-17-journey-1/`. Aucun matériel déployé. La TODO F1 est enregistrée sans réalisation.
+
+
+## 26/09/2026 — Hotel Brassus iPhone, vitrine 2.1.1
+
+Demande explicite : adaptation portrait et ouverture Hôtellerie sur Hotel Brassus / Smartphone avec maquette 3D. Dalle TSW, PC/XPanel et Tablette : GUI CH5 original et vidéo de fond. Adaptation dédiée `phone.html/css/js`, commandes locales sans transport matériel, sept espaces, trois thèmes Original/Clair/Sombre conservés, scènes/circuits, volume/sources/mute, stores avec arrêt et consigne. États conservés entre espaces durant la session. Cette adaptation web ne constitue pas un CH5Z livré au matériel. Source CH5 de l'hôtel et copie native inchangées.
+
+La maquette ouvre en vue globale, puis suit le niveau d'un espace sélectionné ou d'une commande d'éclairage. Éclairages synchronisés, molette de zoom, cadrage entre le téléphone et la colonne en modes normal/Scène. Les limites architecturales de la maquette restent celles documentées au lot 2.1.0. Aucun modèle 3D chargé en fond sur les trois grands supports.
+
+
+## 26/09/2026 — Référence Smartphone commune : grand iPhone
+
+À la demande explicite de Donatien, tous les projets utilisent le grand format portrait iPhone 18 Pro Max (Apple FR vérifié le 26/09/2026 : https://www.apple.com/fr/iphone-18-pro/specs/). Écran 6,9 pouces, 1320 × 2868 pixels, boîtier 78 × 163,4 mm. Configuration partagée `src/data/devices.js` : écran 440 × 956 unités CSS, GUI 440 × 863 après zones réservées de présentation 59/34, boîtier graphique 488 × 1022. La taille physique calibrée et le Mode Scène utilisent cette même configuration. Remplace la référence iPhone 16 Pro antérieure ; aucune variante par projet.

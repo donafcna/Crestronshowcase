@@ -68,3 +68,8 @@ Donatien a autorisé les flèches horizontales des rideaux et ON/OFF + ventilati
 
 ## Industrialisation du 17/09/2026
 Pour la V1/bêta Alexandre et la généralisation, lire docs/industrialisation/README.md. Registre des simulateurs unique dans simulatorRegistry.js ; validation du catalogue au prébuild. tools/quality prépare des candidats dans des dossiers neufs sans déploiement. Les preuves de banc simulé ne remplacent jamais la recette EISC multi-écrans sur matériel.
+
+
+## 26/09/2026 — Référence Smartphone commune : grand iPhone
+
+À la demande explicite de Donatien, tous les projets utilisent le grand format portrait iPhone 18 Pro Max (Apple FR vérifié le 26/09/2026 : https://www.apple.com/fr/iphone-18-pro/specs/). Écran 6,9 pouces, 1320 × 2868 pixels, boîtier 78 × 163,4 mm. Configuration partagée `src/data/devices.js` : écran 440 × 956 unités CSS, GUI 440 × 863 après zones réservées de présentation 59/34, boîtier graphique 488 × 1022. La taille physique calibrée et le Mode Scène utilisent cette même configuration. Remplace la référence iPhone 16 Pro antérieure ; aucune variante par projet.

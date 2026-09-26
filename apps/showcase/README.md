@@ -430,3 +430,15 @@ Nouveau projet Hôtellerie, distinct de Hotel Geneva. Import reproductible du GU
 Bouton Maquette 3D dans la colonne du site, avec vue agrandie hors châssis : six niveaux/extraits issus des plans AV, vue en coupe et toitures, isolation par niveau, rotation, zoom, jour/nuit. Implantation globale, hauteurs et finitions interprétées, clairement signalées ; ce n'est pas un BIM de l'ensemble du bâtiment. Plans bruts non publiés. Mobilier instancié par niveau et chargement 3D à la demande. Pas de smartphone inventé ni de parcours de démo automatique sur ce GUI imbriqué ; autres projets inchangés.
 
 Fiches FR/EN/DE et captures ajoutées. Sources, empreintes, décisions et limites : `docs/hotel-brassus.md`. Recette : `docs/verification/2026-09-26-hotel-brassus/`. Aucun programme ni matériel Crestron modifié ou déployé.
+
+
+## 26/09/2026 — Hotel Brassus iPhone, vitrine 2.1.1
+
+Demande explicite : adaptation portrait et ouverture Hôtellerie sur Hotel Brassus / Smartphone avec maquette 3D. Dalle TSW, PC/XPanel et Tablette : GUI CH5 original et vidéo de fond. Adaptation dédiée `phone.html/css/js`, commandes locales sans transport matériel, sept espaces, trois thèmes Original/Clair/Sombre conservés, scènes/circuits, volume/sources/mute, stores avec arrêt et consigne. États conservés entre espaces durant la session. Cette adaptation web ne constitue pas un CH5Z livré au matériel. Source CH5 de l'hôtel et copie native inchangées.
+
+La maquette ouvre en vue globale, puis suit le niveau d'un espace sélectionné ou d'une commande d'éclairage. Éclairages synchronisés, molette de zoom, cadrage entre le téléphone et la colonne en modes normal/Scène. Les limites architecturales de la maquette restent celles documentées au lot 2.1.0. Aucun modèle 3D chargé en fond sur les trois grands supports.
+
+
+## 26/09/2026 — Référence Smartphone commune : grand iPhone
+
+À la demande explicite de Donatien, tous les projets utilisent le grand format portrait iPhone 18 Pro Max (Apple FR vérifié le 26/09/2026 : https://www.apple.com/fr/iphone-18-pro/specs/). Écran 6,9 pouces, 1320 × 2868 pixels, boîtier 78 × 163,4 mm. Configuration partagée `src/data/devices.js` : écran 440 × 956 unités CSS, GUI 440 × 863 après zones réservées de présentation 59/34, boîtier graphique 488 × 1022. La taille physique calibrée et le Mode Scène utilisent cette même configuration. Remplace la référence iPhone 16 Pro antérieure ; aucune variante par projet.
