@@ -1,0 +1,102 @@
+{
+  "zones": [
+    {
+      "zone": "bar",
+      "view": "room",
+      "selectedId": "550",
+      "selectedZone": "bar",
+      "zoomProgress": 1,
+      "radius": 30,
+      "target": [
+        3.6860884964203287,
+        29.930284414493208,
+        7.365241439189088
+      ]
+    },
+    {
+      "zone": "entrance",
+      "view": "room",
+      "selectedId": "550",
+      "selectedZone": "entrance",
+      "zoomProgress": 1,
+      "radius": 38,
+      "target": [
+        37.935712095465746,
+        37.605026925024724,
+        14.129305822972839
+      ]
+    },
+    {
+      "zone": "restaurant",
+      "view": "room",
+      "selectedId": "350",
+      "selectedZone": "restaurant",
+      "zoomProgress": 1,
+      "radius": 43,
+      "target": [
+        19.216726844869136,
+        38.48174099410693,
+        42.35684606283769
+      ]
+    },
+    {
+      "zone": "salon",
+      "view": "room",
+      "selectedId": "350",
+      "selectedZone": "salon",
+      "zoomProgress": 1,
+      "radius": 27,
+      "target": [
+        25.717479646778294,
+        23.13225597304389,
+        28.828717295270177
+      ]
+    },
+    {
+      "zone": "pdr",
+      "view": "room",
+      "selectedId": "350",
+      "selectedZone": "pdr",
+      "zoomProgress": 1,
+      "radius": 27,
+      "target": [
+        34.717479646778294,
+        23.13225597304389,
+        28.828717295270177
+      ]
+    },
+    {
+      "zone": "wellness",
+      "view": "room",
+      "selectedId": "250",
+      "selectedZone": "wellness",
+      "zoomProgress": 1,
+      "radius": 45,
+      "target": [
+        33.52913274463049,
+        36.520426621739816,
+        56.04786215878362
+      ]
+    },
+    {
+      "zone": "seminar",
+      "view": "room",
+      "selectedId": "450",
+      "selectedZone": "seminar",
+      "zoomProgress": 1,
+      "radius": 42,
+      "target": [
+        37.56052389498846,
+        39.64239818029049,
+        29.51133801486472
+      ]
+    }
+  ],
+  "wheelSteps": [
+    0.15,
+    0.3,
+    0.44999999999999996,
+    0.6
+  ],
+  "errors": []
+}

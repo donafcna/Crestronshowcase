@@ -447,3 +447,7 @@ La maquette ouvre en vue globale, puis suit le niveau d'un espace sélectionné 
 ## 26/09/2026 — Accès mobile exclusivement simplifié, vitrine 2.1.2
 
 Demande de Donatien : smartphones et tablettes affichent seulement le catalogue tactile et son lecteur de GUI. Le choix est fait avant tout rendu du site complet, pour toutes les routes, paramètres et ancien hash #site. Les liens #demo/projet restent utilisables et le retour ouvre le catalogue. Suppression du bouton « Ouvrir le site complet » dans le catalogue et la page indisponible. Les ordinateurs conservent le site complet. Détection iOS/Android et iPad avec user-agent de bureau ; rotation iPad maintenue en tablette.
+
+## 26/09/2026 — Hotel Brassus, enveloppe et caméra 2.1.3
+
+Enveloppe 3D complète inspirée du bâtiment construit : murs, vitrages, bois, dalles, toits végétalisés, rampes et panneaux photovoltaïques. Les dimensions extérieures restent interprétées depuis les plans AV partiels. Caméra alignée sur Villa Crans : transition par espace, molette descendante vers la vue complète, molette montante progressive vers la dernière zone. Sept cibles distinctes et conservation de la sélection.

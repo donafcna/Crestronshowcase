@@ -165,3 +165,7 @@ La maquette ouvre en vue globale, puis suit le niveau d'un espace sélectionné 
 ## 26/09/2026 — Accès mobile exclusivement simplifié, vitrine 2.1.2
 
 Demande de Donatien : smartphones et tablettes affichent seulement le catalogue tactile et son lecteur de GUI. Le choix est fait avant tout rendu du site complet, pour toutes les routes, paramètres et ancien hash #site. Les liens #demo/projet restent utilisables et le retour ouvre le catalogue. Suppression du bouton « Ouvrir le site complet » dans le catalogue et la page indisponible. Les ordinateurs conservent le site complet. Détection iOS/Android et iPad avec user-agent de bureau ; rotation iPad maintenue en tablette.
+
+## 26/09/2026 — Hotel Brassus, enveloppe et caméra 2.1.3
+
+Le fond 3D Hotel Brassus affiche l'enveloppe complète seulement en vue générale. La sélection d'un espace masque l'enveloppe et isole le niveau en coupe. Navigation permanente : molette delta positif = vue complète immédiate ; delta négatif = progression vers la dernière zone sélectionnée. La sélection GUI lance directement la transition. Ne pas perdre `selectedZone` au retour général.
