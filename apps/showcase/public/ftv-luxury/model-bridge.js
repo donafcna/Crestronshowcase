@@ -10,11 +10,12 @@
   const validViewport = v => v && ['x', 'y', 'w', 'h'].every(k => Number.isFinite(v[k])) && v.w > 0 && v.h > 0;
   let last = '', exteriorError = null;
   if (api.project === 'yacht-monaco') {
-    // Manual wheel zoom remains eased and never changes the selected room.
+    // One wheel notch toggles between the complete yacht and the last room.
     api.zoom = delta => {
       if (!Number.isFinite(delta) || delta === 0) return;
-      const amount = Math.max(-600, Math.min(600, delta));
-      desiredRadius = Math.max(4, Math.min(320, desiredRadius * Math.exp(amount * .0015)));
+      if (delta > 0) api.overview();
+      else api.select(api.lastRoom?.() || '0');
+      window.__ftvEmit?.();
     };
     try {
       for (const file of ['yacht-exterior-core.js', 'yacht-exterior.js', 'yacht-exterior-finalize.js', 'yacht-night-finish.js']) {
@@ -37,7 +38,7 @@
       radius = desiredRadius; yaw = desiredYaw; pitch = desiredPitch; target.copy(desiredTarget);
       camera.position.set(target.x + Math.sin(yaw) * Math.cos(pitch) * radius, target.y + Math.sin(pitch) * radius, target.z + Math.cos(yaw) * Math.cos(pitch) * radius);
       camera.lookAt(target);
-      camera.setViewOffset(viewport.w, viewport.h, -viewport.x, -viewport.y, innerWidth, innerHeight);
+      camera.setViewOffset(viewport.w, viewport.h, -viewport.x - viewport.w * .075, -viewport.y, innerWidth, innerHeight);
       camera.updateProjectionMatrix(); camera.updateMatrixWorld(true);
       pending = { requestId, viewport: { ...viewport } };
     };

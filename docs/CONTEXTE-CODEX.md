@@ -1,5 +1,13 @@
 # Reprise Codex — Crestron CH5 Cowork
 
+## 26/09/2026 — Yacht Asteria
+
+Vue générale recentrée à droite du châssis iPhone. Les vues de zones sont relevées et accompagnées d'un bandeau de coque sous le pont pour matérialiser la hauteur au-dessus de l'eau. La molette offre deux vues : vers le bas, yacht complet ; vers le haut, dernière zone sélectionnée, ou première zone par défaut. Les mouvements de caméra sont ralentis. Cycle environnemental propre au yacht : 30 secondes de jour puis 30 secondes de nuit, avec une seconde de fondu incluse à la fin de chaque phase.
+
+## 26/09/2026 — Boutique Auralis
+
+Sushi Bar Kyoto appartient uniquement au secteur Restaurant et n'apparaît plus dans le bandeau Boutique. La molette alterne entre vue complète et dernière zone sélectionnée, avec « Hall & escalier d’apparat » comme repli initial. Les transitions de caméra sont ralenties.
+
 ## 26/09/2026 — Hotel Brassus
 
 Ajout demandé par Donatien dans Hôtellerie avec le vrai GUI de l'Hôtel des Horlogers et une maquette basée sur ses plans locaux. Site 2.1.0, source CH5 2.12.16 importée depuis la distribution compilée fournie. Travail isolé des modifications locales Villa Crans. Détails, synchronisation reproductible, limites architecturales et recette : `apps/showcase/docs/hotel-brassus.md`. Source HDH sur le Bureau et programmes matériels préservés. Ne pas interpréter les valeurs de démonstration comme la configuration du site client.

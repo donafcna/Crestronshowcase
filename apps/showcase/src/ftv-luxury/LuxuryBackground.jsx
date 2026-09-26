@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import './background.css';
 import { LUXURY_MODELS } from './modelProjects';
-import { createWheelNavigation } from '../utils/wheelNavigation';
 const channel = 'ftv-luxury/v1';
 const commands = new Set(['hello', 'select', 'level', 'overview', 'scene', 'lighting', 'color', 'capture', 'visibility', 'resize', 'exterior', 'zoom']);
 const controls = 'iframe,button,a,input,select,textarea,.workspace-device-sidebar,.phone-device-frame,.projects-strip';
@@ -98,19 +97,18 @@ export function LuxuryBackground({ projectId, stageRef, tourSessionRef }) {
         }
       }
     };
-    const zoomWheel = createWheelNavigation(delta => send('zoom', { delta }), {
-      enabled: () => loaded && (!yacht || shown) && !document.hidden,
-      height: () => stage.clientHeight || innerHeight,
-    });
     let lastWheel = 0, accumulated = 0;
-    const wheel = yacht ? zoomWheel : event => {
-      if (!loaded || event.ctrlKey || event.metaKey || event.target.closest(controls) || Math.abs(event.deltaX) > Math.abs(event.deltaY)) return;
+    const wheel = event => {
+      if (!loaded || (yacht && !shown) || document.hidden || event.ctrlKey || event.metaKey || event.target.closest(controls) || Math.abs(event.deltaX) > Math.abs(event.deltaY)) return;
       event.preventDefault();
       if (Math.sign(accumulated) !== Math.sign(event.deltaY)) accumulated = 0;
       accumulated += event.deltaY * (event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? innerHeight : 1);
       if (Math.abs(accumulated) < 36 || performance.now() - lastWheel < 650) return;
       if (accumulated > 0) send('overview');
-      else send('select', { id: gui()?.contentWindow?.ftvGui?.state.zone || 'all' });
+      else {
+        const selected = gui()?.contentWindow?.ftvGui?.state.zone;
+        send('select', { id: selected && selected !== 'all' ? selected : yacht ? '0' : 'hall' });
+      }
       lastWheel = performance.now(); accumulated = 0;
     };
     const click = event => {
@@ -129,7 +127,7 @@ export function LuxuryBackground({ projectId, stageRef, tourSessionRef }) {
     if (yacht) raf = requestAnimationFrame(entryTick);
     hello();
     return () => {
-      zoomWheel.dispose(); clearTimeout(timeout); cancelAnimationFrame(raf);
+      clearTimeout(timeout); cancelAnimationFrame(raf);
       clearInterval(timer); observer.disconnect();
       window.removeEventListener('message', message); window.removeEventListener('resize', layout);
       frame.removeEventListener('load', hello);

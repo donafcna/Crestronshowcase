@@ -14,12 +14,12 @@ test('initial day/night aligns the GUI to cruise/dinner', () => {
     const { calls, cycle } = setup(); cycle.update(state(stage)); assert.deepEqual(calls, [preset]);
   }
 });
-test('actual 20-second environment: scene commands at exact 10-second edges', () => {
+test('actual 60-second environment: scene commands at exact 30-second edges', () => {
   const calls = []; let time = 0;
   const cycle = create(preset => calls.push({time, preset}));
-  for (time=0; time<=40; time+=.125) cycle.update(state(environment.cycle(time).stage));
-  assert.deepEqual(calls, [{time:0,preset:'cruise'},{time:10,preset:'dinner'},
-    {time:20,preset:'cruise'},{time:30,preset:'dinner'},{time:40,preset:'cruise'}]);
+  for (time=0; time<=120; time+=.125) cycle.update(state(environment.cycle(time).stage));
+  assert.deepEqual(calls, [{time:0,preset:'cruise'},{time:30,preset:'dinner'},
+    {time:60,preset:'cruise'},{time:90,preset:'dinner'},{time:120,preset:'cruise'}]);
 });
 test('dusk and dawn do not force a scene', () => {
   const { calls, cycle } = setup(); cycle.update(state('dusk')); cycle.update(state('dawn')); assert.deepEqual(calls, []);

@@ -1,5 +1,13 @@
 # Premier commit 19/7/2026 13h00
 
+## 26/09/2026 — Yacht Asteria : cadrages et cycle
+
+La vue générale du yacht est recentrée dans l'espace libre à côté de l'iPhone. Les vues de zones adoptent un angle plus haut et montrent un bandeau de coque sous le pont afin de conserver un repère d'altitude au-dessus de l'eau. La molette alterne entre deux états : vers le bas, yacht entièrement dézoomé ; vers le haut, dernière zone sélectionnée, ou première zone par défaut. Les déplacements de caméra sont ralentis. Le cycle automatique dure désormais 30 secondes de jour et 30 secondes de nuit, fondu final compris dans chaque moitié.
+
+## 26/09/2026 — Boutique Auralis : navigation
+
+Sushi Bar Kyoto est retiré du secteur Boutique et reste disponible dans Restaurant. La molette alterne entre la vue complète et la dernière zone sélectionnée ; sans sélection préalable, elle ouvre « Hall & escalier d’apparat » au rez-de-chaussée. Les transitions de caméra sont ralenties.
+
 Perte de toutes les données la veille et première reconstitution des fichiers. 
 
 Premiers tests sur Ecrans 21.5': dimensionnement des périphériques OK pour tous les projets et secteurs d'activités. 

@@ -42,6 +42,10 @@ try{
    check(id+' '+mode+' background visible during controls',!bounds.paused&&!bounds.scroll);
    if(mode==='scene')await p.keyboard.press('Escape');
   }
+  const initialCentre=await p.evaluate(()=>{const f=document.querySelector('.luxury-background-frame'),b=f.getBoundingClientRect(),v=f.contentWindow.__ftvViewport;return {x:b.left+v.x+v.w/2,y:b.top+v.y+v.h/2};});
+  await p.mouse.move(initialCentre.x,initialCentre.y);await p.mouse.wheel(0,-140);
+  const defaultRoom=id==='boutique-hermes'?'hall':'0';await m.waitForFunction(r=>window.__ftvModel.state().room===r,defaultRoom);
+  check(id+' reverse wheel opens the default room',true);await p.waitForTimeout(700);await p.mouse.wheel(0,140);await m.waitForFunction(()=>window.__ftvModel.state().room==='all');
   await g.selectOption('#theme','dark');await g.selectOption('#zone',room);await m.waitForFunction(r=>window.__ftvModel.state().room===r,room);
   check(id+' room selection reaches background',await m.evaluate(()=>window.__ftvModel.state().room)===room);
   await snap(id+'-room');

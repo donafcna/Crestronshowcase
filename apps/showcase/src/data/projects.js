@@ -594,7 +594,7 @@ export const projects = [
     name: `Sushi Bar Kyoto`,
     status: `concept`,
     client: `Restaurant gastronomique (concept)`,
-    sectors: [`restaurant`, `boutique`],
+    sectors: [`restaurant`],
     devices: [`android_tablet`, `crestron`],
     isInteractive: true,
     thumbnailUrl: `https://images.unsplash.com/photo-1579871494447-9811cf80d66c?auto=format&fit=crop&w=600&q=80`,
