@@ -18,8 +18,8 @@ const server = http.createServer((req, res) => {
   res.setHeader('Content-Type', mime[path.extname(file)] || 'application/octet-stream');
   res.end(fs.readFileSync(file));
 });
-await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
-const base = `http://127.0.0.1:${server.address().port}`;
+if (!process.env.BASE_URL) await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
+const base = process.env.BASE_URL || `http://127.0.0.1:${server.address().port}`;
 const browser = await chromium.launch({ executablePath: process.env.BROWSER_EXE, args: JSON.parse(process.env.BROWSER_ARGS || '[]'), headless: true });
 const page = await browser.newPage({ viewport: { width: 1600, height: 960 } });
 const errors = [];
@@ -50,8 +50,8 @@ try {
   }
 
   await page.goto(`${base}/interfaces/hotellerie/hotel-brassus/phone`, { waitUntil: 'domcontentloaded' });
-  await page.waitForFunction(() => [...document.querySelectorAll('iframe')].some(item => item.src.includes('/showcases/hotel-brassus/phone.html')));
-  const phone = page.frames().find(item => item.url().includes('/showcases/hotel-brassus/phone.html'));
+  const phoneElement = await page.locator('iframe[src*="/showcases/hotel-brassus/phone.html"]').first().elementHandle({ timeout: 30_000 });
+  const phone = await phoneElement?.contentFrame();
   assert.ok(phone, 'L’interface iPhone Hotel Brassus est chargée');
   await phone.waitForSelector('.scene');
   const palette = await phone.evaluate(() => ({
@@ -65,5 +65,5 @@ try {
   console.log(JSON.stringify({ checks: 12, palette, errors }, null, 2));
 } finally {
   await browser.close();
-  server.close();
+  if (server.listening) server.close();
 }
