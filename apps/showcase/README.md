@@ -459,3 +459,7 @@ Les scènes d'éclairage pilotent désormais quinze projecteurs et seize bandeau
 ## 26/09/2026 — Hotel Brassus, éclairages et rideaux 2.1.5
 
 Toutes les pièces de la maquette reçoivent corniches, spots, appliques, balises basses, suspensions ou chandeliers. Les scènes du Smartphone modulent la luminosité de la pièce sélectionnée. Le décor alterne dix secondes jour et dix secondes nuit. Les Stores du Bar, du Restaurant et des Séminaires ferment et ouvrent des rideaux visibles. La molette commute uniquement entre l'hôtel complet et la dernière pièce centrée.
+
+## 26/09/2026 — Filtre de secteurs mobile 2.1.6
+
+Le catalogue iPhone et tablette affiche sous le logo Fréquence TV un menu déroulant de secteurs. Le choix filtre immédiatement les projets compatibles avec le support courant. Le sous-titre est raccourci en « Interface Crestron CH5 ».

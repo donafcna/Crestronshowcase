@@ -363,3 +363,7 @@ Ajout de quinze faisceaux/projecteurs et seize bandeaux LED synchronisés dans l
 ## 26/09/2026 — Hotel Brassus, éclairages et rideaux 2.1.5
 
 Ajout dans toutes les pièces de 783 éléments lumineux (corniches, spots, appliques, balises basses et luminaires suspendus), avec vingt sources volumétriques. Les scènes 0/35/70/100 % agissent sur la pièce sélectionnée. Cycle automatique de dix secondes jour puis dix secondes nuit. Les deux stores de Bar, Restaurant et Séminaires animent des rideaux sur les vitrages. Navigation réduite à deux vues : bâtiment complet ou dernière pièce centrée. Recette locale : niveaux 0/100 %, progression des rideaux, cadrages 150/30 et bascule jour/nuit vérifiés sans erreur JavaScript.
+
+## 26/09/2026 — Filtre de secteurs mobile 2.1.6
+
+Ajout au catalogue tactile d'un sélecteur de secteurs sous le logo Fréquence TV. Le filtre conserve uniquement les projets compatibles avec le téléphone ou la tablette et appartenant au secteur choisi. Le libellé « Interfaces Crestron CH5 — Frequence TV » devient « Interface Crestron CH5 » dans les trois langues du catalogue.
