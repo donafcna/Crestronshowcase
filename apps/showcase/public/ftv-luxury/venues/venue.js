@@ -134,7 +134,7 @@ if(club){
  for(let i=0;i<20;i++)box('Burgundy velvet wall pleat',-10.85,2,-11+i*1.1,.16,3.7,.6,material(i%2?'#722139':'#4c1c31'));
  for(const x of [-6.3,6.3])box('Disco gold pilaster',x,2.8,-12.6,.2,5.2,.12,material('#d4a447',.25,.75));
  box('Gold screen crown',0,5.8,-12.5,9.5,.1,.1,glow);for(const x of [-4.75,4.75])box('Gold screen frame',x,4,-12.5,.1,3.6,.1,glow);
- sign('STUDIO 77',0,4.05,-12.48,8.7,3.2,'#ffe4a0','#651e39');
+ sign('STUDIO 77',0,4.05,-12.72,8.7,3.2,'#ffe4a0','#651e39');
  }else if(f===1){
  box('Concrete dance slab',0,.08,1,10,.12,12,material('#28323b'));
  for(const x of [-5,5])box('Cyan dance border',x,.16,1,.08,.05,12,glow);
@@ -143,7 +143,7 @@ if(club){
  for(let i=0;i<7;i++)box('Floor circuit line',-3+i, .16,1,.04,.025,11,glow);
  box('Industrial island bar',-8.2,1.05,3,2.5,2.1,7,material('#424b53',.3,.7));
  for(const z of [-1,3,7]){box('Steel lounge bench',8.2,.6,z,2.5,1.2,2.2,M.black);box('Bench neon base',8.2,.12,z,2.5,.08,2.2,glow);}
- sign('NEON FOUNDRY',0,4.05,-12.48,8.7,3.2,'#65f3ff','#111d29');
+ sign('NEON FOUNDRY',0,4.05,-12.72,8.7,3.2,'#65f3ff','#111d29');
  }else{
  cylinder('Circular dance floor',0,.08,1,5.2,.16,material('#2e7069',.28,.3));
  for(const radius of [3.6,4.4,5.15]){const ring=new T.Mesh(new T.TorusGeometry(radius,.045,6,64),glow);ring.name='Circular dance halo';ring.rotation.x=Math.PI/2;ring.position.set(0,.19,1);model.add(ring);}
@@ -153,7 +153,7 @@ if(club){
  for(const z of [-7,0,7]){cylinder('Round ivory lounge',8.2,.45,z,1.5,.8,material('#e5decf'));cylinder('Brass cocktail table',6.7,.85,z,.65,.12,material('#c5a362',.25,.65));}
  box('Jade cocktail bar',-8.3,1.1,2,2.7,2.2,6,material('#378779'));
  for(const x of [-8,8])for(const z of [-8,8]){cylinder('Garden planter',x,.4,z,.6,.8,material('#ded7c7'));for(let k=0;k<4;k++){const leaf=new T.Mesh(new T.SphereGeometry(.65,10,6),material(k%2?'#377b5d':'#549a72'));leaf.name='Tropical greenery';leaf.position.set(x+Math.sin(k)*.35,1.25+k*.25,z+Math.cos(k)*.3);leaf.scale.set(.55,1.1,.7);model.add(leaf);}}
- sign('SKY GARDEN',0,4.05,-12.48,8.7,3.2,'#dff9e9','#2a7068');
+ sign('SKY GARDEN',0,4.05,-12.72,8.7,3.2,'#dff9e9','#2a7068');
  }
  });
  // Service annex beside the single open hall, without partitioning its dance floor.
