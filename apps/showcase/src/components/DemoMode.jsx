@@ -107,7 +107,7 @@ const DemoPlayer = ({ project, deviceType, onBack, onToggleDevice }) => {
 /* ------------------------------------------------------------------ */
 /* Launcher : liste tactile de toutes les interfaces                   */
 /* ------------------------------------------------------------------ */
-const DemoLauncher = ({ deviceType, onOpenProject, onExitDemo }) => {
+const DemoLauncher = ({ deviceType, onOpenProject }) => {
   const { t, lang, changeLanguage, supportedLangs } = useTranslation();
   const [isStandalone] = useState(
     () =>
@@ -189,10 +189,6 @@ const DemoLauncher = ({ deviceType, onOpenProject, onExitDemo }) => {
       </main>
 
       <footer className="demo-launcher-footer">
-        <button className="demo-exit-link" onClick={onExitDemo}>
-          {renderIcon("Monitor", 14)}
-          <span>{t("demo_full_site")}</span>
-        </button>
         <span className="demo-footer-credit">
           Crestron CH5 · HTML5 / CSS / JS — Frequence TV
         </span>
@@ -204,7 +200,7 @@ const DemoLauncher = ({ deviceType, onOpenProject, onExitDemo }) => {
 /* ------------------------------------------------------------------ */
 /* Racine du mode démo : lit la route hash                             */
 /* ------------------------------------------------------------------ */
-export const DemoMode = ({ route, onNavigate, onExitDemo }) => {
+export const DemoMode = ({ route, onNavigate }) => {
   const [deviceType, setDeviceType] = useState(detectDeviceType);
 
   // Resynchronisation à la rotation / au redimensionnement (hors iOS/Android
@@ -213,7 +209,8 @@ export const DemoMode = ({ route, onNavigate, onExitDemo }) => {
     const onResize = () =>
       setDeviceType((prev) => {
         const ua = navigator.userAgent || "";
-        if (/iPhone|iPod|iPad|Android/.test(ua)) return prev;
+        if (/iPhone|iPod|iPad|Android/.test(ua) ||
+            (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1)) return prev;
         const smallest = Math.min(window.innerWidth, window.innerHeight);
         return smallest < 500 ? "phone" : "tablet";
       });
@@ -225,7 +222,7 @@ export const DemoMode = ({ route, onNavigate, onExitDemo }) => {
   const project = projectId ? projects.find((p) => p.id === projectId) : null;
 
   if (projectId && !supportsDemoDevice(project, deviceType)) {
-    return <DemoUnavailable project={project} onBack={() => onNavigate("demo")} onExitDemo={onExitDemo} />;
+    return <DemoUnavailable project={project} onBack={() => onNavigate("demo")} />;
   }
 
   if (project) {
@@ -245,19 +242,17 @@ export const DemoMode = ({ route, onNavigate, onExitDemo }) => {
     <DemoLauncher
       deviceType={deviceType}
       onOpenProject={(id) => onNavigate(`demo/${id}`)}
-      onExitDemo={onExitDemo}
     />
   );
 };
 
-const DemoUnavailable = ({ project, onBack, onExitDemo }) => {
+const DemoUnavailable = ({ project, onBack }) => {
   const { t, lang } = useTranslation();
   return (
     <main className="demo-launcher demo-unavailable">
       <h1>{project ? getProjectName(project, lang) : t("demo_unknown")}</h1>
       <p>{t(project ? "demo_unsupported" : "demo_unknown_hint")}</p>
       <button className="demo-unavailable-action" onClick={onBack}>{t("demo_back")}</button>
-      <button className="demo-exit-link" onClick={onExitDemo}>{t("demo_full_site")}</button>
     </main>
   );
 };

@@ -37,28 +37,16 @@ function App() {
     return () => window.removeEventListener("hashchange", onHashChange);
   }, []);
 
-  // Sur un vrai téléphone / tablette arrivant sur la racine du site (sans
-  // lien profond partagé ni paramètres), ouvrir l'outil de démo marketing.
-  useEffect(() => {
-    if (
-      window.location.pathname === "/" &&
-      !window.location.hash &&
-      !window.location.search &&
-      isMobileDevice()
-    ) {
-      window.location.replace("#demo");
-    }
-  }, []);
-
-  if (hashRoute === "demo" || hashRoute.startsWith("demo/")) {
+  // Mobile visitors always use the touch catalogue/player, including deep links
+  // and the legacy #site escape. Choose this before rendering any desktop shell.
+  const mobileVisitor = isMobileDevice();
+  const isDemoRoute = hashRoute === "demo" || hashRoute.startsWith("demo/");
+  if (mobileVisitor || isDemoRoute) {
     return (
       <DemoMode
-        route={hashRoute}
+        route={isDemoRoute ? hashRoute : "demo"}
         onNavigate={(r) => {
-          window.location.hash = r ? `#${r}` : "";
-        }}
-        onExitDemo={() => {
-          window.location.hash = "#site";
+          window.location.hash = `#${r || "demo"}`;
         }}
       />
     );

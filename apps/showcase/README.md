@@ -442,3 +442,8 @@ La maquette ouvre en vue globale, puis suit le niveau d'un espace sélectionné 
 ## 26/09/2026 — Référence Smartphone commune : grand iPhone
 
 À la demande explicite de Donatien, tous les projets utilisent le grand format portrait iPhone 18 Pro Max (Apple FR vérifié le 26/09/2026 : https://www.apple.com/fr/iphone-18-pro/specs/). Écran 6,9 pouces, 1320 × 2868 pixels, boîtier 78 × 163,4 mm. Configuration partagée `src/data/devices.js` : écran 440 × 956 unités CSS, GUI 440 × 863 après zones réservées de présentation 59/34, boîtier graphique 488 × 1022. La taille physique calibrée et le Mode Scène utilisent cette même configuration. Remplace la référence iPhone 16 Pro antérieure ; aucune variante par projet.
+
+
+## 26/09/2026 — Accès mobile exclusivement simplifié, vitrine 2.1.2
+
+Demande de Donatien : smartphones et tablettes affichent seulement le catalogue tactile et son lecteur de GUI. Le choix est fait avant tout rendu du site complet, pour toutes les routes, paramètres et ancien hash #site. Les liens #demo/projet restent utilisables et le retour ouvre le catalogue. Suppression du bouton « Ouvrir le site complet » dans le catalogue et la page indisponible. Les ordinateurs conservent le site complet. Détection iOS/Android et iPad avec user-agent de bureau ; rotation iPad maintenue en tablette.
