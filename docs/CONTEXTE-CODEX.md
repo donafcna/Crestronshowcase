@@ -6,6 +6,8 @@ Vue générale recentrée à droite du châssis iPhone. Les vues de zones sont r
 
 Affinage 2.1.12 : vues de zones légèrement élargies, cible de caméra abaissée et flanc de coque porté à 2,5 m sous chaque pont afin que la hauteur au-dessus de l'eau reste visible dans toutes les zones.
 
+Affinage 2.1.13 : le flanc atteint 4,2 m et la caméra adopte un angle plus latéral. En vue de zone, les deux ponts inférieurs sont relevés à 5,5 m dans cette présentation en coupe, afin que le volume de coque reste visible même autour du Beach club.
+
 ## 26/09/2026 — Boutique Auralis
 
 Sushi Bar Kyoto appartient uniquement au secteur Restaurant et n'apparaît plus dans le bandeau Boutique. La molette alterne entre vue complète et dernière zone sélectionnée, avec « Hall & escalier d’apparat » comme repli initial. Les transitions de caméra sont ralenties.

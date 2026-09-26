@@ -6,6 +6,8 @@ La vue générale du yacht est recentrée dans l'espace libre à côté de l'iPh
 
 Le cadrage rapproché 2.1.12 élargit ensuite la vue et expose un flanc de coque de 2,5 m sous le pont sélectionné. L'espace reste lisible tandis que la séparation verticale avec l'eau devient immédiatement visible.
 
+Affinage 2.1.13 après contrôle visuel : flanc porté à 4,2 m, angle de caméra abaissé et pont inférieur présenté à 5,5 m au-dessus de l'eau dans la vue en coupe. Le volume turquoise doit occuper une bande latérale clairement visible, y compris pour le Beach club.
+
 ## 26/09/2026 — Boutique Auralis : navigation
 
 Sushi Bar Kyoto est retiré du secteur Boutique et reste disponible dans Restaurant. La molette alterne entre la vue complète et la dernière zone sélectionnée ; sans sélection préalable, elle ouvre « Hall & escalier d’apparat » au rez-de-chaussée. Les transitions de caméra sont ralenties.
