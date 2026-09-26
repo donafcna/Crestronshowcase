@@ -381,3 +381,7 @@ Ajout dans toutes les pièces de 783 éléments lumineux (corniches, spots, appl
 ## 26/09/2026 — Filtre de secteurs mobile 2.1.6
 
 Ajout au catalogue tactile d'un sélecteur de secteurs sous le logo Fréquence TV. Le filtre conserve uniquement les projets compatibles avec le téléphone ou la tablette et appartenant au secteur choisi. Le libellé « Interfaces Crestron CH5 — Frequence TV » devient « Interface Crestron CH5 » dans les trois langues du catalogue.
+
+## 26/09/2026 — Kyoto Rooftop et Hotel Brassus 2.2.0
+
+Le projet Sushi Bar Kyoto reçoit une maquette conceptuelle de restaurant de luxe à deux niveaux, inspirée des deux images remises : salle vitrée et sombre, bar architectural, salon privé, terrasse, escalier extérieur et rooftop végétalisé sous pergola. Le GUI est réorganisé autour des espaces, scènes, quatre circuits lumineux, confort, audio et service. Le Smartphone affiche la maquette 3D synchronisée ; Dalle TSW et Tablette gardent la vidéo. L'interface iPhone Hotel Brassus reprend les couleurs vert profond, vert sélection, blanc et or du GUI CH5 des grands supports. Compilation, lint et douze contrôles navigateur réussis sans erreur.

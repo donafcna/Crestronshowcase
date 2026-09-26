@@ -595,14 +595,14 @@ export const projects = [
     status: `concept`,
     client: `Restaurant gastronomique (concept)`,
     sectors: [`restaurant`],
-    devices: [`android_tablet`, `crestron`],
+    devices: [`ios_phone`, `android_tablet`, `crestron`],
     isInteractive: true,
     thumbnailUrl: `https://images.unsplash.com/photo-1579871494447-9811cf80d66c?auto=format&fit=crop&w=600&q=80`,
     year: `2025`,
     text: {
       fr: {
-        description: `Ambiances d'éclairage par table, ventilation de cuisine et sélection musicale zonée.`,
-        details: `Dans ce restaurant japonais haut de gamme, le personnel contrôle facilement l'ambiance générale. L'éclairage de chaque table peut être adapté aux couples ou aux groupes. La cuisine ouverte dispose de variateurs pour les hottes afin de minimiser le bruit en salle tout en assurant l'extraction.`,
+        description: `Restaurant de luxe sur deux niveaux : salle vitrée, bar architectural et rooftop sous pergola.`,
+        details: `Kyoto Rooftop réunit une salle gastronomique vitrée, un long bar minéral, un salon privé et une terrasse panoramique végétalisée. L'interface iPhone pilote les scènes, les zones lumineuses, le confort et le service ; la maquette 3D réagit aux choix en temps réel.`,
         features: [
           `Éclairage précis par table (luminosité, température)`,
           `Audio multi-zones (bar, salle, salon privé)`,
