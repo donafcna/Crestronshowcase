@@ -9,3 +9,5 @@
 - Validation Edge headless. Aucune mesure architecturale ou recette sur matériel Crestron/iPhone physique n'est revendiquée.
 
 `overview.png` montre l'enveloppe complète ; `wellness.png` montre la coupe de l'espace sélectionné ; `navigation.json` contient les états observés.
+
+Publication `173ea7fd` vérifiée sur `crestrongui.vercel.app` : enveloppe chargée (252 objets directs), Salle privée ciblée sur le niveau 350, retour général en un geste, puis premier palier de rapprochement à `0.1667` en conservant la Salle privée. Aucune erreur JavaScript observée.
