@@ -4,6 +4,8 @@
 
 La vue générale du yacht est recentrée dans l'espace libre à côté de l'iPhone. Les vues de zones adoptent un angle plus haut et montrent un bandeau de coque sous le pont afin de conserver un repère d'altitude au-dessus de l'eau. La molette alterne entre deux états : vers le bas, yacht entièrement dézoomé ; vers le haut, dernière zone sélectionnée, ou première zone par défaut. Les déplacements de caméra sont ralentis. Le cycle automatique dure désormais 30 secondes de jour et 30 secondes de nuit, fondu final compris dans chaque moitié.
 
+Le cadrage rapproché 2.1.12 élargit ensuite la vue et expose un flanc de coque de 2,5 m sous le pont sélectionné. L'espace reste lisible tandis que la séparation verticale avec l'eau devient immédiatement visible.
+
 ## 26/09/2026 — Boutique Auralis : navigation
 
 Sushi Bar Kyoto est retiré du secteur Boutique et reste disponible dans Restaurant. La molette alterne entre la vue complète et la dernière zone sélectionnée ; sans sélection préalable, elle ouvre « Hall & escalier d’apparat » au rez-de-chaussée. Les transitions de caméra sont ralenties.
