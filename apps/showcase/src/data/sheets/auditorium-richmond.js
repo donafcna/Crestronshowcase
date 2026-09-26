@@ -57,7 +57,7 @@ export default {
         "buttons": [
           [
             "Discours",
-            "Rappelle le preset ; feedback immédiat sur les curseurs, la pastille de teinte et le halo de fond."
+            "Rappelle le preset avec un fondu DMX simulé de 4 secondes ; la salle 3D rejoint progressivement les nouveaux niveaux et la nouvelle teinte."
           ],
           [
             "Curseurs",
@@ -72,11 +72,11 @@ export default {
         "buttons": [
           [
             "Cam 1 (Orateur) · Cam 2 (Chaire) · Cam 3 (Public)",
-            "Choix de la caméra active (une seule à la fois, bouton surligné en cyan). Le nom de la caméra s'affiche dans la prévisualisation « STREAM FEED // CAMx »."
+            "Choix de la caméra active. La prévisualisation montre l'estrade selon le cadrage de la caméra choisie."
           ],
           [
-            "REC FEED",
-            "Badge indiquant que ce flux est celui envoyé à l'enregistrement."
+            "REC",
+            "Bouton d'enregistrement placé en haut à droite de la carte Caméras PTZ ; son voyant rouge indique l'état actif."
           ],
           [
             "↑ ← → ↓ (JOY)",
@@ -128,8 +128,8 @@ export default {
         "text": "Routage de la source affichée sur le mur LED principal et gradation de sa luminosité.",
         "buttons": [
           [
-            "PC Pupitre · HDMI Régie · Retour Cam Live · Logo Uni",
-            "Sources en interlock (une seule active, surlignée en cyan) : PC du pupitre, entrée HDMI de la régie, retour de la caméra active, logo de l'université."
+            "PC Pupitre · HDMI Régie · Caméra live · Logo",
+            "Sources en interlock : présentation sur le changement climatique, match de football, vue de la salle et identité Fréquence TV. L'aperçu et le mur LED 3D changent ensemble."
           ],
           [
             "Luminosité",
@@ -224,7 +224,7 @@ export default {
         "buttons": [
           [
             "Discours",
-            "Recalls the preset; immediate feedback on the sliders, the tint pill and the background halo."
+            "Recalls the preset with a simulated four-second DMX fade; the 3D room progressively reaches the new levels and colour."
           ],
           [
             "Sliders",
@@ -239,11 +239,11 @@ export default {
         "buttons": [
           [
             "Cam 1 (Orateur) · Cam 2 (Chaire) · Cam 3 (Public)",
-            "Active camera choice (one at a time, button highlighted in cyan). The camera name appears in the “STREAM FEED // CAMx” preview."
+            "Chooses the active camera. The preview shows the auditorium stage with that camera's framing."
           ],
           [
-            "REC FEED",
-            "Badge showing that this feed is the one sent to the recording."
+            "REC",
+            "Recording button at the top right of the PTZ Cameras card; its red indicator shows the active state."
           ],
           [
             "↑ ← → ↓ (JOY)",
@@ -295,8 +295,8 @@ export default {
         "text": "Routing of the source displayed on the main LED wall and dimming of its brightness.",
         "buttons": [
           [
-            "PC Pupitre · HDMI Régie · Retour Cam Live · Logo Uni",
-            "Interlocked sources (one active, highlighted in cyan): lectern PC, control-room HDMI input, active camera return, university logo."
+            "Lectern PC · Control-room HDMI · Live camera · Logo",
+            "Interlocked sources: climate-change presentation, football match, auditorium view and Fréquence TV identity. The preview and 3D LED wall change together."
           ],
           [
             "Luminosité",
@@ -391,7 +391,7 @@ export default {
         "buttons": [
           [
             "Discours",
-            "Ruft das Preset ab; sofortiges Feedback auf den Reglern, dem Farbpunkt und dem Hintergrundleuchten."
+            "Ruft das Preset mit einer simulierten DMX-Überblendung von vier Sekunden ab; die 3D-Saalbeleuchtung erreicht Pegel und Farbe schrittweise."
           ],
           [
             "Regler",
@@ -406,11 +406,11 @@ export default {
         "buttons": [
           [
             "Cam 1 (Orateur) · Cam 2 (Chaire) · Cam 3 (Public)",
-            "Wahl der aktiven Kamera (nur eine, Taste cyan hervorgehoben). Der Kameraname erscheint in der Vorschau „STREAM FEED // CAMx“."
+            "Wahl der aktiven Kamera. Die Vorschau zeigt die Bühne mit dem gewählten Kamerabild."
           ],
           [
-            "REC FEED",
-            "Abzeichen: dieses Bild wird an die Aufnahme gesendet."
+            "REC",
+            "Aufnahmetaste oben rechts in der Karte PTZ-Kameras; die rote Anzeige zeigt den aktiven Zustand."
           ],
           [
             "↑ ← → ↓ (JOY)",
@@ -462,8 +462,8 @@ export default {
         "text": "Routing der auf der Haupt-LED-Wand gezeigten Quelle und Dimmen ihrer Helligkeit.",
         "buttons": [
           [
-            "PC Pupitre · HDMI Régie · Retour Cam Live · Logo Uni",
-            "Quellen mit Verriegelung (eine aktiv, cyan hervorgehoben): Pult-PC, HDMI-Eingang der Regie, Bild der aktiven Kamera, Universitätslogo."
+            "Pult-PC · Regie-HDMI · Live-Kamera · Logo",
+            "Verriegelte Quellen: Klimawandel-Präsentation, Fußballspiel, Saalansicht und Fréquence-TV-Logo. Vorschau und 3D-LED-Wand wechseln gemeinsam."
           ],
           [
             "Luminosité",

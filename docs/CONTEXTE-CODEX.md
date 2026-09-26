@@ -355,3 +355,11 @@ Demande de Donatien : smartphones et tablettes affichent seulement le catalogue 
 ## 26/09/2026 — Hotel Brassus, enveloppe et caméra 2.1.3
 
 Enveloppe extérieure inspirée du bâtiment réel ajoutée à la maquette interprétée. Vue complète avec murs, vitrages, bois, toitures/terrasses végétalisées, liaisons inclinées et photovoltaïque ; coupe au passage dans un espace. Caméra par zone avec transitions de type Villa Crans. Molette vers le bas : bâtiment complet en un geste. Molette vers le haut : zoom progressif sur la dernière zone. Sources visuelles officielles Hôtel des Horlogers/BIG/CCHE et Swiss Arc documentées dans `apps/showcase/docs/hotel-brassus.md`.
+
+## 26/09/2026 — Auditorium Richmond, lumière et vidéo 2.1.4
+
+Ajout de quinze faisceaux/projecteurs et seize bandeaux LED synchronisés dans le modèle 3D. Les changements de scène et de couleur utilisent un fondu interpolé de quatre secondes. Sur Smartphone, l'enregistrement est intégré à la carte PTZ ; la prévisualisation d'estrade suit pan, tilt, recentrage et zoom. La page Écran propose quatre simulations cohérentes jusque sur la texture du mur LED 3D : climat, football, salle live et Fréquence TV. Build, lint, interactions, absence de défilement interne, contenu 3D et durée du fondu vérifiés localement.
+
+## 26/09/2026 — Hotel Brassus, éclairages et rideaux 2.1.5
+
+Ajout dans toutes les pièces de 783 éléments lumineux (corniches, spots, appliques, balises basses et luminaires suspendus), avec vingt sources volumétriques. Les scènes 0/35/70/100 % agissent sur la pièce sélectionnée. Cycle automatique de dix secondes jour puis dix secondes nuit. Les deux stores de Bar, Restaurant et Séminaires animent des rideaux sur les vitrages. Navigation réduite à deux vues : bâtiment complet ou dernière pièce centrée. Recette locale : niveaux 0/100 %, progression des rideaux, cadrages 150/30 et bascule jour/nuit vérifiés sans erreur JavaScript.

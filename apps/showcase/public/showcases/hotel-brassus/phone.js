@@ -8,7 +8,7 @@
  const zoneEl=document.querySelector('#zone'),content=document.querySelector('#content'),nav=document.querySelector('nav'),theme=document.querySelector('#theme');
  zoneEl.innerHTML=Object.entries(zones).map(([k,v])=>`<option value="${k}">${v}</option>`).join('');zoneEl.value=zone;
  theme.value=['clair','sombre'].includes(params.get('theme'))?params.get('theme'):'actuel';document.body.dataset.theme=theme.value;theme.onchange=()=>{document.body.dataset.theme=theme.value};
- const emit=(focus=false)=>parent.postMessage({focus,channel:'hdh-demo',zone,level:state[zone].lights.reduce((a,b)=>a+b)/4},location.origin);
+ const emit=(focus=false)=>{const s=state[zone];parent.postMessage({focus,channel:'hdh-demo',zone,level:s.lights.reduce((a,b)=>a+b)/4,blinds:s.blinds.reduce((a,b)=>a+b)/s.blinds.length},location.origin)};
  zoneEl.onchange=()=>{zone=zoneEl.value;circuits=false;render();emit(true)};
  function render(){const s=state[zone],hasBlinds=['bar','restaurant','seminar'].includes(zone);if(tab==='blinds'&&!hasBlinds)tab='lighting';
  nav.innerHTML=Object.entries({lighting:'Éclairages',audio:'Audio',blinds:'Stores',temperature:'Température'}).map(([k,v])=>`<button data-tab="${k}" aria-pressed="${tab===k}" ${k==='blinds'&&!hasBlinds?'disabled':''}>${icon(k)}${v}</button>`).join('');
@@ -32,7 +32,7 @@
  for(const [id,d]of [['minus',-.5],['plus',.5]])content.querySelector('#'+id)?.addEventListener('click',()=>{s.temp=Math.max(16,Math.min(28,s.temp+d));render()});
  content.querySelectorAll('[data-blind]').forEach(b=>b.onclick=()=>{const i=+b.dataset.blind;s.target[i]=[0,s.blinds[i],100][+b.dataset.action]});
  }
- setInterval(()=>{for(const s of Object.values(state))s.blinds.forEach((v,i)=>{s.blinds[i]=v+Math.sign(s.target[i]-v)*Math.min(2,Math.abs(s.target[i]-v))});if(tab==='blinds')document.querySelectorAll('[data-blind-value]').forEach(o=>o.value=Math.round(state[zone].blinds[+o.dataset.blindValue])+' %')},100);
+ setInterval(()=>{let moved=false;for(const [key,s] of Object.entries(state))s.blinds.forEach((v,i)=>{const next=v+Math.sign(s.target[i]-v)*Math.min(2,Math.abs(s.target[i]-v));if(key===zone&&next!==v)moved=true;s.blinds[i]=next});if(moved)emit();if(tab==='blinds')document.querySelectorAll('[data-blind-value]').forEach(o=>o.value=Math.round(state[zone].blinds[+o.dataset.blindValue])+' %')},100);
  window.addEventListener('message',e=>{if(e.source===parent&&e.origin===location.origin&&e.data?.channel==='hdh-request')emit()});
  window.HDH_PHONE={state,get zone(){return zone}};render();emit();
 })();

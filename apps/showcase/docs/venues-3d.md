@@ -3,3 +3,7 @@
 Yacht Sunrays et Boutique VCA s’ouvrent sur Smartphone lors du choix du projet ou d’une URL sans support. Un lien explicitement ciblé vers une dalle reste respecté. Auditorium Richmond et Club L’Étoile proposent désormais Smartphone : commandes réparties en onglets, trois thèmes, arrière-plan 3D en coupe à côté du châssis. Auditorium : gradins, scène, pupitre, écran, enceintes et caméras ; club : piste, DJ, bar, lounge et éclairage. Les scènes/circuits/couleur/écran de l’auditorium et les effets lumineux/fumée du club actualisent le modèle. Aucun son, pas de clignotement du stroboscope dans la 3D.
 
 Les anciens supports conservent leur GUI. Les modèles sont conceptuels et la salle ne représente pas les 1000 sièges du projet commercial : 60 sièges schématiques pour garder un rendu léger. Aucun programme matériel modifié. Preuves et limites : `docs/verification/2026-09-21-venues/`. Fiches FR/EN/DE actualisées.
+
+## Auditorium Richmond — effets renforcés, 26 septembre 2026
+
+Le décor contient désormais quinze projecteurs visibles et seize lignes LED réparties sur le proscenium, la scène, les parois et les plafonds. Une transition interpolée de quatre secondes anime les niveaux de face, de contre-jour et de public ainsi que la couleur. Le mur LED dessine un contenu propre à chaque source : présentation climatique, match de football, retour salle ou identité Fréquence TV. La simulation reste illustrative et sans liaison DMX, caméra ou vidéo réelle.

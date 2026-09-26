@@ -25,9 +25,13 @@ scene.add(new T.HemisphereLight('#d6e9ff','#28303c',club?1.3:2));
 const key=new T.DirectionalLight('#ffe7c4',club?1:2.5);key.position.set(10,22,16);key.castShadow=true;key.shadow.mapSize.set(1024,1024);Object.assign(key.shadow.camera,{left:-18,right:18,top:18,bottom:-18,far:80});key.shadow.bias=-.001;scene.add(key);
 const stageLight=new T.PointLight(club?'#a478ff':'#ffe5bf',100,32,2);stageLight.position.set(0,5,-7);scene.add(stageLight);
 const fill=new T.PointLight('#44c9ee',60,30,2);fill.position.set(-7,4,2);scene.add(fill);
-const beams=[],smoke=new T.Group();model.add(smoke);let screenContext,screenTexture;
+const beams=[],auditoriumLedMaterials=[],auditoriumSpots=[],smoke=new T.Group();model.add(smoke);let screenContext,screenTexture;
 function makeScreen(w,h,x,y,z){const c=document.createElement('canvas');c.width=1024;c.height=512;screenContext=c.getContext('2d');screenTexture=new T.CanvasTexture(c);screenTexture.colorSpace=T.SRGBColorSpace;screenMat.map=screenTexture;screenMat.emissiveMap=screenTexture;box('LED screen',x,y,z,w,h,.09,screenMat);box('Screen frame',x,y,z-.12,w+.25,h+.25,.16,M.black)}
-function drawScreen(source){const c=screenContext;c.fillStyle=club?'#271153':'#102c42';c.fillRect(0,0,1024,512);c.fillStyle=club?'#b38cff':'#7acadc';for(let i=0;i<9;i++)c.fillRect(60+i*110,310-Math.sin(i*.8)*60,44,100+Math.sin(i*.8)*60);c.fillStyle='#fff';c.font='bold 65px sans-serif';c.fillText(club?'L’ÉTOILE':'RICHMOND',65,115);c.font='28px sans-serif';c.fillText(club?'AFTER DARK · PRIVATE CLUB':({pc_lectern:'CONFÉRENCE · PRÉSENTATION',regie_hdmi:'RÉGIE · HDMI',cam_feed:'CAMÉRA · LIVE',logo:'FRÉQUENCE TV'}[source]||'CONFÉRENCE'),65,182);screenTexture.needsUpdate=true}
+function drawScreen(source){const c=screenContext;if(club){c.fillStyle='#271153';c.fillRect(0,0,1024,512);c.fillStyle='#b38cff';for(let i=0;i<9;i++)c.fillRect(60+i*110,310-Math.sin(i*.8)*60,44,100+Math.sin(i*.8)*60);c.fillStyle='#fff';c.font='bold 65px sans-serif';c.fillText('L’ÉTOILE',65,115);c.font='28px sans-serif';c.fillText('AFTER DARK · PRIVATE CLUB',65,182)}
+ else if(source==='pc_lectern'){c.fillStyle='#eef7f2';c.fillRect(0,0,1024,512);c.fillStyle='#123a38';c.font='700 62px sans-serif';c.fillText('LE CHANGEMENT',65,130);c.fillText('CLIMATIQUE',65,203);c.fillStyle='#39766e';c.font='25px sans-serif';c.fillText('COMPRENDRE · AGIR · TRANSFORMER',67,255);c.fillStyle='#b7ddcd';c.beginPath();c.arc(800,256,150,0,Math.PI*2);c.fill();c.fillStyle='#2a6173';c.beginPath();c.arc(800,256,108,0,Math.PI*2);c.fill();c.strokeStyle='#ff704d';c.lineWidth=16;c.beginPath();c.moveTo(635,385);c.lineTo(700,340);c.lineTo(760,355);c.lineTo(830,250);c.lineTo(950,150);c.stroke();c.fillStyle='#ff704d';c.font='700 38px sans-serif';c.fillText('+1,5°C',845,105)}
+ else if(source==='regie_hdmi'){c.fillStyle='#20334f';c.fillRect(0,0,1024,512);c.fillStyle='#14844d';c.fillRect(45,82,934,400);c.strokeStyle='#e7f5df';c.lineWidth=7;c.strokeRect(60,98,904,368);c.beginPath();c.moveTo(512,98);c.lineTo(512,466);c.stroke();c.beginPath();c.arc(512,282,62,0,Math.PI*2);c.stroke();c.fillStyle='#f4f7fa';c.fillRect(350,18,324,54);c.fillStyle='#13293e';c.font='700 30px sans-serif';c.textAlign='center';c.fillText('RCH  2  –  1  UNI',512,56);for(let i=0;i<14;i++){c.fillStyle=i<7?'#f7f7f7':'#ef4057';c.beginPath();c.arc(150+(i%7)*118,155+(i%3)*112,12,0,Math.PI*2);c.fill()}c.textAlign='start'}
+ else if(source==='cam_feed'){c.fillStyle='#17293a';c.fillRect(0,0,1024,512);c.fillStyle='#517f91';c.fillRect(180,65,664,230);c.strokeStyle='#111820';c.lineWidth=16;c.strokeRect(180,65,664,230);c.fillStyle='#dffaff';c.font='700 54px sans-serif';c.textAlign='center';c.fillText('SCÈNE · LIVE',512,200);c.fillStyle='#213f50';for(let row=0;row<4;row++)for(let col=0;col<12;col++){c.beginPath();c.roundRect(55+col*78,335+row*40,48,25,8);c.fill()}c.fillStyle='#ff416f';c.font='700 24px sans-serif';c.fillText('● EN DIRECT',512,42);c.textAlign='start'}
+ else{c.fillStyle='#f5f6f7';c.fillRect(0,0,1024,512);c.fillStyle='#151d27';c.font='700 92px sans-serif';c.textAlign='center';c.fillText('FRÉQUENCE',435,258);c.fillStyle='#f05a28';c.fillRect(720,175,155,105);c.fillStyle='#fff';c.fillText('TV',797,258);c.fillStyle='#5e6872';c.font='24px sans-serif';c.fillText('AUDIOVISUEL · DOMOTIQUE',512,330);c.textAlign='start'}screenTexture.needsUpdate=true}
 if(!club){
  box('Stage',0,.38,-8.8,17,.75,6,M.wood);box('Stage step',0,.15,-5.4,10,.3,.8,M.wood);box('Stage edge',0,.77,-5.82,17,.04,.08,accent);
  makeScreen(20.4,4.9,0,3.05,-12.65);sign('AUDITORIUM · RICHMOND',0,5.75,-12.62,9,.55);
@@ -40,11 +44,17 @@ if(!club){
  const speaker=box(Math.abs(z)>11?'Corner speaker':'Side wall speaker',x,3.1,z,.65,1.05,.6,M.black);
  box('Speaker grille',x,3.1,z+.31,.55,.9,.025,M.metal);speaker.userData.audio=true;
  }
- for(const z of [-6,2,9]){for(const x of [-9.5,9.5]){box('Ceiling lighting rail',x,5.9,z,.12,.12,6,M.metal);
+ const addLed=(name,x,y,z,w,h,d)=>{const m=luminous('#e6c997',1);auditoriumLedMaterials.push(m);return box(name,x,y,z,w,h,d,m)};
+ addLed('Proscenium LED top',0,5.58,-12.45,20.8,.09,.08);addLed('Proscenium LED bottom',0,.55,-12.45,20.8,.09,.08);
+ for(const x of [-10.35,10.35])addLed('Proscenium LED side',x,3.05,-12.45,.09,5,.08);
+ for(const z of [-10.8,-8.5,-6.2])addLed('Stage LED strip',0,.82,z,17,.045,.07);
+ for(const x of [-10.72,10.72])for(const z of [-8,-1,6])addLed('Wall LED strip',x,2.6,z,.055,3.1,.09);
+ for(const z of [-6,2,9]){addLed('Ceiling LED cove',0,5.82,z,19,.06,.08);for(const x of [-9.5,-4.75,0,4.75,9.5]){box('Ceiling lighting rail',x,5.9,z,.12,.12,2.5,M.metal);
  box('Ceiling moving head',x,5.65,z,.4,.45,.4,M.black);
  box('Luminaire lens',x,5.4,z,.3,.05,.3,lightMat);
  const beam=new T.Mesh(new T.ConeGeometry(1.35,5.3,20,1,true),new T.MeshBasicMaterial({color:'#ffe2a1',transparent:true,opacity:.07,depthWrite:false,side:T.DoubleSide}));
- beam.position.set(x,2.7,z);model.add(beam);beams.push(beam);
+ beam.position.set(x,2.7,z);beam.userData.circuit=z<0?'faceSpots':z>5?'audienceLights':'backlights';model.add(beam);beams.push(beam);
+ const spot=new T.PointLight('#ffe2a1',10,9,2);spot.position.set(x,4.8,z);scene.add(spot);auditoriumSpots.push(spot);
  }}
 }else{
  box('Dance floor',0,.045,1,11,.08,12,M.black);
@@ -163,6 +173,10 @@ function frame(){const w=innerWidth,h=innerHeight,v=viewport||{x:0,y:0,w,h};rend
  for(const x of [bounds.min.x,bounds.max.x])for(const y of [bounds.min.y,bounds.max.y])for(const z of [bounds.min.z,bounds.max.z]){const p=new T.Vector3(x,y,z).project(camera);extent=Math.max(extent,Math.abs(p.x),Math.abs(p.y));}
  if(extent>.98)lo=distance;else hi=distance;
  }camera.position.copy(center).addScaledVector(dir,hi*zoom);camera.lookAt(center);camera.setViewOffset(v.w,v.h,-v.x,-v.y,w,h);camera.updateProjectionMatrix();}
+const auditoriumFade={duration:4000,active:false,start:0,scene:null,color:null,current:{faceSpots:85,backlights:60,audienceLights:40,color:new T.Color('#39ff14')},from:null,target:null};
+function sampleAuditoriumFade(now){if(!auditoriumFade.active)return auditoriumFade.current;const q=Math.min(1,(now-auditoriumFade.start)/auditoriumFade.duration),ease=q*q*(3-2*q),a=auditoriumFade.from,b=auditoriumFade.target;for(const key of ['faceSpots','backlights','audienceLights'])auditoriumFade.current[key]=T.MathUtils.lerp(a[key],b[key],ease);auditoriumFade.current.color.copy(a.color).lerp(b.color,ease);if(q>=1)auditoriumFade.active=false;return auditoriumFade.current}
+function paintAuditoriumLighting(now){if(club)return;const d=sampleAuditoriumFade(now);stageLight.intensity=d.faceSpots*1.7;fill.intensity=d.audienceLights*1.65;accent.color.copy(d.color);accent.emissive.copy(d.color);accent.emissiveIntensity=d.backlights/48;lightMat.color.copy(d.color);lightMat.emissive.copy(d.color);lightMat.emissiveIntensity=.35+d.faceSpots/48;auditoriumLedMaterials.forEach((m,i)=>{m.color.copy(d.color);m.emissive.copy(d.color);m.emissiveIntensity=(i<4?d.backlights:i<7?d.faceSpots:d.audienceLights)/42});beams.forEach(b=>{const level=d[b.userData.circuit||'audienceLights'];b.material.opacity=level/100*.14;b.material.color.copy(d.color)});auditoriumSpots.forEach((light,i)=>{const circuit=beams[i]?.userData.circuit||'audienceLights';light.color.copy(d.color);light.intensity=d[circuit]*.32})}
+function targetAuditoriumLighting(s){const d=s.dimmers||{faceSpots:85,backlights:60,audienceLights:40},color=s.lightsColor||'#e6c997',sceneChanged=auditoriumFade.scene!==null&&(auditoriumFade.scene!==s.stageScene||auditoriumFade.color!==color);if(auditoriumFade.scene===null){Object.assign(auditoriumFade.current,d);auditoriumFade.current.color.set(color)}else if(sceneChanged){sampleAuditoriumFade(performance.now());auditoriumFade.from={faceSpots:auditoriumFade.current.faceSpots,backlights:auditoriumFade.current.backlights,audienceLights:auditoriumFade.current.audienceLights,color:auditoriumFade.current.color.clone()};auditoriumFade.target={faceSpots:d.faceSpots,backlights:d.backlights,audienceLights:d.audienceLights,color:new T.Color(color)};auditoriumFade.start=performance.now();auditoriumFade.active=true}else if(!auditoriumFade.active){Object.assign(auditoriumFade.current,d)}auditoriumFade.scene=s.stageScene;auditoriumFade.color=color}
 let lastSource='';function apply(s){
  if(club){
  const floor=Math.max(0,Math.min(2,Number(s.clubFloor)||0)),fallback=[...clubRooms.values()].find(r=>r.floor===floor),room=clubRooms.get(s.clubRoom)||fallback,view=s.clubView||'building';
@@ -175,10 +189,10 @@ let lastSource='';function apply(s){
  smoke.visible=!!s.smokeActive;stageLight.intensity=80*room.level;stageLight.position.y=room.floor*9+5;fill.intensity=45*room.level;fill.position.y=room.floor*9+4;
  }
 
- else{const d=s.dimmers||{faceSpots:85,backlights:60,audienceLights:40};stageLight.intensity=d.faceSpots*1.5;fill.intensity=d.audienceLights*1.5;accent.color.set(s.lightsColor||'#e6c997');accent.emissive.copy(accent.color);accent.emissiveIntensity=d.backlights/70;lightMat.emissiveIntensity=d.faceSpots/60;beams.forEach((b,i)=>{b.material.opacity=(i<2?d.faceSpots:d.audienceLights)/100*.09;b.material.color.set(s.lightsColor||'#ffe2a1')});screenMat.emissiveIntensity=(s.ledWallBrightness??90)/100;screenMat.color.setScalar((s.ledWallBrightness??90)/100);if(lastSource!==s.ledWallSource){lastSource=s.ledWallSource;drawScreen(lastSource)}}
+ else{targetAuditoriumLighting(s);screenMat.emissiveIntensity=(s.ledWallBrightness??90)/100;screenMat.color.setScalar((s.ledWallBrightness??90)/100);if(lastSource!==s.ledWallSource){lastSource=s.ledWallSource;drawScreen(lastSource)}}
  window.__venue.state=s;
 }
-window.__venue={scene,renderer,camera,model,apply,state:{},beams,smoke,clubFloors,clubRooms,movingHeads,mirrorBalls};
+window.__venue={scene,renderer,camera,model,apply,state:{},beams,smoke,clubFloors,clubRooms,movingHeads,mirrorBalls,auditoriumLedMaterials,auditoriumSpots,lightingFade:auditoriumFade};
 window.addEventListener('message',e=>{if(e.origin!==location.origin||e.source!==parent||e.data?.channel!==channel||e.data.project!==project)return;const d=e.data;if(d.type==='hello')send('ready');if(d.type==='state'&&d.state)apply(d.state);if(d.type==='viewport'&&d.viewport&&Object.values(d.viewport).every(Number.isFinite)){viewport=d.viewport;frame()}if(d.type==='visibility')visible=!!d.visible;if(d.type==='zoom'){zoom=T.MathUtils.clamp(zoom+d.delta*.06,.75,1.3);frame()}});
 window.addEventListener('resize',frame);frame();
 const down=new T.Vector3(0,-1,0),aimDirection=new T.Vector3();
@@ -191,6 +205,6 @@ let previous=0;function animate(t){requestAnimationFrame(animate);if(!visible||d
  const progress=Math.min(1,(t-u.start)/u.duration),smooth=progress*progress*(3-2*progress);u.aim.lerpVectors(u.from,u.to,smooth);aimHead(h);
  });r.balls.forEach(ball=>ball.rotation.y=t*.00035);});
  }else beams.forEach((b,i)=>{b.rotation.z=Math.sin(t*.00035+i)*.12});
- }renderer.render(scene,camera)}requestAnimationFrame(animate);send('ready');
+ }paintAuditoriumLighting(t);renderer.render(scene,camera)}requestAnimationFrame(animate);send('ready');
 }catch(e){send('error');console.error(e)}
 })();

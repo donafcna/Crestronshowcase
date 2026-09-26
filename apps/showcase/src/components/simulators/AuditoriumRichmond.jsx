@@ -3,6 +3,43 @@ import { VenuePhone, Card, Choices, Slider, Toggle } from '../../venues/VenuePho
 import { useVenueState } from '../../venues/state';
 import { Icons } from "../../icons";
 
+const AuditoriumCameraPreview = ({ activeCam, camPan, camZoom, isRecording }) => {
+  const cameraOffset = activeCam === 'cam2' ? -24 : activeCam === 'cam3' ? 24 : 0;
+  const transform = `translate(${cameraOffset - camPan.x * 0.55}px, ${-camPan.y * 0.32}px) scale(${1 + (camZoom - 1) * 0.035})`;
+  return <div className="aud-camera-preview" data-camera={activeCam} data-pan={`${camPan.x},${camPan.y}`} data-zoom={camZoom}>
+    <div className="aud-camera-toolbar">
+      <span>{activeCam.replace('cam', 'CAMÉRA ')}</span>
+      {isRecording && <span className="aud-live"><i />REC</span>}
+    </div>
+    <div className="aud-camera-scene" style={{ transform }}>
+      <div className="aud-stage-screen">AUDITORIUM<br/><strong>RICHMOND</strong></div>
+      <div className="aud-stage-light aud-stage-light-left" />
+      <div className="aud-stage-light aud-stage-light-right" />
+      <div className="aud-lectern" />
+      <div className="aud-stage-floor" />
+      <div className="aud-seat-row aud-seat-row-1">{Array.from({length: 11}, (_, i)=><i key={i}/>)}</div>
+      <div className="aud-seat-row aud-seat-row-2">{Array.from({length: 13}, (_, i)=><i key={i}/>)}</div>
+    </div>
+    <div className="aud-camera-reticle"><i/><i/></div>
+  </div>;
+};
+
+const AuditoriumScreenPreview = ({ source, brightness }) => <div className="aud-screen-preview" data-source={source} style={{ '--screen-brightness': brightness / 100 }}>
+  {source === 'pc_lectern' && <div className="aud-screen-content aud-climate-slide">
+    <div><span>CONFÉRENCE 2026</span><h3>LE CHANGEMENT<br/>CLIMATIQUE</h3><p>Comprendre · Agir · Transformer</p></div>
+    <div className="aud-climate-graphic"><i/><b>+1,5°C</b></div>
+  </div>}
+  {source === 'regie_hdmi' && <div className="aud-screen-content aud-football-feed">
+    <div className="aud-score">RCH <b>2 – 1</b> UNI <small>72:18</small></div>
+    <div className="aud-pitch"><i/><i/><i/><i/><i/><i/></div>
+  </div>}
+  {source === 'cam_feed' && <div className="aud-screen-content aud-room-feed">
+    <div className="aud-room-stage"><span>LIVE</span><b>SCÈNE</b></div>
+    <div className="aud-room-seats">{Array.from({length: 28}, (_, i)=><i key={i}/>)}</div>
+  </div>}
+  {source === 'logo' && <div className="aud-screen-content aud-logo-feed"><b>FRÉQUENCE</b><strong>TV</strong><span>AUDIOVISUEL · DOMOTIQUE</span></div>}
+</div>;
+
 export const AuditoriumRichmond = ({ deviceType }) => {
   const [activeTab, setActiveTab] = useState("stage_lights"); // stage_lights, ptz_cameras, audio_dante, led_wall
   const [lightsColor, setLightsColor] = useState("#39ff14"); // Neon Lime Green
@@ -84,9 +121,9 @@ export const AuditoriumRichmond = ({ deviceType }) => {
   const isPhone = deviceType === "phone";
   if (isPhone) return <VenuePhone name="Auditorium Richmond" subtitle="Scène · Conférence · Régie" active={activeTab} onTab={setActiveTab} tabs={[["stage_lights","Lumière","Lightbulb"],["ptz_cameras","Caméras","Camera"],["audio_dante","Audio","Volume2"],["led_wall","Écran","Monitor"]]}>
     {activeTab==='stage_lights' && <><Card title="Ambiance de la salle"><Choices value={stageScene} onChange={handleStageScene} options={[["speech","Conférence"],["debate","Débat"],["performance","Spectacle"],["off","Éteindre"]]}/></Card><Card title="Circuits d’éclairage">{[['faceSpots','Scène'],['backlights','Contre-jour'],['audienceLights','Public']].map(([id,label])=><Slider key={id} label={label} value={dimmers[id]} onChange={v=>setDimmers(p=>({...p,[id]:v}))}/>)}<label className="venue-note">Couleur de scène<input aria-label="Couleur de scène" type="color" value={lightsColor} onChange={e=>setLightsColor(e.target.value)}/></label></Card></>}
-    {activeTab==='ptz_cameras' && <><Card title="Caméras PTZ"><Choices value={activeCam} onChange={setActiveCam} options={[["cam1","Caméra 1"],["cam2","Caméra 2"],["cam3","Caméra 3"]]}/><Slider label="Zoom" min={1} max={20} unit="×" value={camZoom} onChange={setCamZoom}/><div className="venue-directions"><span/><button aria-label="Caméra haut" onClick={()=>adjustCam('up')}>{renderIcon('ArrowUp',18)}</button><span/><button aria-label="Caméra gauche" onClick={()=>adjustCam('left')}>{renderIcon('ArrowLeft',18)}</button><button onClick={()=>{setCamPan({x:0,y:0});setCamZoom(1)}}>Centre</button><button aria-label="Caméra droite" onClick={()=>adjustCam('right')}>{renderIcon('ArrowRight',18)}</button><span/><button aria-label="Caméra bas" onClick={()=>adjustCam('down')}>{renderIcon('ArrowDown',18)}</button></div><p className="venue-note">Pan {camPan.x}° · Tilt {camPan.y}°</p></Card><Card title="Captation"><Toggle label="Enregistrement simulé" value={isRecording} onChange={setIsRecording}/></Card></>}
+    {activeTab==='ptz_cameras' && <Card title={<span className="aud-card-title"><span>Caméras PTZ</span><button className="aud-record-btn" aria-label="Enregistrement" aria-pressed={isRecording} onClick={()=>setIsRecording(v=>!v)}><i/>REC</button></span>}><Choices value={activeCam} onChange={setActiveCam} options={[["cam1","Caméra 1"],["cam2","Caméra 2"],["cam3","Caméra 3"]]}/><Slider label="Zoom" min={1} max={20} unit="×" value={camZoom} onChange={setCamZoom}/><div className="venue-directions"><span/><button aria-label="Caméra haut" onClick={()=>adjustCam('up')}>{renderIcon('ArrowUp',18)}</button><span/><button aria-label="Caméra gauche" onClick={()=>adjustCam('left')}>{renderIcon('ArrowLeft',18)}</button><button aria-label="Centrer la caméra" onClick={()=>{setCamPan({x:0,y:0});setCamZoom(1)}}>Centre</button><button aria-label="Caméra droite" onClick={()=>adjustCam('right')}>{renderIcon('ArrowRight',18)}</button><span/><button aria-label="Caméra bas" onClick={()=>adjustCam('down')}>{renderIcon('ArrowDown',18)}</button></div><p className="venue-note">Pan {camPan.x}° · Tilt {camPan.y}°</p><AuditoriumCameraPreview activeCam={activeCam} camPan={camPan} camZoom={camZoom} isRecording={isRecording}/></Card>}
     {activeTab==='audio_dante' && <Card title="Mixage audio">{[['lecternMic','Pupitre'],['wirelessMics','Micros sans fil'],['auxInput','Auxiliaire']].map(([id,label])=><div key={id}><Slider label={label} value={audioFaders[id]} onChange={v=>setAudioFaders(p=>({...p,[id]:v}))}/><Toggle label={'Mute · '+label} value={audioMutes[id]} onChange={v=>setAudioMutes(p=>({...p,[id]:v}))}/></div>)}</Card>}
-    {activeTab==='led_wall' && <Card title="Mur LED"><Choices value={ledWallSource} onChange={setLedWallSource} options={[["pc_lectern","PC pupitre"],["regie_hdmi","HDMI régie"],["cam_feed","Caméra live"],["logo","Logo"]]}/><Slider label="Luminosité écran" min={10} value={ledWallBrightness} onChange={setLedWallBrightness}/><p className="venue-note">La source et la luminosité apparaissent dans la salle 3D.</p></Card>}
+    {activeTab==='led_wall' && <Card title="Mur LED"><Choices value={ledWallSource} onChange={setLedWallSource} options={[["pc_lectern","PC pupitre"],["regie_hdmi","HDMI régie"],["cam_feed","Caméra live"],["logo","Logo"]]}/><Slider label="Luminosité écran" min={10} value={ledWallBrightness} onChange={setLedWallBrightness}/><AuditoriumScreenPreview source={ledWallSource} brightness={ledWallBrightness}/></Card>}
   </VenuePhone>;
 
   return (
@@ -391,10 +428,13 @@ export const AuditoriumRichmond = ({ deviceType }) => {
           {/* TAB 2: PTZ CAMERAS */}
           {activeTab === "ptz_cameras" && (
             <div className="zermatt-panel-card cyber-card fade-in">
-              <h2 className="panel-title-text cyber-panel-title">
-                {renderIcon("Video", 18, "title-icon")}
-                <span>Pilotage Robotique PTZ</span>
-              </h2>
+              <div className="aud-desktop-heading">
+                <h2 className="panel-title-text cyber-panel-title">
+                  {renderIcon("Video", 18, "title-icon")}
+                  <span>Pilotage Robotique PTZ</span>
+                </h2>
+                <button className="aud-record-btn" aria-label="Enregistrement" aria-pressed={isRecording} onClick={()=>setIsRecording(v=>!v)}><i/>REC</button>
+              </div>
 
               <div className="zermatt-grid-layout">
                 {/* Camera selector and preview */}
@@ -421,29 +461,7 @@ export const AuditoriumRichmond = ({ deviceType }) => {
                     </button>
                   </div>
 
-                  <div className="cctv-viewer-container" style={{ height: "170px", position: "relative", overflow: "hidden", borderRadius: "8px", border: "1px solid #00f0ff" }}>
-                    <div style={{ position: "absolute", top: "10px", left: "10px", zIndex: 10 }}>
-                      <span className="live-pill" style={{ background: "#ff007f", color: "#fff", boxShadow: "0 0 8px #ff007f" }}>REC FEED</span>
-                    </div>
-                    <div 
-                      className="feed-image-wrapper"
-                      style={{ 
-                        width: "100%", 
-                        height: "100%", 
-                        background: "#090c15",
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center"
-                      }}
-                    >
-                      <div style={{ textAlign: "center", transform: `translate(${camPan.x}px, ${camPan.y}px) scale(${1 + (camZoom - 1) * 0.3})`, transition: "transform 0.3s ease" }}>
-                        {renderIcon("User", 40, "cyber-text-glow")}
-                        <div style={{ fontSize: "0.7rem", color: "#00f0ff", marginTop: "6px" }}>
-                          STREAM FEED // {activeCam.toUpperCase()}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                  <AuditoriumCameraPreview activeCam={activeCam} camPan={camPan} camZoom={camZoom} isRecording={isRecording}/>
                 </div>
 
                 {/* Joystick & Zoom */}
@@ -454,7 +472,7 @@ export const AuditoriumRichmond = ({ deviceType }) => {
                     <button onClick={() => adjustCam("up")} className="av-source-btn cyber-source-btn" style={{ padding: "8px" }}>{renderIcon("ArrowUp", 14)}</button>
                     <div />
                     <button onClick={() => adjustCam("left")} className="av-source-btn cyber-source-btn" style={{ padding: "8px" }}>{renderIcon("ArrowLeft", 14)}</button>
-                    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", fontSize: "0.65rem", color: "#39ff14" }}>JOY</div>
+                    <button aria-label="Centrer la caméra" onClick={()=>{setCamPan({x:0,y:0});setCamZoom(1)}} className="av-source-btn cyber-source-btn" style={{ padding: "5px", fontSize: ".58rem" }}>Centre</button>
                     <button onClick={() => adjustCam("right")} className="av-source-btn cyber-source-btn" style={{ padding: "8px" }}>{renderIcon("ArrowRight", 14)}</button>
                     <div />
                     <button onClick={() => adjustCam("down")} className="av-source-btn cyber-source-btn" style={{ padding: "8px" }}>{renderIcon("ArrowDown", 14)}</button>
@@ -588,13 +606,13 @@ export const AuditoriumRichmond = ({ deviceType }) => {
                       onClick={() => setLedWallSource("cam_feed")} 
                       className={`av-source-btn cyber-source-btn ${ledWallSource === "cam_feed" ? "active" : ""}`}
                     >
-                      <span>Retour Cam Live</span>
+                      <span>Caméra live</span>
                     </button>
                     <button 
                       onClick={() => setLedWallSource("logo")} 
                       className={`av-source-btn cyber-source-btn ${ledWallSource === "logo" ? "active" : ""}`}
                     >
-                      <span>Logo Uni</span>
+                      <span>Logo</span>
                     </button>
                   </div>
                 </div>
@@ -617,6 +635,10 @@ export const AuditoriumRichmond = ({ deviceType }) => {
                     />
                     <span className="dimmer-percentage" style={{ color: "#39ff14" }}>{ledWallBrightness}%</span>
                   </div>
+                </div>
+                <div className="control-section-card glass-card cyber-sub-card full-width-span">
+                  <span className="section-subtitle cyber-label">Aperçu du mur LED</span>
+                  <AuditoriumScreenPreview source={ledWallSource} brightness={ledWallBrightness}/>
                 </div>
               </div>
             </div>

@@ -451,3 +451,11 @@ Demande de Donatien : smartphones et tablettes affichent seulement le catalogue 
 ## 26/09/2026 — Hotel Brassus, enveloppe et caméra 2.1.3
 
 Enveloppe 3D complète inspirée du bâtiment construit : murs, vitrages, bois, dalles, toits végétalisés, rampes et panneaux photovoltaïques. Les dimensions extérieures restent interprétées depuis les plans AV partiels. Caméra alignée sur Villa Crans : transition par espace, molette descendante vers la vue complète, molette montante progressive vers la dernière zone. Sept cibles distinctes et conservation de la sélection.
+
+## 26/09/2026 — Auditorium Richmond, lumière et vidéo 2.1.4
+
+Les scènes d'éclairage pilotent désormais quinze projecteurs et seize bandeaux LED dans la salle 3D avec un fondu continu de quatre secondes. La page Caméras regroupe le bouton REC, les choix PTZ, le zoom, le recentrage et une image simulée de l'estrade qui suit les mouvements. La section Captation séparée est supprimée. Le mur LED et son aperçu affichent quatre contenus distincts : présentation climatique, football, vue live de la salle et logo Fréquence TV. Aucun équipement réel n'est commandé.
+
+## 26/09/2026 — Hotel Brassus, éclairages et rideaux 2.1.5
+
+Toutes les pièces de la maquette reçoivent corniches, spots, appliques, balises basses, suspensions ou chandeliers. Les scènes du Smartphone modulent la luminosité de la pièce sélectionnée. Le décor alterne dix secondes jour et dix secondes nuit. Les Stores du Bar, du Restaurant et des Séminaires ferment et ouvrent des rideaux visibles. La molette commute uniquement entre l'hôtel complet et la dernière pièce centrée.

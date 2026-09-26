@@ -63,7 +63,7 @@ Le parcours automatique du catalogue est désactivé uniquement pour cette inter
 
 La vue générale reçoit une enveloppe complète de présentation : murs arrière et latéraux, façades vitrées toute hauteur, trame de montants et lamelles de bois, dalles en béton, terrasses et toiture végétalisées, liaisons inclinées et panneaux photovoltaïques. Les références visuelles sont la page Architecture de l'Hôtel des Horlogers, le projet BIG et les photographies publiées par CCHE/Swiss Arc. Les 126 panneaux réels documentés sont représentés par un échantillon lisible, pas reproduits un à un. Les cotes extérieures restent interprétées en raison de l'absence d'élévations complètes dans les plans AV fournis.
 
-La caméra reprend la convention de Villa Crans : sélection d'un espace = trajet fluide de 1,35 s vers sa cible ; molette vers le bas = retour complet au bâtiment ; molette vers le haut = rapprochement progressif vers le dernier espace, conservé après le retour général. Bar, Lobby, Restaurant, Petit salon, Salle privée, Wellness et Séminaires ont des cibles distinctes. Les toitures et l'enveloppe sont affichées dans la vue complète puis masquées dans la coupe de l'espace.
+La caméra utilise deux cadrages : sélection d'un espace ou molette vers le haut = trajet fluide de 1,35 s vers la pièce centrée ; molette vers le bas = retour complet au bâtiment. Le dernier espace est conservé après le retour général. Bar, Lobby, Restaurant, Petit salon, Salle privée, Wellness et Séminaires ont des cibles distinctes. Les toitures et l'enveloppe sont affichées dans la vue complète puis masquées dans la coupe de l'espace.
 
 Références consultées : `https://www.hoteldeshorlogers.com/fr/architecture`, `https://big.dk/projects/audemars-piguet-hotel-5067`, `https://cche.com/fr/projets/hotel-des-horlogers/`, `https://www.swiss-arc.ch/fr/projet/hotel-des-horlogers/13189739`.
 
@@ -73,3 +73,9 @@ Références consultées : `https://www.hoteldeshorlogers.com/fr/architecture`, 
 Demande explicite : adaptation portrait et ouverture Hôtellerie sur Hotel Brassus / Smartphone avec maquette 3D. Dalle TSW, PC/XPanel et Tablette : GUI CH5 original et vidéo de fond. Adaptation dédiée `phone.html/css/js`, commandes locales sans transport matériel, sept espaces, trois thèmes Original/Clair/Sombre conservés, scènes/circuits, volume/sources/mute, stores avec arrêt et consigne. États conservés entre espaces durant la session. Cette adaptation web ne constitue pas un CH5Z livré au matériel. Source CH5 de l'hôtel et copie native inchangées.
 
 La maquette ouvre en vue globale, puis suit le niveau d'un espace sélectionné ou d'une commande d'éclairage. Éclairages synchronisés, molette de zoom, cadrage entre le téléphone et la colonne en modes normal/Scène. Les limites architecturales de la maquette restent celles documentées au lot 2.1.0. Aucun modèle 3D chargé en fond sur les trois grands supports.
+
+## 26/09/2026 — Éclairages, rideaux et cycle extérieur, vitrine 2.1.5
+
+Chaque pièce documentée reçoit des corniches, spots de plafond, appliques, balises basses, suspensions ou chandeliers et un éclairage volumétrique. Les quatre scènes du Smartphone changent la luminosité de la pièce sélectionnée de 0 à 100 %. Le modèle comporte 783 éléments lumineux, 20 sources volumétriques et 75 familles de matériaux lumineux dans 15 zones.
+
+Le décor alterne automatiquement dix secondes de jour et dix secondes de nuit. Le bouton de la maquette permet de mettre ce cycle en pause. La molette ne produit plus de cadrage intermédiaire : bas affiche tout l'hôtel, haut centre et agrandit la dernière pièce. Dans Bar, Restaurant et Séminaires, les commandes Stores animent deux panneaux de rideaux visibles sur les vitrages ; Ouvrir, Stop et Fermer conservent leur progression simulée.
