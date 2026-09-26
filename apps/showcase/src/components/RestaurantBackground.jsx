@@ -6,6 +6,7 @@ const channel = 'ftv-restaurant/v1';
 export function RestaurantBackground({ stageRef }) {
   const frameRef = useRef(null);
   const lastStateRef = useRef(null);
+  const lastWheelRef = useRef(0);
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
@@ -33,20 +34,28 @@ export function RestaurantBackground({ stageRef }) {
       lastStateRef.current = event.detail || {};
       send('state', lastStateRef.current);
     };
+    const wheel = event => {
+      const now = performance.now();
+      if (Math.abs(event.deltaY) < 3 || now - lastWheelRef.current < 550) return;
+      lastWheelRef.current = now;
+      send('view', { view: event.deltaY > 0 ? 'overview' : 'focus' });
+    };
     window.addEventListener('message', message);
     window.addEventListener('ftv-restaurant-control', control);
     window.addEventListener('resize', layout);
+    stage.addEventListener('wheel', wheel, { passive: true });
     const observer = new ResizeObserver(layout); observer.observe(stage);
     const timer = setInterval(layout, 500);
     frame.addEventListener('load', layout);
     return () => {
       clearInterval(timer); observer.disconnect(); frame.removeEventListener('load', layout);
       window.removeEventListener('message', message); window.removeEventListener('ftv-restaurant-control', control); window.removeEventListener('resize', layout);
+      stage.removeEventListener('wheel', wheel);
     };
   }, [stageRef]);
 
   return <div className="plan3d-bg-container luxury-background restaurant-background" data-ready={ready}>
-    <iframe ref={frameRef} className="luxury-background-frame" src="/restaurant-lumiere/model.html?v=2.2.0" title="Maquette 3D du restaurant Kyoto Rooftop" tabIndex={-1} aria-hidden="true" />
+    <iframe ref={frameRef} className="luxury-background-frame" src="/restaurant-lumiere/model.html?v=2.2.1" title="Maquette 3D du restaurant Kyoto Rooftop" tabIndex={-1} aria-hidden="true" />
     {!ready && <span className="luxury-background-loading" role="status">Création du restaurant 3D…</span>}
   </div>;
 }

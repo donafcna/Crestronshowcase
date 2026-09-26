@@ -483,3 +483,9 @@ Le catalogue iPhone et tablette affiche sous le logo Fréquence TV un menu déro
 Le Sushi Bar Kyoto adopte un restaurant de luxe sur deux niveaux avec salle vitrée, bar, salon privé, terrasse et rooftop sous pergola. Son nouveau GUI pilote les zones, cinq scènes et quatre groupes lumineux synchronisés avec la maquette. Le modèle 3D apparaît derrière la version Smartphone ; Dalle TSW et Tablette conservent la vidéo. Description et limites : `docs/restaurant-kyoto-rooftop.md`.
 
 Le GUI iPhone de l'Hotel Brassus reprend la palette du CH5 des autres supports : vert profond `#283b32`, vert de sélection `#517866`, fond clair et accent or `#d2ab21`. Les fonctions et la maquette restent inchangées.
+
+## 26/09/2026 — Feedback Hotel Brassus et extension Kyoto 2.2.1
+
+Tous les boutons de l'iPhone Hotel Brassus utilisent le même feedback que le CH5 : état inactif vert cyan foncé avec texte blanc, état actif en dégradé très sombre avec double contour or. La règle couvre Éclairages, Audio, Rideaux, Température et la navigation basse.
+
+Kyoto Rooftop passe à quinze espaces sur trois niveaux et une emprise environ quatre fois supérieure. Chaque espace possède un mouvement de caméra distinct et s'isole lors du zoom. Molette descendante : vue complète ; molette montante : retour sur la dernière pièce sélectionnée.

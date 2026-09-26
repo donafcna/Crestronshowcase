@@ -1,7 +1,11 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Icons } from '../../icons';
 
-const zones = [['ground','Salle vitrée'],['bar','Bar minéral'],['private','Salon privé'],['rooftop','Rooftop'],['terrace','Terrasse']];
+const zones = [
+  ['accueil','Accueil'],['dining','Salle vitrée'],['bar','Bar minéral'],['kitchen','Cuisine ouverte'],['cellar','Cave à vins'],
+  ['private','Salon privé'],['signature','Salle signature'],['teppanyaki','Teppanyaki'],['lounge','Lounge'],['gallery','Galerie'],
+  ['belvedere','Belvédère'],['terrace','Terrasse'],['rooftop','Rooftop'],['pergola','Pergola'],['garden','Jardin suspendu'],
+];
 const scenes = [['welcome','Accueil','Ouverture chaleureuse'],['dinner','Dîner','Tables et bar tamisés'],['rooftop','Rooftop','Pergola et végétation'],['cleaning','Nettoyage','Éclairage fonctionnel'],['closed','Fermeture','Balisage de sécurité']];
 const sceneLevels = {
   welcome:{tables:72,bar:76,pergola:45,plants:55}, dinner:{tables:48,bar:62,pergola:35,plants:40},
@@ -11,7 +15,7 @@ const Icon = ({name,size=17}) => { const C=Icons[name]||Icons.Circle; return <C 
 
 export const SushiBarKyoto = ({deviceType}) => {
   const phone=deviceType==='phone';
-  const [tab,setTab]=useState('lights'),[zone,setZone]=useState('ground'),[scene,setScene]=useState('welcome');
+  const [tab,setTab]=useState('lights'),[zone,setZone]=useState('dining'),[scene,setScene]=useState('welcome');
   const [levels,setLevels]=useState(sceneLevels.welcome),[temperature,setTemperature]=useState(21.5),[music,setMusic]=useState(38),[service,setService]=useState('Fluide'),[time,setTime]=useState('20:30');
   const zoneName=useMemo(()=>zones.find(([id])=>id===zone)?.[1]||zones[0][1],[zone]);
   useEffect(()=>{const tick=()=>setTime(new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'}));tick();const id=setInterval(tick,1000);return()=>clearInterval(id)},[]);

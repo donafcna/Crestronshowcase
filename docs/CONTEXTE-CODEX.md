@@ -385,3 +385,7 @@ Ajout au catalogue tactile d'un sélecteur de secteurs sous le logo Fréquence T
 ## 26/09/2026 — Kyoto Rooftop et Hotel Brassus 2.2.0
 
 Le projet Sushi Bar Kyoto reçoit une maquette conceptuelle de restaurant de luxe à deux niveaux, inspirée des deux images remises : salle vitrée et sombre, bar architectural, salon privé, terrasse, escalier extérieur et rooftop végétalisé sous pergola. Le GUI est réorganisé autour des espaces, scènes, quatre circuits lumineux, confort, audio et service. Le Smartphone affiche la maquette 3D synchronisée ; Dalle TSW et Tablette gardent la vidéo. L'interface iPhone Hotel Brassus reprend les couleurs vert profond, vert sélection, blanc et or du GUI CH5 des grands supports. Compilation, lint et douze contrôles navigateur réussis sans erreur.
+
+## 26/09/2026 — Feedback Hotel Brassus et Kyoto agrandi 2.2.1
+
+Sur l'iPhone Hotel Brassus, tous les boutons inactifs utilisent le vert cyan foncé du CH5 avec texte blanc. Tous les états actifs utilisent le dégradé sombre et le double contour or, y compris la navigation et les pages Audio, Rideaux et Température. Kyoto Rooftop atteint environ 74 × 54 unités, trois niveaux et quinze espaces sélectionnables. Chaque espace a une destination de caméra distincte et les autres pièces s'effacent pendant le zoom. La molette alterne la vue complète et la dernière pièce.

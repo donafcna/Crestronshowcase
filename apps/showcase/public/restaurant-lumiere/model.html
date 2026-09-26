@@ -1,45 +1,81 @@
-<!doctype html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Kyoto Rooftop · Restaurant 3D</title><style>*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#111615}canvas{display:block;width:100%;height:100%}.badge{position:fixed;right:20px;bottom:18px;padding:8px 12px;border:1px solid #ffffff24;border-radius:20px;background:#0d1515aa;color:#e9dbc1;font:600 10px Arial;letter-spacing:1.2px;backdrop-filter:blur(8px)}</style></head><body><canvas id="c"></canvas><div class="badge">KYOTO ROOFTOP · ÉTUDE 3D</div><script src="/ftv-luxury/vendor/three-r160.min.js"></script><script>
-(()=>{'use strict';const T=THREE,canvas=document.getElementById('c'),renderer=new T.WebGLRenderer({canvas,antialias:true,powerPreference:'high-performance'});renderer.setPixelRatio(Math.min(devicePixelRatio,1.7));renderer.shadowMap.enabled=true;renderer.shadowMap.type=T.PCFSoftShadowMap;renderer.outputColorSpace=T.SRGBColorSpace;renderer.toneMapping=T.ACESFilmicToneMapping;renderer.toneMappingExposure=1.05;
-const scene=new T.Scene();scene.background=new T.Color(0x111715);scene.fog=new T.Fog(0x111715,58,105);const camera=new T.PerspectiveCamera(37,innerWidth/innerHeight,.1,250);let viewport=null;
-const hemi=new T.HemisphereLight(0xdde8df,0x1b1610,1.2);scene.add(hemi);const moon=new T.DirectionalLight(0xffe5bd,2.2);moon.position.set(-20,38,24);moon.castShadow=true;moon.shadow.mapSize.set(2048,2048);Object.assign(moon.shadow.camera,{left:-35,right:35,top:35,bottom:-35,near:1,far:100});scene.add(moon);
-const mat=(name,color,rough=.7,metal=0)=>new T.MeshStandardMaterial({name,color,roughness:rough,metalness:metal});const M={concrete:mat('Béton anthracite',0x343533,.86),stone:mat('Pierre chaude',0x817465,.78),wood:mat('Noyer fumé',0x5a3522,.55),oak:mat('Chêne rooftop',0x8b6743,.7),black:mat('Métal noir',0x111515,.3,.72),cream:mat('Tissu ivoire',0xd8cbb7,.9),green:mat('Végétation',0x315744,.9),glass:new T.MeshPhysicalMaterial({color:0x9cb7ad,roughness:.08,metalness:.05,transparent:true,opacity:.28,transmission:.3,side:T.DoubleSide}),water:mat('Bassin',0x17585a,.18,.2)};
-const glow={tables:new T.MeshStandardMaterial({color:0xffdeb0,emissive:0xffae58,emissiveIntensity:2.3}),bar:new T.MeshStandardMaterial({color:0xffd092,emissive:0xff9b45,emissiveIntensity:2.6}),pergola:new T.MeshStandardMaterial({color:0xffd39a,emissive:0xffa247,emissiveIntensity:2.2}),plants:new T.MeshStandardMaterial({color:0xb7d08a,emissive:0x669d48,emissiveIntensity:1.1})};
-const boxGeo=new T.BoxGeometry(1,1,1),cylGeo=new T.CylinderGeometry(1,1,1,20);function mesh(g,geo,m,x,y,z,sx=1,sy=1,sz=1){const o=new T.Mesh(geo,m);o.position.set(x,y,z);o.scale.set(sx,sy,sz);o.castShadow=true;o.receiveShadow=true;g.add(o);return o}const box=(g,x,y,z,w,h,d,m=M.concrete)=>mesh(g,boxGeo,m,x,y,z,w,h,d);const cyl=(g,x,y,z,r,h,m=M.black)=>mesh(g,cylGeo,m,x,y,z,r,h,r);
-const building=new T.Group();scene.add(building);const ground=new T.Mesh(new T.PlaneGeometry(180,180),new T.ShadowMaterial({opacity:.28}));ground.rotation.x=-Math.PI/2;ground.position.y=-.08;ground.receiveShadow=true;scene.add(ground);
-box(building,0,.25,0,34,.5,26,M.concrete);box(building,0,.55,0,31,.16,23,M.stone);box(building,0,6.05,0,33,.65,25,M.concrete);box(building,0,6.43,0,30.5,.18,22.5,M.oak);
-// Ground floor concrete shell and glazed façade.
-box(building,0,3,-11.1,32,5.5,.6,M.concrete);box(building,-15.7,3,0,.6,5.5,22,M.concrete);box(building,15.7,3,-5,.6,5.5,12,M.concrete);
-for(let x=-14;x<=14;x+=4){box(building,x,3,11.05,.12,5.2,.18,M.black);box(building,x+1.95,3,11,.02,4.8,3.7,M.glass)}box(building,0,5.55,11.05,32,.22,.3,M.black);
-// Long mineral bar, shelves, menu and stools.
-box(building,0,1.25,-7.6,16,2.2,2.2,M.concrete);box(building,0,2.4,-6.55,16.6,.22,1.1,M.stone);box(building,0,1.85,-6.05,15.7,.1,.13,glow.bar);box(building,0,4.65,-10.65,14,1.15,.16,M.black);
-for(let x=-6;x<=6;x+=2){box(building,x,3.6,-10.45,1.45,.08,.45,M.wood);for(let k=0;k<3;k++)cyl(building,x-.45+k*.45,3.82,-10.45,.1,.32,k%2?M.cream:M.green)}
-for(let x=-6.5;x<=6.5;x+=1.85){cyl(building,x,.75,-5.25,.13,1.15,M.black);cyl(building,x,1.34,-5.25,.46,.14,M.cream)}
-// Dining tables and chairs.
-const tableGroups={ground:new T.Group(),private:new T.Group(),rooftop:new T.Group(),terrace:new T.Group(),bar:new T.Group()};Object.values(tableGroups).forEach(g=>building.add(g));
-function chair(g,x,z,rot=0,y=0){const q=new T.Group();q.position.set(x,y,z);q.rotation.y=rot;g.add(q);cyl(q,0,.46,0,.07,.85,M.black);box(q,0,.85,0,.72,.16,.72,M.cream);box(q,0,1.22,-.28,.72,.75,.14,M.cream)}
-function table(g,x,z,w=2.4,d=1.55,y=0){box(g,x,y+.82,z,w,.15,d,M.wood);box(g,x,y+.42,z,w*.45,.78,d*.35,M.black);cyl(g,x,y+1.02,z,.11,.12,glow.tables);for(const s of [-1,1]){chair(g,x+s*(w/2+.48),z,s>0?-Math.PI/2:Math.PI/2,y);chair(g,x,z+s*(d/2+.45),s>0?Math.PI:0,y)}}
-for(const p of [[-9,4],[0,4],[9,4],[-9,8],[0,8],[9,8]])table(tableGroups.ground,...p);table(tableGroups.ground,0,0,6,2.2);
-// Private lounge.
-box(building,11,3,-4.3,.28,5.1,10,M.black);box(building,12.8,3,-.2,5.2,5,.06,M.glass);box(building,11.7,.95,-5,6.5,.7,1.1,M.cream);table(tableGroups.private,11,-1.8,3,1.6);
-// Rooftop perimeter, pergola and outdoor bar.
-for(const s of [-1,1]){box(building,s*15.1,7.2,0,.12,1.4,22,M.glass);box(building,0,7.2,s*10.9,30,.12,1.4,M.glass)}
-for(const x of [-13.8,13.8])for(const z of [-9.5,2.5])box(building,x,9,z,.32,5.4,.32,M.black);for(const z of [-9.5,2.5]){box(building,0,11.6,z,28,.35,.35,M.black);for(let x=-13;x<=13;x+=1.25)box(building,x,11.42,-3.5,.18,.22,12,M.wood)}
-box(building,7.5,7.45,-7.6,12,1.55,1.7,M.black);box(building,7.5,8.28,-6.72,12,.1,.15,glow.bar);for(let x=2.5;x<=12.5;x+=1.8)chair(tableGroups.bar,x,-5.8,0,6.25);
-for(const p of [[-9,-6],[-4,-6],[-9,-1],[-4,-1],[2,3],[8,3],[-8,7],[0,7],[8,7]])table(tableGroups.rooftop,...p,2.3,1.55,6.25);
-// External stair on the right.
-for(let i=0;i<17;i++){const y=.38+i*.35,z=9.4-i*.68;box(building,17,y,z,3,.35,1.05,M.black);box(building,17,y+.2,z,2.7,.05,.12,glow.plants)}box(building,18.45,3.2,4,.12,6.4,12,M.black);
-// Planters and small trees.
-function plant(x,y,z,scale=1){box(building,x,y+.35,z,1.25*scale,.7,1.25*scale,M.black);const trunk=cyl(building,x,y+1.8,z,.12*scale,2.8*scale,M.wood);for(let i=0;i<8;i++){const a=i/8*Math.PI*2,o=mesh(building,new T.SphereGeometry(1,12,8),M.green,x+Math.cos(a)*.55*scale,y+3.1*scale+Math.sin(i)*.25,z+Math.sin(a)*.55*scale,.6*scale,.9*scale,.6*scale);o.castShadow=true}cyl(building,x,y+.78,z,.11,.18,glow.plants)}
-for(const p of [[-13,6.5,-9],[-13,6.5,9],[13,6.5,9],[13,6.5,-2],[-5,6.5,9],[5,6.5,9]])plant(...p,p[2]===9?.72:.9);
-// Pendant lights and architectural strips.
-const lights=[];function pendant(x,y,z,group='tables'){box(building,x,y,z,.08,1.15,.08,M.black);const shade=mesh(building,new T.ConeGeometry(.42,.48,20,1,true),M.black,x,y-.72,z);shade.rotation.x=Math.PI;const bulb=cyl(building,x,y-.87,z,.12,.22,glow[group]);const p=new T.PointLight(group==='pergola'?0xffbb73:0xffd19a,2.5,7,1.8);p.position.set(x,y-.9,z);building.add(p);lights.push({p,group})}
-for(const p of [[-9,4], [0,4],[9,4],[-9,8],[0,8],[9,8],[0,0]])pendant(p[0],5.3,p[1]);for(const x of [-10,-5,0,5,10])pendant(x,11.25,-3.5,'pergola');
-const zones={ground:{target:[0,1.7,3],pos:[31,24,36]},bar:{target:[0,2,-7],pos:[25,15,20]},private:{target:[11,2,-3],pos:[27,13,11]},rooftop:{target:[0,7,-1],pos:[32,27,35]},terrace:{target:[0,7,6],pos:[30,20,33]}};let current='ground',target=new T.Vector3(0,3,0),desiredTarget=target.clone(),desiredPos=new T.Vector3(38,31,42);camera.position.copy(desiredPos);
-function focus(id){current=zones[id]?id:'ground';const v=zones[current];desiredTarget.set(...v.target);desiredPos.set(...v.pos)}function applyLevels(v={}){for(const k of Object.keys(glow)){const n=Number.isFinite(v[k])?v[k]:60;glow[k].emissiveIntensity=.05+n/100*3.1}for(const l of lights){const n=Number.isFinite(v[l.group])?v[l.group]:60;l.p.intensity=.1+n/100*3.8}}
-function resize(){const w=innerWidth,h=innerHeight;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix()}addEventListener('resize',resize);resize();
-const modelState={zone:'ground',levels:{tables:72,bar:76,pergola:45,plants:55}};
-window.__restaurant3d={scene,camera,building,glow,modelState};
-const channel='ftv-restaurant/v1';addEventListener('message',e=>{if(e.origin!==location.origin||e.data?.channel!==channel)return;if(e.data.type==='viewport'){viewport=e.data.viewport}else if(e.data.type==='state'){if(e.data.zone)modelState.zone=e.data.zone;if(e.data.levels)modelState.levels={...modelState.levels,...e.data.levels};focus(e.data.zone);applyLevels(e.data.levels)}});parent.postMessage({channel,type:'ready'},location.origin);
-let last=performance.now();function frame(now){requestAnimationFrame(frame);const dt=Math.min(.05,(now-last)/1000);last=now;const a=1-Math.exp(-dt*2.2);camera.position.lerp(desiredPos,a);target.lerp(desiredTarget,a);camera.lookAt(target);if(viewport)camera.setViewOffset(viewport.w,viewport.h,-viewport.x-viewport.w*.035,-viewport.y,innerWidth,innerHeight);else camera.clearViewOffset();renderer.render(scene,camera)}requestAnimationFrame(frame);
-})();
-</script></body></html>
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Kyoto Rooftop · Restaurant 3D</title>
+  <style>
+    *{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#101513}
+    canvas{display:block;width:100%;height:100%}.badge{position:fixed;right:20px;bottom:18px;padding:8px 12px;border:1px solid #ffffff24;border-radius:20px;background:#0d1515cc;color:#e9dbc1;font:600 10px Arial;letter-spacing:1.2px;backdrop-filter:blur(8px)}
+  </style>
+</head>
+<body>
+  <canvas id="c"></canvas><div class="badge">KYOTO ROOFTOP · 3 NIVEAUX · 15 ESPACES</div>
+  <script src="/ftv-luxury/vendor/three-r160.min.js"></script>
+  <script>
+  (()=>{'use strict';
+    const T=THREE,canvas=document.getElementById('c');
+    const renderer=new T.WebGLRenderer({canvas,antialias:true,powerPreference:'high-performance'});
+    renderer.setPixelRatio(Math.min(devicePixelRatio,1.6));renderer.shadowMap.enabled=true;renderer.shadowMap.type=T.PCFSoftShadowMap;renderer.outputColorSpace=T.SRGBColorSpace;renderer.toneMapping=T.ACESFilmicToneMapping;renderer.toneMappingExposure=1.08;
+    const scene=new T.Scene();scene.background=new T.Color(0x101513);scene.fog=new T.Fog(0x101513,95,180);
+    const camera=new T.PerspectiveCamera(34,innerWidth/innerHeight,.1,320);let viewport=null;
+    scene.add(new T.HemisphereLight(0xdde7df,0x15110d,1.15));
+    const sun=new T.DirectionalLight(0xffdfb0,2.5);sun.position.set(-45,75,55);sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);Object.assign(sun.shadow.camera,{left:-70,right:70,top:70,bottom:-70,near:1,far:190});scene.add(sun);
+    const mat=(name,color,rough=.72,metal=0)=>new T.MeshStandardMaterial({name,color,roughness:rough,metalness:metal});
+    const M={concrete:mat('Béton anthracite',0x303330,.88),stone:mat('Pierre chaude',0x8d7c69,.8),wood:mat('Noyer fumé',0x56301f,.55),oak:mat('Chêne',0x936b42,.7),black:mat('Métal noir',0x0e1412,.28,.74),cream:mat('Tissu ivoire',0xdccfbb,.9),green:mat('Végétation',0x315b43,.92),red:mat('Velours bordeaux',0x6b2827,.86),water:mat('Bassin',0x1b6263,.2,.18),glass:new T.MeshPhysicalMaterial({color:0xa8c2b6,roughness:.09,metalness:.02,transparent:true,opacity:.3,transmission:.25,side:T.DoubleSide})};
+    const glow={tables:new T.MeshStandardMaterial({color:0xffdeb0,emissive:0xffa948,emissiveIntensity:2.2}),bar:new T.MeshStandardMaterial({color:0xffd092,emissive:0xff8d37,emissiveIntensity:2.6}),pergola:new T.MeshStandardMaterial({color:0xffd39a,emissive:0xff9b3b,emissiveIntensity:2.1}),plants:new T.MeshStandardMaterial({color:0xb8d28c,emissive:0x559540,emissiveIntensity:1.1})};
+    const boxGeo=new T.BoxGeometry(1,1,1),cylGeo=new T.CylinderGeometry(1,1,1,18);
+    function mesh(g,geo,m,x,y,z,sx=1,sy=1,sz=1){const o=new T.Mesh(geo,m);o.position.set(x,y,z);o.scale.set(sx,sy,sz);o.castShadow=true;o.receiveShadow=true;g.add(o);return o}
+    const box=(g,x,y,z,w,h,d,m=M.concrete)=>mesh(g,boxGeo,m,x,y,z,w,h,d),cyl=(g,x,y,z,r,h,m=M.black)=>mesh(g,cylGeo,m,x,y,z,r,h,r);
+    const building=new T.Group();scene.add(building);const floorGroups=[new T.Group(),new T.Group(),new T.Group()];floorGroups.forEach(g=>building.add(g));
+    const shadow=new T.Mesh(new T.PlaneGeometry(240,240),new T.ShadowMaterial({opacity:.3}));shadow.rotation.x=-Math.PI/2;shadow.position.y=-.12;shadow.receiveShadow=true;scene.add(shadow);
+    const zones={
+      accueil:{name:'Accueil',floor:0,target:[-27,2.2,18],side:'front'}, dining:{name:'Salle vitrée',floor:0,target:[-10,2.2,14],side:'front'}, bar:{name:'Bar minéral',floor:0,target:[11,2.2,15],side:'front'}, kitchen:{name:'Cuisine ouverte',floor:0,target:[26,2.2,3],side:'right'}, cellar:{name:'Cave à vins',floor:0,target:[20,2.2,-15],side:'back'},
+      private:{name:'Salon privé',floor:1,target:[-25,10.2,15],side:'front'}, signature:{name:'Salle signature',floor:1,target:[-7,10.2,14],side:'front'}, teppanyaki:{name:'Teppanyaki',floor:1,target:[14,10.2,14],side:'front'}, lounge:{name:'Lounge',floor:1,target:[-20,10.2,-12],side:'back'}, gallery:{name:'Galerie',floor:1,target:[12,10.2,-13],side:'back'},
+      belvedere:{name:'Belvédère',floor:2,target:[-25,18.1,14],side:'front'}, terrace:{name:'Terrasse',floor:2,target:[-5,18.1,13],side:'front'}, rooftop:{name:'Rooftop',floor:2,target:[18,18.1,13],side:'front'}, pergola:{name:'Pergola',floor:2,target:[-14,18.1,-11],side:'back'}, garden:{name:'Jardin suspendu',floor:2,target:[19,18.1,-12],side:'back'}
+    };
+    const roomGroups={};for(const id of Object.keys(zones)){roomGroups[id]=new T.Group();roomGroups[id].name=id;floorGroups[zones[id].floor].add(roomGroups[id])}
+    function sign(g,text,x,y,z,rot=0){const c=document.createElement('canvas');c.width=512;c.height=96;const ctx=c.getContext('2d');ctx.fillStyle='#14221d';ctx.fillRect(0,0,c.width,c.height);ctx.strokeStyle='#d2ab21';ctx.lineWidth=5;ctx.strokeRect(3,3,c.width-6,c.height-6);ctx.fillStyle='#f4ead8';ctx.font='600 34px Arial';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(text.toUpperCase(),256,49);const tx=new T.CanvasTexture(c);tx.colorSpace=T.SRGBColorSpace;const o=mesh(g,new T.PlaneGeometry(4.8,.9),new T.MeshBasicMaterial({map:tx,transparent:true}),x,y,z);o.rotation.y=rot;return o}
+    function chair(g,x,y,z,rot=0,color=M.cream){const q=new T.Group();q.position.set(x,y,z);q.rotation.y=rot;g.add(q);cyl(q,0,.46,0,.075,.86,M.black);box(q,0,.85,0,.72,.16,.72,color);box(q,0,1.22,-.28,.72,.75,.14,color)}
+    function table(g,x,y,z,w=2.7,d=1.7,color=M.wood){box(g,x,y+.82,z,w,.16,d,color);box(g,x,y+.42,z,w*.42,.78,d*.35,M.black);cyl(g,x,y+1.03,z,.12,.12,glow.tables);for(const s of [-1,1]){chair(g,x+s*(w/2+.48),y,z,s>0?-Math.PI/2:Math.PI/2);chair(g,x,y,z+s*(d/2+.45),s>0?Math.PI:0)}}
+    function sofa(g,x,y,z,w=4,rot=0){const q=new T.Group();q.position.set(x,y,z);q.rotation.y=rot;g.add(q);box(q,0,.55,0,w,1,.95,M.red);box(q,0,1.15,-.38,w,1.1,.22,M.red)}
+    function plant(g,x,y,z,s=.8){box(g,x,y+.35,z,1.2*s,.7,1.2*s,M.black);cyl(g,x,y+1.5,z,.1*s,2.2*s,M.wood);for(let i=0;i<7;i++){const a=i/7*Math.PI*2;mesh(g,new T.SphereGeometry(1,10,7),M.green,x+Math.cos(a)*.5*s,y+2.6*s+Math.sin(i)*.2,z+Math.sin(a)*.5*s,.55*s,.8*s,.55*s)}cyl(g,x,y+.76,z,.1,.16,glow.plants)}
+    const lights=[];function pendant(g,x,y,z,group='tables'){box(g,x,y,z,.07,1.05,.07,M.black);const shade=mesh(g,new T.ConeGeometry(.42,.5,18,1,true),M.black,x,y-.7,z);shade.rotation.x=Math.PI;cyl(g,x,y-.9,z,.12,.22,glow[group]);const p=new T.PointLight(group==='pergola'?0xffbb73:0xffd19a,2.4,8,1.8);p.position.set(x,y-.9,z);g.add(p);lights.push({p,group})}
+    function roomShell(id,x,z,w,d,level,accent){const g=roomGroups[id],y=level*8;box(g,x,y+.16,z,w,.3,d,accent);box(g,x-w/2,y+2.9,z,.22,5.5,d,M.concrete);box(g,x+w/2,y+2.9,z,.22,5.5,d,M.concrete);box(g,x,y+2.9,z-d/2,w,5.5,.22,M.concrete);sign(g,zones[id].name,x,y+4.7,z-d/2+.13,0);return g}
+    const accents=[mat('Pierre claire',0x75695b,.82),mat('Terre cuite',0x765441,.82),mat('Ardoise',0x3d4843,.86)];
+    // Four times the original footprint: 68 × 52 m, arranged as three complete levels.
+    for(let level=0;level<3;level++){const g=floorGroups[level],y=level*8;box(g,0,y+.3,0,70,.6,54,M.concrete);box(g,0,y+.68,0,67,.14,51,level===2?M.oak:M.stone);for(const x of [-34.4,34.4])box(g,x,y+3,0,.45,5.6,52,M.concrete);box(g,0,y+3,-25.7,69,5.6,.45,M.concrete);for(let x=-32;x<=32;x+=4){box(g,x,y+3,25.65,.08,5.1,.16,M.black);box(g,x+1.94,y+3,25.58,.02,4.8,3.7,M.glass)}}
+    // Ground level: welcome, main dining room, monumental bar, kitchen and cellar.
+    roomShell('accueil',-27,15,12,19,0,accents[0]);sofa(roomGroups.accueil,-28,0,16,5);box(roomGroups.accueil,-24,1,12,3,1.7,1.2,M.stone);plant(roomGroups.accueil,-31,0,21,1.1);
+    roomShell('dining',-11,14,20,21,0,accents[1]);for(const p of [[-16,10],[-8,10],[-16,18],[-8,18]])table(roomGroups.dining,p[0],0,p[1]);
+    roomShell('bar',10,14,19,21,0,accents[2]);box(roomGroups.bar,10,1.2,8,15,2,2.1,M.concrete);box(roomGroups.bar,10,2.27,9,16,.15,1,glow.bar);for(let x=4;x<=16;x+=2.4)chair(roomGroups.bar,x,0,10.4,0);
+    roomShell('kitchen',27,3,13,24,0,accents[0]);for(const z of [-4,4,10]){box(roomGroups.kitchen,27,.95,z,8,1.6,2.2,M.black);box(roomGroups.kitchen,27,1.8,z,7.6,.08,1.9,M.stone)}box(roomGroups.kitchen,27,4.7,3,8,.5,18,M.black);
+    roomShell('cellar',18,-15,28,15,0,accents[1]);for(let x=7;x<=29;x+=4)for(let z=-20;z<=-11;z+=3)cyl(roomGroups.cellar,x,1.3,z,.32,2.2,M.wood);
+    // First level: five materially distinct dining and social rooms.
+    roomShell('private',-26,14,14,21,1,accents[1]);table(roomGroups.private,-26,8,14,6,2.4);sofa(roomGroups.private,-26,8,21,7,Math.PI);
+    roomShell('signature',-9,14,19,21,1,accents[0]);for(const p of [[-14,10],[-5,10],[-14,18],[-5,18]])table(roomGroups.signature,p[0],8,p[1]);
+    roomShell('teppanyaki',14,14,22,21,1,accents[2]);box(roomGroups.teppanyaki,14,9,14,11,1.8,3,M.black);box(roomGroups.teppanyaki,14,10,14,7,.12,1.6,glow.bar);for(let x=8;x<=20;x+=2.2)chair(roomGroups.teppanyaki,x,8,17,0);
+    roomShell('lounge',-20,-13,27,17,1,accents[2]);sofa(roomGroups.lounge,-25,8,-14,7,-Math.PI/2);sofa(roomGroups.lounge,-15,8,-14,7,Math.PI/2);table(roomGroups.lounge,-20,8,-14,3.4,2);
+    roomShell('gallery',12,-14,31,15,1,accents[0]);for(let x=1;x<=23;x+=5){box(roomGroups.gallery,x,10,-20.9,3.2,3.2,.2,M.cream);cyl(roomGroups.gallery,x,8.8,-14,.5,1.8,M.stone)}
+    // Rooftop: five open-air destinations with pergolas, water and gardens.
+    roomShell('belvedere',-27,14,13,21,2,accents[0]);sofa(roomGroups.belvedere,-27,16,15,7);box(roomGroups.belvedere,-27,16.4,8,8,.7,3,M.water);
+    roomShell('terrace',-10,14,19,21,2,accents[1]);for(const p of [[-15,10],[-6,10],[-15,19],[-6,19]])table(roomGroups.terrace,p[0],16,p[1]);
+    roomShell('rooftop',14,14,25,21,2,accents[2]);box(roomGroups.rooftop,14,17.2,8,18,2,2.3,M.black);box(roomGroups.rooftop,14,18.3,9.2,19,.12,.2,glow.bar);for(let x=5;x<=23;x+=2.6)chair(roomGroups.rooftop,x,16,10.7,0);
+    roomShell('pergola',-16,-13,31,17,2,accents[1]);for(const x of [-30,-2])for(const z of [-20,-6])box(roomGroups.pergola,x,19.8,z,.3,7.5,.3,M.black);for(let z=-20;z<=-6;z+=1.4)box(roomGroups.pergola,-16,23.6,z,29,.18,.2,M.oak);for(const p of [[-24,-15],[-14,-15],[-5,-15]])table(roomGroups.pergola,p[0],16,p[1]);
+    roomShell('garden',18,-14,28,15,2,accents[0]);for(const p of [[7,-19],[13,-10],[20,-19],[27,-10],[30,-19]])plant(roomGroups.garden,p[0],16,p[1],1.15);box(roomGroups.garden,19,16.5,-14,10,.65,5,M.water);
+    // Lighting, glass rails and a prominent external stair tie the levels together.
+    for(const [id,z] of Object.entries(zones)){const g=roomGroups[id],t=z.target;pendant(g,t[0],z.floor*8+5.2,t[2],z.floor===2?'pergola':id==='bar'||id==='rooftop'?'bar':'tables')}
+    for(let level=0;level<3;level++){const g=floorGroups[level],y=level*8;for(const s of [-1,1])box(g,s*33.2,y+1.35,0,.1,1.4,49,M.glass)}
+    for(let i=0;i<23;i++){const y=.35+i*.7,z=22-i*1.9;box(building,37,y,z,5,.35,1.35,M.black);box(building,37,y+.22,z,4.6,.06,.15,glow.plants)}box(building,39,8.2,1,.15,16.4,48,M.black);
+    for(const p of [[-32,0,23],[31,0,22],[-31,8,23],[30,8,22],[-31,16,23],[31,16,-22]])plant(building,...p,1);
+    const overview={target:[0,10,0],pos:[86,66,94]};let current='dining',view='overview',target=new T.Vector3(...overview.target),desiredTarget=target.clone(),desiredPos=new T.Vector3(...overview.pos);camera.position.copy(desiredPos);
+    function focus(id,mode='focus'){current=zones[id]?id:current;view=mode;for(const [roomId,group] of Object.entries(roomGroups))group.visible=mode==='overview'||roomId===current;if(mode==='overview'){desiredTarget.set(...overview.target);desiredPos.set(...overview.pos);return}const z=zones[current],t=z.target,front=z.side==='front',back=z.side==='back',right=z.side==='right';desiredTarget.set(...t);desiredPos.set(t[0]+(right?28:front?20:back?-21:22),t[1]+11,t[2]+(front?27:back?-27:right?8:24))}
+    function applyLevels(v={}){for(const k of Object.keys(glow)){const n=Number.isFinite(v[k])?v[k]:60;glow[k].emissiveIntensity=.06+n/100*3.2}for(const l of lights){const n=Number.isFinite(v[l.group])?v[l.group]:60;l.p.intensity=.12+n/100*3.9}}
+    function resize(){const w=innerWidth,h=innerHeight;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix()}addEventListener('resize',resize);resize();
+    const modelState={zone:'dining',view:'overview',levels:{tables:72,bar:76,pergola:45,plants:55}};window.__restaurant3d={scene,camera,building,zones,roomGroups,glow,modelState,focus,get desiredPosition(){return desiredPos.toArray()}};
+    const channel='ftv-restaurant/v1';addEventListener('message',e=>{if(e.origin!==location.origin||e.data?.channel!==channel)return;if(e.data.type==='viewport')viewport=e.data.viewport;else if(e.data.type==='view'){modelState.view=e.data.view;focus(modelState.zone,e.data.view)}else if(e.data.type==='state'){if(e.data.zone){modelState.zone=e.data.zone;modelState.view='focus';focus(e.data.zone,'focus')}if(e.data.levels){modelState.levels={...modelState.levels,...e.data.levels};applyLevels(e.data.levels)}}});parent.postMessage({channel,type:'ready'},location.origin);
+    let last=performance.now();function frame(now){requestAnimationFrame(frame);const dt=Math.min(.05,(now-last)/1000);last=now;const a=1-Math.exp(-dt*1.55);camera.position.lerp(desiredPos,a);target.lerp(desiredTarget,a);camera.lookAt(target);if(viewport)camera.setViewOffset(viewport.w,viewport.h,-viewport.x-viewport.w*.025,-viewport.y,innerWidth,innerHeight);else camera.clearViewOffset();renderer.render(scene,camera)}requestAnimationFrame(frame);
+  })();
+  </script>
+</body>
+</html>
