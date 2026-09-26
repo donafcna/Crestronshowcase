@@ -1,10 +1,11 @@
-# Hotel Brassus — recette éclairages et rideaux 2.1.5
+# Hotel Brassus — recette éclairages et rideaux 2.1.7
 
 Recette locale du 26 septembre 2026 sur Microsoft Edge.
 
 - Quinze groupes de pièces, 783 éléments lumineux, vingt sources volumétriques et soixante-quinze familles de luminaires.
 - Bar Éteint : niveau 0 %, intensité volumétrique 0. Bar Total : niveau 100 %, intensité 7,5.
-- Les deux Stores progressent ensemble ; après 1,3 seconde, ils atteignent 28 % et 26 % et les panneaux de rideaux s'élargissent dans la maquette.
+- Le menu et les commandes utilisent le libellé « Rideaux » dans les sept zones, dont Lobby, Petit salon, Salle privée et Wellness. Les panneaux et leurs plis sont exclus de l'optimisation par instances afin de rester animables ; après 1,3 seconde de fermeture, les deux rideaux atteignent 28 % et 26 % et s'élargissent visiblement dans la maquette.
+- Les changements de scène d'éclairage utilisent un fondu progressif de quatre secondes ; les réglages manuels restent immédiats.
 - Molette bas : vue complète, rayon 150. Molette haut : pièce Bar centrée, rayon 30. Aucun cadrage intermédiaire.
 - Phase initiale jour, phase nuit observée 10,2 secondes plus tard.
 - Build, validation du catalogue et syntaxe JavaScript réussis. Aucun message d'erreur pendant la recette intégrée.

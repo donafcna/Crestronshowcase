@@ -129,7 +129,7 @@ export default {
         "buttons": [
           [
             "PC Pupitre · HDMI Régie · Caméra live · Logo",
-            "Sources en interlock : présentation sur le changement climatique, match de football, vue de la salle et identité Fréquence TV. L'aperçu et le mur LED 3D changent ensemble."
+            "Sources en interlock : présentation sur le changement climatique, présentatrice fictive du journal de 20 h, vue de la salle et logo officiel Fréquence TV. L'aperçu et le mur LED 3D changent ensemble."
           ],
           [
             "Luminosité",
@@ -296,7 +296,7 @@ export default {
         "buttons": [
           [
             "Lectern PC · Control-room HDMI · Live camera · Logo",
-            "Interlocked sources: climate-change presentation, football match, auditorium view and Fréquence TV identity. The preview and 3D LED wall change together."
+            "Interlocked sources: climate-change presentation, fictional 8 p.m. news presenter, auditorium view and official Fréquence TV logo. The preview and 3D LED wall change together."
           ],
           [
             "Luminosité",
@@ -463,7 +463,7 @@ export default {
         "buttons": [
           [
             "Pult-PC · Regie-HDMI · Live-Kamera · Logo",
-            "Verriegelte Quellen: Klimawandel-Präsentation, Fußballspiel, Saalansicht und Fréquence-TV-Logo. Vorschau und 3D-LED-Wand wechseln gemeinsam."
+            "Verriegelte Quellen: Klimawandel-Präsentation, fiktive Moderatorin der 20-Uhr-Nachrichten, Saalansicht und offizielles Fréquence-TV-Logo. Vorschau und 3D-LED-Wand wechseln gemeinsam."
           ],
           [
             "Luminosité",

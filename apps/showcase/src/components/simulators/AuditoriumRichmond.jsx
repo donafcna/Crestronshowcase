@@ -29,15 +29,15 @@ const AuditoriumScreenPreview = ({ source, brightness }) => <div className="aud-
     <div><span>CONFÉRENCE 2026</span><h3>LE CHANGEMENT<br/>CLIMATIQUE</h3><p>Comprendre · Agir · Transformer</p></div>
     <div className="aud-climate-graphic"><i/><b>+1,5°C</b></div>
   </div>}
-  {source === 'regie_hdmi' && <div className="aud-screen-content aud-football-feed">
-    <div className="aud-score">RCH <b>2 – 1</b> UNI <small>72:18</small></div>
-    <div className="aud-pitch"><i/><i/><i/><i/><i/><i/></div>
+  {source === 'regie_hdmi' && <div className="aud-screen-content aud-news-feed">
+    <img src="/assets/auditorium-news-presenter.png" alt="Présentatrice fictive du journal de 20 heures" />
+    <span>HDMI RÉGIE · EN DIRECT</span>
   </div>}
   {source === 'cam_feed' && <div className="aud-screen-content aud-room-feed">
     <div className="aud-room-stage"><span>LIVE</span><b>SCÈNE</b></div>
     <div className="aud-room-seats">{Array.from({length: 28}, (_, i)=><i key={i}/>)}</div>
   </div>}
-  {source === 'logo' && <div className="aud-screen-content aud-logo-feed"><b>FRÉQUENCE</b><strong>TV</strong><span>AUDIOVISUEL · DOMOTIQUE</span></div>}
+  {source === 'logo' && <div className="aud-screen-content aud-logo-feed"><img src="/assets/logo-frequence-tv-5LGUrtbd.png" alt="Fréquence TV — Son Image & Domotique" /></div>}
 </div>;
 
 export const AuditoriumRichmond = ({ deviceType }) => {

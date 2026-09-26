@@ -25,13 +25,18 @@ scene.add(new T.HemisphereLight('#d6e9ff','#28303c',club?1.3:2));
 const key=new T.DirectionalLight('#ffe7c4',club?1:2.5);key.position.set(10,22,16);key.castShadow=true;key.shadow.mapSize.set(1024,1024);Object.assign(key.shadow.camera,{left:-18,right:18,top:18,bottom:-18,far:80});key.shadow.bias=-.001;scene.add(key);
 const stageLight=new T.PointLight(club?'#a478ff':'#ffe5bf',100,32,2);stageLight.position.set(0,5,-7);scene.add(stageLight);
 const fill=new T.PointLight('#44c9ee',60,30,2);fill.position.set(-7,4,2);scene.add(fill);
-const beams=[],auditoriumLedMaterials=[],auditoriumSpots=[],smoke=new T.Group();model.add(smoke);let screenContext,screenTexture;
+const beams=[],auditoriumLedMaterials=[],auditoriumSpots=[],smoke=new T.Group();model.add(smoke);let screenContext,screenTexture,currentScreenSource='pc_lectern';
+const newsImage=new Image(),brandImage=new Image();
+newsImage.src='/assets/auditorium-news-presenter.png';brandImage.src='/assets/logo-frequence-tv-5LGUrtbd.png';
+const redrawLoadedScreen=()=>{if(screenContext)drawScreen(currentScreenSource)};newsImage.onload=redrawLoadedScreen;brandImage.onload=redrawLoadedScreen;
+function drawCover(c,image,w,h){const scale=Math.max(w/image.naturalWidth,h/image.naturalHeight),sw=w/scale,sh=h/scale;c.drawImage(image,(image.naturalWidth-sw)/2,(image.naturalHeight-sh)/2,sw,sh,0,0,w,h)}
+function drawContain(c,image,w,h,padding=50){const scale=Math.min((w-padding*2)/image.naturalWidth,(h-padding*2)/image.naturalHeight),dw=image.naturalWidth*scale,dh=image.naturalHeight*scale;c.drawImage(image,(w-dw)/2,(h-dh)/2,dw,dh)}
 function makeScreen(w,h,x,y,z){const c=document.createElement('canvas');c.width=1024;c.height=512;screenContext=c.getContext('2d');screenTexture=new T.CanvasTexture(c);screenTexture.colorSpace=T.SRGBColorSpace;screenMat.map=screenTexture;screenMat.emissiveMap=screenTexture;box('LED screen',x,y,z,w,h,.09,screenMat);box('Screen frame',x,y,z-.12,w+.25,h+.25,.16,M.black)}
-function drawScreen(source){const c=screenContext;if(club){c.fillStyle='#271153';c.fillRect(0,0,1024,512);c.fillStyle='#b38cff';for(let i=0;i<9;i++)c.fillRect(60+i*110,310-Math.sin(i*.8)*60,44,100+Math.sin(i*.8)*60);c.fillStyle='#fff';c.font='bold 65px sans-serif';c.fillText('L’ÉTOILE',65,115);c.font='28px sans-serif';c.fillText('AFTER DARK · PRIVATE CLUB',65,182)}
+function drawScreen(source){currentScreenSource=source;const c=screenContext;if(club&&source==='club_visual'){c.fillStyle='#271153';c.fillRect(0,0,1024,512);c.fillStyle='#b38cff';for(let i=0;i<9;i++)c.fillRect(60+i*110,310-Math.sin(i*.8)*60,44,100+Math.sin(i*.8)*60);c.fillStyle='#fff';c.font='bold 65px sans-serif';c.fillText('L’ÉTOILE',65,115);c.font='28px sans-serif';c.fillText('AFTER DARK · PRIVATE CLUB',65,182)}
  else if(source==='pc_lectern'){c.fillStyle='#eef7f2';c.fillRect(0,0,1024,512);c.fillStyle='#123a38';c.font='700 62px sans-serif';c.fillText('LE CHANGEMENT',65,130);c.fillText('CLIMATIQUE',65,203);c.fillStyle='#39766e';c.font='25px sans-serif';c.fillText('COMPRENDRE · AGIR · TRANSFORMER',67,255);c.fillStyle='#b7ddcd';c.beginPath();c.arc(800,256,150,0,Math.PI*2);c.fill();c.fillStyle='#2a6173';c.beginPath();c.arc(800,256,108,0,Math.PI*2);c.fill();c.strokeStyle='#ff704d';c.lineWidth=16;c.beginPath();c.moveTo(635,385);c.lineTo(700,340);c.lineTo(760,355);c.lineTo(830,250);c.lineTo(950,150);c.stroke();c.fillStyle='#ff704d';c.font='700 38px sans-serif';c.fillText('+1,5°C',845,105)}
- else if(source==='regie_hdmi'){c.fillStyle='#20334f';c.fillRect(0,0,1024,512);c.fillStyle='#14844d';c.fillRect(45,82,934,400);c.strokeStyle='#e7f5df';c.lineWidth=7;c.strokeRect(60,98,904,368);c.beginPath();c.moveTo(512,98);c.lineTo(512,466);c.stroke();c.beginPath();c.arc(512,282,62,0,Math.PI*2);c.stroke();c.fillStyle='#f4f7fa';c.fillRect(350,18,324,54);c.fillStyle='#13293e';c.font='700 30px sans-serif';c.textAlign='center';c.fillText('RCH  2  –  1  UNI',512,56);for(let i=0;i<14;i++){c.fillStyle=i<7?'#f7f7f7':'#ef4057';c.beginPath();c.arc(150+(i%7)*118,155+(i%3)*112,12,0,Math.PI*2);c.fill()}c.textAlign='start'}
+ else if(source==='regie_hdmi'){c.fillStyle='#07111d';c.fillRect(0,0,1024,512);if(newsImage.complete&&newsImage.naturalWidth)drawCover(c,newsImage,1024,512);c.fillStyle='#b51124e8';c.fillRect(28,438,296,49);c.fillStyle='#fff';c.font='700 23px sans-serif';c.fillText('HDMI RÉGIE · EN DIRECT',47,470)}
  else if(source==='cam_feed'){c.fillStyle='#17293a';c.fillRect(0,0,1024,512);c.fillStyle='#517f91';c.fillRect(180,65,664,230);c.strokeStyle='#111820';c.lineWidth=16;c.strokeRect(180,65,664,230);c.fillStyle='#dffaff';c.font='700 54px sans-serif';c.textAlign='center';c.fillText('SCÈNE · LIVE',512,200);c.fillStyle='#213f50';for(let row=0;row<4;row++)for(let col=0;col<12;col++){c.beginPath();c.roundRect(55+col*78,335+row*40,48,25,8);c.fill()}c.fillStyle='#ff416f';c.font='700 24px sans-serif';c.fillText('● EN DIRECT',512,42);c.textAlign='start'}
- else{c.fillStyle='#f5f6f7';c.fillRect(0,0,1024,512);c.fillStyle='#151d27';c.font='700 92px sans-serif';c.textAlign='center';c.fillText('FRÉQUENCE',435,258);c.fillStyle='#f05a28';c.fillRect(720,175,155,105);c.fillStyle='#fff';c.fillText('TV',797,258);c.fillStyle='#5e6872';c.font='24px sans-serif';c.fillText('AUDIOVISUEL · DOMOTIQUE',512,330);c.textAlign='start'}screenTexture.needsUpdate=true}
+ else{c.fillStyle='#fff';c.fillRect(0,0,1024,512);if(brandImage.complete&&brandImage.naturalWidth)drawContain(c,brandImage,1024,512,90)}screenTexture.needsUpdate=true}
 if(!club){
  box('Stage',0,.38,-8.8,17,.75,6,M.wood);box('Stage step',0,.15,-5.4,10,.3,.8,M.wood);box('Stage edge',0,.77,-5.82,17,.04,.08,accent);
  makeScreen(20.4,4.9,0,3.05,-12.65);sign('AUDITORIUM · RICHMOND',0,5.75,-12.62,9,.55);
@@ -163,16 +168,16 @@ if(club){
  }
 }
 
-drawScreen('pc_lectern');
+drawScreen(club?'club_visual':'pc_lectern');
 // Fit the projected geometry to the usable viewport, with a 2% edge allowance.
-let fitObject=model;
-function frame(){const w=innerWidth,h=innerHeight,v=viewport||{x:0,y:0,w,h};renderer.setSize(w,h);camera.aspect=v.w/v.h;camera.clearViewOffset();
- const bounds=new T.Box3().setFromObject(fitObject),center=bounds.getCenter(new T.Vector3());target.copy(center);
+let fitObject=model,cameraMotion=null;
+function frame(){const w=innerWidth,h=innerHeight,v=viewport||{x:0,y:0,w,h},fromPos=camera.position.clone(),fromTarget=target.clone();renderer.setSize(w,h);camera.aspect=v.w/v.h;camera.clearViewOffset();
+ const bounds=new T.Box3().setFromObject(fitObject),center=bounds.getCenter(new T.Vector3());
  const dir=new T.Vector3(30,28,37).normalize();let lo=1,hi=170;
  for(let i=0;i<22;i++){const distance=(lo+hi)/2;camera.position.copy(center).addScaledVector(dir,distance);camera.lookAt(center);camera.updateMatrixWorld();camera.updateProjectionMatrix();let extent=0;
  for(const x of [bounds.min.x,bounds.max.x])for(const y of [bounds.min.y,bounds.max.y])for(const z of [bounds.min.z,bounds.max.z]){const p=new T.Vector3(x,y,z).project(camera);extent=Math.max(extent,Math.abs(p.x),Math.abs(p.y));}
  if(extent>.98)lo=distance;else hi=distance;
- }camera.position.copy(center).addScaledVector(dir,hi*zoom);camera.lookAt(center);camera.setViewOffset(v.w,v.h,-v.x,-v.y,w,h);camera.updateProjectionMatrix();}
+ }const toPos=center.clone().addScaledVector(dir,hi*zoom);camera.setViewOffset(v.w,v.h,-v.x,-v.y,w,h);camera.updateProjectionMatrix();if(club&&window.__venue?.state?.clubRoom){camera.position.copy(fromPos);target.copy(fromTarget);camera.lookAt(target);cameraMotion={fromPos,fromTarget,toPos,toTarget:center,start:performance.now(),duration:900}}else{camera.position.copy(toPos);target.copy(center);camera.lookAt(target)}}
 const auditoriumFade={duration:4000,active:false,start:0,scene:null,color:null,current:{faceSpots:85,backlights:60,audienceLights:40,color:new T.Color('#39ff14')},from:null,target:null};
 function sampleAuditoriumFade(now){if(!auditoriumFade.active)return auditoriumFade.current;const q=Math.min(1,(now-auditoriumFade.start)/auditoriumFade.duration),ease=q*q*(3-2*q),a=auditoriumFade.from,b=auditoriumFade.target;for(const key of ['faceSpots','backlights','audienceLights'])auditoriumFade.current[key]=T.MathUtils.lerp(a[key],b[key],ease);auditoriumFade.current.color.copy(a.color).lerp(b.color,ease);if(q>=1)auditoriumFade.active=false;return auditoriumFade.current}
 function paintAuditoriumLighting(now){if(club)return;const d=sampleAuditoriumFade(now);stageLight.intensity=d.faceSpots*1.7;fill.intensity=d.audienceLights*1.65;accent.color.copy(d.color);accent.emissive.copy(d.color);accent.emissiveIntensity=d.backlights/48;lightMat.color.copy(d.color);lightMat.emissive.copy(d.color);lightMat.emissiveIntensity=.35+d.faceSpots/48;auditoriumLedMaterials.forEach((m,i)=>{m.color.copy(d.color);m.emissive.copy(d.color);m.emissiveIntensity=(i<4?d.backlights:i<7?d.faceSpots:d.audienceLights)/42});beams.forEach(b=>{const level=d[b.userData.circuit||'audienceLights'];b.material.opacity=level/100*.14;b.material.color.copy(d.color)});auditoriumSpots.forEach((light,i)=>{const circuit=beams[i]?.userData.circuit||'audienceLights';light.color.copy(d.color);light.intensity=d[circuit]*.32})}
@@ -186,6 +191,7 @@ let lastSource='';function apply(s){
  r.materials.forEach(m=>m.emissiveIntensity=r.level);r.beams.forEach(b=>b.material.opacity=r.level*(s.strobeActive?.11:.075));r.group.getObjectByName('Mirror ball light dots').material.opacity=r.level*.65;r.smokes.forEach(p=>p.visible=!!s.smokeActive&&r.level>0);
  });
  const nextFit=view==='room'?room.group:view==='floor'?clubFloors[room.floor]:model;if(fitObject!==nextFit){fitObject=nextFit;frame();}
+ if(lastSource!==s.clubScreenSource){lastSource=s.clubScreenSource;drawScreen(lastSource||'club_visual')}
  smoke.visible=!!s.smokeActive;stageLight.intensity=80*room.level;stageLight.position.y=room.floor*9+5;fill.intensity=45*room.level;fill.position.y=room.floor*9+4;
  }
 
@@ -199,6 +205,7 @@ const down=new T.Vector3(0,-1,0),aimDirection=new T.Vector3();
 function aimHead(head){const direction=aimDirection.copy(head.userData.aim).sub(head.position),distance=direction.length();head.quaternion.setFromUnitVectors(down,direction.normalize());const beam=head.getObjectByName('RGBW light beam');beam.scale.y=(distance-.45)/4.9;beam.position.y=-(distance+.45)/2;}
 for(const head of movingHeads)aimHead(head);
 let previous=0;function animate(t){requestAnimationFrame(animate);if(!visible||document.hidden||t-previous<33)return;previous=t;
+ if(cameraMotion){const q=Math.min(1,(t-cameraMotion.start)/cameraMotion.duration),ease=q*q*(3-2*q);camera.position.lerpVectors(cameraMotion.fromPos,cameraMotion.toPos,ease);target.lerpVectors(cameraMotion.fromTarget,cameraMotion.toTarget,ease);camera.lookAt(target);if(q>=1)cameraMotion=null}
  if(!matchMedia('(prefers-reduced-motion: reduce)').matches){
  if(club){clubRooms.forEach(r=>{if(!r.level)return;if(window.__venue.state.lyresActive!==false)r.heads.forEach(h=>{
  const u=h.userData;if(t>=u.next){u.from.copy(u.aim);const angle=Math.random()*Math.PI*2,radius=Math.sqrt(Math.random())*3.8;u.to.set(Math.cos(angle)*radius,.16,1+Math.sin(angle)*radius);u.start=t;u.duration=260+Math.random()*390;u.next=t+u.duration;}

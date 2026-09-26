@@ -74,8 +74,8 @@ Demande explicite : adaptation portrait et ouverture Hôtellerie sur Hotel Brass
 
 La maquette ouvre en vue globale, puis suit le niveau d'un espace sélectionné ou d'une commande d'éclairage. Éclairages synchronisés, molette de zoom, cadrage entre le téléphone et la colonne en modes normal/Scène. Les limites architecturales de la maquette restent celles documentées au lot 2.1.0. Aucun modèle 3D chargé en fond sur les trois grands supports.
 
-## 26/09/2026 — Éclairages, rideaux et cycle extérieur, vitrine 2.1.5
+## 26/09/2026 — Éclairages, rideaux et cycle extérieur, vitrine 2.1.7
 
 Chaque pièce documentée reçoit des corniches, spots de plafond, appliques, balises basses, suspensions ou chandeliers et un éclairage volumétrique. Les quatre scènes du Smartphone changent la luminosité de la pièce sélectionnée de 0 à 100 %. Le modèle comporte 783 éléments lumineux, 20 sources volumétriques et 75 familles de matériaux lumineux dans 15 zones.
 
-Le décor alterne automatiquement dix secondes de jour et dix secondes de nuit. Le bouton de la maquette permet de mettre ce cycle en pause. La molette ne produit plus de cadrage intermédiaire : bas affiche tout l'hôtel, haut centre et agrandit la dernière pièce. Dans Bar, Restaurant et Séminaires, les commandes Stores animent deux panneaux de rideaux visibles sur les vitrages ; Ouvrir, Stop et Fermer conservent leur progression simulée.
+Le décor alterne automatiquement dix secondes de jour et dix secondes de nuit. Le bouton de la maquette permet de mettre ce cycle en pause. La molette ne produit plus de cadrage intermédiaire : bas affiche tout l'hôtel, haut centre et agrandit la dernière pièce. Dans Bar, Lobby, Restaurant, Petit salon, Salle privée, Wellness et Séminaires, les commandes Rideaux animent deux panneaux plissés visibles devant les vitrages ; Ouvrir, Stop et Fermer conservent leur progression simulée. Les panneaux sont exclus du regroupement 3D afin que leur mouvement reste visible. Tout changement de scène d'éclairage utilise un fondu progressif de quatre secondes.

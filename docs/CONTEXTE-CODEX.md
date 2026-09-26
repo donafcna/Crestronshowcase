@@ -358,7 +358,9 @@ Enveloppe extérieure inspirée du bâtiment réel ajoutée à la maquette inter
 
 ## 26/09/2026 — Auditorium Richmond, lumière et vidéo 2.1.4
 
-Ajout de quinze faisceaux/projecteurs et seize bandeaux LED synchronisés dans le modèle 3D. Les changements de scène et de couleur utilisent un fondu interpolé de quatre secondes. Sur Smartphone, l'enregistrement est intégré à la carte PTZ ; la prévisualisation d'estrade suit pan, tilt, recentrage et zoom. La page Écran propose quatre simulations cohérentes jusque sur la texture du mur LED 3D : climat, football, salle live et Fréquence TV. Build, lint, interactions, absence de défilement interne, contenu 3D et durée du fondu vérifiés localement.
+Ajout de quinze faisceaux/projecteurs et seize bandeaux LED synchronisés dans le modèle 3D. Les changements de scène et de couleur utilisent un fondu interpolé de quatre secondes. Sur Smartphone, l'enregistrement est intégré à la carte PTZ ; la prévisualisation d'estrade suit pan, tilt, recentrage et zoom. La page Écran propose quatre simulations cohérentes jusque sur la texture du mur LED 3D : climat, présentatrice fictive du journal de 20 h, salle live et logo officiel Fréquence TV. Build, lint, interactions, absence de défilement interne, contenu 3D et durée du fondu vérifiés localement.
+
+L'Étoile Club utilise un menu de zone sous son titre. La molette choisit uniquement la vue bâtiment ou la dernière salle sélectionnée, avec interpolation de caméra. L'onglet Espaces est remplacé par Écran ; quatre sources vidéo modifient ensemble l'aperçu Smartphone et la texture du modèle 3D.
 
 ## 26/09/2026 — Hotel Brassus, éclairages et rideaux 2.1.5
 

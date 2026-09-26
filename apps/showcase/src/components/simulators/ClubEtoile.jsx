@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { VenuePhone, Card, Choices, Slider, Toggle } from '../../venues/VenuePhone';
 import { useVenueState } from '../../venues/state';
-import { ClubSpaces, CLUB_ROOMS } from '../../venues/ClubSpaces';
+import { CLUB_ROOMS } from '../../venues/ClubSpaces';
 import { Icons } from "../../icons";
 
 export const ClubEtoile = ({ deviceType }) => {
-  const [activeTab, setActiveTab] = useState(deviceType === "phone" ? "spaces" : "hvac"); // hvac, audio_limit, effects
+  const [activeTab, setActiveTab] = useState(deviceType === "phone" ? "screen" : "hvac"); // screen, hvac, audio_limit, effects
   const [clubFloor, setClubFloor] = useState(0);
   const [clubRoom, setClubRoom] = useState('original');
   const [clubView, setClubView] = useState('building');
+  const [clubScreenSource, setClubScreenSource] = useState('club_visual');
   const [roomSettings, setRoomSettings] = useState(() => Object.fromEntries(CLUB_ROOMS.map(r=>[r.id,{scene:'signature',level:75}])));
-  const changeFloor = floor => { setClubFloor(floor); setClubRoom(CLUB_ROOMS.find(r=>r.floor===floor).id); setClubView('floor'); };
   const changeRoom = id => { setClubRoom(id); setClubFloor(CLUB_ROOMS.find(r=>r.id===id).floor); setClubView('room'); };
   const [crowdDensity, setCrowdDensity] = useState("busy"); // cozy, busy, packed
   const [fanSpeed, setFanSpeed] = useState(65);
@@ -66,18 +66,25 @@ export const ClubEtoile = ({ deviceType }) => {
     return () => clearInterval(interval);
   }, [dancefloorVolume]);
 
+  useEffect(() => {
+    const onWheelView = e => setClubView(e.detail === 'building' ? 'building' : 'room');
+    window.addEventListener('ftv-club-view', onWheelView);
+    return () => window.removeEventListener('ftv-club-view', onWheelView);
+  }, []);
+
   const renderIcon = (iconName, size = 16, className = "") => {
     const IconComp = Icons[iconName] || Icons.HelpCircle;
     return <IconComp size={size} className={className} />;
   };
 
-  useVenueState('club-etoile', { crowdDensity, smokeActive, strobeActive, lyresActive, strobeFreq, dancefloorVolume, barVolume, clubFloor, clubRoom, clubView, roomSettings });
+  useVenueState('club-etoile', { crowdDensity, smokeActive, strobeActive, lyresActive, strobeFreq, dancefloorVolume, barVolume, clubFloor, clubRoom, clubView, clubScreenSource, roomSettings });
   const isPhone = deviceType === "phone";
-  if (isPhone) return <VenuePhone name="L’Étoile Club" subtitle="3 niveaux · 3 grandes salles · DJ" active={activeTab} onTab={setActiveTab} tabs={[["spaces","Espaces","LayoutGrid"],["hvac","Climat","Wind"],["audio_limit","Audio","Volume2"],["effects","Ambiances","Sparkles"]]}>
-    {activeTab==='spaces' && <ClubSpaces floor={clubFloor} onFloor={changeFloor} room={clubRoom} onRoom={changeRoom} view={clubView} onView={setClubView} settings={roomSettings[clubRoom]} onSettings={patch=>setRoomSettings(s=>({...s,[clubRoom]:{...s[clubRoom],...patch}}))}/>}
+  const roomSelect=<label className="club-room-select">Zone<select aria-label="Zone du club" value={clubView==='building'?'building':clubRoom} onChange={e=>{if(e.target.value==='building')setClubView('building');else changeRoom(e.target.value)}}><option value="building">Bâtiment</option>{CLUB_ROOMS.map(r=><option key={r.id} value={r.id}>{r.floor===0?'RDC':`${r.floor}e étage`} · {r.name}</option>)}</select></label>;
+  if (isPhone) return <VenuePhone name="L’Étoile Club" subtitle="3 niveaux · 3 grandes salles · DJ" headerExtra={roomSelect} active={activeTab} onTab={setActiveTab} tabs={[["screen","Écran","Monitor"],["hvac","Climat","Wind"],["audio_limit","Audio","Volume2"],["effects","Ambiances","Sparkles"]]}>
+    {activeTab==='screen' && <Card title="Écran DJ"><Choices value={clubScreenSource} onChange={setClubScreenSource} options={[["club_visual","Visuels club"],["regie_hdmi","Journal 20 h"],["cam_feed","Caméra live"],["logo","Logo"]]}/><div className="aud-screen-preview club-screen-preview" data-source={clubScreenSource}>{clubScreenSource==='club_visual'&&<div className="aud-screen-content club-visual-feed"><strong>L’ÉTOILE</strong><span>AFTER DARK</span></div>}{clubScreenSource==='regie_hdmi'&&<div className="aud-screen-content aud-news-feed"><img src="/assets/auditorium-news-presenter.png" alt="Journal de 20 heures"/></div>}{clubScreenSource==='cam_feed'&&<div className="aud-screen-content aud-room-feed"><div className="aud-room-stage"><span>LIVE</span><b>PISTE</b></div><div className="aud-room-seats">{Array.from({length:28},(_,i)=><i key={i}/>)}</div></div>}{clubScreenSource==='logo'&&<div className="aud-screen-content aud-logo-feed"><img src="/assets/logo-frequence-tv-5LGUrtbd.png" alt="Fréquence TV"/></div>}</div></Card>}
     {activeTab==='hvac' && <><Card title="Affluence"><Choices value={crowdDensity} onChange={setCrowdDensity} options={[["cozy","Calme"],["busy","Normal"],["packed","Forte affluence"]]}/></Card><Card title="Ventilation & climatisation"><p className="venue-readout">{targetTemp.toFixed(1)} °C</p><p className="venue-note">Consigne adaptée à l’affluence · CTA en ligne</p><Slider label="Extraction d’air" value={fanSpeed} onChange={setFanSpeed}/></Card><Card title="Fin de service"><button className="venue-toggle" onClick={()=>{setCrowdDensity('cozy');setSmokeActive(false);setStrobeActive(false);setDancefloorVolume(0);setBarVolume(0)}}>Éteindre le son et les effets</button></Card></>}
     {activeTab==='audio_limit' && <><Card title="Capteur acoustique · Simulation"><p className="venue-readout">{currentDb} dB</p><p className="venue-note">{limiterTripped?'Limiteur actif · seuil atteint':'Seuil du simulateur : 105 dB'}</p></Card><Card title="Volume par zone"><Slider label="Piste" value={dancefloorVolume} onChange={setDancefloorVolume}/><Slider label="Bar" value={barVolume} onChange={setBarVolume}/><p className="venue-note">Aucun son n’est diffusé.</p></Card></>}
-    {activeTab==='effects' && <><Card title="Effets scéniques"><Toggle label="Mouvement des lyres" value={lyresActive} onChange={setLyresActive}/><Toggle label="Jet de fumée" value={smokeActive} onChange={setSmokeActive}/><Toggle label="Stroboscope" value={strobeActive} onChange={setStrobeActive}/><Slider label="Fréquence programmée" min={1} max={15} unit=" Hz" value={strobeFreq} onChange={setStrobeFreq}/><p className="venue-note">La 3D représente le stroboscope par une lumière continue.</p></Card><Card title="Scènes rapides"><Choices value={strobeActive?'party':'calm'} onChange={v=>{setStrobeActive(v==='party');setSmokeActive(v==='party')}} options={[["party","Soirée"],["calm","Calme"]]}/></Card></>}
+    {activeTab==='effects' && <><Card title={CLUB_ROOMS.find(r=>r.id===clubRoom).name}><Choices value={roomSettings[clubRoom].scene} options={[["signature","Signature"],["party","Festif"],["calm","Doux"],["off","Éteint"]]} onChange={scene=>setRoomSettings(s=>({...s,[clubRoom]:{...s[clubRoom],scene}}))}/><Slider label="Intensité de la salle" value={roomSettings[clubRoom].level} onChange={level=>setRoomSettings(s=>({...s,[clubRoom]:{...s[clubRoom],level}}))}/></Card><Card title="Effets scéniques"><Toggle label="Mouvement des lyres" value={lyresActive} onChange={setLyresActive}/><Toggle label="Jet de fumée" value={smokeActive} onChange={setSmokeActive}/><Toggle label="Stroboscope" value={strobeActive} onChange={setStrobeActive}/><Slider label="Fréquence programmée" min={1} max={15} unit=" Hz" value={strobeFreq} onChange={setStrobeFreq}/><p className="venue-note">La 3D représente le stroboscope par une lumière continue.</p></Card><Card title="Scènes rapides"><Choices value={strobeActive?'party':'calm'} onChange={v=>{setStrobeActive(v==='party');setSmokeActive(v==='party')}} options={[["party","Soirée"],["calm","Calme"]]}/></Card></>}
   </VenuePhone>;
 
   return (

@@ -454,7 +454,9 @@ Enveloppe 3D complète inspirée du bâtiment construit : murs, vitrages, bois, 
 
 ## 26/09/2026 — Auditorium Richmond, lumière et vidéo 2.1.4
 
-Les scènes d'éclairage pilotent désormais quinze projecteurs et seize bandeaux LED dans la salle 3D avec un fondu continu de quatre secondes. La page Caméras regroupe le bouton REC, les choix PTZ, le zoom, le recentrage et une image simulée de l'estrade qui suit les mouvements. La section Captation séparée est supprimée. Le mur LED et son aperçu affichent quatre contenus distincts : présentation climatique, football, vue live de la salle et logo Fréquence TV. Aucun équipement réel n'est commandé.
+Les scènes d'éclairage pilotent désormais quinze projecteurs et seize bandeaux LED dans la salle 3D avec un fondu continu de quatre secondes. La page Caméras regroupe le bouton REC, les choix PTZ, le zoom, le recentrage et une image simulée de l'estrade qui suit les mouvements. La section Captation séparée est supprimée. Le mur LED et son aperçu affichent quatre contenus distincts : présentation climatique, présentatrice fictive du journal de 20 h, vue live de la salle et logo officiel Fréquence TV. Aucun équipement réel n'est commandé.
+
+L'Étoile Club sélectionne désormais le bâtiment ou une salle depuis un menu sous le titre. La molette alterne entre la vue complète et la dernière salle avec un déplacement progressif de la caméra. L'ancien onglet Espaces devient Écran et propose quatre sources dont l'image est synchronisée sur l'écran du modèle 3D.
 
 ## 26/09/2026 — Hotel Brassus, éclairages et rideaux 2.1.5
 

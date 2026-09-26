@@ -1,4 +1,4 @@
-# Auditorium Richmond — recette 2.1.4
+# Auditorium Richmond — recette 2.1.7
 
 Recette locale du 26 septembre 2026 sur Microsoft Edge, route Smartphone et décor 3D.
 
@@ -6,7 +6,7 @@ Recette locale du 26 septembre 2026 sur Microsoft Edge, route Smartphone et déc
 - Lint réussi, avec les avertissements préexistants du dépôt.
 - Page Caméras : absence de la carte Captation, bouton REC intégré, image d'estrade présente.
 - Pan droite : transformation de `translate(0px, 0px)` à `translate(-5.5px, 0px)` ; Centre revient à l'origine.
-- Page Écran : les quatre sources exposent `pc_lectern`, `regie_hdmi`, `cam_feed` et `logo` avec un rendu distinct.
+- Page Écran : les quatre sources exposent `pc_lectern`, `regie_hdmi`, `cam_feed` et `logo` avec un rendu distinct. HDMI régie affiche une présentatrice fictive du journal de 20 h ; Logo reprend l'asset officiel Fréquence TV. Les deux visuels sont également reportés sur la texture du mur LED 3D.
 - Modèle 3D : 16 bandeaux LED, 15 luminaires ponctuels et 15 faisceaux.
 - Fondu Débat : actif à 0,15 s, intermédiaire à 2,16 s et terminé à 4,37 s sur la consigne exacte.
 - Aucun message d'erreur JavaScript pendant la recette.
