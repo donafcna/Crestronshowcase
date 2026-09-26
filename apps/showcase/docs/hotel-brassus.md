@@ -20,7 +20,7 @@ La CSP de la copie bloque les connexions distantes et les médias.
 
 Décisions : supports d'origine paysage (dalle, iPad, XPanel), pas de faux GUI iPhone.
 Les trois thèmes de cette réalisation sont Original, Clair et Sombre ; le thème Verre du catalogue n'est pas ajouté au GUI client.
-La maquette a son onglet dans la présentation de ce projet, accessible sur les trois supports.
+Le bouton Maquette 3D de la colonne du site ouvre une vue agrandie hors du châssis, accessible sur les trois supports. Les sélecteurs Espace/Thème restent aussi hors du GUI.
 Elle ne modifie pas les règles de fond 3D des autres projets.
 `demo.css` corrige uniquement la lisibilité du menu en vitrine (l'original réduit l'opacité des entrées inactives à 0,35).
 Les pourcentages AV et valeurs des circuits sont aussi corrigés en thème Sombre (texte clair sur fond clair dans la source).

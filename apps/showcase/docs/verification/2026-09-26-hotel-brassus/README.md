@@ -14,3 +14,5 @@ Environnement : Windows, Edge Chromium automatisé par Playwright, build Vite se
 Exceptions explicites : pas de GUI Smartphone dans la source livrée ; pas de thème Verre ajouté ; pas de modèle architectural d'exécution. Les fenêtres AV de l'ancien profil 211 ne sont pas exposées par le profil Séminaires 210 actuel. Les pages sont vérifiées aux dimensions internes, les châssis séparément ; cette recette est factorisée et n'est pas annoncée comme le produit cartésien de tous les états et modes.
 
 Script reproductible : `apps/showcase/scripts/test-hotel-brassus.cjs`. Variables facultatives `PLAYWRIGHT_MODULE`, `BROWSER_CHANNEL`, `HDH_BASE_URL`, `HDH_TEST_OUTPUT` pour adapter l'installation locale.
+
+Revue finale : GUI seul dans le châssis ; sélecteurs et ouverture 3D déplacés dans la colonne du site. `host-model.json` vérifie profil Séminaires, thème Sombre, ouverture de la vue 3D hors du châssis et fermeture par Échap depuis son iframe. Les captures `site-final.png`, `scene-final.png` et `model-dialog.png` remplacent les vues antérieures avec barre de présentation imbriquée.

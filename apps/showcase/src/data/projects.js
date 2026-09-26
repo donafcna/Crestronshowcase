@@ -315,7 +315,7 @@ export const projects = [
     "xpanel"
   ],
   "isInteractive": false,
-  "embedUrl": "/showcases/hotel-brassus/index.html",
+  "embedUrl": "/showcases/hotel-brassus/ch5/index.html?zone=bar&theme=actuel&nolock=1",
   "thumbnailUrl": "/sheets/hotel-brassus/01-gui.png",
   "year": "2026",
   "text": {

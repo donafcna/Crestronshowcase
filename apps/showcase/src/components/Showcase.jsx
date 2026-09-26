@@ -1,3 +1,4 @@
+import { HotelBrassusTools } from "./HotelBrassusTools";
 import React, { Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Icons as LucideIcons } from "../icons";
 import { useTranslation } from "../context/LanguageContext";
@@ -563,6 +564,7 @@ const ShowcaseInner = ({ sectorId, projectId, device }) => {
                 )}
               </div>
             )}
+            {activeProject.id === "hotel-brassus" && <HotelBrassusTools key={viewportDevice} guiFrameRef={guiFrameRef} />}
             <div className="device-buttons-column">
               {projectViewports.map((dev) => (
                 <button
