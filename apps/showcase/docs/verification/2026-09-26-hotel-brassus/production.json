@@ -1,0 +1,10 @@
+{
+  "url": "https://crestrongui.vercel.app/interfaces/hotellerie/hotel-brassus/wallpanel",
+  "deployed": true,
+  "lighting": 100,
+  "levels": [
+    "250"
+  ],
+  "closed": true,
+  "errors": []
+}

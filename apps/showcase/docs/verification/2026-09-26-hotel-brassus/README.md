@@ -16,3 +16,5 @@ Exceptions explicites : pas de GUI Smartphone dans la source livrée ; pas de th
 Script reproductible : `apps/showcase/scripts/test-hotel-brassus.cjs`. Variables facultatives `PLAYWRIGHT_MODULE`, `BROWSER_CHANNEL`, `HDH_BASE_URL`, `HDH_TEST_OUTPUT` pour adapter l'installation locale.
 
 Revue finale : GUI seul dans le châssis ; sélecteurs et ouverture 3D déplacés dans la colonne du site. `host-model.json` vérifie profil Séminaires, thème Sombre, ouverture de la vue 3D hors du châssis et fermeture par Échap depuis son iframe. Les captures `site-final.png`, `scene-final.png` et `model-dialog.png` remplacent les vues antérieures avec barre de présentation imbriquée.
+
+Publication vérifiée sur Vercel : `8e4a7180`. Route publique Hotel Brassus, profil Restaurant, scène Total à 100 %, ouverture du modèle, niveau 250 isolé et fermeture contrôlés en ligne ; aucune exception JavaScript. Module 3D public identique au fichier local (fins de ligne normalisées). Rapport `production.json`. Dépôt principal local avancé sans modification du diff ni du statut des travaux Villa Crans préexistants.
