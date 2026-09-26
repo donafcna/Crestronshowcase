@@ -1,0 +1,459 @@
+[
+  {
+    "theme": "actuel",
+    "zone": "bar",
+    "page": "av",
+    "count": 8,
+    "bad": []
+  },
+  {
+    "theme": "actuel",
+    "zone": "bar",
+    "page": "lighting",
+    "count": 8,
+    "bad": []
+  },
+  {
+    "theme": "actuel",
+    "zone": "bar",
+    "page": "circuits",
+    "count": 21,
+    "bad": []
+  },
+  {
+    "theme": "actuel",
+    "zone": "bar",
+    "page": "temperature",
+    "count": 7,
+    "bad": []
+  },
+  {
+    "theme": "actuel",
+    "zone": "bar",
+    "page": "blinds",
+    "count": 6,
+    "bad": []
+  },
+  {
+    "theme": "actuel",
+    "zone": "entrance",
+    "page": "av",
+    "count": 10,
+    "bad": []
+  },
+  {
+    "theme": "actuel",
+    "zone": "entrance",
+    "page": "lighting",
+    "count": 11,
+    "bad": []
+  },
+  {
+    "theme": "actuel",
+    "zone": "entrance",
+    "page": "temperature",
+    "count": 7,
+    "bad": []
+  },
+  {
+    "theme": "actuel",
+    "zone": "entrance",
+    "page": "blinds",
+    "count": 4,
+    "bad": []
+  },
+  {
+    "theme": "actuel",
+    "zone": "restaurant",
+    "page": "av",
+    "count": 11,
+    "bad": []
+  },
+  {
+    "theme": "actuel",
+    "zone": "restaurant",
+    "page": "lighting",
+    "count": 11,
+    "bad": []
+  },
+  {
+    "theme": "actuel",
+    "zone": "restaurant",
+    "page": "temperature",
+    "count": 7,
+    "bad": []
+  },
+  {
+    "theme": "actuel",
+    "zone": "restaurant",
+    "page": "blinds",
+    "count": 6,
+    "bad": []
+  },
+  {
+    "theme": "actuel",
+    "zone": "wellness",
+    "page": "av",
+    "count": 12,
+    "bad": []
+  },
+  {
+    "theme": "actuel",
+    "zone": "wellness",
+    "page": "lighting",
+    "count": 11,
+    "bad": []
+  },
+  {
+    "theme": "actuel",
+    "zone": "wellness",
+    "page": "temperature",
+    "count": 7,
+    "bad": []
+  },
+  {
+    "theme": "actuel",
+    "zone": "wellness",
+    "page": "blinds",
+    "count": 4,
+    "bad": []
+  },
+  {
+    "theme": "actuel",
+    "zone": "seminar",
+    "page": "av",
+    "count": 12,
+    "bad": []
+  },
+  {
+    "theme": "actuel",
+    "zone": "seminar",
+    "page": "lighting",
+    "count": 10,
+    "bad": []
+  },
+  {
+    "theme": "actuel",
+    "zone": "seminar",
+    "page": "temperature",
+    "count": 7,
+    "bad": []
+  },
+  {
+    "theme": "actuel",
+    "zone": "seminar",
+    "page": "blinds",
+    "count": 6,
+    "bad": []
+  },
+  {
+    "theme": "clair",
+    "zone": "bar",
+    "page": "av",
+    "count": 8,
+    "bad": []
+  },
+  {
+    "theme": "clair",
+    "zone": "bar",
+    "page": "lighting",
+    "count": 8,
+    "bad": []
+  },
+  {
+    "theme": "clair",
+    "zone": "bar",
+    "page": "circuits",
+    "count": 21,
+    "bad": []
+  },
+  {
+    "theme": "clair",
+    "zone": "bar",
+    "page": "temperature",
+    "count": 7,
+    "bad": []
+  },
+  {
+    "theme": "clair",
+    "zone": "bar",
+    "page": "blinds",
+    "count": 6,
+    "bad": []
+  },
+  {
+    "theme": "clair",
+    "zone": "entrance",
+    "page": "av",
+    "count": 10,
+    "bad": []
+  },
+  {
+    "theme": "clair",
+    "zone": "entrance",
+    "page": "lighting",
+    "count": 11,
+    "bad": []
+  },
+  {
+    "theme": "clair",
+    "zone": "entrance",
+    "page": "temperature",
+    "count": 7,
+    "bad": []
+  },
+  {
+    "theme": "clair",
+    "zone": "entrance",
+    "page": "blinds",
+    "count": 4,
+    "bad": []
+  },
+  {
+    "theme": "clair",
+    "zone": "restaurant",
+    "page": "av",
+    "count": 11,
+    "bad": []
+  },
+  {
+    "theme": "clair",
+    "zone": "restaurant",
+    "page": "lighting",
+    "count": 11,
+    "bad": []
+  },
+  {
+    "theme": "clair",
+    "zone": "restaurant",
+    "page": "temperature",
+    "count": 7,
+    "bad": []
+  },
+  {
+    "theme": "clair",
+    "zone": "restaurant",
+    "page": "blinds",
+    "count": 6,
+    "bad": []
+  },
+  {
+    "theme": "clair",
+    "zone": "wellness",
+    "page": "av",
+    "count": 12,
+    "bad": []
+  },
+  {
+    "theme": "clair",
+    "zone": "wellness",
+    "page": "lighting",
+    "count": 11,
+    "bad": []
+  },
+  {
+    "theme": "clair",
+    "zone": "wellness",
+    "page": "temperature",
+    "count": 7,
+    "bad": []
+  },
+  {
+    "theme": "clair",
+    "zone": "wellness",
+    "page": "blinds",
+    "count": 4,
+    "bad": []
+  },
+  {
+    "theme": "clair",
+    "zone": "seminar",
+    "page": "av",
+    "count": 14,
+    "bad": [
+      {
+        "text": "Salles séparées",
+        "selector": "btn-mode1",
+        "ratio": 1,
+        "color": [
+          255,
+          255,
+          255
+        ],
+        "bg": [
+          255,
+          255,
+          255
+        ]
+      }
+    ]
+  },
+  {
+    "theme": "clair",
+    "zone": "seminar",
+    "page": "lighting",
+    "count": 10,
+    "bad": []
+  },
+  {
+    "theme": "clair",
+    "zone": "seminar",
+    "page": "temperature",
+    "count": 7,
+    "bad": []
+  },
+  {
+    "theme": "clair",
+    "zone": "seminar",
+    "page": "blinds",
+    "count": 6,
+    "bad": []
+  },
+  {
+    "theme": "sombre",
+    "zone": "bar",
+    "page": "av",
+    "count": 8,
+    "bad": []
+  },
+  {
+    "theme": "sombre",
+    "zone": "bar",
+    "page": "lighting",
+    "count": 8,
+    "bad": []
+  },
+  {
+    "theme": "sombre",
+    "zone": "bar",
+    "page": "circuits",
+    "count": 21,
+    "bad": []
+  },
+  {
+    "theme": "sombre",
+    "zone": "bar",
+    "page": "temperature",
+    "count": 7,
+    "bad": []
+  },
+  {
+    "theme": "sombre",
+    "zone": "bar",
+    "page": "blinds",
+    "count": 6,
+    "bad": []
+  },
+  {
+    "theme": "sombre",
+    "zone": "entrance",
+    "page": "av",
+    "count": 10,
+    "bad": []
+  },
+  {
+    "theme": "sombre",
+    "zone": "entrance",
+    "page": "lighting",
+    "count": 11,
+    "bad": []
+  },
+  {
+    "theme": "sombre",
+    "zone": "entrance",
+    "page": "temperature",
+    "count": 7,
+    "bad": []
+  },
+  {
+    "theme": "sombre",
+    "zone": "entrance",
+    "page": "blinds",
+    "count": 4,
+    "bad": []
+  },
+  {
+    "theme": "sombre",
+    "zone": "restaurant",
+    "page": "av",
+    "count": 11,
+    "bad": []
+  },
+  {
+    "theme": "sombre",
+    "zone": "restaurant",
+    "page": "lighting",
+    "count": 11,
+    "bad": []
+  },
+  {
+    "theme": "sombre",
+    "zone": "restaurant",
+    "page": "temperature",
+    "count": 7,
+    "bad": []
+  },
+  {
+    "theme": "sombre",
+    "zone": "restaurant",
+    "page": "blinds",
+    "count": 6,
+    "bad": []
+  },
+  {
+    "theme": "sombre",
+    "zone": "wellness",
+    "page": "av",
+    "count": 12,
+    "bad": []
+  },
+  {
+    "theme": "sombre",
+    "zone": "wellness",
+    "page": "lighting",
+    "count": 11,
+    "bad": []
+  },
+  {
+    "theme": "sombre",
+    "zone": "wellness",
+    "page": "temperature",
+    "count": 7,
+    "bad": []
+  },
+  {
+    "theme": "sombre",
+    "zone": "wellness",
+    "page": "blinds",
+    "count": 4,
+    "bad": []
+  },
+  {
+    "theme": "sombre",
+    "zone": "seminar",
+    "page": "av",
+    "count": 14,
+    "bad": []
+  },
+  {
+    "theme": "sombre",
+    "zone": "seminar",
+    "page": "lighting",
+    "count": 10,
+    "bad": []
+  },
+  {
+    "theme": "sombre",
+    "zone": "seminar",
+    "page": "temperature",
+    "count": 7,
+    "bad": []
+  },
+  {
+    "theme": "sombre",
+    "zone": "seminar",
+    "page": "blinds",
+    "count": 6,
+    "bad": []
+  }
+]

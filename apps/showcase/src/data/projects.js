@@ -301,6 +301,60 @@ export const projects = [
     },
   },
   {
+  "id": "hotel-brassus",
+  "autoDemo": false,
+  "name": "Hotel Brassus",
+  "status": "realisation",
+  "client": "Hôtel des Horlogers",
+  "sectors": [
+    "hotellerie"
+  ],
+  "devices": [
+    "crestron",
+    "ios_tablet",
+    "xpanel"
+  ],
+  "isInteractive": false,
+  "embedUrl": "/showcases/hotel-brassus/index.html",
+  "thumbnailUrl": "/sheets/hotel-brassus/01-gui.png",
+  "year": "2026",
+  "text": {
+    "fr": {
+      "description": "GUI CH5 de l’Hôtel des Horlogers au Brassus, avec maquette 3D issue des plans fournis.",
+      "details": "Interface originale CH5 2.12.16 : bar, lobby, restaurant, salons, wellness et séminaires. Démonstration locale des commandes AV, éclairages, stores et température. Maquette 3D des niveaux documentés ; implantation globale, hauteurs et finitions interprétées.",
+      "features": [
+        "GUI CH5 original et trois thèmes",
+        "Sept espaces de démonstration",
+        "Audio, éclairages, stores et température",
+        "Maquette 3D par niveau, coupe et rotation",
+        "Démonstration sans connexion à l’hôtel"
+      ]
+    },
+    "en": {
+      "description": "Original CH5 GUI for Hôtel des Horlogers in Le Brassus, with a 3D model based on the supplied plans.",
+      "details": "Original CH5 2.12.16 interface for the bar, lobby, restaurant, lounges, wellness and seminar rooms. Local simulation of AV, lighting, blinds and temperature. 3D reconstruction of documented levels; overall positioning, heights and finishes are interpretive.",
+      "features": [
+        "Original CH5 GUI and three themes",
+        "Seven demonstration spaces",
+        "Audio, lighting, blinds and temperature",
+        "3D levels, cutaway and orbit controls",
+        "Offline simulation, no hotel connection"
+      ]
+    },
+    "de": {
+      "description": "Originale CH5-Oberfläche des Hôtel des Horlogers in Le Brassus mit 3D-Modell nach den bereitgestellten Plänen.",
+      "details": "Originale CH5-Oberfläche 2.12.16 für Bar, Lobby, Restaurant, Salons, Wellness und Seminarräume. Lokale Simulation von AV, Licht, Beschattung und Temperatur. 3D-Rekonstruktion dokumentierter Ebenen; Gesamtanordnung, Höhen und Materialien sind interpretiert.",
+      "features": [
+        "Originale CH5-Oberfläche mit drei Designs",
+        "Sieben Demonstrationsbereiche",
+        "Audio, Licht, Beschattung und Temperatur",
+        "3D-Ebenen, Schnittansicht und Rotation",
+        "Simulation ohne Verbindung zum Hotel"
+      ]
+    }
+  }
+},
+  {
     id: `hotel-geneva`,
     name: `Palace 5* Genève`,
     status: `concept`,

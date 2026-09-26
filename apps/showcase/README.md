@@ -421,3 +421,12 @@ La mesure démarre à la pression, conserve les retards jusqu’à 45 secondes, 
 Vérifications : build et lint réussis (avertissements existants), 14 tests du diagnostic réussis, syntaxe des scripts inline et identité des attributs des boutons contrôlées. La batterie générale donne 39/43, avec les quatre mêmes échecs sur le commit initial inchangé : configuration `meta.version=1.0.201` contre profil de qualification `1.0.196`. Le profil de qualification matériel n’a pas été assoupli pour publier la vitrine. Chromium se ferme par SIGSEGV avant le chargement ; aucun résultat de rendu, de contraste ou de recette Safari/iPhone n’est revendiqué. Les écrans de présentation et fiches commerciales ne changent pas. Preuves : `docs/verification/2026-09-21-centralisation-c1/` à la racine.
 
 Artefacts : source iPhone C1 et showcase mis à jour ; aucun CH5Z, CPZ ou LPZ compilé ou envoyé. Le C# C1 reste dans le paquet remis à Donatien et n’est pas ajouté au dépôt par cette publication du site. Le correctif matériel complet conserve son installation et sa recette séparées.
+
+
+## 26/09/2026 — Hotel Brassus, vitrine 2.1.0
+
+Nouveau projet Hôtellerie, distinct de Hotel Geneva. Import reproductible du GUI HDH CH5 2.12.16 depuis le dossier fourni, avec ses thèmes Original/Clair/Sombre et sept profils locaux. Retours natifs CrComLib simulés ; aucun contact avec un automate. Sources de l'hôtel préservées. Correction de contraste du menu et des valeurs en thème sombre dans une feuille réservée à la vitrine ; ouverture du panneau des circuits via l'adaptateur local.
+
+Onglet Maquette 3D : six niveaux/extraits issus des plans AV, vue en coupe et toitures, isolation par niveau, rotation, zoom, jour/nuit. Implantation globale, hauteurs et finitions interprétées, clairement signalées ; ce n'est pas un BIM de l'ensemble du bâtiment. Plans bruts non publiés. Mobilier instancié par niveau et chargement 3D à la demande. Pas de smartphone inventé ni de parcours de démo automatique sur ce GUI imbriqué ; autres projets inchangés.
+
+Fiches FR/EN/DE et captures ajoutées. Sources, empreintes, décisions et limites : `docs/hotel-brassus.md`. Recette : `docs/verification/2026-09-26-hotel-brassus/`. Aucun programme ni matériel Crestron modifié ou déployé.

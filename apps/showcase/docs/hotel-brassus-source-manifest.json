@@ -1,0 +1,4304 @@
+{
+  "ch5Version": "2.12.16",
+  "sourceFolder": "20260918 HDH CH5",
+  "files": [
+    {
+      "path": "favicon.ico",
+      "sha256": "1da1ef4cc443f86ea1c91cd367c6228d26c114ec9d198ec9f911ca0955336579"
+    },
+    {
+      "path": "index.html",
+      "sha256": "3c1850c710fcf38c35b6a9515f7ef343a3e9f17673a8aaab862a96ad9f2f12fc"
+    },
+    {
+      "path": "appui/manifest",
+      "sha256": "a6b7f3a28849cb58d25cc505881bda3191dbf71a8458f2761ad939cd3b25fc38"
+    },
+    {
+      "path": "assets/dark-theme.css",
+      "sha256": "e2607a7f5686093b17c646b6d98ef3e49fdd0473976aa5517d892b2d9f8375ba"
+    },
+    {
+      "path": "assets/high-contrast-theme.css",
+      "sha256": "4bedb3be246c73a3f32d5efa4ec9c082d94789e0fe79a3cadc918580b628694a"
+    },
+    {
+      "path": "assets/light-theme.css",
+      "sha256": "f1577539dd67e1f4504e35b91cc9bf3cf36019b176840553e16510224f442097"
+    },
+    {
+      "path": "assets/zoom-dark-theme.css",
+      "sha256": "c07eccfdde7a0ad4403390803546015108e06fa54d4b757e5e4a9d7f60ef90d0"
+    },
+    {
+      "path": "assets/zoom-light-theme.css",
+      "sha256": "1c7426ee9a1b740a560ccdb4e2220df36565648e0d2334618adf3b83bf608edb"
+    },
+    {
+      "path": "config/contract.cse2j",
+      "sha256": "fedad347603dc6bc3fdaf7c31d42085bb05fcbb43305a5853e29edb3030a651b"
+    },
+    {
+      "path": "libraries/component.217789ce.js",
+      "sha256": "a59f526e02fa5c56c1aafb75d420706665a08c3509d3726b24feef22be330d92"
+    },
+    {
+      "path": "libraries/component.217789ce.js.LICENSE.txt",
+      "sha256": "8de9a82a0ccb8ba7d327121926d16584821776f6ebe2cc952c1887b28550542c"
+    },
+    {
+      "path": "libraries/cr-com-lib.4d074c68.js",
+      "sha256": "bc8a43309e33e1daf9b78dc370292383540c129512f5f5db9f7bef8d2f769710"
+    },
+    {
+      "path": "app/project/assets/data/translation/en.json",
+      "sha256": "d51f56450bd4148160b0ab363e87e3b16ccaa2662deb82282d11b3537414e6d3"
+    },
+    {
+      "path": "app/project/assets/img/BottomMenu/155491.svg",
+      "sha256": "f82423308a71d31e7bc669237f2c4bc423d8e34a5a87238edb2828b08949e3a4"
+    },
+    {
+      "path": "app/project/assets/img/BottomMenu/AVBlack.png",
+      "sha256": "745566d22045d7b09e18ff0d51e059b1e9e4f94b65c763f215b944a135fc6f43"
+    },
+    {
+      "path": "app/project/assets/img/BottomMenu/AVWhite.png",
+      "sha256": "22d0d3a7fc7d1298cc434e51508a31223a39f700eaa1a0c24fc1c183cc4b2a53"
+    },
+    {
+      "path": "app/project/assets/img/BottomMenu/BlindsBlack.png",
+      "sha256": "7627cb28d52899361025265dd7cc1af0138ec02aaf516747c4df8c42e38ebb87"
+    },
+    {
+      "path": "app/project/assets/img/BottomMenu/BlindsWhite.png",
+      "sha256": "482806b8cacfb049cafcec93b442d6bf5061f8667abb62c43f5316afbe270333"
+    },
+    {
+      "path": "app/project/assets/img/BottomMenu/LightsBlack.png",
+      "sha256": "4dcce9ba70832dbe27a3ffc5ec5a56ab60f9f5d0b572364de6d8f622e22df27e"
+    },
+    {
+      "path": "app/project/assets/img/BottomMenu/LightsWhite.png",
+      "sha256": "8b14a35a9f3f15b93ff0e095c6df8e542b03693dd54b4c7f6978daaccf6c9b6d"
+    },
+    {
+      "path": "app/project/assets/img/BottomMenu/PowerBlack.png",
+      "sha256": "766e2ceb310cdfd2d2077206982de6b8dd4554c85cdf5705d6bdb7716d937a27"
+    },
+    {
+      "path": "app/project/assets/img/BottomMenu/PowerWhite.png",
+      "sha256": "86d23ac7295cf4649308ca2273ed6dbf2124e1c85f8141f2779e8df1b0b99abe"
+    },
+    {
+      "path": "app/project/assets/img/BottomMenu/TemperatureBlack.png",
+      "sha256": "c49d7674257d5a22372b2c044f7fff4e43e0c96714728ff686dba45071e52a98"
+    },
+    {
+      "path": "app/project/assets/img/BottomMenu/TemperatureWhite.png",
+      "sha256": "3ec05d9b9f0f0caa56655e9b5aa4f151cbf44c00845ffdfc39319aa4ae7dd911"
+    },
+    {
+      "path": "app/project/assets/img/Dpad-Icons/Dpad-Dn.svg",
+      "sha256": "262e5fa3537ba7843b83a1e6d24958d99c2c9da2d7e0dc162a18047a7e630630"
+    },
+    {
+      "path": "app/project/assets/img/Dpad-Icons/Dpad-Left.svg",
+      "sha256": "f37d4b07bdcbca053897751a4768c5c03138f43478c178786a49865c9b6dada6"
+    },
+    {
+      "path": "app/project/assets/img/Dpad-Icons/Dpad-Right.svg",
+      "sha256": "8e273ca777944797a9062f0e6cd9cf2cd863e064c6067bf876f98f1df208eff2"
+    },
+    {
+      "path": "app/project/assets/img/Dpad-Icons/Dpad-Up.svg",
+      "sha256": "2fc50653c23ebb2beea97e402deee78ec4f8bf207b463915699c6d8ca116a62d"
+    },
+    {
+      "path": "app/project/assets/img/Horlogers/LogoHorloger.png",
+      "sha256": "845fd3f17069ca76f2382ae927333afead6334ff199f012c845509e171a0c72f"
+    },
+    {
+      "path": "app/project/assets/img/Horlogers/LogoHorlogerTr.jpg",
+      "sha256": "9ab0fa495fa3eddd69df19257861b1a80528c7838ac4030d92dde9e671282381"
+    },
+    {
+      "path": "app/project/assets/img/icons/1420410410.svg",
+      "sha256": "e4b4e2c9bf32f14c54a5bbfe47b46d1b644d168b95944da253c148aef81b5337"
+    },
+    {
+      "path": "app/project/assets/img/icons/afaulconbridge-Lightbulb-OnOff-1.svg",
+      "sha256": "ddf898d01f6e78d175fc26029adaa75848c17d3c038bdcd53d8d8f665ebe7629"
+    },
+    {
+      "path": "app/project/assets/img/icons/afaulconbridge-Lightbulb-OnOff-2.svg",
+      "sha256": "0d3119383c1fece6314d626d991fa3d9c2bf34ed4563a48c091a0878c6001e61"
+    },
+    {
+      "path": "app/project/assets/img/icons/blinds (1).png",
+      "sha256": "11a2995df2429e1b97681a53773ef89e827d4d17521f62fa0e3de182aca4ad7e"
+    },
+    {
+      "path": "app/project/assets/img/icons/blinds.png",
+      "sha256": "11a2995df2429e1b97681a53773ef89e827d4d17521f62fa0e3de182aca4ad7e"
+    },
+    {
+      "path": "app/project/assets/img/icons/BULB01.svg",
+      "sha256": "4c922942a930c7f1012ea6c098e10fc48e15ad91454c985894c1efd152835aa4"
+    },
+    {
+      "path": "app/project/assets/img/icons/BULB02 (1).svg",
+      "sha256": "9f61db69e25120718d5ec097b91981abca6cf600b1302a326e272a1fe56a22cd"
+    },
+    {
+      "path": "app/project/assets/img/icons/BULB02.svg",
+      "sha256": "9f61db69e25120718d5ec097b91981abca6cf600b1302a326e272a1fe56a22cd"
+    },
+    {
+      "path": "app/project/assets/img/icons/cloud-download-outline.svg",
+      "sha256": "a4dd468facbf2b7de26859bde809da93ce868761fb35adee1c62c56c7205c2e3"
+    },
+    {
+      "path": "app/project/assets/img/icons/down-arrow-svgrepo-com.svg",
+      "sha256": "83e47888e985ceb28a2238cb4b8a69d9ae32bc84ab995b4397c73bd15a6bafcf"
+    },
+    {
+      "path": "app/project/assets/img/icons/down-arrow.png",
+      "sha256": "44b0dd02792b6bdd632ead648479ae31a48120d23600b763f399653701fbff38"
+    },
+    {
+      "path": "app/project/assets/img/icons/glossy-blue-button.svg",
+      "sha256": "b6d4ceaabb567201249cccb748de77ae84b1e85d6c02a589310a412bc296b2f0"
+    },
+    {
+      "path": "app/project/assets/img/icons/glossy-darkgray-button.svg",
+      "sha256": "8c2cd332586539ae141262167a4021e154bac3a7f17ce9fa068f6b51eb050917"
+    },
+    {
+      "path": "app/project/assets/img/icons/glossy-green-button.svg",
+      "sha256": "0b566d71df53c53d8e167bd584b80aca1e39bb3864c2833d03247f0c4c2e1f56"
+    },
+    {
+      "path": "app/project/assets/img/icons/glossy-light-orange-button.svg",
+      "sha256": "ebfb852f09f953a123981a5f9527f539fbc362144fe44d3387dec589bc1eae24"
+    },
+    {
+      "path": "app/project/assets/img/icons/glossy-lightgray-button.svg",
+      "sha256": "eb047e531f02bee75793601ef185ccd95b7ce699e3c34302a9396031bdba86ab"
+    },
+    {
+      "path": "app/project/assets/img/icons/GraySquareButton.svg",
+      "sha256": "a7b9adbad1ea508c6fe5dfabbf4322547b58d0b67e5790ede8584a0b3a9e6ead"
+    },
+    {
+      "path": "app/project/assets/img/icons/GreenRoundedButton.svg",
+      "sha256": "61fd5ccaa32501fc1991ca51c0c4cde7d2d6558f47c04e469bcdc5dd6159224c"
+    },
+    {
+      "path": "app/project/assets/img/icons/icon-light-18.jpg",
+      "sha256": "25642dc76424b962535444c0d7943caef140c07c0b60949ddc880d33e8e4db4a"
+    },
+    {
+      "path": "app/project/assets/img/icons/icon-osx-volume.svg",
+      "sha256": "0f57968811f4095ea12fa73ac216e67a5ab40f2d55928a33a4ea004ed3e5ded4"
+    },
+    {
+      "path": "app/project/assets/img/icons/light-bulb.svg",
+      "sha256": "05d821fa53313f2d0e353122bf2940d9a6b6c540e960abdce2496c8a6e77288a"
+    },
+    {
+      "path": "app/project/assets/img/icons/lightbulb.svg",
+      "sha256": "2224c744d91c96a68a076d7ef30df6720bb358cb9c191b61eee9bd79ecd2f9d4"
+    },
+    {
+      "path": "app/project/assets/img/icons/lightOff.png",
+      "sha256": "49f4600f907fc3db16d6b7d34fde53c7ffc0077c70343a8aa571af44dbf1058e"
+    },
+    {
+      "path": "app/project/assets/img/icons/lightOff.svg",
+      "sha256": "67c8e26d2e99258c7175090e77d951f7f268bf6289b4a828bb4b5cf0026b58b3"
+    },
+    {
+      "path": "app/project/assets/img/icons/lightOffTr.png",
+      "sha256": "ff3ed8d55fe154ea4449cf5014ecab68a11fdf5b699b8833ad2d545345324206"
+    },
+    {
+      "path": "app/project/assets/img/icons/lightOn.png",
+      "sha256": "3f9788747419eb4e63fc6165d271772e017ec0aa19c5bbc0f55d3dbf805ae078"
+    },
+    {
+      "path": "app/project/assets/img/icons/lightOn.svg",
+      "sha256": "dd4bfc74c114b45a0b72186189afca56207fbd733e9f82d939ba53e8756468a1"
+    },
+    {
+      "path": "app/project/assets/img/icons/lightOnTr.png",
+      "sha256": "25be263580ab67885000384c5fef493e018e25f20155026f2d33f5166535833b"
+    },
+    {
+      "path": "app/project/assets/img/icons/loud-speaker.svg",
+      "sha256": "202c6bb80e0f364f1c2bd63b666e9aa08fd993d4edd8a5ec1e03c1e76373d3dc"
+    },
+    {
+      "path": "app/project/assets/img/icons/micro-white.svg",
+      "sha256": "383327586648c795633ba7c9f37d9dbbd562a5c2f40e394aa84bf712109e4854"
+    },
+    {
+      "path": "app/project/assets/img/icons/microphone-black1.svg",
+      "sha256": "8420a6e191dc8e6bc6f42aa30b28594a1d6b410d78aa2568e8e3d2b9287cbdd0"
+    },
+    {
+      "path": "app/project/assets/img/icons/microphone-black2.svg",
+      "sha256": "e15c1969aab6f674891b937b5b78fdb3892af822d04c197de494446fdbf71e64"
+    },
+    {
+      "path": "app/project/assets/img/icons/microphone-black3.svg",
+      "sha256": "e15c1969aab6f674891b937b5b78fdb3892af822d04c197de494446fdbf71e64"
+    },
+    {
+      "path": "app/project/assets/img/icons/microphone-grey.svg",
+      "sha256": "e0855bc9585f9d475d14501391e4f35b05cade76d83ee6a567a69d180164351f"
+    },
+    {
+      "path": "app/project/assets/img/icons/OrangeRoundedButton.svg",
+      "sha256": "f3ed7832867505d67074aff44c1deb4edbbf77564c37f74ae63db2e3c870ae8b"
+    },
+    {
+      "path": "app/project/assets/img/icons/OrangeSquareButton.svg",
+      "sha256": "e730001019e659a2d7ffe26f809fdccc27e6e645f724b8bf9fe8495acfdcf253"
+    },
+    {
+      "path": "app/project/assets/img/icons/RedRoundedButton.svg",
+      "sha256": "d93edf9cc5d681195a69697708b40c5aa5d08f4f0af75a641922a48dd0cccaee"
+    },
+    {
+      "path": "app/project/assets/img/icons/RedSquareButton.svg",
+      "sha256": "2adf778af752f7c6342df32be9e55dba691d5d6b7a21c6913158362261105985"
+    },
+    {
+      "path": "app/project/assets/img/icons/Romanov_Light_bulb_.svg",
+      "sha256": "bf8ff295b85c7a6a596305775c18eaf931bf41eadc814a4b0ea494576dcd2c12"
+    },
+    {
+      "path": "app/project/assets/img/icons/shutter (1).png",
+      "sha256": "b4ba5c49668b2047da9a1dcdb08cdcd831890ab3b95c3ba4f9635d86579c38d7"
+    },
+    {
+      "path": "app/project/assets/img/icons/shutter.png",
+      "sha256": "b4ba5c49668b2047da9a1dcdb08cdcd831890ab3b95c3ba4f9635d86579c38d7"
+    },
+    {
+      "path": "app/project/assets/img/icons/sound.svg",
+      "sha256": "4999deeb9f39c25ca54b43d43ad01346667b95bf1e58670115249b4db85dbbe1"
+    },
+    {
+      "path": "app/project/assets/img/icons/speaker-black-sideview.svg",
+      "sha256": "4a0a7048c91048d2c7ebadf647023c3218cb6d6a77b1bf3e73a49387073ffcde"
+    },
+    {
+      "path": "app/project/assets/img/icons/speaker-grey-faceview.svg",
+      "sha256": "fff1197c4432e1dae914b799bdd8aeb8d6a9ae0f2aded158ae9acc59a22216c2"
+    },
+    {
+      "path": "app/project/assets/img/icons/speaker-grey-faceview2.svg",
+      "sha256": "33f6bc55581e3a001d59f9bd1f9879f98ef5e4ef6f008eaf02230b545c4c3301"
+    },
+    {
+      "path": "app/project/assets/img/icons/speaker-grey-sideview.svg",
+      "sha256": "77cfa011da61a198ce0f8a888730ec202677b838d62163747f531b0fe5645c1f"
+    },
+    {
+      "path": "app/project/assets/img/icons/speaker-svgrepo-com.svg",
+      "sha256": "729910277305ae38248def67f8ec3ce48b66735a9878e09e882c8cdfade1af36"
+    },
+    {
+      "path": "app/project/assets/img/icons/speaker-white-faceview.svg",
+      "sha256": "346aabc6e33e40a7c4a13d7071ab15626627ac6ff3fff3e559b250022b6c94f9"
+    },
+    {
+      "path": "app/project/assets/img/icons/speaker-white-sideview-vol0.svg",
+      "sha256": "46bb38822a0c431fe7343e7258f376fe4e084cd9ce1da1dc30e858162dd56070"
+    },
+    {
+      "path": "app/project/assets/img/icons/speaker-white-sideview-vol1.svg",
+      "sha256": "82cef4900511b63e139cabd1ff2690eccea80828519285a367b60f63f8699a3c"
+    },
+    {
+      "path": "app/project/assets/img/icons/speaker-white-sideview-vol2.svg",
+      "sha256": "e93972419f0e1c39c1d8b37b398f631ccb2c35c69382268624c9df94aab53620"
+    },
+    {
+      "path": "app/project/assets/img/icons/speaker-white-sideview-vol3.svg",
+      "sha256": "1dc159b94b40b056e7735cf1dad7b061b49e1750308c9e56ffe3433f6d17663e"
+    },
+    {
+      "path": "app/project/assets/img/icons/stop-button.png",
+      "sha256": "4e5101a02356bd74728f067ca9f0f62c72adf26d81120cb5c3709d0c570fda97"
+    },
+    {
+      "path": "app/project/assets/img/icons/temperature-svgrepo-com.svg",
+      "sha256": "7a51ed0356fde7ec535b5065c39944173535dd7e866b982954ad06ecce3df568"
+    },
+    {
+      "path": "app/project/assets/img/icons/thermometer-temperature-svgrepo-com.svg",
+      "sha256": "553191837deaf4e8d7a7ba59e30b9bc622d6167a373ece7e87d698f2ecf3f71e"
+    },
+    {
+      "path": "app/project/assets/img/icons/up-arrow.png",
+      "sha256": "af98e0f38d87fedb75efd9c2076345fb18e47c685d161dfcbe300cc724c1ef1f"
+    },
+    {
+      "path": "app/project/assets/img/navigation/crestron_swirl_blue.svg",
+      "sha256": "7cda94997813e2b3da48c12e68ac5001ec7ee268f790d2540a72db30cf9e5eb9"
+    },
+    {
+      "path": "app/project/assets/img/navigation/finger.svg",
+      "sha256": "5f3512e424c2bef2d6b8726b8c39f9c51e121f7712e385bf9ddf7ab53684771b"
+    },
+    {
+      "path": "app/project/assets/img/navigation/Icon AV Black.png",
+      "sha256": "745566d22045d7b09e18ff0d51e059b1e9e4f94b65c763f215b944a135fc6f43"
+    },
+    {
+      "path": "app/project/assets/img/navigation/Icon AV White.png",
+      "sha256": "22d0d3a7fc7d1298cc434e51508a31223a39f700eaa1a0c24fc1c183cc4b2a53"
+    },
+    {
+      "path": "app/project/assets/img/navigation/Icon Lights Black.png",
+      "sha256": "4dcce9ba70832dbe27a3ffc5ec5a56ab60f9f5d0b572364de6d8f622e22df27e"
+    },
+    {
+      "path": "app/project/assets/img/navigation/Icon Lights White.png",
+      "sha256": "8b14a35a9f3f15b93ff0e095c6df8e542b03693dd54b4c7f6978daaccf6c9b6d"
+    },
+    {
+      "path": "app/project/assets/img/navigation/Icon Stores Black.png",
+      "sha256": "7627cb28d52899361025265dd7cc1af0138ec02aaf516747c4df8c42e38ebb87"
+    },
+    {
+      "path": "app/project/assets/img/navigation/Icon Stores White.png",
+      "sha256": "482806b8cacfb049cafcec93b442d6bf5061f8667abb62c43f5316afbe270333"
+    },
+    {
+      "path": "app/project/assets/img/navigation/Icon Temperature Black.png",
+      "sha256": "c49d7674257d5a22372b2c044f7fff4e43e0c96714728ff686dba45071e52a98"
+    },
+    {
+      "path": "app/project/assets/img/navigation/Icon Temperature White.png",
+      "sha256": "3ec05d9b9f0f0caa56655e9b5aa4f151cbf44c00845ffdfc39319aa4ae7dd911"
+    },
+    {
+      "path": "app/project/assets/img/navigation/idea.svg",
+      "sha256": "dec4695b00b1c6b6976ee2181ae7bdef84137e8e87b16552c5f96ab22cacf739"
+    },
+    {
+      "path": "app/project/assets/img/navigation/lists.svg",
+      "sha256": "c65ea89feefcd60ba709cf3e01469c95b30ffec635e205880fd2c4d5e6765423"
+    },
+    {
+      "path": "app/project/assets/img/navigation/nav_icon_0.svg",
+      "sha256": "b609d1a1c9744a776bcbd67167ee3f078c648445052309bc5e120aa2bf776d2b"
+    },
+    {
+      "path": "app/project/assets/img/navigation/nav_icon_1.svg",
+      "sha256": "b609d1a1c9744a776bcbd67167ee3f078c648445052309bc5e120aa2bf776d2b"
+    },
+    {
+      "path": "app/project/assets/img/navigation/nav_icon_2.svg",
+      "sha256": "b609d1a1c9744a776bcbd67167ee3f078c648445052309bc5e120aa2bf776d2b"
+    },
+    {
+      "path": "app/project/assets/img/navigation/nav_icon_3.svg",
+      "sha256": "b609d1a1c9744a776bcbd67167ee3f078c648445052309bc5e120aa2bf776d2b"
+    },
+    {
+      "path": "app/project/assets/img/navigation/nav_icon_4.svg",
+      "sha256": "b609d1a1c9744a776bcbd67167ee3f078c648445052309bc5e120aa2bf776d2b"
+    },
+    {
+      "path": "app/project/assets/img/navigation/nav_icon_5.svg",
+      "sha256": "b609d1a1c9744a776bcbd67167ee3f078c648445052309bc5e120aa2bf776d2b"
+    },
+    {
+      "path": "app/project/assets/img/navigation/nav_icon_6.svg",
+      "sha256": "b609d1a1c9744a776bcbd67167ee3f078c648445052309bc5e120aa2bf776d2b"
+    },
+    {
+      "path": "app/project/assets/img/navigation/ok.svg",
+      "sha256": "d2ce2d5219277b07320438aad6e70de0f65606201580695c14a7208bd60e23f9"
+    },
+    {
+      "path": "app/project/assets/img/navigation/page.svg",
+      "sha256": "b609d1a1c9744a776bcbd67167ee3f078c648445052309bc5e120aa2bf776d2b"
+    },
+    {
+      "path": "app/project/assets/img/navigation/something.svg",
+      "sha256": "d2ce2d5219277b07320438aad6e70de0f65606201580695c14a7208bd60e23f9"
+    },
+    {
+      "path": "app/project/assets/img/navigation/video.svg",
+      "sha256": "414f231f9a13ebf6fd5b51f6f0adfb2277040044ed4f6e6e90132f7ab3272cd3"
+    },
+    {
+      "path": "app/project/assets/img/Photos/horloger.png",
+      "sha256": "738f6e672de8f4523b1fa05dbdd907abdfd664ef32c3180580a47a5af796192d"
+    },
+    {
+      "path": "app/project/assets/img/Project-Backgrounds/Background Horloger.png",
+      "sha256": "e4a00e1dc0e980978972958e6f78c7bf0d62138c4364d118808f39da9edb799f"
+    },
+    {
+      "path": "app/project/assets/img/icons/Audio/music.svg",
+      "sha256": "0ed471b8eec7a3e1861c06633b2361f9e9c0e07319d721bce3cf2a41d1de09ad"
+    },
+    {
+      "path": "app/project/assets/img/icons/Audio/speaker.png",
+      "sha256": "14bfd40ef35857b4204317f931fa9399720b287c7ff9e8f0512c4d9535c56a0a"
+    },
+    {
+      "path": "app/project/assets/img/icons/Audio/speaker.svg",
+      "sha256": "f396ac652e8272574cb566a06c6abfa4de5f500ead3a7fecdced3a682ac0e014"
+    },
+    {
+      "path": "app/project/assets/img/icons/Audio/speakermuted.png",
+      "sha256": "08ee149cee98b46fc4c08a0b2b63f39fea9b8e0caf9c8d38fbd4c861eaadb463"
+    },
+    {
+      "path": "app/project/assets/img/icons/Audio/speakermuted.svg",
+      "sha256": "daf075a1a293087d1e29c484d3217ba6645e6ef8512e81384b117590bc757865"
+    },
+    {
+      "path": "app/project/assets/img/icons/Audio/speakermutedwhite v0 v0.png",
+      "sha256": "08ee149cee98b46fc4c08a0b2b63f39fea9b8e0caf9c8d38fbd4c861eaadb463"
+    },
+    {
+      "path": "app/project/assets/img/icons/Audio/speakermutedwhite v0.png",
+      "sha256": "08ee149cee98b46fc4c08a0b2b63f39fea9b8e0caf9c8d38fbd4c861eaadb463"
+    },
+    {
+      "path": "app/project/assets/img/icons/Audio/speakermutedwhite.png",
+      "sha256": "08ee149cee98b46fc4c08a0b2b63f39fea9b8e0caf9c8d38fbd4c861eaadb463"
+    },
+    {
+      "path": "app/project/assets/img/icons/Audio/speakerwhite v0 v0.png",
+      "sha256": "14bfd40ef35857b4204317f931fa9399720b287c7ff9e8f0512c4d9535c56a0a"
+    },
+    {
+      "path": "app/project/assets/img/icons/Audio/speakerwhite v0.png",
+      "sha256": "14bfd40ef35857b4204317f931fa9399720b287c7ff9e8f0512c4d9535c56a0a"
+    },
+    {
+      "path": "app/project/assets/img/icons/Audio/speakerwhite.png",
+      "sha256": "14bfd40ef35857b4204317f931fa9399720b287c7ff9e8f0512c4d9535c56a0a"
+    },
+    {
+      "path": "app/project/assets/img/icons/Video/Icon AV Black.png",
+      "sha256": "745566d22045d7b09e18ff0d51e059b1e9e4f94b65c763f215b944a135fc6f43"
+    },
+    {
+      "path": "app/project/assets/img/icons/Video/Icon AV BlackTr.png",
+      "sha256": "840eb2f8f8fc36388e3a840cdee0f71f56e54a5d0a9c75c704dfa7f205c003e7"
+    },
+    {
+      "path": "app/project/assets/img/icons/Video/Icon-AV-BlackTr.svg",
+      "sha256": "c13b23b9ecac49a235ca112993d2356cc72046f045f25b0d11085620af77f9ae"
+    },
+    {
+      "path": "app/project/components/pages/av/av-emulator.json",
+      "sha256": "f79b9408ee9a4419a3f3458ad079d64ea6508366369eab30db5db52ad9d7b333"
+    },
+    {
+      "path": "app/project/components/pages/av/av.html",
+      "sha256": "dee73dd78017437a0bfadd008bfb9c6c5e0251889f65b6feaea140d5165f5cd4"
+    },
+    {
+      "path": "app/project/components/pages/blinds/blinds-emulator.json",
+      "sha256": "f79b9408ee9a4419a3f3458ad079d64ea6508366369eab30db5db52ad9d7b333"
+    },
+    {
+      "path": "app/project/components/pages/blinds/blinds.html",
+      "sha256": "af8d35f02a41e4d1c3e3282b094c90d1018a43e8400528873f4dda491bf58448"
+    },
+    {
+      "path": "app/project/components/pages/lighting/lighting-emulator.json",
+      "sha256": "f79b9408ee9a4419a3f3458ad079d64ea6508366369eab30db5db52ad9d7b333"
+    },
+    {
+      "path": "app/project/components/pages/lighting/lighting.html",
+      "sha256": "ef663c1e5d632a3bd81c368282a418ceff7ab10b72b7716a036c3718060cfd73"
+    },
+    {
+      "path": "app/project/components/pages/poweroff/poweroff-emulator.json",
+      "sha256": "f79b9408ee9a4419a3f3458ad079d64ea6508366369eab30db5db52ad9d7b333"
+    },
+    {
+      "path": "app/project/components/pages/poweroff/poweroff.html",
+      "sha256": "f3b2835ed3ea73d19d26db65d20a97aa40a265a7019550b8c1d28e45a0d8f065"
+    },
+    {
+      "path": "app/project/components/pages/temperature/temperature-emulator.json",
+      "sha256": "f79b9408ee9a4419a3f3458ad079d64ea6508366369eab30db5db52ad9d7b333"
+    },
+    {
+      "path": "app/project/components/pages/temperature/temperature.html",
+      "sha256": "e68b34156732215d9d792c60f176bc90008e4848596511b2660ab7dfa3a372c5"
+    },
+    {
+      "path": "app/template/assets/fonts/roboto-v27-latin-100.eot",
+      "sha256": "5183d37e3038897096ca6345035e44e3a1e1a13c1c88aabf8a38231d73e15739"
+    },
+    {
+      "path": "app/template/assets/fonts/roboto-v27-latin-100.svg",
+      "sha256": "26275512bbdd53156733b534b8a93f926663074bd15b32aebc92387ec877e30e"
+    },
+    {
+      "path": "app/template/assets/fonts/roboto-v27-latin-100.ttf",
+      "sha256": "33e11a792cdd9d4aecd5b676d1a0dc9e7385975e35080e540b9639203a7e8052"
+    },
+    {
+      "path": "app/template/assets/fonts/roboto-v27-latin-100.woff",
+      "sha256": "a38ad0b609e4d2039d18b0f9dc89e9060f2e2e05f2f42764a6a93354346a6c37"
+    },
+    {
+      "path": "app/template/assets/fonts/roboto-v27-latin-100.woff2",
+      "sha256": "22482584aeaa7b1d74de072793246c65e38b402ac231f38bb0d9102802543230"
+    },
+    {
+      "path": "app/template/assets/fonts/roboto-v27-latin-100italic.eot",
+      "sha256": "6161490d7463e7baaaedf5d76cf31e2a7c4252f60d46a29f4f2186cc1367f218"
+    },
+    {
+      "path": "app/template/assets/fonts/roboto-v27-latin-100italic.svg",
+      "sha256": "2e44a7ee51c8ba442989e53c6869fc35083f59e58102cf211b403be1661a1e5b"
+    },
+    {
+      "path": "app/template/assets/fonts/roboto-v27-latin-100italic.ttf",
+      "sha256": "426204b23967eb68831eba08ada7a22d4d74d75ed5122dd4c2fb825f8fcab033"
+    },
+    {
+      "path": "app/template/assets/fonts/roboto-v27-latin-100italic.woff",
+      "sha256": "75d75439f2a7ea1851a3e5b621320b9dfa1399861d2ec6d443a3c2919b93afb7"
+    },
+    {
+      "path": "app/template/assets/fonts/roboto-v27-latin-100italic.woff2",
+      "sha256": "5ec2c7c341db456f2c057a73bdcc82be478efc0834741036198d9589765af6a2"
+    },
+    {
+      "path": "app/template/assets/fonts/roboto-v27-latin-300.eot",
+      "sha256": "6d4c20d455759c51daab60db3aec76284ac3696121c590a15ecd99a43bc366db"
+    },
+    {
+      "path": "app/template/assets/fonts/roboto-v27-latin-300.svg",
+      "sha256": "70e6369f9bd8828aac01a685fa350fea382251550bfc0de5ebe7163342061c1c"
+    },
+    {
+      "path": "app/template/assets/fonts/roboto-v27-latin-300.ttf",
+      "sha256": "cc5011972e352363bd8f41e1a3b59c16cbc5e283cc119af9ddd098ec905b7415"
+    },
+    {
+      "path": "app/template/assets/fonts/roboto-v27-latin-300.woff",
+      "sha256": "855a06974032bb69157d469aba6f63440e8be47c421f45c3f396f4e0b87b6de8"
+    },
+    {
+      "path": "app/template/assets/fonts/roboto-v27-latin-300.woff2",
+      "sha256": "33530b007071281a97e79baab13ddf7cc4b9de942ebd3e212224857335f7cb97"
+    },
+    {
+      "path": "app/template/assets/fonts/roboto-v27-latin-300italic.eot",
+      "sha256": "5ee860c3fcf601e3d51770ffd3bb6682107334db3937daca8e5bf7381f49c9c8"
+    },
+    {
+      "path": "app/template/assets/fonts/roboto-v27-latin-300italic.svg",
+      "sha256": "9cf2ffae89e668261e35af3fda7b51078f731cc7e1bf797b7d73dab7c3bbc5de"
+    },
+    {
+      "path": "app/template/assets/fonts/roboto-v27-latin-300italic.ttf",
+      "sha256": "38a89f53518a7670fcf67aa104c8e2e8234790a0fcb6950efcee9c2fc885e5d3"
+    },
+    {
+      "path": "app/template/assets/fonts/roboto-v27-latin-300italic.woff",
+      "sha256": "917a5159be44de9a82072f6a1c52ef645844d6bedf42f8fd1549cd99d6db2cc5"
+    },
+    {
+      "path": "app/template/assets/fonts/roboto-v27-latin-300italic.woff2",
+      "sha256": "4c7856c0d39606a745670d4c03525f3644fe65304191be208516def923cc3762"
+    },
+    {
+      "path": "app/template/assets/fonts/roboto-v27-latin-500.eot",
+      "sha256": "6044b9f4de2bfedb0e23cdcde85b950676ca15b6de18bfa98bb944a7be4ed187"
+    },
+    {
+      "path": "app/template/assets/fonts/roboto-v27-latin-500.svg",
+      "sha256": "679eb020429b65c21deb42212a49fbdda9be5d985ef55803c2ad83f8c428fbf0"
+    },
+    {
+      "path": "app/template/assets/fonts/roboto-v27-latin-500.ttf",
+      "sha256": "7796600b2ee4c84552cb08fd79603c19b95cd21089e802f222320feceba74c45"
+    },
+    {
+      "path": "app/template/assets/fonts/roboto-v27-latin-500.woff",
+      "sha256": "bd811625271acca47f7dac48b460f13e08ee947b2a8e17e278c4d5ccb5d9323c"
+    },
+    {
+      "path": "app/template/assets/fonts/roboto-v27-latin-500.woff2",
+      "sha256": "bb46ed079c3dd3c39af5051b4ada48f29f49151dad4fa218117bad2fdb5e616f"
+    },
+    {
+      "path": "app/template/assets/fonts/roboto-v27-latin-500italic.eot",
+      "sha256": "7f350615f7e3b0a3feef95026ea988efe24b647e9a68a93f420799eee07b57bf"
+    },
+    {
+      "path": "app/template/assets/fonts/roboto-v27-latin-500italic.svg",
+      "sha256": "61243fa2e143cf51f1535df33ae4c75d2548567a976d991f03fa87ac04761ea8"
+    },
+    {
+      "path": "app/template/assets/fonts/roboto-v27-latin-500italic.ttf",
+      "sha256": "88f87cdf817311dfa951df2579f095f3e992ef882ba9a0711f4a8b32e06bdf85"
+    },
+    {
+      "path": "app/template/assets/fonts/roboto-v27-latin-500italic.woff",
+      "sha256": "8411023a027610aeb3dc333438e12a17222163ae78817c5395da04548ed30150"
+    },
+    {
+      "path": "app/template/assets/fonts/roboto-v27-latin-500italic.woff2",
+      "sha256": "0a938256d2de59b044f8ca7c7aa0c788ed2ffa9a48bf0e3930a5830c4298f509"
+    },
+    {
+      "path": "app/template/assets/fonts/roboto-v27-latin-700.eot",
+      "sha256": "d994c112c4a7ff635c0922fe0cf428f0e176beec73a521b59498630782c25ee6"
+    },
+    {
+      "path": "app/template/assets/fonts/roboto-v27-latin-700.svg",
+      "sha256": "90fd3ac31f8553c19f65018e385022cfae140a6341b0cc05d7701a90ad28dde2"
+    },
+    {
+      "path": "app/template/assets/fonts/roboto-v27-latin-700.ttf",
+      "sha256": "52dc362cae7e441a98741305a38b045859ac60e99377d9d88922ec32cb944cfa"
+    },
+    {
+      "path": "app/template/assets/fonts/roboto-v27-latin-700.woff",
+      "sha256": "a01a632e56731a854f35701aa8c3a6a19a113290d9032ff9048f8064c45383bd"
+    },
+    {
+      "path": "app/template/assets/fonts/roboto-v27-latin-700.woff2",
+      "sha256": "0eaeadb58e6995ba85eccb6198aaef77eeb1d4b66699e4e1f3fc10eb6adfcdb9"
+    },
+    {
+      "path": "app/template/assets/fonts/roboto-v27-latin-700italic.eot",
+      "sha256": "997b5d17e1b799f8b6e439f0124a2eb55f4e87679d2dfe8e0bbff4949fcff804"
+    },
+    {
+      "path": "app/template/assets/fonts/roboto-v27-latin-700italic.svg",
+      "sha256": "f3fa251b00cf984bad8c0224de665a2b2c3b3d6d08b64dd601d0ecaed0b3572c"
+    },
+    {
+      "path": "app/template/assets/fonts/roboto-v27-latin-700italic.ttf",
+      "sha256": "b48ef8ec3a31e379fd238f9878c63e35a077997f6a75fcaf7f2382b1460dbd55"
+    },
+    {
+      "path": "app/template/assets/fonts/roboto-v27-latin-700italic.woff",
+      "sha256": "a22585cfd64238ef14b1b383b5b9a8bad7c89e354c09fc0886067e876687a38c"
+    },
+    {
+      "path": "app/template/assets/fonts/roboto-v27-latin-700italic.woff2",
+      "sha256": "2a42cc82f30fbf25a268f6d5a10158e8312a838222da6847158ea4175fa289d4"
+    },
+    {
+      "path": "app/template/assets/fonts/roboto-v27-latin-900.eot",
+      "sha256": "2fd57e4688ff39c31aef08fe926b6fd5b00a35c1e71440bb0b26fe91c455bb1c"
+    },
+    {
+      "path": "app/template/assets/fonts/roboto-v27-latin-900.svg",
+      "sha256": "1f626680217362d9a26da9eca11d46a0318b95c5d084fccce55a08ee4971a34c"
+    },
+    {
+      "path": "app/template/assets/fonts/roboto-v27-latin-900.ttf",
+      "sha256": "5abde466e653eda612285a42d7f23c6490961fe942d2ec3b86d731db531b57bd"
+    },
+    {
+      "path": "app/template/assets/fonts/roboto-v27-latin-900.woff",
+      "sha256": "d33864e01e5103ebe439732bb606e694c73b6851f24da25d41901eb17cb5d98e"
+    },
+    {
+      "path": "app/template/assets/fonts/roboto-v27-latin-900.woff2",
+      "sha256": "0e868ca932480407e63d27e8e868cb1514581142928b9be15ec9039bf5fe348f"
+    },
+    {
+      "path": "app/template/assets/fonts/roboto-v27-latin-900italic.eot",
+      "sha256": "2fc971723c90add9b3f6cae7738625eceb3a3ddf2a553c5454d539aaada83247"
+    },
+    {
+      "path": "app/template/assets/fonts/roboto-v27-latin-900italic.svg",
+      "sha256": "fea2db367482beff05c6651eccfce3f0b049da19a82e0bfeae88221549469057"
+    },
+    {
+      "path": "app/template/assets/fonts/roboto-v27-latin-900italic.ttf",
+      "sha256": "d449bcfcd062266871baf83d35e57d7a90089a3e05a5f96f60c096c2ffeee56c"
+    },
+    {
+      "path": "app/template/assets/fonts/roboto-v27-latin-900italic.woff",
+      "sha256": "b31b421bafe532f6b6bdbb6f680fb11bd3968f23c7fe09a29b1a22f4c8dd2a7e"
+    },
+    {
+      "path": "app/template/assets/fonts/roboto-v27-latin-900italic.woff2",
+      "sha256": "5f2778667ce7da721e201618eac589ac1a32af6b43c246675826a8d728eb902b"
+    },
+    {
+      "path": "app/template/assets/fonts/roboto-v27-latin-italic.eot",
+      "sha256": "b110149bdf2c9ecb6ae8aa8ad9a15ab1b999d5b9a5cfc7698883dff93340a392"
+    },
+    {
+      "path": "app/template/assets/fonts/roboto-v27-latin-italic.svg",
+      "sha256": "75c12901ed264247e6625f4353cc62136a710fe147e1e76618df7d6fed78b902"
+    },
+    {
+      "path": "app/template/assets/fonts/roboto-v27-latin-italic.ttf",
+      "sha256": "3d549f3e5837763b1dbb31a5cae5d4015c9e706e96906aec08b073831c432128"
+    },
+    {
+      "path": "app/template/assets/fonts/roboto-v27-latin-italic.woff",
+      "sha256": "2b5fb1f0ee063320196a64157ae9a949bb4656bc48604914175f1eda636dce07"
+    },
+    {
+      "path": "app/template/assets/fonts/roboto-v27-latin-italic.woff2",
+      "sha256": "46375ee9192c1e0f6eabe4d32b2a48b996b93037f7b4beb970df5b87359548fd"
+    },
+    {
+      "path": "app/template/assets/fonts/roboto-v27-latin-regular.eot",
+      "sha256": "be869a73a160440e8bfc5c7d84a907febd61075d920d51c7d0097d7295c865cd"
+    },
+    {
+      "path": "app/template/assets/fonts/roboto-v27-latin-regular.svg",
+      "sha256": "f23d5a8b97a1078d2c4c8ae90495010fc762986f3eb85e84476c641ee5a72a5b"
+    },
+    {
+      "path": "app/template/assets/fonts/roboto-v27-latin-regular.ttf",
+      "sha256": "52e0349a641604d5204952039bfac8acde78242227defae8864d1caa48b8c5c1"
+    },
+    {
+      "path": "app/template/assets/fonts/roboto-v27-latin-regular.woff",
+      "sha256": "ea50ac7fddb61a5ce248a7f8b3a31a98fe16285e076b16e6da6b4e10910724bb"
+    },
+    {
+      "path": "app/template/assets/fonts/roboto-v27-latin-regular.woff2",
+      "sha256": "cc46322d5c4d41da447f26f7fa714827f2ec9a112968c12ef5736c7494985eca"
+    },
+    {
+      "path": "app/template/assets/img/ch5-logo-dark.svg",
+      "sha256": "6fbc6bfc4f0a1799402cbde97621c3482bb0d9f97a5c032c5f89a2962955e810"
+    },
+    {
+      "path": "app/template/assets/img/ch5-logo-light.svg",
+      "sha256": "f961329215fc35c7a22cb620339cefe4fddb855307cc7308aa0e15de1bae381c"
+    },
+    {
+      "path": "app/template/assets/img/trans-bg.png",
+      "sha256": "74d8d38724eafe6ccc1716b55303045284d65b30be51eaa2799d4c554da68bae"
+    },
+    {
+      "path": "app/template/assets/data/translation/en.json",
+      "sha256": "6fa46d700dce8c1f269a89cead8f462436d3acf0bc977b6747ff6fdd8d073fff"
+    },
+    {
+      "path": "app/template/components/pages/template-page/template-page.html",
+      "sha256": "b00d8efac0fe531dafc169161d9bffbeedae5c782e155f17f3b60e258dad722c"
+    },
+    {
+      "path": "app/template/components/widgets/template-app-loader/template-app-loader.html",
+      "sha256": "a5a4b400b4ab249931a805ce794af9651d3ee1731a9711f43ac5d9b65ea22b32"
+    },
+    {
+      "path": "app/template/components/widgets/template-remote-logger-settings/template-remote-logger-settings.html",
+      "sha256": "cb8ad8172fa02f21b61ab5efd78fca2dbcc8dba212c0ccd53ef2107b864bca15"
+    },
+    {
+      "path": "app/template/components/widgets/template-set-theme/template-set-theme.html",
+      "sha256": "2072ef8255b6d645b35eac6b65e2950225cbac9ff8c41616d01127f98eea8f1f"
+    },
+    {
+      "path": "app/template/components/widgets/template-version-info/template-version-info.html",
+      "sha256": "08633c9bca34a4dac0b01d1edab01eff9b67fd4604ef80bd0acf27fbd32b3b6f"
+    },
+    {
+      "path": "assets/css/ch5-theme.css",
+      "sha256": "4c8ec10bca07c091f1a4101baa1531b8229b85b053a7bb83540365d9364a91d7"
+    },
+    {
+      "path": "assets/css/external.css",
+      "sha256": "afe5e7afaaa254ed453573c64adcfcdc5a8435c0481d7aecc17ae4432fd88355"
+    },
+    {
+      "path": "assets/css/main.5c4e3b4752e6c865484b.css",
+      "sha256": "5380cc8cf3df7e7f04398024d12cb685b7fcb4a6d29b20ff14aac2d4cd387b06"
+    },
+    {
+      "path": "assets/css/projectcomponents.fa4492d5211833356893.css",
+      "sha256": "961492fa2e0cb82dc7e5e8b09cac42f4c41fc032f0aea7221f214d4b09728584"
+    },
+    {
+      "path": "assets/css/templatecomponents.41e32db31cd6e54f14b4.css",
+      "sha256": "580c73f6c99002613a91d7bbc94226127e01840c14b6a1ab850552c7c3b6b7e8"
+    },
+    {
+      "path": "assets/data/app.manifest.json",
+      "sha256": "7baa7f25006bf1b3a788135aaca14ba262b9bf360068d19d541941744fc0d4a5"
+    },
+    {
+      "path": "assets/data/hard-buttons.json",
+      "sha256": "3bf448fa2025c6cbb8bf7b9884027deb29edb30eb98072266a7e5326ea4cacda"
+    },
+    {
+      "path": "assets/data/project-config.json",
+      "sha256": "689af5146044f03858b508a19d99fbd28b860b71dc0819c96c97e3bb9b8eca0b"
+    },
+    {
+      "path": "assets/data/version.json",
+      "sha256": "60e61e119611b9c8fb6992bd607e149bdfe1c4876566fbc46a5c7ac2d2611ed3"
+    },
+    {
+      "path": "assets/font/MaterialIcons-Outlined.ttf",
+      "sha256": "b2e8175a7062a7e35741dc592928fa4ee91ade323639c8c53a47b886ab88e4d1"
+    },
+    {
+      "path": "assets/font/MaterialIcons-Outlined.woff",
+      "sha256": "d38a331a017fdbdaca531f46c6ee1965f3d0792ec4cae1daf975d68dc34c9ab9"
+    },
+    {
+      "path": "assets/font/MaterialIcons-Outlined.woff2",
+      "sha256": "2c21971a092ab1d1b1e5431f4963f99f8f1ef665292f6d8eb23748ceb0e5b9b1"
+    },
+    {
+      "path": "assets/font/MaterialIcons-Round.ttf",
+      "sha256": "014a7c5e93fefc7db0c225505328dd5a5fc4ccabc8c1c6f6752142a9a06de575"
+    },
+    {
+      "path": "assets/font/MaterialIcons-Round.woff",
+      "sha256": "6bed9988acd59b99090a59251e7d04e126c1fb9c309f09d5b1633443fca01ebe"
+    },
+    {
+      "path": "assets/font/MaterialIcons-Round.woff2",
+      "sha256": "5ba2b854855c442a89709de3f39f61d07da4811ec399d10c90bb760028c84b64"
+    },
+    {
+      "path": "assets/font/MaterialIcons-Sharp.ttf",
+      "sha256": "636a3b92be222530760cd08b4d9a54a6c98a60eadf26057c39b88443d13322b3"
+    },
+    {
+      "path": "assets/font/MaterialIcons-Sharp.woff",
+      "sha256": "79ef6d4a47613aced330342e5e250de511a5084479f49769fa7626c75377a964"
+    },
+    {
+      "path": "assets/font/MaterialIcons-Sharp.woff2",
+      "sha256": "f19f19be84d8b44d28e6d3fc118a6bed5d297d4ecd7ecb19926e7b6f953c9e87"
+    },
+    {
+      "path": "assets/font/MaterialIcons-TwoTone.ttf",
+      "sha256": "4d74ff0be4e93553495cf3e9e58d1b3f9ed12ebfdeedd46cf7d8d9a02e2cc36b"
+    },
+    {
+      "path": "assets/font/MaterialIcons-TwoTone.woff",
+      "sha256": "1874b759c692c0bf936e4a99c8a3f00566c97f3a13992fbc164e05c818bc8bfe"
+    },
+    {
+      "path": "assets/font/MaterialIcons-TwoTone.woff2",
+      "sha256": "3c7d9470f24609a1ed789554de833e77dc4dacf179ffcc097bf7c36789963cae"
+    },
+    {
+      "path": "assets/font/MaterialIcons.ttf",
+      "sha256": "ac4f89e439ec07c68113e4c07bc4998da108d441d3a4d129930debb016af47e6"
+    },
+    {
+      "path": "assets/font/MaterialIcons.woff",
+      "sha256": "caca21a44039acb4f3e74a58088e2326915bf98ff010228b5c720188019b77c6"
+    },
+    {
+      "path": "assets/font/MaterialIcons.woff2",
+      "sha256": "71af1472b5dabfdf8b345ba03767fd7b78b03d723477f1373fe226043d16b7a1"
+    },
+    {
+      "path": "assets/webfonts/fa-brands-400.ttf",
+      "sha256": "e28096fa75a96ac77020155ea3a6dd7312983e84115366d4cf49a0c312ec6d51"
+    },
+    {
+      "path": "assets/webfonts/fa-brands-400.woff2",
+      "sha256": "232c6f6a7678304f9efaa26f30b1610debc2ba9f4cd636b5e6751c8d73761b92"
+    },
+    {
+      "path": "assets/webfonts/fa-regular-400.ttf",
+      "sha256": "9174757efc83e072436e873c22be1663d3c103b0a16d7fb73569af4918d4d351"
+    },
+    {
+      "path": "assets/webfonts/fa-regular-400.woff2",
+      "sha256": "c27da6f833431da5aa295c44540bfac0fd8270ba6a3c4346427006d8a7b34b76"
+    },
+    {
+      "path": "assets/webfonts/fa-solid-900.ttf",
+      "sha256": "b4990d0d0c5f5d38d62e936eea120674e584c7eea8dcee38a975c0cf9a37539b"
+    },
+    {
+      "path": "assets/webfonts/fa-solid-900.woff2",
+      "sha256": "ae17c16afbea216707b2203ea1cf9bdb45b9bfe47d0f4ae3258ddbc6294dd02f"
+    },
+    {
+      "path": "assets/webfonts/fa-v4compatibility.ttf",
+      "sha256": "ff8f525fb050c5d24519ccc8f5723d85b2e51edd3f9bc6548af55aebadd4f269"
+    },
+    {
+      "path": "assets/webfonts/fa-v4compatibility.woff2",
+      "sha256": "c7a869faca299d15be10a01f19d0765a7c4d46d8922d9b9317235c1e4a6f0982"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-100.eot",
+      "sha256": "5183d37e3038897096ca6345035e44e3a1e1a13c1c88aabf8a38231d73e15739"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-100.svg",
+      "sha256": "26275512bbdd53156733b534b8a93f926663074bd15b32aebc92387ec877e30e"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-100.ttf",
+      "sha256": "33e11a792cdd9d4aecd5b676d1a0dc9e7385975e35080e540b9639203a7e8052"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-100.woff",
+      "sha256": "a38ad0b609e4d2039d18b0f9dc89e9060f2e2e05f2f42764a6a93354346a6c37"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-100.woff2",
+      "sha256": "22482584aeaa7b1d74de072793246c65e38b402ac231f38bb0d9102802543230"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-100italic.eot",
+      "sha256": "6161490d7463e7baaaedf5d76cf31e2a7c4252f60d46a29f4f2186cc1367f218"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-100italic.svg",
+      "sha256": "2e44a7ee51c8ba442989e53c6869fc35083f59e58102cf211b403be1661a1e5b"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-100italic.ttf",
+      "sha256": "426204b23967eb68831eba08ada7a22d4d74d75ed5122dd4c2fb825f8fcab033"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-100italic.woff",
+      "sha256": "75d75439f2a7ea1851a3e5b621320b9dfa1399861d2ec6d443a3c2919b93afb7"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-100italic.woff2",
+      "sha256": "5ec2c7c341db456f2c057a73bdcc82be478efc0834741036198d9589765af6a2"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-300.eot",
+      "sha256": "6d4c20d455759c51daab60db3aec76284ac3696121c590a15ecd99a43bc366db"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-300.svg",
+      "sha256": "70e6369f9bd8828aac01a685fa350fea382251550bfc0de5ebe7163342061c1c"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-300.ttf",
+      "sha256": "cc5011972e352363bd8f41e1a3b59c16cbc5e283cc119af9ddd098ec905b7415"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-300.woff",
+      "sha256": "855a06974032bb69157d469aba6f63440e8be47c421f45c3f396f4e0b87b6de8"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-300.woff2",
+      "sha256": "33530b007071281a97e79baab13ddf7cc4b9de942ebd3e212224857335f7cb97"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-300italic.eot",
+      "sha256": "5ee860c3fcf601e3d51770ffd3bb6682107334db3937daca8e5bf7381f49c9c8"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-300italic.svg",
+      "sha256": "9cf2ffae89e668261e35af3fda7b51078f731cc7e1bf797b7d73dab7c3bbc5de"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-300italic.ttf",
+      "sha256": "38a89f53518a7670fcf67aa104c8e2e8234790a0fcb6950efcee9c2fc885e5d3"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-300italic.woff",
+      "sha256": "917a5159be44de9a82072f6a1c52ef645844d6bedf42f8fd1549cd99d6db2cc5"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-300italic.woff2",
+      "sha256": "4c7856c0d39606a745670d4c03525f3644fe65304191be208516def923cc3762"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-500.eot",
+      "sha256": "6044b9f4de2bfedb0e23cdcde85b950676ca15b6de18bfa98bb944a7be4ed187"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-500.svg",
+      "sha256": "679eb020429b65c21deb42212a49fbdda9be5d985ef55803c2ad83f8c428fbf0"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-500.ttf",
+      "sha256": "7796600b2ee4c84552cb08fd79603c19b95cd21089e802f222320feceba74c45"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-500.woff",
+      "sha256": "bd811625271acca47f7dac48b460f13e08ee947b2a8e17e278c4d5ccb5d9323c"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-500.woff2",
+      "sha256": "bb46ed079c3dd3c39af5051b4ada48f29f49151dad4fa218117bad2fdb5e616f"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-500italic.eot",
+      "sha256": "7f350615f7e3b0a3feef95026ea988efe24b647e9a68a93f420799eee07b57bf"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-500italic.svg",
+      "sha256": "61243fa2e143cf51f1535df33ae4c75d2548567a976d991f03fa87ac04761ea8"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-500italic.ttf",
+      "sha256": "88f87cdf817311dfa951df2579f095f3e992ef882ba9a0711f4a8b32e06bdf85"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-500italic.woff",
+      "sha256": "8411023a027610aeb3dc333438e12a17222163ae78817c5395da04548ed30150"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-500italic.woff2",
+      "sha256": "0a938256d2de59b044f8ca7c7aa0c788ed2ffa9a48bf0e3930a5830c4298f509"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-700.eot",
+      "sha256": "d994c112c4a7ff635c0922fe0cf428f0e176beec73a521b59498630782c25ee6"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-700.svg",
+      "sha256": "90fd3ac31f8553c19f65018e385022cfae140a6341b0cc05d7701a90ad28dde2"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-700.ttf",
+      "sha256": "52dc362cae7e441a98741305a38b045859ac60e99377d9d88922ec32cb944cfa"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-700.woff",
+      "sha256": "a01a632e56731a854f35701aa8c3a6a19a113290d9032ff9048f8064c45383bd"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-700.woff2",
+      "sha256": "0eaeadb58e6995ba85eccb6198aaef77eeb1d4b66699e4e1f3fc10eb6adfcdb9"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-700italic.eot",
+      "sha256": "997b5d17e1b799f8b6e439f0124a2eb55f4e87679d2dfe8e0bbff4949fcff804"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-700italic.svg",
+      "sha256": "f3fa251b00cf984bad8c0224de665a2b2c3b3d6d08b64dd601d0ecaed0b3572c"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-700italic.ttf",
+      "sha256": "b48ef8ec3a31e379fd238f9878c63e35a077997f6a75fcaf7f2382b1460dbd55"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-700italic.woff",
+      "sha256": "a22585cfd64238ef14b1b383b5b9a8bad7c89e354c09fc0886067e876687a38c"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-700italic.woff2",
+      "sha256": "2a42cc82f30fbf25a268f6d5a10158e8312a838222da6847158ea4175fa289d4"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-900.eot",
+      "sha256": "2fd57e4688ff39c31aef08fe926b6fd5b00a35c1e71440bb0b26fe91c455bb1c"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-900.svg",
+      "sha256": "1f626680217362d9a26da9eca11d46a0318b95c5d084fccce55a08ee4971a34c"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-900.ttf",
+      "sha256": "5abde466e653eda612285a42d7f23c6490961fe942d2ec3b86d731db531b57bd"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-900.woff",
+      "sha256": "d33864e01e5103ebe439732bb606e694c73b6851f24da25d41901eb17cb5d98e"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-900.woff2",
+      "sha256": "0e868ca932480407e63d27e8e868cb1514581142928b9be15ec9039bf5fe348f"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-900italic.eot",
+      "sha256": "2fc971723c90add9b3f6cae7738625eceb3a3ddf2a553c5454d539aaada83247"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-900italic.svg",
+      "sha256": "fea2db367482beff05c6651eccfce3f0b049da19a82e0bfeae88221549469057"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-900italic.ttf",
+      "sha256": "d449bcfcd062266871baf83d35e57d7a90089a3e05a5f96f60c096c2ffeee56c"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-900italic.woff",
+      "sha256": "b31b421bafe532f6b6bdbb6f680fb11bd3968f23c7fe09a29b1a22f4c8dd2a7e"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-900italic.woff2",
+      "sha256": "5f2778667ce7da721e201618eac589ac1a32af6b43c246675826a8d728eb902b"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-italic.eot",
+      "sha256": "b110149bdf2c9ecb6ae8aa8ad9a15ab1b999d5b9a5cfc7698883dff93340a392"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-italic.svg",
+      "sha256": "75c12901ed264247e6625f4353cc62136a710fe147e1e76618df7d6fed78b902"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-italic.ttf",
+      "sha256": "3d549f3e5837763b1dbb31a5cae5d4015c9e706e96906aec08b073831c432128"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-italic.woff",
+      "sha256": "2b5fb1f0ee063320196a64157ae9a949bb4656bc48604914175f1eda636dce07"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-italic.woff2",
+      "sha256": "46375ee9192c1e0f6eabe4d32b2a48b996b93037f7b4beb970df5b87359548fd"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-regular.eot",
+      "sha256": "be869a73a160440e8bfc5c7d84a907febd61075d920d51c7d0097d7295c865cd"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-regular.svg",
+      "sha256": "f23d5a8b97a1078d2c4c8ae90495010fc762986f3eb85e84476c641ee5a72a5b"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-regular.ttf",
+      "sha256": "52e0349a641604d5204952039bfac8acde78242227defae8864d1caa48b8c5c1"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-regular.woff",
+      "sha256": "ea50ac7fddb61a5ce248a7f8b3a31a98fe16285e076b16e6da6b4e10910724bb"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-regular.woff2",
+      "sha256": "cc46322d5c4d41da447f26f7fa714827f2ec9a112968c12ef5736c7494985eca"
+    },
+    {
+      "path": "assets/svgs/icons/airmedia.svg",
+      "sha256": "0918f81421cf04ff6c4ec5907a85dbe022eedfd72be5d30a380d75face594d24"
+    },
+    {
+      "path": "assets/svgs/icons/airplay.svg",
+      "sha256": "aa4a9aa033baa5eec9af2aae158dfb0b180928cffb494c57e79635ed324f5eef"
+    },
+    {
+      "path": "assets/svgs/icons/alarm-clock.svg",
+      "sha256": "e432ed46f4d5764ef54d4c53e97c2bac9ad76d599db4232066294f7f9c4758c0"
+    },
+    {
+      "path": "assets/svgs/icons/am-fm.svg",
+      "sha256": "4cda63cd36d7272c5a9b7cfcbc1f2e81ac098a8d7b1a8f520341c1e7f00c1a05"
+    },
+    {
+      "path": "assets/svgs/icons/amazon.svg",
+      "sha256": "0fe41ae42408d016037e831ac24e64b80d22e111a232ec5db796fd9d895fa659"
+    },
+    {
+      "path": "assets/svgs/icons/amenities.svg",
+      "sha256": "b78020fb5ffb957d9598236dcd64c1f4c250486cd021a01fa3e015f9c98e8279"
+    },
+    {
+      "path": "assets/svgs/icons/appletv.svg",
+      "sha256": "312dcb52ab7a694b2b0b87941b30113922e27113352949cd28417b0e3d03ceb3"
+    },
+    {
+      "path": "assets/svgs/icons/aux-plate.svg",
+      "sha256": "85b9f770ab7a8672bc23b9b0d05020a35ec3048dbafda78f504bae3a64337715"
+    },
+    {
+      "path": "assets/svgs/icons/backgrounds.svg",
+      "sha256": "54d62485d1622f5089c95c30e6fbfc18ee82ef24db4b14bfa64e22a7adcbdab8"
+    },
+    {
+      "path": "assets/svgs/icons/blank.svg",
+      "sha256": "40752ad3e93b64c319058f87ba70b9a0f2dfdf30ea3c7965e37517d01db9e2bf"
+    },
+    {
+      "path": "assets/svgs/icons/blu-ray.svg",
+      "sha256": "39f7cbbc3a66441f0c227da3c4d7a7e52888c02a5452e0cbf4cd150c01932617"
+    },
+    {
+      "path": "assets/svgs/icons/cd.svg",
+      "sha256": "7e1dac95681df5841c53b11894b003feb848cabeedcebf25a1d0d41b98773631"
+    },
+    {
+      "path": "assets/svgs/icons/chrome.svg",
+      "sha256": "a9f43670a7f21c458263fc0558cc68cf4372797d70a0b59d5baec84fa9ee5cf7"
+    },
+    {
+      "path": "assets/svgs/icons/clapper.svg",
+      "sha256": "03639eefaf67ba3f79df663376169b94fceea9c64fc9f9bd788b30cf4b292f6e"
+    },
+    {
+      "path": "assets/svgs/icons/climate.svg",
+      "sha256": "64c7baaa9df7f4bbea91fb13e84c3377e76a0213e97d92bab2938c1346cee785"
+    },
+    {
+      "path": "assets/svgs/icons/directv.svg",
+      "sha256": "a7acb8d2079096da830214b16545555443ad9499c6c08ff8f53b42f05246c9af"
+    },
+    {
+      "path": "assets/svgs/icons/dish-network.svg",
+      "sha256": "7bee51d429669258ab3c692850376b4173d1e02ee9ba42326b1a18b3bbaa95d9"
+    },
+    {
+      "path": "assets/svgs/icons/display-alt.svg",
+      "sha256": "da645f59a1ea60f2500b82bc0985b005171ba9dd698d6c5332d0c80b2c6dd1dd"
+    },
+    {
+      "path": "assets/svgs/icons/display.svg",
+      "sha256": "9b5f4aa114a78528c9f06e7c54460e1f1064e655ddefe3eea4adf80c7fa48184"
+    },
+    {
+      "path": "assets/svgs/icons/document-camera-alt.svg",
+      "sha256": "66fa02af3f251172a85afe1f8ece81835c05ee916562308ff48e535b112f296c"
+    },
+    {
+      "path": "assets/svgs/icons/document-camera.svg",
+      "sha256": "4b55ce00aba8e89f57c4918e7bbcbd5507e6366f14db98e2d195139313652d72"
+    },
+    {
+      "path": "assets/svgs/icons/door-station.svg",
+      "sha256": "0778227af0b85fd77603c465f836f560339159fa41608f7c6b926c5675860228"
+    },
+    {
+      "path": "assets/svgs/icons/drapes.svg",
+      "sha256": "42456ae7c40121c349a19f132e24b84bfd635b97144d817b562a082ef90ab25a"
+    },
+    {
+      "path": "assets/svgs/icons/dvd.svg",
+      "sha256": "91bf83a34d67bfdeaf74c9bb666d6821e87c31fec3b9bb79801f93923a6784e9"
+    },
+    {
+      "path": "assets/svgs/icons/dvr-alt.svg",
+      "sha256": "31d01aaeacd8bb10997b4610d24d3d6fbc7cf7bf93b6bdbef95d2198a2016c48"
+    },
+    {
+      "path": "assets/svgs/icons/dvr.svg",
+      "sha256": "1cb363b27c493f299164ff5cd53511eeb96248da7d1615da474198a9bb864993"
+    },
+    {
+      "path": "assets/svgs/icons/energy-management.svg",
+      "sha256": "588636484f96a6dd8edef62e6fa95eab8032a928a5f0c8db2d5619ba9d265483"
+    },
+    {
+      "path": "assets/svgs/icons/environment.svg",
+      "sha256": "3b3089b760bc3842a616d78949cd925ead9e212be17535272997df357948a4d8"
+    },
+    {
+      "path": "assets/svgs/icons/favorites.svg",
+      "sha256": "95796620e65fd633ed1d94aeaa11e85a3837d0f51be82e430555fda3ae497c51"
+    },
+    {
+      "path": "assets/svgs/icons/film-reel.svg",
+      "sha256": "b3fef3ee6b9e9410173f8c2119fd28094c6721b7e25cdad3ae3c802ccf6cd169"
+    },
+    {
+      "path": "assets/svgs/icons/fireplace.svg",
+      "sha256": "c60853ead4c4f3b54fd546e1e4856b69f8527fa89a5f89270ecb2f7b037e55c4"
+    },
+    {
+      "path": "assets/svgs/icons/front-door-alt.svg",
+      "sha256": "c8396c816599ef95116a2b8c6bb044a5cfee8279f17db801a90c5e98cc0325b5"
+    },
+    {
+      "path": "assets/svgs/icons/front-door.svg",
+      "sha256": "15d870991081006ef261f32771fc8b17a39fa7e0dec7f1b101fbef7f592db20f"
+    },
+    {
+      "path": "assets/svgs/icons/gamepad.svg",
+      "sha256": "5b0ec22ae6eb8e8213e90b191382ab9036f7a0c3ec22324657e376f6ec8adb02"
+    },
+    {
+      "path": "assets/svgs/icons/garage.svg",
+      "sha256": "4114ddb59c508f71bb747e049ed16ada7ee410b8d8ce76ecde3e20ee2b3972d6"
+    },
+    {
+      "path": "assets/svgs/icons/gear.svg",
+      "sha256": "d01bc7ea1ae8696a40aca5e7f09cb6e0056aac7d2bfbe6bff2a27ae8b1c645a7"
+    },
+    {
+      "path": "assets/svgs/icons/home-alt.svg",
+      "sha256": "66ec2bff47877a77c45bf3b8580814a4c08ab0058d3c30b93d7148328d137e30"
+    },
+    {
+      "path": "assets/svgs/icons/home.svg",
+      "sha256": "42a55d95446ee8cd1a675eaf8fcc30042a308c6ab3001f22039981069b6b8f90"
+    },
+    {
+      "path": "assets/svgs/icons/hulu.svg",
+      "sha256": "6ddcc6e0e69b2f30bf206ab387c0d4fb73f1e4b6d4f2ed34d7e0be071f9fa28d"
+    },
+    {
+      "path": "assets/svgs/icons/iheart-radio.svg",
+      "sha256": "dc817940faf6f4c6a0a440e5b9898701ad85e00fe1b35c2e982aa2a4ce8dd901"
+    },
+    {
+      "path": "assets/svgs/icons/imac.svg",
+      "sha256": "4139978fb7e758c2d874bb2d633f7f6087836c2f48e1aff9d33fda2a13feb9b3"
+    },
+    {
+      "path": "assets/svgs/icons/internet-radio.svg",
+      "sha256": "389f04a3d892bd3c2d3f81a0c1281e8b26afc8a2b8b4a476e8aa9e3d0bd91e75"
+    },
+    {
+      "path": "assets/svgs/icons/ipod.svg",
+      "sha256": "591a39406b6c44c70745e1c5103316106c364315ba59825905726a00b9cf34d6"
+    },
+    {
+      "path": "assets/svgs/icons/iserver.svg",
+      "sha256": "8da856460bf6db9bbc25e78910dd594ad5bc05045f594b4d45c38632cef070ac"
+    },
+    {
+      "path": "assets/svgs/icons/jukebox.svg",
+      "sha256": "7b543e3eba9ebb1f7a7cb63a3058a832e63ac0d07fed924f346c454929991674"
+    },
+    {
+      "path": "assets/svgs/icons/kaleidescape.svg",
+      "sha256": "92647b9ec448f61bf3892a9b0d3a618d487367df577c62b5fa91ada77e0afa97"
+    },
+    {
+      "path": "assets/svgs/icons/laptop-alt.svg",
+      "sha256": "a5e13e40ba247b59484388a44df4897767b3e94f09e153d2b72b1e4be717beab"
+    },
+    {
+      "path": "assets/svgs/icons/laptop.svg",
+      "sha256": "0d0be40962d196988dbed18f7113d0481d937768c2480e7f952d6a63795a43a6"
+    },
+    {
+      "path": "assets/svgs/icons/lastfm.svg",
+      "sha256": "14e350c2786dae1c651d9903d8d83e97689bfba64e511bd02cc85402c94b3cc6"
+    },
+    {
+      "path": "assets/svgs/icons/lights.svg",
+      "sha256": "c808645014c78a28423be45997f9d25b026b585f5c7d8e1405afff9c86f294ba"
+    },
+    {
+      "path": "assets/svgs/icons/macbook-pro.svg",
+      "sha256": "22f40cc3db3125cc0936ca4a0e686d3223dc7abc944a1ba88c3466bf23449e7c"
+    },
+    {
+      "path": "assets/svgs/icons/macros.svg",
+      "sha256": "05d15d5dc8d8a87ebfeb85c006450c4628424c1fe6e7a5d9a7804a5d92716eba"
+    },
+    {
+      "path": "assets/svgs/icons/mic.svg",
+      "sha256": "5e9484024ed0c24ad3e35ecb63e2d2a18d560d61da5e31bfa720f6c684f0bba5"
+    },
+    {
+      "path": "assets/svgs/icons/murfie.svg",
+      "sha256": "31c5a7eb37945246e78583c1bab14c02a9a1159bf5bbfb2cdd5b4135fbb8e961"
+    },
+    {
+      "path": "assets/svgs/icons/music-note-alt.svg",
+      "sha256": "768b6bf7d3babfdc4686297f341e30e9d498e11e610b184d30193e35fbb75536"
+    },
+    {
+      "path": "assets/svgs/icons/music-note.svg",
+      "sha256": "58db21dd51b5535279518ac99021719b4952d26b6bfe96b593236e1d09df0090"
+    },
+    {
+      "path": "assets/svgs/icons/napster.svg",
+      "sha256": "7ca106f747e3cf40add5e06e9ec0930d30a28743f9e29ddc2c9259eb724c25f0"
+    },
+    {
+      "path": "assets/svgs/icons/netflix.svg",
+      "sha256": "3bc52413c9b9e4072d8db4c6fe24b2b9e5c1d744b9a5ae73918861b69dcf12a0"
+    },
+    {
+      "path": "assets/svgs/icons/news.svg",
+      "sha256": "abab6b2f08412189b51950d7d5a905ebe83e21f08d8d2e30dcc42ff59b0db2a2"
+    },
+    {
+      "path": "assets/svgs/icons/pandora.svg",
+      "sha256": "1ac2373fce4ea6b69eab8838a52fd61b5f228e6ef39c87af2aa38187007e03a2"
+    },
+    {
+      "path": "assets/svgs/icons/pc.svg",
+      "sha256": "c18e9337677ce5c273665856907907dc28a059bb30d8a2e74dcce65912c5e094"
+    },
+    {
+      "path": "assets/svgs/icons/phone-alt.svg",
+      "sha256": "7210957f4f2977ca3f7462cf6556ba05a7b238220507fefdb77da77b92d12452"
+    },
+    {
+      "path": "assets/svgs/icons/phone.svg",
+      "sha256": "4bac5e1804c5b5c83963a864048f70d44cc25b72045c66b007b6115308899594"
+    },
+    {
+      "path": "assets/svgs/icons/piano.svg",
+      "sha256": "2653c51ec39928599b0ad0510710fe5e104886f1a0dd316cfd89906713ad8626"
+    },
+    {
+      "path": "assets/svgs/icons/playstation-3.svg",
+      "sha256": "b5805c0a763103297710cc2294fb54187581d524715a78aae01a5cc8994f831e"
+    },
+    {
+      "path": "assets/svgs/icons/playstation-logo.svg",
+      "sha256": "cad97f47ebc8e2e3bd6d445cc312a708e13d17538f891100593035ed4a53b10e"
+    },
+    {
+      "path": "assets/svgs/icons/pool.svg",
+      "sha256": "84e93262ff8a4a2723f0f795d6955db8a12efec447eaa79ea7e8e9ea4787f860"
+    },
+    {
+      "path": "assets/svgs/icons/power.svg",
+      "sha256": "20a7493a695eccda3aa4e34933c388557af98f47b7260a6f85fef678a9662a3e"
+    },
+    {
+      "path": "assets/svgs/icons/projector.svg",
+      "sha256": "274fb9a45bfffe6d88e1bc651ee44e3e6bfcdf2d25eee204ac210201cc656c3d"
+    },
+    {
+      "path": "assets/svgs/icons/record-player.svg",
+      "sha256": "8ed395ae47a9bf90aa2bae5d1870e7227df15ade56750555b195979b8af14d86"
+    },
+    {
+      "path": "assets/svgs/icons/rhapsody.svg",
+      "sha256": "8f9a5cbc1d4066fa6cd451ea28b98938a4295ba1f424712234f8f0df5c4517ef"
+    },
+    {
+      "path": "assets/svgs/icons/roku.svg",
+      "sha256": "fc3b5077ac5b61a55547e18c84523c5b67ae56fbfbfb800f233f915a6df9955d"
+    },
+    {
+      "path": "assets/svgs/icons/room-door.svg",
+      "sha256": "dbf5cecd0e5b5f3ceb9180bc8648d852839073f1047dba98049d3e56988f017d"
+    },
+    {
+      "path": "assets/svgs/icons/satellite-alt.svg",
+      "sha256": "2923c1bee59fac7181ef708f62fb740eee6f54c2ce8bc3d703b5eee2d2400288"
+    },
+    {
+      "path": "assets/svgs/icons/satellite.svg",
+      "sha256": "f60a7dfea7319d283151207bfa835e05ca9b75329a6a08f8fe36e91f74f2ad51"
+    },
+    {
+      "path": "assets/svgs/icons/scheduler.svg",
+      "sha256": "d32ac19b6e0dd62c5f1098034b3944a10d3c1aa3177d5ab77c55ed706210a50a"
+    },
+    {
+      "path": "assets/svgs/icons/screen.svg",
+      "sha256": "4e883192350f9f609a6f310cc8a2441b06e08387c8372ecaf0b490cfb7471702"
+    },
+    {
+      "path": "assets/svgs/icons/sec-cam-alt.svg",
+      "sha256": "91fbcfe59164b166ec4366d5e452459348d99f3b4387dbd3b82526128caa9d0c"
+    },
+    {
+      "path": "assets/svgs/icons/sec-cam.svg",
+      "sha256": "bae5b36e86324d50e82c63dd7209baac573b3de67edb6f3bb3385cc2b849349f"
+    },
+    {
+      "path": "assets/svgs/icons/security.svg",
+      "sha256": "6f2365bce669f6f5423e5bc08c1f6508bc885c4bbbc154cc04d601410bd9b211"
+    },
+    {
+      "path": "assets/svgs/icons/shades.svg",
+      "sha256": "8642f4c8aa5b7ce6c92f9505539a7cdbb4efc7ce76accbe7142265156d09137b"
+    },
+    {
+      "path": "assets/svgs/icons/shield.svg",
+      "sha256": "be9fe7cc573e0e14fabf0654885e5f8f38e677fb0d02f6c72fa96cdbb4e92801"
+    },
+    {
+      "path": "assets/svgs/icons/sirius-satellite-radio.svg",
+      "sha256": "b48cafbc2337230ed555eafaf635dadf52a0d66ae58fc7019e074115b20f80c1"
+    },
+    {
+      "path": "assets/svgs/icons/sirius-xm-satellite-radio.svg",
+      "sha256": "1a7846179c4e1996525edc193be8da196a9676e0ae055091ca60a6057b76600e"
+    },
+    {
+      "path": "assets/svgs/icons/slacker-radio.svg",
+      "sha256": "bd1f7c799dd69a4239605dfd2612a9d62488f8a11afe442e363fa3b125ded5bb"
+    },
+    {
+      "path": "assets/svgs/icons/smartv.svg",
+      "sha256": "f7400c75dc4c581cc2a075ab85aeb9c4b9348174046d99f4a89d879badc86b4b"
+    },
+    {
+      "path": "assets/svgs/icons/sonos.svg",
+      "sha256": "4342c12a2dbb0bbece09eab87618328576f832d5242a20e044cb2fc36db2ebf4"
+    },
+    {
+      "path": "assets/svgs/icons/speaker.svg",
+      "sha256": "47aad7d213bdb8ce964f05e79f272339494efca8a9b85ed8d3e42ff7ae3931fc"
+    },
+    {
+      "path": "assets/svgs/icons/spotify.svg",
+      "sha256": "60193bb62a0a1896641ed63b3dc16fa3690f89bd2ef8c224a199f945218f1131"
+    },
+    {
+      "path": "assets/svgs/icons/sprinkler.svg",
+      "sha256": "9afb5d6cb1585ad7601f85e61036db55b08c818cbd8b48d8e78ac4371ab55422"
+    },
+    {
+      "path": "assets/svgs/icons/tablet.svg",
+      "sha256": "ad925a51929198c6c94fe9e19bb0e4d78e3e8a277dcc7d98cc7b638126b24e8e"
+    },
+    {
+      "path": "assets/svgs/icons/tidal.svg",
+      "sha256": "793c32ef462c53577017782e27627dbd7a05b385f13d8a75d97a75cbdcc84551"
+    },
+    {
+      "path": "assets/svgs/icons/tivo.svg",
+      "sha256": "524a2f1b8a16f9db8871b2813d83268faaa699fe164ebfd386fa70337732b812"
+    },
+    {
+      "path": "assets/svgs/icons/tunein.svg",
+      "sha256": "25bdb7ca74606831b6558b25d27b41ea9388c3b69e512b2f90cfae63bbb87e6e"
+    },
+    {
+      "path": "assets/svgs/icons/tv.svg",
+      "sha256": "4a05b499e9a6df34a4687c1aa8917178f840f9526b54983c0214c72a0c951608"
+    },
+    {
+      "path": "assets/svgs/icons/user-group.svg",
+      "sha256": "c8674daedbbcfff19fff769070970d8ddb5d0f5e40d2a90de373985ca23db3ac"
+    },
+    {
+      "path": "assets/svgs/icons/vcr.svg",
+      "sha256": "8b8677eaae2d3bec524ea1774a87d62f331f06558cab00de4e83fd946aebecd8"
+    },
+    {
+      "path": "assets/svgs/icons/video-conferencing-alt.svg",
+      "sha256": "3a0e44a0cd866a07c0cabe5efefa477c76c7d15f52639f3e9ce55033a56f281e"
+    },
+    {
+      "path": "assets/svgs/icons/video-conferencing.svg",
+      "sha256": "c42f0d3eef386b09e700bcd02ca1ca0e451de46c1a7250484eb814d334bef40c"
+    },
+    {
+      "path": "assets/svgs/icons/video-switcher.svg",
+      "sha256": "58630af4c77aca2e87ba808fe83183fcdb3efb16035ec12fce557f4e02a15feb"
+    },
+    {
+      "path": "assets/svgs/icons/vudu.svg",
+      "sha256": "377d8dc4ffa0741c88aa02d3f16c187bf7e2961995291d99af462e7d9f2f0ec5"
+    },
+    {
+      "path": "assets/svgs/icons/wand.svg",
+      "sha256": "050880d472eeefc3e786853e717f83c8447a8d762ee13a07a593c6f7f568a174"
+    },
+    {
+      "path": "assets/svgs/icons/weather.svg",
+      "sha256": "c91aa0048b45e5d2d12a14855fa36a6ce0cb606758abfba008d7a50853d3dd69"
+    },
+    {
+      "path": "assets/svgs/icons/web.svg",
+      "sha256": "745d37b5ca74a3d619bd50fc6e7d663a050e101504b2a28a665b68e7fcad3cf8"
+    },
+    {
+      "path": "assets/svgs/icons/wii-logo.svg",
+      "sha256": "f56f6cb6c4176474773c1ea2817aad7de13e85408bc6519e856ae5c66e68552b"
+    },
+    {
+      "path": "assets/svgs/icons/wii-u-logo.svg",
+      "sha256": "488b84cc20b47ecba4b75db53b1e45ef3244b0a764ad7dbb4471859cfdad61a2"
+    },
+    {
+      "path": "assets/svgs/icons/wii-u.svg",
+      "sha256": "0233741aedfd13daab4d9b1cba371bfc775c12903b4d59ff3dc02610863192d1"
+    },
+    {
+      "path": "assets/svgs/icons/wii.svg",
+      "sha256": "cc645bfb6f112470345a9af581bb14b627697d2a3af9b83a483c110cdd049b27"
+    },
+    {
+      "path": "assets/svgs/icons/xbox-360.svg",
+      "sha256": "095ee8289874c626f35343dd14331e90035feb53feb842e972e4af77140bf5fb"
+    },
+    {
+      "path": "assets/svgs/icons/xbox-logo.svg",
+      "sha256": "f0685057906952cb06dee573898db4b1a46cf8d98ce60dcbb5135c983c7c35fe"
+    },
+    {
+      "path": "assets/svgs/icons/xm-satellite-radio.svg",
+      "sha256": "cd1cc863216838ab3ed87410cd4999682ab9b8fe079d671ade23124c884c540c"
+    },
+    {
+      "path": "assets/svgs/icons/you-tube.svg",
+      "sha256": "e41316f399c5109278a6722e2599c74e8d5fcb4dd4594cc0a45886e392b30193"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/abc.svg",
+      "sha256": "c87a790beb8fde918aa1aeccb2b2f868f98f2ca37967d3b10a1d0535e5e625d0"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/address-book.svg",
+      "sha256": "28cdcf83fffb6300fab3d11216975b3722cad56bd3f721927fb200aa974b1e5f"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/airmedia.svg",
+      "sha256": "e1cb1961f72a339c4a0653a5b348559ea1aacbf263c4c8030bdbbc8a5e1b0691"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/alarm.svg",
+      "sha256": "f4493a3e7d8e86b6d6bc59415b94cee5f19ab27250e549da9a85621e05c7e9c0"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/alert.svg",
+      "sha256": "dd4a0e1b48b455769ec05e6e520e5b13acd9df04165f9ea52e0b221f126fc69f"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/android.svg",
+      "sha256": "be91ebe7cfe2d210e3c1adef77899b035c28d59d8e68dc4888234b863377a1a3"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/apple.svg",
+      "sha256": "09acb50d96626645b7d2107296a258d93b1daf25f2c688a384c4b6c5c8b26d10"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/asterisk.svg",
+      "sha256": "1706deac74603ff097dab92fb1ed0130f7a2c0a79d73d91644d3c63b5c01ffa6"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/audio-note.svg",
+      "sha256": "ce49d4974a640610acdd63a67fe1141301618a4d17cf77992d9200546fd1280f"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/ban.svg",
+      "sha256": "a9817461bbfe99d2a9fb3fc8a878fef1d994fddca7f1aa895638aadc0db8c06e"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/battery-charging.svg",
+      "sha256": "f46965891477c91a023232bbddedc93373701a18934e8be64523f479302ee6fd"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/battery-empty.svg",
+      "sha256": "88cebe7027c12949a4dd76038ab7704467f6650d1f05b6a5bc345942b01e8fab"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/battery-full.svg",
+      "sha256": "d67350d15f4d9578a300bcf3df12d019fa1d149819be59921c1aa361fcdee2e9"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/battery-low.svg",
+      "sha256": "2b65df839491e0c25c7f95f2b8c1df01b9d265062eafb25f0c6b5db3ac542d52"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/blank.svg",
+      "sha256": "1c8a84718aab433045210d0d954f2116fc3bc27735af90e9feef64acf8dea9ca"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/blinds-closed.svg",
+      "sha256": "fe4e43ce3074c53ae2879f19d943756f76a9e970e3976b31d4b1bcbfd9ef1bc6"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/blinds.svg",
+      "sha256": "1cb0b415e2dc048e46b78d9ff41fea98bc122764acb50e3b90f1662f9292acbf"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/blu-ray.svg",
+      "sha256": "0f2433db9ba3c897895db29cfbe244c85fe1e7caf9b09e8c868fc7de358e8930"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/bluetooth.svg",
+      "sha256": "ba3072e112ddf2700ad233defc81710dc482a23aaa9c39f6159eed342331b4bf"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/bolt.svg",
+      "sha256": "3af8e45b076880c71d5758e9dac78b5d9a0bf123f3547f92879f2d1bbd9dba63"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/brightness-max.svg",
+      "sha256": "280d6766a2f4961a46d8da7d1d0253f0945ae52cd1ad020c2972d2f53b8d72e7"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/brightness-medium.svg",
+      "sha256": "5fd3a8262d9afd5c149eb82da7b6ca116a889da034b2279e89cdf26214ee1c07"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/brightness.svg",
+      "sha256": "958df020c1d11ad5768f9002eb40dd355c498b67e305690803a1f05740fa5b78"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/broken-route.svg",
+      "sha256": "968a920f455e29c9599e9d6a9b4ca216fb55974730de190fa208331952409556"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/brush.svg",
+      "sha256": "ad05710213a722d9e4e0e5c7a2f25324ac96e2b0c2d88e935b049eaa1c0401e7"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/calendar.svg",
+      "sha256": "bcc6088b9146c28438f2a71970bc6121350dba68c7ac82a8e242e06084ebf5f8"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/camera.svg",
+      "sha256": "a40795f82ce22df9078b95a6640969de3020c94e27e44ff6e5dc066e38d2f3a3"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/cart.svg",
+      "sha256": "d9796264db51dcf275c3ca0a27d6c0dac9f189a73e4eb5e53fcc8af800292aa5"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/cd.svg",
+      "sha256": "2264723015f436c106b90a6fecc4d822960774db246c95e239486a8a0e0df4f8"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/check.svg",
+      "sha256": "c9a05d7a3a35072eea6606e68b063f277fd29caee3126199c51963f7e10961f9"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/checkbox-checked.svg",
+      "sha256": "ed1c48d552511c0ebf84ab75f62ad8f3f706ae9dcddf9844812cdedebb5c63b1"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/checkbox-off.svg",
+      "sha256": "a07f8166fa0541149ea284b2c2f05ab220789dcc81914c8c86ba32fae90a7b92"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/checkbox.svg",
+      "sha256": "a8d62aa9537d1f9190056e0afbd744ed6d70d06e1397600dccf2af5570cff0d4"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/chrome.svg",
+      "sha256": "842c8825e05b1491b2a272e1f47299dc1406b0866a7385a9b4f2d06432e65a22"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/climate-scheduler.svg",
+      "sha256": "caaa33670631e9ff0d9e20db82a9ab4b31807252f4d2e4fbfa6a906bafda5733"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/climate.svg",
+      "sha256": "2f951bc087956bfc6ad2aa2b42259f841833113479fd72d455380b3650b290d4"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/clock.svg",
+      "sha256": "57f1dbe76c6f2d95cfbe210d9decf6c51e5c8d672cbf3d205237296c0873028a"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/comment-check.svg",
+      "sha256": "a0efc793ef28e5dd3a3678623c2bf2ceb2e826ef9d20ea5989f3c6f0a7d1c213"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/comment.svg",
+      "sha256": "52c4d27ff54caa29134c677c8b74e3617fb5c5a81ee87c6aefacaae8043e3ffe"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/connector-plate.svg",
+      "sha256": "31f062c7ef1cca1ac63edeabe9af3a17b079a3bc8fcf85ed0b65e97d67acb2ae"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/connector.svg",
+      "sha256": "ed5d215ff38994197a108a3cf2d08f554342d9d098fe5f8023f24b1d0ef52c55"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/contrast.svg",
+      "sha256": "4e78a9e3ef56d4f9a65304811fcc4c8504c164f23d6aa74f28c60c5dcd83cc7a"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/crestron.svg",
+      "sha256": "f1648d4bdaeabbf26a0927f0041525dcb734813c3c8a81c5f3c4149aab5407f1"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/dashboard.svg",
+      "sha256": "73d7983046bcb019dfd97bc7aeaa595dafd73b4e7ec6f69ce8f1cbd8197253d2"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/delete-alt.svg",
+      "sha256": "9834a329b4a88d39398c963566f5d34a473cb0a940eb8a6279157e8f5dabf5e6"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/delete.svg",
+      "sha256": "f961b463440944b73a79317c35989d9325f6db026a6bd90324955d9cf98ba8b2"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/disk.svg",
+      "sha256": "126e437fb6ed954503ae06d4e5cfaf046b8c0a414c9dca4e4538ff6f8d38bd9b"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/dnd-on.svg",
+      "sha256": "31f5d01dfb5bea5df7b0967d0626265a654032e55c29efc83e4631ce9ed55d25"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/dnd.svg",
+      "sha256": "139b6f85256c3da28d1ff5fbdeb3c5080cd6df192b6a849cc3837c0ca18f4ae9"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/door.svg",
+      "sha256": "be3bed97f47ec5b53eda81b721c26abc363dd51fbbfe0a9f21e2120d69749f44"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/down-alt.svg",
+      "sha256": "7c2a3365c17616a620463e4a750defef29cece2c2b13e4345a27af07aa4c2c66"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/down-right.svg",
+      "sha256": "3d9f134d4ecd3b0ea09aaa5679a60b28021e6b7044441b2eb9bcd6a5faa402cf"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/down.svg",
+      "sha256": "f203ad7521f69dc991c228622fc4c60fe6b0e2cafd3e58835dd5733b38b28c24"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/download-cloud.svg",
+      "sha256": "014e961ab74f850f7d07e71a0851bb6de8f0e1e2a7f49984a832d4e1af6e1157"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/download.svg",
+      "sha256": "93501fa6560512e7bf563feef6f7d986b1e0ca024df5e6af3223802257ef5fb4"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/drapes-closed.svg",
+      "sha256": "980434d17fe0121e09dfc038395eac76f641233b176bed96b650a7e25fad1989"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/drapes-open.svg",
+      "sha256": "5c7dc5d9d2c911a057e4057a9d94e205691c23e898bdb7f762a2aecf652be3d4"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/drapes.svg",
+      "sha256": "6abd5eb0f2e1e4b78bcc231ad6b051eb2908813b4ef413bbe6f7b4fdff03e175"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/dvd.svg",
+      "sha256": "95e8e5a3d58cdca61a4840e445c4128aec2b5f747076407d251d2fcacf59472c"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/eject.svg",
+      "sha256": "469bffa1ae9b80dba2e4c59716c9c9a6ff2483a740645184e48e285623288773"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/enter.svg",
+      "sha256": "cfd0ee080e10ff3e1b094e3c8df0d7f147b272aabeb3148aacf090a6aa0d0c92"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/eraser.svg",
+      "sha256": "d0c476e7a9c0865af0bccd2c9be04c7c7fb8ff36e5079d734cce8fec941dd512"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/eye.svg",
+      "sha256": "a36f62c172916a57cb4f4233817de5a1f1aef9f67aa410a1fd28568f2aac3e07"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/film.svg",
+      "sha256": "7da4a5d2203609854e074840cfcdea18975bed1ca8f9b2518b88c1f8417b41d7"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/fire.svg",
+      "sha256": "c9a7fb995f0ae203b18056e13fb2ab861230c1903d069cc15e50c61b01cdf1c3"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/fireplace.svg",
+      "sha256": "0beb125784e94fd8339c8d7bfdd92e54c9b8ce33a581c81a195ce11e0c0cd84c"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/folder.svg",
+      "sha256": "97ed52841677d1c316618fd3f256c45012a7cec47b3b4fa3919cc7ce9f596e44"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/fwd.svg",
+      "sha256": "d6122119702120077b6a66738270461b3c09c2316272f20d4827785ac7a60be0"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/game.svg",
+      "sha256": "1ceb16bf9dfbc12710052338135d698a53a815ac336c9c8774a9a292705e358b"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/garage.svg",
+      "sha256": "b4f8433ca9180423897fc54016f564458e926d0a032f813bb0e8c6465038cc25"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/gear.svg",
+      "sha256": "8f24db51b52056229a9abbe56e0595c7f161a0654b678bbf7dbe5d9eba78c0c7"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/globe.svg",
+      "sha256": "8cc4810d85246a59cb9613b3646d509971a32268a181cd748049c5a048d7162c"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/graph-alt.svg",
+      "sha256": "edba96e1feba6a45d58912c6353fbc8a145a092b59bbdf6d9fa59310986e36b1"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/graph.svg",
+      "sha256": "cdc534ab38f254c44e2c8bce5fd7db8a6459d2eca89beb278af20691fdebd275"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/grid.svg",
+      "sha256": "5281679bf61fdcde3e0f08aa6e1a09bea9ca9138a999f0feab9d47b88a1a894d"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/group.svg",
+      "sha256": "6830795fa46489885d80948fe43ab3f0b267df17495f5808030487b52f3b6ba1"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/guide-list-alt.svg",
+      "sha256": "179922b77935386f8e9d697d468bfe7cda8380978781185e025c873b8b360f1b"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/guide.svg",
+      "sha256": "c5a745407c16b5a209e8e70b26c3f57478e19b378b17d0c9c7535f8386c3782d"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/hd.svg",
+      "sha256": "588b7ea9bff540bfb2dd121ab0a7638def94fa65703e24f1e43b0d5880426943"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/heart.svg",
+      "sha256": "c0a6b17c2e3b62c4397f440e6d12f38e96ad0df838e92cff98d79e0d99a763b9"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/help.svg",
+      "sha256": "4b020134a6501fbf1436c9b1fea16c2e9b9a6172894a5da19e376ec74becd7cd"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/home.svg",
+      "sha256": "74e26afb5ab49949ffb14589e710306e3d75fe5aaec6b9383d81dce2d4f852c6"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/hot-tub.svg",
+      "sha256": "f0e0f7fd3c9640990be9c2b35468e65d09a53d5d1e618926db410b0d135789ba"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/iheart-radio.svg",
+      "sha256": "3f5481dd405c69bb04ea8634e0a41b1eb18957149d9b60e481d544eadbb3cebf"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/image.svg",
+      "sha256": "e664fd2a297ef35993cfb820155ba17302066c5a43f173f5fef89cee83fe012b"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/info.svg",
+      "sha256": "17de7b2e1b1fadc4c5439dd3bf52b5618e3ce491be113055aaa11888d73415bd"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/ipad.svg",
+      "sha256": "208eae042a0d2a3e1a4c437d8f61dd1d706d3b5610b2c7c29d1087b1ba8fc598"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/iphone-ipod-touch.svg",
+      "sha256": "a68e9b3c689b9e20e5137daac80686b90ee5325c607206f4504ac656b7ecfb16"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/ipod.svg",
+      "sha256": "28a235d5de7939c26626cd4a9b39a14aef8513647550cf28cd473f2328208083"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/keyboard.svg",
+      "sha256": "c92fdafa9447441077c95c32f143cf7068a2566af7efc0504bfb3e4f5a9cdf5b"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/keypad.svg",
+      "sha256": "de0fb8bf4301bc746bdaef9fe8a12d8b84e93627e54ac93e503c4581fa78e14e"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/laptop.svg",
+      "sha256": "e4c4bd1e7d996d799cdc37166846dc8393a55e25eab32e05240e738059f2d598"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/lastfm.svg",
+      "sha256": "aeeb8299c2cd061112875a2c384a371cf2f6548ee693baced57303afbca95c6e"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/left-alt.svg",
+      "sha256": "f668a388e7ce54269c105b5f6f7e1ef5dbceac5f4967ab8331029622087f901d"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/left.svg",
+      "sha256": "4fe073d72c216495a5540ab6a4e859791669702602f7de6adf1c690a5cbc689f"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/lights-off.svg",
+      "sha256": "f71ed2c4bb3bb2f4709305a957f462f46219755abe4e57aab528a43e625bd5fd"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/lights.svg",
+      "sha256": "bb10c008b7eeb2887632badb5be7b0785868a3aeb50b512f205169bf8e054e99"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/list.svg",
+      "sha256": "e61bc0b930691ba92b1300e63ef319273e68d0657a7996bc7f97f0bae735d686"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/live.svg",
+      "sha256": "2a1efe4854fea7d9557b3743453572137704ab405363fa69040488fa5ccfe0d1"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/location-minus.svg",
+      "sha256": "cd3063e299d41dccb9dc945b3e3d4e7ad1d7109ea504a5950ff91dd5cb5d4854"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/location-plus.svg",
+      "sha256": "d8b520d6c1454e25a2de0710d973b28a020f9735875effe4d46e4346d9921406"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/location.svg",
+      "sha256": "d8d71a98ba5667a257f973c4560e9d1223f63330866f11aceea6808e935cf6d0"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/lync.svg",
+      "sha256": "7c26acf58ead2edd28ec30bbe1de35ac4b1930232c2187317c33a5341b58e0be"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/magnifying-glass.svg",
+      "sha256": "748b267838c6ebec633ed873c893c53f196b86ece7453f22ef76fd4409fef54e"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/media-server.svg",
+      "sha256": "66cc8fc88f1048fa0d389623bd8f999ec2677133b9dc120f9819fd3bd30083c1"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/mic-mute.svg",
+      "sha256": "526b4b8851c4cee8aef633dbf758feba6844e58b9d8c8ee58ed8434e99131feb"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/mic-muted.svg",
+      "sha256": "870181a05aa906ebecd86ffdb01d97af0fe9d928d26215e550e3ff07d46d4add"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/mic.svg",
+      "sha256": "fe705bd71664661279e9b0651136659cb14d2e9430be12217321011993d8ed4c"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/minus.svg",
+      "sha256": "15e4d131cf158f3cd1128fbe60e568a6dc3071349bf290f98794672532250d61"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/more.svg",
+      "sha256": "bcf976eae736103bd85121163244ae25d8aba0110f2d563e04f86f064f88c807"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/mouse.svg",
+      "sha256": "1290ae772d75f9d3c222a2063305125c144a8462cf2b6d0497f8d5078cf59124"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/murfie.svg",
+      "sha256": "234e55566b141422d67e0aae75628d2ece94f4049c8583f555d0064f5e0ed4d3"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/napster.svg",
+      "sha256": "4e8da1243ddfe4c73d0fe496be81da458a91b69e1f1baa881fff0f6dffb0f9d7"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/network-wi-fi-low.svg",
+      "sha256": "16115772661cbf38ac1ee9749046608a091f84d68301cbdf93c5922938e9625c"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/network-wi-fi-max.svg",
+      "sha256": "c285055c54f28736dbb39545a098c23cbb55b8f0b71e7d51b2506047f43bfdd3"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/network-wi-fi-med.svg",
+      "sha256": "6024e22d443674336867e43102cb67f12d8d2915188c4ae45083f383b099845e"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/network-wi-fi-off.svg",
+      "sha256": "d5184854fb2e20afb38e25000ca007e74d482b22b237f5bf443f603e126fedb4"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/next-alt.svg",
+      "sha256": "ffa5cf80b1ee1eb7abac2e951ae2d1e166e2153a6bc1751b6e1e082c9604e4a6"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/next-page.svg",
+      "sha256": "5c16c789e18b83f4a1ac29d362a2e80b88034fde88d42409574f61af2b8f57e3"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/next.svg",
+      "sha256": "11947352f0a1d42ac998b5677de04d85f58efa0aaa6bcd3f0b3ef04c6986baaf"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/options-off.svg",
+      "sha256": "d27a9246ef6149fa4561bc2040d33ea14d7d7a7652c7a9fb4bfbbe76eb1b86ac"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/options-on.svg",
+      "sha256": "b7ae9bd0bd5580b0b2ad5b9f7f22c879404979e663d247d2176fb62cfa707ded"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/outlet.svg",
+      "sha256": "1f1706d3f11ed869e4a03edb06d7104741f8811bbf058b29b9094dc932583e95"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/padlock-closed.svg",
+      "sha256": "74524605e3c93b7f64bd6c0f192443896ffb1b03ba67f3bcbf21744ec4fd24ea"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/padlock-open.svg",
+      "sha256": "bca54d1196c90befb03014e1ad7d75db043256e5fd7d79d5d090c651f70236f1"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/pandora.svg",
+      "sha256": "d14530ee4bfe721973b217115b4695cbf9d7f1389d98e658d783cd2a20fb9d1f"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/pause.svg",
+      "sha256": "26d944da42b32a50c15e5fa62af4a98664a711b1c250437a5c1795ee7d586ae4"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/pen.svg",
+      "sha256": "e5d10e4ceaa2f970c628574756ee18a23ea8f65cf8c021d9f0da056f75502882"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/phone-down.svg",
+      "sha256": "8b70521fa5950451b081b9cf89af3daa3d885881dc7fe40337c6979d3d872270"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/phone.svg",
+      "sha256": "1d7abcdfb8c4302bc3f27a8514ee28eca32be4f305147149263e1ff15186ad10"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/play-all.svg",
+      "sha256": "523c2504001a77ca69fb757b1fe78de27d54068b44234ea8b446985a01649b37"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/play-alt.svg",
+      "sha256": "bdd5aad368089f3e10d526f47214ee649369b116506c6aa49fe40126b20eab3f"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/play-library.svg",
+      "sha256": "945f65bb23478c5699d3bb037ae477726f0f3e013452956e8b6c76a3ab243867"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/play-list.svg",
+      "sha256": "956c7664e349491a0241e9bca63496fcd60d476d364f6824c333d123194c4d2c"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/play-pause.svg",
+      "sha256": "e345e483dffaa6422b8ab16e8584b9f0bfc401ad4a9fc29938606e45a009755b"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/play.svg",
+      "sha256": "5fefb01ce247c013d9afe1777b74008cf8c8fba0a09792a737e08f1bbb7be0b5"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/playlist.svg",
+      "sha256": "db49a79f80adf5570689cd372490163b5791ce656e443a49a38da88aaab8dc7c"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/plus.svg",
+      "sha256": "22bc79156e655f7c2a81a7079aae5c8f4576c6f08e901b62353477cf17214495"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/pool.svg",
+      "sha256": "4a219fa7f85355dc7b0eb1e568ee57f434fdba0aaa5c1f2f7dae568904c4d422"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/power.svg",
+      "sha256": "fbe2c687f0a77f342e0a8f79612a25aace1ea4105a9a73c3177292f8e1b561b4"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/prev-page.svg",
+      "sha256": "886169703703f6cdf44fa1d0d92215fef3dcf71d279b777799e652a46a1b6b5e"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/previous-alt.svg",
+      "sha256": "c3ec95d922c2b8893d538db40a9fc235df69667c278bc66d1128b4d45a70191f"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/previous.svg",
+      "sha256": "409bababc8fafdd6c1fd0820eb29f7c307eab0ac2078028a7d329994a25d7e36"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/projector.svg",
+      "sha256": "f11efae1c66780630216e80d73e97b223ba5482a3f3049972a62fbf20da1dbb8"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/radio-signal.svg",
+      "sha256": "42415be3a5fb9d84c9f6e3b7d3bb0ad2b11b6b06ed3963133a5fc344057a1c0e"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/rec.svg",
+      "sha256": "82197c92bb2aa6cdc267a44cab2e5093e964d5c84f28681dce3508026fd303a3"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/repeat-item.svg",
+      "sha256": "b4e7a3d375876072260df47fbcdb2339637e8150b5c2fd976da6a9233a6baa24"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/repeat-off.svg",
+      "sha256": "3dd1c073e5975c4d2380986a93888558abb81c55c0dfde874d4bc9a9a6b77da2"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/repeat.svg",
+      "sha256": "0b7238ed8c8996776827973e58b50e9de886286ececafd8054c72dd53ef93340"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/replay.svg",
+      "sha256": "bbf5f8779585e7d55f39ca33a3eee76e8dcd4b59ed1de988d09b484b85937a62"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/rew.svg",
+      "sha256": "6480fa95843f1f52f9afe9b5284b8c7aea0935a42b655851ccdc7961fc52988d"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/rhapsody.svg",
+      "sha256": "05290c6faadc109e6f612de35da43072a68ee689695129fe8ca7b824e0d791ac"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/right-alt.svg",
+      "sha256": "c63793cf91709a3d5557afac466f234e201c8167841a41d2c6a12fa0542506f0"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/right.svg",
+      "sha256": "45be90370e68f081f3ec0dbd8ac2198f295bd1cd73c7ea216387614a1a2ee887"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/roku.svg",
+      "sha256": "1f220a20e2e313f0f28749cd12b27b5198b40bca0bb5c9ae31ef8768e9bb0f53"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/rss.svg",
+      "sha256": "3be6405ec6497f0f1c863327229eb069d2e2badaaf02b2bc197a97efa504c9e6"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/satellite.svg",
+      "sha256": "3f9a6199c12a2d7b34da963144d98558ee21ff4bd90f64181332fe0c422fde67"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/scene.svg",
+      "sha256": "ce88c355ca720e362c0c91cc97ca124354735b3f6e58f6bad0ddda0ebde3bfef"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/settings-alt.svg",
+      "sha256": "5b64d57d7d215db1929120a8a41ec6ee9764c2098c99b90abe45430ad2aac035"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/settings.svg",
+      "sha256": "271b244758162639916bda548bf206c9d31beeae3ef26be015b2c925dab23726"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/shades-closed.svg",
+      "sha256": "58f54765bd3b553928d207f402d94f40c614ee4d5caf560a777e061417ee0927"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/shades.svg",
+      "sha256": "8af29836749ebcc4b3b0cbb1bba05e4ad6d61360864f28c2e40fcca34c0eede5"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/share.svg",
+      "sha256": "8a6b12f9dd26e9d24ecb7de470d2fa960e359b69f870b166b90cb397b28d3d28"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/shield.svg",
+      "sha256": "f395bb8d44434ec5453f3673d90c5832aac4feef2f1e2307b4daed0a16fecb11"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/shuffle-item.svg",
+      "sha256": "c0b0b70f1f09c4bf233b2e9f612529434d89af78aec256c7166aea7d4da8772f"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/shuffle-off.svg",
+      "sha256": "c246711b6edd3e309e50159e3ebf4a6dd05770c1493a4b428e281c350f047a8d"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/shuffle.svg",
+      "sha256": "b9f4a42c6e68af7925ca1b839a9414673fd9dbdcc0a277e7ce48c47f39041fef"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/sirius.svg",
+      "sha256": "6589360bb7285f3c85be3417ed1c20be3fe390a59629ec45252b55cf10f779d8"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/siriusxm.svg",
+      "sha256": "8d26635cde7dd804f56be5ec03ea03fba4c664c0e8206a4f3e0b808f1a5cabce"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/skip-ahead.svg",
+      "sha256": "78e345bef3820aa49bd8d29b0c2c08764b32a8f8b08616db26bb81be1c6e999d"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/skip-back.svg",
+      "sha256": "73f062658ba0499f908104418abc2fb7ff7b77e47bf095f2d33cb9d091ab2081"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/slacker-radio.svg",
+      "sha256": "4033201f5243c15e66e18cb367a17ed3683056769afc4f9cf4a552a40e348e6c"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/sleep.svg",
+      "sha256": "5df6b8b32bd20ada772a1241b548b66917f384e39a82e4a90ecea1888a6764a1"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/slow.svg",
+      "sha256": "39d26202b6579989f69f746998abd38d45e06f7fe18e0dafb11d7e20d47d877c"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/snow-flake.svg",
+      "sha256": "40bdbc0449f80608594a5a9db30dbfbaaff701958025efd96fe050a8baf5a7ff"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/song-add.svg",
+      "sha256": "08257eaf7036d539fc5170dbeb2aac7f776988ed674712609c6ff451dc8804c8"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/sonos.svg",
+      "sha256": "882ff9284fd22215a9d7dc8babc70c3f607b985eefbbe58095684c629f5a43e6"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/spotify.svg",
+      "sha256": "68be26a3be1f92c0facb62b8bc2763789b1b50e4b15191b426adf5de371407d9"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/star.svg",
+      "sha256": "924d782c479e66427881fd5dfaf636f20f58432738729911884d46bab87b4294"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/stop-source.svg",
+      "sha256": "ab281aa53cf948ddf6c7683cd248a931fda7b56c6a78ca3fdae3bd034a79ddfb"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/stop.svg",
+      "sha256": "da5063d731a743549a4dbb5c68628e64e427033024a967593fa9858d1ed15f62"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/stopwatch.svg",
+      "sha256": "3f4e282e981462924db1eeb2058e61c7c559457f2ed9a6a08d9a7fe26b6efb17"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/sun.svg",
+      "sha256": "29917ea9972e02be3d924d6097d51b153a6af3a92c1c2deba9c277e1881ec5a2"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/system.svg",
+      "sha256": "cf80106bb6125f6f42203a71d501ac6c0376266f52464c65280aff42ba044eb6"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/theater.svg",
+      "sha256": "9dbdd1f85ad9e77de27e393d0842f90c126702d70133d78006ccc405b4d6ef74"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/thumb-down.svg",
+      "sha256": "5e348f8da772253d4b933e69ce6d84bafab26fcc6b42d3737c5fe57129af7b84"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/thumb-up.svg",
+      "sha256": "ebadf1a9764d230af12e8e6ffcaf47aada20820184aee4526a89f8eb33e69b82"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/tidal.svg",
+      "sha256": "7e80deade6524e5584d9fa440d90e6907b4ca51f20bec948a21afd57afc5afd5"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/trashcan.svg",
+      "sha256": "3c5ad3987a5b7596e417d62dabf005263f4b2f106195ef874ab8de84b1c2a9ac"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/triangle.svg",
+      "sha256": "4db27b27b264942f908f0ee50b78c4c4af4251713808b4cc73ee57dfbf221fd9"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/tv.svg",
+      "sha256": "306df8f12943e2341909d62612a044057c66b5dbf6ced1c1e650bb08f966eb01"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/ungroup.svg",
+      "sha256": "6792b17e3916fd563fa42e9bbcb964009db5d29167bbb6aefb7fe33ce0372c6f"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/up-alt.svg",
+      "sha256": "9e972488729f2611510ae6639abef49168b87069a8f0f09b6fcc77ca57cb97d0"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/up.svg",
+      "sha256": "14ab89939551eab19317d9ff908622c7c72707754ca0a2b3666d2680755392df"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/upload.svg",
+      "sha256": "93df76e7bafe0f96a3152f0377f393782632b0a3ae7b5a154216450c907f051c"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/usb-alt.svg",
+      "sha256": "47d087ed4345486bf4473507b7f4bc1472078b5f19bb728f531f3593aba30d37"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/usb.svg",
+      "sha256": "5bcb4e0de2d6a8a55abbfe81940dde4813ad096b34b24239a0710e76bfe0f5a0"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/user-bookmark.svg",
+      "sha256": "293bcfb8935f3df70bb1fd962a70f117c7be6854d77bdef8b69a8eb41a743774"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/user-check.svg",
+      "sha256": "c6846aa9c16cbe8c7c00c150a06cbb941dcebc555051dbd0bdefd140f0ab7fb9"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/user-minus.svg",
+      "sha256": "3090299c1b86de7423f46e1ade541d7dfa159505cab4ee4697054af695e9a806"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/user.svg",
+      "sha256": "8402fbf38d2768c71637f86085290c071c91e7b18625cacc6673710c1bd990f4"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/users.svg",
+      "sha256": "90c1081d73616ba29a3f8449c3067d01442e31b7e055abf6d9ca99967cc49295"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/video-input.svg",
+      "sha256": "c88fe5eb1a572fd8bcb648988cc6e5d340cbc57361a5cac8ca04069aef0d5ac4"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/video-output.svg",
+      "sha256": "ca2a9a47c95f68e0eb1a18466aeb97cfb06a857bdf14456b820448f88950ccd8"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/video-screen-alt.svg",
+      "sha256": "1edcd8eef6d394364a99f46ddfc0332e748b6d868b89a21cf7407aea82495570"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/video-screen.svg",
+      "sha256": "2e84519198df8d3d2ffeeec441644c6716a70f1f57e1d75fdf4cbf9f9fa2a79d"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/volume-hi.svg",
+      "sha256": "fcc9b5ef2289a9a980967df888e355b4e2d2df03e049a817a5a859d202d78730"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/volume-lo.svg",
+      "sha256": "cfcaeef7673e62ad1f42e03d4a5bf3f320bd4fe83ca7b7ee4a430976299b97e0"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/volume-mute.svg",
+      "sha256": "aa870af5292340b2e5bce8d3fc6310e2dbaff4ce7163bab9fa5e86475e561b1a"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/volume-muted.svg",
+      "sha256": "eb5e4fd36c7130e71c7bee0557af12b39e67470c4bb5eda51740062ae4bd4156"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/volume.svg",
+      "sha256": "2d54f76d63744f1c2710dbf090b4152763a9cadc29e182b46dea40a98d621a95"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/weather.svg",
+      "sha256": "8bbea95f9fb920323f8104e77ba0347cd063fe2638af9433e32d661c8f689b0b"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/wi-fi.svg",
+      "sha256": "7cbb1a3759cd0e878c067a8acbba5ff329eb3b688d94a9bce5f10f7dfd176bbe"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/windows.svg",
+      "sha256": "ad266ba805950ba355db1ba00e763072874a4fea3b08e033336a7521bb1fd1bb"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/wireless-device.svg",
+      "sha256": "2e364ac9c0bf25f2c6f2c736513e69c11c1e0d3f995dd4e4cc7b29d4643bd462"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/wrench.svg",
+      "sha256": "f73f73e42c3bc82d4480232cebbced2aa07b2ffa159fbcc47b398ec64bde4a85"
+    },
+    {
+      "path": "assets/svgs/media-transports/accents/xm.svg",
+      "sha256": "007560929fa9d90d46d2227751db771fd4712940de08a31482de9e41aab19b0b"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/abc.svg",
+      "sha256": "a820bafc8172e208f0227cea12251442bca1d8c4606517e3e1e29d076ed21f99"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/address-book.svg",
+      "sha256": "dd143b7a760ad6291bba07311a79436c3040c8fd55a02c71bc4cab97679cac79"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/airmedia.svg",
+      "sha256": "3e940c90b938198417d4a8c2f5072920f5b9e7f03c6ebbf43a7da4a2d0bdb851"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/alarm.svg",
+      "sha256": "6beac510922766409258afced6e9dab404613e63b89f1e04a6bf11098fdb51b5"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/alert.svg",
+      "sha256": "183074c24f507c61b25bf325b99988da5daa77a7172066a65cc212bb89b06838"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/android.svg",
+      "sha256": "018596e12a2d9e11c953c65cf01941deca9aa650a5ee4033af2931f0d0ba4c96"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/apple.svg",
+      "sha256": "a68aec65abd2045ab404e6d6c8e14364bda66eff5c4fb333a0740c61e1455998"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/asterisk.svg",
+      "sha256": "f2de1516efed5614ed19fd690bdff7791a3685f3a14d5b0ee890d61ce0ef5ec7"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/audio-note.svg",
+      "sha256": "25227f1ce0989c9b8f98c005d4e80329bf7eee89da1d62f260e4aca95f521870"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/ban.svg",
+      "sha256": "d29f3a30517084f5e07f4d85f8d94684d928523956a63a4d2fe2f947a99fc5e2"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/battery-charging.svg",
+      "sha256": "fbb35391767d32cf4850c53dbdb6c67e2ef4f8fe2d38fc060dfafa896dc35817"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/battery-empty.svg",
+      "sha256": "88cebe7027c12949a4dd76038ab7704467f6650d1f05b6a5bc345942b01e8fab"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/battery-full.svg",
+      "sha256": "abd82bbd4771f1f8a3b59ce2d1fa603694b774a671352e7651a865de1e76242b"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/battery-low.svg",
+      "sha256": "f6f24679fafee408ec59982c64d764393ab66144228d75da55a8215d4961348d"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/blank.svg",
+      "sha256": "d51311e2e8ba020f900de4b4e43ca60b3dc6796d7203755aba0e2ef36de24838"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/blinds-closed.svg",
+      "sha256": "95e1eca96de50650682e3570ab672d01cb89e8ca75a44d3299a60d49a8f23417"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/blinds.svg",
+      "sha256": "9edbdde211ae1be1614101579ea2cfdf2e776baea71e3477fe42485937bf5ed1"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/blu-ray.svg",
+      "sha256": "c38a5cb50b3498b913cd89d787f7f20136d360ca83d621dcefa2efc01cb55d60"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/bluetooth.svg",
+      "sha256": "94b275937595871ce7c377f7c585f380b88d2d0089a1990ced0782f50991d799"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/bolt.svg",
+      "sha256": "320740672ab35308798b3c060f8b1f66a4bf7e04da79283ebc977d51ea6250d6"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/brightness-max.svg",
+      "sha256": "7763b353d9c248d2ad454c7b903f0505493d9e0ac29740f81577f57ed21ade83"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/brightness-medium.svg",
+      "sha256": "1a2fa2e91c5587b136bbaecc5ba2e2fb84d18acb963e0bff8093420a0a0139d9"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/brightness.svg",
+      "sha256": "b0807f9eb08901b521e8edc260ad426f1edd49875040d21dc46935faa82f1b52"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/broken-route.svg",
+      "sha256": "b901fbdcf4e2cfedaf8f76fef5585a5fd367b881c1518b2043b6d62815cfe582"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/brush.svg",
+      "sha256": "cb1963f35f4caaa5e95421f4933f17f396c4ac00f972f1c203e86014de919f8d"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/calendar.svg",
+      "sha256": "5eb685e53f4c4b89c456d9415d43197f00c5662277b89f26fd0265be1c699c17"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/camera.svg",
+      "sha256": "df3a7e2cc86b0ad5bb1a8f9309a92bca9805fde536fe1bf4aed7fcd59afb3ddf"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/cart.svg",
+      "sha256": "b38fcc8e0f841bcb72e730e398ec1d6ff7d05f8c4ec9d828786a490569589098"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/cd.svg",
+      "sha256": "8e47f0365f2275a4cdbb8da141ff8180e16b4e746155c175f3245c75abaddfc0"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/check.svg",
+      "sha256": "f0ec35d1bee3860caa0d315360d594344b7096a77a4dbeb834af06e9402f740b"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/checkbox-checked.svg",
+      "sha256": "5324b1191c784a48542ff6bdc29bacf0d1628e284b2a9eda3664e69ab1717c18"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/checkbox-off.svg",
+      "sha256": "760a1b12a9165ceab21b6655d37f284df5da4a9f346f77983f1dc61fd645cb78"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/checkbox.svg",
+      "sha256": "82b67a4033264bfa0275e0dc1d5535070c9487f892ad2f49c5a348f4b41a0b96"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/chrome.svg",
+      "sha256": "346c63fb1476bce597fe75ffa63b985efd81075d4f6ceb7d3ee42f92f59921ab"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/climate-scheduler.svg",
+      "sha256": "5020801d325a4593202004977265198a7a717f6a97babc520d65cf494e61998c"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/climate.svg",
+      "sha256": "beb4d6eb1471c31a7807918e4f1a580ad9b92224adb6eb6a192614d6d3e182ac"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/clock.svg",
+      "sha256": "a1f569d6957103fe475b66baaf9b8663ff544fad1aebb74d2d9a9418c7cfc84b"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/comment-check.svg",
+      "sha256": "cd82a8ce70c797c7dd6c8d6bba21d17dbfcc9b31e5557c305ebdfe68d17b7a20"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/comment.svg",
+      "sha256": "3d637031f5160600e11b039ced05dbcceab5d43b4f22a9f3d2bd721836a0b999"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/connector-plate.svg",
+      "sha256": "e4a9a12d7e64da6ad577e842ab4741cb7de6a1f92dc7d902b6000a864d6392d9"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/connector.svg",
+      "sha256": "b6ab27508e523ede61849dab03feef9e2bb9849f4a758b050f0b8cbcc8235197"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/contrast.svg",
+      "sha256": "a8129ac1c868d28d0c05ccfdd8491245c1334f847c746048fef1dbf67ae461f3"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/crestron.svg",
+      "sha256": "57f2af7bc942dcd5b21c357ceececb1c8c5635862c8ce0a2f8eaef0067a065d2"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/dashboard.svg",
+      "sha256": "cf4c485d687c27722c59d2d6dce09ac760336ca71fd00a55d867793cef1a0a91"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/delete-alt.svg",
+      "sha256": "555da38f0f154aac7b077b58101da90f549085615440b1190706df3181187eb1"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/delete.svg",
+      "sha256": "25068bd12b3a95eb001bfc2e7c801ea421677a07b45de5bd0c752c253288f781"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/disk.svg",
+      "sha256": "9233d401396d0a924fc200131f2fc529e12bd0e461d206a305be2a5e0d6480b2"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/dnd-on.svg",
+      "sha256": "3c9a8381e2dd24c1d11cadde99f512d7d6b3db15f324a695dc1f58274528d16a"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/dnd.svg",
+      "sha256": "8e212c2beebee48d69139479fff27af1d34a71130a11b80c7fff8c1528f3c215"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/door.svg",
+      "sha256": "c22cbde8b86c094484a2a9920606834bf756bccb9c1d2b7871b3057b9b8a4bb5"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/down-alt.svg",
+      "sha256": "09785a37ee44deb43551e1b46a394cd981a06bce87f28780c6e5f69cdc863e02"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/down-right.svg",
+      "sha256": "f1a53fd7281bfb82c3128b0f9ca61de5aae55d4cfdd267ecbe58b87da19bc25a"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/down.svg",
+      "sha256": "0ae1bf7f2549ed655635125b035ae7c44c8fb9954aa1ee2280a2065fbdec08fa"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/download-cloud.svg",
+      "sha256": "1ae0ea87de50b2a98d98947c7cea002548ba9228ff1575066d2d947880ba52ba"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/download.svg",
+      "sha256": "24def4bdbb9470603643903b59cd371549ba75fd06ffd827ba2468d33d1003f6"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/drapes-closed.svg",
+      "sha256": "eaa1c9565ddb6970619d011c55fef3058ae37005d0a7066d1145049b75e9a627"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/drapes-open.svg",
+      "sha256": "760bfc1d118631e1ab1bbc22f387aa6fb4655de63bda08758389dae46378a6e5"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/drapes.svg",
+      "sha256": "6efc20615c59ace36edc2ab3a53d7d90f56a9ced1e8dfcfed8c473f4d0376001"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/dvd.svg",
+      "sha256": "b3f9febebcc2e8ce27acb43e76a2ef2f68092ea57ee260b03e854d27231524b3"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/eject.svg",
+      "sha256": "020dc9d3f12ba77f43218ffa310fc020e53d2777ad9d419e408a5095b1c581a4"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/enter.svg",
+      "sha256": "20fbcca0eb4b6b288d2527d844b66b96e5f197a332b765393304de5efef6b3f5"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/eraser.svg",
+      "sha256": "7b39cfca34668c8dcf48a0f0568e9a8a12c709236ee4143457ae0415517bb432"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/eye.svg",
+      "sha256": "7c5c42d68c2174d394fed92f370e251dd59f04ed894c0cce760278b531050c1a"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/film.svg",
+      "sha256": "386eea4d7d1be420cd9417d9bd67c84b885be6cb8b856ec0950db414129ba194"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/fire.svg",
+      "sha256": "a964601c1fd7916092ab8310a667922b617a34c7dadfb85b55f648fc7316dde7"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/fireplace.svg",
+      "sha256": "b14aabff8f981e44eb8a78224a598c408e6f6a812c26a99d4d2563221e5a9c65"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/folder.svg",
+      "sha256": "1436aacd494943eda3385766498a5376da907072cd815c73d8b74b4f3e76bf47"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/fwd.svg",
+      "sha256": "f2d883c9ebb9be98aa5471e3a37775486909e40bb57efa49dbdad2b53632b970"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/game.svg",
+      "sha256": "a81d4c3fe22bbd201a70e7081d000b01aa6bc8d669aa555c6c8443cd505e3a2f"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/garage.svg",
+      "sha256": "1b7afca4012ca901340965fae81fedf0cf39856dc8f432057418804ca4838d7c"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/gear.svg",
+      "sha256": "161b88a035eb2d7a04e57792b266d64544c1b1a7228a1a07147d54bee3b309a9"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/globe.svg",
+      "sha256": "cd1fc0e8fc27a1822ef204ed3b405a0d2ebde82896182e15b0304e30277c8e17"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/graph-alt.svg",
+      "sha256": "cc85168847be3b3ea4c3dd0cc9345dac17966ac2902aaf3b4dc2a2a040231831"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/graph.svg",
+      "sha256": "9f9648acf106160469f6a62c8ba5dcec22ac66edcc668ddc2cca3762d8184101"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/grid.svg",
+      "sha256": "70d67aac294557956f50014c1ae99d62c4361ffbc2073242fe2db88787b61fe4"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/group.svg",
+      "sha256": "c21cd36acb6d96cfc0c3a072588e8930172b954e4f8b8d9f88a8bcadf4700f38"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/guide-list-alt.svg",
+      "sha256": "380759c6b2972c5f0270f588d92f753e4821b1e4d60755e77a9522fdabdf5f1f"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/guide.svg",
+      "sha256": "2a88002107dd31c3e26ae6e152c527d1a8982fdccf03ebaaf21e664012cef995"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/hd.svg",
+      "sha256": "29eecccdada368597ddc138d17c1dbf920fab830093b48e48495f50ccec01156"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/heart.svg",
+      "sha256": "e34ad33ceba67e19fd642beec98f1e4834074484fec7eb2efd3e18c3c17d015a"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/help.svg",
+      "sha256": "3897c509eb24f3aba1e9dbbcfdb497f9f6f40717684c9fc75e0646f4c9af92f8"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/home.svg",
+      "sha256": "996bf257b7d91e6cd43d0a9a71cac6cf6510bd0a4f3f5271278e0b1a8acccb68"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/hot-tub.svg",
+      "sha256": "809bcda4bc11b1d586a49d0b2ac7def12f39e720621b960628380138a52fe98e"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/iheart-radio.svg",
+      "sha256": "527340b25ee6bb054a59bc25d4a9237e77083aeaf911d41bb43b458aeb381239"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/image.svg",
+      "sha256": "8ce90307d58dabf49dad79e4bd042a772bb90c4e22f429a376d16cbebfda7a1d"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/info.svg",
+      "sha256": "efc77799075e72bb438f7b077e141900aaa7675dc211ed7d3e6db54515dd36da"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/ipad.svg",
+      "sha256": "9d645b093fd51bb05d2066d3d5ef5bb6c96712169adb4c11f077f69775398d2f"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/iphone-ipod-touch.svg",
+      "sha256": "625fb266e78cd2e64135b7a764f9033289c078ac783e722cb51528f55603f528"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/ipod.svg",
+      "sha256": "f121ce372deefe7c9474fd32c5f6fec7738b8c15cbae007fb1fae59e674990cc"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/keyboard.svg",
+      "sha256": "7468a684d0450c5a943d10dbc039d4a54f2cad62fc7477b3f28140d676f3c0e1"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/keypad.svg",
+      "sha256": "0b106db5976b67e16e6b13a0e59a0dd7882c5fd3d03dcd9b75b19620b696aaae"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/laptop.svg",
+      "sha256": "087ca15be308b6229a030c79baa5b972aacd0784944c7d6be69ab0c3908e0416"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/lastfm.svg",
+      "sha256": "74af2016789542326aec05ac67967e41617e541d17bd7e1e413c1e565a344f62"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/left-alt.svg",
+      "sha256": "b639fa72abc32590c3bc0a252b4740c1f498e7709810f3b3c844c6008f9c25a1"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/left.svg",
+      "sha256": "0df1fe1bd54c18a71900cfc72111993efe2181045859e725e0a7518640e4c4a0"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/lights-off.svg",
+      "sha256": "da759e1b107d60ef619f763b1f422bc155702b2747d584bc543b5a5c1d816933"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/lights.svg",
+      "sha256": "d9de6134dbde7e775def1cc879a6be5224724f0ca983d75804e19f7b160e16ca"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/list.svg",
+      "sha256": "20d1cf9c2f3b7bb68585a57f10d45b481f9e1b877b8c3acbdf21acbdad27ce23"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/live.svg",
+      "sha256": "05581e0f91ac0533ef0c56a88df4fa71626bd4f3d4d149b11571cca00c7be34d"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/location-minus.svg",
+      "sha256": "1e210abbb23da8e1487bfadb15ad08e97708565b50dbcfee09521628ff2211bf"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/location-plus.svg",
+      "sha256": "cfdce83907a6461d4f98712dd17a6614ba499b4d283c9beff99ddeeb2efc0439"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/location.svg",
+      "sha256": "5f1265fd155d0a139b2f82c793706f35ab4a01132e2d3f5e88a0d5dbedd389f5"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/lync.svg",
+      "sha256": "0402061782cfa865f8767d4e1ef6e1c65c3bd10a6fa06def4df9feaf241b67a5"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/magnifying-glass.svg",
+      "sha256": "4b15fcc4d28ed65b96585a5886614aba53fbadf1ada65bd2f04ae2983bc2d5b2"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/media-server.svg",
+      "sha256": "d5fb1103ef63a7ff2c3b5a429b960f680c388bc2bf21f9b367474fa6f1f836c7"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/mic-mute.svg",
+      "sha256": "9dea6eda8b841b6c86ab2b49b9fa33f26a8548d4dc552ecbc6809cb43fb7d50d"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/mic-muted.svg",
+      "sha256": "9f20b8020df9c29bb35d42a10836a89d587914a093a91bc5918d41bcc6a265d2"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/mic.svg",
+      "sha256": "8d85263c0088461e16338a085b6934084e78481cce954bc2cda272c1800f2cbe"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/minus.svg",
+      "sha256": "62447070be8d4b776a4d630f5ebef79f14919e97bad80e77b073fe08e2153d24"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/more.svg",
+      "sha256": "e37760ee0e3e3e6482d6961d3ca443d8f9594b3fa5db212858fc06ef9edcb498"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/mouse.svg",
+      "sha256": "02cfe687e1f7be25a3b264f929cb64c93e77d7e9053dff046d65d474f80fefdb"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/murfie.svg",
+      "sha256": "312d10443ed7c4152dc249b5934d3970f11cf58fc93eef24113514ad3352770d"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/napster.svg",
+      "sha256": "c5fd7016484218a999cb77932cf7d784c52bc58deb6bd3e01b9a2d8ab9f58baa"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/network-wi-fi-low.svg",
+      "sha256": "ef84beca477d4813162ed9b6680f2a99ed813461c39faf0890bad1acbeabbd5f"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/network-wi-fi-max.svg",
+      "sha256": "fed48a51a730f39025156a46b632fc87c8519526dc22f609dcd1b6d194afe50e"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/network-wi-fi-med.svg",
+      "sha256": "412b859b9da11d36f979c849acb68978273a9770a5b716d3511045d27f4eb86c"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/network-wi-fi-off.svg",
+      "sha256": "d5184854fb2e20afb38e25000ca007e74d482b22b237f5bf443f603e126fedb4"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/next-alt.svg",
+      "sha256": "241d7fa13dba29836b1ac9c7a520ea66935a6ae77308cc288b16b4e9d091b146"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/next-page.svg",
+      "sha256": "c5ce51452cf332a3c5d6c7885c1184c5a4555ac9abe7fd25ba6d8bfce37465df"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/next.svg",
+      "sha256": "4ada108dfeaa2452bac1d6b7fc40a57c5a86b27c699e51c365f689c544cf442c"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/options-off.svg",
+      "sha256": "93e0c05d7d61c1c3c2891225602463f5aa1ab2e35de51dc540a6e2428a5f135c"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/options-on.svg",
+      "sha256": "0bdf04f5cc72462c90761b9f68b1786e4e91b414e4d5e1da359f22c2210ac359"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/outlet.svg",
+      "sha256": "889c27474b86f6baed2dfd22f5d5d7903df5f1ec957d91bcb04a547d0c881590"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/padlock-closed.svg",
+      "sha256": "c1027b7c1c32cefbf86166e358d290eaed3fe472ef98dc21c82b435b5b71534a"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/padlock-open.svg",
+      "sha256": "d42c40f67e901aa6930b3f284615080af5314576a452d41370db2991b578bf32"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/pandora.svg",
+      "sha256": "a266e18f0e69ed45bd97dd05ed60c7c577446a56173c8bec5336b9cec89b1b26"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/pause.svg",
+      "sha256": "bb4da370db76a2fb520699b23a1b5d98ef9d62ebfb8241e2383e36ccc59c5677"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/pen.svg",
+      "sha256": "3c2a24604aa8f42940c335ee3a61020e44dfa0027610ad0be1ead82e0218e04b"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/phone-down.svg",
+      "sha256": "10b54d828be38b766ab3096be2437254d4463b3e5fb9e693f4d8472f3df78be1"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/phone.svg",
+      "sha256": "8be7cf5b3b4fccdb5f310ebb20b3f888c6b7f15ad5bedea078c5818b61966fec"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/play-all.svg",
+      "sha256": "f11896d8bd64d899b585e96e494c91a54de819f703c1f4a771f85f902604df02"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/play-alt.svg",
+      "sha256": "fba698daadef7e88711a25581d42a92b6d0f9abea9dbcfdd788c03861cf0f148"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/play-library.svg",
+      "sha256": "48bf2a78a11b064a6e4cfffec9ca43220f92afb76fd4a9fbf9dc65a473627cfd"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/play-list.svg",
+      "sha256": "72905f062f93b318bd54b3ab217833ade09dff30ed5bcc67e79681d4f23162e0"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/play-pause.svg",
+      "sha256": "6c01e4a96c52f24fd8decf6e5191c5f7104e8fa0e1052118e553781c3e9bef10"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/play.svg",
+      "sha256": "fb263ac4b35fbea839d5d07f0bd9d7978e54ed4eb9b10aa2a41df3eca49591ea"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/playlist.svg",
+      "sha256": "cdd24b5c5e4d90df3e01b9121943ec94df16d4468fddeaeaff298a0bfb3580c3"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/plus.svg",
+      "sha256": "200d87d923c6b6a5ad2b7b6c144556295811cb4edd7070f507391073abeff29a"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/pool.svg",
+      "sha256": "692346404f9f7d1e2251176f86481e2e42ade11574c19eb59d46f76699d7b150"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/power.svg",
+      "sha256": "0e6349064819c6484b8a42311adc527704328217662f828c2b7193c8acea0d09"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/prev-page.svg",
+      "sha256": "fff256364f54e2164231986365a820c776bfbf50aa303bcec57e543d56fad00e"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/previous-alt.svg",
+      "sha256": "008c665a9cea77da421078af7ac5eb305bc1afb7789b41d9711b22535e51cce3"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/previous.svg",
+      "sha256": "547cb2bca89aaaa9d390631447af4e198ebaaa312a498459accfd0a656c2ba2b"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/projector.svg",
+      "sha256": "57e17ca0c2de01c04deb60eda9edf2b30d5eb6348b2df421b78c5de4a70ea5ff"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/radio-signal.svg",
+      "sha256": "50bce897b341aa200d3ac429cbe57cf6a3a7578aa50e562c81b6e591d6b2d81d"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/rec.svg",
+      "sha256": "12d30d65eabfac33368cc4505f92fd64472222b96ebb3d975956ef53de02863a"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/repeat-item.svg",
+      "sha256": "5a4ade3720934a67fb341e62b65ef93f3bc6ca53e2806ef24739ea39c0677b1c"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/repeat-off.svg",
+      "sha256": "8b1d9c0c54600aa01fae17c5523a9527b7cc4987d232d023105c800646081d0d"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/repeat.svg",
+      "sha256": "24685e16fbacc0a0656843de18c915347011627dd240e0ba50a38f9624c59372"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/replay.svg",
+      "sha256": "52aa7fe427fea021788a228d553c83784b58c7c8f82e546d47f8e8abbb1befc2"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/rew.svg",
+      "sha256": "307f237126f82e5fca20c0b8c48b483ce0a08fdf5c9521749b9dc7f1a562de6a"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/rhapsody.svg",
+      "sha256": "85b797496faa0a6f9c165d4b9568ee20a0affa597f4fba9c793094a775f55e5d"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/right-alt.svg",
+      "sha256": "c3f5324ae3223a3b4b550b99c00d8648dfa2b9928ae4b90ef196f369385c182f"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/right.svg",
+      "sha256": "e793c9a7216f611a64d7a5b166a2417fe821a94da7589abcf15b0c3b2f215e33"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/roku.svg",
+      "sha256": "3e2e7a432f3619679c7dfd5bfb9ee69e63435ae45a2afe5c6beaec38f4d42747"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/rss.svg",
+      "sha256": "85a522a0f54a7a79028cb8c0e20ab41c06061c4da382029d9b7bb6e4f22f7df0"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/satellite.svg",
+      "sha256": "d0cce7c5eabaaeb561bdfe7ad99e0faae83336e31102c0a7fb6d92bc4737224c"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/scene.svg",
+      "sha256": "6e371fa1b47bc5cc1868935d7001575e03f1350ac6d322edc6cfdaab23911bab"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/settings-alt.svg",
+      "sha256": "9f09acce616706afcab08667b3e113c1ed0ebd9ea6365a557d1735cb1b988e22"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/settings.svg",
+      "sha256": "1e65df9c38597a4e1957d96c7e71993c358423908e11ef48bbeb05f47e12f454"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/shades-closed.svg",
+      "sha256": "78852ba908e4e1e342618330dba65ef043dd8b7f276d380d6298d7ec9df4b3cb"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/shades.svg",
+      "sha256": "497201d8d96eadf349ae3235a3d8c5666652ee139bc9eea9fcf821d68425d956"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/share.svg",
+      "sha256": "f88b0fa3ae85e8081abb64171027b0d9257531de2bb9bd0b059465452438eb5c"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/shield.svg",
+      "sha256": "2adfc5e0d260bed54629007b3393e34b61aba22cb4adaed58ab6a7424c2f84e0"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/shuffle-item.svg",
+      "sha256": "70cf67149fa38222f60cf45279df03bcf3d7478cb92d54d7916f21d52e34f018"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/shuffle-off.svg",
+      "sha256": "f09ab1aa25017c5a1f54461c1b4c9642876adfee8bbefb7ef44158ad22735924"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/shuffle.svg",
+      "sha256": "b72fd8874472dce08d93a586bd8134e597f54a742d19ed7537edc6346ccaf09b"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/sirius.svg",
+      "sha256": "bcb45a85fa55d477f6c7f3af9ae3855850f038045dd1585a3acac1598d279253"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/siriusxm.svg",
+      "sha256": "1aabd42ae8f63e7e74562bd11f02c0de8ef7ffc5c6ee6b10b26d2c57c534f8ec"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/skip-ahead.svg",
+      "sha256": "ffa5ccf6119ab181368bef92917c1811a2aa3e3ae9ff8442ba6b69deeb28e731"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/skip-back.svg",
+      "sha256": "d643e07239544f2db43ac28b2cdae79916f5d2cf93d1f793c0e3c27b8784d361"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/slacker-radio.svg",
+      "sha256": "d4f7432e083a6baf244f25da404b1cdf6e9ae475da46b608357c2b7b1d228498"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/sleep.svg",
+      "sha256": "4a223a69ed0869fda669667fecdac6d7fc3ae042f95934f9c1a807c3dec9d7e2"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/slow.svg",
+      "sha256": "a1d32224cebe858ac338c00326bab016736837c26f701bfa0fdb60fb2e5e0b85"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/snow-flake.svg",
+      "sha256": "90f1469c51a46c099b1bc50435e7d9dc421baee6dd95fe120fcb0e1b8693a987"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/song-add.svg",
+      "sha256": "ac0cdb8b350c9e0a11fa045095c1937e1d17747a0fa095045472b9140697ff9a"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/sonos.svg",
+      "sha256": "c8c63889d0f5161e9d3ddd78623e247c14279114986366a4b3c97346d3314246"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/spotify.svg",
+      "sha256": "e5d643f2d03f0ae239f33657be493f4c1d7642c30a20fd48f92a6d73fc655215"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/star.svg",
+      "sha256": "29ca1c665435e7a9190a356dd3113ac6ada9e86ac99698e9b4521af1312298a7"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/stop-source.svg",
+      "sha256": "5372254cb97d8463383b6f03ad2ce93fd38bd3de4265cad67409c4fd27eaac36"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/stop.svg",
+      "sha256": "570687bd2186f589fe6cf659a06214d9468b390a62e949146516f05fa72eada2"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/stopwatch.svg",
+      "sha256": "7327d5e227eb972fac542081334acafe207399fb328fddf5f1e5ef42867d855c"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/sun.svg",
+      "sha256": "59542f7ff08ba578490fad15865769e876842ae91c14a153e92b651cc8b1389d"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/system.svg",
+      "sha256": "10517525545cdfc2fb146cc0ef35f8b3e443c648902b532014f1b2bdc54aa6bd"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/theater.svg",
+      "sha256": "637ab1a36e2646ac66b52119a2456074d8f18776679a4a475d3fe6f0dd06febd"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/thumb-down.svg",
+      "sha256": "68e546987053bee72d9f6f0583d2371e635cd69cffca69891840b6827895b54e"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/thumb-up.svg",
+      "sha256": "4a9ac12698c217294329dc2955b841c813e23cd240521fa68097b79dd9834453"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/tidal.svg",
+      "sha256": "da79de4f74c4014724738d861f01007b18dc49c05b2fb9c56eecbd16b2455821"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/trashcan.svg",
+      "sha256": "0fc2ce42622cb13c00f8a40eda5dc82496899e1edbaf2e8187696b0206e04e93"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/triangle.svg",
+      "sha256": "588f641f890e53579911c86a46f717bb52db0fcd6739fb32edd7b02bfd5b3576"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/tv.svg",
+      "sha256": "2f0da6d18a407d31b9fdc40682a0d945c3fa94d7bc962fbed55d9df16a620423"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/ungroup.svg",
+      "sha256": "dd848bdcf61722c6b89a04313196ffe4c49c81ff1713e3f5ad4a40dbd626d8ad"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/up-alt.svg",
+      "sha256": "e6880c7b565fd630a32904d2972713dde976b4fff995a03e63baf9e316c8345e"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/up.svg",
+      "sha256": "0f7737375ed9c9f56409bc9f3e4f8e9251320e5c8e38c9e0706a6e31fcaff8b0"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/upload.svg",
+      "sha256": "c463bf53e396e92a2e8c24778f3e12aa5d6336ef753a2e470d47e5b72b5a1f4d"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/usb-alt.svg",
+      "sha256": "535ac5cc41f0d3a4a402e4c651fbe79050d57d3e71103e3caacde9002763142c"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/usb.svg",
+      "sha256": "63a7ee895152a70fa8e21c383e7058d93a6e37bd1b38381476a1e3c793ecc07e"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/user-bookmark.svg",
+      "sha256": "5d521c149c7de8d14a23724b0a0729471b35440560a158445dcc9a189abe4e90"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/user-check.svg",
+      "sha256": "fdfa2d475ff568aa355a46628182b1d399b56f8328035ed34450f3e157a7c124"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/user-minus.svg",
+      "sha256": "28c147c1ebeaf21da8a851a402677d509aff81fe9e0dced5b56ad00d78454142"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/user.svg",
+      "sha256": "d0976f9a51a7b90fdff168dc322d1b33f7f4465f3a75bae6717fd7d22ac207a3"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/users.svg",
+      "sha256": "83bebb1897b060245eb20bcc2a70ef6802b9bc0fe4122dc577cbbe803d63fc4a"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/video-input.svg",
+      "sha256": "56c38d96544a1171a6660c9a3d318cf8c053dce52dc1d05b5ba572c6030667d2"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/video-output.svg",
+      "sha256": "a1ba27c8f038545dbda84b18e924211c39cccf9dc3677202e771119e0261e0fc"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/video-screen-alt.svg",
+      "sha256": "b055f0cfc6036f2af39d57f97efd91b9d99b2fa5c3db5483bf600ebc025decf4"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/video-screen.svg",
+      "sha256": "43c00c8bc2b5c204dc619d51cd1d54b1bfbc0af9157b7dde19c1ee282e377288"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/volume-hi.svg",
+      "sha256": "9d15d9a9b1ed09b4e9fbefcc4f4525f8cd46925b4b0c955035951a05bf5d1bb4"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/volume-lo.svg",
+      "sha256": "e857b09ac8a4009ada2d7864125eba3b39cdd650237cf35882564f8f1ff9eeec"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/volume-mute.svg",
+      "sha256": "31751c18917c203ad270693de4bcaedf3ba6490854ce3631e5b0db6a482b2ca5"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/volume-muted.svg",
+      "sha256": "602c817ee86d4a987fc5f2cfec94f403935b6e9e4745a3eddbff2e60f7d44afe"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/volume.svg",
+      "sha256": "e9e40bfe995326ecb664d066fde2ffe19c301933381a4c794fb1ae08697af523"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/weather.svg",
+      "sha256": "1ab2668193a061426870a5f8646b65217691bc15dfec1b313ec124c4a01b8ed9"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/wi-fi.svg",
+      "sha256": "f81a204a76e48a27e9c318a1432532029e624012bbea00a2ec075a1b40577997"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/windows.svg",
+      "sha256": "c809c59c32639c520343b33d2546612c0e5554bf1e06987ce6f540f8d608bbc4"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/wireless-device.svg",
+      "sha256": "e981f5fa1680096834c73d14f6c33ee8327da01e0e1a49c0bbd79c0f6ae7601f"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/wrench.svg",
+      "sha256": "2b05179c09629236e98abc50c389eb01249e1842ca6bae70a3f54e9f974f8087"
+    },
+    {
+      "path": "assets/svgs/media-transports/dark/xm.svg",
+      "sha256": "84de69b33f68c4554bad3943f9f208dea9d14fa0cd9e1db04acc09e358818658"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/abc.svg",
+      "sha256": "d2b7974fae4781f2529a529e8ffccf166ed0ced75fcf1a2927959937613d0574"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/address-book.svg",
+      "sha256": "a9ca6209ca869aa88f86a4852d2310a92740520df5d25b2d20f4e06857daa022"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/airmedia.svg",
+      "sha256": "b665c4d0e1d39cf053fe38d3617a296c7e39fa5f7f61bf49720804cbceef0909"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/alarm.svg",
+      "sha256": "54b71326961a3ceba6b967b5adf75d9336ccbde6022b77f2d6b2197848c6c8d0"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/alert.svg",
+      "sha256": "532179c158127d2f6b2e3bdbe46e5d6a838f41052efa2ece9085515aff007ed3"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/android.svg",
+      "sha256": "6ed947e328a54f21870090b413382231af6fa88fceb4cd231bfd2f84235844ea"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/apple.svg",
+      "sha256": "1c2c397aec55123fa59f7fb6ae67502b53f290b5e5f0a100bd3f0c6b247b8ece"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/asterisk.svg",
+      "sha256": "e33e3f37733a00f03856f7fea0fc91fbaa783dfad1f656be8a2b6c2c3e16570c"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/audio-note.svg",
+      "sha256": "cb01a0ae595c5bbc202be684932e606f2529754f9001698ada821b91e98277af"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/ban.svg",
+      "sha256": "529174ed587a79511bfbcbad8c1a6cf650c730e271bace87ec81628a03a32468"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/battery-charging.svg",
+      "sha256": "73cfcc8d990f2b7b684856aff6f7b1cf69ebd9c62d493d446404074aa44f26a3"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/battery-empty.svg",
+      "sha256": "88cebe7027c12949a4dd76038ab7704467f6650d1f05b6a5bc345942b01e8fab"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/battery-full.svg",
+      "sha256": "15ecfaa29de22a6899ed211a557ba987e753e9e7f73767447c70f2581d0549ed"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/battery-low.svg",
+      "sha256": "9dd855fa6b75ab56c80029b6328fc2cb8bf174f9edfd0637e1c8f5aff18272f5"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/blank.svg",
+      "sha256": "37f95f3a2e13f3594764320a51cf7fd7370badc3b92f66f656540743411c32a4"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/blinds-closed.svg",
+      "sha256": "0e3399d87892bb3cff3b1d710bfb218e3ad2df215d4107b3a73979f3b0a3555d"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/blinds.svg",
+      "sha256": "ae4d2ff90f5002c02088f26ab4b6e71df5bf8ca247bd9ae6fd634f133667f6ef"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/blu-ray.svg",
+      "sha256": "fa75e192335dee9ea84b376c998eafe160ef0bcaca4e8ac7127ced8d6aeed754"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/bluetooth.svg",
+      "sha256": "fefb4a8d10b36edf9fe7c8b760dc0d873b219d147d019db5d6384625329cd6fe"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/bolt.svg",
+      "sha256": "59c7f6a11a93a00b7fec8ab42ee3aadf9c8e7cdf080294f9f4cdd94935eec3f5"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/brightness-max.svg",
+      "sha256": "e1f761d5d705af69609893ee1deb1f8d59ea39b1b34c83d3f3721db355870059"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/brightness-medium.svg",
+      "sha256": "dd89184b0221f7079ebdf6a8666c51c97dc54385792e73007b653057471780e0"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/brightness.svg",
+      "sha256": "d4fa0d22283b7436889abc8d79073c084c076643a1b6a48838133856862f000f"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/broken-route.svg",
+      "sha256": "f01caa2d7b14b5d906f5fe0dbcda9d59d2bf63a7481993e26b5268f4fdd5c580"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/brush.svg",
+      "sha256": "3ab6acc24d51785661317940540e8ef8c1f97234b4a6ed1c677f665d8092c7a9"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/calendar.svg",
+      "sha256": "e9ca2458cc591f447fca68972130fb09f58c393ad4f84aee08910ba9954ae6e3"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/camera.svg",
+      "sha256": "7da71da7c149e995f8828f63836d7c575e732d6990b6911ec771217a55ba34b3"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/cart.svg",
+      "sha256": "7b17113307add8eb1e089b8a93747d04621a91fe6a23e629593b25fdab76820b"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/cd.svg",
+      "sha256": "39fa3f70ddb7a3781df79d9c71139399e325e29d34cb88922c41575db551924f"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/check.svg",
+      "sha256": "2f59920d8471282d2f7cea13d9bd87bf74ad74e61d2c47edad9c273db2560973"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/checkbox-checked.svg",
+      "sha256": "16a7a6d9b5be3aeae1c467b5b1777fb5ce74d60ad7d0f682881c519ccab33b70"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/checkbox-off.svg",
+      "sha256": "090a6cfb4719dcb5340b7d572684a7cffa9649700aa12100a2d0d188a3c21dce"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/checkbox.svg",
+      "sha256": "69681275a131fd3f8b2e83e0b9bd31cc37851aaa2e3820c255cdf33430237a1c"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/chrome.svg",
+      "sha256": "0249fc9d43bc6e0a737dd18c120aa97be602e7aab7034cb0067542961d354b22"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/climate-scheduler.svg",
+      "sha256": "7c297eeb5e26de62227d607a9fdc9606820bed21afbc62806f9fd2f648ba3607"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/climate.svg",
+      "sha256": "be3734086d8f64243573a731320b4aaf403906d9f22ecbade226d4dbb24a32b4"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/clock.svg",
+      "sha256": "8042f7aede7b42fdd167bcec66ccfb0c920db5f6772a156a2d708dade20e54e2"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/comment-check.svg",
+      "sha256": "8daa1cc9703d0cf6348e890ef0f77ef765de0b6eafedb8214ff5c49939407fb3"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/comment.svg",
+      "sha256": "b261738d46a9203d1c599a104e74a1342aac370cce0cb24fccb9da2d19827f20"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/connector-plate.svg",
+      "sha256": "d31f59a8a76a98692766b09eba9ac900b95e83a550fb0fee54b9b7f0387addae"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/connector.svg",
+      "sha256": "b9d25c369bd4bf8675da98c9b92641e7fcbd4f0139f21ee8ea7ef0a3c9e65bcb"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/contrast.svg",
+      "sha256": "71a222b276aebb2d26be1a20cad84ccfc228971d08845426455a943e598532d2"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/crestron.svg",
+      "sha256": "d9aafb88f72a484937c4f8d06e3fdc4400981663ced644d25d5d10acb7d06cbb"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/dashboard.svg",
+      "sha256": "a041efb824b2acf2673d061f2dbde1cb43b026c53b2e391efb0f7a30d62c44f4"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/delete-alt.svg",
+      "sha256": "3ea1afdb961c535f146f3eaa1a36b5bcc59b34ff3441fe7b085e8e71c293b67a"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/delete.svg",
+      "sha256": "3f9db412d707023960dab689e3c4f4a6a75a7a37fd0865e2b07658c10ea8e53d"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/disk.svg",
+      "sha256": "7e81074cfe63468f3809a4eddbc5a06bbd0934c306f7bcb1448002efe1f718da"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/dnd-on.svg",
+      "sha256": "60fd858df02cbe9d91542daada2219661f5e31eeb3e51541f5929eaed7ac5ad1"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/dnd.svg",
+      "sha256": "61c1d0c20f76c021d8dd4fa04630bbdec92ab2707b0ce5389200256ec608321c"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/door.svg",
+      "sha256": "eaa8c10d52aacfd78a849f67e487fa0b44543ee1d94101f36a7a901bbdfe5638"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/down-alt.svg",
+      "sha256": "91d4e1d449837b976ca4436c34558ee4226b03284ae7d960c78d7dbc8c296993"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/down-right.svg",
+      "sha256": "1179315d549754b7cf7595fa4924cad6f8a8d7038182870556a37a67a96de45e"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/down.svg",
+      "sha256": "e1bec8ec2e2cdedb56eac59187f08406c2c24504cc062156eee4d8177de974ea"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/download-cloud.svg",
+      "sha256": "0acebe111c07707329a26ff0109861b78bf0e27fef148ed5c8f4b2c34a67033b"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/download.svg",
+      "sha256": "99f48100d302c32f1649731c2c83603970fb361ceb3556df6ffaabe87a7e7019"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/drapes-closed.svg",
+      "sha256": "f8549c10121dbb3b37e88b445604c5a8bd047c1112cfce1c1aed79cf3ab55650"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/drapes-open.svg",
+      "sha256": "87171b63c78b3e77c6a6c9263d9da434f4473eb6c7381f9eb1ef0b02a60a8ae6"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/drapes.svg",
+      "sha256": "138e05993bcce2945f7bd086b51f80371856d4b6bee125d6a015441f23680634"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/dvd.svg",
+      "sha256": "bf10fe38e38b77bce44550b6a9eb15649b69796ec83868c5ed86fc8293b2da11"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/eject.svg",
+      "sha256": "e9494277c3aaea1870c9e37d026323b3ec7125dfc8bc5b2ff45bb2b756080cfe"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/enter.svg",
+      "sha256": "664edc8fdfd227a1dc6d4d0af57c6b6acba722af59d5a6bad5c5d8371ac21056"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/eraser.svg",
+      "sha256": "09b08d64d8d1ac7df0a60b6e91c30585492401bf970dcd3e99403af8dbc299d0"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/eye.svg",
+      "sha256": "90e3f259668a674047b78a102647918ab771582255e1f29db59ad0acc48cbd9c"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/film.svg",
+      "sha256": "09122cad309a756462e74dd8d7f531b5afa2412691cbad9382badb2058d125c8"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/fire.svg",
+      "sha256": "edfd6ca1fa7a26783c77e206b2d64d117d261a6df2127a3d72dc6f3d335c805c"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/fireplace.svg",
+      "sha256": "f4ae41bdcc2445f1f56b652c563a3369053bbadd2480f67c92ece21e47646fa6"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/folder.svg",
+      "sha256": "22ffa4db085cc8ad1d81bdf459dcdeceabf66b5cb12f6d8fc807183de9018f22"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/fwd.svg",
+      "sha256": "3cc101f310a2565f77b5b7e33712a0a73701dc029fff560f21314a880d441700"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/game.svg",
+      "sha256": "ab83a328ccd7596385bda30d39b1b7389a5be784721b3f2ff3600995eddce6fb"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/garage.svg",
+      "sha256": "7e0241b7d0dc1cf4759a4ffd0811756b7968e510228a8e4fd7fa74ddc6a2d0c5"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/gear.svg",
+      "sha256": "ca308e9e02a3bae9765c078e333fb2083e6e20e91533efc237a785f2a524d260"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/globe.svg",
+      "sha256": "9ec7fddb160325c0b901815b7178e5a6abbf465d76b9271d05d8be58545c884e"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/graph-alt.svg",
+      "sha256": "162dc09bd8e4070fdb28251cd9c9816ce9c652710dbcef36d9e75d4c836ae44a"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/graph.svg",
+      "sha256": "f5a7fcf9eecfee09c40a5e3b7c9064ddad5487f67ae7b4887cd96cfb750cae6f"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/grid.svg",
+      "sha256": "e30b063375ca38fe0398eaee1ec317fb4861ae878c86a454f59a8e08c93c3850"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/group.svg",
+      "sha256": "51b2516f3fe267df110c1fca7b08c939ebe745ef901c58d293733587e0c78ef7"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/guide-list-alt.svg",
+      "sha256": "9f61db6160a79072a265537edc596bf107b0137cce0161038aa41e05e6bb6019"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/guide.svg",
+      "sha256": "c3d87857fa77948bb8e7f115080adf9850eea2fa618d1f9950e39f30cf1486f3"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/hd.svg",
+      "sha256": "c5ef66a282d90c2ae28509d3fc66e16d1aeaa280cdcc5485bb36d5d4a52367e0"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/heart.svg",
+      "sha256": "ce24db13fc1a78cc8fe8e7c662b082ad56a64099cc4664f0aadea1ad4e825a7b"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/help.svg",
+      "sha256": "8099ce4b8da42969f4929fbba142f2ffe1d7666dcd8c81c2e046b8f5944eed68"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/home.svg",
+      "sha256": "4b2f7a15cf340e7195b349d0b11acf44e38e6cc59e5d22b492a80fb8614da867"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/hot-tub.svg",
+      "sha256": "603068f6f3d4801d3757b43e320e14469f93cd965db9809c484c8740a36e19f4"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/iheart-radio.svg",
+      "sha256": "48770be9587d052325e86c609c589c1d05b6fc4320ced8f3f82d2b253a904d52"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/image.svg",
+      "sha256": "092bb6e6c716b255130fa0f9e672f471b68cfd0ebd90fb589e3183e769641a35"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/info.svg",
+      "sha256": "63cc9887c8faa6f3ce393d33f70770aa32e58e5f2b8b28c875aa80043e8dc9fd"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/ipad.svg",
+      "sha256": "be1d443e61ceafb218a4f721c372d4c8274b91f9a5d02b33f1af8accd1628f28"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/iphone-ipod-touch.svg",
+      "sha256": "f1b1a15d58079b5dd00108a68a6076ac6f83d065192edb2b41b1f261ee11fc06"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/ipod.svg",
+      "sha256": "803c646a65d4661b02250aeda9ffe5708f09dc899fe8ee4fdb4721036bf76618"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/keyboard.svg",
+      "sha256": "26125dc3290dbbdd1e94b8b2fc98263aa1532229769cf6ede322d5d50eec707a"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/keypad.svg",
+      "sha256": "8e56d16539c749c26890233293bd3755c1db7203062336b6adc9ccac0b3570f3"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/laptop.svg",
+      "sha256": "52aab0dc04ff26fd83dc8df215322f688bca3c9e8df64a00747803c8fff5520e"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/lastfm.svg",
+      "sha256": "febd5a6d4cef9ea9bbf257898158a21f51647ed8c2f1a03d350da1b7be201a78"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/left-alt.svg",
+      "sha256": "ced9dfa7fea68ba06030f2ac90b5bb6b0b017060e067c984a17617a35f1fdf13"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/left.svg",
+      "sha256": "eaf2901ec1cba5e77aa6b6805a220eff3b27876e0fed558c42daf41a91c98658"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/lights-off.svg",
+      "sha256": "a97c910d31a21fa777933d04be347b4aa9451b83ddd7eb233be62e32a3d55bd0"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/lights.svg",
+      "sha256": "f587ddcfa4e01cb255802fba6ee83f3e880e53db251dbee7475f6a3f11c3bb14"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/list.svg",
+      "sha256": "352682d9999367df4e718bbaf4d2cf7d9a891e65e5e544e3480fe6579bb8082e"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/live.svg",
+      "sha256": "b5d0873ff67c34de90851648c7839f72a183f0af6da9325ba6f701765b0c459e"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/location-minus.svg",
+      "sha256": "cbd7b6c488569a2221cfe0245c817f6fb376ec691c5d16a6177ead3c6d893487"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/location-plus.svg",
+      "sha256": "b275d485f659ab3d5ef713b4e2e8815fa4edc1e1a3c52ab8c50b3671956e5841"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/location.svg",
+      "sha256": "c3e48f06973cf53d68137a4a24f91a180069e7d87ce9a763da7fc57af8bf3b3a"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/lync.svg",
+      "sha256": "d7e71e1a82f4f6972355b18315c25c1310e1955d8b0b8e87a7c5a28045e8c75c"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/magnifying-glass.svg",
+      "sha256": "4ab327bbcc9aa600e755de56143fd45e9692f18f6ebc90bd9f14b5a1650bb715"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/media-server.svg",
+      "sha256": "b5f39d174d222bf75a8c758a7c251875ec680da6204c20bb1d90f75f0baa1fe3"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/mic-mute.svg",
+      "sha256": "8730c72df4694685ce89b4ac9124db56ecb95e0ca209e20e138133dbee3ba363"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/mic-muted.svg",
+      "sha256": "6c7fa888c2c31a6a6a46a271b082dbb63f3ad9efff0488c286182e6b841bb6bb"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/mic.svg",
+      "sha256": "7f210d9faf0c947d1bce45780276caaea2f12585986735a6e82225a251f6b821"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/minus.svg",
+      "sha256": "966e9c6cef17e740b0358ccfc531e959969e195736f33409ce2f08a74085e99e"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/more.svg",
+      "sha256": "67017949ea50c8461f072fb4ba2d663a2e7f0bfb89680910fa9764e8254a8124"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/mouse.svg",
+      "sha256": "c58c6d60e8fc6995451947ce5aff9b5d3b5d444077e089b2e56e1442ad3a026b"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/murfie.svg",
+      "sha256": "f4ceacdbf6781d5a2a83d96b3a53a4adfd0f7fb967caa5852565c541b31016e3"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/napster.svg",
+      "sha256": "d2dfb4d3f280017794f31b2e6daae7c52f898cdd9947d06a8a595c79d87948d3"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/network-wi-fi-low.svg",
+      "sha256": "79019be145421fb227af220608f900e500d932dac1086fcf6f4c3573ab176178"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/network-wi-fi-max.svg",
+      "sha256": "92e23af872fcda9515ea1974fc19f659f69a435d6414c8a68b93de7c0d4fe7ff"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/network-wi-fi-med.svg",
+      "sha256": "267ea718b9c56461e6004b26a128ee43afed1316a6fc526eedb8705762afaff1"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/network-wi-fi-off.svg",
+      "sha256": "22675d6f625c8446786aba235d247e10e468e478cd4525aa53a549df52284a5a"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/next-alt.svg",
+      "sha256": "54a4cc22463fc3aa7eb49cdfef018e6a34b02e6c9e7ffb913c95953627cacfe1"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/next-page.svg",
+      "sha256": "51e965ceaf2d6a8ec0fd10384371e2be117c33f29bea91a7694908110dc42288"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/next.svg",
+      "sha256": "bc1ff340ee99652ebf767036199f1edd14af7b341594068904b4ea196376f630"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/options-off.svg",
+      "sha256": "b035635f726cc906297c3355dcf016390076ab5667a044b985944d82688f3fb0"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/options-on.svg",
+      "sha256": "7cb2fb851009a99c368bbba324427d65f95865eb71cdf2ee81bdfc3f76a32a6a"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/outlet.svg",
+      "sha256": "edafc3e5683925089a99a5d5ba9ee99eab95e9ebbf39f9499058a47774be795e"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/padlock-closed.svg",
+      "sha256": "00252cfbcaa1595637d312aa6822e28312dbcb45af151f100b0510042a5b7635"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/padlock-open.svg",
+      "sha256": "5c31bc21d092139b66c70fd6e8c2bed4d5fb5b3cc0918f02d3a017567bb82fc4"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/pandora.svg",
+      "sha256": "7228b85cdfe6c7815fac3f51a2420026ed8e42ec5b905f75ecbb6ee857a8141d"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/pause.svg",
+      "sha256": "bc27ebbd92c4f521e48c9d8d0987e73f84abb02d5c76a72ed05547c3cdf9f0ef"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/pen.svg",
+      "sha256": "054431ba00525677e800d59257e00d7a4338b6c8dad43a4576eeae229e19b7df"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/phone-down.svg",
+      "sha256": "cf725c235fb5412cebbb297e1bd6f26eea77bb11ee0566786ddd9a5897ac90f0"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/phone.svg",
+      "sha256": "884820223103e51f0b50a37f0bc7fcfd7331b0f827ecc62b3fdb1156b955caf5"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/play-all.svg",
+      "sha256": "c791cfa57d848182a33d88904e0a85bfaadc1129080c7333c9b13e6f05507214"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/play-alt.svg",
+      "sha256": "a06d757465d4f975d534fc119f1615d4dc8feeb3c9a37f0924137d4e11facd29"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/play-library.svg",
+      "sha256": "83a0dc303775535499c2968e10d22f766cee6ccb8088ddf6f8b9c710f8f3f1ed"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/play-list.svg",
+      "sha256": "358bc4a23ee820becd06173fcabf5edbb2721366a48d67452245d8d0ad6827bb"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/play-pause.svg",
+      "sha256": "b5a5cec78c3f8a136b6881db5901cdb9fcfe2b4a3840b3be0af8a178774bc1a4"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/play.svg",
+      "sha256": "92181ea576abfd19fa3daf7cb145372fdafaec801cee8da6937bb1dadd2781a4"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/playlist.svg",
+      "sha256": "e35cd6f1dca88f5524fd2642b57205bb331a7336fe9188e1f3448476e43fc219"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/plus.svg",
+      "sha256": "430c30ce0ee5335b877a6decbd93dc3dc5d39b5275d7ca18ab224d6d61f93576"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/pool.svg",
+      "sha256": "d0d0e7bc9a9a94823e9b90f59d28652413948613ee671e740e78458bc0e40d57"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/power.svg",
+      "sha256": "d7ff790d87095b88ab940663b480fbf2f312023b7e5e2253f490cb493517db85"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/prev-page.svg",
+      "sha256": "ab3d4b2e1b76917e377a36f23d3b44e7d8a0d6d9bd31fc84706c9331c5af0e7a"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/previous-alt.svg",
+      "sha256": "2b84b63483ce77699218237bd283d590e62306caf0d7a7fd134ad840dc71389b"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/previous.svg",
+      "sha256": "cb473c5bd7dab64b5fc561ebebfcbfbe0aa2e8792a2a0678886e242cec652613"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/projector.svg",
+      "sha256": "ddeb9cc7535818bbcd50bb365a08aa4164f5dd39df5d5cc59b7a4112b6a31dea"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/radio-signal.svg",
+      "sha256": "50e0b488072e88df681c203a4c775e1fcd5cd77c59356403a6133ad501250f8a"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/rec.svg",
+      "sha256": "2a0db8e9abd3111f092c25d98835875d751ec9ae11471f7c80034394c023f746"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/repeat-item.svg",
+      "sha256": "dff5bbc7c5bfbf7ee93ea5c0106831d41c152fdf2033058bd3f914d82fe70905"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/repeat-off.svg",
+      "sha256": "b5a131bfd9b68676af21988ad9a8b1335cccbfd080c03784d00ec9e8344b11ba"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/repeat.svg",
+      "sha256": "01b316f5b1f1e17acbe6a387ffc409cea16757c87484da7d7744a009e4586d04"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/replay.svg",
+      "sha256": "1f6eb646e586d63f2341f2e4d6a847ce1229eaf59895a59e20873a2c912ae7ed"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/rew.svg",
+      "sha256": "a6d58224510b6626d5430d44cf85c1d86ac98326d483801297303d3ab0a9a1f3"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/rhapsody.svg",
+      "sha256": "e012ce0ca484ec65646cc5419977bb047161fd0f2e4a4a6eb3e27d45d9e8c2b5"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/right-alt.svg",
+      "sha256": "587fe87ea65d2d061d723633d862a53e21b0765988093c2f19a31289920c2b12"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/right.svg",
+      "sha256": "4ee53da13917e668e655dbe059ddbf742c21b27eaf1ebb19bf93bb239ee76384"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/roku.svg",
+      "sha256": "4d3c9c2550cb68ac54b1fca4a7466c898ba5f97cc1c17e0d77d6f9f846b63e58"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/rss.svg",
+      "sha256": "9c743e4e62a06a9e83d552197668aca93864545d35bb1cc89464de234cd5ec11"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/satellite.svg",
+      "sha256": "ec833fbd84e8c5d81b8aa11a1e2f7ef133bc6a5ef849c3928c90597872c88b83"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/scene.svg",
+      "sha256": "f0d6c3f91d0b94d5f9c2041a69ae8af4cecff756071a96e73e865886e1fb6352"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/settings-alt.svg",
+      "sha256": "4cd3fab5f71b9cb45ffbdb10638c95c415d6aac8824b4107044df8e0fb1c2293"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/settings.svg",
+      "sha256": "e4c467e36a9fb32449e6ebdca26a445744a56ca81f755d2f63e848470e1a4a4d"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/shades-closed.svg",
+      "sha256": "b095f26977ba6b0f301e34dd118854a2679bd38cae4015a145fee39da668a518"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/shades.svg",
+      "sha256": "aa9b5f79a10ece29ecbef95f811c4bb33cae220b24df89fa708584db5f324dd6"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/share.svg",
+      "sha256": "1fe737b1a16b1b207772df0fbaa4ff67caae1f1350b83ea73239c88d0a492c16"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/shield.svg",
+      "sha256": "35ad43a6693879411522ea49bd5b4f1e12fb8905dfade4f25894c8b091240230"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/shuffle-item.svg",
+      "sha256": "23fda95493f2ec13d68c9fba202a7d87ef331e10c30ca79161ba4c3136ea34fc"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/shuffle-off.svg",
+      "sha256": "b4d5264d7421af492cf29e76ba16c57138375de6ed05a4571ec0d3d67063d0b0"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/shuffle.svg",
+      "sha256": "c31fa4da1085bbf193f2e0d45b13a53972d811aeb68feef0a68a3d1cfae22979"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/sirius.svg",
+      "sha256": "d05d182da778b26f01109bc276c1f9ac5eeb9fdb77a3570a55d74ddd2670b753"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/siriusxm.svg",
+      "sha256": "8597055523528848344361642c930e5dd37ab79992dd5ab71d652feeab9869a3"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/skip-ahead.svg",
+      "sha256": "9348f3019018d78e17455025c453c665b4d63c83afa7b86d8fc7a5dad1672ad7"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/skip-back.svg",
+      "sha256": "7c6e9d597eb5dacbf89f0e1208cc20820a00ddf3fba83a0a1c3bb70da56e207b"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/slacker-radio.svg",
+      "sha256": "56bfcffc1d174f9bb45cd8d55881b3f348a5917ac3288454ffd80146383c6662"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/sleep.svg",
+      "sha256": "d096c210def020f8092bd33322c0a825c6a610d644c874d1dcfbc97a8dd5fb30"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/slow.svg",
+      "sha256": "c4ce8e5f9928ec13b2a9ca4a151138166724bff8e4f3ae190fdfd39ea67f57f7"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/snow-flake.svg",
+      "sha256": "6f5d8cb4b68da04b6d9d15524b368e50f61fdf150ba9498fb1829a909a8e11f2"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/song-add.svg",
+      "sha256": "0e8c22052fc2cd69bb53c5ef0d78e1408c8e6e73930da9d870060f1a9d2ccf0d"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/sonos.svg",
+      "sha256": "757b5c7b08628bf62c82ee4fac308c52124e94a26390d0a60caeb5b37bf4e87e"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/spotify.svg",
+      "sha256": "5936f0cbbf2165fcc4165dffdf1d11cc6f07ee1c30864002bb1f9032a5939e67"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/star.svg",
+      "sha256": "021c2b58a242932a405eb7739267bfd2b90e39e83ccae39ab8ea7c9e83915f49"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/stop-source.svg",
+      "sha256": "7595ba132e76413f52f9919a33dfa9e13a9c39478e13a0d919bb5c5fe47410bf"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/stop.svg",
+      "sha256": "5e1954b83173fc9b34a34a0c1f43aaa76071b8981dd0ac0f527cdff1a6ddce6d"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/stopwatch.svg",
+      "sha256": "57d2c6be21971fe90de7e533f0e14a5a131e47b5a66c9a42daa3138a80846574"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/sun.svg",
+      "sha256": "23cb6f754e2f8ae7e243abae0a6c6f3701e3281ed01f5a64b127f82e564cba2f"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/system.svg",
+      "sha256": "0adde4bcc402779e0b0fc3edf04d8a195135d2b5952e559842b18e6224d6983f"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/theater.svg",
+      "sha256": "a43de571d01271c3758e456617a1fc7a0c1fc3fa3b2a251e075768ba6f31ef75"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/thumb-down.svg",
+      "sha256": "2724e56e1adbae02dbef7d70a3e243bd4fa64b230909ccfc39e59d945c80cf68"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/thumb-up.svg",
+      "sha256": "0e523f731db10f82236c6fe883e4caea200fefada393f807e236a86413a8746b"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/tidal.svg",
+      "sha256": "e8dfe181b528ed3675881dc1da54a27ee777d347e36d6e7f65d861b1a6581d75"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/trashcan.svg",
+      "sha256": "1c3d2f8d45553bd218196c78a049f7dd36a76eafcee2470b383eabb12c9bd262"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/triangle.svg",
+      "sha256": "dd63e7e726729409dd7354c75a664d2280a71f0b510c7380707e39af771f562c"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/tv.svg",
+      "sha256": "40d7ce6be5266e054d12364acf56886ce5a5acb6aa2a188dc999c2320ee8f2cc"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/ungroup.svg",
+      "sha256": "78a18faf675a78fe154f8882f9234e0e4db9b7756b8bfd5794aad95181f0b7c4"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/up-alt.svg",
+      "sha256": "da77d923594b5954f4fd269c1a40f9381dcef9569d73fa7d52a470b59c9fedf7"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/up.svg",
+      "sha256": "6f6a71b074224e8c20fbaaeb2e40852105e02f345e420970f0ab55b99142069f"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/upload.svg",
+      "sha256": "029724143968d913be0e846051b5fa511e2c9c98e698be8408ef1f6727dc349d"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/usb-alt.svg",
+      "sha256": "c1e3bf75e3533576a0be73f9da5ae89584a03b341b39cfc7351e8a566da39dad"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/usb.svg",
+      "sha256": "96f1183578521594d446e93d6f7a1aa98d0f8296b85cdf81f8d02cef10aa86c7"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/user-bookmark.svg",
+      "sha256": "5b0de5c9944da358bca935e98878559f560fd57afbcefc679cb2c89648ff4820"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/user-check.svg",
+      "sha256": "9bfb092899e27dc203da5a231a96a83c35157772dac03d643d3daad1cae84ccc"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/user-minus.svg",
+      "sha256": "dc69e85fe65c2605dfa158622b643307d023937fb5b83449498ea2d0a86a3521"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/user.svg",
+      "sha256": "8ad3d9d553d0cb25a6be31f1d46692fc570fbd4d4cab5495583db6c1b596d269"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/users.svg",
+      "sha256": "8e503493d22a077e7ccccb142ace5c2f4da2abd200fda94e18bd294c1d07e6c4"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/video-input.svg",
+      "sha256": "3c5c9b2849cf7071d4343b67b8184d3207fef9ba3ae2706d3a35df78e628e486"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/video-output.svg",
+      "sha256": "a26e22bce965cef1ceb92c16d0937b66d93f481b6a682e63705ef83877795633"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/video-screen-alt.svg",
+      "sha256": "f688226919adb3dd552820f182b474a1a2c321f3cf84f21dbee67e1a4d134e62"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/video-screen.svg",
+      "sha256": "9012f1f5535154a8f3747ab135f958b88c647035f7e707e2d8580bcb5aa6a92b"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/volume-hi.svg",
+      "sha256": "3250e0056ef84e415a140644dcf57b4b0ed1f110044a13f9abe163751fb9b47b"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/volume-lo.svg",
+      "sha256": "87af25cb18a27901add7dfd98a3ebbc2cb229fd01a4be5cf9723570f56af9e3f"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/volume-mute.svg",
+      "sha256": "7fb1a3caa3386b8535de2eacf2ff0841c3282bb4243b9039d2fb4589dbb59beb"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/volume-muted.svg",
+      "sha256": "e3ddfe7cbe58a0f5e205dcf495962485fa5ead83f64472c952c94c3809dbc3c8"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/volume.svg",
+      "sha256": "bca24d39bf5fc04d97bb2decae0a19fc14fdcc70d091e26ca89c47c93826be2b"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/weather.svg",
+      "sha256": "da66fc25223c67b28958a26d85120625db76ae438b3ad6f566b43c8947e8b35f"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/wi-fi.svg",
+      "sha256": "eb872ff0f84f9016381724f6e16201b5d16a3ddf3bea5a10e972539e27229eb6"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/windows.svg",
+      "sha256": "7dd4d23ccdb2b1a6b4cc62bc4d572057ac9a2934d62c5137dc9e7116dda422d5"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/wireless-device.svg",
+      "sha256": "a0dac21604ca973e8ead21727bd9116911dc4c74a1ac120658da7004701c53c7"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/wrench.svg",
+      "sha256": "d573d59774a8da066928ad358e07f52f24b4d3655e1b74d8e60512eeefbeebb7"
+    },
+    {
+      "path": "assets/svgs/media-transports/light/xm.svg",
+      "sha256": "0692fc1884b3d7a988f18b8cf3dbd52d0110ce2cc599d911590641b4635cea99"
+    }
+  ],
+  "plans": [
+    {
+      "file": "APH_bar_lobby_550.pdf",
+      "sha256": "cb375ca9b0c3ad45954fafd8d81a6d80ab88084650be5eebaf5a5c507b8972f5"
+    },
+    {
+      "file": "APH_niveau_250.pdf",
+      "sha256": "96abf4eb20b577a73f35bed2c15969dd47a5ef34fcb663c0da48e98254b0e842"
+    },
+    {
+      "file": "APH_niveau_450.pdf",
+      "sha256": "ef4b10bf1c47026db8a69b97990fe91d2a16326ce121e69d8af1c132ef0e7b54"
+    },
+    {
+      "file": "APH_petit_salon.pdf",
+      "sha256": "e2d9ad89f0bd8b0930f036a4da9353c2a3684f3959ac3f970cf2256e392f07dc"
+    },
+    {
+      "file": "APH_petit_salon_AV.pdf",
+      "sha256": "91e6f9826d4b26b9e233714805a5008bd4f0881f0151f9a985be191c31b0bb05"
+    },
+    {
+      "file": "APH_retaurant_WC305_306.pdf",
+      "sha256": "3241935dc2a1891c8742bc6b7d85acd84e4b87a7565e58291c5159b643e3c9c7"
+    },
+    {
+      "file": "HDH_schema_de_principe_smartbee.pdf",
+      "sha256": "e6289e715142329b29a8ea491f0c53fd13c5de25216a039fcd8dbda973213435"
+    },
+    {
+      "file": "Plans V2.0\\2021.05.19_Repérage plafond noirs.pdf",
+      "sha256": "30dba0de560f74738eb3fc2ecb3e21fab09439aee0ce4ff65fcd80f3e37161bb"
+    },
+    {
+      "file": "Plans V2.0\\FTV_450_3618-450P100-050-P (1).pdf",
+      "sha256": "c65f316378a706eb56ba86726f96665904a293c0a2a79b9de4a0f5301c899924"
+    },
+    {
+      "file": "Plans V2.0\\Niveau-350-Audio-3618 - APH-Soumission CFC 236.4 installations audio-visuelles V1.0 (1).pdf",
+      "sha256": "9dd4c956a867551f87cd9a41c0e2b6618edc31e560ba0b5760d3fef9e0cf8e61"
+    },
+    {
+      "file": "Plans V2.0\\Niveau_250_Audio_3618 - APH_Soumission CFC 236.4 installations audio-visuelles V2.0.pdf",
+      "sha256": "7798a4d6ba178c4dd4182780f04351c58202072aa133b750d4169698bf558eec"
+    },
+    {
+      "file": "Plans V2.0\\Niveau_300B_Audio_3618 - APH_Soumission CFC 236.4 installations audio-visuelles V2.0.pdf",
+      "sha256": "bbcee89c90fb760ca59ec24ea48ea0e8ad11e12fad2f38e3ea8fa84d9119268e"
+    },
+    {
+      "file": "Plans V2.0\\Niveau_300_Audio_3618 - APH_Soumission CFC 236.4 installations audio-visuelles V2.0.pdf",
+      "sha256": "bb9dab2ee3c3608559a2211f0116638f8e2e2d8dcc27311644d605eaf437f2c9"
+    },
+    {
+      "file": "Plans V2.0\\Niveau_400_Audio_3618 - APH_Soumission CFC 236.4 installations audio-visuelles V2.0.pdf",
+      "sha256": "44732c8b76097b6fc2b2e01c6ca5871354ff8c6b1437fdd37dbd29d004330302"
+    },
+    {
+      "file": "Plans V2.0\\Niveau_550_Audio_3618 - APH_Soumission CFC 236.4 installations audio-visuelles V2.0.pdf",
+      "sha256": "05558ff18918a262e2ee110d5576ac83b083c80cc17683bfe06a0779e0a2b2f2"
+    }
+  ]
+}

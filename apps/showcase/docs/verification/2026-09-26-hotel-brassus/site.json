@@ -1,0 +1,54 @@
+{
+  "results": [
+    {
+      "device": "wallpanel",
+      "mode": "normal",
+      "url": "http://127.0.0.1:4187/interfaces/hotellerie/hotel-brassus/wallpanel",
+      "frames": 4
+    },
+    {
+      "device": "wallpanel",
+      "mode": "scene"
+    },
+    {
+      "device": "wallpanel",
+      "mode": "fullscreen"
+    },
+    {
+      "device": "tablet",
+      "mode": "normal",
+      "url": "http://127.0.0.1:4187/interfaces/hotellerie/hotel-brassus/tablet",
+      "frames": 4
+    },
+    {
+      "device": "tablet",
+      "mode": "fullscreen"
+    },
+    {
+      "device": "desktop",
+      "mode": "normal",
+      "url": "http://127.0.0.1:4187/interfaces/hotellerie/hotel-brassus/desktop",
+      "frames": 4
+    },
+    {
+      "device": "desktop",
+      "mode": "fullscreen"
+    },
+    {
+      "lang": "fr",
+      "sheet": true
+    },
+    {
+      "lang": "en",
+      "sheet": true
+    },
+    {
+      "lang": "de",
+      "sheet": true
+    },
+    {
+      "geneva": true
+    }
+  ],
+  "errors": []
+}

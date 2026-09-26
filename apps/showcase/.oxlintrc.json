@@ -1,9 +1,21 @@
 {
   "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "oxc"],
-  "ignorePatterns": ["public/plan3d/vendor/**", "public/showcases/**/js/ch5-components.js"],
+  "plugins": [
+    "react",
+    "oxc"
+  ],
+  "ignorePatterns": [
+    "public/plan3d/vendor/**",
+    "public/showcases/**/js/ch5-components.js",
+    "public/showcases/hotel-brassus/ch5/**"
+  ],
   "rules": {
     "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
+    "react/only-export-components": [
+      "warn",
+      {
+        "allowConstantExport": true
+      }
+    ]
   }
 }

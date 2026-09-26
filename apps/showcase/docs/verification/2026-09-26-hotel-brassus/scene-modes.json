@@ -1,0 +1,41 @@
+{
+  "results": [
+    {
+      "device": "wallpanel",
+      "mode": "Responsive",
+      "frame": 1,
+      "overflow": false
+    },
+    {
+      "device": "wallpanel",
+      "mode": "Taille réelle",
+      "frame": 1,
+      "overflow": false
+    },
+    {
+      "device": "tablet",
+      "mode": "Responsive",
+      "frame": 1,
+      "overflow": false
+    },
+    {
+      "device": "tablet",
+      "mode": "Taille réelle",
+      "frame": 1,
+      "overflow": false
+    },
+    {
+      "device": "desktop",
+      "mode": "Responsive",
+      "frame": 1,
+      "overflow": false
+    },
+    {
+      "device": "desktop",
+      "mode": "Taille réelle",
+      "frame": 1,
+      "overflow": false
+    }
+  ],
+  "errors": []
+}

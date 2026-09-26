@@ -1,5 +1,10 @@
 # Reprise Codex — Crestron CH5 Cowork
 
+## 26/09/2026 — Hotel Brassus
+
+Ajout demandé par Donatien dans Hôtellerie avec le vrai GUI de l'Hôtel des Horlogers et une maquette basée sur ses plans locaux. Site 2.1.0, source CH5 2.12.16 importée depuis la distribution compilée fournie. Travail isolé des modifications locales Villa Crans. Détails, synchronisation reproductible, limites architecturales et recette : `apps/showcase/docs/hotel-brassus.md`. Source HDH sur le Bureau et programmes matériels préservés. Ne pas interpréter les valeurs de démonstration comme la configuration du site client.
+
+
 ## 17/09/2026 — limite de sauvegarde vérifiée après la demande de pause
 
 La sauvegarde Git est confirmée pour les sources et les fichiers non ignorés. **Elle n'est pas une image complète du laptop ni une garantie de restauration intégrale.** Les derniers `Villaftv.cpz` et `Project_Slot2.lpz`, ainsi que `deploy.secrets.psd1`, sont présents localement et ignorés ; logiciels/outils Windows et accès externes restent à sauvegarder ou réinstaller. Voir [AUDIT-RESTAURATION-2026-09-17.md](AUDIT-RESTAURATION-2026-09-17.md) pour l'inventaire vérifié et les lacunes. Ne pas annoncer « tout récupérable à l'identique depuis Git seul ». Aucun changement fonctionnel ; pause maintenue.

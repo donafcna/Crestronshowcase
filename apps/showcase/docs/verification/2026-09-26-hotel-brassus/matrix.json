@@ -1,0 +1,2166 @@
+{
+  "results": [
+    {
+      "viewport": 1280,
+      "theme": "actuel",
+      "zone": "bar",
+      "page": "av",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1920,
+      "theme": "actuel",
+      "zone": "bar",
+      "page": "av",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1194,
+      "theme": "actuel",
+      "zone": "bar",
+      "page": "av",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1920,
+      "theme": "actuel",
+      "zone": "bar",
+      "page": "lighting",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1280,
+      "theme": "actuel",
+      "zone": "bar",
+      "page": "lighting",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1194,
+      "theme": "actuel",
+      "zone": "bar",
+      "page": "lighting",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1920,
+      "theme": "actuel",
+      "zone": "bar",
+      "page": "temperature",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1194,
+      "theme": "actuel",
+      "zone": "bar",
+      "page": "temperature",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1280,
+      "theme": "actuel",
+      "zone": "bar",
+      "page": "temperature",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1920,
+      "theme": "actuel",
+      "zone": "bar",
+      "page": "blinds",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1194,
+      "theme": "actuel",
+      "zone": "bar",
+      "page": "blinds",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1280,
+      "theme": "actuel",
+      "zone": "bar",
+      "page": "blinds",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1194,
+      "theme": "actuel",
+      "zone": "entrance",
+      "page": "av",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1920,
+      "theme": "actuel",
+      "zone": "entrance",
+      "page": "av",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1194,
+      "theme": "actuel",
+      "zone": "entrance",
+      "page": "lighting",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1920,
+      "theme": "actuel",
+      "zone": "entrance",
+      "page": "lighting",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1280,
+      "theme": "actuel",
+      "zone": "entrance",
+      "page": "av",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1194,
+      "theme": "actuel",
+      "zone": "entrance",
+      "page": "temperature",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1920,
+      "theme": "actuel",
+      "zone": "entrance",
+      "page": "temperature",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1280,
+      "theme": "actuel",
+      "zone": "entrance",
+      "page": "lighting",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1280,
+      "theme": "actuel",
+      "zone": "entrance",
+      "page": "temperature",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1194,
+      "theme": "actuel",
+      "zone": "restaurant",
+      "page": "av",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1920,
+      "theme": "actuel",
+      "zone": "restaurant",
+      "page": "av",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1194,
+      "theme": "actuel",
+      "zone": "restaurant",
+      "page": "lighting",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1920,
+      "theme": "actuel",
+      "zone": "restaurant",
+      "page": "lighting",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1280,
+      "theme": "actuel",
+      "zone": "restaurant",
+      "page": "av",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1194,
+      "theme": "actuel",
+      "zone": "restaurant",
+      "page": "temperature",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1920,
+      "theme": "actuel",
+      "zone": "restaurant",
+      "page": "temperature",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1280,
+      "theme": "actuel",
+      "zone": "restaurant",
+      "page": "lighting",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1194,
+      "theme": "actuel",
+      "zone": "restaurant",
+      "page": "blinds",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1920,
+      "theme": "actuel",
+      "zone": "restaurant",
+      "page": "blinds",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1280,
+      "theme": "actuel",
+      "zone": "restaurant",
+      "page": "temperature",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1280,
+      "theme": "actuel",
+      "zone": "restaurant",
+      "page": "blinds",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1920,
+      "theme": "actuel",
+      "zone": "salon",
+      "page": "av",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1194,
+      "theme": "actuel",
+      "zone": "salon",
+      "page": "av",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1920,
+      "theme": "actuel",
+      "zone": "salon",
+      "page": "lighting",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1194,
+      "theme": "actuel",
+      "zone": "salon",
+      "page": "lighting",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1920,
+      "theme": "actuel",
+      "zone": "salon",
+      "page": "temperature",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1194,
+      "theme": "actuel",
+      "zone": "salon",
+      "page": "temperature",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1280,
+      "theme": "actuel",
+      "zone": "salon",
+      "page": "av",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1280,
+      "theme": "actuel",
+      "zone": "salon",
+      "page": "lighting",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1280,
+      "theme": "actuel",
+      "zone": "salon",
+      "page": "temperature",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1920,
+      "theme": "actuel",
+      "zone": "pdr",
+      "page": "av",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1194,
+      "theme": "actuel",
+      "zone": "pdr",
+      "page": "av",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1920,
+      "theme": "actuel",
+      "zone": "pdr",
+      "page": "lighting",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1194,
+      "theme": "actuel",
+      "zone": "pdr",
+      "page": "lighting",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1920,
+      "theme": "actuel",
+      "zone": "pdr",
+      "page": "temperature",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1194,
+      "theme": "actuel",
+      "zone": "pdr",
+      "page": "temperature",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1280,
+      "theme": "actuel",
+      "zone": "pdr",
+      "page": "av",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1280,
+      "theme": "actuel",
+      "zone": "pdr",
+      "page": "lighting",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1280,
+      "theme": "actuel",
+      "zone": "pdr",
+      "page": "temperature",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1920,
+      "theme": "actuel",
+      "zone": "wellness",
+      "page": "av",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1194,
+      "theme": "actuel",
+      "zone": "wellness",
+      "page": "av",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1920,
+      "theme": "actuel",
+      "zone": "wellness",
+      "page": "lighting",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1194,
+      "theme": "actuel",
+      "zone": "wellness",
+      "page": "lighting",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1920,
+      "theme": "actuel",
+      "zone": "wellness",
+      "page": "temperature",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1194,
+      "theme": "actuel",
+      "zone": "wellness",
+      "page": "temperature",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1280,
+      "theme": "actuel",
+      "zone": "wellness",
+      "page": "av",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1280,
+      "theme": "actuel",
+      "zone": "wellness",
+      "page": "lighting",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1280,
+      "theme": "actuel",
+      "zone": "wellness",
+      "page": "temperature",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1920,
+      "theme": "actuel",
+      "zone": "seminar",
+      "page": "av",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1194,
+      "theme": "actuel",
+      "zone": "seminar",
+      "page": "av",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1920,
+      "theme": "actuel",
+      "zone": "seminar",
+      "page": "lighting",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1194,
+      "theme": "actuel",
+      "zone": "seminar",
+      "page": "lighting",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1920,
+      "theme": "actuel",
+      "zone": "seminar",
+      "page": "temperature",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1280,
+      "theme": "actuel",
+      "zone": "seminar",
+      "page": "av",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1194,
+      "theme": "actuel",
+      "zone": "seminar",
+      "page": "temperature",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1920,
+      "theme": "actuel",
+      "zone": "seminar",
+      "page": "blinds",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1280,
+      "theme": "actuel",
+      "zone": "seminar",
+      "page": "lighting",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1194,
+      "theme": "actuel",
+      "zone": "seminar",
+      "page": "blinds",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1280,
+      "theme": "actuel",
+      "zone": "seminar",
+      "page": "temperature",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1280,
+      "theme": "actuel",
+      "zone": "seminar",
+      "page": "blinds",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1920,
+      "theme": "clair",
+      "zone": "bar",
+      "page": "av",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1194,
+      "theme": "clair",
+      "zone": "bar",
+      "page": "av",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1920,
+      "theme": "clair",
+      "zone": "bar",
+      "page": "lighting",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1194,
+      "theme": "clair",
+      "zone": "bar",
+      "page": "lighting",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1920,
+      "theme": "clair",
+      "zone": "bar",
+      "page": "temperature",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1194,
+      "theme": "clair",
+      "zone": "bar",
+      "page": "temperature",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1280,
+      "theme": "clair",
+      "zone": "bar",
+      "page": "av",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1920,
+      "theme": "clair",
+      "zone": "bar",
+      "page": "blinds",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1194,
+      "theme": "clair",
+      "zone": "bar",
+      "page": "blinds",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1280,
+      "theme": "clair",
+      "zone": "bar",
+      "page": "lighting",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1280,
+      "theme": "clair",
+      "zone": "bar",
+      "page": "temperature",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1280,
+      "theme": "clair",
+      "zone": "bar",
+      "page": "blinds",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1920,
+      "theme": "clair",
+      "zone": "entrance",
+      "page": "av",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1194,
+      "theme": "clair",
+      "zone": "entrance",
+      "page": "av",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1920,
+      "theme": "clair",
+      "zone": "entrance",
+      "page": "lighting",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1194,
+      "theme": "clair",
+      "zone": "entrance",
+      "page": "lighting",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1920,
+      "theme": "clair",
+      "zone": "entrance",
+      "page": "temperature",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1194,
+      "theme": "clair",
+      "zone": "entrance",
+      "page": "temperature",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1280,
+      "theme": "clair",
+      "zone": "entrance",
+      "page": "av",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1280,
+      "theme": "clair",
+      "zone": "entrance",
+      "page": "lighting",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1280,
+      "theme": "clair",
+      "zone": "entrance",
+      "page": "temperature",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1920,
+      "theme": "clair",
+      "zone": "restaurant",
+      "page": "av",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1920,
+      "theme": "clair",
+      "zone": "restaurant",
+      "page": "lighting",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1194,
+      "theme": "clair",
+      "zone": "restaurant",
+      "page": "av",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1194,
+      "theme": "clair",
+      "zone": "restaurant",
+      "page": "lighting",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1920,
+      "theme": "clair",
+      "zone": "restaurant",
+      "page": "temperature",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1194,
+      "theme": "clair",
+      "zone": "restaurant",
+      "page": "temperature",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1920,
+      "theme": "clair",
+      "zone": "restaurant",
+      "page": "blinds",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1194,
+      "theme": "clair",
+      "zone": "restaurant",
+      "page": "blinds",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1280,
+      "theme": "clair",
+      "zone": "restaurant",
+      "page": "av",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1280,
+      "theme": "clair",
+      "zone": "restaurant",
+      "page": "lighting",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1280,
+      "theme": "clair",
+      "zone": "restaurant",
+      "page": "temperature",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1280,
+      "theme": "clair",
+      "zone": "restaurant",
+      "page": "blinds",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1920,
+      "theme": "clair",
+      "zone": "salon",
+      "page": "av",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1920,
+      "theme": "clair",
+      "zone": "salon",
+      "page": "lighting",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1194,
+      "theme": "clair",
+      "zone": "salon",
+      "page": "av",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1920,
+      "theme": "clair",
+      "zone": "salon",
+      "page": "temperature",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1194,
+      "theme": "clair",
+      "zone": "salon",
+      "page": "lighting",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1194,
+      "theme": "clair",
+      "zone": "salon",
+      "page": "temperature",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1280,
+      "theme": "clair",
+      "zone": "salon",
+      "page": "av",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1280,
+      "theme": "clair",
+      "zone": "salon",
+      "page": "lighting",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1280,
+      "theme": "clair",
+      "zone": "salon",
+      "page": "temperature",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1920,
+      "theme": "clair",
+      "zone": "pdr",
+      "page": "av",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1920,
+      "theme": "clair",
+      "zone": "pdr",
+      "page": "lighting",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1194,
+      "theme": "clair",
+      "zone": "pdr",
+      "page": "av",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1920,
+      "theme": "clair",
+      "zone": "pdr",
+      "page": "temperature",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1194,
+      "theme": "clair",
+      "zone": "pdr",
+      "page": "lighting",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1194,
+      "theme": "clair",
+      "zone": "pdr",
+      "page": "temperature",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1280,
+      "theme": "clair",
+      "zone": "pdr",
+      "page": "av",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1280,
+      "theme": "clair",
+      "zone": "pdr",
+      "page": "lighting",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1280,
+      "theme": "clair",
+      "zone": "pdr",
+      "page": "temperature",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1920,
+      "theme": "clair",
+      "zone": "wellness",
+      "page": "av",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1920,
+      "theme": "clair",
+      "zone": "wellness",
+      "page": "lighting",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1920,
+      "theme": "clair",
+      "zone": "wellness",
+      "page": "temperature",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1194,
+      "theme": "clair",
+      "zone": "wellness",
+      "page": "av",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1194,
+      "theme": "clair",
+      "zone": "wellness",
+      "page": "lighting",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1194,
+      "theme": "clair",
+      "zone": "wellness",
+      "page": "temperature",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1280,
+      "theme": "clair",
+      "zone": "wellness",
+      "page": "av",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1280,
+      "theme": "clair",
+      "zone": "wellness",
+      "page": "lighting",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1280,
+      "theme": "clair",
+      "zone": "wellness",
+      "page": "temperature",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1920,
+      "theme": "clair",
+      "zone": "seminar",
+      "page": "av",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1920,
+      "theme": "clair",
+      "zone": "seminar",
+      "page": "lighting",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1194,
+      "theme": "clair",
+      "zone": "seminar",
+      "page": "av",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1920,
+      "theme": "clair",
+      "zone": "seminar",
+      "page": "temperature",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1194,
+      "theme": "clair",
+      "zone": "seminar",
+      "page": "lighting",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1920,
+      "theme": "clair",
+      "zone": "seminar",
+      "page": "blinds",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1194,
+      "theme": "clair",
+      "zone": "seminar",
+      "page": "temperature",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1194,
+      "theme": "clair",
+      "zone": "seminar",
+      "page": "blinds",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1280,
+      "theme": "clair",
+      "zone": "seminar",
+      "page": "av",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1280,
+      "theme": "clair",
+      "zone": "seminar",
+      "page": "lighting",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1280,
+      "theme": "clair",
+      "zone": "seminar",
+      "page": "temperature",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1280,
+      "theme": "clair",
+      "zone": "seminar",
+      "page": "blinds",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1920,
+      "theme": "sombre",
+      "zone": "bar",
+      "page": "av",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1920,
+      "theme": "sombre",
+      "zone": "bar",
+      "page": "lighting",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1194,
+      "theme": "sombre",
+      "zone": "bar",
+      "page": "av",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1920,
+      "theme": "sombre",
+      "zone": "bar",
+      "page": "temperature",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1194,
+      "theme": "sombre",
+      "zone": "bar",
+      "page": "lighting",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1920,
+      "theme": "sombre",
+      "zone": "bar",
+      "page": "blinds",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1194,
+      "theme": "sombre",
+      "zone": "bar",
+      "page": "temperature",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1194,
+      "theme": "sombre",
+      "zone": "bar",
+      "page": "blinds",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1280,
+      "theme": "sombre",
+      "zone": "bar",
+      "page": "av",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1280,
+      "theme": "sombre",
+      "zone": "bar",
+      "page": "lighting",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1280,
+      "theme": "sombre",
+      "zone": "bar",
+      "page": "temperature",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1280,
+      "theme": "sombre",
+      "zone": "bar",
+      "page": "blinds",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1920,
+      "theme": "sombre",
+      "zone": "entrance",
+      "page": "av",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1920,
+      "theme": "sombre",
+      "zone": "entrance",
+      "page": "lighting",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1194,
+      "theme": "sombre",
+      "zone": "entrance",
+      "page": "av",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1920,
+      "theme": "sombre",
+      "zone": "entrance",
+      "page": "temperature",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1194,
+      "theme": "sombre",
+      "zone": "entrance",
+      "page": "lighting",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1194,
+      "theme": "sombre",
+      "zone": "entrance",
+      "page": "temperature",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1280,
+      "theme": "sombre",
+      "zone": "entrance",
+      "page": "av",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1280,
+      "theme": "sombre",
+      "zone": "entrance",
+      "page": "lighting",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1280,
+      "theme": "sombre",
+      "zone": "entrance",
+      "page": "temperature",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1920,
+      "theme": "sombre",
+      "zone": "restaurant",
+      "page": "av",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1920,
+      "theme": "sombre",
+      "zone": "restaurant",
+      "page": "lighting",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1920,
+      "theme": "sombre",
+      "zone": "restaurant",
+      "page": "temperature",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1194,
+      "theme": "sombre",
+      "zone": "restaurant",
+      "page": "av",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1194,
+      "theme": "sombre",
+      "zone": "restaurant",
+      "page": "lighting",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1920,
+      "theme": "sombre",
+      "zone": "restaurant",
+      "page": "blinds",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1194,
+      "theme": "sombre",
+      "zone": "restaurant",
+      "page": "temperature",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1194,
+      "theme": "sombre",
+      "zone": "restaurant",
+      "page": "blinds",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1280,
+      "theme": "sombre",
+      "zone": "restaurant",
+      "page": "av",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1280,
+      "theme": "sombre",
+      "zone": "restaurant",
+      "page": "lighting",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1280,
+      "theme": "sombre",
+      "zone": "restaurant",
+      "page": "temperature",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1280,
+      "theme": "sombre",
+      "zone": "restaurant",
+      "page": "blinds",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1920,
+      "theme": "sombre",
+      "zone": "salon",
+      "page": "av",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1920,
+      "theme": "sombre",
+      "zone": "salon",
+      "page": "lighting",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1920,
+      "theme": "sombre",
+      "zone": "salon",
+      "page": "temperature",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1194,
+      "theme": "sombre",
+      "zone": "salon",
+      "page": "av",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1194,
+      "theme": "sombre",
+      "zone": "salon",
+      "page": "lighting",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1194,
+      "theme": "sombre",
+      "zone": "salon",
+      "page": "temperature",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1280,
+      "theme": "sombre",
+      "zone": "salon",
+      "page": "av",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1280,
+      "theme": "sombre",
+      "zone": "salon",
+      "page": "lighting",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1280,
+      "theme": "sombre",
+      "zone": "salon",
+      "page": "temperature",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1920,
+      "theme": "sombre",
+      "zone": "pdr",
+      "page": "av",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1920,
+      "theme": "sombre",
+      "zone": "pdr",
+      "page": "lighting",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1920,
+      "theme": "sombre",
+      "zone": "pdr",
+      "page": "temperature",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1194,
+      "theme": "sombre",
+      "zone": "pdr",
+      "page": "av",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1194,
+      "theme": "sombre",
+      "zone": "pdr",
+      "page": "lighting",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1194,
+      "theme": "sombre",
+      "zone": "pdr",
+      "page": "temperature",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1280,
+      "theme": "sombre",
+      "zone": "pdr",
+      "page": "av",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1280,
+      "theme": "sombre",
+      "zone": "pdr",
+      "page": "lighting",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1280,
+      "theme": "sombre",
+      "zone": "pdr",
+      "page": "temperature",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1920,
+      "theme": "sombre",
+      "zone": "wellness",
+      "page": "av",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1920,
+      "theme": "sombre",
+      "zone": "wellness",
+      "page": "lighting",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1920,
+      "theme": "sombre",
+      "zone": "wellness",
+      "page": "temperature",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1194,
+      "theme": "sombre",
+      "zone": "wellness",
+      "page": "av",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1194,
+      "theme": "sombre",
+      "zone": "wellness",
+      "page": "lighting",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1194,
+      "theme": "sombre",
+      "zone": "wellness",
+      "page": "temperature",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1280,
+      "theme": "sombre",
+      "zone": "wellness",
+      "page": "av",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1280,
+      "theme": "sombre",
+      "zone": "wellness",
+      "page": "lighting",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1280,
+      "theme": "sombre",
+      "zone": "wellness",
+      "page": "temperature",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1920,
+      "theme": "sombre",
+      "zone": "seminar",
+      "page": "av",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1920,
+      "theme": "sombre",
+      "zone": "seminar",
+      "page": "lighting",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1920,
+      "theme": "sombre",
+      "zone": "seminar",
+      "page": "temperature",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1920,
+      "theme": "sombre",
+      "zone": "seminar",
+      "page": "blinds",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1194,
+      "theme": "sombre",
+      "zone": "seminar",
+      "page": "av",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1194,
+      "theme": "sombre",
+      "zone": "seminar",
+      "page": "lighting",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1194,
+      "theme": "sombre",
+      "zone": "seminar",
+      "page": "temperature",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1194,
+      "theme": "sombre",
+      "zone": "seminar",
+      "page": "blinds",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1280,
+      "theme": "sombre",
+      "zone": "seminar",
+      "page": "av",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1280,
+      "theme": "sombre",
+      "zone": "seminar",
+      "page": "lighting",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1280,
+      "theme": "sombre",
+      "zone": "seminar",
+      "page": "temperature",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    },
+    {
+      "viewport": 1280,
+      "theme": "sombre",
+      "zone": "seminar",
+      "page": "blinds",
+      "overflow": false,
+      "broken": [],
+      "text": false,
+      "small": []
+    }
+  ],
+  "errors": [],
+  "http": []
+}

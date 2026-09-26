@@ -1,0 +1,30 @@
+[
+  {
+    "theme": "actuel",
+    "on": 100,
+    "off": 0,
+    "mute": true
+  },
+  {
+    "theme": "clair",
+    "on": 100,
+    "off": 0,
+    "mute": true
+  },
+  {
+    "theme": "sombre",
+    "on": 100,
+    "off": 0,
+    "mute": true
+  },
+  {
+    "gradient": {
+      "background": "radial-gradient(circle, rgb(81, 120, 102) 0%, rgb(0, 0, 0) 100%)",
+      "minRatio": 4.966515922263853
+    }
+  },
+  {
+    "mode2": true,
+    "mode1": false
+  }
+]

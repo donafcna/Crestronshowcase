@@ -253,7 +253,7 @@ const ShowcaseInner = ({ sectorId, projectId, device }) => {
   }, [demoEnabled, armResume]);
 
   const { cursor } = useAutoDemo({
-    enabled: demoEnabled,
+    enabled: demoEnabled && activeProject.autoDemo !== false,
     running: demoRunning && !expandedProjectId,
     stageRef,
     guiKey: `${activeProject.id}/${viewportDevice}/${demoEpoch}`,
@@ -595,7 +595,7 @@ const ShowcaseInner = ({ sectorId, projectId, device }) => {
                     onCalibrate={openCalib}
                   />
                 )}
-                {demoEnabled && demoRunning && (
+                {demoEnabled && activeProject.autoDemo !== false && demoRunning && (
                   <div className="present-hint glass-panel">
                     {renderIcon("Presentation", 14)}
                     <span>
@@ -609,8 +609,8 @@ const ShowcaseInner = ({ sectorId, projectId, device }) => {
         </div>
       </div>
       {calibOpen && <CalibrateCard onClose={() => setCalibOpen(false)} />}
-      {demoEnabled && <DemoCursor cursor={cursor} />}
-      {demoEnabled && !demoRunning && resumeAt && (
+      {demoEnabled && activeProject.autoDemo !== false && <DemoCursor cursor={cursor} />}
+      {demoEnabled && activeProject.autoDemo !== false && !demoRunning && resumeAt && (
         <DemoCountdown resumeAt={resumeAt} total={idleResumeMs} onResumeNow={resumeDemo} />
       )}
     </div>

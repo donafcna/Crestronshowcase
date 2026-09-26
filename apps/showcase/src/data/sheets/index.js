@@ -1,3 +1,4 @@
+import hotelBrassus from "./hotel-brassus";
 // Fiches détaillées par interface : chaque écran du GUI avec capture et explication
 // de chaque bouton (« Fonctionnalités en détail » de la fiche PDF).
 // Format d'un module : { fr: { intro, sections: [{ title, image, image2?, portrait?, text, buttons: [[label, explication], …] }] }, en: {…}, de: {…} }
@@ -21,6 +22,7 @@ import villaLeman from "./villa-leman";
 import yachtMonaco from "./yacht-monaco";
 
 const docs = {
+  "hotel-brassus": hotelBrassus,
   "appartement-carouge": appartementCarouge,
   "appartement-eaux-vives": appartementEauxVives,
   "auditorium-richmond": auditoriumRichmond,
