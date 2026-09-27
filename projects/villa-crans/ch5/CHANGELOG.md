@@ -1,5 +1,21 @@
 # Villa Crans CH5 — journal des versions
 
+## v4.8 — 27/09/2026 — scene OFF selectionnee en rouge sur tous les chassis (a compiler : CH5 seul, web + tsw + mobile)
+
+| Artefact | Etat de ce lot |
+|---|---|
+| CH5 source | `src/themes/scene-controls.css` (jetons `--scene-off-*` au niveau de `body#app-body`, regles dalle + page iPhone), `src/index.html` (charge la feuille) — **a recompiler** ; `iphone.html` inchange |
+| CPZ / LPZ | inchanges |
+| Config | `meta.version` 1.0.207 |
+| Showcase | regeneree par `sync-villa-crans.py`, non poussee |
+| Batterie | `tools/qa-off-rouge.mjs` : 3 themes × {dalle 1920×1200 page + fenetre Circuits, iPhone page + fenetre Circuits}, OFF selectionne rouge et >= 4:1 partout (4,43 a 7:1) : **12/12 VERT** ; avant : 9/12 hors regle (dalle or, page iPhone or, et en Clair la dalle ne distinguait pas OFF selectionne). `qa-v47.mjs` iPhone rejoue : 69/69 |
+
+**Decision Donatien (recette 1.0.206 sur XPanel) : OFF rouge partout.** Jusqu'ici seul le second jeu de l'iPhone (fenetre Circuits) l'etait,
+via un `--ch5-button-selected-background-color:#dc2626` pose en dur sur un bouton. Le rouge devient un jeton partage (`--scene-off-active-bg/-text/-border/-glow`,
+variante Clair `#b91c1c`) consomme par les trois formes : `<ch5-button data-join="51">` de la dalle / iPad / XPanel, `#scene-btn-51.scene-btn-mobile`
+de la page iPhone, `.scene-cmd-btn--off` de la fenetre Circuits iPhone. `index.html` charge desormais `themes/scene-controls.css` comme `iphone.html`.
+
+
 ## v4.7 — 27/09/2026 — iPhone : scenes de la fenetre Circuits, HVAC et wellness en `<button>` ; vitrine regeneree (a compiler : CH5 seul)
 
 | Artefact | Etat de ce lot |

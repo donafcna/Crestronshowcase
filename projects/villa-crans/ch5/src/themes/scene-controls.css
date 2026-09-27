@@ -13,9 +13,6 @@ body#app-body #circuits-overlay {
     --scene-active-bg: rgba(196, 154, 69, 0.22);
     --scene-active-text: #ffffff;
     --scene-active-border: #c49a45;
-    --scene-off-active-bg: #dc2626;
-    --scene-off-active-text: #ffffff;
-    --scene-off-active-border: #fecaca;
 }
 body#app-body.theme-light #circuits-overlay {
     --scene-idle-bg: rgba(15, 23, 42, 0.06);
@@ -24,9 +21,6 @@ body#app-body.theme-light #circuits-overlay {
     --scene-active-bg: #fdf3dc;
     --scene-active-text: #1f2937;
     --scene-active-border: #a16207;
-    --scene-off-active-bg: #b91c1c;
-    --scene-off-active-text: #ffffff;
-    --scene-off-active-border: #7f1d1d;
 }
 body#app-body #circuits-overlay .scene-cmd-btn {
     min-width: 0;
@@ -82,4 +76,45 @@ body#app-body #circuits-overlay .scene-cmd-btn:focus-visible {
         padding: 0 2px;
         font-size: 0.8rem;
     }
+}
+
+/* ---------------------------------------------------------------------------------------------
+   Scene OFF (join 51) selectionnee : ROUGE SUR TOUS LES CHASSIS (decision Donatien, 27.09.2026).
+   Un seul jeu de jetons pour la dalle / iPad / XPanel (<ch5-button data-join="51">, index.html),
+   la page principale de l'iPhone (#scene-btn-51.scene-btn-mobile) et la fenetre Circuits de
+   l'iPhone (.scene-cmd-btn--off, ci-dessus). index.html charge cette feuille apres ses styles
+   internes ; les selecteurs sont plus specifiques que « ch5-button[selected="true"] .scene-btn »
+   et que « .theme-light .scene-btn-mobile.selected » d'iphone.html. Contrastes : #fff sur #dc2626
+   = 4,8:1, #fff sur #b91c1c = 6,5:1. */
+body#app-body {
+    --scene-off-active-bg: #dc2626;
+    --scene-off-active-text: #ffffff;
+    --scene-off-active-border: #fecaca;
+    --scene-off-glow: 0 0 20px rgba(220, 38, 38, 0.55);
+}
+body#app-body.theme-light {
+    --scene-off-active-bg: #b91c1c;
+    --scene-off-active-text: #ffffff;
+    --scene-off-active-border: #7f1d1d;
+    --scene-off-glow: 0 0 14px rgba(185, 28, 28, 0.35);
+}
+/* Dalle, iPad, XPanel */
+body#app-body ch5-button[customClass~="scene-btn"][data-join="51"][selected="true"] .scene-btn,
+body#app-body ch5-button[customClass~="scene-btn"][data-join="51"].ch5-button--selected .scene-btn,
+body#app-body ch5-button[customClass~="scene-btn"][data-join="51"] .scene-btn.ch5-button--selected {
+    background-color: var(--scene-off-active-bg) !important;
+    border-color: var(--scene-off-active-border) !important;
+    color: var(--scene-off-active-text) !important;
+    box-shadow: var(--scene-off-glow) !important;
+}
+body#app-body ch5-button[customClass~="scene-btn"][data-join="51"][selected="true"] .ch5-button--label,
+body#app-body ch5-button[customClass~="scene-btn"][data-join="51"].ch5-button--selected .ch5-button--label {
+    color: var(--scene-off-active-text) !important;
+}
+/* iPhone, page principale */
+body#app-body #scene-btn-51.scene-btn-mobile.selected {
+    background-color: var(--scene-off-active-bg) !important;
+    border-color: var(--scene-off-active-border) !important;
+    color: var(--scene-off-active-text) !important;
+    box-shadow: var(--scene-off-glow) !important;
 }

@@ -5,6 +5,7 @@
   classe `.selected`. Le `<ch5-button receiveStateSelected>` n'y affiche ni l'appui ni l'état (5-20 s de retard, v4.4). Convertis : Centralisation
   401-411 (v4.4), partitions 301-312 (v4.6), scènes fenêtre Circuits 51-54 + HVAC 610-615 + sauna/hammam 620-621/624-625 (v4.7). Restent en
   `<ch5-button>` les impulsions sans état (49/50, 622/623, 626/627, télécommandes, 251-253). La dalle (`index.html`) garde ses `<ch5-button>`.
+- **Scène OFF (51) sélectionnée = rouge sur tous les châssis** (v4.8, jetons `--scene-off-*` sur `body#app-body` dans `scene-controls.css`, chargée par les deux HTML).
 - Jetons par thème dans les CSS partagés, consommés par les deux formes : `global-controls.css` (`--global-*`), `alarm-controls.css` (`--alarm-*`),
   `room-controls.css` (`--hvac-*` sur `.hvac-controls`), `scene-controls.css` (`--scene-*` sur `#circuits-overlay`). Couleurs en `!important`
   à cause de la règle générique `.theme-light .custom-overlay-panel button` d'`iphone.html`.
@@ -45,7 +46,7 @@
 Quatre versions à tenir alignées, ici et en tête de chaque entrée du CHANGELOG.
 | Artefact | Version | Compilation |
 |---|---|---|
-| CH5 `.ch5z` (TSW + XPanel + mobile) | source **1.0.206** (`meta.version`) ; `version.json` 1.0.204 = dernier build ; installé 1.0.204 (TSW .1.16, XPanel CP4 .1.200, Crestron One) ; **v4.6 + v4.7 à compiler** (`-Target web`, `tsw`, `mobile`) | `deploy.ps1` incrémente `version.json` à chaque build, puis aligner `meta.version` |
+| CH5 `.ch5z` (TSW + XPanel + mobile) | source **1.0.207** (`meta.version`) ; 1.0.206 (v4.7) compilé et déployé le 27/09 sur TSW .1.16, XPanel CP4 .1.200 et Crestron One ; **v4.8 à compiler** (`-Target web`, `tsw`, `mobile`) | `deploy.ps1` incrémente `version.json` à chaque build, puis aligner `meta.version` |
 | CPZ slot 1 (C#) | 1.0.195.0 (v4.5) compilé et chargé ; aucun changement C# depuis | SIMPL# Pro + `deploy.ps1 -Target cp4` |
 | LPZ slot 2 (SIMPL) | v4.1 compilé 18/09 05:20 (`Project_Slot2.lpz`), **jamais testé sur matériel** ; SMW inchangé depuis | F12 sur `Project_Slot2.smw` puis charger |
 | Showcase Vercel | prod = `74cd4a41` (17.09) ; copie locale régénérée le 27/09 (v4.4 → v4.7), **non poussée** | `sync-villa-crans.py` puis push `main` → Vercel |
@@ -137,7 +138,7 @@ La démo automatique démarre désormais sur **tous les supports** (elle était 
 6. **Jamais deux clés d'un même objet JSON qui ne diffèrent que par la casse** (`MUSIQUE` / `Musique` dans `traductions`) : `ConvertFrom-Json` de PowerShell 5.1 refuse le fichier et `deploy.ps1` s'arrête avant le build, alors que `JSON.parse` et Python les acceptent en silence. Contrôlé désormais par `tools/quality/validate-config.mjs`.
 
 ## Reste à faire
-1. **Compiler v4.6 + v4.7** (`deploy.ps1 -Target web`, `tsw`, `mobile`), relever la version dans Réglages sur l'iPhone, puis aligner `meta.version`.
+1. **Compiler v4.8** (`deploy.ps1 -Target web`, `tsw`, `mobile`), relever la version dans Réglages sur l'iPhone, puis aligner `meta.version`.
    Recette iPhone : partitions, scènes de la fenêtre Circuits (appui, état, appui long 💾), HVAC ON/OFF/ventilation, sauna/hammam.
 2. **Push de `main`** (commits locaux + vitrine régénérée v4.4 → v4.7) → Vercel ; vérifier en ligne. Attendre le GO de Donatien.
 3. LPZ v4.1 : charger `Project_Slot2.lpz` et recette Debugger (rappel de scène → `Rxx_Circuit_N_fb#`, 💾 → aucun join, dalle ↔ iPad, progreset).
