@@ -59,7 +59,7 @@ try {
   await page.waitForTimeout(100);
   const circuitAfter = await frame.evaluate(() => ({ exterior:window.__restaurant3d.circuitMaterials.exterior.tables.emissiveIntensity, dining:window.__restaurant3d.circuitMaterials.dining.tables.emissiveIntensity }));
   assert.ok(circuitAfter.exterior < .03 && Math.abs(circuitAfter.dining-circuitBefore.dining) < .001, 'Le circuit extérieur varie sans modifier les pièces');
-  await page.locator('.rk-scenes button').filter({ hasText: 'Accueil' }).click();
+  await page.locator('.rk-scenes button[data-scene="welcome"]').click();
   const cameraGoals = new Set();
   const floorFailures = [];
   const visualZones = new Set(['cellar','private','signature','teppanyaki','lounge','gallery','belvedere','terrace']);
@@ -98,7 +98,7 @@ try {
   await page.locator('.device-stage').dispatchEvent('wheel', { deltaY: -120 });
   await page.waitForTimeout(100);
   assert.equal(await frame.evaluate(() => window.__restaurant3d.modelState.view), 'focus', 'La molette montante revient à la dernière zone');
-  await page.locator('.rk-scenes button').filter({ hasText: 'Rooftop' }).click();
+  await page.locator('.rk-scenes button[data-scene="rooftop"]').click();
   await page.waitForTimeout(2400);
   assert.equal(await frame.evaluate(() => window.__restaurant3d.modelState.zoneLevels.rooftop.pergola), 88);
   await page.screenshot({ path: path.join(out, 'restaurant-phone.png'), fullPage: true });
@@ -116,6 +116,9 @@ try {
   const boutiqueFrame = page.frames().find(item => item.url().includes('/ftv-luxury/models/boutique.html'));
   assert.ok(boutiqueFrame, 'La maquette Boutique est chargée');
   await boutiqueFrame.waitForFunction(() => window.__ftvModel?.state);
+  const boutiqueGui = page.frames().find(item => item.url().includes('/ftv-luxury/gui.html') && item.url().includes('boutique-hermes'));
+  assert.ok(boutiqueGui, 'Le GUI Boutique est disponible pour la démonstration');
+  await boutiqueGui.waitForFunction(() => window.ftvGui?.ready);
   const boutiqueEntryState = await boutiqueFrame.evaluate(() => window.__ftvModel.state());
   assert.deepEqual(
     { room:boutiqueEntryState.room,floor:boutiqueEntryState.floor,view:boutiqueEntryState.view },
@@ -130,11 +133,13 @@ try {
   await page.waitForTimeout(Math.max(0, 4500 - (Date.now() - boutiqueStarted)));
   assert.equal(await page.locator('.demo-cursor.visible').count(), 0, 'Boutique conserve la vue globale sans curseur pendant cinq secondes');
   assert.equal((await boutiqueFrame.evaluate(() => window.__ftvModel.state())).room, 'all', 'Boutique reste sur la vue globale pendant le délai initial');
+  assert.equal(await boutiqueGui.evaluate(() => window.ftvGui.state.preset), 'closed', 'Boutique démarre sur la scène Fermeture');
+  assert.ok(Math.abs(await boutiqueFrame.evaluate(() => document.querySelector('#ftv-jewel').__jewel.vals.cove)-5) < .2, 'Toutes les pièces sont en veille sur la vue globale initiale');
   await page.waitForTimeout(1700);
   assert.equal(await page.locator('.demo-cursor.visible').count(), 1, 'Le curseur Boutique apparaît après cinq secondes sans interaction');
   assert.equal((await boutiqueFrame.evaluate(() => window.__ftvModel.state())).room, 'hall', 'Le curseur sélectionne Hall et escalier d’apparat après le délai');
-  const boutiqueGui = page.frames().find(item => item.url().includes('/ftv-luxury/gui.html') && item.url().includes('boutique-hermes'));
-  assert.ok(boutiqueGui, 'Le GUI Boutique est disponible pour la démonstration');
+  await page.waitForTimeout(5200);
+  assert.equal(await boutiqueGui.evaluate(() => window.ftvGui.state.preset), 'private', 'La première scène automatique est Rendez-vous privé');
   await boutiqueGui.evaluate(() => window.ftvGui.selectRoom('hall'));
   await page.waitForTimeout(100);
   assert.equal((await boutiqueFrame.evaluate(() => window.__ftvModel.state())).room, 'hall', 'La démonstration peut sélectionner le Hall et escalier d’apparat');
@@ -150,10 +155,23 @@ try {
   await boutiqueGui.evaluate(() => window.ftvGui.selectRoom('all'));
   await page.waitForTimeout(1000);
   await page.screenshot({ path: path.join(out, 'boutique-stable-entry.png'), fullPage: true });
+  const restaurantTourStarted = Date.now();
   await page.locator('a[href="/interfaces/restaurant"]').click();
   await page.waitForFunction(() => location.pathname.endsWith('/interfaces/restaurant/sushi-bar-kyoto/phone'));
   assert.equal(await page.locator('.phone-device-frame').count(), 1, 'Restaurant ouvre le châssis Smartphone');
   await page.locator('.restaurant-background[data-ready="true"]').waitFor({ timeout: 30_000 });
+  const restaurantTourFrame = page.frames().find(item => item.url().includes('/restaurant-lumiere/model.html'));
+  assert.ok(restaurantTourFrame, 'La maquette Restaurant est disponible pour le parcours automatique');
+  await page.waitForTimeout(Math.max(0, 4500 - (Date.now() - restaurantTourStarted)));
+  assert.equal(await page.locator('.demo-cursor.visible').count(), 0, 'Restaurant conserve la vue globale sans curseur pendant cinq secondes');
+  assert.equal(await restaurantTourFrame.evaluate(() => window.__restaurant3d.modelState.view), 'overview', 'Restaurant démarre sur la vue globale');
+  assert.ok(await restaurantTourFrame.evaluate(() => Object.values(window.__restaurant3d.modelState.zoneLevels).every(levels => levels.tables===0&&levels.bar===8&&levels.pergola===0&&levels.plants===18)), 'Restaurant démarre en Fermeture dans toutes les zones');
+  await page.waitForTimeout(1700);
+  assert.equal(await page.locator('.demo-cursor.visible').count(), 1, 'Le curseur Restaurant apparaît après cinq secondes sans interaction');
+  await restaurantTourFrame.waitForFunction(() => window.__restaurant3d.modelState.zone === 'accueil', null, { timeout: 3000 });
+  assert.equal(await restaurantTourFrame.evaluate(() => window.__restaurant3d.modelState.zone), 'accueil', 'Le curseur Restaurant sélectionne la première zone');
+  await page.waitForTimeout(5200);
+  assert.equal(await page.locator('.rk-scenes button.active').getAttribute('data-scene'), 'dinner', 'La première scène automatique Restaurant est Dîner');
 
   await page.goto(`${base}/interfaces/hotellerie/hotel-brassus/phone`, { waitUntil: 'domcontentloaded' });
   const phoneElement = await page.locator('iframe[src*="/showcases/hotel-brassus/phone.html"]').first().elementHandle({ timeout: 30_000 });

@@ -425,3 +425,9 @@ Après la vue générale et en l’absence d’interaction, le curseur de démon
 ## 27/09/2026 — Zoom Restaurant et délai Boutique 2.2.10
 
 Les quinze cadrages rapprochés du restaurant remplissent au maximum l’espace disponible tout en gardant leur sol visible. À l’ouverture de Boutique, la vue globale reste affichée pendant cinq secondes. Sans interaction, le curseur sélectionne ensuite le Hall et escalier d’apparat, puis les quatre scènes à cinq secondes d’intervalle.
+
+## 27/09/2026 — Parcours complet Boutique 2.2.11
+
+Boutique s’ouvre en vue globale avec la scène Fermeture dans tous les espaces. Après cinq secondes sans interaction, le curseur visite le Hall puis chacun des quatorze salons. Dans chaque pièce il applique Rendez-vous privé, Réception et Ouverture, avec cinq secondes entre chaque action. La fin du parcours revient à la vue globale et réapplique Fermeture à toute la boutique.
+
+Restaurant suit le même parcours : vue globale en Fermeture, cinq secondes d’attente, puis visite des quinze pavillons avec Dîner, Rooftop et Accueil toutes les cinq secondes. La séquence se termine sur la vue globale avec Fermeture appliquée à toutes les zones.

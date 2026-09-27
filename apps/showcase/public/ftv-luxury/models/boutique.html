@@ -57,8 +57,8 @@
     const connections=new T.Group();connections.userData.batchRoot=true;model.add(connections);
     const M={}, batches=new Map(), clipping=[], roomModels=[], hitFloors=[], labelSprites=[], ceilings=[];
     const lightMats={cove:[],case:[],sconce:[],spot:[],path:[],chandelier:[]};
-    const vals={cove:85,case:100,sconce:75,spot:65,path:55,chandelier:100};
-    const state={floor:'both',view:'overview',room:null,labels:true,scene:'gala',plan:false};let lastRoomId='hall';
+    const vals={cove:5,case:8,sconce:0,spot:0,path:45,chandelier:0};
+    const state={floor:'both',view:'overview',room:null,labels:true,scene:'night',plan:false};let lastRoomId='hall';
     function mat(name,color,metal=0,rough=.6){return M[name]=new T.MeshStandardMaterial({color,metalness:metal,roughness:rough});}
     mat('ivory',0xece4d1,0,.48);mat('panel',0xd4cab5,0,.67);mat('gold',0xb8924b,.82,.22);mat('darkgold',0x786039,.78,.33);mat('jade',0x668875,.05,.68);mat('ink',0x15342f,.1,.62);mat('velvet',0x123c37,0,.98);mat('red',0xad9690,0,.9);mat('blue',0x8fa9a1,0,.9);mat('black',0x161e1b,.1,.58);mat('silver',0xd8e1e4,.86,.18);mat('service',0x869189,0,.8);mat('plinth',0x35473e,.1,.7);mat('pearl',0xf9edd6,.28,.22);mat('ruby',0xa8234b,.4,.08);mat('sapphire',0x1f68aa,.4,.06);mat('emerald',0x079774,.4,.07);
     M.glass=new T.MeshPhysicalMaterial({color:0xddebea,metalness:.06,roughness:.05,transparent:true,opacity:.13,depthWrite:false,side:T.DoubleSide});

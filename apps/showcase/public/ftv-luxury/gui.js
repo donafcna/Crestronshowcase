@@ -2,9 +2,11 @@
 const params=new URLSearchParams(location.search),kind=params.get('project')==='yacht-monaco'?'yacht':'boutique',cfg=window.FTV_CATALOG[kind],$=id=>document.getElementById(id),channel='ftv-luxury/v1',isLocalFile=location.protocol==='file:'||location.origin==='null',origin=isLocalFile?'*':location.origin,key=`ftv-luxury:${cfg.project}:v1`;
 const panel2D=(params.get('device')||'wallpanel').startsWith('wallpanel');
 const externalModel=!panel2D&&params.get('background')==='1'&&parent!==window;
-const baseValues=()=>({...cfg.presets[0].values});const zoneDefaults=()=>({lights:baseValues(),volume:35,source:cfg.sources[0],playing:false,muted:false});
-let state={zone:'all',floor:'all',tab:'light',preset:cfg.presets[0].id,zones:{all:zoneDefaults()},color:'#ffd7a2',kelvin:3000,autoWhite:false,scent:true,fragrance:'Bois d’ambre',diffusion:30,effect:'off',speed:35,opening:'09:00',closing:'19:00',schedule:false},modelReady=panel2D,noticeTimer;
+const initialPreset=kind==='boutique'?cfg.presets.find(p=>p.id==='closed')||cfg.presets[0]:cfg.presets[0];
+const baseValues=()=>({...initialPreset.values});const zoneDefaults=()=>({lights:baseValues(),volume:35,source:cfg.sources[0],playing:false,muted:false});
+let state={zone:'all',floor:'all',tab:'light',preset:initialPreset.id,zones:{all:zoneDefaults()},color:'#ffd7a2',kelvin:3000,autoWhite:false,scent:true,fragrance:'Bois d’ambre',diffusion:30,effect:'off',speed:35,opening:'09:00',closing:'19:00',schedule:false},modelReady=panel2D,noticeTimer;
 try{const saved=JSON.parse(localStorage.getItem(key)||'null');if(saved&&saved.zones){for(const id of ['all',...cfg.rooms.map(r=>r.id)]){const v=saved.zones[id];if(v){const z=zoneDefaults();for(const [ch] of cfg.channels)if(Number.isFinite(v.lights?.[ch]))z.lights[ch]=Math.max(0,Math.min(100,v.lights[ch]));if(cfg.sources.includes(v.source))z.source=v.source;if(Number.isFinite(v.volume))z.volume=Math.max(0,Math.min(100,v.volume));z.muted=v.muted===true;state.zones[id]=z;}}if(/^#[a-f\d]{6}$/i.test(saved.color))state.color=saved.color;if(cfg.presets.some(p=>p.id===saved.preset))state.preset=saved.preset;}}catch{}
+if(kind==='boutique')state={...state,zone:'all',floor:'all',preset:initialPreset.id,zones:{all:zoneDefaults()}};
 const zone=()=>state.zones[state.zone]||(state.zones[state.zone]={...state.zones.all,lights:{...state.zones.all.lights}});
 const save=()=>{try{localStorage.setItem(key,JSON.stringify(state))}catch{}};
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));

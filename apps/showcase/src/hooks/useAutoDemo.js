@@ -477,7 +477,8 @@ export const useAutoDemo = ({ enabled, running, stageRef, guiKey, onCycleEnd, on
     };
 
     const run = async () => {
-      const startDelay = guiKey.startsWith("boutique-hermes/") ? 5000 : TIMING.startDelay;
+      const guidedBuilding = guiKey.startsWith("boutique-hermes/") || guiKey.startsWith("sushi-bar-kyoto/");
+      const startDelay = guidedBuilding ? 5000 : TIMING.startDelay;
       if (!villaDevice) await sleep(startDelay, token);
       if (token.cancelled) return;
 

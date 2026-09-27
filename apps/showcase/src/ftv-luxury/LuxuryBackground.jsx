@@ -4,7 +4,7 @@ import { LUXURY_MODELS } from './modelProjects';
 const channel = 'ftv-luxury/v1';
 const commands = new Set(['hello', 'select', 'level', 'overview', 'scene', 'lighting', 'color', 'capture', 'visibility', 'resize', 'exterior', 'zoom']);
 const controls = 'iframe,button,a,input,select,textarea,.workspace-device-sidebar,.phone-device-frame,.projects-strip';
-const ENTRY_VERSION = '2026-09-27-boutique-demo-4';
+const ENTRY_VERSION = '2026-09-27-boutique-tour-5';
 
 /** Reveal the yacht only after a frame has actually rendered in the free viewport. */
 export function LuxuryBackground({ projectId, stageRef, tourSessionRef }) {

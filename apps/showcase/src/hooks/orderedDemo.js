@@ -39,25 +39,62 @@ export async function runOrderedDemo({ gui, token, sleep, moveTo, act, setCursor
     const heading = shown('h2,h3,h4,.card-title,.ap-ctrl-head,.vl-label').find(el => categories[name].test(text(el)));
     return perform(heading, 1400, false);
   };
+  if(gui.root.querySelector('.rk-ui')){
+    const selector=gui.root.querySelector('.rk-zone select');
+    const selectZone=async id=>{
+      if(!selector||!await perform(selector,0,false))return false;
+      setCursor?.(c=>({...c,pulse:c.pulse+1,pressed:true}));
+      if(gui.win.__restaurantGui?.selectZone)gui.win.__restaurantGui.selectZone(id);
+      else {
+        const setter=Object.getOwnPropertyDescriptor(gui.win.HTMLSelectElement.prototype,'value')?.set;
+        setter?.call(selector,id);
+        selector.dispatchEvent(new gui.win.Event('input',{bubbles:true}));
+        selector.dispatchEvent(new gui.win.Event('change',{bubbles:true}));
+      }
+      await sleep(160,token);setCursor?.(c=>({...c,pressed:false}));return !token.cancelled;
+    };
+    const rooms=[...selector.options].map(option=>({id:option.value,name:option.textContent})).filter(zone=>zone.id!=='exterior');
+    if(!await selectZone(rooms[0].id))return false;
+    let nextPress=performance.now()+5000;
+    const waitForPress=async action=>{await sleep(Math.max(0,nextPress-performance.now()-850),token);if(token.cancelled)return false;const complete=await action();nextPress+=5000;return complete;};
+    for(let roomIndex=0;roomIndex<rooms.length;roomIndex++){
+      if(roomIndex>0&&!await waitForPress(()=>selectZone(rooms[roomIndex].id)))return false;
+      for(const id of ['dinner','rooftop','welcome'])if(!await waitForPress(()=>perform(gui.root.querySelector(`[data-scene="${id}"]`),0)))return false;
+    }
+    if(!await waitForPress(()=>selectZone('exterior')))return false;
+    if(!await waitForPress(()=>perform(gui.root.querySelector('[data-scene="closed"]'),0)))return false;
+    gui.win.__restaurantGui?.applyAllScene?.('closed');await sleep(5000,token);return !token.cancelled;
+  }
   // The luxury scenes use a native room selector and a same-origin GUI API.
   if (gui.win.ftvGui) {
     const api = gui.win.ftvGui;
     if(api.config.project==='boutique-hermes'){
       const selector=gui.doc.getElementById('zone');
-      if(selector&&await perform(selector,0,false)){
+      const selectRoom=async id=>{
+        if(!selector||!await perform(selector,0,false))return false;
         setCursor?.(c=>({...c,pulse:c.pulse+1,pressed:true}));
-        api.selectRoom('hall');
+        api.selectRoom(id);
         await sleep(160,token);
         setCursor?.(c=>({...c,pressed:false}));
-      }
+        return !token.cancelled;
+      };
+      if(!await selectRoom('hall'))return false;
       let nextPress=performance.now()+5000;
-      for(const preset of api.config.presets){
-        if(token.cancelled)return false;
-        const button=gui.doc.querySelector(`[data-preset="${preset.id}"]`);
+      const waitForPress=async action=>{
         await sleep(Math.max(0,nextPress-performance.now()-850),token);
-        await perform(button,0);
-        nextPress+=5000;
+        if(token.cancelled)return false;
+        const complete=await action();nextPress+=5000;return complete;
+      };
+      const sceneOrder=['private','gala','opening'];
+      for(let roomIndex=0;roomIndex<api.config.rooms.length;roomIndex++){
+        if(roomIndex>0&&!await waitForPress(()=>selectRoom(api.config.rooms[roomIndex].id)))return false;
+        for(const id of sceneOrder){
+          if(!await waitForPress(()=>perform(gui.doc.querySelector(`[data-preset="${id}"]`),0)))return false;
+        }
       }
+      if(!await waitForPress(()=>selectRoom('all')))return false;
+      if(!await waitForPress(()=>perform(gui.doc.querySelector('[data-preset="closed"]'),0)))return false;
+      await sleep(5000,token);
       return !token.cancelled;
     }
     for (const room of api.config.rooms.slice(0, 3)) {
