@@ -1,8 +1,10 @@
 import React, { useEffect, useRef } from 'react';
+import { useGui3dTab } from '../hooks/useGui3dTab';
 
 /** Shared, isolated GUI; keeps the showcase's existing device frame and routes. */
 export function LuxuryControl({ projectId, deviceType = 'wallpanel', background3D = false, onControl }) {
   const frame = useRef(null);
+  const { gui3dTab } = useGui3dTab();
   useEffect(() => {
     const handle = event => {
       if (event.origin !== window.location.origin || event.source !== frame.current?.contentWindow) return;
@@ -17,7 +19,7 @@ export function LuxuryControl({ projectId, deviceType = 'wallpanel', background3
   }, [projectId, onControl]);
   return React.createElement('iframe', {
     ref: frame,
-    src: `/ftv-luxury/gui.html?project=${encodeURIComponent(projectId)}&device=${encodeURIComponent(deviceType)}${background3D ? '&background=1' : ''}`,
+    src: `/ftv-luxury/gui.html?project=${encodeURIComponent(projectId)}&device=${encodeURIComponent(deviceType)}${background3D ? '&background=1' : ''}${gui3dTab ? '&tab3d=1' : ''}`,
     title: `${projectId === 'yacht-monaco' ? 'Asteria' : 'Boutique Auralis'} — ${deviceType.startsWith('wallpanel') ? 'espaces et commandes' : 'commandes et visite 3D'}`,
     className: `ftv-luxury-interface ${deviceType}`,
     allow: 'fullscreen',

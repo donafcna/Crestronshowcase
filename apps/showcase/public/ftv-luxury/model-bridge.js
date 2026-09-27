@@ -80,7 +80,7 @@
         case 'lighting': if (m.values && typeof m.values === 'object') api.lighting(m.values, m.scope || 'all'); break;
         case 'color': api.color(m.value); break;
         case 'capture': api.capture(); break;
-        case 'blinds': api.blinds?.(m.position, m.facade); break;
+        case 'blinds': api.blinds?.(m.position, typeof m.scope === 'string' ? m.scope : 'all'); break;
         case 'all-lights': api.allLights?.(m.on === true); break;
         case 'environment-time': if (Number.isFinite(m.seconds) && m.seconds >= 0) api.environmentTime?.(m.seconds); break;
         case 'exterior': if (!exteriorError) api.exterior?.(m.command); break;

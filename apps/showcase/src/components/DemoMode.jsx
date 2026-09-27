@@ -5,7 +5,7 @@ import { projects, sectors, getProjectName } from "../data/showcaseProjects";
 import "../demo.css";
 
 import { getSimulator } from "./simulatorRegistry";
-import { supportsDemoDevice, nextDemoDevice } from "./demoCapabilities";
+import { supportsDemoDevice } from "./demoCapabilities";
 
 const SimulatorFallback = () => (
   <div className="simulator-loading">
@@ -47,7 +47,7 @@ const renderIcon = (iconName, size = 16, className = "") => {
 /* Lecteur plein écran : une interface, plein cadre, sur le vrai      */
 /* appareil (aucun boîtier simulé).                                   */
 /* ------------------------------------------------------------------ */
-const DemoPlayer = ({ project, deviceType, onBack, onToggleDevice }) => {
+const DemoPlayer = ({ project, deviceType, onBack }) => {
   const { lang, t } = useTranslation();
 
   const Simulator = getSimulator(project);
@@ -59,20 +59,10 @@ const DemoPlayer = ({ project, deviceType, onBack, onToggleDevice }) => {
 
   return (
     <div className="demo-player">
-      {/* Bandeau de retour permanent, au-dessus de la GUI */}
-      <div className="demo-player-controls">
-        <button className="demo-ctrl-btn" onClick={onBack} aria-label={t("demo_back")}>
-          {renderIcon("ChevronLeft", 20)}
-        </button>
-        <span className="demo-ctrl-title">{getProjectName(project, lang)}</span>
-        {nextDemoDevice(project, deviceType) !== deviceType && <button
-          className="demo-ctrl-btn"
-          onClick={onToggleDevice}
-          aria-label={t("demo_toggle_device")}
-        >
-          {renderIcon(deviceType === "phone" ? "Smartphone" : "Tablet", 18)}
-        </button>}
-      </div>
+      {/* Seul bouton de retour : rond, en haut à gauche, par-dessus la GUI qui garde toute la hauteur. */}
+      <button className="demo-ctrl-btn demo-back-btn" onClick={onBack} aria-label={t("demo_back")}>
+        {renderIcon("ChevronLeft", 20)}
+      </button>
 
       <div className="demo-player-screen">
         {Simulator ? (
@@ -228,9 +218,6 @@ export const DemoMode = ({ route, onNavigate }) => {
         project={project}
         deviceType={deviceType}
         onBack={() => onNavigate("demo")}
-        onToggleDevice={() =>
-          setDeviceType((d) => nextDemoDevice(project, d))
-        }
       />
     );
   }

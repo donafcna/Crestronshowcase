@@ -527,3 +527,13 @@ Une scène appliquée à un salon était bien limitée à cet espace, mais reven
 Chaque salon reçoit deux nappes lumineuses au sol, indexées sur les corniches et les spots : depuis la vue d'ensemble, un espace allumé se distingue immédiatement d'un espace éteint.
 
 Les commandes de stores et d'éclairage général sont désormais relayées au modèle 3D de fond du site, qui les ignorait faute d'être déclarées dans la liste des commandes autorisées.
+
+## 27/09/2026 — Restaurant en gradins, retours Boutique et ergonomie mobile 2.2.18
+
+Kyoto Gardens abandonne l'archipel de pavillons : trois plateaux continus en gradins (sol et plafond d'un seul tenant par niveau), les salles ouvertes sur le devant de chaque terrasse derrière un garde-corps vitré, deux volées d'escalier à paliers reliant les niveaux à droite du bâtiment, le paysage (allées, bassin, lanternes) déplacé sur le parvis. En vue de zone, l'ossature située au-dessus du niveau visité s'efface, façon maquette en coupe. Les quinze zones, les scènes et les circuits restent identiques.
+
+Boutique : plus d'applique ni de décor mural sur les murs de façade vitrés ; la section Stores pilote les baies de l'espace sélectionné (ou de toute la boutique) ; une scène jouée dans le Hall n'entraîne plus l'ambiance de tout le bâtiment, désormais calculée sur la moyenne des espaces.
+
+L'onglet Vue 3D des GUI Boutique et Yacht est mis de côté : masqué par défaut, il revient avec le suffixe `/5` dans l'adresse et disparaît avec `/6` (mémorisé par navigateur). Le modèle 3D de fond du site n'est pas concerné.
+
+Barre des projets : le bouton « + » et la description défilante disparaissent, les flèches du clavier ne peuvent plus rester bloquées dessus. Mode Dev : le bandeau de mesures d'écran s'affiche aussi sur l'accueil. Mode démo iPhone : la GUI occupe toute la hauteur, seul un bouton rond de retour reste en haut à gauche.

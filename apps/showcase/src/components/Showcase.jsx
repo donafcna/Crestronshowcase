@@ -2,7 +2,7 @@ import { HotelBrassusTools } from "./HotelBrassusTools";
 import React, { Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Icons as LucideIcons } from "../icons";
 import { useTranslation } from "../context/LanguageContext";
-import { projects, getDeviceById, getProjectText, getProjectName, getStatusLabel } from "../data/showcaseProjects";
+import { projects, getDeviceById, getProjectName } from "../data/showcaseProjects";
 import { BackgroundVideo } from "./BackgroundVideo";
 import { Plan3DBackground, plan3dEnabled } from "./Plan3DBackground";
 import { LUXURY_MODELS } from "../ftv-luxury/modelProjects";
@@ -138,8 +138,6 @@ const ShowcaseInner = ({ sectorId, projectId, device }) => {
   );
 
   const [isFullscreen, setIsFullscreen] = useState(false);
-  const [expandedProjectId, setExpandedProjectId] = useState(null);
-  const [sentenceIndex, setSentenceIndex] = useState(0);
   const [capturing, setCapturing] = useState(false);
   const [captureNotice, setCaptureNotice] = useState("");
   const stageRef = useRef(null);
@@ -257,7 +255,7 @@ const ShowcaseInner = ({ sectorId, projectId, device }) => {
 
   const { cursor } = useAutoDemo({
     enabled: demoEnabled && activeProject.autoDemo !== false,
-    running: demoRunning && !expandedProjectId,
+    running: demoRunning,
     stageRef,
     guiKey: `${activeProject.id}/${viewportDevice}/${demoEpoch}`,
     villaDevice, villaSessionRef,
@@ -284,26 +282,6 @@ const ShowcaseInner = ({ sectorId, projectId, device }) => {
     }
   }, [kiosk]);
 
-  // ---- Défilement des phrases de description --------------------------------
-  const projectText = getProjectText(activeProject, lang);
-  const sentences = useMemo(
-    () =>
-      (projectText.details || "")
-        .split(/(?<=[.!?])\s+/)
-        .map((s) => s.trim())
-        .filter(Boolean),
-    [projectText.details]
-  );
-
-  useEffect(() => {
-    if (!expandedProjectId) return;
-    setSentenceIndex(0);
-    if (sentences.length <= 1) return;
-    const interval = setInterval(() => setSentenceIndex((prev) => (prev + 1) % sentences.length), 5000);
-    return () => clearInterval(interval);
-  }, [activeProject.id, expandedProjectId, sentences.length]);
-
-  const currentSentence = sentences[sentenceIndex] || sentences[0] || "";
 
   // ---- Capture d'écran de l'appareil (PNG) -----------------------------------
   const handleCapture = async () => {
@@ -337,17 +315,6 @@ const ShowcaseInner = ({ sectorId, projectId, device }) => {
     return <IconComp size={size} className={className} />;
   };
 
-  const handleToggleProjectDetails = (e, projId) => {
-    e.preventDefault();
-    e.stopPropagation();
-    if (expandedProjectId === projId) {
-      setExpandedProjectId(null);
-    } else {
-      setExpandedProjectId(projId);
-      const proj = projects.find((p) => p.id === projId);
-      if (proj && proj.id !== activeProject.id) goTo(proj, firstViewportOf(proj));
-    }
-  };
 
   const shareUrl = `${buildShowcasePath({ sectorId, projectId: activeProject.id, device: viewportDevice })}${
     clientName ? `?client=${encodeURIComponent(clientName)}` : ""
@@ -420,38 +387,6 @@ const ShowcaseInner = ({ sectorId, projectId, device }) => {
                 {renderIcon("FolderOpen", 26, "empty-icon")}
                 <p>{t("showcase_empty_projects")}</p>
               </div>
-            ) : expandedProjectId ? (
-              <div className="project-expanded-layout fade-in compact-cards-expanded">
-                <div className="project-list-card horizontal-card selected expanded-state compact-row-card">
-                  <img src={activeProject.thumbnailUrl} alt="" className="card-thumb-compact" />
-                  <div className="card-info-block-compact">
-                    <span className="proj-name-compact">{getProjectName(activeProject, lang)}</span>
-                    <button
-                      onClick={(e) => handleToggleProjectDetails(e, activeProject.id)}
-                      className="card-plus-btn-compact active"
-                      title="Back to list"
-                    >
-                      {renderIcon("X", 10)}
-                    </button>
-                  </div>
-                </div>
-                <div className="expanded-vertical-divider" />
-                <div className="expanded-info-details">
-                  <div className="expanded-meta-row">
-                    <span className={`status-pill status-${activeProject.status}`}>
-                      {renderIcon(activeProject.status === "realisation" ? "BadgeCheck" : "Sparkles", 12)}
-                      {getStatusLabel(activeProject.status, lang)}
-                    </span>
-                    <span className="meta-pill">{activeProject.client}</span>
-                    <span className="meta-pill">{activeProject.year}</span>
-                  </div>
-                  <div className="description-cycler-container">
-                    <p key={sentenceIndex} className="cycler-sentence-text fade-in-sentence">
-                      {currentSentence}
-                    </p>
-                  </div>
-                </div>
-              </div>
             ) : (
               <div className={`projects-strip ${strip.canLeft ? "can-left" : ""} ${strip.canRight ? "can-right" : ""}`}>
                 {strip.canLeft && (
@@ -479,13 +414,6 @@ const ShowcaseInner = ({ sectorId, projectId, device }) => {
                         {proj.status === "realisation" && renderIcon("BadgeCheck", 12, "realisation-mark")}
                         {getProjectName(proj, lang)}
                       </span>
-                      <button
-                        onClick={(e) => handleToggleProjectDetails(e, proj.id)}
-                        className="card-plus-btn-compact"
-                        title={t("showcase_details_tooltip")}
-                      >
-                        {renderIcon("Plus", 10)}
-                      </button>
                     </div>
                   </a>
                 ))}

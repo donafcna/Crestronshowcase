@@ -56,3 +56,6 @@
  .panel-2d .source{padding:7px 10px}.panel-2d .source-list{gap:4px}
  .panel-2d .slider-hint{font-size:10px;line-height:1.2}
 }
+
+/* Onglet Vue 3D mis de cote (tab3d absent) : les commandes prennent toute la largeur. */
+.no-3d .workspace{grid-template-columns:1fr}.no-3d .workspace>.model-card{display:none!important}.no-3d #expand{display:none}
