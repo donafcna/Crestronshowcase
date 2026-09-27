@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { runVillaTour } from "./villaTour";
 import { runOrderedDemo } from "./orderedDemo";
+import { GUIDED_DEMO_TIMING, isGuidedProject } from "./guidedDemoTiming";
 
 // ----------------------------------------------------------------------------
 // Démo automatique d'une interface.
@@ -477,8 +478,8 @@ export const useAutoDemo = ({ enabled, running, stageRef, guiKey, onCycleEnd, on
     };
 
     const run = async () => {
-      const guidedBuilding = guiKey.startsWith("boutique-hermes/") || guiKey.startsWith("sushi-bar-kyoto/");
-      const startDelay = guidedBuilding ? 5000 : TIMING.startDelay;
+      const guidedBuilding = isGuidedProject(guiKey.split("/")[0]);
+      const startDelay = guidedBuilding ? GUIDED_DEMO_TIMING.startDelay : TIMING.startDelay;
       if (!villaDevice) await sleep(startDelay, token);
       if (token.cancelled) return;
 
@@ -488,7 +489,7 @@ export const useAutoDemo = ({ enabled, running, stageRef, guiKey, onCycleEnd, on
       let gui = null;
       for (let i = 0; i < 180 && !token.cancelled; i++) {
         gui = resolveGui(stage);
-        if (gui && collect(gui).actions.length >= 3 && (!villaDevice || (gui.win.Villa?.ready && gui.doc.URL.includes(villaDevice === "phone" ? "/iphone.html" : "/index.html")))) break;
+        if (gui && collect(gui).actions.length >= 3 && (!guidedBuilding || !gui.win.ftvGui || gui.win.ftvGui.ready) && (!villaDevice || (gui.win.Villa?.ready && gui.doc.URL.includes(villaDevice === "phone" ? "/iphone.html" : "/index.html")))) break;
         gui = null;
         await sleep(250, token);
       }

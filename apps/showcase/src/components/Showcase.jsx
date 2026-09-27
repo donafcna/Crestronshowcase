@@ -17,6 +17,7 @@ import { DemoToolbar } from "./DemoToolbar";
 import { useRouter, buildShowcasePath } from "../router";
 import { useDemoSettings } from "../hooks/useDemoSettings";
 import { useAutoDemo } from "../hooks/useAutoDemo";
+import { isGuidedProject } from "../hooks/guidedDemoTiming";
 import { VILLA_PROJECT, createVillaSession } from "../hooks/villaTour";
 import { DemoCursor, DemoCountdown } from "./DemoOverlay";
 import { useGuiFullscreen } from "../hooks/useGuiFullscreen";
@@ -221,7 +222,7 @@ const ShowcaseInner = ({ sectorId, projectId, device }) => {
       villaSessionRef.current = createVillaSession();
       setDemoEpoch(n => n + 1);
     }
-    const guidedEntry = ["boutique-hermes", "sushi-bar-kyoto"].includes(activeProject.id) && first;
+    const guidedEntry = isGuidedProject(activeProject.id) && first;
     if ((villaDevice && (entry || first || automaticAdvance.current)) || guidedEntry) {
       clearTimeout(resumeTimer.current);
       setResumeAt(null); setDemoRunning(true);
@@ -619,4 +620,3 @@ const ShowcaseInner = ({ sectorId, projectId, device }) => {
     </div>
   );
 };
-
