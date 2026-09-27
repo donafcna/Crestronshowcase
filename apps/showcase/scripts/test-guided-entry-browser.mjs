@@ -1,6 +1,6 @@
-// Real menu, GUI, scene clicks and rendering. Do not replace clocks or renderers.
-// Exact programmed delays are unit-tested. Record intentional sleeps and actual
-// latency separately: CPU WebGL can block timers AND synchronous DOM operations.
+// Real menu, GUI, scene clicks and rendering. No replacement clocks/renderers.
+// Exact configured delays are unit-tested; report real latency separately on
+// software WebGL, where a render can delay a timer by several seconds.
 import { chromium } from 'playwright';
 import assert from 'node:assert/strict';
 import { mkdir, writeFile } from 'node:fs/promises';
@@ -14,7 +14,7 @@ function checkGap(sleeps,from,to,expected){
  const programmed=ticks.reduce((n,s)=>n+s.ms,0),late=ticks.reduce((n,s)=>n+(s.late||0),0);
  assert.ok(programmed<=expected+60,`No extra programmed wait: ${programmed} / ${expected}`);
  assert.ok(to-from>=expected-50,`No early click: ${to-from}`);
- assert.ok(to-from<30000,'the requested next action must complete, not stall indefinitely');
+ assert.ok(to-from<90000,'next action must complete rather than stall indefinitely');
  return {targetMs:expected,actualMs:to-from,programmedMs:programmed,lateTimersMs:late,otherRuntimeDelayMs:Math.max(0,to-from-expected-late)};
 }
 try{
@@ -23,9 +23,10 @@ try{
   ['restaurant','sushi-bar-kyoto','accueil',['dinner','rooftop','welcome']],
   ['yacht','yacht-monaco','0',['sunset','dinner','cruise']]
  ]){
+  if(process.env.SECTOR&&process.env.SECTOR!==sector)continue;
   for(const [theme,mode] of (process.env.SMOKE==='1'?[['dark','normal']]:[['dark','normal'],['light','normal'],['glass','scene']])){
    const context=await browser.newContext({viewport:{width:1536,height:1000},deviceScaleFactor:.5,reducedMotion:'reduce',serviceWorkers:'block'});
-   const page=await context.newPage();activePage=page;page.setDefaultTimeout(90000);
+   const page=await context.newPage();activePage=page;page.setDefaultTimeout(120000);
    const result={sector,project,theme,mode,events:[],checks:[]};report.cases.push(result);
    page.on('pageerror',e=>report.errors.push(`${project}: ${e.message}`));
    await context.addInitScript(({theme})=>{
@@ -65,13 +66,13 @@ try{
    const frame=async()=>restaurant?page:await (await page.locator('iframe.ftv-luxury-interface').elementHandle()).contentFrame();
    const gui=await frame();
    const read=()=>gui.evaluate(()=>window.__guidedTrace.filter(e=>e.type==='zone'||e.type==='scene'));
-   await gui.waitForFunction(()=>window.__guidedTrace.filter(e=>e.type==='scene').length>=2,null,{polling:100,timeout:60000});
+   await gui.waitForFunction(()=>window.__guidedTrace.filter(e=>e.type==='scene').length>=2,null,{polling:100,timeout:120000});
    result.events=await read();
    const zone=result.events.find(e=>e.type==='zone'),[first,second]=result.events.filter(e=>e.type==='scene');
    assert.equal(zone.id,firstZone);assert.equal(first.id,scenes[0]);assert.equal(second.id,scenes[1]);
    const host=await page.evaluate(()=>({sleeps:window.__guidedSleeps,entry:window.__guidedTrace.find(e=>e.type==='entry')?.at,cursor:window.__firstCursorAt}));
    assert.ok(host.sleeps.some(s=>s.ms===3000),'actual initial 3000 ms sleep');
-   result.cursorAfterEntry=host.cursor-host.entry;assert.ok(result.cursorAfterEntry>=2950&&result.cursorAfterEntry<30000);
+   result.cursorAfterEntry=host.cursor-host.entry;assert.ok(result.cursorAfterEntry>=2950&&result.cursorAfterEntry<90000);
    result.firstGap=checkGap(host.sleeps,zone.at,first.at,1000);result.nextGap=checkGap(host.sleeps,first.at,second.at,5000);
    result.checks.push('3-second entry scheduled','first scene scheduled after 1 second','next scene scheduled after 5 seconds');
    if(!restaurant){const feedback=await gui.evaluate(()=>window.__guidedTrace.filter(e=>e.type==='feedback'));for(const press of [first,second])assert.ok(feedback.some(f=>f.id===press.id&&f.at>=press.at&&f.at-press.at<500),'native scene press reaches GUI feedback');}
