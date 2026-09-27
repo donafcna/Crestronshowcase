@@ -601,8 +601,8 @@ export const projects = [
     year: `2025`,
     text: {
       fr: {
-        description: `Restaurant de luxe sur deux niveaux : salle vitrée, bar architectural et rooftop sous pergola.`,
-        details: `Kyoto Rooftop réunit une salle gastronomique vitrée, un long bar minéral, un salon privé et une terrasse panoramique végétalisée. L'interface iPhone pilote les scènes, les zones lumineuses, le confort et le service ; la maquette 3D réagit aux choix en temps réel.`,
+        description: `Quinze pavillons gastronomiques dans un jardin architectural : salles vitrées, bar, salons et pergolas.`,
+        details: `Kyoto Gardens réunit quinze espaces aux formes uniques, reliés par des promenades paysagères. Chaque pavillon possède son implantation de tables et de chaises, ses appliques, balises et luminaires de plafond. L'interface iPhone pilote les scènes, les zones lumineuses, le confort et le service ; la maquette 3D réagit aux choix en temps réel.`,
         features: [
           `Éclairage précis par table (luminosité, température)`,
           `Audio multi-zones (bar, salle, salon privé)`,

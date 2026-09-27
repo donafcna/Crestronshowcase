@@ -489,3 +489,9 @@ Le GUI iPhone de l'Hotel Brassus reprend la palette du CH5 des autres supports :
 Tous les boutons de l'iPhone Hotel Brassus utilisent le même feedback que le CH5 : état inactif vert cyan foncé avec texte blanc, état actif en dégradé très sombre avec double contour or. La règle couvre Éclairages, Audio, Rideaux, Température et la navigation basse.
 
 Kyoto Rooftop passe à quinze espaces sur trois niveaux et une emprise environ quatre fois supérieure. Chaque espace possède un mouvement de caméra distinct et s'isole lors du zoom. Molette descendante : vue complète ; molette montante : retour sur la dernière pièce sélectionnée.
+
+## 27/09/2026 — Kyoto Gardens et éclairages Hotel Brassus 2.2.2
+
+Kyoto abandonne le bâtiment rectangulaire au profit de quinze pavillons aux formes et couvertures distinctes, reliés par des promenades paysagères. Chaque zone zoomée montre sa propre implantation d'au moins quatre tables et seize chaises, ainsi que des balises au sol, appliques murales, spots et lignes lumineuses au plafond.
+
+Les scènes iPhone Hotel Brassus sont émises avant le rafraîchissement de l'interface et leur contraste dans la maquette est renforcé. Le fondu reste de quatre secondes ; l'écart mesuré entre Total et Éteint dépasse un facteur 100 sur les matériaux lumineux.

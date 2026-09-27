@@ -33,10 +33,18 @@ try {
   const frame = page.frames().find(item => item.url().includes('/restaurant-lumiere/model.html'));
   assert.ok(frame, 'Le modèle 3D restaurant est chargé');
   await frame.waitForFunction(() => window.__restaurant3d?.building);
-  assert.ok(await frame.evaluate(() => window.__restaurant3d.building.children.length > 100), 'Le modèle contient le mobilier et l’architecture');
+  assert.ok(await frame.evaluate(() => { let count=0;window.__restaurant3d.building.traverse(()=>count++);return count>1200 }), 'Le modèle contient le mobilier et l’architecture');
   assert.equal(await page.locator('.rk-zone option').count(), 15, 'Le GUI propose quinze espaces');
   const dimensions = await frame.evaluate(() => { const size=new THREE.Vector3();new THREE.Box3().setFromObject(window.__restaurant3d.building).getSize(size);return size.toArray() });
-  assert.ok(dimensions[0] >= 70 && dimensions[2] >= 52, 'Le restaurant couvre quatre fois l’emprise initiale');
+  assert.ok(dimensions[0] * dimensions[2] >= 4400, 'Le restaurant couvre plus de quatre fois l’emprise initiale');
+  const roomDesigns = await frame.evaluate(() => ({
+    combinations:new Set(window.__restaurant3d.specs.map(item => `${item[7]}-${item[8]}-${item[10]}`)).size,
+    furniture:Object.fromEntries(Object.entries(window.__restaurant3d.roomGroups).map(([id,group]) => { let tables=0,chairs=0;group.traverse(item => { if(item.name==='table')tables++;if(item.name==='chair')chairs++ });return [id,{tables,chairs}] })),
+    lights:window.__restaurant3d.zoneLights,
+  }));
+  assert.equal(roomDesigns.combinations, 15, 'Les quinze zones ont une architecture et une implantation uniques');
+  assert.ok(Object.values(roomDesigns.furniture).every(room => room.tables >= 4 && room.chairs >= 16), 'Chaque zone contient plusieurs tables et chaises');
+  assert.ok(Object.values(roomDesigns.lights).every(room => room.floor >= 8 && room.wall >= 8 && room.ceiling >= 8), 'Chaque zone reçoit des éclairages de sol, mur et plafond');
   const cameraGoals = new Set();
   for (const option of await page.locator('.rk-zone option').evaluateAll(items => items.map(item => item.value))) {
     await page.locator('.rk-zone select').selectOption(option);
@@ -60,7 +68,7 @@ try {
   await page.waitForTimeout(100);
   assert.equal(await frame.evaluate(() => window.__restaurant3d.modelState.view), 'focus', 'La molette montante revient à la dernière zone');
   await page.locator('.rk-scenes button').filter({ hasText: 'Rooftop' }).click();
-  await page.waitForTimeout(200);
+  await page.waitForTimeout(2400);
   assert.equal(await frame.evaluate(() => window.__restaurant3d.modelState.levels.pergola), 88);
   await page.screenshot({ path: path.join(out, 'restaurant-phone.png'), fullPage: true });
 
@@ -76,6 +84,16 @@ try {
   const phone = await phoneElement?.contentFrame();
   assert.ok(phone, 'L’interface iPhone Hotel Brassus est chargée');
   await phone.waitForSelector('.scene');
+  const hotelModel = page.frames().find(item => item.url().includes('/showcases/hotel-brassus/model.html'));
+  assert.ok(hotelModel, 'La maquette Hotel Brassus est chargée');
+  await hotelModel.waitForFunction(() => window.HDH_MODEL?.roomLighting?.get('bar'));
+  await phone.locator('.scene[data-scene="3"]').click();
+  await page.waitForTimeout(4200);
+  const hotelOn = await hotelModel.evaluate(() => { const room=window.HDH_MODEL.roomLighting.get('bar');return { level:room.level, intensity:room.materials[0].material.emissiveIntensity } });
+  await phone.locator('.scene[data-scene="0"]').click();
+  await page.waitForTimeout(4200);
+  const hotelOff = await hotelModel.evaluate(() => { const room=window.HDH_MODEL.roomLighting.get('bar');return { level:room.level, intensity:room.materials[0].material.emissiveIntensity } });
+  assert.ok(hotelOn.level > 99 && hotelOff.level < 1 && hotelOn.intensity > hotelOff.intensity * 20, 'Les scènes iPhone pilotent visiblement les éclairages du plan 3D');
   const palette = await phone.evaluate(() => ({
     bg: getComputedStyle(document.body).getPropertyValue('--bg').trim(),
     ink: getComputedStyle(document.body).getPropertyValue('--ink').trim(),
@@ -96,7 +114,7 @@ try {
   assert.ok(buttonStates.filter(state => state.pressed === 'true').every(state => state.image.startsWith('radial-gradient') && state.border === 'rgb(210, 171, 33)'));
   await page.screenshot({ path: path.join(out, 'hotel-brassus-phone.png'), fullPage: true });
   assert.deepEqual(errors, []);
-  console.log(JSON.stringify({ checks: 23, dimensions, cameraGoals:cameraGoals.size, palette, buttonStates:buttonStates.length, errors }, null, 2));
+  console.log(JSON.stringify({ checks: 28, dimensions, cameraGoals:cameraGoals.size, roomDesigns:{combinations:roomDesigns.combinations,zones:Object.keys(roomDesigns.furniture).length}, hotelLighting:{on:hotelOn,off:hotelOff}, palette, buttonStates:buttonStates.length, errors }, null, 2));
 } finally {
   await browser.close();
   if (server.listening) server.close();

@@ -389,3 +389,9 @@ Le projet Sushi Bar Kyoto reçoit une maquette conceptuelle de restaurant de lux
 ## 26/09/2026 — Feedback Hotel Brassus et Kyoto agrandi 2.2.1
 
 Sur l'iPhone Hotel Brassus, tous les boutons inactifs utilisent le vert cyan foncé du CH5 avec texte blanc. Tous les états actifs utilisent le dégradé sombre et le double contour or, y compris la navigation et les pages Audio, Rideaux et Température. Kyoto Rooftop atteint environ 74 × 54 unités, trois niveaux et quinze espaces sélectionnables. Chaque espace a une destination de caméra distincte et les autres pièces s'effacent pendant le zoom. La molette alterne la vue complète et la dernière pièce.
+
+## 27/09/2026 — Kyoto Gardens et visibilité des scènes Hotel Brassus 2.2.2
+
+Kyoto est redessiné comme un domaine de quinze pavillons non rectangulaires reliés par des promenades. Les quinze combinaisons de forme, couverture et mobilier sont distinctes ; chaque zone comprend au minimum quatre tables, seize chaises, huit balises au sol, huit appliques et des luminaires de plafond. Les quinze cadrages et la navigation à la molette sont conservés.
+
+Pour Hotel Brassus, l'envoi d'une scène iPhone précède désormais le nouveau rendu du bouton et les émissions ainsi que les sources ponctuelles de la maquette sont renforcées sans supprimer le fondu de quatre secondes. La recette mesure bien 100 puis 0 % sur la zone Bar, avec une intensité émissive de 4,29 puis 0,034.

@@ -23,7 +23,7 @@
  if(tab==='temperature')html=`<div class="eyebrow">Confort de la pièce</div><h1>Température</h1><div class="card"><p style="text-align:center">Consigne</p><div class="value" aria-live="polite">${s.temp.toFixed(1)}<span style="font-size:22px"> °C</span></div><div class="adjust"><button id="minus" aria-label="Diminuer la température">−</button><button id="plus" aria-label="Augmenter la température">+</button></div></div><p>Température ambiante · 21.0 °C</p>`;
  if(tab==='blinds')html='<div class="eyebrow">Maîtriser la lumière naturelle</div><h1>Rideaux</h1>'+s.blinds.map((v,i)=>`<div class="card stack"><div class="row"><span>Rideau ${i+1}</span><output data-blind-value="${i}">${Math.round(v)} %</output></div><div class="row">${['Ouvrir','Stop','Fermer'].map((n,j)=>`<button data-blind="${i}" data-action="${j}">${n}</button>`).join('')}</div></div>`).join('');
  content.innerHTML=html;
- content.querySelectorAll('[data-scene]').forEach(b=>b.onclick=()=>{s.scene=+b.dataset.scene;s.lights.fill([0,35,70,100][s.scene]);render();emit(true)});
+ content.querySelectorAll('[data-scene]').forEach(b=>b.onclick=()=>{s.scene=+b.dataset.scene;s.lights.fill([0,35,70,100][s.scene]);emit(true);render()});
  content.querySelectorAll('[data-light]').forEach(r=>r.oninput=()=>{s.lights[+r.dataset.light]=+r.value;s.scene=null;r.nextElementSibling.value=r.value+' %';emit(true)});
  content.querySelector('#circuits')?.addEventListener('click',()=>{circuits=!circuits;render()});
  content.querySelectorAll('[data-source]').forEach(b=>b.onclick=()=>{s.source=+b.dataset.source;render()});

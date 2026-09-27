@@ -24,7 +24,7 @@ export const SushiBarKyoto = ({deviceType}) => {
   const changeLevel=(key,value)=>{setScene('custom');setLevels(v=>({...v,[key]:Number(value)}))};
 
   return <div className={`rk-ui ${phone?'phone':'panel'}`}>
-    <header className="rk-header"><div><span className="rk-kicker">FRÉQUENCE TV · HOSPITALITY</span><h1>Kyoto Rooftop</h1><p>Restaurant gastronomique · 2 niveaux</p></div><div className="rk-clock"><Icon name="Clock3" size={14}/><b>{time}</b></div></header>
+    <header className="rk-header"><div><span className="rk-kicker">FRÉQUENCE TV · HOSPITALITY</span><h1>Kyoto Gardens</h1><p>Restaurant gastronomique · 15 pavillons</p></div><div className="rk-clock"><Icon name="Clock3" size={14}/><b>{time}</b></div></header>
     <label className="rk-zone"><span>Zone</span><select value={zone} onChange={e=>setZone(e.target.value)}>{zones.map(([id,name])=><option key={id} value={id}>{name}</option>)}</select></label>
     <nav className="rk-tabs">{[['lights','Lightbulb','Ambiances'],['comfort','Wind','Confort'],['audio','Music2','Audio'],['service','Bell','Service']].map(([id,icon,label])=><button key={id} className={tab===id?'active':''} onClick={()=>setTab(id)}><Icon name={icon}/><span>{label}</span></button>)}</nav>
     <main className="rk-main">
