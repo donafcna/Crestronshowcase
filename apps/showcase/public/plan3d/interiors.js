@@ -164,6 +164,107 @@ export function createInteriors(renderer, palette) {
       if(R.id===10){box(g,A.oak,.48,.82,1.3,.58,.07,1.65);box(g,A.glass,.185,1.8,1.4,.015,1.2,.74);plant(g,w-1,1.4,.6);books(g,w-1.2,.44,d-.8,5);}
     }else if(type==='cinema')R.decor.style='acoustic-cinema';
     else if(type==='technique')R.decor.style='av-racks-and-distribution';
+    else if(type==='entree')hall(R,g,emit);
+    else if(type==='escalier')stairHall(R,g);
+    else if(type==='wc')toilets(R,g);
+    else if(type==='buanderie')laundry(R,g);
+    else if(type==='sdb')bathroom(R,g,emit);
+  }
+  /* ---------- Duplex : entrée, hall d'escalier, WC, buanderie, salles de bains ---------- */
+  // Volée droite le long du mur ouest : départ au sud (z1, côté caméra), arrivée au nord (z0).
+  // La trémie du niveau supérieur reprend ces cotes ; vue de dessus, les marches descendantes restent lisibles.
+  const STAIR={x:.45,w:1.15,z0:1.6,z1:4.9,risers:16,rise:3/16};
+  function hall(R,g,emit){
+    const {w,d}=R.cfg;R.decor.style='oak-stair-and-console';
+    const tread=(STAIR.z1-STAIR.z0)/(STAIR.risers-1),run=STAIR.z1-STAIR.z0,cx=STAIR.x+STAIR.w/2;
+    for(let i=0;i<STAIR.risers-1;i++){
+      const yTop=(i+1)*STAIR.rise,z=STAIR.z1-(i+.5)*tread;
+      box(g,A.oak,cx,yTop-.022,z,STAIR.w,.045,tread+.02);
+      box(g,A.oak,cx,yTop-STAIR.rise/2-.02,z+tread/2-.012,STAIR.w-.06,STAIR.rise-.04,.024);
+    }
+    const angle=Math.atan2(3-STAIR.rise,run),length=Math.hypot(3-STAIR.rise,run);
+    for(const x of [STAIR.x+.03,STAIR.x+STAIR.w-.03]){const stringer=box(g,A.oak,x,1.5-STAIR.rise/2,(STAIR.z0+STAIR.z1)/2,.05,.26,length);stringer.rotation.x=angle;}
+    for(let i=0;i<5;i++){const t=i/4,z=STAIR.z1-.15-t*(run-.3),y=STAIR.rise+t*(3-2*STAIR.rise)+.5;cylinder(g,A.black,STAIR.x+STAIR.w+.03,y,z,.014,1);}
+    const rail=box(g,A.oak,STAIR.x+STAIR.w+.03,1.5-STAIR.rise/2+.98,(STAIR.z0+STAIR.z1)/2,.05,.05,length+.2);rail.rotation.x=angle;
+    // Console, tableau éclairé, banc, patères et tapis le long du mur nord.
+    box(g,A.oak,3.2,.82,.4,1.2,.04,.4);for(const x of [2.68,3.72])box(g,A.black,x,.4,.4,.03,.8,.35);
+    cylinder(g,A.ceramic,2.9,.94,.42,.1,.24,.06);books(g,3.25,.84,.42,4);
+    box(g,A.oak,3.4,1.55,.185,.95,.8,.04);box(g,A.art,3.4,1.55,.21,.85,.7,.01);
+    box(g,A.brass,3.4,2.02,.3,.6,.025,.025);box(g,emit,3.4,1.99,.32,.5,.012,.02);
+    const bx=Math.min(w-.5,5);box(g,A.oak,bx,.44,.5,1.2,.05,.4);for(const x of [bx-.5,bx+.5])box(g,A.oak,x,.21,.5,.05,.42,.36);
+    cushion(g,A.moss,bx,.5,.5,1.1,.07,.36);
+    box(g,A.clay,w*.55,.018,d*.55,2.2,.012,1.6);
+    for(let i=0;i<4;i++)ball(g,A.brass,2.3+i*.16,1.62,.19,.025,.025,.04);
+  }
+  function stairHall(R,g){
+    const {w,d}=R.cfg;R.decor.style='stairwell-gallery';
+    const tread=(STAIR.z1-STAIR.z0)/(STAIR.risers-1),cx=STAIR.x+STAIR.w/2;
+    // Marches hautes vues dans la trémie (elles descendent vers le sud), garde-corps vitré et main courante chêne.
+    for(let i=0;i<6;i++){const y=-i*STAIR.rise,z=STAIR.z0+(i+.5)*tread;box(g,A.oak,cx,y-.022,z,STAIR.w,.045,tread+.02);box(g,A.oak,cx,y-STAIR.rise/2-.02,z+tread/2-.012,STAIR.w-.06,STAIR.rise-.04,.024);}
+    box(g,A.oak,STAIR.x+.03,-.55,STAIR.z0+.7,.05,1.1,1.4);
+    const ex=STAIR.x+STAIR.w+.03,zs=STAIR.z1+.03;
+    box(g,A.glass,ex,.55,(STAIR.z0+STAIR.z1)/2,.016,1.0,STAIR.z1-STAIR.z0);
+    box(g,A.glass,(STAIR.x+ex)/2,.55,zs,ex-STAIR.x,1.0,.016);
+    for(const z of [STAIR.z0,STAIR.z0+(STAIR.z1-STAIR.z0)/2,STAIR.z1])cylinder(g,A.black,ex,.55,z,.016,1.05);
+    box(g,A.oak,ex,1.08,(STAIR.z0+STAIR.z1)/2,.06,.05,STAIR.z1-STAIR.z0+.06);box(g,A.oak,(STAIR.x+ex)/2,1.08,zs,ex-STAIR.x+.06,.05,.06);
+    box(g,A.oak,ex-.02,.05,(STAIR.z0+STAIR.z1)/2,.05,.1,STAIR.z1-STAIR.z0+.05);   // nez de trémie
+    // Galerie : banc, tableaux et tapis.
+    wallArt(g,d*.6,R.id,2);
+    box(g,A.oak,w-1.6,.44,.5,1.3,.05,.42);for(const x of [w-2.15,w-1.05])box(g,A.oak,x,.21,.5,.05,.42,.38);cushion(g,A.cream,w-1.6,.5,.5,1.2,.07,.38);
+    box(g,A.clay,w*.6,.018,d*.6,1.8,.012,1.3);
+  }
+  function toilets(R,g){
+    const {w,d}=R.cfg;R.decor.style='guest-toilets';
+    // Cuvette suspendue sur le mur nord, lave-mains sur le mur ouest, miroir.
+    box(g,A.stone,w/2,.03,d/2,w-.3,.025,d-.3);
+    box(g,A.white,w/2,.4,.45,.36,.34,.56);box(g,A.white,w/2,.62,.3,.4,.06,.36);box(g,A.charcoal,w/2,1.1,.2,.42,.9,.1);box(g,A.brass,w/2,1.35,.26,.12,.03,.02);
+    box(g,A.oak,.42,.82,Math.min(d-.5,1.75),.5,.04,.42);box(g,A.ceramic,.42,.87,Math.min(d-.5,1.75),.38,.07,.3);cylinder(g,A.brass,.25,1.0,Math.min(d-.5,1.75),.012,.22);
+    box(g,A.glass,.19,1.45,Math.min(d-.5,1.75),.01,.6,.42);box(g,A.brass,.185,1.45,Math.min(d-.5,1.75),.012,.64,.46);
+    box(g,A.cream,.4,.55,Math.min(d-.5,1.75)-.4,.06,.5,.05);   // serviette
+  }
+  function laundry(R,g){
+    const {w,d}=R.cfg;R.decor.style='laundry-and-shelving';
+    // Lave-linge et sèche-linge sous plan, évier, étagères murales avec paniers, table à repasser.
+    for(const [x,i] of [[.5,0],[1.15,1]]){
+      box(g,A.white,x,.43,.5,.6,.85,.6);cylinder(g,A.black,x,.42,.81,.2,.02).rotation.x=Math.PI/2;cylinder(g,A.glass,x,.42,.82,.17,.02).rotation.x=Math.PI/2;
+      box(g,A.charcoal,x,.78,.81,.5,.08,.02);for(let k=0;k<3;k++)ball(g,i?A.clay:A.moss,x-.15+k*.1,.78,.83,.012);
+    }
+    box(g,A.stone,.85,.89,.5,1.4,.04,.64);
+    box(g,A.stone,2.35,.85,.5,.9,.06,.6);box(g,A.ceramic,2.35,.83,.5,.6,.08,.4);cylinder(g,A.brass,2.35,1.02,.28,.012,.28);
+    box(g,A.white,2.35,.45,.5,.88,.8,.58);
+    for(const y of [1.15,1.65,2.15]){box(g,A.oak,.35,y,4.0,.34,.035,2.0);}
+    for(let i=0;i<4;i++)box(g,i%2?A.cream:A.moss,.35,1.28,3.25+i*.5,.28,.24,.4);
+    for(let i=0;i<3;i++)cylinder(g,A.clay,.35,1.77,3.4+i*.6,.11,.22);
+    box(g,A.paper,.35,2.27,4.0,.26,.2,1.6);
+    cylinder(g,A.cream,w-.7,.3,d-.9,.24,.6);
+    box(g,A.cream,w-1.0,.85,d*.55,.38,.03,1.3);for(const z of [d*.55-.5,d*.55+.5])box(g,A.black,w-1.0,.42,z,.3,.82,.03);
+    box(g,A.oak,w*.6,.018,d*.5,1.2,.01,.9);
+  }
+  function bathroom(R,g,emit){
+    const {w,d}=R.cfg;R.decor.style='stone-bathroom';
+    const win=R.win,x1=win?win.x+win.w/2+.25:.4,x2=w-.35,vw=Math.max(.8,x2-x1);
+    // Plan vasque en pierre à droite de la fenêtre, une ou deux vasques, miroir rétro-éclairé et appliques.
+    box(g,A.oak,x1+vw/2,.42,.45,vw,.18,.5);box(g,A.stone,x1+vw/2,.86,.42,vw,.08,.6);
+    const basins=vw>1.7?[x1+vw*.27,x1+vw*.73]:[x1+vw/2];
+    for(const x of basins){box(g,A.ceramic,x,.94,.42,.5,.1,.36);cylinder(g,A.brass,x,1.05,.24,.012,.26);}
+    box(g,A.glass,x1+vw/2,1.6,.19,vw-.2,.85,.012);box(g,A.charcoal,x1+vw/2,1.6,.176,vw-.2,.85,.004);
+    for(const y of [1.155,2.045])box(g,emit,x1+vw/2,y,.185,vw-.16,.02,.008);for(const x of [x1+.11,x2-.11])box(g,emit,x,1.6,.185,.02,.89,.008);   // rétro-éclairage périphérique
+    box(g,A.stone,w/2,.03,d/2,w-.3,.025,d-.3);   // dallage pierre
+    for(const x of [x1+.05,x2-.05]){cylinder(g,A.brass,x,1.9,.24,.02,.4);}
+    box(g,A.cream,x1+vw/2,.55,.72,.6,.04,.06);   // serviette pliée
+    // Douche vitrée sur le mur ouest, receveur pierre, colonne et pommeau.
+    const sz0=d-1.5,sz1=d-.3,sc=(sz0+sz1)/2;
+    box(g,A.stone,.7,.03,sc,1.1,.05,sz1-sz0);box(g,A.glass,1.25,1.05,sc,.015,2.05,sz1-sz0);box(g,A.glass,.7,1.05,sz0,1.1,2.05,.015);
+    box(g,A.brass,1.25,2.08,sc,.03,.03,sz1-sz0+.02);box(g,A.brass,.7,2.08,sz0,1.12,.03,.03);
+    cylinder(g,A.brass,.22,1.4,sc,.014,1.4);cylinder(g,A.brass,.5,2.15,sc,.11,.012);box(g,A.brass,.35,2.15,sc,.3,.014,.014);
+    cylinder(g,A.black,.7,.06,sc,.05,.01);
+    // Baignoire îlot, robinetterie au sol ; WC en niche à demi-cloison sous l'allège ; sèche-serviettes.
+    if(w>=3.6){const bx=w*.55,bz=d-1.15;mesh(g,rounded(1.7,.6,.78),A.white,bx,.3,bz);box(g,A.ceramic,bx,.57,bz,1.5,.06,.6);box(g,A.glass,bx,.56,bz,1.46,.02,.56);cylinder(g,A.brass,bx+.95,.45,bz,.014,.9);box(g,A.brass,bx+.95,.9,bz-.12,.02,.02,.25);}
+    box(g,A.white,.5,.4,.62,.36,.34,.56);box(g,A.white,.5,.62,.47,.4,.06,.36);box(g,A.charcoal,.5,1.0,.2,.42,.7,.1);
+    box(g,A.oak,1.0,.45,.6,.06,.9,1.2);
+    box(g,A.brass,.23,1.1,1.55,.04,1.0,.6);for(let i=0;i<9;i++)cylinder(g,A.brass,.23,.65+i*.11,1.55,.012,.6).rotation.x=Math.PI/2;
+    box(g,A.cream,.28,1.05,1.55,.03,.3,.5);
+    box(g,A.cream,w*.55,.05,d-.55,1.1,.015,.5);   // tapis de bain
   }
   function decorate(R){
     const {w,d,type}=R.cfg,g=R.group; const details=new T.Group();details.name='Architectural details';g.add(details);
@@ -187,12 +288,12 @@ export function createInteriors(renderer, palette) {
       if(type==='poolhouse')picture(details,d*.72);
       keypad(details,R.cfg.windowWall==='west'||['salon','cuisine'].includes(type)?.95:d*.35+.4);
       if(type!=='sauna'){
-        plant(details,w-.52,d-.55,.85);
+        plant(details,w-.52,d-.55,Math.min(.85,w*.38));   // pièces étroites (WC) : plante réduite
         // Recessed wall speaker, distinct from hi-fi columns and the soundbar.
 
 
         // Track with three adjustable downlights, warm indirect LED cornice.
-        if(type!=='cinema'){
+        if(type!=='cinema'&&type!=='wc'){
           // Keep suspended tracks near the rear wall, outside the camera-to-TV sightline.
           const trackZ=Math.min(1.25,d*.25);
           box(details,A.black,w*.6,2.88,trackZ,w*.5,.025,.045);

@@ -1,6 +1,33 @@
 # Villa Crans CH5 — journal des versions
 
-## v4.8 — 27/09/2026 — scene OFF selectionnee en rouge sur tous les chassis (a compiler : CH5 seul, web + tsw + mobile)
+## v4.9 — 28/09/2026 — OFF eclairage en OR comme les autres scenes ; OFF audio/video en ROUGE sur toutes les interfaces (a compiler : CH5 seul, web + tsw + mobile)
+
+| Artefact | Etat de ce lot |
+|---|---|
+| CH5 source | `src/themes/scene-controls.css` (bloc rouge v4.8 retire, OFF = jetons des autres scenes ; correctif Clair dalle), nouveau `src/themes/av-controls.css` (jetons `--av-off-*`), `src/index.html` (charge av-controls.css, plus de `#dc2626` en dur sur ETEINDRE), `src/iphone.html` (charge av-controls.css, classe `--off` retiree) — **a recompiler** |
+| CPZ / LPZ | inchanges |
+| Config | `meta.version` **1.0.207** (v4.8 n'a jamais ete compile : v4.8 + v4.9 = un seul build) |
+| Showcase | regeneree par `sync-villa-crans.py`, non poussee |
+| Batterie | `tools/qa-off-scenes-av.mjs` : 3 themes × {dalle 1920×1200 piece 8, iPhone page + fenetre Circuits + Sources} — OFF eclairage selectionne = meme fond / bordure que TOTAL selectionne (or, 6,1 a 14:1), OFF A/V selectionne rouge plein icone blanche : **6/6 VERT** ; `qa-v47.mjs` iPhone rejoue 69/69 ; planche-contact `docs/verification/2026-09-28-v49-off-or-av-rouge/` |
+
+**Malentendu du 27/09 corrige.** « OFF rouge partout » visait le bouton OFF de la section Audio / Video (join 200), pas la scene OFF d'eclairage.
+Regle Donatien (28.09.2026) : **scene OFF = or comme les autres scenes, sur tous les chassis ; OFF audio/video = rouge sur toutes les interfaces.**
+- Eclairage : le rouge de la fenetre Circuits iPhone (herite d'un `--ch5-button-selected-background-color:#dc2626` en dur, present aussi sur
+  ETEINDRE de la dalle) est abandonne ; les quatre scenes partagent les memes jetons `--scene-*`.
+- Audio / video : jetons `--av-off-{idle,active}-*` dans `av-controls.css`, consommes par le `<ch5-button customClass="power-off-btn">` de la
+  dalle / iPad / XPanel et par `#power-off-btn-mobile` de l'iPhone. Etat selectionne (= tout eteint) : rouge plein `#dc2626` (`#b91c1c` en Clair),
+  icone blanche, halo. **Remplace l'aspect « veille » gris de la dalle du 10.09.2026.**
+
+**Defaut preexistant corrige (dalle, theme Clair).** La regle generique d'index.html `.theme-light .scene-btn:not([selected="true"])` vise l'element
+interne, qui ne porte jamais `selected` (attribut de l'hote `<ch5-button>`) : une scene selectionnee etait repeinte en gris clair, donc invisible.
+`scene-controls.css` pose l'etat selectionne en Clair (or #c49a45, texte #1f2937, bordure ambre). Meme piege possible sur `source-btn`, `mute-btn`,
+`preset-btn`, `preset-text-btn` de la meme regle : a verifier au prochain lot Clair.
+
+**Decisions par defaut.** Etat repos du OFF audio/video inchange (anneau rouge) ; icone blanche sur l'etat selectionne en Clair aussi (l'icone noire
+d'index.html tombait sur le rouge) ; batterie dalle sur la piece 8 (Home cinema), seule facon d'afficher la carte Sources en mode deploiement.
+
+
+## v4.8 — 27/09/2026 — scene OFF selectionnee en rouge sur tous les chassis — **ANNULE par v4.9 (malentendu : il s'agissait du OFF audio/video)**, jamais compile
 
 | Artefact | Etat de ce lot |
 |---|---|

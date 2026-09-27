@@ -1,0 +1,27 @@
+# Dependances et sorties generees (jamais commitees)
+node_modules/
+dist/
+olddist/
+qr/
+
+# Visual Studio / MSBuild / NuGet
+.vs/
+bin/
+obj/
+*.user
+packages/
+
+# Artefacts Crestron compiles et sauvegardes SIMPL
+*.ch5z
+*.cpz
+*.lpz
+*.clz
+*.backup-*.smw
+
+# Identifiants
+deploy.secrets.psd1
+console_web_log.txt
+*.log
+
+# Copie du Core CH5 regeneree par tools/assemble.py (41 Mo, jamais editee) : non versionnee
+ch5/src/

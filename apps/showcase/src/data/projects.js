@@ -107,6 +107,59 @@ export const projects = [
     },
   },
   {
+    // Deuxième GUI CH5 réelle issue du Core Villa Crans : seul villa_config.json change.
+    // Vitrine régénérée par scripts/sync-appartement-crans.py (jamais éditée à la main).
+    id: `appartement-crans`,
+    name: `Appartement Crans-Montana`,
+    status: `realisation`,
+    client: `Propriétaire privé`,
+    sectors: [`residentiel`],
+    devices: [`crestron`, `ios_tablet`, `ios_phone`],
+    isInteractive: false,
+    embedUrl: `/showcases/appartement-crans/index.html`,
+    embedPhoneUrl: `/showcases/appartement-crans/iphone.html`,
+    thumbnailUrl: `https://images.unsplash.com/photo-1549488344-1f9b8d2bd1f3?auto=format&fit=crop&w=600&q=80`,
+    year: `2026`,
+    text: {
+      fr: {
+        description: `Duplex de 350 m² à Crans-Montana : 17 zones, éclairage Lutron, rideaux motorisés, climat et audio-vidéo B&O sur le même Core CH5 que la Villa Crans.`,
+        details: `Appartement en duplex de 350 m² sur deux niveaux, piloté par une interface Crestron CH5 configurée en 17 zones. L'éclairage Lutron HomeWorks QS (DALI et phase) propose dans chaque pièce les scènes JOUR, SOIR, NUIT et OFF, dont les niveaux de chaque circuit reprennent la séquence d'opérations de l'éclairagiste. Rideaux et voilages motorisés, climatisation pièce par pièce et audio-vidéo Bang & Olufsen complètent le pilotage. Cette GUI partage le même Core CH5 (page, contrat de signaux, programmes) que la Villa Crans-Montana : seul le fichier de configuration JSON change.`,
+        features: [
+          `Duplex de 350 m² sur deux niveaux, 17 zones`,
+          `Éclairage Lutron HomeWorks QS (DALI / phase), 101 circuits`,
+          `Scènes JOUR · SOIR · NUIT · OFF par pièce, niveaux issus de la séquence d'opérations`,
+          `Rideaux et voilages motorisés, climat par pièce`,
+          `Audio-vidéo Bang & Olufsen dans les pièces de vie et les chambres`,
+          `Même Core CH5 que la Villa Crans : seul le JSON de configuration change`,
+        ],
+      },
+      en: {
+        description: `350 m² duplex in Crans-Montana: 17 zones, Lutron lighting, motorised curtains, climate and B&O audio-video on the same CH5 Core as the Villa Crans.`,
+        details: `A 350 m² duplex apartment on two levels, controlled by a Crestron CH5 interface configured for 17 zones. Lutron HomeWorks QS lighting (DALI and phase) offers DAY, EVENING, NIGHT and OFF scenes in every room, with each circuit level taken from the lighting designer's sequence of operations. Motorised curtains and sheers, room-by-room air conditioning and Bang & Olufsen audio-video complete the system. This GUI shares the same CH5 Core (page, signal contract, programs) as the Villa Crans-Montana: only the JSON configuration file changes.`,
+        features: [
+          `350 m² duplex on two levels, 17 zones`,
+          `Lutron HomeWorks QS lighting (DALI / phase), 101 circuits`,
+          `DAY · EVENING · NIGHT · OFF scenes per room, levels from the sequence of operations`,
+          `Motorised curtains and sheers, per-room climate`,
+          `Bang & Olufsen audio-video in living areas and bedrooms`,
+          `Same CH5 Core as the Villa Crans: only the configuration JSON changes`,
+        ],
+      },
+      de: {
+        description: `350 m² Duplex in Crans-Montana: 17 Zonen, Lutron-Beleuchtung, Motorvorhänge, Klima und B&O-Audio/Video auf demselben CH5-Core wie die Villa Crans.`,
+        details: `Duplex-Wohnung mit 350 m² auf zwei Ebenen, gesteuert über eine Crestron-CH5-Oberfläche mit 17 Zonen. Die Lutron-HomeWorks-QS-Beleuchtung (DALI und Phasenanschnitt) bietet in jedem Raum die Szenen TAG, ABEND, NACHT und AUS; die Stufen jedes Stromkreises stammen aus der Betriebssequenz des Lichtplaners. Motorisierte Vorhänge und Stores, Klimatisierung je Raum und Bang-&-Olufsen-Audio/Video vervollständigen die Steuerung. Diese GUI teilt denselben CH5-Core (Seite, Signalvertrag, Programme) wie die Villa Crans-Montana: nur die JSON-Konfigurationsdatei ändert sich.`,
+        features: [
+          `350 m² Duplex auf zwei Ebenen, 17 Zonen`,
+          `Lutron-HomeWorks-QS-Beleuchtung (DALI / Phase), 101 Stromkreise`,
+          `Szenen TAG · ABEND · NACHT · AUS je Raum, Stufen aus der Betriebssequenz`,
+          `Motorisierte Vorhänge und Stores, Klima je Raum`,
+          `Bang-&-Olufsen-Audio/Video in Wohnbereichen und Schlafzimmern`,
+          `Gleicher CH5-Core wie die Villa Crans: nur das Konfigurations-JSON ändert sich`,
+        ],
+      },
+    },
+  },
+  {
     id: `villa-gemini`,
     name: `Villa Nyon`,
     status: `concept`,

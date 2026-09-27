@@ -10,13 +10,14 @@ import { VenueBackground } from '../venues/VenueBackground';
 import { VENUE_PROJECTS } from '../venues/state';
 
 // A deployment changes the module URL, including its dependent assets.
-const PLAN3D_VERSION = "2026-09-17-journey-1";
+const PLAN3D_VERSION = "2026-09-27-residence-1";
 
 // Fond de page 3D (Three.js) à la place de la vidéo, pour les projets qui ont un plan 3D
 // (public/plan3d/<id>.json). Le GUI tourne dans son iframe et n'est pas modifié : le module
 // public/plan3d/plan3d.js lit ses feedbacks à travers la fenêtre de l'iframe (même origine).
 export const PLAN3D_PROJECTS = {
   "villa-gemini-frequencetv": "/plan3d/villa-crans.json",
+  "appartement-crans": "/plan3d/appartement-crans.json",
 };
 
 // Quand la 3D remplace la vidéo : une règle par cas (support affiché + largeur de fenêtre).

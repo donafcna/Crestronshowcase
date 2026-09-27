@@ -1,0 +1,397 @@
+﻿# Deploiement Appartement Crans-Montana (copie du Core Villa Crans par tools/assemble.py, ne pas editer ici) : CH5 -> TSW (192.168.1.48) et programme C# -> CP4 (192.168.1.200)
+# Usage :
+#   .\deploy.ps1                 -> build CH5 + deploiement TSW + CP4
+#   .\deploy.ps1 -Target tsw     -> uniquement la TSW
+#   .\deploy.ps1 -Target cp4     -> uniquement le CP4
+#   .\deploy.ps1 -Target web     -> Web XPanel sur le serveur web du CP4 (QR codes par piece) + regeneration des QR
+#   .\deploy.ps1 -Target mobile  -> projet pour l'application Crestron One (iPhone / iPad, IP-ID 05-06)
+#   .\deploy.ps1 -SkipBuild      -> sans recompiler l'archive CH5
+#   .\deploy.ps1 -SkipContrast   -> sans la garde de contraste (a n'utiliser que sur faux positif avere)
+#   .\deploy.ps1 -Target web -CP4Host 192.168.3.109  -> vise un autre processeur (banc de test du bureau)
+#                                   sans toucher au fichier d'identifiants
+#   .\deploy.ps1 -Target tsw -TswHost 192.168.1.16   -> vise la tablette a une autre adresse (DHCP, autre reseau)
+# Les identifiants sont lus dans deploy.secrets.psd1 (jamais commite).
+# Cle optionnelle dans deploy.secrets.psd1 -> CP4.WebAuthToken : jeton d'authentification passe dans les QR (?authtoken=).
+
+param(
+    [ValidateSet('all', 'tsw', 'cp4', 'config', 'web', 'mobile')]
+    [string]$Target = 'all',
+    [switch]$SkipBuild,
+    [switch]$SkipContrast,
+    [string]$CP4Host,
+    [string]$TswHost
+)
+
+$ErrorActionPreference = 'Stop'
+$root = Split-Path -Parent $MyInvocation.MyCommand.Path
+
+# ch5-cli lance a travers tools\ch5-compat.js : Node 23+ a retire les helpers util.is*
+# que ssh2-streams (dependance du CLI) utilise encore. Sans ce prealable, l'envoi SFTP
+# reussit puis le CLI s'arrete sur "isDate is not a function. No success executing command."
+$ch5Cli = Join-Path $root 'node_modules\@crestron\ch5-utilities-cli\build\index.js'
+$ch5Compat = Join-Path $root 'tools\ch5-compat.js'
+function Invoke-Ch5Cli {
+    param([string[]]$Arguments)
+    if (-not (Test-Path $ch5Cli)) { throw "ch5-cli introuvable : $ch5Cli (npm install dans $root)" }
+    if (Test-Path $ch5Compat) { & node '--require' $ch5Compat $ch5Cli @Arguments }
+    else { & node $ch5Cli @Arguments }
+}
+
+# Node.js systeme en tete de PATH (necessaire pour npx ch5-cli dans les contextes a PATH obsolete)
+if (Test-Path 'C:\Program Files\nodejs\node.exe') {
+    $env:Path = 'C:\Program Files\nodejs;' + $env:Path
+}
+
+# --- Identifiants ---
+$secretsFile = Join-Path $root 'deploy.secrets.psd1'
+if (-not (Test-Path $secretsFile)) {
+    throw "Fichier d'identifiants introuvable : $secretsFile"
+}
+$S = Import-PowerShellDataFile $secretsFile
+foreach ($k in @('TSW', 'CP4')) {
+    if ($S[$k].User -eq 'REMPLACEZ_MOI' -or $S[$k].Password -eq 'REMPLACEZ_MOI') {
+        throw "Renseignez User/Password pour $k dans deploy.secrets.psd1"
+    }
+}
+
+function Get-HostKeyArgs {
+    param($Device)
+    # -hostkey rend plink/pscp totalement non-interactifs (pas de cache ni de question)
+    $hkArgs = @()
+    foreach ($hk in $Device.HostKeys) { $hkArgs += @('-hostkey', $hk) }
+    return $hkArgs
+}
+
+function Send-ConsoleCommands {
+    param($Device, [string[]]$Commands)
+    # Envoie des commandes console Crestron via plink (la session se ferme sur 'bye')
+    # Ligne vide en tete : la console Crestron corrompt la 1re ligne recue pendant son init
+    $stdin = "`r`n" + (($Commands + 'bye') -join "`r`n") + "`r`n"
+    $hk = Get-HostKeyArgs $Device
+    # EAP 'Continue' local : en 5.1, le stderr des exe natifs redirige en ErrorRecord fatal avec 'Stop'
+    $prevEap = $ErrorActionPreference; $ErrorActionPreference = 'Continue'
+    $out = $stdin | & plink -batch -ssh -no-antispoof @hk -pw $Device.Password "$($Device.User)@$($Device.Host)" 2>&1 | ForEach-Object { "$_" }
+    $ErrorActionPreference = $prevEap
+    # Le code de sortie plink n'est pas fiable ici (252 meme en succes) : on analyse la sortie.
+    $joined = $out -join "`n"
+    if ($joined -notmatch 'Disconnecting Bye') {
+        throw "Session console incomplete sur $($Device.Host) : $($out -join ' | ')"
+    }
+    # Seuls les refus de commande console comptent (pas les [ERROR] des logs applicatifs relayes)
+    $errCount = @($out | Where-Object { $_ -match '^ERROR:' }).Count
+    if ($errCount -gt 1) {
+        # 1 erreur max toleree : celle de la ligne sacrificielle corrompue
+        throw "Commande refusee par $($Device.Host) : $($out -join ' | ')"
+    }
+    return $out
+}
+
+function Copy-ToDevice {
+    param($Device, [string]$LocalFile, [string]$RemotePath)
+    $hk = Get-HostKeyArgs $Device
+    $prevEap = $ErrorActionPreference; $ErrorActionPreference = 'Continue'
+    $out = & pscp -batch @hk -pw $Device.Password $LocalFile "$($Device.User)@$($Device.Host):$RemotePath" 2>&1 | ForEach-Object { "$_" }
+    $ErrorActionPreference = $prevEap
+    if ($LASTEXITCODE -ne 0) {
+        throw "Echec transfert vers $($Device.Host) : $($out -join ' | ')"
+    }
+    Write-Host "  Transfert OK -> $($Device.Host):$RemotePath"
+}
+
+function Test-InlineScripts {
+    param([string]$HtmlFile)
+    # Garde-fou : verifie la syntaxe (node --check) de chaque bloc <script> inline du HTML.
+    # ch5-cli archive ne fait que zipper : un guillemet ou une accolade manquante (collage rate)
+    # passerait sinon jusqu'a la dalle, ou le navigateur rejette silencieusement tout le bloc.
+    $html = Get-Content $HtmlFile -Raw -Encoding UTF8
+    $name = Split-Path -Leaf $HtmlFile
+    $rx = [regex]'(?is)<script\b([^>]*)>(.*?)</script>'
+    $utf8NoBom = New-Object System.Text.UTF8Encoding $false
+    $tmp = Join-Path ([System.IO.Path]::GetTempPath()) 'villacrans_script_check.js'
+    $n = 0; $errors = @()
+    foreach ($m in $rx.Matches($html)) {
+        $attrs = $m.Groups[1].Value
+        if ($attrs -match '\bsrc\s*=') { continue }                                         # scripts externes : pas concernes
+        if ($attrs -match 'type\s*=\s*["'']([^"'']+)' -and $Matches[1] -notmatch 'javascript|module|ecmascript') { continue }  # JSON, templates...
+        $code = $m.Groups[2].Value
+        if ($code.Trim().Length -eq 0) { continue }
+        $n++
+        # Ligne du HTML ou commence le bloc (pour retrouver l'erreur : ligne HTML = ligne bloc + offset)
+        $offset = ($html.Substring(0, $m.Index) -split "`n").Count
+        [System.IO.File]::WriteAllText($tmp, $code, $utf8NoBom)
+        $prevEap = $ErrorActionPreference; $ErrorActionPreference = 'Continue'
+        $out = & node --check $tmp 2>&1 | ForEach-Object { "$_" }
+        $ErrorActionPreference = $prevEap
+        if ($LASTEXITCODE -ne 0) {
+            $detail = ($out | Where-Object { $_ -match 'SyntaxError|^\s*\^|^[^:]*:\d+' } | Select-Object -First 4) -join ' | '
+            $errors += "$name : bloc <script> no $n (debute ligne $offset du HTML, ajouter $offset aux lignes ci-dessous) -> $detail"
+        }
+    }
+    Remove-Item $tmp -ErrorAction SilentlyContinue
+    if ($errors.Count -gt 0) {
+        throw ("JavaScript invalide, deploiement annule :`n  " + ($errors -join "`n  "))
+    }
+    Write-Host "  $name : $n bloc(s) <script> OK" -ForegroundColor Green
+}
+
+# --- Build CH5 ---
+if (-not $SkipBuild -and $Target -notin @('cp4', 'config')) {
+    Write-Host "[1/3] Compilation de l'archive CH5 (appartementcrans.ch5z)..." -ForegroundColor Cyan
+
+    # Verification de syntaxe avant tout (avant l'increment de version, pour ne pas consommer un numero)
+    Write-Host "  Verification des blocs <script> (node --check)..."
+    foreach ($f in @('src\index.html', 'src\iphone.html')) {
+        $p = Join-Path $root $f
+        if (Test-Path $p) { Test-InlineScripts $p }
+    }
+    # Lisibilite : contraste de chaque texte dans chaque theme (tools/check_contrast.mjs, Playwright).
+    # Sert la source src/ en local et ouvre chaque GUI dans un navigateur sans fenetre. Si Playwright
+    # n'est pas installe (npm i -D playwright pngjs ; npx playwright install chromium), on avertit seulement.
+    if ($SkipContrast) {
+        Write-Host "  Contraste : garde desactivee (-SkipContrast)" -ForegroundColor Yellow
+    } elseif (Test-Path (Join-Path $root 'node_modules\playwright')) {
+        Write-Host "  Verification du contraste des textes (3 themes)..."
+        # Serveur dans un fichier a part : Start-Process joint -ArgumentList par des espaces
+        # sans les proteger, un script node -e en ligne y serait coupe au premier espace.
+        $srv = Start-Process -FilePath node -ArgumentList @(
+            (Join-Path $root 'tools\serve_src.mjs'), (Join-Path $root 'src'), '4179') -PassThru -WindowStyle Hidden
+        try {
+            # Attendre que le port reponde vraiment plutot que de parier sur une seconde.
+            $pret = $false
+            foreach ($essai in 1..40) {
+                try {
+                    $c = New-Object System.Net.Sockets.TcpClient
+                    $c.Connect('127.0.0.1', 4179); $c.Close(); $pret = $true; break
+                } catch { Start-Sleep -Milliseconds 250 }
+            }
+            if (-not $pret) { throw "Le serveur local (tools\serve_src.mjs, port 4179) n'a pas demarre, controle de contraste impossible" }
+            # Les deux GUI, chacune sur son gabarit : la dalle (index.html, aussi iPad et XPanel)
+            # et le smartphone (iphone.html), dont la mise en page n'etait pas couverte jusqu'ici.
+            foreach ($gui in @(
+                @{ Fichier = 'index.html';  Gabarit = '1340x890'; Nom = 'dalle / iPad / XPanel' },
+                @{ Fichier = 'iphone.html'; Gabarit = '393x852';  Nom = 'smartphone' })) {
+                $guiPath = Join-Path $root ('src\' + $gui.Fichier)
+                if (-not (Test-Path $guiPath)) { continue }
+                Write-Host "    $($gui.Fichier) - $($gui.Nom) ($($gui.Gabarit))"
+                & node (Join-Path $root 'tools\check_contrast.mjs') "http://localhost:4179/$($gui.Fichier)" 3 $gui.Gabarit
+                if ($LASTEXITCODE -ne 0) { throw "Textes illisibles dans au moins un theme sur $($gui.Fichier) (voir ci-dessus), deploiement annule. Si le releve est un faux positif (texte sur photo), relancer avec -SkipContrast" }
+            }
+        } finally { Stop-Process -Id $srv.Id -ErrorAction SilentlyContinue }
+    } else {
+        Write-Host "  Attention : Playwright absent, contraste des textes non verifie (npm i -D playwright pngjs ; npx playwright install chromium)" -ForegroundColor Yellow
+    }
+
+    # Idem pour villa_config.json (un JSON malforme rend le CP4 muet, cf. docs/06_TODO.md P1)
+    $cfgCheck = Join-Path $root '..\villa_config.json'
+    if (Test-Path $cfgCheck) {
+        try { Get-Content $cfgCheck -Raw -Encoding UTF8 | ConvertFrom-Json | Out-Null; Write-Host "  villa_config.json : JSON OK" -ForegroundColor Green }
+        catch { throw "villa_config.json invalide, deploiement annule : $($_.Exception.Message)" }
+    }
+
+    # Increment automatique de la version (version.json -> src/version.js, affichee par le GUI)
+    $verFile = Join-Path $root 'version.json'
+    $ver = '1.0.149'
+    if (Test-Path $verFile) { try { $ver = (Get-Content $verFile -Raw -Encoding UTF8 | ConvertFrom-Json).version } catch {} }
+    $vParts = $ver.Split('.')
+    $vParts[2] = [string]([int]$vParts[2] + 1)
+    $newVer = $vParts -join '.'
+    $utf8NoBom = New-Object System.Text.UTF8Encoding $false
+    [System.IO.File]::WriteAllText($verFile, "{`n  `"version`": `"$newVer`"`n}`n", $utf8NoBom)
+    [System.IO.File]::WriteAllText((Join-Path $root 'src\version.js'), "window.appVersion = 'v$newVer';", $utf8NoBom)
+    [System.IO.File]::WriteAllText((Join-Path $root 'src\build_date.json'), "{`"compileDate`":`"$((Get-Date).ToString('dd/MM/yyyy HH:mm:ss'))`"}", $utf8NoBom)
+    Write-Host "  Version : v$newVer" -ForegroundColor Cyan
+
+    # Embarquer la configuration dans le projet CH5 (source par defaut du GUI sans liaison CP4).
+    # Version .js en <script> obligatoire : fetch() est bloque en contexte local sur les dalles.
+    $cfgSrc = Join-Path $root '..\villa_config.json'
+    if (Test-Path $cfgSrc) {
+        Copy-Item $cfgSrc (Join-Path $root 'src\villa_config.json') -Force
+        $cfgJson = Get-Content $cfgSrc -Raw -Encoding UTF8
+        [System.IO.File]::WriteAllText((Join-Path $root 'src\villa_config.js'), "window.villaConfigEmbedded = $cfgJson;", (New-Object System.Text.UTF8Encoding $false))
+    }
+    Push-Location $root
+    try {
+        Invoke-Ch5Cli @('archive', '-p', 'appartementcrans', '-d', 'src', '-o', 'dist') | Out-Null
+        if ($LASTEXITCODE -ne 0) { throw "Echec de ch5-cli archive" }
+    } finally { Pop-Location }
+    Write-Host "  Archive OK : dist\appartementcrans.ch5z"
+}
+
+# --- TSW ---
+if ($Target -in @('all', 'tsw')) {
+    # -TswHost permet de viser la tablette a une autre adresse (identifiants et cle d'hote inchanges)
+    $tsw = $S.TSW
+    if ($TswHost) { $tsw = @{}; foreach ($k in $S.TSW.Keys) { $tsw[$k] = $S.TSW[$k] }; $tsw.Host = $TswHost }
+    Write-Host "[2/3] Deploiement CH5 sur la TSW $($tsw.Host)..." -ForegroundColor Cyan
+    $ch5z = Join-Path $root 'dist\appartementcrans.ch5z'
+    if (-not (Test-Path $ch5z)) { throw "Archive introuvable : $ch5z" }
+    Copy-ToDevice -Device $tsw -LocalFile $ch5z -RemotePath '/display/appartementcrans.ch5z'
+    Write-Host "  Chargement du projet (PROJECTLOAD)..."
+    Send-ConsoleCommands -Device $tsw -Commands @('PROJECTLOAD') | Out-Null
+    Write-Host "  TSW : projet charge." -ForegroundColor Green
+}
+
+# --- WEB XPANEL : le meme .ch5z sur le serveur web du CP4 -> https://<CP4>/appartementcrans/index.html (QR codes) ---
+if ($Target -in @('all', 'web')) {
+    # -CP4Host permet de viser un autre processeur (banc de test) sans modifier deploy.secrets.psd1
+    $cibleWeb = if ($CP4Host) { $CP4Host } else { $S.CP4.Host }
+    Write-Host "[web] Deploiement du Web XPanel sur le CP4 $cibleWeb..." -ForegroundColor Cyan
+    $ch5z = Join-Path $root 'dist\appartementcrans.ch5z'
+    if (-not (Test-Path $ch5z)) { throw "Archive introuvable : $ch5z" }
+    # -p : le CLI demande l'utilisateur et le mot de passe SFTP. Il n'existe aucune option de mot de passe
+    # et il ne lit aucune variable d'environnement (les anciennes CH5CLI_DEPLOY_* etaient sans effet,
+    # d'ou des deploiements web qui echouaient en silence). Seule une cle SSH (-i) eviterait l'invite.
+    Write-Host "  Identifiants SFTP du processeur demandes ci-dessous." -ForegroundColor Yellow
+    Push-Location $root
+    try {
+        # Sortie laissee a l'ecran : la capturer casserait l'invite de saisie du mot de passe.
+        Invoke-Ch5Cli @('deploy', '-H', $cibleWeb, '-t', 'web', '-p', $ch5z)
+    } finally { Pop-Location }
+    # ch5-cli sort en code 0 meme quand le deploiement echoue (l'ancien script annoncait donc
+    # "Web XPanel OK" a tort). On verifie ce qui compte vraiment : la page repond-elle ?
+    $urlWeb = "https://$cibleWeb/appartementcrans/index.html"
+    # 17.09.2026 : sur le CP4 192.168.1.200 la verification echouait avec "La connexion sous-jacente a
+    # ete fermee : une erreur inattendue s'est produite lors de l'envoi" alors que le deploiement
+    # avait reussi. Cause : un scriptblock PowerShell en ServerCertificateValidationCallback est
+    # appele hors runspace par .NET et plante (piege connu de PowerShell 5.1). On installe donc un
+    # rappel compile (Add-Type), on active TLS 1.1/1.2, et en dernier recours on interroge avec
+    # curl.exe -k (livre avec Windows 10+). Un transport impossible n'est plus une erreur fatale :
+    # seul un code HTTP different de 200 l'est.
+    if (-not ('FtvTrustAll' -as [type])) {
+        Add-Type -TypeDefinition @'
+using System.Net;
+using System.Net.Security;
+using System.Security.Cryptography.X509Certificates;
+public static class FtvTrustAll {
+    public static bool Ok(object s, X509Certificate c, X509Chain ch, SslPolicyErrors e) { return true; }
+    public static void Install() { ServicePointManager.ServerCertificateValidationCallback = Ok; }
+    public static void Remove() { ServicePointManager.ServerCertificateValidationCallback = null; }
+}
+'@
+    }
+    $code = $null; $transport = $null
+    try {
+        [FtvTrustAll]::Install()
+        [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.SecurityProtocolType]::Tls12 -bor [System.Net.SecurityProtocolType]::Tls11
+        $code = (Invoke-WebRequest -Uri $urlWeb -UseBasicParsing -TimeoutSec 20).StatusCode
+    } catch {
+        $transport = $_.Exception.Message
+    } finally { [FtvTrustAll]::Remove() }
+    if ($null -eq $code) {
+        $curl = Get-Command curl.exe -ErrorAction SilentlyContinue
+        if ($curl) {
+            $out = & $curl.Source -k -s -o NUL -w '%{http_code}' --max-time 20 $urlWeb 2>$null
+            if ($out -match '^\d{3}$') { $code = [int]$out }
+        }
+    }
+    if ($null -eq $code) {
+        Write-Warning "Deploiement web non confirme automatiquement sur $cibleWeb ($transport). Ouvrir $urlWeb dans un navigateur pour verifier."
+    } elseif ($code -ne 200 -and $code -ne 302) {
+        throw "Deploiement web non confirme sur $cibleWeb : $urlWeb repond $code"
+    } else {
+        Write-Host "  Web XPanel OK : $urlWeb" -ForegroundColor Green
+    }
+    # 22.09.2026 : un code 200 ne prouve rien, une copie perimee repond 200 aussi. L'iPhone est
+    # reste trois jours sur 1.0.196 pendant que le script annoncait des deploiements reussis.
+    # On lit la version reellement servie et on la compare a celle qui vient d'etre construite.
+    $versionAttendue = (Get-Content (Join-Path $root 'version.json') -Raw | ConvertFrom-Json).version
+    $urlVersion = "https://$cibleWeb/appartementcrans/version.js"
+    $versionServie = $null
+    try {
+        [FtvTrustAll]::Install()
+        $versionServie = (Invoke-WebRequest -Uri $urlVersion -UseBasicParsing -TimeoutSec 20).Content
+    } catch { $versionServie = $null } finally { [FtvTrustAll]::Remove() }
+    if (-not $versionServie) {
+        $curl = Get-Command curl.exe -ErrorAction SilentlyContinue
+        if ($curl) { $versionServie = & $curl.Source -k -s --max-time 20 $urlVersion 2>$null }
+    }
+    if ($versionServie -match "v?(\d+\.\d+\.\d+)") {
+        $servie = $Matches[1]
+        if ($servie -eq $versionAttendue) {
+            Write-Host "  Version servie par le CP4 : $servie (= build)" -ForegroundColor Green
+        } else {
+            throw "Le CP4 sert encore la version $servie alors que le build est $versionAttendue : le deploiement web n'a pas pris (identifiants SFTP ?)."
+        }
+    } else {
+        Write-Warning "Version servie illisible ($urlVersion) : verifier a la main que le CP4 sert bien $versionAttendue."
+    }
+    Write-Host "  GUI smartphone : https://$cibleWeb/appartementcrans/iphone.html" -ForegroundColor Green
+
+    # QR codes par piece (tools/gen_qr.js -> qr\)
+    $qrArgs = @((Join-Path $root 'tools\gen_qr.js'), '--base', "https://$cibleWeb/appartementcrans/index.html")
+    if ($S.CP4.WebAuthToken) { $qrArgs += @('--token', $S.CP4.WebAuthToken) }
+    if ($S.CP4.WifiName) { $qrArgs += @('--wifi', $S.CP4.WifiName) }
+    & node @qrArgs
+    if ($LASTEXITCODE -ne 0) { Write-Host "  Attention : generation des QR codes en echec (npm install --save-dev qrcode ?)" -ForegroundColor Yellow }
+    else { Write-Host "  QR codes regeneres : qr\index.html" -ForegroundColor Green }
+    if ($Target -eq 'web') { Write-Host "Deploiement termine." -ForegroundColor Green; exit 0 }
+}
+
+# --- MOBILE : le meme .ch5z pour l'application Crestron One (iPhone IP-ID 06, iPad IP-ID 05) ---
+# 22.09.2026 : cette cible manquait. Les cibles tsw (PROJECTLOAD) et web (-t web) ne touchent pas le
+# projet que Crestron One telecharge depuis le processeur : l'iPhone est reste sur 1.0.196 pendant
+# six livraisons, et chaque test "sur l'iPhone" a en fait teste une version vieille de trois jours.
+if ($Target -in @('all', 'mobile')) {
+    $cibleMobile = if ($CP4Host) { $CP4Host } else { $S.CP4.Host }
+    Write-Host "[mobile] Deploiement du projet Crestron One sur le CP4 $cibleMobile..." -ForegroundColor Cyan
+    $ch5z = Join-Path $root 'dist\appartementcrans.ch5z'
+    if (-not (Test-Path $ch5z)) { throw "Archive introuvable : $ch5z" }
+    Write-Host "  Identifiants SFTP du processeur demandes ci-dessous." -ForegroundColor Yellow
+    Push-Location $root
+    try {
+        Invoke-Ch5Cli @('deploy', '-H', $cibleMobile, '-t', 'mobile', '-p', $ch5z)
+    } finally { Pop-Location }
+    Write-Host "  Projet mobile envoye. Sur l'iPhone : fermeture forcee de Crestron One puis relance ;" -ForegroundColor Green
+    Write-Host "  verifier dans Reglages que la version affichee est bien celle du build." -ForegroundColor Green
+    if ($Target -eq 'mobile') { Write-Host "Deploiement termine." -ForegroundColor Green; exit 0 }
+}
+
+# --- CONFIG SEULE : envoi de villa_config.json au CP4 + redemarrage du programme (sans recharger le cpz) ---
+if ($Target -eq 'config') {
+    Write-Host "[config] Envoi de villa_config.json sur le CP4 $($S.CP4.Host)..." -ForegroundColor Cyan
+    $villaCfg = Join-Path $root '..\villa_config.json'
+    if (-not (Test-Path $villaCfg)) { throw "villa_config.json introuvable a la racine du projet" }
+
+    # Validation JSON avant envoi (evite de charger une config corrompue)
+    try { Get-Content $villaCfg -Raw -Encoding UTF8 | ConvertFrom-Json | Out-Null }
+    catch { throw "villa_config.json invalide : $($_.Exception.Message)" }
+
+    # Resynchroniser les copies embarquees du GUI (prises en compte au prochain build TSW)
+    Copy-Item $villaCfg (Join-Path $root 'src\villa_config.json') -Force
+    $cfgJson = Get-Content $villaCfg -Raw -Encoding UTF8
+    [System.IO.File]::WriteAllText((Join-Path $root 'src\villa_config.js'), "window.villaConfigEmbedded = $cfgJson;", (New-Object System.Text.UTF8Encoding $false))
+
+    Copy-ToDevice -Device $S.CP4 -LocalFile $villaCfg -RemotePath '/user/villa_config.json'
+    Write-Host "  Redemarrage du programme (progreset) pour recharger la configuration..."
+    Send-ConsoleCommands -Device $S.CP4 -Commands @('progreset -p:01') | Out-Null
+    Write-Host "  Configuration rechargee - les panels la recevront a la reconnexion." -ForegroundColor Green
+    Write-Host "Deploiement termine." -ForegroundColor Green
+    exit 0
+}
+
+# --- CP4 ---
+if ($Target -in @('all', 'cp4')) {
+    Write-Host "[3/3] Chargement du programme C# sur le CP4 $($S.CP4.Host)..." -ForegroundColor Cyan
+
+    # Configuration de dimensionnement du GUI (lue par le programme au boot, transmise au CH5)
+    $villaCfg = Join-Path $root '..\villa_config.json'
+    if (Test-Path $villaCfg) {
+        try { Get-Content $villaCfg -Raw -Encoding UTF8 | ConvertFrom-Json | Out-Null }
+        catch { throw "villa_config.json invalide, envoi au CP4 annule : $($_.Exception.Message)" }
+        Copy-ToDevice -Device $S.CP4 -LocalFile $villaCfg -RemotePath '/user/villa_config.json'
+    } else {
+        Write-Host "  Attention : villa_config.json absent, dimensionnement historique conserve." -ForegroundColor Yellow
+    }
+
+    $cpz = Join-Path $root '..\simpl-sharp\AppartementCrans\bin\Debug\AppartementCrans.cpz'
+    if (-not (Test-Path $cpz)) { throw "Programme introuvable : $cpz (compilez depuis Visual Studio)" }
+    $slot = $S.CP4.Slot
+    if (-not $slot) { $slot = '01' }
+    Copy-ToDevice -Device $S.CP4 -LocalFile $cpz -RemotePath "/program$slot/AppartementCrans.cpz"
+    Write-Host "  Chargement du programme (progload -p:$slot)..."
+    Send-ConsoleCommands -Device $S.CP4 -Commands @("progload -p:$slot") | Out-Null
+    Write-Host "  CP4 : programme recharge (slot $slot)." -ForegroundColor Green
+}
+
+Write-Host "Deploiement termine." -ForegroundColor Green
+exit 0

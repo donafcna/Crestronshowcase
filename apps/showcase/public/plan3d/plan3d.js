@@ -13,10 +13,11 @@
  * api.setWindow(rect) cadre la pièce dans la zone libre de la page ; api.dispose() à la fin.
  * =========================================================================== */
 import * as THREE from './vendor/three.module.min.js';
-import { createInteriors } from './interiors.js?v=2026-09-17-feedback-1';
-import { buildLandscape } from './landscape.js?v=2026-09-17-valley-1';
+import { createInteriors } from './interiors.js?v=2026-09-27-residence-1';
+import { buildLandscape } from './landscape.js?v=2026-09-27-residence-1';
 import { createEstate } from './estate.js?v=2026-09-17-lighting-1';
-import { enrichRoom } from './room-features.js?v=2026-09-17-audio-1';
+import { createResidence } from './residence.js?v=2026-09-27-residence-1';
+import { enrichRoom } from './room-features.js?v=2026-09-27-residence-1';
 import { furnishSpecialRoom } from './special-rooms.js?v=2026-09-17-rooms-1';
 import { createTVStage } from './tv-stage.js?v=2026-09-17-stadiums-1';
 import { drawProgramme } from './tv-programmes.js?v=2026-09-16-estate-2';
@@ -33,6 +34,8 @@ export function createPlan3D(opts) {
     function later(fn, ms) { var id = setTimeout(function () { timers.delete(id); if (running) fn(); }, ms); timers.add(id); return id; }
 
     var NIVEAU_H = 3.0;            // hauteur d'un niveau (m)
+    // Enveloppe 'residence' : les niveaux du duplex sont posés sur un socle (baseElevation, m) ; la terrasse suit son niveau.
+    var RESIDENCE = cfg.enveloppe === 'residence', BASE_Y = RESIDENCE ? (cfg.baseElevation || 0) : 0;
     var NIVEAU_GAP = 4.2;          // vide entre les dalles (écorché : chaque niveau reste lisible)
     var PIECES = cfg.pieces || defaultLayout();
     var ROOMS = {};                // id -> objets de la pièce
@@ -299,11 +302,23 @@ export function createPlan3D(opts) {
         g.position.set(p.x, y0, p.z);
         var w = p.w, d = p.d, ext = p.type === 'terrasse' || p.type === 'piscine';
         (ext ? scene : sceneR).add(g);
+        var voidFloor = p.type === 'escalier' && p.stairVoid;
         var R = { id: p.id, cfg: p, group: g, lamps: [], glow: [], levels: [0,0,0,0,0], renderLevels: [0,0,0,0,0], fadeTargets: [0,0,0,0,0], lightFade: null, sceneOff: false, audio: { source: 0, music: false, mute: false, volume: 0, mediaVolume: 0, paused: false }, tv: null, speakers: [], hvac: null, thermo: null, y0: y0, ext: ext };
 
         // Sol, dalle et murs du fond (nord = -z, ouest = -x) : écorché ouvert vers la caméra (+x, +z)
-        box(w, 0.25, d, M.dalle, w / 2, -0.125, d / 2, g);
-        box(w - 0.1, 0.02, d - 0.1, ext ? (p.type === 'terrasse' ? M.gazon : M.solExt) : (p.type === 'chambre' || p.type === 'suite' ? M.solChambre : M.sol), w / 2, 0.01, d / 2, g);
+        var floorMat = ext ? (p.type === 'terrasse' ? M.gazon : M.solExt) : (p.type === 'chambre' || p.type === 'suite' ? M.solChambre : M.sol);
+        if (voidFloor) {
+            // Trémie d'escalier : la dalle et le sol sont découpés en quatre bandes autour du vide.
+            var v = p.stairVoid;
+            [[0, 0, v.x, d], [v.x + v.w, 0, w - v.x - v.w, d], [v.x, 0, v.w, v.z], [v.x, v.z + v.d, v.w, d - v.z - v.d]].forEach(function (s) {
+                if (s[2] <= 0.01 || s[3] <= 0.01) return;
+                box(s[2], 0.25, s[3], M.dalle, s[0] + s[2] / 2, -0.125, s[1] + s[3] / 2, g);
+                box(s[2], 0.02, s[3], floorMat, s[0] + s[2] / 2, 0.01, s[1] + s[3] / 2, g);
+            });
+        } else {
+            box(w, 0.25, d, M.dalle, w / 2, -0.125, d / 2, g);
+            box(w - 0.1, 0.02, d - 0.1, floorMat, w / 2, 0.01, d / 2, g);
+        }
         if (!ext && p.windowWall === 'none') {
             box(w, NIVEAU_H, .15, p.type==='cinema'?M.murSombre:M.mur, w/2, NIVEAU_H/2, .075, g);
             box(.15, NIVEAU_H, d, p.type==='cinema'?M.murSombre:M.mur, .075, NIVEAU_H/2, d/2, g);
@@ -442,6 +457,7 @@ export function createPlan3D(opts) {
                 cyl(0.28, 0.5, M.pot, w - 0.6, 0.25, d - 0.6, g, 0.22); sph(0.5, M.plante, w - 0.6, 0.85, d - 0.6, g);
                 tvPos = null; break;
             case 'sauna': tvPos=null;break;
+            case 'entree': case 'wc': case 'buanderie': case 'sdb': case 'escalier': tvPos = null; break;   // décor dans interiors.js
             case 'garage': case 'golf': case 'technique': tvPos = null; break;
             case 'poolhouse':
                 box(2.6, 1.0, 0.7, M.bois, w * 0.45, 0.5, 0.75, g); box(2.7, 0.06, 0.8, M.metal, w * 0.45, 1.03, 0.75, g);
@@ -469,7 +485,7 @@ export function createPlan3D(opts) {
         }
 
         // Audio / vidéo : TV murale + 2 enceintes
-        if (tvPos && p.av !== false) {
+        if (tvPos && p.av !== false && p.tv !== false) {
             var sw = tvPos.size, shh = sw * 9 / 16;
             var avRoomGroup=g, tvGroup=new THREE.Group();tvGroup.name='Television assembly';g.add(tvGroup);g=tvGroup;
             // Téléviseur : dalle fine à bord alu, support mural, bandeau logo, voyant de veille, barre de son
@@ -540,7 +556,10 @@ export function createPlan3D(opts) {
     function makeLabel(text) {
         var c = document.createElement('canvas'); c.width = 512; c.height = 128; var g = c.getContext('2d');
         g.fillStyle = 'rgba(15,23,42,0.72)'; roundRect(g, 8, 24, 496, 80, 24); g.fill();
-        g.fillStyle = '#fff'; g.font = 'bold 44px Arial'; g.textAlign = 'center'; g.fillText(text.toUpperCase(), 256, 80);
+        // Les noms longs (« Salle de bains principale ») sont réduits pour tenir dans le cartouche.
+        var label = text.toUpperCase(), size = 44; g.font = 'bold 44px Arial';
+        while (size > 22 && g.measureText(label).width > 470) { size -= 2; g.font = 'bold ' + size + 'px Arial'; }
+        g.fillStyle = '#fff'; g.textAlign = 'center'; g.fillText(label, 256, 64 + size * 0.36);
         var tex = new THREE.CanvasTexture(c); tex.colorSpace = THREE.SRGBColorSpace;
         var sp = new THREE.Sprite(new THREE.SpriteMaterial({ map: tex, transparent: true, depthTest: false })); sp.scale.set(2.6, 0.65, 1); sp.renderOrder = 10;
         return sp;
@@ -634,7 +653,7 @@ export function createPlan3D(opts) {
         camera.setViewOffset(W, H, W / 2 - (win.x + win.w / 2), H / 2 - (win.y + win.h / 2), W, H);
     }
     var camState = { pos: new THREE.Vector3(), tgt: new THREE.Vector3(), basePos: new THREE.Vector3(), baseTgt: new THREE.Vector3() };
-    function roomElevation(p, layout) { return p.type === 'terrasse' || p.type === 'piscine' ? 0 : p.niveau * 3.6 + layout * (p.niveau * 3.6 + 7.2); }
+    function roomElevation(p, layout) { return ((p.type === 'terrasse' || p.type === 'piscine') && !RESIDENCE ? 0 : p.niveau * 3.6 + layout * (p.niveau * 3.6 + 7.2)) + BASE_Y; }
     function villaBounds(layout) {
         var b = new THREE.Box3(); Object.values(ROOMS).forEach(function (R) { var p=R.cfg,y=roomElevation(p, layout ?? explosion);b.expandByPoint(new THREE.Vector3(p.x,y-.25,p.z));b.expandByPoint(new THREE.Vector3(p.x+p.w,y+3.85,p.z+p.d)); }); return b;
     }
@@ -655,7 +674,7 @@ export function createPlan3D(opts) {
     }
     function overviewPose(layout) {
         var value = layout ?? explosion, b = value < .001 && envelope ? envelope.bounds : villaBounds(value), c = b.getCenter(new THREE.Vector3());
-        if(value<.001)c.y=3;
+        if(value<.001)c.y=envelope.focusY ?? 3;
         var o=fitBounds(b, c, value < .001 ? new THREE.Vector3(.64,.58,1) : undefined);
         if(value<.001)o.pos.sub(o.tgt).multiplyScalar(.94/1.1).add(o.tgt);
         return o;
@@ -904,10 +923,14 @@ export function createPlan3D(opts) {
     /* ---------- Construction ---------- */
     var noms = opts.names || {};
     PIECES.forEach(function (p) { if (!p.nom) p.nom = noms[p.id] || ('Pièce ' + p.id); buildRoom(p); });
-    envelope = createEstate(scene, ROOMS, interiors, renderer);
+    envelope = RESIDENCE ? createResidence(scene, ROOMS, interiors, renderer, { base: BASE_Y }) : createEstate(scene, ROOMS, interiors, renderer);
+    if (envelope.shadow) {   // bâtiment haut : cadre d'ombre extérieur élargi
+        var sh = envelope.shadow; sunE.position.fromArray(sh.position); sunE.target.position.fromArray(sh.target);
+        Object.assign(sunE.shadow.camera, { left: -sh.size, right: sh.size, top: sh.size, bottom: -sh.size, near: 1, far: sh.far }); sunE.shadow.camera.updateProjectionMatrix();
+    }
     applyLayout(0);showOnly(null);
-    landscape = buildLandscape(scene, envelope.bounds, interiors); sceneR.fog = scene.fog;
-    var naturalMotion=addNaturalMotion(ROOMS[12],landscape);
+    landscape = buildLandscape(scene, envelope.bounds, interiors, { driveway: !RESIDENCE }); sceneR.fog = scene.fog;
+    var naturalMotion=addNaturalMotion(Object.values(ROOMS).filter(function (R) { return R.eau; })[0],landscape);
     goOverview(true);
     resize();
     raf = requestAnimationFrame(loop);
@@ -915,7 +938,7 @@ export function createPlan3D(opts) {
     /* ---------- API publique ---------- */
     var API = {
         setRoom: setRoom,
-        version: '2026-09-17-journey-1',
+        version: '2026-09-27-residence-1',
         holdOverview: function (held) { overviewHeld = !!held; },
         applyDemoAmbience: function (snapshot) {
             Object.entries(snapshot).forEach(function ([id, state]) {

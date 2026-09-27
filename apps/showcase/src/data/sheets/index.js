@@ -3,6 +3,7 @@ import hotelBrassus from "./hotel-brassus";
 // de chaque bouton (« Fonctionnalités en détail » de la fiche PDF).
 // Format d'un module : { fr: { intro, sections: [{ title, image, image2?, portrait?, text, buttons: [[label, explication], …] }] }, en: {…}, de: {…} }
 import appartementCarouge from "./appartement-carouge";
+import appartementCrans from "./appartement-crans";
 import appartementEauxVives from "./appartement-eaux-vives";
 import auditoriumRichmond from "./auditorium-richmond";
 import boardroomFutureav from "./boardroom-futureav";
@@ -24,6 +25,7 @@ import yachtMonaco from "./yacht-monaco";
 const docs = {
   "hotel-brassus": hotelBrassus,
   "appartement-carouge": appartementCarouge,
+  "appartement-crans": appartementCrans,
   "appartement-eaux-vives": appartementEauxVives,
   "auditorium-richmond": auditoriumRichmond,
   "boardroom-futureav": boardroomFutureav,

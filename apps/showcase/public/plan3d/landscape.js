@@ -5,7 +5,8 @@ import * as T from './vendor/three.module.min.js';
 import { buildNeighborhood } from './neighborhood.js?v=2026-09-17-valley-1';
 import { createValley, buildValleyWater } from './valley.js?v=2026-09-17-valley-1';
 
-export function buildLandscape(scene, bounds, kit) {
+export function buildLandscape(scene, bounds, kit, options) {
+  options=options||{};
   const c=bounds.getCenter(new T.Vector3());
   const rand=kit.random,A=kit.materials;
   scene.fog=new T.Fog(0xaebfc3,175,400);
@@ -44,7 +45,9 @@ export function buildLandscape(scene, bounds, kit) {
     color.multiplyScalar(.95+.05*Math.sin(x*.4+z*.6));color.toArray(colors,i*3);
   }
   // Remove terrain triangles across the actual sloping driveway opening.
-  const indices=[];for(let i=0;i<terrain.index.count;i+=3){const ids=[0,1,2].map(j=>terrain.index.getX(i+j));const xs=ids.map(j=>p.getX(j)+c.x),zs=ids.map(j=>p.getZ(j)+c.z);if(Math.max(...xs)>12.1&&Math.min(...xs)<18.9&&Math.max(...zs)>10.8&&Math.min(...zs)<40)continue;indices.push(...ids);}terrain.setIndex(indices);
+  // Enveloppe résidence : aucune rampe de garage, le terrain reste continu.
+  const driveway=options.driveway!==false;
+  const indices=[];for(let i=0;i<terrain.index.count;i+=3){const ids=[0,1,2].map(j=>terrain.index.getX(i+j));const xs=ids.map(j=>p.getX(j)+c.x),zs=ids.map(j=>p.getZ(j)+c.z);if(driveway&&Math.max(...xs)>12.1&&Math.min(...xs)<18.9&&Math.max(...zs)>10.8&&Math.min(...zs)<40)continue;indices.push(...ids);}terrain.setIndex(indices);
   terrain.setAttribute('color',new T.BufferAttribute(colors,3));terrain.computeVertexNormals();
   const soil=document.createElement('canvas');soil.width=soil.height=512;const sg=soil.getContext('2d');sg.fillStyle='#c5c5c5';sg.fillRect(0,0,512,512);
   for(let i=0;i<24000;i++){const v=135+Math.floor(rand()*115);sg.strokeStyle=`rgb(${v},${v},${v})`;sg.lineWidth=.6+rand();const x=rand()*512,y=rand()*512;sg.beginPath();sg.moveTo(x,y);sg.lineTo(x+(rand()-.5)*4,y-2-rand()*6);sg.stroke();}

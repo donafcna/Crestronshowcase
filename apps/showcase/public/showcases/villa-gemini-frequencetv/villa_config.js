@@ -9,7 +9,7 @@ window.villaConfigEmbedded = {
     "tracesConsoleDescription": "false = le programme du slot 1 n'affiche en console que ses messages de diagnostic (démarrage, configuration, EISC, arrivée d'un périphérique, erreurs) et la GUI ne recopie plus ses console.log sur le sériel 100. Passer à true pour retrouver la trace complète des actions utilisateur pendant une mise au point ; un progreset suffit, aucune recompilation.",
     "tracesLatence": false,
     "tracesLatenceDescription": "Gouverne UNIQUEMENT les traces [LAT] du programme du slot 1 : une ligne par appui (ip, join, nombre de joins reellement ecrits, duree passee dans le programme). Le bandeau de latence de la GUI ne depend PAS de ce drapeau : villa_config.js est embarque dans le .ch5z au moment du build et le cache localStorage sert une copie figee, un drapeau de config n'atteindrait la GUI qu'apres le transfert complet du CP4, ou jamais. La GUI s'arme par geste : 5 appuis sur le titre CENTRALISATION en moins de 3 s, memorise par appareil, meme geste pour couper. Cote slot 1 un progreset suffit, aucune recompilation. A remettre a false apres la mesure.",
-    "dateModification": "2026-09-27",
+    "dateModification": "2026-09-19",
     "langueReference": "fr",
     "languesDisponibles": [
       "fr",

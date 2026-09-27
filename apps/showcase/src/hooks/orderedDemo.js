@@ -8,7 +8,7 @@ const categories = {
   hvac: /^(hvac|climat|temperature|chauffage|climate|klima|heizung)/,
   av: /^(audio|video|media|sources|musique|music|medien|sonorisation)/,
 };
-export async function runOrderedDemo({ gui, token, sleep, moveTo, act, setCursor, visible }) {
+export async function runOrderedDemo({ gui, token, sleep, moveTo, act, setCursor, visible, active = () => false }) {
   const all = selector => [...gui.root.querySelectorAll(selector)];
   const shown = selector => all(selector).filter(el => {
     const r = el.getBoundingClientRect(), slider = el.matches('input[type="range"],ch5-slider');
@@ -65,6 +65,70 @@ export async function runOrderedDemo({ gui, token, sleep, moveTo, act, setCursor
     const heading = shown('h2,h3,h4,.card-title,.ap-ctrl-head,.vl-label').find(el => categories[name].test(text(el)));
     return perform(heading, 1400, false);
   };
+  // GUI CH5 issues du Core Villa Crans (moteur vitrine Villa.*) hors parcours villaTour :
+  // pièces → éclairage (scène non active) → HVAC → sources → volume → OFF audio-vidéo, sans jamais
+  // presser un bouton déjà actif. Dalle / tablette (index.html) et smartphone (iphone.html).
+  if (gui.win.Villa && (gui.doc.querySelector('ch5-button[data-room-id]') || gui.doc.querySelector('#room-select'))) {
+    const phone = !!gui.doc.querySelector('#room-select');
+    const find = selector => [...gui.doc.querySelectorAll(selector)].find(el => visible(el, gui));
+    const findInactive = selector => [...gui.doc.querySelectorAll(selector)].find(el => visible(el, gui) && !active(el));
+    const step = async (selector, dwell = 900, inactiveOnly = true, click = true) => {
+      if (token.cancelled) return false;
+      const el = inactiveOnly ? findInactive(selector) : find(selector);
+      if (!el) return !token.cancelled;
+      return perform(el, dwell, click);
+    };
+    const hidden = id => { const el = gui.doc.getElementById(id); return !el || gui.win.getComputedStyle(el).display === 'none'; };
+    const rooms = phone
+      ? [...(gui.doc.querySelector('#room-select')?.options || [])].filter(o => o.value && !o.disabled).map(o => Number(o.value))
+      : [...gui.doc.querySelectorAll('ch5-button[data-room-id]')].map(el => Number(el.dataset.roomId));
+    if (!rooms.length) return false;
+    const visited = [];
+    for (let visit = 0; visit < 3 && !token.cancelled; visit++) {
+      const current = Number(gui.win.Villa.activeRoom);
+      let id;
+      if (phone) id = rooms.find(r => r !== current && !visited.includes(r));
+      else {
+        // Le menu défile : préférer un bouton de pièce déjà visible, sinon amener le premier
+        // non visité dans la fenêtre du menu (jamais un abandon du parcours pour une pièce).
+        const buttons = [...gui.doc.querySelectorAll('ch5-button[data-room-id]')].filter(el => Number(el.dataset.roomId) !== current && !visited.includes(Number(el.dataset.roomId)));
+        let el = buttons.find(b => visible(b, gui) && !active(b));
+        if (!el && buttons[0]) { buttons[0].scrollIntoView({ block: 'center', behavior: 'instant' }); await sleep(250, token); el = buttons.find(b => visible(b, gui) && !active(b)); }
+        id = el ? Number(el.dataset.roomId) : undefined;
+      }
+      if (id === undefined) { if (!visit) id = current; else break; }
+      visited.push(id);
+      if (id !== current) {
+        if (phone) {
+          const select = find('#room-select');
+          if (!select || !await perform(select, 0, false)) return false;
+          setCursor?.(c => ({ ...c, pulse: c.pulse + 1, pressed: true }));
+          select.value = String(id);
+          select.dispatchEvent(new gui.win.Event('change', { bubbles: true }));
+          await sleep(160, token); setCursor?.(c => ({ ...c, pressed: false }));
+        } else if (!await step(`ch5-button[data-room-id="${id}"]`, 150)) return false;
+      }
+      await sleep(1400, token);
+      // L'onglet LUMIÈRES de la dalle n'expose son état que par un style en ligne : ne l'ouvrir que s'il est fermé.
+      if (phone ? !await step('#nav-lights', 700) : (hidden('lights-control-content') && !await step('#tab-lights-btn', 700))) return false;
+      // Une scène d'éclairage non active (JOUR / SOIR / NUIT… puis OFF en dernier recours).
+      const scene = phone
+        ? findInactive('#scene-btn-52, #scene-btn-53, #scene-btn-54') || findInactive('#scene-btn-51')
+        : findInactive('#card-eclairages ch5-button[data-join="52"], #card-eclairages ch5-button[data-join="53"], #card-eclairages ch5-button[data-join="54"]')
+          || findInactive('#card-eclairages ch5-button[data-join="51"]');
+      if (scene && !await perform(scene, 1600)) return false;
+      if (!await step(phone ? '#nav-hvac' : '#card-cvc [data-climate-tab="hvac"]', 1200)) return false;
+      if (!await step(phone ? '#nav-audio' : '#card-av h2', 600, phone, phone)) return false;
+      const source = async id => {
+        if (!await step(phone ? `#source-btn-${id}` : `#card-av ch5-button[data-join="${150 + id}"]`, 1800)) return false;
+        return step('#audio-confirm-video', 500, false);
+      };
+      if (!await source(1) || !await source(4)) return false;
+      if (!await step('ch5-slider[sendeventonchange="52"], #volume-slider-mobile, input[type="range"][id*="volume"]', 1000, false)) return false;
+      if (!await step(phone ? '#power-off-btn-mobile' : '#card-av ch5-button[data-join="200"]', 900)) return false;
+    }
+    return !token.cancelled;
+  }
   if (gui.root.querySelector('.rk-ui')) {
     const selector = gui.root.querySelector('.rk-zone select');
     if (!selector) return false;

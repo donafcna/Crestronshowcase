@@ -1,0 +1,4238 @@
+{
+  "meta": {
+    "projet": "Appartement Crans-Montana",
+    "integrateur": "Fréquence TV",
+    "version": "1.0.0-showcase",
+    "mode": "showcase",
+    "modeDescription": "'deploiement' = GUI livré chez le client : les feedbacks viennent du CP4 (C# slot 1 + SIMPL slot 2) via js/webxpanel.js / CrComLib, aucune simulation. 'showcase' = copie pour le site crestrongui.vercel.app : posé UNIQUEMENT par scripts/sync-villa-crans.py du dépôt Crestronshowcase, feedbacks simulés dans le navigateur (js/local-feedback.js), curseur de démo géré par le site (jamais par le GUI). Ne jamais mettre 'showcase' ici. Voir docs/08_WORKFLOW_SHOWCASE.md.",
+    "tracesConsole": false,
+    "tracesConsoleDescription": "false = le programme du slot 1 n'affiche en console que ses messages de diagnostic (démarrage, configuration, EISC, arrivée d'un périphérique, erreurs) et la GUI ne recopie plus ses console.log sur le sériel 100. Passer à true pour retrouver la trace complète des actions utilisateur pendant une mise au point ; un progreset suffit, aucune recompilation.",
+    "tracesLatence": false,
+    "tracesLatenceDescription": "Gouverne UNIQUEMENT les traces [LAT] du programme du slot 1 : une ligne par appui (ip, join, nombre de joins reellement ecrits, duree passee dans le programme). Le bandeau de latence de la GUI ne depend PAS de ce drapeau : villa_config.js est embarque dans le .ch5z au moment du build et le cache localStorage sert une copie figee, un drapeau de config n'atteindrait la GUI qu'apres le transfert complet du CP4, ou jamais. La GUI s'arme par geste : 5 appuis sur le titre CENTRALISATION en moins de 3 s, memorise par appareil, meme geste pour couper. Cote slot 1 un progreset suffit, aucune recompilation. A remettre a false apres la mesure.",
+    "dateModification": "2026-09-19",
+    "langueReference": "fr",
+    "languesDisponibles": [
+      "fr",
+      "en",
+      "es",
+      "de",
+      "ru"
+    ],
+    "aide": [
+      "PROCESS ÉQUIPE FTV : 1) Remplir ce fichier (sections 'pieces', 'sourcesAudioVideo', 'scenesStores').",
+      "2) L'envoyer dans la conversation Claude qui complète la section 'traductions' pour toutes les langues du GUI.",
+      "3) Le déployer sur le CP4 (deploy.ps1 le copie dans /user/villa_config.json).",
+      "4) Au démarrage, le CP4 lit ce fichier et le transmet au CH5 qui modèle le GUI en conséquence.",
+      "RÈGLES : maximum 4 scènes d'éclairage par pièce. Maximum 20 circuits par pièce. Maximum 6 moteurs par pièce.",
+      "Un nom laissé vide (\"\") reprend le nom par défaut indiqué dans 'valeursParDefaut'.",
+      "Un pilotage avec \"actif\": false masque toute la section correspondante dans le GUI pour cette pièce.",
+      "ICONES : chaque piece a un champ icone (emoji affiche dans le menu de gauche). Choisir dans valeursParDefaut.iconesDisponibles et copier-coller."
+    ],
+    "description": "Duplex de 350 m² (niveaux 9 et 10) dans une résidence hôtelière de Crans-Montana : 17 zones, éclairage Lutron HomeWorks QS (DALI + phase) avec niveaux par scène issus de la séquence d'opérations Lutron, rideaux motorisés Lutron, CVC par pièce, audio-vidéo B&O. GUI CH5, C# et générateur SIMPL = Core Villa Crans (contrat v4.1) ; seul ce fichier change.",
+    "coreOrigine": "projects/villa-crans/ch5 (GUI + C#) et projects/villa-crans/simpl/contract (générateur)"
+  },
+  "valeursParDefaut": {
+    "iconesDisponibles": {
+      "🛋️": "Salon",
+      "🍳": "Cuisine",
+      "🍽️": "Salle à manger",
+      "🛏️": "Chambre",
+      "💼": "Bureau",
+      "🎬": "Home cinéma",
+      "🎮": "Salle de jeux",
+      "🚪": "Suite invités",
+      "🌿": "Terrasse & jardin",
+      "🏊": "Piscine & spa",
+      "🧖": "Sauna & hammam",
+      "🏖️": "Pool house",
+      "🚗": "Garage",
+      "📺": "Salle TV",
+      "🎵": "Salle de musique",
+      "🧺": "Buanderie",
+      "🍷": "Cave à vin",
+      "🏋️": "Salle de sport",
+      "🛁": "Salle de bain",
+      "🏠": "Pièce générique"
+    },
+    "scenesEclairage": [
+      "OFF",
+      "JOUR",
+      "SOIR",
+      "NUIT"
+    ],
+    "circuits": [
+      "Spots",
+      "Corniche LED",
+      "Appliques",
+      "Veilleuses"
+    ],
+    "moteurs": [
+      {
+        "nom": "Volet ext. 1",
+        "type": "volet"
+      },
+      {
+        "nom": "Volet ext. 2",
+        "type": "volet"
+      },
+      {
+        "nom": "Rideau ext. 1",
+        "type": "rideau"
+      },
+      {
+        "nom": "Rideau ext. 2",
+        "type": "rideau"
+      },
+      {
+        "nom": "Store 1",
+        "type": "store"
+      },
+      {
+        "nom": "Store 2",
+        "type": "store"
+      }
+    ],
+    "scenesStores": [
+      "Tout ouvrir",
+      "Position été",
+      "Position hiver",
+      "Tout fermer"
+    ],
+    "cvc": {
+      "consigneMinC": 16,
+      "consigneMaxC": 28,
+      "pasC": 0.5
+    }
+  },
+  "sourcesAudioVideo": [
+    {
+      "id": 1,
+      "nom": "Apple TV"
+    },
+    {
+      "id": 2,
+      "nom": "Sky Q"
+    },
+    {
+      "id": 3,
+      "nom": "Swisscom"
+    },
+    {
+      "id": 4,
+      "nom": "IPTV"
+    },
+    {
+      "id": 5,
+      "nom": "MUSIQUE"
+    }
+  ],
+  "scenesStores": {
+    "nombre": 4,
+    "noms": [
+      "Tout ouvrir",
+      "Position été",
+      "Position hiver",
+      "Tout fermer"
+    ]
+  },
+  "widgets": {
+    "description": "Affichage des widgets du GUI (true = affiche, false = masque). Reglage global villa.",
+    "meteoActualites": {
+      "actif": true,
+      "description": "Widget meteo de la colonne de gauche ; ville/coordonnees lues par le Core (27.09.2026)",
+      "ville": "Crans-Montana",
+      "latitude": 46.3117,
+      "longitude": 7.4806
+    },
+    "bandeauActualites": {
+      "actif": true,
+      "description": "Bandeau 'Etat de la villa' du bloc multimedia (alarme, multimedia, CVC, processeur) - ex bandeau actualites"
+    },
+    "parPeripherique": {
+      "description": "Surcharges par appareil (cle = IP-ID hexadecimal). Pour chaque widget : true = affiche, false = masque sur CET appareil ; cle absente = reglage global. Extensible a d autres parametres d affichage.",
+      "03": {
+        "nom": "TSW dalle tactile"
+      },
+      "04": {
+        "nom": "XPanel navigateur"
+      },
+      "05": {
+        "nom": "iPad"
+      },
+      "06": {
+        "nom": "iPhone"
+      }
+    }
+  },
+  "pieces": [
+    {
+      "id": 1,
+      "nom": "Salon",
+      "icone": "🛋️",
+      "intersystem": true,
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "scenes": {
+            "nombre": 4,
+            "noms": [
+              "OFF",
+              "JOUR",
+              "SOIR",
+              "NUIT"
+            ],
+            "niveaux": [
+              [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                52428,
+                52428,
+                52428,
+                52428,
+                65535
+              ],
+              [
+                49151,
+                49151,
+                13107,
+                49151,
+                65535
+              ],
+              [
+                3932,
+                3932,
+                5243,
+                3277,
+                0
+              ]
+            ],
+            "niveauxDescription": "Niveau 0-65535 de chaque circuit pour chaque scène, dans l'ordre de circuits.noms. Valeur de repli : dès que le slot 2 remonte le niveau réel d'un circuit, c'est lui qui fait foi et la scène ne le repositionne plus.",
+            "origine": "Séquence d'opérations Lutron du projet : OFF = Scene Off, JOUR = CELS Day, SOIR = CELS Night, NUIT = Low Scene (veilleuses forcées)."
+          },
+          "circuits": {
+            "nombre": 5,
+            "noms": [
+              "Spots côté vallée",
+              "Spots coin lecture",
+              "Corniche LED",
+              "Lampadaires",
+              "Cheminée"
+            ],
+            "lutron": [
+              "Living - Spots coté vallée",
+              "Living - Spots corner",
+              "Living - Cove",
+              "Living - Floor Lamps",
+              ""
+            ],
+            "type": [
+              "DALI",
+              "DALI",
+              "DALI",
+              "PHASE",
+              "contact"
+            ]
+          }
+        },
+        "moteurs": {
+          "actif": true,
+          "nombre": 4,
+          "liste": [
+            {
+              "nom": "Rideau baie sud",
+              "type": "rideau"
+            },
+            {
+              "nom": "Rideau baie est",
+              "type": "rideau"
+            },
+            {
+              "nom": "Voilage sud",
+              "type": "store"
+            },
+            {
+              "nom": "Voilage est",
+              "type": "store"
+            }
+          ]
+        },
+        "cvc": {
+          "actif": true,
+          "marcheArret": true,
+          "ventilation": {
+            "actif": true,
+            "vitesses": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          "etatInitial": {
+            "marche": true,
+            "ventilation": 0
+          },
+          "consigne": {
+            "min": 16,
+            "max": 28,
+            "pas": 0.5
+          }
+        },
+        "controlesGeneraux": {
+          "actif": true,
+          "partitionsAlarme": 4
+        },
+        "audioVideo": {
+          "actif": true,
+          "sources": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      },
+      "actif": true,
+      "niveau": 0,
+      "plan3d": {
+        "type": "salon",
+        "x": 12.3,
+        "z": 11.8,
+        "w": 8.2,
+        "d": 6.2,
+        "windowWall": "north"
+      }
+    },
+    {
+      "id": 2,
+      "nom": "Salle à manger",
+      "icone": "🍽️",
+      "intersystem": true,
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "scenes": {
+            "nombre": 4,
+            "noms": [
+              "OFF",
+              "JOUR",
+              "SOIR",
+              "NUIT"
+            ],
+            "niveaux": [
+              [
+                0,
+                0,
+                0
+              ],
+              [
+                52428,
+                52428,
+                39321
+              ],
+              [
+                49151,
+                49151,
+                13107
+              ],
+              [
+                3932,
+                0,
+                5243
+              ]
+            ],
+            "niveauxDescription": "Niveau 0-65535 de chaque circuit pour chaque scène, dans l'ordre de circuits.noms. Valeur de repli : dès que le slot 2 remonte le niveau réel d'un circuit, c'est lui qui fait foi et la scène ne le repositionne plus.",
+            "origine": "Séquence d'opérations Lutron du projet : OFF = Scene Off, JOUR = CELS Day, SOIR = CELS Night, NUIT = Low Scene (veilleuses forcées)."
+          },
+          "circuits": {
+            "nombre": 3,
+            "noms": [
+              "Spots",
+              "Suspensions",
+              "Corniche LED"
+            ],
+            "lutron": [
+              "Dining - Spots",
+              "Dining - Suspensions",
+              "Dining - Cove"
+            ],
+            "type": [
+              "DALI",
+              "PHASE",
+              "DALI"
+            ]
+          }
+        },
+        "moteurs": {
+          "actif": true,
+          "nombre": 2,
+          "liste": [
+            {
+              "nom": "Rideau terrasse",
+              "type": "rideau"
+            },
+            {
+              "nom": "Voilage",
+              "type": "store"
+            }
+          ]
+        },
+        "cvc": {
+          "actif": true,
+          "marcheArret": true,
+          "ventilation": {
+            "actif": true,
+            "vitesses": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          "etatInitial": {
+            "marche": true,
+            "ventilation": 0
+          },
+          "consigne": {
+            "min": 16,
+            "max": 28,
+            "pas": 0.5
+          }
+        },
+        "controlesGeneraux": {
+          "actif": true,
+          "partitionsAlarme": 4
+        },
+        "audioVideo": {
+          "actif": true,
+          "sources": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      },
+      "actif": true,
+      "niveau": 0,
+      "plan3d": {
+        "type": "repas",
+        "x": 6.3,
+        "z": 11.8,
+        "w": 5.7,
+        "d": 6.2,
+        "windowWall": "north"
+      }
+    },
+    {
+      "id": 3,
+      "nom": "Cuisine",
+      "icone": "🍳",
+      "intersystem": true,
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "scenes": {
+            "nombre": 4,
+            "noms": [
+              "OFF",
+              "JOUR",
+              "SOIR",
+              "NUIT"
+            ],
+            "niveaux": [
+              [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                52428,
+                52428,
+                52428,
+                52428,
+                52428,
+                52428
+              ],
+              [
+                49151,
+                49151,
+                49151,
+                49151,
+                13107,
+                13107
+              ],
+              [
+                3932,
+                3932,
+                0,
+                3277,
+                5243,
+                0
+              ]
+            ],
+            "niveauxDescription": "Niveau 0-65535 de chaque circuit pour chaque scène, dans l'ordre de circuits.noms. Valeur de repli : dès que le slot 2 remonte le niveau réel d'un circuit, c'est lui qui fait foi et la scène ne le repositionne plus.",
+            "origine": "Séquence d'opérations Lutron du projet : OFF = Scene Off, JOUR = CELS Day, SOIR = CELS Night, NUIT = Low Scene (veilleuses forcées)."
+          },
+          "circuits": {
+            "nombre": 6,
+            "noms": [
+              "Spots plafond",
+              "Spots passage",
+              "Lustre îlot",
+              "Spots îlot",
+              "Corniche LED",
+              "Plan de travail"
+            ],
+            "lutron": [
+              "Kitchen - Spots ceiling",
+              "Kitchen - Spots passage",
+              "Kitchen - Illot lustre",
+              "Kitchen - Illot spots",
+              "Kitchen - Cove",
+              "Kitchen - Comptoir"
+            ],
+            "type": [
+              "DALI",
+              "DALI",
+              "PHASE",
+              "PHASE",
+              "DALI",
+              "DALI"
+            ]
+          }
+        },
+        "moteurs": {
+          "actif": true,
+          "nombre": 1,
+          "liste": [
+            {
+              "nom": "Store fenêtre",
+              "type": "store"
+            }
+          ]
+        },
+        "cvc": {
+          "actif": true,
+          "marcheArret": true,
+          "ventilation": {
+            "actif": true,
+            "vitesses": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          "etatInitial": {
+            "marche": true,
+            "ventilation": 0
+          },
+          "consigne": {
+            "min": 16,
+            "max": 28,
+            "pas": 0.5
+          }
+        },
+        "controlesGeneraux": {
+          "actif": true,
+          "partitionsAlarme": 4
+        },
+        "audioVideo": {
+          "actif": true,
+          "sources": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      },
+      "actif": true,
+      "niveau": 0,
+      "plan3d": {
+        "type": "cuisine",
+        "x": 0,
+        "z": 11.8,
+        "w": 6,
+        "d": 6.2,
+        "windowWall": "north"
+      }
+    },
+    {
+      "id": 4,
+      "nom": "Entrée",
+      "icone": "🚪",
+      "intersystem": true,
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "scenes": {
+            "nombre": 4,
+            "noms": [
+              "OFF",
+              "JOUR",
+              "SOIR",
+              "NUIT"
+            ],
+            "niveaux": [
+              [
+                0,
+                0,
+                0
+              ],
+              [
+                52428,
+                52428,
+                52428
+              ],
+              [
+                49151,
+                22937,
+                26214
+              ],
+              [
+                3932,
+                0,
+                20971
+              ]
+            ],
+            "niveauxDescription": "Niveau 0-65535 de chaque circuit pour chaque scène, dans l'ordre de circuits.noms. Valeur de repli : dès que le slot 2 remonte le niveau réel d'un circuit, c'est lui qui fait foi et la scène ne le repositionne plus.",
+            "origine": "Séquence d'opérations Lutron du projet : OFF = Scene Off, JOUR = CELS Day, SOIR = CELS Night, NUIT = Low Scene (veilleuses forcées)."
+          },
+          "circuits": {
+            "nombre": 3,
+            "noms": [
+              "Spots",
+              "Éclairage tableau",
+              "Appliques"
+            ],
+            "lutron": [
+              "Entrance - Spots",
+              "Entrance - Painting",
+              "Entrance - Wall Lights"
+            ],
+            "type": [
+              "DALI",
+              "PHASE",
+              "DALI"
+            ]
+          }
+        },
+        "moteurs": {
+          "actif": false,
+          "nombre": 6,
+          "liste": [
+            {
+              "nom": "Volet ext. 1",
+              "type": "volet"
+            },
+            {
+              "nom": "Volet ext. 2",
+              "type": "volet"
+            },
+            {
+              "nom": "Rideau ext. 1",
+              "type": "rideau"
+            },
+            {
+              "nom": "Rideau ext. 2",
+              "type": "rideau"
+            },
+            {
+              "nom": "Store 1",
+              "type": "store"
+            },
+            {
+              "nom": "Store 2",
+              "type": "store"
+            }
+          ]
+        },
+        "cvc": {
+          "actif": false,
+          "marcheArret": true,
+          "ventilation": {
+            "actif": true,
+            "vitesses": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          "etatInitial": {
+            "marche": true,
+            "ventilation": 0
+          },
+          "consigne": {
+            "min": 16,
+            "max": 28,
+            "pas": 0.5
+          }
+        },
+        "controlesGeneraux": {
+          "actif": true,
+          "partitionsAlarme": 4
+        },
+        "audioVideo": {
+          "actif": false,
+          "sources": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      },
+      "actif": true,
+      "niveau": 0,
+      "plan3d": {
+        "type": "entree",
+        "x": 0,
+        "z": 6.4,
+        "w": 6,
+        "d": 5.1,
+        "windowWall": "none"
+      }
+    },
+    {
+      "id": 5,
+      "nom": "WC invités",
+      "icone": "🚻",
+      "intersystem": true,
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "scenes": {
+            "nombre": 4,
+            "noms": [
+              "OFF",
+              "JOUR",
+              "SOIR",
+              "NUIT"
+            ],
+            "niveaux": [
+              [
+                0
+              ],
+              [
+                52428
+              ],
+              [
+                49151
+              ],
+              [
+                3277
+              ]
+            ],
+            "niveauxDescription": "Niveau 0-65535 de chaque circuit pour chaque scène, dans l'ordre de circuits.noms. Valeur de repli : dès que le slot 2 remonte le niveau réel d'un circuit, c'est lui qui fait foi et la scène ne le repositionne plus.",
+            "origine": "Séquence d'opérations Lutron du projet : OFF = Scene Off, JOUR = CELS Day, SOIR = CELS Night, NUIT = Low Scene (veilleuses forcées)."
+          },
+          "circuits": {
+            "nombre": 1,
+            "noms": [
+              "Spots"
+            ],
+            "lutron": [
+              "Entrance - WC Spots"
+            ],
+            "type": [
+              "DALI"
+            ]
+          }
+        },
+        "moteurs": {
+          "actif": false,
+          "nombre": 6,
+          "liste": [
+            {
+              "nom": "Volet ext. 1",
+              "type": "volet"
+            },
+            {
+              "nom": "Volet ext. 2",
+              "type": "volet"
+            },
+            {
+              "nom": "Rideau ext. 1",
+              "type": "rideau"
+            },
+            {
+              "nom": "Rideau ext. 2",
+              "type": "rideau"
+            },
+            {
+              "nom": "Store 1",
+              "type": "store"
+            },
+            {
+              "nom": "Store 2",
+              "type": "store"
+            }
+          ]
+        },
+        "cvc": {
+          "actif": false,
+          "marcheArret": true,
+          "ventilation": {
+            "actif": true,
+            "vitesses": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          "etatInitial": {
+            "marche": true,
+            "ventilation": 0
+          },
+          "consigne": {
+            "min": 16,
+            "max": 28,
+            "pas": 0.5
+          }
+        },
+        "controlesGeneraux": {
+          "actif": true,
+          "partitionsAlarme": 4
+        },
+        "audioVideo": {
+          "actif": false,
+          "sources": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      },
+      "actif": true,
+      "niveau": 0,
+      "plan3d": {
+        "type": "wc",
+        "x": 9.6,
+        "z": 6.4,
+        "w": 1.5,
+        "d": 2.4,
+        "windowWall": "none"
+      }
+    },
+    {
+      "id": 6,
+      "nom": "Buanderie",
+      "icone": "🧺",
+      "intersystem": true,
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "scenes": {
+            "nombre": 4,
+            "noms": [
+              "OFF",
+              "JOUR",
+              "SOIR",
+              "NUIT"
+            ],
+            "niveaux": [
+              [
+                0,
+                0
+              ],
+              [
+                52428,
+                52428
+              ],
+              [
+                49151,
+                13107
+              ],
+              [
+                3932,
+                5243
+              ]
+            ],
+            "niveauxDescription": "Niveau 0-65535 de chaque circuit pour chaque scène, dans l'ordre de circuits.noms. Valeur de repli : dès que le slot 2 remonte le niveau réel d'un circuit, c'est lui qui fait foi et la scène ne le repositionne plus.",
+            "origine": "Séquence d'opérations Lutron du projet : OFF = Scene Off, JOUR = CELS Day, SOIR = CELS Night, NUIT = Low Scene (veilleuses forcées)."
+          },
+          "circuits": {
+            "nombre": 2,
+            "noms": [
+              "Spots",
+              "Corniche LED"
+            ],
+            "lutron": [
+              "Laundry - Spots",
+              "Laundry - Cove"
+            ],
+            "type": [
+              "DALI",
+              "DALI"
+            ]
+          }
+        },
+        "moteurs": {
+          "actif": false,
+          "nombre": 6,
+          "liste": [
+            {
+              "nom": "Volet ext. 1",
+              "type": "volet"
+            },
+            {
+              "nom": "Volet ext. 2",
+              "type": "volet"
+            },
+            {
+              "nom": "Rideau ext. 1",
+              "type": "rideau"
+            },
+            {
+              "nom": "Rideau ext. 2",
+              "type": "rideau"
+            },
+            {
+              "nom": "Store 1",
+              "type": "store"
+            },
+            {
+              "nom": "Store 2",
+              "type": "store"
+            }
+          ]
+        },
+        "cvc": {
+          "actif": false,
+          "marcheArret": true,
+          "ventilation": {
+            "actif": true,
+            "vitesses": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          "etatInitial": {
+            "marche": true,
+            "ventilation": 0
+          },
+          "consigne": {
+            "min": 16,
+            "max": 28,
+            "pas": 0.5
+          }
+        },
+        "controlesGeneraux": {
+          "actif": true,
+          "partitionsAlarme": 4
+        },
+        "audioVideo": {
+          "actif": false,
+          "sources": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      },
+      "actif": true,
+      "niveau": 0,
+      "plan3d": {
+        "type": "buanderie",
+        "x": 0,
+        "z": 0,
+        "w": 3.4,
+        "d": 6,
+        "windowWall": "none"
+      }
+    },
+    {
+      "id": 7,
+      "nom": "Suite parentale",
+      "icone": "🛏️",
+      "intersystem": true,
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "scenes": {
+            "nombre": 4,
+            "noms": [
+              "OFF",
+              "JOUR",
+              "SOIR",
+              "NUIT"
+            ],
+            "niveaux": [
+              [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                52428,
+                39321,
+                39321,
+                65535,
+                65535,
+                16384,
+                0,
+                52428,
+                52428,
+                39321
+              ],
+              [
+                49151,
+                13107,
+                22937,
+                65535,
+                65535,
+                6554,
+                0,
+                22937,
+                22937,
+                19660
+              ],
+              [
+                3932,
+                5243,
+                9830,
+                0,
+                0,
+                1966,
+                65535,
+                0,
+                0,
+                19660
+              ]
+            ],
+            "niveauxDescription": "Niveau 0-65535 de chaque circuit pour chaque scène, dans l'ordre de circuits.noms. Valeur de repli : dès que le slot 2 remonte le niveau réel d'un circuit, c'est lui qui fait foi et la scène ne le repositionne plus.",
+            "origine": "Séquence d'opérations Lutron du projet : OFF = Scene Off, JOUR = CELS Day, SOIR = CELS Night, NUIT = Low Scene (veilleuses forcées)."
+          },
+          "circuits": {
+            "nombre": 10,
+            "noms": [
+              "Spots",
+              "Corniche LED",
+              "Tête de lit",
+              "Chevet gauche",
+              "Chevet droit",
+              "Niches",
+              "Veilleuses",
+              "Dressing Monsieur",
+              "Dressing Madame",
+              "Terrasse"
+            ],
+            "lutron": [
+              "Masterbed - Spots",
+              "Masterbed - Cove",
+              "Masterbed - Bedhead",
+              "Masterbed - Bedhead left",
+              "Masterbed - Bedhead right",
+              "Masterbed - Niches Besides",
+              "Masterbed - Nightlights",
+              "Masterbed - His Dressing",
+              "Masterbed - Her Dressing",
+              "Masterbed - Terrasse by Living"
+            ],
+            "type": [
+              "DALI",
+              "DALI",
+              "DALI",
+              "DALI",
+              "DALI",
+              "DALI",
+              "DALI",
+              "DALI",
+              "DALI",
+              "DALI"
+            ]
+          }
+        },
+        "moteurs": {
+          "actif": true,
+          "nombre": 3,
+          "liste": [
+            {
+              "nom": "Rideau terrasse",
+              "type": "rideau"
+            },
+            {
+              "nom": "Voilage",
+              "type": "store"
+            },
+            {
+              "nom": "Rideau dressing",
+              "type": "rideau"
+            }
+          ]
+        },
+        "cvc": {
+          "actif": true,
+          "marcheArret": true,
+          "ventilation": {
+            "actif": true,
+            "vitesses": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          "etatInitial": {
+            "marche": true,
+            "ventilation": 0
+          },
+          "consigne": {
+            "min": 16,
+            "max": 28,
+            "pas": 0.5
+          }
+        },
+        "controlesGeneraux": {
+          "actif": true,
+          "partitionsAlarme": 4
+        },
+        "audioVideo": {
+          "actif": true,
+          "sources": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      },
+      "actif": true,
+      "niveau": 0,
+      "plan3d": {
+        "type": "suite",
+        "x": 11.3,
+        "z": 6.4,
+        "w": 8,
+        "d": 5.1,
+        "windowWall": "north"
+      }
+    },
+    {
+      "id": 8,
+      "nom": "Bain parental",
+      "icone": "🛁",
+      "intersystem": true,
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "scenes": {
+            "nombre": 4,
+            "noms": [
+              "OFF",
+              "JOUR",
+              "SOIR",
+              "NUIT"
+            ],
+            "niveaux": [
+              [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                65535,
+                39321,
+                65535,
+                39321,
+                65535,
+                22937,
+                39321,
+                65535
+              ],
+              [
+                49151,
+                13107,
+                39321,
+                26214,
+                49151,
+                6554,
+                19660,
+                65535
+              ],
+              [
+                3932,
+                5243,
+                2621,
+                20971,
+                3932,
+                1966,
+                19660,
+                0
+              ]
+            ],
+            "niveauxDescription": "Niveau 0-65535 de chaque circuit pour chaque scène, dans l'ordre de circuits.noms. Valeur de repli : dès que le slot 2 remonte le niveau réel d'un circuit, c'est lui qui fait foi et la scène ne le repositionne plus.",
+            "origine": "Séquence d'opérations Lutron du projet : OFF = Scene Off, JOUR = CELS Day, SOIR = CELS Night, NUIT = Low Scene (veilleuses forcées)."
+          },
+          "circuits": {
+            "nombre": 8,
+            "noms": [
+              "Spots",
+              "Corniche LED",
+              "Douche vapeur",
+              "Appliques miroir",
+              "Spots WC",
+              "Niche WC",
+              "Terrasse",
+              "Sèche-serviettes"
+            ],
+            "lutron": [
+              "Masterbath - Spots",
+              "Masterbath - Cove",
+              "Masterbath - Shower",
+              "Masterbath - Wall Lights",
+              "Masterbath - WC Spots",
+              "Masterbath - WC niche",
+              "Masterbath - Terrasse by Office",
+              ""
+            ],
+            "type": [
+              "DALI",
+              "DALI",
+              "DALI",
+              "DALI",
+              "DALI",
+              "DALI",
+              "DALI",
+              "contact"
+            ]
+          }
+        },
+        "moteurs": {
+          "actif": false,
+          "nombre": 6,
+          "liste": [
+            {
+              "nom": "Volet ext. 1",
+              "type": "volet"
+            },
+            {
+              "nom": "Volet ext. 2",
+              "type": "volet"
+            },
+            {
+              "nom": "Rideau ext. 1",
+              "type": "rideau"
+            },
+            {
+              "nom": "Rideau ext. 2",
+              "type": "rideau"
+            },
+            {
+              "nom": "Store 1",
+              "type": "store"
+            },
+            {
+              "nom": "Store 2",
+              "type": "store"
+            }
+          ]
+        },
+        "cvc": {
+          "actif": true,
+          "marcheArret": true,
+          "ventilation": {
+            "actif": true,
+            "vitesses": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          "etatInitial": {
+            "marche": true,
+            "ventilation": 0
+          },
+          "consigne": {
+            "min": 16,
+            "max": 28,
+            "pas": 0.5
+          }
+        },
+        "controlesGeneraux": {
+          "actif": true,
+          "partitionsAlarme": 4
+        },
+        "audioVideo": {
+          "actif": false,
+          "sources": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      },
+      "actif": true,
+      "niveau": 0,
+      "plan3d": {
+        "type": "sdb",
+        "x": 3.7,
+        "z": 0,
+        "w": 4.6,
+        "d": 6,
+        "windowWall": "north"
+      }
+    },
+    {
+      "id": 9,
+      "nom": "Bureau",
+      "icone": "💼",
+      "intersystem": true,
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "scenes": {
+            "nombre": 4,
+            "noms": [
+              "OFF",
+              "JOUR",
+              "SOIR",
+              "NUIT"
+            ],
+            "niveaux": [
+              [
+                0,
+                0
+              ],
+              [
+                52428,
+                52428
+              ],
+              [
+                49151,
+                13107
+              ],
+              [
+                3932,
+                5243
+              ]
+            ],
+            "niveauxDescription": "Niveau 0-65535 de chaque circuit pour chaque scène, dans l'ordre de circuits.noms. Valeur de repli : dès que le slot 2 remonte le niveau réel d'un circuit, c'est lui qui fait foi et la scène ne le repositionne plus.",
+            "origine": "Séquence d'opérations Lutron du projet : OFF = Scene Off, JOUR = CELS Day, SOIR = CELS Night, NUIT = Low Scene (veilleuses forcées)."
+          },
+          "circuits": {
+            "nombre": 2,
+            "noms": [
+              "Spots",
+              "Corniche LED"
+            ],
+            "lutron": [
+              "Living - Spots corner",
+              "Living - Cove"
+            ],
+            "type": [
+              "DALI",
+              "DALI"
+            ]
+          }
+        },
+        "moteurs": {
+          "actif": true,
+          "nombre": 1,
+          "liste": [
+            {
+              "nom": "Rideau",
+              "type": "rideau"
+            }
+          ]
+        },
+        "cvc": {
+          "actif": true,
+          "marcheArret": true,
+          "ventilation": {
+            "actif": true,
+            "vitesses": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          "etatInitial": {
+            "marche": true,
+            "ventilation": 0
+          },
+          "consigne": {
+            "min": 16,
+            "max": 28,
+            "pas": 0.5
+          }
+        },
+        "controlesGeneraux": {
+          "actif": true,
+          "partitionsAlarme": 4
+        },
+        "audioVideo": {
+          "actif": false,
+          "sources": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      },
+      "actif": true,
+      "niveau": 0,
+      "plan3d": {
+        "type": "bureau",
+        "x": 19.6,
+        "z": 6.4,
+        "w": 3.4,
+        "d": 5.1,
+        "windowWall": "north"
+      }
+    },
+    {
+      "id": 10,
+      "nom": "Salle TV",
+      "icone": "📺",
+      "intersystem": true,
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "scenes": {
+            "nombre": 4,
+            "noms": [
+              "OFF",
+              "JOUR",
+              "SOIR",
+              "NUIT"
+            ],
+            "niveaux": [
+              [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                65535,
+                65535,
+                52428,
+                39321,
+                65535,
+                65535,
+                0,
+                0
+              ],
+              [
+                49151,
+                49151,
+                22937,
+                13107,
+                65535,
+                65535,
+                0,
+                19660
+              ],
+              [
+                3932,
+                3932,
+                0,
+                5243,
+                0,
+                0,
+                65535,
+                19660
+              ]
+            ],
+            "niveauxDescription": "Niveau 0-65535 de chaque circuit pour chaque scène, dans l'ordre de circuits.noms. Valeur de repli : dès que le slot 2 remonte le niveau réel d'un circuit, c'est lui qui fait foi et la scène ne le repositionne plus.",
+            "origine": "Séquence d'opérations Lutron du projet : OFF = Scene Off, JOUR = CELS Day, SOIR = CELS Night, NUIT = Low Scene (veilleuses forcées)."
+          },
+          "circuits": {
+            "nombre": 8,
+            "noms": [
+              "Spots entrée",
+              "Spots",
+              "Éclairage tableau",
+              "Corniche LED",
+              "Chevet gauche",
+              "Chevet droit",
+              "Veilleuses",
+              "Terrasse"
+            ],
+            "lutron": [
+              "TV Room - Spots entrée",
+              "TV Room - Spots",
+              "TV Room - Painting",
+              "TV Room - Cove",
+              "TV Room - Bedhead left",
+              "TV Room - Bedhead right",
+              "TV Room - Nightlights",
+              "TV Room - Terrace"
+            ],
+            "type": [
+              "DALI",
+              "DALI",
+              "PHASE",
+              "DALI",
+              "DALI",
+              "DALI",
+              "DALI",
+              "DALI"
+            ]
+          }
+        },
+        "moteurs": {
+          "actif": true,
+          "nombre": 2,
+          "liste": [
+            {
+              "nom": "Rideau",
+              "type": "rideau"
+            },
+            {
+              "nom": "Voilage",
+              "type": "store"
+            }
+          ]
+        },
+        "cvc": {
+          "actif": true,
+          "marcheArret": true,
+          "ventilation": {
+            "actif": true,
+            "vitesses": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          "etatInitial": {
+            "marche": true,
+            "ventilation": 0
+          },
+          "consigne": {
+            "min": 16,
+            "max": 28,
+            "pas": 0.5
+          }
+        },
+        "controlesGeneraux": {
+          "actif": true,
+          "partitionsAlarme": 4
+        },
+        "audioVideo": {
+          "actif": true,
+          "sources": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      },
+      "actif": true,
+      "niveau": 0,
+      "plan3d": {
+        "type": "chambre",
+        "x": 8.6,
+        "z": 0,
+        "w": 7.4,
+        "d": 6,
+        "windowWall": "north"
+      }
+    },
+    {
+      "id": 11,
+      "nom": "Bain salle TV",
+      "icone": "🛁",
+      "intersystem": true,
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "scenes": {
+            "nombre": 4,
+            "noms": [
+              "OFF",
+              "JOUR",
+              "SOIR",
+              "NUIT"
+            ],
+            "niveaux": [
+              [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                36044,
+                65535,
+                65535,
+                39321,
+                58982,
+                42598,
+                32768,
+                22937,
+                39321,
+                22937,
+                65535
+              ],
+              [
+                26214,
+                49151,
+                49151,
+                13107,
+                49151,
+                13107,
+                6554,
+                49151,
+                26214,
+                6554,
+                65535
+              ],
+              [
+                20971,
+                13107,
+                3932,
+                5243,
+                2621,
+                5243,
+                1966,
+                3277,
+                20971,
+                1966,
+                0
+              ]
+            ],
+            "niveauxDescription": "Niveau 0-65535 de chaque circuit pour chaque scène, dans l'ordre de circuits.noms. Valeur de repli : dès que le slot 2 remonte le niveau réel d'un circuit, c'est lui qui fait foi et la scène ne le repositionne plus.",
+            "origine": "Séquence d'opérations Lutron du projet : OFF = Scene Off, JOUR = CELS Day, SOIR = CELS Night, NUIT = Low Scene (veilleuses forcées)."
+          },
+          "circuits": {
+            "nombre": 11,
+            "noms": [
+              "Appliques miroir",
+              "Spots vasque",
+              "Spots",
+              "Corniche LED",
+              "Spots douche",
+              "Corniche douche",
+              "Niche douche",
+              "Spot WC",
+              "Appliques WC",
+              "Niche WC",
+              "Sèche-serviettes"
+            ],
+            "lutron": [
+              "TV Room Bath - Mirror wall lights",
+              "TV Room Bath - Sink spots",
+              "TV Room Bath - Spots",
+              "TV Room Bath - Cove",
+              "TV Room Bath - Shower Spots",
+              "TV Room Bath - Shower Cove",
+              "TV Room Bath - Shower niche",
+              "TV Room Bath - WC spot",
+              "TV Room Bath - WC Wall Lights",
+              "TV Room Bath - WC niche",
+              ""
+            ],
+            "type": [
+              "PHASE",
+              "DALI",
+              "DALI",
+              "DALI",
+              "DALI",
+              "DALI",
+              "DALI",
+              "DALI",
+              "DALI",
+              "DALI",
+              "contact"
+            ]
+          }
+        },
+        "moteurs": {
+          "actif": false,
+          "nombre": 6,
+          "liste": [
+            {
+              "nom": "Volet ext. 1",
+              "type": "volet"
+            },
+            {
+              "nom": "Volet ext. 2",
+              "type": "volet"
+            },
+            {
+              "nom": "Rideau ext. 1",
+              "type": "rideau"
+            },
+            {
+              "nom": "Rideau ext. 2",
+              "type": "rideau"
+            },
+            {
+              "nom": "Store 1",
+              "type": "store"
+            },
+            {
+              "nom": "Store 2",
+              "type": "store"
+            }
+          ]
+        },
+        "cvc": {
+          "actif": true,
+          "marcheArret": true,
+          "ventilation": {
+            "actif": true,
+            "vitesses": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          "etatInitial": {
+            "marche": true,
+            "ventilation": 0
+          },
+          "consigne": {
+            "min": 16,
+            "max": 28,
+            "pas": 0.5
+          }
+        },
+        "controlesGeneraux": {
+          "actif": true,
+          "partitionsAlarme": 4
+        },
+        "audioVideo": {
+          "actif": false,
+          "sources": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      },
+      "actif": true,
+      "niveau": 0,
+      "plan3d": {
+        "type": "sdb",
+        "x": 6.3,
+        "z": 6.4,
+        "w": 3,
+        "d": 5.1,
+        "windowWall": "none"
+      }
+    },
+    {
+      "id": 12,
+      "nom": "Hall étage",
+      "icone": "🪜",
+      "intersystem": true,
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "scenes": {
+            "nombre": 4,
+            "noms": [
+              "OFF",
+              "JOUR",
+              "SOIR",
+              "NUIT"
+            ],
+            "niveaux": [
+              [
+                0,
+                0,
+                0
+              ],
+              [
+                52428,
+                52428,
+                52428
+              ],
+              [
+                49151,
+                26214,
+                22937
+              ],
+              [
+                3932,
+                20971,
+                0
+              ]
+            ],
+            "niveauxDescription": "Niveau 0-65535 de chaque circuit pour chaque scène, dans l'ordre de circuits.noms. Valeur de repli : dès que le slot 2 remonte le niveau réel d'un circuit, c'est lui qui fait foi et la scène ne le repositionne plus.",
+            "origine": "Séquence d'opérations Lutron du projet : OFF = Scene Off, JOUR = CELS Day, SOIR = CELS Night, NUIT = Low Scene (veilleuses forcées)."
+          },
+          "circuits": {
+            "nombre": 3,
+            "noms": [
+              "Spots escalier",
+              "Appliques hall",
+              "Corniche LED"
+            ],
+            "lutron": [
+              "Entrance - Spots",
+              "Entrance - Wall Lights",
+              "Entrance - Painting"
+            ],
+            "type": [
+              "DALI",
+              "DALI",
+              "PHASE"
+            ]
+          }
+        },
+        "moteurs": {
+          "actif": false,
+          "nombre": 6,
+          "liste": [
+            {
+              "nom": "Volet ext. 1",
+              "type": "volet"
+            },
+            {
+              "nom": "Volet ext. 2",
+              "type": "volet"
+            },
+            {
+              "nom": "Rideau ext. 1",
+              "type": "rideau"
+            },
+            {
+              "nom": "Rideau ext. 2",
+              "type": "rideau"
+            },
+            {
+              "nom": "Store 1",
+              "type": "store"
+            },
+            {
+              "nom": "Store 2",
+              "type": "store"
+            }
+          ]
+        },
+        "cvc": {
+          "actif": false,
+          "marcheArret": true,
+          "ventilation": {
+            "actif": true,
+            "vitesses": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          "etatInitial": {
+            "marche": true,
+            "ventilation": 0
+          },
+          "consigne": {
+            "min": 16,
+            "max": 28,
+            "pas": 0.5
+          }
+        },
+        "controlesGeneraux": {
+          "actif": true,
+          "partitionsAlarme": 4
+        },
+        "audioVideo": {
+          "actif": false,
+          "sources": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      },
+      "actif": true,
+      "niveau": 1,
+      "plan3d": {
+        "type": "escalier",
+        "x": 0,
+        "z": 6.4,
+        "w": 6,
+        "d": 5.1,
+        "windowWall": "none"
+      }
+    },
+    {
+      "id": 13,
+      "nom": "Chambre Twin",
+      "icone": "🛏️",
+      "intersystem": true,
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "scenes": {
+            "nombre": 4,
+            "noms": [
+              "OFF",
+              "JOUR",
+              "SOIR",
+              "NUIT"
+            ],
+            "niveaux": [
+              [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                32768,
+                39321,
+                39321,
+                65535,
+                65535,
+                52428,
+                0,
+                0
+              ],
+              [
+                49151,
+                13107,
+                22937,
+                65535,
+                65535,
+                22937,
+                0,
+                19660
+              ],
+              [
+                3932,
+                5243,
+                9830,
+                0,
+                0,
+                2621,
+                65535,
+                19660
+              ]
+            ],
+            "niveauxDescription": "Niveau 0-65535 de chaque circuit pour chaque scène, dans l'ordre de circuits.noms. Valeur de repli : dès que le slot 2 remonte le niveau réel d'un circuit, c'est lui qui fait foi et la scène ne le repositionne plus.",
+            "origine": "Séquence d'opérations Lutron du projet : OFF = Scene Off, JOUR = CELS Day, SOIR = CELS Night, NUIT = Low Scene (veilleuses forcées)."
+          },
+          "circuits": {
+            "nombre": 8,
+            "noms": [
+              "Spots",
+              "Corniche LED",
+              "Tête de lit",
+              "Chevet gauche",
+              "Chevet droit",
+              "Dressing",
+              "Veilleuses",
+              "Terrasse"
+            ],
+            "lutron": [
+              "Twin Room - Spots",
+              "Twin Room - Cove",
+              "Twin Room - Bedhead",
+              "Twin Room - Bedhead left",
+              "Twin Room - Bedhead right",
+              "Twin Room - Dressing",
+              "Twin Room - Nightlights",
+              "Twin Room - Terrace"
+            ],
+            "type": [
+              "DALI",
+              "DALI",
+              "DALI",
+              "DALI",
+              "DALI",
+              "DALI",
+              "DALI",
+              "DALI"
+            ]
+          }
+        },
+        "moteurs": {
+          "actif": true,
+          "nombre": 2,
+          "liste": [
+            {
+              "nom": "Rideau",
+              "type": "rideau"
+            },
+            {
+              "nom": "Voilage",
+              "type": "store"
+            }
+          ]
+        },
+        "cvc": {
+          "actif": true,
+          "marcheArret": true,
+          "ventilation": {
+            "actif": true,
+            "vitesses": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          "etatInitial": {
+            "marche": true,
+            "ventilation": 0
+          },
+          "consigne": {
+            "min": 16,
+            "max": 28,
+            "pas": 0.5
+          }
+        },
+        "controlesGeneraux": {
+          "actif": true,
+          "partitionsAlarme": 4
+        },
+        "audioVideo": {
+          "actif": true,
+          "sources": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      },
+      "actif": true,
+      "niveau": 1,
+      "plan3d": {
+        "type": "chambre",
+        "x": 0,
+        "z": 0,
+        "w": 7,
+        "d": 6,
+        "windowWall": "north"
+      }
+    },
+    {
+      "id": 14,
+      "nom": "Bain Twin",
+      "icone": "🛁",
+      "intersystem": true,
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "scenes": {
+            "nombre": 4,
+            "noms": [
+              "OFF",
+              "JOUR",
+              "SOIR",
+              "NUIT"
+            ],
+            "niveaux": [
+              [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                36044,
+                65535,
+                42598,
+                65535,
+                39321,
+                32768,
+                22937,
+                45874,
+                22937,
+                65535
+              ],
+              [
+                26214,
+                49151,
+                13107,
+                49151,
+                13107,
+                6554,
+                49151,
+                19660,
+                6554,
+                65535
+              ],
+              [
+                20971,
+                2621,
+                5243,
+                2621,
+                5243,
+                1966,
+                2621,
+                5243,
+                1966,
+                0
+              ]
+            ],
+            "niveauxDescription": "Niveau 0-65535 de chaque circuit pour chaque scène, dans l'ordre de circuits.noms. Valeur de repli : dès que le slot 2 remonte le niveau réel d'un circuit, c'est lui qui fait foi et la scène ne le repositionne plus.",
+            "origine": "Séquence d'opérations Lutron du projet : OFF = Scene Off, JOUR = CELS Day, SOIR = CELS Night, NUIT = Low Scene (veilleuses forcées)."
+          },
+          "circuits": {
+            "nombre": 10,
+            "noms": [
+              "Appliques",
+              "Spots",
+              "Corniche LED",
+              "Spots douche",
+              "Corniche douche",
+              "Niche douche",
+              "Spot WC",
+              "Corniche WC",
+              "Niche WC",
+              "Sèche-serviettes"
+            ],
+            "lutron": [
+              "Twin Room Bath - Wall lights",
+              "Twin Room Bath - Spots",
+              "Twin Room Bath - Cove",
+              "Twin Room Bath - Shower Spots",
+              "Twin Room Bath - Shower cove",
+              "Twin Room Bath - Shower niche",
+              "Twin Room Bath - WC spot",
+              "Twin Room Bath - WC cove",
+              "Twin Room Bath - WC niche",
+              ""
+            ],
+            "type": [
+              "PHASE",
+              "DALI",
+              "DALI",
+              "DALI",
+              "DALI",
+              "DALI",
+              "DALI",
+              "DALI",
+              "DALI",
+              "contact"
+            ]
+          }
+        },
+        "moteurs": {
+          "actif": false,
+          "nombre": 6,
+          "liste": [
+            {
+              "nom": "Volet ext. 1",
+              "type": "volet"
+            },
+            {
+              "nom": "Volet ext. 2",
+              "type": "volet"
+            },
+            {
+              "nom": "Rideau ext. 1",
+              "type": "rideau"
+            },
+            {
+              "nom": "Rideau ext. 2",
+              "type": "rideau"
+            },
+            {
+              "nom": "Store 1",
+              "type": "store"
+            },
+            {
+              "nom": "Store 2",
+              "type": "store"
+            }
+          ]
+        },
+        "cvc": {
+          "actif": true,
+          "marcheArret": true,
+          "ventilation": {
+            "actif": true,
+            "vitesses": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          "etatInitial": {
+            "marche": true,
+            "ventilation": 0
+          },
+          "consigne": {
+            "min": 16,
+            "max": 28,
+            "pas": 0.5
+          }
+        },
+        "controlesGeneraux": {
+          "actif": true,
+          "partitionsAlarme": 4
+        },
+        "audioVideo": {
+          "actif": false,
+          "sources": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      },
+      "actif": true,
+      "niveau": 1,
+      "plan3d": {
+        "type": "sdb",
+        "x": 7.3,
+        "z": 0,
+        "w": 4.4,
+        "d": 6,
+        "windowWall": "north"
+      }
+    },
+    {
+      "id": 15,
+      "nom": "Chambre VIP",
+      "icone": "🛏️",
+      "intersystem": true,
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "scenes": {
+            "nombre": 4,
+            "noms": [
+              "OFF",
+              "JOUR",
+              "SOIR",
+              "NUIT"
+            ],
+            "niveaux": [
+              [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                58982,
+                32768,
+                52428,
+                39321,
+                65535,
+                65535,
+                0,
+                0
+              ],
+              [
+                49151,
+                19660,
+                49151,
+                22937,
+                65535,
+                65535,
+                0,
+                19660
+              ],
+              [
+                3932,
+                3932,
+                3932,
+                9830,
+                0,
+                0,
+                65535,
+                19660
+              ]
+            ],
+            "niveauxDescription": "Niveau 0-65535 de chaque circuit pour chaque scène, dans l'ordre de circuits.noms. Valeur de repli : dès que le slot 2 remonte le niveau réel d'un circuit, c'est lui qui fait foi et la scène ne le repositionne plus.",
+            "origine": "Séquence d'opérations Lutron du projet : OFF = Scene Off, JOUR = CELS Day, SOIR = CELS Night, NUIT = Low Scene (veilleuses forcées)."
+          },
+          "circuits": {
+            "nombre": 8,
+            "noms": [
+              "Spots entrée",
+              "Spots dressing",
+              "Spots lit",
+              "Tête de lit",
+              "Chevet gauche",
+              "Chevet droit",
+              "Veilleuses",
+              "Terrasse"
+            ],
+            "lutron": [
+              "VIP Room - Entrance",
+              "VIP Room - Spot by Entrance",
+              "VIP Room - Spot by Bed",
+              "VIP Room - Bedhead",
+              "VIP Room - Bedhead Left",
+              "VIP room - Bedhead Right",
+              "VIP Room - Nightlights",
+              "VIP Room - Terrace"
+            ],
+            "type": [
+              "DALI",
+              "DALI",
+              "DALI",
+              "DALI",
+              "DALI",
+              "DALI",
+              "DALI",
+              "DALI"
+            ]
+          }
+        },
+        "moteurs": {
+          "actif": true,
+          "nombre": 2,
+          "liste": [
+            {
+              "nom": "Rideau",
+              "type": "rideau"
+            },
+            {
+              "nom": "Voilage",
+              "type": "store"
+            }
+          ]
+        },
+        "cvc": {
+          "actif": true,
+          "marcheArret": true,
+          "ventilation": {
+            "actif": true,
+            "vitesses": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          "etatInitial": {
+            "marche": true,
+            "ventilation": 0
+          },
+          "consigne": {
+            "min": 16,
+            "max": 28,
+            "pas": 0.5
+          }
+        },
+        "controlesGeneraux": {
+          "actif": true,
+          "partitionsAlarme": 4
+        },
+        "audioVideo": {
+          "actif": true,
+          "sources": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      },
+      "actif": true,
+      "niveau": 1,
+      "plan3d": {
+        "type": "suite",
+        "x": 12,
+        "z": 0,
+        "w": 7,
+        "d": 6,
+        "windowWall": "north"
+      }
+    },
+    {
+      "id": 16,
+      "nom": "Bain VIP",
+      "icone": "🛁",
+      "intersystem": true,
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "scenes": {
+            "nombre": 4,
+            "noms": [
+              "OFF",
+              "JOUR",
+              "SOIR",
+              "NUIT"
+            ],
+            "niveaux": [
+              [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                36044,
+                65535,
+                65535,
+                45874,
+                42598,
+                32768,
+                22937,
+                22937,
+                39321,
+                65535
+              ],
+              [
+                26214,
+                39321,
+                49151,
+                49151,
+                13107,
+                6554,
+                49151,
+                6554,
+                26214,
+                65535
+              ],
+              [
+                20971,
+                13107,
+                3932,
+                3277,
+                5243,
+                1966,
+                2621,
+                1966,
+                20971,
+                0
+              ]
+            ],
+            "niveauxDescription": "Niveau 0-65535 de chaque circuit pour chaque scène, dans l'ordre de circuits.noms. Valeur de repli : dès que le slot 2 remonte le niveau réel d'un circuit, c'est lui qui fait foi et la scène ne le repositionne plus.",
+            "origine": "Séquence d'opérations Lutron du projet : OFF = Scene Off, JOUR = CELS Day, SOIR = CELS Night, NUIT = Low Scene (veilleuses forcées)."
+          },
+          "circuits": {
+            "nombre": 10,
+            "noms": [
+              "Appliques miroir",
+              "Spots vasque",
+              "Spots",
+              "Spots dressing",
+              "Corniches",
+              "Niche douche",
+              "Spot WC",
+              "Niche WC",
+              "Appliques",
+              "Sèche-serviettes"
+            ],
+            "lutron": [
+              "VIP Room Bath - Mirror wall lights",
+              "VIP Room Bath - Sink spots",
+              "VIP Room Bath - spots",
+              "VIP Room Bath - Dressing spots",
+              "VIP Room Bath - WC+ Shower Coves",
+              "VIP Room Bath - Shower niche",
+              "VIP Room Bath - WC spot",
+              "VIP Room Bath - WC niche",
+              "VIP Room Bath - Wall Lights",
+              ""
+            ],
+            "type": [
+              "PHASE",
+              "DALI",
+              "DALI",
+              "DALI",
+              "DALI",
+              "DALI",
+              "DALI",
+              "DALI",
+              "DALI",
+              "contact"
+            ]
+          }
+        },
+        "moteurs": {
+          "actif": false,
+          "nombre": 6,
+          "liste": [
+            {
+              "nom": "Volet ext. 1",
+              "type": "volet"
+            },
+            {
+              "nom": "Volet ext. 2",
+              "type": "volet"
+            },
+            {
+              "nom": "Rideau ext. 1",
+              "type": "rideau"
+            },
+            {
+              "nom": "Rideau ext. 2",
+              "type": "rideau"
+            },
+            {
+              "nom": "Store 1",
+              "type": "store"
+            },
+            {
+              "nom": "Store 2",
+              "type": "store"
+            }
+          ]
+        },
+        "cvc": {
+          "actif": true,
+          "marcheArret": true,
+          "ventilation": {
+            "actif": true,
+            "vitesses": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          "etatInitial": {
+            "marche": true,
+            "ventilation": 0
+          },
+          "consigne": {
+            "min": 16,
+            "max": 28,
+            "pas": 0.5
+          }
+        },
+        "controlesGeneraux": {
+          "actif": true,
+          "partitionsAlarme": 4
+        },
+        "audioVideo": {
+          "actif": false,
+          "sources": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      },
+      "actif": true,
+      "niveau": 1,
+      "plan3d": {
+        "type": "sdb",
+        "x": 6.3,
+        "z": 6.4,
+        "w": 4,
+        "d": 5.1,
+        "windowWall": "none"
+      }
+    },
+    {
+      "id": 17,
+      "nom": "Balcons",
+      "icone": "🌿",
+      "intersystem": true,
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "scenes": {
+            "nombre": 4,
+            "noms": [
+              "OFF",
+              "JOUR",
+              "SOIR",
+              "NUIT"
+            ],
+            "niveaux": [
+              [
+                0,
+                0,
+                0
+              ],
+              [
+                39321,
+                0,
+                0
+              ],
+              [
+                19660,
+                19660,
+                19660
+              ],
+              [
+                19660,
+                19660,
+                19660
+              ]
+            ],
+            "niveauxDescription": "Niveau 0-65535 de chaque circuit pour chaque scène, dans l'ordre de circuits.noms. Valeur de repli : dès que le slot 2 remonte le niveau réel d'un circuit, c'est lui qui fait foi et la scène ne le repositionne plus.",
+            "origine": "Séquence d'opérations Lutron du projet : OFF = Scene Off, JOUR = CELS Day, SOIR = CELS Night, NUIT = Low Scene (veilleuses forcées)."
+          },
+          "circuits": {
+            "nombre": 3,
+            "noms": [
+              "Balcon sud",
+              "Balcon est",
+              "Balcon nord"
+            ],
+            "lutron": [
+              "Masterbed - Terrasse by Living",
+              "TV Room - Terrace",
+              "Twin Room - Terrace"
+            ],
+            "type": [
+              "DALI",
+              "DALI",
+              "DALI"
+            ]
+          }
+        },
+        "moteurs": {
+          "actif": true,
+          "nombre": 1,
+          "liste": [
+            {
+              "nom": "Store banne",
+              "type": "store"
+            }
+          ]
+        },
+        "cvc": {
+          "actif": false,
+          "marcheArret": true,
+          "ventilation": {
+            "actif": true,
+            "vitesses": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          "etatInitial": {
+            "marche": true,
+            "ventilation": 0
+          },
+          "consigne": {
+            "min": 16,
+            "max": 28,
+            "pas": 0.5
+          }
+        },
+        "controlesGeneraux": {
+          "actif": true,
+          "partitionsAlarme": 4
+        },
+        "audioVideo": {
+          "actif": false,
+          "sources": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      },
+      "actif": true,
+      "niveau": 0,
+      "plan3d": {
+        "type": "terrasse",
+        "x": 20.8,
+        "z": 11.8,
+        "w": 4.2,
+        "d": 6.2,
+        "windowWall": "north"
+      }
+    }
+  ],
+  "traductions": {
+    "en": {
+      "Tout ouvrir": "Open all",
+      "Position été": "Summer position",
+      "Position hiver": "Winter position",
+      "Tout fermer": "Close all",
+      "MUSIQUE": "MUSIC",
+      "CHAUFFAGE": "HEATING",
+      "CLIMATISATION": "COOLING",
+      "Salon": "Living room",
+      "Salle à manger": "Dining room",
+      "Cuisine": "Kitchen",
+      "Entrée": "Entrance",
+      "WC invités": "Guest WC",
+      "Buanderie": "Laundry",
+      "Suite parentale": "Master suite",
+      "Bain parental": "Master bathroom",
+      "Bureau": "Office",
+      "Salle TV": "TV room",
+      "Bain salle TV": "TV room bathroom",
+      "Hall étage": "Upper hall",
+      "Chambre Twin": "Twin room",
+      "Bain Twin": "Twin bathroom",
+      "Chambre VIP": "VIP room",
+      "Bain VIP": "VIP bathroom",
+      "Balcons": "Balconies",
+      "OFF": "OFF",
+      "JOUR": "DAY",
+      "SOIR": "EVENING",
+      "NUIT": "NIGHT",
+      "Spots côté vallée": "Valley-side spots",
+      "Spots coin lecture": "Reading corner spots",
+      "Corniche LED": "LED cove",
+      "Lampadaires": "Floor lamps",
+      "Cheminée": "Fireplace",
+      "Spots": "Spots",
+      "Suspensions": "Pendants",
+      "Spots plafond": "Ceiling spots",
+      "Spots passage": "Passage spots",
+      "Lustre îlot": "Island chandelier",
+      "Spots îlot": "Island spots",
+      "Plan de travail": "Worktop",
+      "Éclairage tableau": "Painting light",
+      "Appliques": "Wall lights",
+      "Tête de lit": "Bedhead",
+      "Chevet gauche": "Left bedside",
+      "Chevet droit": "Right bedside",
+      "Niches": "Niches",
+      "Veilleuses": "Nightlights",
+      "Dressing Monsieur": "His dressing",
+      "Dressing Madame": "Her dressing",
+      "Terrasse": "Terrace",
+      "Douche vapeur": "Steam shower",
+      "Appliques miroir": "Mirror lights",
+      "Spots WC": "WC spots",
+      "Niche WC": "WC niche",
+      "Sèche-serviettes": "Towel heater",
+      "Spots entrée": "Entrance spots",
+      "Spots vasque": "Basin spots",
+      "Spots douche": "Shower spots",
+      "Corniche douche": "Shower cove",
+      "Niche douche": "Shower niche",
+      "Spot WC": "WC spot",
+      "Appliques WC": "WC wall lights",
+      "Spots escalier": "Staircase spots",
+      "Appliques hall": "Hall wall lights",
+      "Dressing": "Dressing",
+      "Spots dressing": "Dressing spots",
+      "Spots lit": "Bed spots",
+      "Corniches": "Coves",
+      "Corniche WC": "WC cove",
+      "Balcon sud": "South balcony",
+      "Balcon est": "East balcony",
+      "Balcon nord": "North balcony",
+      "Rideau baie sud": "South bay curtain",
+      "Rideau baie est": "East bay curtain",
+      "Voilage sud": "South sheer",
+      "Voilage est": "East sheer",
+      "Rideau terrasse": "Terrace curtain",
+      "Voilage": "Sheer",
+      "Store fenêtre": "Window blind",
+      "Rideau dressing": "Dressing curtain",
+      "Rideau": "Curtain",
+      "Store banne": "Awning",
+      "Appartement Crans-Montana": "Crans-Montana apartment"
+    },
+    "es": {
+      "Tout ouvrir": "Abrir todo",
+      "Position été": "Posición verano",
+      "Position hiver": "Posición invierno",
+      "Tout fermer": "Cerrar todo",
+      "MUSIQUE": "MÚSICA",
+      "CHAUFFAGE": "CALEFACCIÓN",
+      "CLIMATISATION": "REFRIGERACIÓN",
+      "Salon": "Salón",
+      "Salle à manger": "Comedor",
+      "Cuisine": "Cocina",
+      "Entrée": "Entrada",
+      "WC invités": "Aseo",
+      "Buanderie": "Lavandería",
+      "Suite parentale": "Suite principal",
+      "Bain parental": "Baño principal",
+      "Bureau": "Despacho",
+      "Salle TV": "Sala de TV",
+      "Bain salle TV": "Baño sala de TV",
+      "Hall étage": "Hall superior",
+      "Chambre Twin": "Habitación Twin",
+      "Bain Twin": "Baño Twin",
+      "Chambre VIP": "Habitación VIP",
+      "Bain VIP": "Baño VIP",
+      "Balcons": "Balcones",
+      "OFF": "OFF",
+      "JOUR": "DÍA",
+      "SOIR": "TARDE",
+      "NUIT": "NOCHE",
+      "Spots côté vallée": "Focos lado valle",
+      "Spots coin lecture": "Focos rincón lectura",
+      "Corniche LED": "Cornisa LED",
+      "Lampadaires": "Lámparas de pie",
+      "Cheminée": "Chimenea",
+      "Spots": "Focos",
+      "Suspensions": "Colgantes",
+      "Spots plafond": "Focos techo",
+      "Spots passage": "Focos paso",
+      "Lustre îlot": "Lámpara isla",
+      "Spots îlot": "Focos isla",
+      "Plan de travail": "Encimera",
+      "Éclairage tableau": "Luz cuadro",
+      "Appliques": "Apliques",
+      "Tête de lit": "Cabecero",
+      "Chevet gauche": "Mesita izquierda",
+      "Chevet droit": "Mesita derecha",
+      "Niches": "Nichos",
+      "Veilleuses": "Luces nocturnas",
+      "Dressing Monsieur": "Vestidor él",
+      "Dressing Madame": "Vestidor ella",
+      "Terrasse": "Terraza",
+      "Douche vapeur": "Ducha de vapor",
+      "Appliques miroir": "Apliques espejo",
+      "Spots WC": "Focos WC",
+      "Niche WC": "Nicho WC",
+      "Sèche-serviettes": "Toallero",
+      "Spots entrée": "Focos entrada",
+      "Spots vasque": "Focos lavabo",
+      "Spots douche": "Focos ducha",
+      "Corniche douche": "Cornisa ducha",
+      "Niche douche": "Nicho ducha",
+      "Spot WC": "Foco WC",
+      "Appliques WC": "Apliques WC",
+      "Spots escalier": "Focos escalera",
+      "Appliques hall": "Apliques hall",
+      "Dressing": "Vestidor",
+      "Spots dressing": "Focos vestidor",
+      "Spots lit": "Focos cama",
+      "Corniches": "Cornisas",
+      "Corniche WC": "Cornisa WC",
+      "Balcon sud": "Balcón sur",
+      "Balcon est": "Balcón este",
+      "Balcon nord": "Balcón norte",
+      "Rideau baie sud": "Cortina ventanal sur",
+      "Rideau baie est": "Cortina ventanal este",
+      "Voilage sud": "Visillo sur",
+      "Voilage est": "Visillo este",
+      "Rideau terrasse": "Cortina terraza",
+      "Voilage": "Visillo",
+      "Store fenêtre": "Estor ventana",
+      "Rideau dressing": "Cortina vestidor",
+      "Rideau": "Cortina",
+      "Store banne": "Toldo",
+      "Appartement Crans-Montana": "Apartamento Crans-Montana"
+    },
+    "de": {
+      "Tout ouvrir": "Alles Öffnen",
+      "Position été": "Sommerposition",
+      "Position hiver": "Winterposition",
+      "Tout fermer": "Alles Schließen",
+      "MUSIQUE": "MUSIK",
+      "CHAUFFAGE": "HEIZUNG",
+      "CLIMATISATION": "KÜHLUNG",
+      "Salon": "Wohnzimmer",
+      "Salle à manger": "Esszimmer",
+      "Cuisine": "Küche",
+      "Entrée": "Eingang",
+      "WC invités": "Gäste-WC",
+      "Buanderie": "Waschküche",
+      "Suite parentale": "Elternsuite",
+      "Bain parental": "Elternbad",
+      "Bureau": "Büro",
+      "Salle TV": "TV-Zimmer",
+      "Bain salle TV": "Bad TV-Zimmer",
+      "Hall étage": "Halle Obergeschoss",
+      "Chambre Twin": "Twin-Zimmer",
+      "Bain Twin": "Bad Twin",
+      "Chambre VIP": "VIP-Zimmer",
+      "Bain VIP": "Bad VIP",
+      "Balcons": "Balkone",
+      "OFF": "AUS",
+      "JOUR": "TAG",
+      "SOIR": "ABEND",
+      "NUIT": "NACHT",
+      "Spots côté vallée": "Spots Talseite",
+      "Spots coin lecture": "Spots Leseecke",
+      "Corniche LED": "LED-Voute",
+      "Lampadaires": "Stehleuchten",
+      "Cheminée": "Kamin",
+      "Spots": "Spots",
+      "Suspensions": "Pendelleuchten",
+      "Spots plafond": "Deckenspots",
+      "Spots passage": "Spots Durchgang",
+      "Lustre îlot": "Insel-Leuchter",
+      "Spots îlot": "Insel-Spots",
+      "Plan de travail": "Arbeitsfläche",
+      "Éclairage tableau": "Bildbeleuchtung",
+      "Appliques": "Wandleuchten",
+      "Tête de lit": "Kopfteil",
+      "Chevet gauche": "Nachttisch links",
+      "Chevet droit": "Nachttisch rechts",
+      "Niches": "Nischen",
+      "Veilleuses": "Nachtlichter",
+      "Dressing Monsieur": "Ankleide Herr",
+      "Dressing Madame": "Ankleide Dame",
+      "Terrasse": "Terrasse",
+      "Douche vapeur": "Dampfdusche",
+      "Appliques miroir": "Spiegelleuchten",
+      "Spots WC": "WC-Spots",
+      "Niche WC": "WC-Nische",
+      "Sèche-serviettes": "Handtuchwärmer",
+      "Spots entrée": "Spots Eingang",
+      "Spots vasque": "Spots Waschtisch",
+      "Spots douche": "Duschspots",
+      "Corniche douche": "Voute Dusche",
+      "Niche douche": "Duschnische",
+      "Spot WC": "WC-Spot",
+      "Appliques WC": "WC-Wandleuchten",
+      "Spots escalier": "Treppenspots",
+      "Appliques hall": "Wandleuchten Halle",
+      "Dressing": "Ankleide",
+      "Spots dressing": "Spots Ankleide",
+      "Spots lit": "Spots Bett",
+      "Corniches": "Vouten",
+      "Corniche WC": "Voute WC",
+      "Balcon sud": "Balkon Süd",
+      "Balcon est": "Balkon Ost",
+      "Balcon nord": "Balkon Nord",
+      "Rideau baie sud": "Vorhang Südfenster",
+      "Rideau baie est": "Vorhang Ostfenster",
+      "Voilage sud": "Store Süd",
+      "Voilage est": "Store Ost",
+      "Rideau terrasse": "Vorhang Terrasse",
+      "Voilage": "Store",
+      "Store fenêtre": "Fensterrollo",
+      "Rideau dressing": "Vorhang Ankleide",
+      "Rideau": "Vorhang",
+      "Store banne": "Markise",
+      "Appartement Crans-Montana": "Wohnung Crans-Montana"
+    },
+    "ru": {
+      "Tout ouvrir": "Открыть все",
+      "Position été": "Летнее положение",
+      "Position hiver": "Зимнее положение",
+      "Tout fermer": "Закрыть все",
+      "MUSIQUE": "МУЗЫКА",
+      "CHAUFFAGE": "ОТОПЛЕНИЕ",
+      "CLIMATISATION": "ОХЛАЖДЕНИЕ",
+      "Salon": "Гостиная",
+      "Salle à manger": "Столовая",
+      "Cuisine": "Кухня",
+      "Entrée": "Прихожая",
+      "WC invités": "Гостевой туалет",
+      "Buanderie": "Прачечная",
+      "Suite parentale": "Главная спальня",
+      "Bain parental": "Главная ванная",
+      "Bureau": "Кабинет",
+      "Salle TV": "ТВ-комната",
+      "Bain salle TV": "Ванная ТВ-комнаты",
+      "Hall étage": "Верхний холл",
+      "Chambre Twin": "Спальня Twin",
+      "Bain Twin": "Ванная Twin",
+      "Chambre VIP": "Спальня VIP",
+      "Bain VIP": "Ванная VIP",
+      "Balcons": "Балконы",
+      "OFF": "ВЫКЛ",
+      "JOUR": "ДЕНЬ",
+      "SOIR": "ВЕЧЕР",
+      "NUIT": "НОЧЬ",
+      "Spots côté vallée": "Споты у долины",
+      "Spots coin lecture": "Споты уголка чтения",
+      "Corniche LED": "LED-карниз",
+      "Lampadaires": "Торшеры",
+      "Cheminée": "Камин",
+      "Spots": "Споты",
+      "Suspensions": "Подвесы",
+      "Spots plafond": "Потолочные споты",
+      "Spots passage": "Споты прохода",
+      "Lustre îlot": "Люстра острова",
+      "Spots îlot": "Споты острова",
+      "Plan de travail": "Столешница",
+      "Éclairage tableau": "Подсветка картины",
+      "Appliques": "Бра",
+      "Tête de lit": "Изголовье",
+      "Chevet gauche": "Левая тумба",
+      "Chevet droit": "Правая тумба",
+      "Niches": "Ниши",
+      "Veilleuses": "Ночники",
+      "Dressing Monsieur": "Гардероб (он)",
+      "Dressing Madame": "Гардероб (она)",
+      "Terrasse": "Терраса",
+      "Douche vapeur": "Паровой душ",
+      "Appliques miroir": "Подсветка зеркала",
+      "Spots WC": "Споты WC",
+      "Niche WC": "Ниша WC",
+      "Sèche-serviettes": "Полотенцесушитель",
+      "Spots entrée": "Споты входа",
+      "Spots vasque": "Споты раковины",
+      "Spots douche": "Споты душа",
+      "Corniche douche": "Карниз душа",
+      "Niche douche": "Ниша душа",
+      "Spot WC": "Спот WC",
+      "Appliques WC": "Бра WC",
+      "Spots escalier": "Споты лестницы",
+      "Appliques hall": "Бра холла",
+      "Dressing": "Гардероб",
+      "Spots dressing": "Споты гардероба",
+      "Spots lit": "Споты кровати",
+      "Corniches": "Карнизы",
+      "Corniche WC": "Карниз WC",
+      "Balcon sud": "Южный балкон",
+      "Balcon est": "Восточный балкон",
+      "Balcon nord": "Северный балкон",
+      "Rideau baie sud": "Штора южного окна",
+      "Rideau baie est": "Штора восточного окна",
+      "Voilage sud": "Тюль юг",
+      "Voilage est": "Тюль восток",
+      "Rideau terrasse": "Штора террасы",
+      "Voilage": "Тюль",
+      "Store fenêtre": "Рулонная штора",
+      "Rideau dressing": "Штора гардероба",
+      "Rideau": "Штора",
+      "Store banne": "Маркиза",
+      "Appartement Crans-Montana": "Апартаменты Кран-Монтана"
+    }
+  },
+  "contrat": {
+    "version": "v4.1 (18.09.2026) — scènes d'éclairage mémorisées par le C#, 20 circuits par pièce, sur la base v4 (15.09.2026 : joins de pilotage globaux, routage SIMPL par buffers)",
+    "alarme": {
+      "description": "Centrale d'alarme de la villa. Le code de reference n'est plus code en dur ni dans le JavaScript du panel ni dans le C# : le GUI envoie la saisie sur le serial 43, le C# la relaie telle quelle a l'EISC du slot 2 (serial 43) et attend le verdict de la vraie centrale (digital 44 = accepte, 45 = refuse). Si le slot 2 ne repond pas dans le delai ci-dessous, le C# tranche localement avec codeParDefaut.",
+      "codeParDefaut": "1234",
+      "delaiReponseCentraleMs": 1200,
+      "note": "codeParDefaut n'est qu'un repli de mise en service : a changer sur site, ou a vider (\"\") pour refuser toute validation locale et n'accepter que le verdict de la centrale du slot 2."
+    },
+    "notes": [
+      "CONTRAT v2 (22.08.2026) : Piece.Select etendu a 30 pieces (digitaux 11-40). Decalages : Eclairage.Scene 21-24 -> 51-54, AV.Mute 53 -> 55, CVC.ConsignePlus 35 -> 49, CVC.ConsigneMoins 36 -> 50, Meteo.EasterEgg 37 -> 56.",
+      "Contrat de joins unifié Villa Crans, structuré en deux familles :",
+      "1) signauxGlobaux : joins système/globaux/interface (tous < 1000), miroir 1:1 vers l'EISC du slot 2.",
+      "2) blocsPieces : chaque pièce expose un bloc de 100 joins sur l'EISC - base = 1000 + (id - 1) * 100.",
+      "   Exemple : pièce 1 = 1000..1099, pièce 2 = 1100..1199, pièce 15 = 2400..2499.",
+      "   Le flag 'intersystem' de chaque pièce (true/false) active ou coupe son bloc EISC :",
+      "   mettre false sur les pièces non câblées en SIMPL limite le nombre de signaux à monitorer dans le debugger.",
+      "Les joins GUI restent découplés (la dalle pilote la pièce active) ; les blocs par pièce ne concernent que l'intersystem.",
+      "CONFLIT HISTORIQUE RÉSOLU : les joins 201/202 étaient partagés entre lecteur média (mute/volume) et scènes de stores.",
+      "Le lecteur média utilise désormais 55 (mute) et 52 (volume) ; 201-204 restent les scènes de stores.",
+      "TÉLÉCOMMANDES SOURCES (09.09.2026) : blocs digitaux momentanés AV.Telecommande.* — Apple TV 211-220 (inchangé), Sky Q 500-527, IPTV 530-557, Swisscom TV 560-600. À router côté C# vers les drivers IR/IP ; les joins historiques 221-250 des télécommandes ne sont plus émis (250 = Config.Resync).",
+      "AUDIO / VIDÉO (09.09.2026, v1.0.166) : les 4 sources vidéo 151-154 sont en interlock (150 = OFF) ; 155 = musique sur les haut-parleurs (la vidéo reste) ; 156 = l'audio revient à la vidéo ; analogique 53 = source audio. Blocs pièces : +51..+55 vidéo, +56 musique, +57 audio=vidéo, analogique +53 source audio. Le GUI n'émet plus 50 (Power OFF) ni 201 (mute) ; le C# traite le 200 (extinction A/V).",
+      "CONTRAT v3 (11.09.2026) : les joins de PILOTAGE ne sont plus partages entre pieces. Chaque piece dispose cote GUI du meme bloc de 100 joins que cote EISC (base = 1000 + (pieceId-1)*100). Les joins logiques du HTML sont traduits a l'execution par la couche VillaJoins (bloc <script id=\"villa-joins\">). Restent globaux : selection de piece, alarme (partitions 301-312 et centrale 41-48), presets globaux 401-411/420, telecommandes de sources, signaux systeme et transport de configuration, materiel de la dalle. Voir contrat.blocsPiecesGui.",
+      "CONTRAT v3 : joins GUI ajoutes au contrat car utilises par l'interface sans etre declares en v2 : digital 200 (extinction A/V), digital 251-253 (transport du lecteur media), analog 254 (volume du lecteur media), serial 100 (console navigateur), serial 43 + digital 44-46 (pave de code d'alarme, qui n'envoyait rien en v2).",
+      "CONTRAT v3 : le transport du lecteur media suit le cablage reel des boutons (251 lecture/pause, 252 suivant, 253 precedent) et non l'ordre suppose en v2."
+    ],
+    "eisc": {
+      "actif": true,
+      "ipid": "0xF0",
+      "adresseIp": "127.0.0.2",
+      "slotCible": 2,
+      "description": "Pont intersystem vers le programme SIMPL Windows chargé sur le slot 2 du CP4. Côté SIMPL : symbole 'Intersystem Communications' (EISC), IP-ID F0, IP 127.0.0.2."
+    },
+    "signauxGlobaux": [
+      {
+        "contractName": "Piece.Active",
+        "type": "analog",
+        "join": 10,
+        "direction": "bidirectionnel",
+        "eiscJoin": 10,
+        "description": "ID de la pièce active (1..N)"
+      },
+      {
+        "contractName": "Piece.Nom",
+        "type": "serial",
+        "join": 10,
+        "direction": "sortie",
+        "eiscJoin": 10,
+        "description": "Nom de la pièce active (majuscules)"
+      },
+      {
+        "contractName": "Piece.Select",
+        "type": "digital",
+        "joinDebut": 11,
+        "nombre": 30,
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 11,
+        "description": "Selection directe piece 1..30 (join = 10 + id de piece) + feedback"
+      },
+      {
+        "contractName": "Eclairage.Scene",
+        "type": "digital",
+        "joinDebut": 51,
+        "nombre": 4,
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 51,
+        "description": "Scenes d'eclairage 1..4 de la piece active + feedback (v2, ex-21-24) — v4.1 : appui = impulsion vers le slot 2 (Lighting_SceneN_fb) ; l'état tenu est pousse par le C# sur le bloc piece +21..+24 (Rxx_Lighting_SceneN_fb) et aux ecrans sur 51-54"
+      },
+      {
+        "contractName": "Eclairage.NiveauMaster",
+        "type": "analog",
+        "join": 21,
+        "direction": "bidirectionnel",
+        "eiscJoin": 21,
+        "description": "Niveau master éclairage pièce active (0..65535)"
+      },
+      {
+        "contractName": "CVC.Consigne",
+        "type": "analog",
+        "join": 31,
+        "direction": "bidirectionnel",
+        "eiscJoin": 31,
+        "description": "Consigne de température x10 (210 = 21.0°C)"
+      },
+      {
+        "contractName": "CVC.TempActuelle",
+        "type": "serial",
+        "join": 32,
+        "direction": "sortie",
+        "eiscJoin": 32,
+        "description": "Température actuelle formatée (ex: 22.4)"
+      },
+      {
+        "contractName": "CVC.Mode",
+        "type": "serial",
+        "join": 33,
+        "direction": "sortie",
+        "eiscJoin": 33,
+        "description": "Mode CVC actif (CHAUFFAGE / CLIMATISATION)"
+      },
+      {
+        "contractName": "CVC.ConsigneTexte",
+        "type": "serial",
+        "join": 34,
+        "direction": "sortie",
+        "eiscJoin": 34,
+        "description": "Consigne formatée (ex: 21.0)"
+      },
+      {
+        "contractName": "CVC.ConsignePlus",
+        "type": "digital",
+        "join": 49,
+        "direction": "entree",
+        "eiscJoin": 49,
+        "description": "Consigne +0.5 C (piece active) (v2, ex-35)"
+      },
+      {
+        "contractName": "CVC.ConsigneMoins",
+        "type": "digital",
+        "join": 50,
+        "direction": "entree",
+        "eiscJoin": 50,
+        "description": "Consigne -0.5 C (piece active) (v2, ex-36)"
+      },
+      {
+        "contractName": "Meteo.EasterEgg",
+        "type": "digital",
+        "join": 56,
+        "direction": "entree",
+        "eiscJoin": 56,
+        "description": "Triple-clic widget meteo (v2, ex-37)"
+      },
+      {
+        "contractName": "Stores.Groupe",
+        "type": "digital",
+        "joinDebut": 61,
+        "nombre": 9,
+        "direction": "entree",
+        "eiscJoinDebut": 61,
+        "description": "Commandes groupees des motorisations de la piece active : Volets Ext. 61/62/63, Rideaux 64/65/66, Stores 67/68/69 (Monter/Stop/Descendre). Le C# relaie vers le slot 2 qui pilote les moteurs reels."
+      },
+      {
+        "contractName": "Alarme.Armer",
+        "type": "digital",
+        "join": 41,
+        "direction": "bidirectionnel",
+        "eiscJoin": 41,
+        "description": "Armement général alarme + feedback"
+      },
+      {
+        "contractName": "Alarme.Desarmer",
+        "type": "digital",
+        "join": 42,
+        "direction": "bidirectionnel",
+        "eiscJoin": 42,
+        "description": "Désarmement général alarme + feedback"
+      },
+      {
+        "contractName": "AV.SourceActive",
+        "type": "analog",
+        "join": 51,
+        "direction": "bidirectionnel",
+        "eiscJoin": 51,
+        "description": "Source vidéo active (0 = off, 1..4)"
+      },
+      {
+        "contractName": "AV.Volume",
+        "type": "analog",
+        "join": 52,
+        "direction": "bidirectionnel",
+        "eiscJoin": 52,
+        "description": "Volume multimédia pièce active (0..65535)"
+      },
+      {
+        "contractName": "AV.Mute",
+        "type": "digital",
+        "join": 55,
+        "direction": "bidirectionnel",
+        "eiscJoin": 55,
+        "description": "Mute audio piece active (toggle + feedback) (v2, ex-53)"
+      },
+      {
+        "contractName": "Eclairage.Circuit",
+        "type": "analog",
+        "joinDebut": 71,
+        "nombre": 20,
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 71,
+        "description": "Niveau des circuits 1..20 de la pièce affichée (joins 71-90, contrat v4.1) ; routé sur le bloc pièce +71..+90"
+      },
+      {
+        "contractName": "Moteur.Commande",
+        "type": "digital",
+        "joinDebut": 81,
+        "nombre": 18,
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 81,
+        "description": "Moteurs 1..6 : triplets Monter/Stop/Descendre (81,82,83 = moteur 1 ... 96,97,98 = moteur 6)"
+      },
+      {
+        "contractName": "Systeme.IpId",
+        "type": "serial",
+        "join": 99,
+        "direction": "sortie",
+        "eiscJoin": 99,
+        "description": "IP-ID du panel connecté"
+      },
+      {
+        "contractName": "Systeme.CpzNom",
+        "type": "serial",
+        "join": 101,
+        "direction": "sortie",
+        "eiscJoin": 101,
+        "description": "Nom du fichier CPZ"
+      },
+      {
+        "contractName": "Systeme.CpzDate",
+        "type": "serial",
+        "join": 102,
+        "direction": "sortie",
+        "eiscJoin": 102,
+        "description": "Date de compilation du CPZ"
+      },
+      {
+        "contractName": "Systeme.Console",
+        "type": "serial",
+        "join": 103,
+        "direction": "bidirectionnel",
+        "eiscJoin": 103,
+        "description": "Commande console CP4 (entrée) / réponse (sortie)"
+      },
+      {
+        "contractName": "Systeme.DateValidation",
+        "type": "serial",
+        "join": 104,
+        "direction": "bidirectionnel",
+        "eiscJoin": 104,
+        "description": "Date de dernière validation par périphérique"
+      },
+      {
+        "contractName": "Config.Json",
+        "type": "serial",
+        "join": 105,
+        "direction": "sortie",
+        "eiscJoin": 105,
+        "description": "Transport de villa_config.json vers le CH5 (chunks 'VCFG|i|n|payload')"
+      },
+      {
+        "contractName": "Config.Hash",
+        "type": "serial",
+        "join": 106,
+        "direction": "sortie",
+        "eiscJoin": 106,
+        "description": "Empreinte de villa_config.json publiee aux panels : le GUI ne demande le transfert complet (Digital 250) que si son cache differe."
+      },
+      {
+        "contractName": "AV.Source.Select",
+        "type": "digital",
+        "joinDebut": 150,
+        "nombre": 5,
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 150,
+        "description": "Sélection source VIDÉO 0..4 en interlock (150 = OFF) + feedback. La musique n'est plus une source vidéo (v1.0.166)."
+      },
+      {
+        "contractName": "Stores.Scene",
+        "type": "digital",
+        "joinDebut": 201,
+        "nombre": 4,
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 201,
+        "description": "Scènes de stores 1..4 de la pièce active + feedback"
+      },
+      {
+        "contractName": "Config.Resync",
+        "type": "digital",
+        "join": 250,
+        "direction": "entree",
+        "eiscJoin": 250,
+        "description": "Demande de (re)envoi de la configuration par le panel"
+      },
+      {
+        "contractName": "Config.ChunkAck",
+        "type": "analog",
+        "join": 250,
+        "direction": "entree",
+        "eiscJoin": 250,
+        "description": "Accusé de réception du chunk N de configuration"
+      },
+      {
+        "contractName": "Alarme.Partition",
+        "type": "digital",
+        "joinDebut": 301,
+        "nombre": 12,
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 301,
+        "description": "Partitions 1..4 : triplets Armer/Partiel/Désarmer (301,302,303 = partition 1)"
+      },
+      {
+        "contractName": "Global.Eclairage.ToutAllumer",
+        "type": "digital",
+        "join": 401,
+        "direction": "entree",
+        "eiscJoin": 401,
+        "description": "Commande globale : tout allumer"
+      },
+      {
+        "contractName": "Global.Eclairage.ToutEteindre",
+        "type": "digital",
+        "join": 402,
+        "direction": "entree",
+        "eiscJoin": 402,
+        "description": "Commande globale : tout éteindre"
+      },
+      {
+        "contractName": "Global.Eclairage.ModeEco",
+        "type": "digital",
+        "join": 403,
+        "direction": "entree",
+        "eiscJoin": 403,
+        "description": "Commande globale : mode éco"
+      },
+      {
+        "contractName": "Global.Stores.ToutOuvrir",
+        "type": "digital",
+        "join": 404,
+        "direction": "entree",
+        "eiscJoin": 404,
+        "description": "Commande globale : ouvrir tous les stores"
+      },
+      {
+        "contractName": "Global.Stores.ToutFermer",
+        "type": "digital",
+        "join": 405,
+        "direction": "entree",
+        "eiscJoin": 405,
+        "description": "Commande globale : fermer tous les stores"
+      },
+      {
+        "contractName": "Global.Stores.PositionInter",
+        "type": "digital",
+        "join": 406,
+        "direction": "entree",
+        "eiscJoin": 406,
+        "description": "Commande globale : position intermédiaire"
+      },
+      {
+        "contractName": "Global.CVC.Confort",
+        "type": "digital",
+        "join": 407,
+        "direction": "entree",
+        "eiscJoin": 407,
+        "description": "Commande globale CVC : confort"
+      },
+      {
+        "contractName": "Global.CVC.Nuit",
+        "type": "digital",
+        "join": 408,
+        "direction": "entree",
+        "eiscJoin": 408,
+        "description": "Commande globale CVC : nuit"
+      },
+      {
+        "contractName": "Global.CVC.HorsGel",
+        "type": "digital",
+        "join": 409,
+        "direction": "entree",
+        "eiscJoin": 409,
+        "description": "Commande globale CVC : hors gel"
+      },
+      {
+        "contractName": "Global.Vacances.Activer",
+        "type": "digital",
+        "join": 410,
+        "direction": "bidirectionnel",
+        "eiscJoin": 410,
+        "description": "Mode vacances ON + feedback"
+      },
+      {
+        "contractName": "Global.Vacances.Desactiver",
+        "type": "digital",
+        "join": 411,
+        "direction": "bidirectionnel",
+        "eiscJoin": 411,
+        "description": "Mode vacances OFF + feedback"
+      },
+      {
+        "contractName": "Presets.Sauvegarde",
+        "type": "serial",
+        "join": 420,
+        "direction": "entree",
+        "eiscJoin": 420,
+        "description": "Payload JSON de sauvegarde des presets globaux"
+      },
+      {
+        "contractName": "Scenes.Enregistrement",
+        "type": "serial",
+        "join": 421,
+        "direction": "entree",
+        "description": "v4.1 : 💾 / appui long sur une scene : le GUI envoie {\"piece\":n,\"scene\":1..4,\"circuits\":[20 niveaux 0-65535]} ; le C# l'enregistre dans /user/scenes_<piece>.json (jamais recopie vers le slot 2)"
+      },
+      {
+        "contractName": "Scenes.Memorisee",
+        "type": "digital",
+        "joinDebut": 421,
+        "nombre": 4,
+        "direction": "sortie",
+        "description": "v4.1 : scene 1..4 memorisee pour la piece affichee par l'ecran (marqueur 💾 du bouton) ; pose par le C#, pas par le slot 2"
+      },
+      {
+        "contractName": "Systeme.PieceActiveDalle",
+        "type": "analog",
+        "join": 240,
+        "direction": "sortie",
+        "eiscJoin": 240,
+        "description": "Piece actuellement affichee par la dalle principale (IP-ID 03), diffusee a tous les peripheriques (suivi par le debugger virtuel)."
+      },
+      {
+        "contractName": "Systeme.VolumeDalle",
+        "type": "analog",
+        "join": 260,
+        "direction": "entree/sortie",
+        "eiscJoin": 260,
+        "description": "Volume audio materiel de la dalle TSW (0-100), pilote l'extender AllAudioVolume. Utilise par la page Video. Feedback diffuse a tous les peripheriques."
+      },
+      {
+        "contractName": "Systeme.MuteDalle",
+        "type": "digital",
+        "join": 261,
+        "direction": "entree/sortie",
+        "eiscJoin": 261,
+        "description": "Bascule mute du volume materiel de la dalle TSW (memorise/restaure le dernier volume). Feedback = etat mute."
+      },
+      {
+        "contractName": "AV.Telecommande.AppleTV",
+        "type": "digital",
+        "joinDebut": 211,
+        "nombre": 10,
+        "direction": "entree",
+        "eiscJoinDebut": 211,
+        "description": "Télécommande Apple TV (momentanés) : up,down,left,right,select,back,home,play/pause,rew,fwd = 211..220. Volume +/- et mute de la télécommande agissent sur AV.Volume (52) et AV.Mute (55), pas sur la box."
+      },
+      {
+        "contractName": "AV.Telecommande.SkyQ",
+        "type": "digital",
+        "joinDebut": 500,
+        "nombre": 28,
+        "direction": "entree",
+        "eiscJoinDebut": 500,
+        "description": "Télécommande Sky Q (momentanés), offsets 0..27 : up,down,left,right,ok,back,menu,exit,live,dvr,guide,info,last,pgup,pgdn,chup,chdn,rew,play,fwd,pause,stop,replay,rec,yellow,blue,red,green"
+      },
+      {
+        "contractName": "AV.Telecommande.IPTV",
+        "type": "digital",
+        "joinDebut": 530,
+        "nombre": 28,
+        "direction": "entree",
+        "eiscJoinDebut": 530,
+        "description": "Télécommande box IPTV (momentanés), mêmes offsets que Sky Q : up,down,left,right,ok,back,menu,exit,live,dvr,guide,info,last,pgup,pgdn,chup,chdn,rew,play,fwd,pause,stop,replay,rec,yellow,blue,red,green"
+      },
+      {
+        "contractName": "AV.Telecommande.Swisscom",
+        "type": "digital",
+        "joinDebut": 560,
+        "nombre": 41,
+        "direction": "entree",
+        "eiscJoinDebut": 560,
+        "description": "Télécommande Swisscom TV (momentanés), offsets 0..40 : power,assistant,input,mute,rew,rec,fwd,replay,play,skip,back,home,guide,option,up,down,left,right,ok,volup,voldn,mic,pup,pdn,pip,d0,d1,d2,d3,d4,d5,d6,d7,d8,d9,txt,radio,red,green,yellow,blue. mute/volup/voldn du GUI agissent sur AV.Mute (55) / AV.Volume (52) ; le join box reste réservé."
+      },
+      {
+        "contractName": "AV.Musique",
+        "type": "digital",
+        "join": 155,
+        "direction": "bidirectionnel",
+        "eiscJoin": 155,
+        "description": "Appui : la musique passe sur les haut-parleurs, la vidéo reste à l'écran. Feedback : musique en audio (v1.0.166)."
+      },
+      {
+        "contractName": "AV.Audio.SuivreVideo",
+        "type": "digital",
+        "join": 156,
+        "direction": "bidirectionnel",
+        "eiscJoin": 156,
+        "description": "Appui : l'audio des haut-parleurs revient à la source vidéo. Feedback : audio = vidéo (v1.0.166)."
+      },
+      {
+        "contractName": "AV.SourceAudio",
+        "type": "analog",
+        "join": 53,
+        "direction": "sortie",
+        "eiscJoin": 53,
+        "description": "Source audio des haut-parleurs : 0 = off, 1..4 = audio de la source vidéo, 5 = musique (v1.0.166)."
+      },
+      {
+        "contractName": "AV.Extinction",
+        "type": "digital",
+        "join": 200,
+        "direction": "bidirectionnel",
+        "description": "Extinction complete de l'A/V de la piece active (ex-join 50 Power OFF). Join logique, traduit en base+45 par piece.",
+        "portee": "par piece",
+        "note": "Join LOGIQUE : ne transite jamais tel quel sur l EISC, il est traduit en base+offset (voir blocsPieces)."
+      },
+      {
+        "contractName": "Media.Transport",
+        "type": "digital",
+        "joinDebut": 251,
+        "nombre": 3,
+        "direction": "entree",
+        "description": "Lecteur media : 251 lecture/pause, 252 suivant, 253 precedent (ordre reel des boutons du GUI). Joins logiques, traduits en base+58/+59/+60 par piece.",
+        "portee": "par piece",
+        "note": "Join LOGIQUE : ne transite jamais tel quel sur l EISC, il est traduit en base+offset (voir blocsPieces)."
+      },
+      {
+        "contractName": "Media.Volume",
+        "type": "analog",
+        "join": 254,
+        "direction": "bidirectionnel",
+        "description": "Volume du lecteur media (0..65535). Join logique, traduit en base+54 par piece.",
+        "portee": "par piece",
+        "note": "Join LOGIQUE : ne transite jamais tel quel sur l EISC, il est traduit en base+offset (voir blocsPieces)."
+      },
+      {
+        "contractName": "Systeme.ConsoleNavigateur",
+        "type": "serial",
+        "join": 100,
+        "direction": "sortie",
+        "eiscJoin": 100,
+        "description": "Redirection des messages console du navigateur CH5 vers le CP4 (250 caracteres max)."
+      },
+      {
+        "contractName": "Alarme.CodeSaisi",
+        "type": "serial",
+        "join": 43,
+        "direction": "entree",
+        "eiscJoin": 43,
+        "description": "Code saisi sur le pave numerique du GUI, envoye a la centrale pour validation. Le GUI ne valide plus le code lui-meme."
+      },
+      {
+        "contractName": "Alarme.CodeValide",
+        "type": "digital",
+        "join": 44,
+        "direction": "sortie",
+        "eiscJoin": 44,
+        "description": "Feedback centrale : code accepte (impulsion)."
+      },
+      {
+        "contractName": "Alarme.CodeRefuse",
+        "type": "digital",
+        "join": 45,
+        "direction": "sortie",
+        "eiscJoin": 45,
+        "description": "Feedback centrale : code refuse (impulsion)."
+      },
+      {
+        "contractName": "Alarme.CodeEfface",
+        "type": "digital",
+        "join": 46,
+        "direction": "entree",
+        "eiscJoin": 46,
+        "description": "Appui sur la touche C du pave : efface la saisie en cours."
+      },
+      {
+        "contractName": "CVC.Marche",
+        "type": "digital",
+        "join": 610,
+        "eiscJoin": 610,
+        "direction": "bidirectionnel",
+        "description": "GUI : impulsion commande et retour selection natif. EISC : impulsion vers slot 2 seulement ; etat via bloc CVC de piece."
+      },
+      {
+        "contractName": "CVC.Arret",
+        "type": "digital",
+        "join": 611,
+        "eiscJoin": 611,
+        "direction": "bidirectionnel",
+        "description": "GUI : impulsion commande et retour selection natif. EISC : impulsion vers slot 2 seulement ; etat via bloc CVC de piece."
+      },
+      {
+        "contractName": "CVC.VentilationAuto",
+        "type": "digital",
+        "join": 612,
+        "eiscJoin": 612,
+        "direction": "bidirectionnel",
+        "description": "GUI : impulsion commande et retour selection natif. EISC : impulsion vers slot 2 seulement ; etat via bloc CVC de piece."
+      },
+      {
+        "contractName": "CVC.VentilationFaible",
+        "type": "digital",
+        "join": 613,
+        "eiscJoin": 613,
+        "direction": "bidirectionnel",
+        "description": "GUI : impulsion commande et retour selection natif. EISC : impulsion vers slot 2 seulement ; etat via bloc CVC de piece."
+      },
+      {
+        "contractName": "CVC.VentilationMoyenne",
+        "type": "digital",
+        "join": 614,
+        "eiscJoin": 614,
+        "direction": "bidirectionnel",
+        "description": "GUI : impulsion commande et retour selection natif. EISC : impulsion vers slot 2 seulement ; etat via bloc CVC de piece."
+      },
+      {
+        "contractName": "CVC.VentilationForte",
+        "type": "digital",
+        "join": 615,
+        "eiscJoin": 615,
+        "direction": "bidirectionnel",
+        "description": "GUI : impulsion commande et retour selection natif. EISC : impulsion vers slot 2 seulement ; etat via bloc CVC de piece."
+      },
+      {
+        "contractName": "CVC.Ventilation",
+        "type": "analog",
+        "join": 61,
+        "eiscJoin": 61,
+        "direction": "bidirectionnel",
+        "description": "Vitesse 0 Auto, 1 faible, 2 moyenne, 3 forte ; retour GUI de la piece affichee."
+      },
+      {
+        "contractName": "Wellness.Sauna.On",
+        "type": "digital",
+        "join": 620,
+        "eiscJoin": 620,
+        "direction": "bidirectionnel"
+      },
+      {
+        "contractName": "Wellness.Sauna.Off",
+        "type": "digital",
+        "join": 621,
+        "eiscJoin": 621,
+        "direction": "bidirectionnel"
+      },
+      {
+        "contractName": "Wellness.Sauna.Plus",
+        "type": "digital",
+        "join": 622,
+        "eiscJoin": 622,
+        "direction": "bidirectionnel"
+      },
+      {
+        "contractName": "Wellness.Sauna.Moins",
+        "type": "digital",
+        "join": 623,
+        "eiscJoin": 623,
+        "direction": "bidirectionnel"
+      },
+      {
+        "contractName": "Wellness.Hammam.On",
+        "type": "digital",
+        "join": 624,
+        "eiscJoin": 624,
+        "direction": "bidirectionnel"
+      },
+      {
+        "contractName": "Wellness.Hammam.Off",
+        "type": "digital",
+        "join": 625,
+        "eiscJoin": 625,
+        "direction": "bidirectionnel"
+      },
+      {
+        "contractName": "Wellness.Hammam.Plus",
+        "type": "digital",
+        "join": 626,
+        "eiscJoin": 626,
+        "direction": "bidirectionnel"
+      },
+      {
+        "contractName": "Wellness.Hammam.Moins",
+        "type": "digital",
+        "join": 627,
+        "eiscJoin": 627,
+        "direction": "bidirectionnel"
+      },
+      {
+        "contractName": "Wellness.Sauna.Consigne",
+        "type": "analog",
+        "join": 62,
+        "eiscJoin": 62,
+        "direction": "bidirectionnel"
+      },
+      {
+        "contractName": "Wellness.Hammam.Consigne",
+        "type": "analog",
+        "join": 63,
+        "eiscJoin": 63,
+        "direction": "bidirectionnel"
+      },
+      {
+        "contractName": "Wellness.Sauna.Mesure",
+        "type": "analog",
+        "join": 64,
+        "eiscJoin": 64,
+        "direction": "sortie"
+      },
+      {
+        "contractName": "Wellness.Hammam.Mesure",
+        "type": "analog",
+        "join": 65,
+        "eiscJoin": 65,
+        "direction": "sortie"
+      },
+      {
+        "contractName": "Wellness.Sauna.Consigne.Texte",
+        "type": "serial",
+        "join": 62,
+        "eiscJoin": 62,
+        "direction": "sortie"
+      },
+      {
+        "contractName": "Wellness.Hammam.Consigne.Texte",
+        "type": "serial",
+        "join": 63,
+        "eiscJoin": 63,
+        "direction": "sortie"
+      },
+      {
+        "contractName": "Wellness.Sauna.Mesure.Texte",
+        "type": "serial",
+        "join": 64,
+        "eiscJoin": 64,
+        "direction": "sortie"
+      },
+      {
+        "contractName": "Wellness.Hammam.Mesure.Texte",
+        "type": "serial",
+        "join": 65,
+        "eiscJoin": 65,
+        "direction": "sortie"
+      }
+    ],
+    "blocsPieces": {
+      "description": "Bloc de joins EISC par pièce, pour le programme SIMPL du slot 2. Base du bloc = 1000 + (pieceId - 1) * 100. Offsets ci-dessous à ajouter à la base. Actif uniquement si la pièce a 'intersystem': true.",
+      "baseFormule": "1000 + (pieceId - 1) * 100",
+      "tailleBloc": 100,
+      "offsets": [
+        {
+          "contractName": "Piece.<id>.Stores.Groupe",
+          "type": "digital",
+          "offsetDebut": 1,
+          "nombre": 9,
+          "direction": "bidirectionnel",
+          "description": "Commandes groupees (v3 : ecrites directement par le GUI de la piece) : Volets Up/Stop/Down (+1/+2/+3), Rideaux (+4/+5/+6), Stores (+7/+8/+9)"
+        },
+        {
+          "contractName": "Piece.<id>.Eclairage.Scene",
+          "type": "digital",
+          "offsetDebut": 21,
+          "nombre": 4,
+          "direction": "bidirectionnel",
+          "description": "Scenes eclairage 1..4 : Rxx_Lighting_SceneN_fb = etat tenu par le C# (scene active) ; Rxx_Lighting_SceneN = scene imposee par le slot 2 (clavier)"
+        },
+        {
+          "contractName": "Piece.<id>.CVC.ConsignePlus",
+          "type": "digital",
+          "offset": 35,
+          "direction": "entree",
+          "description": "Consigne +0.5°C"
+        },
+        {
+          "contractName": "Piece.<id>.CVC.ConsigneMoins",
+          "type": "digital",
+          "offset": 36,
+          "direction": "entree",
+          "description": "Consigne -0.5°C"
+        },
+        {
+          "contractName": "Piece.<id>.Stores.Scene",
+          "type": "digital",
+          "offsetDebut": 41,
+          "nombre": 4,
+          "direction": "bidirectionnel",
+          "description": "Scenes de stores 1..4 (equiv. joins GUI 201-204)"
+        },
+        {
+          "contractName": "Piece.<id>.AV.Mute",
+          "type": "digital",
+          "offset": 50,
+          "direction": "bidirectionnel",
+          "description": "Mute audio (toggle + feedback, equiv. join GUI 55)"
+        },
+        {
+          "contractName": "Piece.<id>.AV.Source.Select",
+          "type": "digital",
+          "offsetDebut": 51,
+          "nombre": 6,
+          "direction": "bidirectionnel",
+          "description": "Selection source 0..5 (+51 = OFF, +52..+55 = sources video 1..4, +56 = musique sur les haut-parleurs). Joins logiques GUI 150-155."
+        },
+        {
+          "contractName": "Piece.<id>.Moteur.Commande",
+          "type": "digital",
+          "offsetDebut": 61,
+          "nombre": 18,
+          "direction": "bidirectionnel",
+          "description": "Moteurs 1..6, triplets Monter/Stop/Descendre (v3 : ecrits directement par le GUI de la piece, joins logiques 81-98)"
+        },
+        {
+          "contractName": "Piece.<id>.Alarme.Partition",
+          "type": "digital",
+          "offsetDebut": 81,
+          "nombre": 12,
+          "direction": "bidirectionnel",
+          "description": "Partitions 1..4, triplets Armer/Partiel/Désarmer (équiv. joins GUI 301-312)"
+        },
+        {
+          "contractName": "Piece.<id>.Eclairage.NiveauMaster",
+          "type": "analog",
+          "offset": 21,
+          "direction": "bidirectionnel",
+          "description": "Niveau master éclairage (0..65535)"
+        },
+        {
+          "contractName": "Piece.<id>.CVC.Consigne",
+          "type": "analog",
+          "offset": 31,
+          "direction": "bidirectionnel",
+          "description": "Consigne de température x10"
+        },
+        {
+          "contractName": "Piece.<id>.AV.SourceActive",
+          "type": "analog",
+          "offset": 51,
+          "direction": "bidirectionnel",
+          "description": "Source active (0=off, 1..5)"
+        },
+        {
+          "contractName": "Piece.<id>.AV.Volume",
+          "type": "analog",
+          "offset": 52,
+          "direction": "bidirectionnel",
+          "description": "Volume multimédia (0..65535)"
+        },
+        {
+          "contractName": "Piece.<id>.Eclairage.Circuit",
+          "type": "analog",
+          "offsetDebut": 71,
+          "nombre": 20,
+          "direction": "bidirectionnel",
+          "description": "Niveau des circuits 1..20 (v4.1). Rxx_Circuit_N_fb# = niveau impose par le C# (scene, curseur) ; Rxx_Circuit_N# = niveau reel remonte par le slot 2"
+        },
+        {
+          "contractName": "Piece.<id>.CVC.TempActuelle",
+          "type": "serial",
+          "offset": 32,
+          "direction": "sortie",
+          "description": "Température actuelle formatée"
+        },
+        {
+          "contractName": "Piece.<id>.CVC.Mode",
+          "type": "serial",
+          "offset": 33,
+          "direction": "sortie",
+          "description": "Mode CVC (CHAUFFAGE / CLIMATISATION)"
+        },
+        {
+          "contractName": "Piece.<id>.CVC.ConsigneTexte",
+          "type": "serial",
+          "offset": 34,
+          "direction": "sortie",
+          "description": "Consigne formatée"
+        },
+        {
+          "contractName": "Piece.<id>.Nom",
+          "type": "serial",
+          "offset": 10,
+          "direction": "sortie",
+          "description": "Nom de la pièce (langue de référence)"
+        },
+        {
+          "contractName": "Piece.<id>.AV.Audio.SuivreVideo",
+          "type": "digital",
+          "offset": 57,
+          "direction": "bidirectionnel",
+          "description": "L'audio des haut-parleurs revient a la source video (join logique GUI 156)."
+        },
+        {
+          "contractName": "Piece.<id>.AV.Extinction",
+          "type": "digital",
+          "offset": 45,
+          "direction": "bidirectionnel",
+          "description": "Extinction complete de l'A/V de la piece (join logique GUI 200)."
+        },
+        {
+          "contractName": "Piece.<id>.Media.Transport",
+          "type": "digital",
+          "offsetDebut": 58,
+          "nombre": 3,
+          "direction": "entree",
+          "description": "Lecteur media : +58 lecture/pause (join logique 251), +59 suivant (252), +60 precedent (253). Ordre aligne sur le cablage reel des boutons du GUI."
+        },
+        {
+          "contractName": "Piece.<id>.AV.SourceAudio",
+          "type": "analog",
+          "offset": 53,
+          "direction": "bidirectionnel",
+          "description": "Source audio des haut-parleurs : 0 = off, 1..4 = audio de la source video, 5 = musique (join logique GUI 53)."
+        },
+        {
+          "contractName": "Piece.<id>.Media.Volume",
+          "type": "analog",
+          "offset": 54,
+          "direction": "bidirectionnel",
+          "description": "Volume du lecteur media 0..65535 (join logique GUI 254)."
+        },
+        {
+          "contractName": "Piece.<id>.CVC.MarcheVentilation",
+          "type": "digital",
+          "offsetDebut": 93,
+          "nombre": 6,
+          "direction": "bidirectionnel",
+          "description": "+93 marche (retour slot 2 niveau vrai/faux), +94 arret, +95 Auto, +96 faible, +97 moyen, +98 fort. Les offsets alarme +81..92 restent reserves."
+        },
+        {
+          "contractName": "Piece.<id>.CVC.Ventilation",
+          "type": "analog",
+          "offset": 33,
+          "direction": "bidirectionnel",
+          "description": "Vitesse 0 Auto, 1 faible, 2 moyenne, 3 forte. Ne pas confondre avec temperature mesuree +32."
+        },
+        {
+          "contractName": "Piece.<id>.Wellness.Commandes",
+          "type": "digital",
+          "offsetDebut": 11,
+          "nombre": 8,
+          "direction": "bidirectionnel"
+        },
+        {
+          "contractName": "Piece.<id>.Wellness.ConsignesMesures",
+          "type": "analog",
+          "offsetDebut": 34,
+          "nombre": 4,
+          "direction": "bidirectionnel"
+        },
+        {
+          "contractName": "Piece.<id>.Wellness.Texte",
+          "type": "serial",
+          "offsetDebut": 44,
+          "nombre": 4,
+          "direction": "sortie",
+          "description": "Consigne sauna, humidité cible hammam, température mesurée sauna, humidité mesurée hammam. -- tant que le driver ne fournit pas la mesure."
+        }
+      ]
+    },
+    "blocsPiecesGui": {
+      "actif": false,
+      "description": "Contrat v3 (blocs par piece) DESACTIVE le 15.09.2026. Deux raisons : (1) CH5 fige sendEventOnClick a l'initialisation du composant, la reecriture d'attribut faite ici n'avait donc aucun effet sur l'emission — un bouton portant 1052 emettait toujours 151 ; (2) choix d'architecture : tous les pilotages (sources, telecommandes, scenes, stores) utilisent desormais des joins IDENTIQUES quelle que soit la piece, et SIMPL route sur Room_Select# (a10) avec des buffers, ce qui allege aussi le debugger Toolbox. Remettre actif=true restaurerait une traduction qui ne fonctionne pas : ne pas le faire sans avoir d'abord corrige le point (1).",
+      "baseFormule": "1000 + (pieceId - 1) * 100",
+      "tailleBloc": 100,
+      "pieceMax": 30,
+      "joinMaxTheorique": 3998,
+      "appliqueEn": [
+        "deploiement"
+      ],
+      "note": "En mode showcase le mapping est inactif : le site vitrine n'a qu'un seul panel virtuel, les joins logiques sont utilises tels quels par js/local-feedback.js.",
+      "exceptionsGlobales": [
+        {
+          "plage": "digital 11-40",
+          "nom": "Piece.Select",
+          "raison": "selection de la piece : par nature globale"
+        },
+        {
+          "plage": "analog 10",
+          "nom": "Piece.Active",
+          "raison": "piece affichee par le panel : par nature globale. ATTENTION : le seriel 10 (Piece.Nom) n'est PAS une exception, il est traduit en base+10 et chaque panel lit le nom de SA piece."
+        },
+        {
+          "plage": "digital 301-312",
+          "nom": "Alarme.Partition",
+          "raison": "EXCEPTION DEMANDEE : les etats des partitions d'alarme 1..4 sont communs a toute la villa"
+        },
+        {
+          "plage": "digital 401-411 + serial 420",
+          "nom": "Global.* / Presets.Sauvegarde",
+          "raison": "EXCEPTION DEMANDEE : les presets globaux sont communs a toute la villa"
+        },
+        {
+          "plage": "digital 41-48",
+          "nom": "Alarme.General / Alarme.Code",
+          "raison": "la centrale d'alarme est unique pour la villa"
+        },
+        {
+          "plage": "digital 211-220 / 500-527 / 530-557 / 560-600",
+          "nom": "AV.Telecommande.*",
+          "raison": "une commande de telecommande vise l'APPAREIL SOURCE (Apple TV, Sky Q, box IPTV, Swisscom), pas la piece : dupliquer par piece n'aurait pas de sens et couterait 15 x 130 joins"
+        },
+        {
+          "plage": "serial 99-106, digital/analog 250",
+          "nom": "Systeme.* / Config.*",
+          "raison": "signaux systeme et transport de configuration"
+        },
+        {
+          "plage": "analog 240 / analog 260 / digital 261",
+          "nom": "Systeme.*Dalle",
+          "raison": "materiel propre a la dalle TSW principale"
+        },
+        {
+          "plage": "digital 56",
+          "nom": "Meteo.EasterEgg",
+          "raison": "widget global"
+        }
+      ],
+      "mapping": {
+        "digital": {
+          "61": 1,
+          "62": 2,
+          "63": 3,
+          "64": 4,
+          "65": 5,
+          "66": 6,
+          "67": 7,
+          "68": 8,
+          "69": 9,
+          "51": 21,
+          "52": 22,
+          "53": 23,
+          "54": 24,
+          "49": 35,
+          "50": 36,
+          "201": 41,
+          "202": 42,
+          "203": 43,
+          "204": 44,
+          "200": 45,
+          "55": 50,
+          "150": 51,
+          "151": 52,
+          "152": 53,
+          "153": 54,
+          "154": 55,
+          "155": 56,
+          "156": 57,
+          "251": 58,
+          "252": 59,
+          "253": 60,
+          "81": 61,
+          "82": 62,
+          "83": 63,
+          "84": 64,
+          "85": 65,
+          "86": 66,
+          "87": 67,
+          "88": 68,
+          "89": 69,
+          "90": 70,
+          "91": 71,
+          "92": 72,
+          "93": 73,
+          "94": 74,
+          "95": 75,
+          "96": 76,
+          "97": 77,
+          "98": 78,
+          "610": 93,
+          "611": 94,
+          "612": 95,
+          "613": 96,
+          "614": 97,
+          "615": 98,
+          "620": 11,
+          "621": 12,
+          "622": 13,
+          "623": 14,
+          "624": 15,
+          "625": 16,
+          "626": 17,
+          "627": 18
+        },
+        "analog": {
+          "31": 31,
+          "51": 51,
+          "52": 52,
+          "53": 53,
+          "254": 54,
+          "71": 71,
+          "72": 72,
+          "73": 73,
+          "74": 74,
+          "75": 75,
+          "76": 76,
+          "77": 77,
+          "78": 78,
+          "79": 79,
+          "80": 80,
+          "81": 81,
+          "82": 82,
+          "83": 83,
+          "84": 84,
+          "85": 85,
+          "86": 86,
+          "87": 87,
+          "88": 88,
+          "89": 89,
+          "90": 90,
+          "61": 33,
+          "62": 34,
+          "63": 35,
+          "64": 36,
+          "65": 37
+        },
+        "serial": {
+          "10": 10,
+          "32": 32,
+          "33": 33,
+          "34": 34,
+          "62": 44,
+          "63": 45,
+          "64": 46,
+          "65": 47
+        }
+      }
+    },
+    "cvcEtendu": {
+      "actif": true,
+      "commandes": {
+        "marche": 610,
+        "arret": 611,
+        "auto": 612,
+        "faible": 613,
+        "moyen": 614,
+        "fort": 615
+      },
+      "ventilationAnalogique": 61,
+      "ventilationValeurs": {
+        "auto": 0,
+        "faible": 1,
+        "moyen": 2,
+        "fort": 3
+      },
+      "retoursPieces": {
+        "marcheDigitalOffset": 93,
+        "arretDigitalOffset": 94,
+        "ventilationDigitalOffsetDebut": 95,
+        "ventilationAnalogOffset": 33
+      },
+      "note": "Commandes GUI globales 610-615, routage par a10 avant impulsion. Retours materiels par bloc CVC de piece : d(base+93) niveau marche vrai/faux, a(base+33) vitesse 0..3. Aucun retour global ambigu du slot 2."
+    },
+    "wellness": {
+      "actif": false,
+      "sauna": {
+        "marche": 620,
+        "arret": 621,
+        "plus": 622,
+        "moins": 623,
+        "consigne": 62,
+        "mesure": 64
+      },
+      "hammam": {
+        "marche": 624,
+        "arret": 625,
+        "plus": 626,
+        "moins": 627,
+        "consigne": 63,
+        "mesure": 65
+      },
+      "note": "Commandes globales, piece a10 avant impulsion; retours EISC par piece d+11/+15, a+34..37. Etat OFF initial; aucune ventilation des cabines. Reglages definitifs selon le fabricant du generateur."
+    }
+  },
+  "pagesSpeciales": {
+    "description": "Pages speciales du menu de navigation (true = presente dans le menu). Jeux et Animation desactivees le 09.09.2026 (code conserve : remettre actif = true pour les retrouver). youtubeRecherche personnalise la video. Video desactivee le 15.09.2026. Meme convention sur les pieces : \"actif\": false sort la piece des menus sans toucher a ses joins.",
+    "jeux": {
+      "actif": false,
+      "nom": "Jeux",
+      "icone": "🚀"
+    },
+    "animation": {
+      "actif": false,
+      "nom": "Animation",
+      "icone": "✨"
+    },
+    "video": {
+      "actif": false,
+      "nom": "Vidéo",
+      "icone": "⚽",
+      "youtubeRecherche": "football highlights"
+    }
+  }
+}

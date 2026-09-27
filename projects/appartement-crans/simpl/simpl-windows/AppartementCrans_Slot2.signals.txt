@@ -1,0 +1,896 @@
+# AppartementCrans_Slot2.smw — signaux EISC (IP-ID F0). O = sortie du symbole (reçu par le slot 2), I = entrée (renvoyé par le slot 2).
+
+## SORTIES (slot 2 reçoit)
+
+### Digitaux (358)
+d  11  Room_Select1_fb
+d  12  Room_Select2_fb
+d  13  Room_Select3_fb
+d  14  Room_Select4_fb
+d  15  Room_Select5_fb
+d  16  Room_Select6_fb
+d  17  Room_Select7_fb
+d  18  Room_Select8_fb
+d  19  Room_Select9_fb
+d  20  Room_Select10_fb
+d  21  Room_Select11_fb
+d  22  Room_Select12_fb
+d  23  Room_Select13_fb
+d  24  Room_Select14_fb
+d  25  Room_Select15_fb
+d  26  Room_Select16_fb
+d  27  Room_Select17_fb
+d  28  Room_Select18_fb
+d  29  Room_Select19_fb
+d  30  Room_Select20_fb
+d  31  Room_Select21_fb
+d  32  Room_Select22_fb
+d  33  Room_Select23_fb
+d  34  Room_Select24_fb
+d  35  Room_Select25_fb
+d  36  Room_Select26_fb
+d  37  Room_Select27_fb
+d  38  Room_Select28_fb
+d  39  Room_Select29_fb
+d  40  Room_Select30_fb
+d  41  Alarm_Arm_fb
+d  42  Alarm_Disarm_fb
+d  46  Alarm_Code_Clear
+d  49  HVAC_Setpoint_Up
+d  50  HVAC_Setpoint_Down
+d  51  Lighting_Scene1_fb
+d  52  Lighting_Scene2_fb
+d  53  Lighting_Scene3_fb
+d  54  Lighting_Scene4_fb
+d  55  Audio_Mute_fb
+d  61  Shades_Volets_Up
+d  62  Shades_Volets_Stop
+d  63  Shades_Volets_Down
+d  64  Shades_Rideaux_Up
+d  65  Shades_Rideaux_Stop
+d  66  Shades_Rideaux_Down
+d  67  Shades_Stores_Up
+d  68  Shades_Stores_Stop
+d  69  Shades_Stores_Down
+d  81  Motor_1_Up_fb
+d  82  Motor_1_Stop_fb
+d  83  Motor_1_Down_fb
+d  84  Motor_2_Up_fb
+d  85  Motor_2_Stop_fb
+d  86  Motor_2_Down_fb
+d  87  Motor_3_Up_fb
+d  88  Motor_3_Stop_fb
+d  89  Motor_3_Down_fb
+d  90  Motor_4_Up_fb
+d  91  Motor_4_Stop_fb
+d  92  Motor_4_Down_fb
+d  93  Motor_5_Up_fb
+d  94  Motor_5_Stop_fb
+d  95  Motor_5_Down_fb
+d  96  Motor_6_Up_fb
+d  97  Motor_6_Stop_fb
+d  98  Motor_6_Down_fb
+d 150  Source_Select_0_fb
+d 151  Source_Select_1_fb
+d 152  Source_Select_2_fb
+d 153  Source_Select_3_fb
+d 154  Source_Select_4_fb
+d 155  Source_Select_5_fb
+d 156  Source_AudioReturn_fb
+d 200  AV_Off_fb
+d 201  Shades_Scene_1_fb
+d 202  Shades_Scene_2_fb
+d 203  Shades_Scene_3_fb
+d 204  Shades_Scene_4_fb
+d 211  Remote_AppleTV_Up
+d 212  Remote_AppleTV_Down
+d 213  Remote_AppleTV_Left
+d 214  Remote_AppleTV_Right
+d 215  Remote_AppleTV_Ok
+d 216  Remote_AppleTV_Back
+d 217  Remote_AppleTV_Home
+d 218  Remote_AppleTV_Play
+d 219  Remote_AppleTV_Rew
+d 220  Remote_AppleTV_Fwd
+d 251  Media_PlayPause
+d 252  Media_Next
+d 253  Media_Prev
+d 301  Alarm_Part1_Arm_fb
+d 302  Alarm_Part1_Partial_fb
+d 303  Alarm_Part1_Disarm_fb
+d 304  Alarm_Part2_Arm_fb
+d 305  Alarm_Part2_Partial_fb
+d 306  Alarm_Part2_Disarm_fb
+d 307  Alarm_Part3_Arm_fb
+d 308  Alarm_Part3_Partial_fb
+d 309  Alarm_Part3_Disarm_fb
+d 310  Alarm_Part4_Arm_fb
+d 311  Alarm_Part4_Partial_fb
+d 312  Alarm_Part4_Disarm_fb
+d 401  Global_Lights_AllOn_fb
+d 402  Global_Lights_AllOff_fb
+d 403  Global_Lights_Eco_fb
+d 404  Global_Shades_AllOpen_fb
+d 405  Global_Shades_AllClose_fb
+d 406  Global_Shades_Preset_fb
+d 407  Global_HVAC_Comfort_fb
+d 408  Global_HVAC_Night_fb
+d 409  Global_HVAC_Frost_fb
+d 410  Global_Vacation_On_fb
+d 411  Global_Vacation_Off_fb
+d 500  Remote_SkyQ_Up
+d 501  Remote_SkyQ_Down
+d 502  Remote_SkyQ_Left
+d 503  Remote_SkyQ_Right
+d 504  Remote_SkyQ_Ok
+d 505  Remote_SkyQ_Back
+d 506  Remote_SkyQ_Menu
+d 507  Remote_SkyQ_Exit
+d 508  Remote_SkyQ_Live
+d 509  Remote_SkyQ_Dvr
+d 510  Remote_SkyQ_Guide
+d 511  Remote_SkyQ_Info
+d 512  Remote_SkyQ_Last
+d 513  Remote_SkyQ_PgUp
+d 514  Remote_SkyQ_PgDn
+d 515  Remote_SkyQ_ChUp
+d 516  Remote_SkyQ_ChDn
+d 517  Remote_SkyQ_Rew
+d 518  Remote_SkyQ_Play
+d 519  Remote_SkyQ_Fwd
+d 520  Remote_SkyQ_Pause
+d 521  Remote_SkyQ_Stop
+d 522  Remote_SkyQ_Replay
+d 523  Remote_SkyQ_Rec
+d 524  Remote_SkyQ_Yellow
+d 525  Remote_SkyQ_Blue
+d 526  Remote_SkyQ_Red
+d 527  Remote_SkyQ_Green
+d 530  Remote_IPTV_Up
+d 531  Remote_IPTV_Down
+d 532  Remote_IPTV_Left
+d 533  Remote_IPTV_Right
+d 534  Remote_IPTV_Ok
+d 535  Remote_IPTV_Back
+d 536  Remote_IPTV_Menu
+d 537  Remote_IPTV_Exit
+d 538  Remote_IPTV_Live
+d 539  Remote_IPTV_Dvr
+d 540  Remote_IPTV_Guide
+d 541  Remote_IPTV_Info
+d 542  Remote_IPTV_Last
+d 543  Remote_IPTV_PgUp
+d 544  Remote_IPTV_PgDn
+d 545  Remote_IPTV_ChUp
+d 546  Remote_IPTV_ChDn
+d 547  Remote_IPTV_Rew
+d 548  Remote_IPTV_Play
+d 549  Remote_IPTV_Fwd
+d 550  Remote_IPTV_Pause
+d 551  Remote_IPTV_Stop
+d 552  Remote_IPTV_Replay
+d 553  Remote_IPTV_Rec
+d 554  Remote_IPTV_Yellow
+d 555  Remote_IPTV_Blue
+d 556  Remote_IPTV_Red
+d 557  Remote_IPTV_Green
+d 560  Remote_Swisscom_Power
+d 561  Remote_Swisscom_Assistant
+d 562  Remote_Swisscom_Input
+d 563  Remote_Swisscom_Mute
+d 564  Remote_Swisscom_Rew
+d 565  Remote_Swisscom_Rec
+d 566  Remote_Swisscom_Fwd
+d 567  Remote_Swisscom_Replay
+d 568  Remote_Swisscom_Play
+d 569  Remote_Swisscom_Skip
+d 570  Remote_Swisscom_Back
+d 571  Remote_Swisscom_Home
+d 572  Remote_Swisscom_Guide
+d 573  Remote_Swisscom_Option
+d 574  Remote_Swisscom_Up
+d 575  Remote_Swisscom_Down
+d 576  Remote_Swisscom_Left
+d 577  Remote_Swisscom_Right
+d 578  Remote_Swisscom_Ok
+d 579  Remote_Swisscom_VolUp
+d 580  Remote_Swisscom_VolDn
+d 581  Remote_Swisscom_Mic
+d 582  Remote_Swisscom_PUp
+d 583  Remote_Swisscom_PDn
+d 584  Remote_Swisscom_Pip
+d 585  Remote_Swisscom_D0
+d 586  Remote_Swisscom_D1
+d 587  Remote_Swisscom_D2
+d 588  Remote_Swisscom_D3
+d 589  Remote_Swisscom_D4
+d 590  Remote_Swisscom_D5
+d 591  Remote_Swisscom_D6
+d 592  Remote_Swisscom_D7
+d 593  Remote_Swisscom_D8
+d 594  Remote_Swisscom_D9
+d 595  Remote_Swisscom_Txt
+d 596  Remote_Swisscom_Radio
+d 597  Remote_Swisscom_Red
+d 598  Remote_Swisscom_Green
+d 599  Remote_Swisscom_Yellow
+d 600  Remote_Swisscom_Blue
+d 610  HVAC_On_Cmd
+d 611  HVAC_Off_Cmd
+d 612  HVAC_Fan_Auto_Cmd
+d 613  HVAC_Fan_Low_Cmd
+d 614  HVAC_Fan_Medium_Cmd
+d 615  HVAC_Fan_High_Cmd
+d1021  R01_Lighting_Scene1_fb
+d1022  R01_Lighting_Scene2_fb
+d1023  R01_Lighting_Scene3_fb
+d1024  R01_Lighting_Scene4_fb
+d1093  R01_HVAC_On_fb
+d1094  R01_HVAC_Off_fb
+d1095  R01_HVAC_Fan_Auto_fb
+d1096  R01_HVAC_Fan_Low_fb
+d1097  R01_HVAC_Fan_Medium_fb
+d1098  R01_HVAC_Fan_High_fb
+d1121  R02_Lighting_Scene1_fb
+d1122  R02_Lighting_Scene2_fb
+d1123  R02_Lighting_Scene3_fb
+d1124  R02_Lighting_Scene4_fb
+d1193  R02_HVAC_On_fb
+d1194  R02_HVAC_Off_fb
+d1195  R02_HVAC_Fan_Auto_fb
+d1196  R02_HVAC_Fan_Low_fb
+d1197  R02_HVAC_Fan_Medium_fb
+d1198  R02_HVAC_Fan_High_fb
+d1221  R03_Lighting_Scene1_fb
+d1222  R03_Lighting_Scene2_fb
+d1223  R03_Lighting_Scene3_fb
+d1224  R03_Lighting_Scene4_fb
+d1293  R03_HVAC_On_fb
+d1294  R03_HVAC_Off_fb
+d1295  R03_HVAC_Fan_Auto_fb
+d1296  R03_HVAC_Fan_Low_fb
+d1297  R03_HVAC_Fan_Medium_fb
+d1298  R03_HVAC_Fan_High_fb
+d1321  R04_Lighting_Scene1_fb
+d1322  R04_Lighting_Scene2_fb
+d1323  R04_Lighting_Scene3_fb
+d1324  R04_Lighting_Scene4_fb
+d1421  R05_Lighting_Scene1_fb
+d1422  R05_Lighting_Scene2_fb
+d1423  R05_Lighting_Scene3_fb
+d1424  R05_Lighting_Scene4_fb
+d1521  R06_Lighting_Scene1_fb
+d1522  R06_Lighting_Scene2_fb
+d1523  R06_Lighting_Scene3_fb
+d1524  R06_Lighting_Scene4_fb
+d1621  R07_Lighting_Scene1_fb
+d1622  R07_Lighting_Scene2_fb
+d1623  R07_Lighting_Scene3_fb
+d1624  R07_Lighting_Scene4_fb
+d1693  R07_HVAC_On_fb
+d1694  R07_HVAC_Off_fb
+d1695  R07_HVAC_Fan_Auto_fb
+d1696  R07_HVAC_Fan_Low_fb
+d1697  R07_HVAC_Fan_Medium_fb
+d1698  R07_HVAC_Fan_High_fb
+d1721  R08_Lighting_Scene1_fb
+d1722  R08_Lighting_Scene2_fb
+d1723  R08_Lighting_Scene3_fb
+d1724  R08_Lighting_Scene4_fb
+d1793  R08_HVAC_On_fb
+d1794  R08_HVAC_Off_fb
+d1795  R08_HVAC_Fan_Auto_fb
+d1796  R08_HVAC_Fan_Low_fb
+d1797  R08_HVAC_Fan_Medium_fb
+d1798  R08_HVAC_Fan_High_fb
+d1821  R09_Lighting_Scene1_fb
+d1822  R09_Lighting_Scene2_fb
+d1823  R09_Lighting_Scene3_fb
+d1824  R09_Lighting_Scene4_fb
+d1893  R09_HVAC_On_fb
+d1894  R09_HVAC_Off_fb
+d1895  R09_HVAC_Fan_Auto_fb
+d1896  R09_HVAC_Fan_Low_fb
+d1897  R09_HVAC_Fan_Medium_fb
+d1898  R09_HVAC_Fan_High_fb
+d1921  R10_Lighting_Scene1_fb
+d1922  R10_Lighting_Scene2_fb
+d1923  R10_Lighting_Scene3_fb
+d1924  R10_Lighting_Scene4_fb
+d1993  R10_HVAC_On_fb
+d1994  R10_HVAC_Off_fb
+d1995  R10_HVAC_Fan_Auto_fb
+d1996  R10_HVAC_Fan_Low_fb
+d1997  R10_HVAC_Fan_Medium_fb
+d1998  R10_HVAC_Fan_High_fb
+d2021  R11_Lighting_Scene1_fb
+d2022  R11_Lighting_Scene2_fb
+d2023  R11_Lighting_Scene3_fb
+d2024  R11_Lighting_Scene4_fb
+d2093  R11_HVAC_On_fb
+d2094  R11_HVAC_Off_fb
+d2095  R11_HVAC_Fan_Auto_fb
+d2096  R11_HVAC_Fan_Low_fb
+d2097  R11_HVAC_Fan_Medium_fb
+d2098  R11_HVAC_Fan_High_fb
+d2121  R12_Lighting_Scene1_fb
+d2122  R12_Lighting_Scene2_fb
+d2123  R12_Lighting_Scene3_fb
+d2124  R12_Lighting_Scene4_fb
+d2221  R13_Lighting_Scene1_fb
+d2222  R13_Lighting_Scene2_fb
+d2223  R13_Lighting_Scene3_fb
+d2224  R13_Lighting_Scene4_fb
+d2293  R13_HVAC_On_fb
+d2294  R13_HVAC_Off_fb
+d2295  R13_HVAC_Fan_Auto_fb
+d2296  R13_HVAC_Fan_Low_fb
+d2297  R13_HVAC_Fan_Medium_fb
+d2298  R13_HVAC_Fan_High_fb
+d2321  R14_Lighting_Scene1_fb
+d2322  R14_Lighting_Scene2_fb
+d2323  R14_Lighting_Scene3_fb
+d2324  R14_Lighting_Scene4_fb
+d2393  R14_HVAC_On_fb
+d2394  R14_HVAC_Off_fb
+d2395  R14_HVAC_Fan_Auto_fb
+d2396  R14_HVAC_Fan_Low_fb
+d2397  R14_HVAC_Fan_Medium_fb
+d2398  R14_HVAC_Fan_High_fb
+d2421  R15_Lighting_Scene1_fb
+d2422  R15_Lighting_Scene2_fb
+d2423  R15_Lighting_Scene3_fb
+d2424  R15_Lighting_Scene4_fb
+d2493  R15_HVAC_On_fb
+d2494  R15_HVAC_Off_fb
+d2495  R15_HVAC_Fan_Auto_fb
+d2496  R15_HVAC_Fan_Low_fb
+d2497  R15_HVAC_Fan_Medium_fb
+d2498  R15_HVAC_Fan_High_fb
+d2521  R16_Lighting_Scene1_fb
+d2522  R16_Lighting_Scene2_fb
+d2523  R16_Lighting_Scene3_fb
+d2524  R16_Lighting_Scene4_fb
+d2593  R16_HVAC_On_fb
+d2594  R16_HVAC_Off_fb
+d2595  R16_HVAC_Fan_Auto_fb
+d2596  R16_HVAC_Fan_Low_fb
+d2597  R16_HVAC_Fan_Medium_fb
+d2598  R16_HVAC_Fan_High_fb
+d2621  R17_Lighting_Scene1_fb
+d2622  R17_Lighting_Scene2_fb
+d2623  R17_Lighting_Scene3_fb
+d2624  R17_Lighting_Scene4_fb
+
+### Analogiques (154)
+a  10  Room_Selected#
+a  21  Lighting_Master_fb
+a  31  HVAC_Setpoint_fb
+a  32  HVAC_Temperature_fb
+a  33  HVAC_Mode_fb
+a  51  Source_Active_fb#
+a  52  Audio_Volume_fb#
+a  61  HVAC_FanSpeed_Cmd#
+a  71  Circuit_1_fb#
+a  72  Circuit_2_fb#
+a  73  Circuit_3_fb#
+a  74  Circuit_4_fb#
+a  75  Circuit_5_fb#
+a  76  Circuit_6_fb#
+a  77  Circuit_7_fb#
+a  78  Circuit_8_fb#
+a  79  Circuit_9_fb#
+a  80  Circuit_10_fb#
+a  81  Circuit_11_fb#
+a  82  Circuit_12_fb#
+a  83  Circuit_13_fb#
+a  84  Circuit_14_fb#
+a  85  Circuit_15_fb#
+a  86  Circuit_16_fb#
+a  87  Circuit_17_fb#
+a  88  Circuit_18_fb#
+a  89  Circuit_19_fb#
+a  90  Circuit_20_fb#
+a 254  Media_Volume_fb#
+a1031  R01_HVAC_Setpoint_fb#
+a1033  R01_HVAC_FanSpeed_fb#
+a1071  R01_Circuit_1_fb#
+a1072  R01_Circuit_2_fb#
+a1073  R01_Circuit_3_fb#
+a1074  R01_Circuit_4_fb#
+a1075  R01_Circuit_5_fb#
+a1131  R02_HVAC_Setpoint_fb#
+a1133  R02_HVAC_FanSpeed_fb#
+a1171  R02_Circuit_1_fb#
+a1172  R02_Circuit_2_fb#
+a1173  R02_Circuit_3_fb#
+a1231  R03_HVAC_Setpoint_fb#
+a1233  R03_HVAC_FanSpeed_fb#
+a1271  R03_Circuit_1_fb#
+a1272  R03_Circuit_2_fb#
+a1273  R03_Circuit_3_fb#
+a1274  R03_Circuit_4_fb#
+a1275  R03_Circuit_5_fb#
+a1276  R03_Circuit_6_fb#
+a1371  R04_Circuit_1_fb#
+a1372  R04_Circuit_2_fb#
+a1373  R04_Circuit_3_fb#
+a1471  R05_Circuit_1_fb#
+a1571  R06_Circuit_1_fb#
+a1572  R06_Circuit_2_fb#
+a1631  R07_HVAC_Setpoint_fb#
+a1633  R07_HVAC_FanSpeed_fb#
+a1671  R07_Circuit_1_fb#
+a1672  R07_Circuit_2_fb#
+a1673  R07_Circuit_3_fb#
+a1674  R07_Circuit_4_fb#
+a1675  R07_Circuit_5_fb#
+a1676  R07_Circuit_6_fb#
+a1677  R07_Circuit_7_fb#
+a1678  R07_Circuit_8_fb#
+a1679  R07_Circuit_9_fb#
+a1680  R07_Circuit_10_fb#
+a1731  R08_HVAC_Setpoint_fb#
+a1733  R08_HVAC_FanSpeed_fb#
+a1771  R08_Circuit_1_fb#
+a1772  R08_Circuit_2_fb#
+a1773  R08_Circuit_3_fb#
+a1774  R08_Circuit_4_fb#
+a1775  R08_Circuit_5_fb#
+a1776  R08_Circuit_6_fb#
+a1777  R08_Circuit_7_fb#
+a1778  R08_Circuit_8_fb#
+a1831  R09_HVAC_Setpoint_fb#
+a1833  R09_HVAC_FanSpeed_fb#
+a1871  R09_Circuit_1_fb#
+a1872  R09_Circuit_2_fb#
+a1931  R10_HVAC_Setpoint_fb#
+a1933  R10_HVAC_FanSpeed_fb#
+a1971  R10_Circuit_1_fb#
+a1972  R10_Circuit_2_fb#
+a1973  R10_Circuit_3_fb#
+a1974  R10_Circuit_4_fb#
+a1975  R10_Circuit_5_fb#
+a1976  R10_Circuit_6_fb#
+a1977  R10_Circuit_7_fb#
+a1978  R10_Circuit_8_fb#
+a2031  R11_HVAC_Setpoint_fb#
+a2033  R11_HVAC_FanSpeed_fb#
+a2071  R11_Circuit_1_fb#
+a2072  R11_Circuit_2_fb#
+a2073  R11_Circuit_3_fb#
+a2074  R11_Circuit_4_fb#
+a2075  R11_Circuit_5_fb#
+a2076  R11_Circuit_6_fb#
+a2077  R11_Circuit_7_fb#
+a2078  R11_Circuit_8_fb#
+a2079  R11_Circuit_9_fb#
+a2080  R11_Circuit_10_fb#
+a2081  R11_Circuit_11_fb#
+a2171  R12_Circuit_1_fb#
+a2172  R12_Circuit_2_fb#
+a2173  R12_Circuit_3_fb#
+a2231  R13_HVAC_Setpoint_fb#
+a2233  R13_HVAC_FanSpeed_fb#
+a2271  R13_Circuit_1_fb#
+a2272  R13_Circuit_2_fb#
+a2273  R13_Circuit_3_fb#
+a2274  R13_Circuit_4_fb#
+a2275  R13_Circuit_5_fb#
+a2276  R13_Circuit_6_fb#
+a2277  R13_Circuit_7_fb#
+a2278  R13_Circuit_8_fb#
+a2331  R14_HVAC_Setpoint_fb#
+a2333  R14_HVAC_FanSpeed_fb#
+a2371  R14_Circuit_1_fb#
+a2372  R14_Circuit_2_fb#
+a2373  R14_Circuit_3_fb#
+a2374  R14_Circuit_4_fb#
+a2375  R14_Circuit_5_fb#
+a2376  R14_Circuit_6_fb#
+a2377  R14_Circuit_7_fb#
+a2378  R14_Circuit_8_fb#
+a2379  R14_Circuit_9_fb#
+a2380  R14_Circuit_10_fb#
+a2431  R15_HVAC_Setpoint_fb#
+a2433  R15_HVAC_FanSpeed_fb#
+a2471  R15_Circuit_1_fb#
+a2472  R15_Circuit_2_fb#
+a2473  R15_Circuit_3_fb#
+a2474  R15_Circuit_4_fb#
+a2475  R15_Circuit_5_fb#
+a2476  R15_Circuit_6_fb#
+a2477  R15_Circuit_7_fb#
+a2478  R15_Circuit_8_fb#
+a2531  R16_HVAC_Setpoint_fb#
+a2533  R16_HVAC_FanSpeed_fb#
+a2571  R16_Circuit_1_fb#
+a2572  R16_Circuit_2_fb#
+a2573  R16_Circuit_3_fb#
+a2574  R16_Circuit_4_fb#
+a2575  R16_Circuit_5_fb#
+a2576  R16_Circuit_6_fb#
+a2577  R16_Circuit_7_fb#
+a2578  R16_Circuit_8_fb#
+a2579  R16_Circuit_9_fb#
+a2580  R16_Circuit_10_fb#
+a2671  R17_Circuit_1_fb#
+a2672  R17_Circuit_2_fb#
+a2673  R17_Circuit_3_fb#
+
+### Séries (41)
+s  10  Room_Selected$
+s  32  HVAC_Temperature_fb$
+s  33  HVAC_Mode_fb$
+s  34  HVAC_Setpoint_fb$
+s  43  Alarm_Code$
+s1032  R01_HVAC_Temperature_fb$
+s1033  R01_HVAC_Mode_fb$
+s1034  R01_HVAC_Setpoint_fb$
+s1132  R02_HVAC_Temperature_fb$
+s1133  R02_HVAC_Mode_fb$
+s1134  R02_HVAC_Setpoint_fb$
+s1232  R03_HVAC_Temperature_fb$
+s1233  R03_HVAC_Mode_fb$
+s1234  R03_HVAC_Setpoint_fb$
+s1632  R07_HVAC_Temperature_fb$
+s1633  R07_HVAC_Mode_fb$
+s1634  R07_HVAC_Setpoint_fb$
+s1732  R08_HVAC_Temperature_fb$
+s1733  R08_HVAC_Mode_fb$
+s1734  R08_HVAC_Setpoint_fb$
+s1832  R09_HVAC_Temperature_fb$
+s1833  R09_HVAC_Mode_fb$
+s1834  R09_HVAC_Setpoint_fb$
+s1932  R10_HVAC_Temperature_fb$
+s1933  R10_HVAC_Mode_fb$
+s1934  R10_HVAC_Setpoint_fb$
+s2032  R11_HVAC_Temperature_fb$
+s2033  R11_HVAC_Mode_fb$
+s2034  R11_HVAC_Setpoint_fb$
+s2232  R13_HVAC_Temperature_fb$
+s2233  R13_HVAC_Mode_fb$
+s2234  R13_HVAC_Setpoint_fb$
+s2332  R14_HVAC_Temperature_fb$
+s2333  R14_HVAC_Mode_fb$
+s2334  R14_HVAC_Setpoint_fb$
+s2432  R15_HVAC_Temperature_fb$
+s2433  R15_HVAC_Mode_fb$
+s2434  R15_HVAC_Setpoint_fb$
+s2532  R16_HVAC_Temperature_fb$
+s2533  R16_HVAC_Mode_fb$
+s2534  R16_HVAC_Setpoint_fb$
+
+## ENTRÉES (slot 2 renvoie)
+
+### Digitaux (163)
+d  11  Room_Select1
+d  12  Room_Select2
+d  13  Room_Select3
+d  14  Room_Select4
+d  15  Room_Select5
+d  16  Room_Select6
+d  17  Room_Select7
+d  18  Room_Select8
+d  19  Room_Select9
+d  20  Room_Select10
+d  21  Room_Select11
+d  22  Room_Select12
+d  23  Room_Select13
+d  24  Room_Select14
+d  25  Room_Select15
+d  26  Room_Select16
+d  27  Room_Select17
+d  28  Room_Select18
+d  29  Room_Select19
+d  30  Room_Select20
+d  31  Room_Select21
+d  32  Room_Select22
+d  33  Room_Select23
+d  34  Room_Select24
+d  35  Room_Select25
+d  36  Room_Select26
+d  37  Room_Select27
+d  38  Room_Select28
+d  39  Room_Select29
+d  40  Room_Select30
+d  41  Alarm_Arm
+d  42  Alarm_Disarm
+d  44  Alarm_Code_OK
+d  45  Alarm_Code_KO
+d  51  Lighting_Scene1
+d  52  Lighting_Scene2
+d  53  Lighting_Scene3
+d  54  Lighting_Scene4
+d  55  Audio_Mute
+d  81  Motor_1_Up
+d  82  Motor_1_Stop
+d  83  Motor_1_Down
+d  84  Motor_2_Up
+d  85  Motor_2_Stop
+d  86  Motor_2_Down
+d  87  Motor_3_Up
+d  88  Motor_3_Stop
+d  89  Motor_3_Down
+d  90  Motor_4_Up
+d  91  Motor_4_Stop
+d  92  Motor_4_Down
+d  93  Motor_5_Up
+d  94  Motor_5_Stop
+d  95  Motor_5_Down
+d  96  Motor_6_Up
+d  97  Motor_6_Stop
+d  98  Motor_6_Down
+d 150  Source_Select_0
+d 151  Source_Select_1
+d 152  Source_Select_2
+d 153  Source_Select_3
+d 154  Source_Select_4
+d 155  Source_Select_5
+d 156  Source_AudioReturn
+d 200  AV_Off
+d 201  Shades_Scene_1
+d 202  Shades_Scene_2
+d 203  Shades_Scene_3
+d 204  Shades_Scene_4
+d 301  Alarm_Part1_Arm
+d 302  Alarm_Part1_Partial
+d 303  Alarm_Part1_Disarm
+d 304  Alarm_Part2_Arm
+d 305  Alarm_Part2_Partial
+d 306  Alarm_Part2_Disarm
+d 307  Alarm_Part3_Arm
+d 308  Alarm_Part3_Partial
+d 309  Alarm_Part3_Disarm
+d 310  Alarm_Part4_Arm
+d 311  Alarm_Part4_Partial
+d 312  Alarm_Part4_Disarm
+d 410  Global_Vacation_On
+d 411  Global_Vacation_Off
+d1021  R01_Lighting_Scene1_Actual
+d1022  R01_Lighting_Scene2_Actual
+d1023  R01_Lighting_Scene3_Actual
+d1024  R01_Lighting_Scene4_Actual
+d1093  R01_HVAC_On_Actual
+d1121  R02_Lighting_Scene1_Actual
+d1122  R02_Lighting_Scene2_Actual
+d1123  R02_Lighting_Scene3_Actual
+d1124  R02_Lighting_Scene4_Actual
+d1193  R02_HVAC_On_Actual
+d1221  R03_Lighting_Scene1_Actual
+d1222  R03_Lighting_Scene2_Actual
+d1223  R03_Lighting_Scene3_Actual
+d1224  R03_Lighting_Scene4_Actual
+d1293  R03_HVAC_On_Actual
+d1321  R04_Lighting_Scene1_Actual
+d1322  R04_Lighting_Scene2_Actual
+d1323  R04_Lighting_Scene3_Actual
+d1324  R04_Lighting_Scene4_Actual
+d1421  R05_Lighting_Scene1_Actual
+d1422  R05_Lighting_Scene2_Actual
+d1423  R05_Lighting_Scene3_Actual
+d1424  R05_Lighting_Scene4_Actual
+d1521  R06_Lighting_Scene1_Actual
+d1522  R06_Lighting_Scene2_Actual
+d1523  R06_Lighting_Scene3_Actual
+d1524  R06_Lighting_Scene4_Actual
+d1621  R07_Lighting_Scene1_Actual
+d1622  R07_Lighting_Scene2_Actual
+d1623  R07_Lighting_Scene3_Actual
+d1624  R07_Lighting_Scene4_Actual
+d1693  R07_HVAC_On_Actual
+d1721  R08_Lighting_Scene1_Actual
+d1722  R08_Lighting_Scene2_Actual
+d1723  R08_Lighting_Scene3_Actual
+d1724  R08_Lighting_Scene4_Actual
+d1793  R08_HVAC_On_Actual
+d1821  R09_Lighting_Scene1_Actual
+d1822  R09_Lighting_Scene2_Actual
+d1823  R09_Lighting_Scene3_Actual
+d1824  R09_Lighting_Scene4_Actual
+d1893  R09_HVAC_On_Actual
+d1921  R10_Lighting_Scene1_Actual
+d1922  R10_Lighting_Scene2_Actual
+d1923  R10_Lighting_Scene3_Actual
+d1924  R10_Lighting_Scene4_Actual
+d1993  R10_HVAC_On_Actual
+d2021  R11_Lighting_Scene1_Actual
+d2022  R11_Lighting_Scene2_Actual
+d2023  R11_Lighting_Scene3_Actual
+d2024  R11_Lighting_Scene4_Actual
+d2093  R11_HVAC_On_Actual
+d2121  R12_Lighting_Scene1_Actual
+d2122  R12_Lighting_Scene2_Actual
+d2123  R12_Lighting_Scene3_Actual
+d2124  R12_Lighting_Scene4_Actual
+d2221  R13_Lighting_Scene1_Actual
+d2222  R13_Lighting_Scene2_Actual
+d2223  R13_Lighting_Scene3_Actual
+d2224  R13_Lighting_Scene4_Actual
+d2293  R13_HVAC_On_Actual
+d2321  R14_Lighting_Scene1_Actual
+d2322  R14_Lighting_Scene2_Actual
+d2323  R14_Lighting_Scene3_Actual
+d2324  R14_Lighting_Scene4_Actual
+d2393  R14_HVAC_On_Actual
+d2421  R15_Lighting_Scene1_Actual
+d2422  R15_Lighting_Scene2_Actual
+d2423  R15_Lighting_Scene3_Actual
+d2424  R15_Lighting_Scene4_Actual
+d2493  R15_HVAC_On_Actual
+d2521  R16_Lighting_Scene1_Actual
+d2522  R16_Lighting_Scene2_Actual
+d2523  R16_Lighting_Scene3_Actual
+d2524  R16_Lighting_Scene4_Actual
+d2593  R16_HVAC_On_Actual
+d2621  R17_Lighting_Scene1_Actual
+d2622  R17_Lighting_Scene2_Actual
+d2623  R17_Lighting_Scene3_Actual
+d2624  R17_Lighting_Scene4_Actual
+
+### Analogiques (164)
+a  10  Room_Select#
+a  21  Lighting_Master
+a  31  HVAC_Setpoint
+a  33  HVAC_Mode
+a  51  Source_Active#
+a  52  Audio_Volume#
+a  71  Circuit_1#
+a  72  Circuit_2#
+a  73  Circuit_3#
+a  74  Circuit_4#
+a  75  Circuit_5#
+a  76  Circuit_6#
+a  77  Circuit_7#
+a  78  Circuit_8#
+a  79  Circuit_9#
+a  80  Circuit_10#
+a  81  Circuit_11#
+a  82  Circuit_12#
+a  83  Circuit_13#
+a  84  Circuit_14#
+a  85  Circuit_15#
+a  86  Circuit_16#
+a  87  Circuit_17#
+a  88  Circuit_18#
+a  89  Circuit_19#
+a  90  Circuit_20#
+a 254  Media_Volume#
+a1031  R01_HVAC_Setpoint#
+a1032  R01_HVAC_Temperature#
+a1033  R01_HVAC_FanSpeed_Actual#
+a1071  R01_Circuit_1_Actual#
+a1072  R01_Circuit_2_Actual#
+a1073  R01_Circuit_3_Actual#
+a1074  R01_Circuit_4_Actual#
+a1075  R01_Circuit_5_Actual#
+a1131  R02_HVAC_Setpoint#
+a1132  R02_HVAC_Temperature#
+a1133  R02_HVAC_FanSpeed_Actual#
+a1171  R02_Circuit_1_Actual#
+a1172  R02_Circuit_2_Actual#
+a1173  R02_Circuit_3_Actual#
+a1231  R03_HVAC_Setpoint#
+a1232  R03_HVAC_Temperature#
+a1233  R03_HVAC_FanSpeed_Actual#
+a1271  R03_Circuit_1_Actual#
+a1272  R03_Circuit_2_Actual#
+a1273  R03_Circuit_3_Actual#
+a1274  R03_Circuit_4_Actual#
+a1275  R03_Circuit_5_Actual#
+a1276  R03_Circuit_6_Actual#
+a1371  R04_Circuit_1_Actual#
+a1372  R04_Circuit_2_Actual#
+a1373  R04_Circuit_3_Actual#
+a1471  R05_Circuit_1_Actual#
+a1571  R06_Circuit_1_Actual#
+a1572  R06_Circuit_2_Actual#
+a1631  R07_HVAC_Setpoint#
+a1632  R07_HVAC_Temperature#
+a1633  R07_HVAC_FanSpeed_Actual#
+a1671  R07_Circuit_1_Actual#
+a1672  R07_Circuit_2_Actual#
+a1673  R07_Circuit_3_Actual#
+a1674  R07_Circuit_4_Actual#
+a1675  R07_Circuit_5_Actual#
+a1676  R07_Circuit_6_Actual#
+a1677  R07_Circuit_7_Actual#
+a1678  R07_Circuit_8_Actual#
+a1679  R07_Circuit_9_Actual#
+a1680  R07_Circuit_10_Actual#
+a1731  R08_HVAC_Setpoint#
+a1732  R08_HVAC_Temperature#
+a1733  R08_HVAC_FanSpeed_Actual#
+a1771  R08_Circuit_1_Actual#
+a1772  R08_Circuit_2_Actual#
+a1773  R08_Circuit_3_Actual#
+a1774  R08_Circuit_4_Actual#
+a1775  R08_Circuit_5_Actual#
+a1776  R08_Circuit_6_Actual#
+a1777  R08_Circuit_7_Actual#
+a1778  R08_Circuit_8_Actual#
+a1831  R09_HVAC_Setpoint#
+a1832  R09_HVAC_Temperature#
+a1833  R09_HVAC_FanSpeed_Actual#
+a1871  R09_Circuit_1_Actual#
+a1872  R09_Circuit_2_Actual#
+a1931  R10_HVAC_Setpoint#
+a1932  R10_HVAC_Temperature#
+a1933  R10_HVAC_FanSpeed_Actual#
+a1971  R10_Circuit_1_Actual#
+a1972  R10_Circuit_2_Actual#
+a1973  R10_Circuit_3_Actual#
+a1974  R10_Circuit_4_Actual#
+a1975  R10_Circuit_5_Actual#
+a1976  R10_Circuit_6_Actual#
+a1977  R10_Circuit_7_Actual#
+a1978  R10_Circuit_8_Actual#
+a2031  R11_HVAC_Setpoint#
+a2032  R11_HVAC_Temperature#
+a2033  R11_HVAC_FanSpeed_Actual#
+a2071  R11_Circuit_1_Actual#
+a2072  R11_Circuit_2_Actual#
+a2073  R11_Circuit_3_Actual#
+a2074  R11_Circuit_4_Actual#
+a2075  R11_Circuit_5_Actual#
+a2076  R11_Circuit_6_Actual#
+a2077  R11_Circuit_7_Actual#
+a2078  R11_Circuit_8_Actual#
+a2079  R11_Circuit_9_Actual#
+a2080  R11_Circuit_10_Actual#
+a2081  R11_Circuit_11_Actual#
+a2171  R12_Circuit_1_Actual#
+a2172  R12_Circuit_2_Actual#
+a2173  R12_Circuit_3_Actual#
+a2231  R13_HVAC_Setpoint#
+a2232  R13_HVAC_Temperature#
+a2233  R13_HVAC_FanSpeed_Actual#
+a2271  R13_Circuit_1_Actual#
+a2272  R13_Circuit_2_Actual#
+a2273  R13_Circuit_3_Actual#
+a2274  R13_Circuit_4_Actual#
+a2275  R13_Circuit_5_Actual#
+a2276  R13_Circuit_6_Actual#
+a2277  R13_Circuit_7_Actual#
+a2278  R13_Circuit_8_Actual#
+a2331  R14_HVAC_Setpoint#
+a2332  R14_HVAC_Temperature#
+a2333  R14_HVAC_FanSpeed_Actual#
+a2371  R14_Circuit_1_Actual#
+a2372  R14_Circuit_2_Actual#
+a2373  R14_Circuit_3_Actual#
+a2374  R14_Circuit_4_Actual#
+a2375  R14_Circuit_5_Actual#
+a2376  R14_Circuit_6_Actual#
+a2377  R14_Circuit_7_Actual#
+a2378  R14_Circuit_8_Actual#
+a2379  R14_Circuit_9_Actual#
+a2380  R14_Circuit_10_Actual#
+a2431  R15_HVAC_Setpoint#
+a2432  R15_HVAC_Temperature#
+a2433  R15_HVAC_FanSpeed_Actual#
+a2471  R15_Circuit_1_Actual#
+a2472  R15_Circuit_2_Actual#
+a2473  R15_Circuit_3_Actual#
+a2474  R15_Circuit_4_Actual#
+a2475  R15_Circuit_5_Actual#
+a2476  R15_Circuit_6_Actual#
+a2477  R15_Circuit_7_Actual#
+a2478  R15_Circuit_8_Actual#
+a2531  R16_HVAC_Setpoint#
+a2532  R16_HVAC_Temperature#
+a2533  R16_HVAC_FanSpeed_Actual#
+a2571  R16_Circuit_1_Actual#
+a2572  R16_Circuit_2_Actual#
+a2573  R16_Circuit_3_Actual#
+a2574  R16_Circuit_4_Actual#
+a2575  R16_Circuit_5_Actual#
+a2576  R16_Circuit_6_Actual#
+a2577  R16_Circuit_7_Actual#
+a2578  R16_Circuit_8_Actual#
+a2579  R16_Circuit_9_Actual#
+a2580  R16_Circuit_10_Actual#
+a2671  R17_Circuit_1_Actual#
+a2672  R17_Circuit_2_Actual#
+a2673  R17_Circuit_3_Actual#
+

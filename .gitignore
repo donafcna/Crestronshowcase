@@ -20,3 +20,5 @@ obj/
 
 # Captures et sorties temporaires ; preuves sélectionnées dans docs/verification/
 /Claude outputs/
+__pycache__/
+apps/showcase/test-results/

@@ -1,0 +1,933 @@
+{
+  "base": "http://localhost:4173",
+  "results": [
+    {
+      "name": "wallpanel/normal/dark : page sans scroll horizontal",
+      "ok": true,
+      "detail": "1920/1920"
+    },
+    {
+      "name": "wallpanel/normal/dark : GUI sans scroll horizontal",
+      "ok": true,
+      "detail": "1280/1280"
+    },
+    {
+      "name": "wallpanel/normal/dark : aucun média en lecture",
+      "ok": true,
+      "detail": "0"
+    },
+    {
+      "name": "wallpanel/normal/dark : libellés du menu des pièces non tronqués",
+      "ok": true,
+      "detail": "aucun"
+    },
+    {
+      "name": "wallpanel/normal/dark : fenêtre Circuits (11 circuits, 3 colonnes) sans défilement interne",
+      "ok": true,
+      "detail": "358/358"
+    },
+    {
+      "name": "wallpanel/normal/light : page sans scroll horizontal",
+      "ok": true,
+      "detail": "1920/1920"
+    },
+    {
+      "name": "wallpanel/normal/light : GUI sans scroll horizontal",
+      "ok": true,
+      "detail": "1280/1280"
+    },
+    {
+      "name": "wallpanel/normal/light : aucun média en lecture",
+      "ok": true,
+      "detail": "0"
+    },
+    {
+      "name": "wallpanel/normal/light : libellés du menu des pièces non tronqués",
+      "ok": true,
+      "detail": "aucun"
+    },
+    {
+      "name": "wallpanel/normal/light : fenêtre Circuits (11 circuits, 3 colonnes) sans défilement interne",
+      "ok": true,
+      "detail": "358/358"
+    },
+    {
+      "name": "wallpanel/normal/glass : page sans scroll horizontal",
+      "ok": true,
+      "detail": "1920/1920"
+    },
+    {
+      "name": "wallpanel/normal/glass : GUI sans scroll horizontal",
+      "ok": true,
+      "detail": "1280/1280"
+    },
+    {
+      "name": "wallpanel/normal/glass : aucun média en lecture",
+      "ok": true,
+      "detail": "0"
+    },
+    {
+      "name": "wallpanel/normal/glass : libellés du menu des pièces non tronqués",
+      "ok": true,
+      "detail": "aucun"
+    },
+    {
+      "name": "wallpanel/normal/glass : fenêtre Circuits (11 circuits, 3 colonnes) sans défilement interne",
+      "ok": true,
+      "detail": "358/358"
+    },
+    {
+      "name": "wallpanel/normal : 0 erreur console / page",
+      "ok": true,
+      "detail": "0"
+    },
+    {
+      "name": "wallpanel/scene-reel/dark : page sans scroll horizontal",
+      "ok": true,
+      "detail": "1920/1920"
+    },
+    {
+      "name": "wallpanel/scene-reel/dark : GUI sans scroll horizontal",
+      "ok": true,
+      "detail": "1280/1280"
+    },
+    {
+      "name": "wallpanel/scene-reel/dark : aucun média en lecture",
+      "ok": true,
+      "detail": "0"
+    },
+    {
+      "name": "wallpanel/scene-reel/dark : libellés du menu des pièces non tronqués",
+      "ok": true,
+      "detail": "aucun"
+    },
+    {
+      "name": "wallpanel/scene-reel/dark : fenêtre Circuits (11 circuits, 3 colonnes) sans défilement interne",
+      "ok": true,
+      "detail": "358/358"
+    },
+    {
+      "name": "wallpanel/scene-reel/light : page sans scroll horizontal",
+      "ok": true,
+      "detail": "1920/1920"
+    },
+    {
+      "name": "wallpanel/scene-reel/light : GUI sans scroll horizontal",
+      "ok": true,
+      "detail": "1280/1280"
+    },
+    {
+      "name": "wallpanel/scene-reel/light : aucun média en lecture",
+      "ok": true,
+      "detail": "0"
+    },
+    {
+      "name": "wallpanel/scene-reel/light : libellés du menu des pièces non tronqués",
+      "ok": true,
+      "detail": "aucun"
+    },
+    {
+      "name": "wallpanel/scene-reel/light : fenêtre Circuits (11 circuits, 3 colonnes) sans défilement interne",
+      "ok": true,
+      "detail": "358/358"
+    },
+    {
+      "name": "wallpanel/scene-reel/glass : page sans scroll horizontal",
+      "ok": true,
+      "detail": "1920/1920"
+    },
+    {
+      "name": "wallpanel/scene-reel/glass : GUI sans scroll horizontal",
+      "ok": true,
+      "detail": "1280/1280"
+    },
+    {
+      "name": "wallpanel/scene-reel/glass : aucun média en lecture",
+      "ok": true,
+      "detail": "0"
+    },
+    {
+      "name": "wallpanel/scene-reel/glass : libellés du menu des pièces non tronqués",
+      "ok": true,
+      "detail": "aucun"
+    },
+    {
+      "name": "wallpanel/scene-reel/glass : fenêtre Circuits (11 circuits, 3 colonnes) sans défilement interne",
+      "ok": true,
+      "detail": "358/358"
+    },
+    {
+      "name": "wallpanel/scene-reel : 0 erreur console / page",
+      "ok": true,
+      "detail": "0"
+    },
+    {
+      "name": "wallpanel/scene-responsive/dark : page sans scroll horizontal",
+      "ok": true,
+      "detail": "1920/1920"
+    },
+    {
+      "name": "wallpanel/scene-responsive/dark : GUI sans scroll horizontal",
+      "ok": true,
+      "detail": "1280/1280"
+    },
+    {
+      "name": "wallpanel/scene-responsive/dark : aucun média en lecture",
+      "ok": true,
+      "detail": "0"
+    },
+    {
+      "name": "wallpanel/scene-responsive/dark : libellés du menu des pièces non tronqués",
+      "ok": true,
+      "detail": "aucun"
+    },
+    {
+      "name": "wallpanel/scene-responsive/dark : fenêtre Circuits (11 circuits, 3 colonnes) sans défilement interne",
+      "ok": true,
+      "detail": "358/358"
+    },
+    {
+      "name": "wallpanel/scene-responsive/light : page sans scroll horizontal",
+      "ok": true,
+      "detail": "1920/1920"
+    },
+    {
+      "name": "wallpanel/scene-responsive/light : GUI sans scroll horizontal",
+      "ok": true,
+      "detail": "1280/1280"
+    },
+    {
+      "name": "wallpanel/scene-responsive/light : aucun média en lecture",
+      "ok": true,
+      "detail": "0"
+    },
+    {
+      "name": "wallpanel/scene-responsive/light : libellés du menu des pièces non tronqués",
+      "ok": true,
+      "detail": "aucun"
+    },
+    {
+      "name": "wallpanel/scene-responsive/light : fenêtre Circuits (11 circuits, 3 colonnes) sans défilement interne",
+      "ok": true,
+      "detail": "358/358"
+    },
+    {
+      "name": "wallpanel/scene-responsive/glass : page sans scroll horizontal",
+      "ok": true,
+      "detail": "1920/1920"
+    },
+    {
+      "name": "wallpanel/scene-responsive/glass : GUI sans scroll horizontal",
+      "ok": true,
+      "detail": "1280/1280"
+    },
+    {
+      "name": "wallpanel/scene-responsive/glass : aucun média en lecture",
+      "ok": true,
+      "detail": "0"
+    },
+    {
+      "name": "wallpanel/scene-responsive/glass : libellés du menu des pièces non tronqués",
+      "ok": true,
+      "detail": "aucun"
+    },
+    {
+      "name": "wallpanel/scene-responsive/glass : fenêtre Circuits (11 circuits, 3 colonnes) sans défilement interne",
+      "ok": true,
+      "detail": "358/358"
+    },
+    {
+      "name": "wallpanel/scene-responsive : 0 erreur console / page",
+      "ok": true,
+      "detail": "0"
+    },
+    {
+      "name": "wallpanel/plein-ecran/dark : page sans scroll horizontal",
+      "ok": true,
+      "detail": "1920/1920"
+    },
+    {
+      "name": "wallpanel/plein-ecran/dark : GUI sans scroll horizontal",
+      "ok": true,
+      "detail": "1920/1920"
+    },
+    {
+      "name": "wallpanel/plein-ecran/dark : aucun média en lecture",
+      "ok": true,
+      "detail": "0"
+    },
+    {
+      "name": "wallpanel/plein-ecran/dark : libellés du menu des pièces non tronqués",
+      "ok": true,
+      "detail": "aucun"
+    },
+    {
+      "name": "wallpanel/plein-ecran/dark : fenêtre Circuits (11 circuits, 3 colonnes) sans défilement interne",
+      "ok": true,
+      "detail": "358/358"
+    },
+    {
+      "name": "wallpanel/plein-ecran/light : page sans scroll horizontal",
+      "ok": true,
+      "detail": "1920/1920"
+    },
+    {
+      "name": "wallpanel/plein-ecran/light : GUI sans scroll horizontal",
+      "ok": true,
+      "detail": "1920/1920"
+    },
+    {
+      "name": "wallpanel/plein-ecran/light : aucun média en lecture",
+      "ok": true,
+      "detail": "0"
+    },
+    {
+      "name": "wallpanel/plein-ecran/light : libellés du menu des pièces non tronqués",
+      "ok": true,
+      "detail": "aucun"
+    },
+    {
+      "name": "wallpanel/plein-ecran/light : fenêtre Circuits (11 circuits, 3 colonnes) sans défilement interne",
+      "ok": true,
+      "detail": "358/358"
+    },
+    {
+      "name": "wallpanel/plein-ecran/glass : page sans scroll horizontal",
+      "ok": true,
+      "detail": "1920/1920"
+    },
+    {
+      "name": "wallpanel/plein-ecran/glass : GUI sans scroll horizontal",
+      "ok": true,
+      "detail": "1920/1920"
+    },
+    {
+      "name": "wallpanel/plein-ecran/glass : aucun média en lecture",
+      "ok": true,
+      "detail": "0"
+    },
+    {
+      "name": "wallpanel/plein-ecran/glass : libellés du menu des pièces non tronqués",
+      "ok": true,
+      "detail": "aucun"
+    },
+    {
+      "name": "wallpanel/plein-ecran/glass : fenêtre Circuits (11 circuits, 3 colonnes) sans défilement interne",
+      "ok": true,
+      "detail": "358/358"
+    },
+    {
+      "name": "wallpanel/plein-ecran : 0 erreur console / page",
+      "ok": true,
+      "detail": "0"
+    },
+    {
+      "name": "tablet/normal/dark : page sans scroll horizontal",
+      "ok": true,
+      "detail": "1920/1920"
+    },
+    {
+      "name": "tablet/normal/dark : GUI sans scroll horizontal",
+      "ok": true,
+      "detail": "1180/1180"
+    },
+    {
+      "name": "tablet/normal/dark : aucun média en lecture",
+      "ok": true,
+      "detail": "0"
+    },
+    {
+      "name": "tablet/normal/dark : libellés du menu des pièces non tronqués",
+      "ok": true,
+      "detail": "aucun"
+    },
+    {
+      "name": "tablet/normal/dark : fenêtre Circuits (11 circuits, 3 colonnes) sans défilement interne",
+      "ok": true,
+      "detail": "358/358"
+    },
+    {
+      "name": "tablet/normal/light : page sans scroll horizontal",
+      "ok": true,
+      "detail": "1920/1920"
+    },
+    {
+      "name": "tablet/normal/light : GUI sans scroll horizontal",
+      "ok": true,
+      "detail": "1180/1180"
+    },
+    {
+      "name": "tablet/normal/light : aucun média en lecture",
+      "ok": true,
+      "detail": "0"
+    },
+    {
+      "name": "tablet/normal/light : libellés du menu des pièces non tronqués",
+      "ok": true,
+      "detail": "aucun"
+    },
+    {
+      "name": "tablet/normal/light : fenêtre Circuits (11 circuits, 3 colonnes) sans défilement interne",
+      "ok": true,
+      "detail": "358/358"
+    },
+    {
+      "name": "tablet/normal/glass : page sans scroll horizontal",
+      "ok": true,
+      "detail": "1920/1920"
+    },
+    {
+      "name": "tablet/normal/glass : GUI sans scroll horizontal",
+      "ok": true,
+      "detail": "1180/1180"
+    },
+    {
+      "name": "tablet/normal/glass : aucun média en lecture",
+      "ok": true,
+      "detail": "0"
+    },
+    {
+      "name": "tablet/normal/glass : libellés du menu des pièces non tronqués",
+      "ok": true,
+      "detail": "aucun"
+    },
+    {
+      "name": "tablet/normal/glass : fenêtre Circuits (11 circuits, 3 colonnes) sans défilement interne",
+      "ok": true,
+      "detail": "358/358"
+    },
+    {
+      "name": "tablet/normal : 0 erreur console / page",
+      "ok": true,
+      "detail": "0"
+    },
+    {
+      "name": "tablet/scene-reel/dark : page sans scroll horizontal",
+      "ok": true,
+      "detail": "1920/1920"
+    },
+    {
+      "name": "tablet/scene-reel/dark : GUI sans scroll horizontal",
+      "ok": true,
+      "detail": "1180/1180"
+    },
+    {
+      "name": "tablet/scene-reel/dark : aucun média en lecture",
+      "ok": true,
+      "detail": "0"
+    },
+    {
+      "name": "tablet/scene-reel/dark : libellés du menu des pièces non tronqués",
+      "ok": true,
+      "detail": "aucun"
+    },
+    {
+      "name": "tablet/scene-reel/dark : fenêtre Circuits (11 circuits, 3 colonnes) sans défilement interne",
+      "ok": true,
+      "detail": "358/358"
+    },
+    {
+      "name": "tablet/scene-reel/light : page sans scroll horizontal",
+      "ok": true,
+      "detail": "1920/1920"
+    },
+    {
+      "name": "tablet/scene-reel/light : GUI sans scroll horizontal",
+      "ok": true,
+      "detail": "1180/1180"
+    },
+    {
+      "name": "tablet/scene-reel/light : aucun média en lecture",
+      "ok": true,
+      "detail": "0"
+    },
+    {
+      "name": "tablet/scene-reel/light : libellés du menu des pièces non tronqués",
+      "ok": true,
+      "detail": "aucun"
+    },
+    {
+      "name": "tablet/scene-reel/light : fenêtre Circuits (11 circuits, 3 colonnes) sans défilement interne",
+      "ok": true,
+      "detail": "358/358"
+    },
+    {
+      "name": "tablet/scene-reel/glass : page sans scroll horizontal",
+      "ok": true,
+      "detail": "1920/1920"
+    },
+    {
+      "name": "tablet/scene-reel/glass : GUI sans scroll horizontal",
+      "ok": true,
+      "detail": "1180/1180"
+    },
+    {
+      "name": "tablet/scene-reel/glass : aucun média en lecture",
+      "ok": true,
+      "detail": "0"
+    },
+    {
+      "name": "tablet/scene-reel/glass : libellés du menu des pièces non tronqués",
+      "ok": true,
+      "detail": "aucun"
+    },
+    {
+      "name": "tablet/scene-reel/glass : fenêtre Circuits (11 circuits, 3 colonnes) sans défilement interne",
+      "ok": true,
+      "detail": "358/358"
+    },
+    {
+      "name": "tablet/scene-reel : 0 erreur console / page",
+      "ok": true,
+      "detail": "0"
+    },
+    {
+      "name": "tablet/scene-responsive/dark : page sans scroll horizontal",
+      "ok": true,
+      "detail": "1920/1920"
+    },
+    {
+      "name": "tablet/scene-responsive/dark : GUI sans scroll horizontal",
+      "ok": true,
+      "detail": "1180/1180"
+    },
+    {
+      "name": "tablet/scene-responsive/dark : aucun média en lecture",
+      "ok": true,
+      "detail": "0"
+    },
+    {
+      "name": "tablet/scene-responsive/dark : libellés du menu des pièces non tronqués",
+      "ok": true,
+      "detail": "aucun"
+    },
+    {
+      "name": "tablet/scene-responsive/dark : fenêtre Circuits (11 circuits, 3 colonnes) sans défilement interne",
+      "ok": true,
+      "detail": "358/358"
+    },
+    {
+      "name": "tablet/scene-responsive/light : page sans scroll horizontal",
+      "ok": true,
+      "detail": "1920/1920"
+    },
+    {
+      "name": "tablet/scene-responsive/light : GUI sans scroll horizontal",
+      "ok": true,
+      "detail": "1180/1180"
+    },
+    {
+      "name": "tablet/scene-responsive/light : aucun média en lecture",
+      "ok": true,
+      "detail": "0"
+    },
+    {
+      "name": "tablet/scene-responsive/light : libellés du menu des pièces non tronqués",
+      "ok": true,
+      "detail": "aucun"
+    },
+    {
+      "name": "tablet/scene-responsive/light : fenêtre Circuits (11 circuits, 3 colonnes) sans défilement interne",
+      "ok": true,
+      "detail": "358/358"
+    },
+    {
+      "name": "tablet/scene-responsive/glass : page sans scroll horizontal",
+      "ok": true,
+      "detail": "1920/1920"
+    },
+    {
+      "name": "tablet/scene-responsive/glass : GUI sans scroll horizontal",
+      "ok": true,
+      "detail": "1180/1180"
+    },
+    {
+      "name": "tablet/scene-responsive/glass : aucun média en lecture",
+      "ok": true,
+      "detail": "0"
+    },
+    {
+      "name": "tablet/scene-responsive/glass : libellés du menu des pièces non tronqués",
+      "ok": true,
+      "detail": "aucun"
+    },
+    {
+      "name": "tablet/scene-responsive/glass : fenêtre Circuits (11 circuits, 3 colonnes) sans défilement interne",
+      "ok": true,
+      "detail": "358/358"
+    },
+    {
+      "name": "tablet/scene-responsive : 0 erreur console / page",
+      "ok": true,
+      "detail": "0"
+    },
+    {
+      "name": "tablet/plein-ecran/dark : page sans scroll horizontal",
+      "ok": true,
+      "detail": "1920/1920"
+    },
+    {
+      "name": "tablet/plein-ecran/dark : GUI sans scroll horizontal",
+      "ok": true,
+      "detail": "1920/1920"
+    },
+    {
+      "name": "tablet/plein-ecran/dark : aucun média en lecture",
+      "ok": true,
+      "detail": "0"
+    },
+    {
+      "name": "tablet/plein-ecran/dark : libellés du menu des pièces non tronqués",
+      "ok": true,
+      "detail": "aucun"
+    },
+    {
+      "name": "tablet/plein-ecran/dark : fenêtre Circuits (11 circuits, 3 colonnes) sans défilement interne",
+      "ok": true,
+      "detail": "358/358"
+    },
+    {
+      "name": "tablet/plein-ecran/light : page sans scroll horizontal",
+      "ok": true,
+      "detail": "1920/1920"
+    },
+    {
+      "name": "tablet/plein-ecran/light : GUI sans scroll horizontal",
+      "ok": true,
+      "detail": "1920/1920"
+    },
+    {
+      "name": "tablet/plein-ecran/light : aucun média en lecture",
+      "ok": true,
+      "detail": "0"
+    },
+    {
+      "name": "tablet/plein-ecran/light : libellés du menu des pièces non tronqués",
+      "ok": true,
+      "detail": "aucun"
+    },
+    {
+      "name": "tablet/plein-ecran/light : fenêtre Circuits (11 circuits, 3 colonnes) sans défilement interne",
+      "ok": true,
+      "detail": "358/358"
+    },
+    {
+      "name": "tablet/plein-ecran/glass : page sans scroll horizontal",
+      "ok": true,
+      "detail": "1920/1920"
+    },
+    {
+      "name": "tablet/plein-ecran/glass : GUI sans scroll horizontal",
+      "ok": true,
+      "detail": "1920/1920"
+    },
+    {
+      "name": "tablet/plein-ecran/glass : aucun média en lecture",
+      "ok": true,
+      "detail": "0"
+    },
+    {
+      "name": "tablet/plein-ecran/glass : libellés du menu des pièces non tronqués",
+      "ok": true,
+      "detail": "aucun"
+    },
+    {
+      "name": "tablet/plein-ecran/glass : fenêtre Circuits (11 circuits, 3 colonnes) sans défilement interne",
+      "ok": true,
+      "detail": "358/358"
+    },
+    {
+      "name": "tablet/plein-ecran : 0 erreur console / page",
+      "ok": true,
+      "detail": "0"
+    },
+    {
+      "name": "phone/normal/dark : page sans scroll horizontal",
+      "ok": true,
+      "detail": "1920/1920"
+    },
+    {
+      "name": "phone/normal/dark : GUI sans scroll horizontal",
+      "ok": true,
+      "detail": "440/440"
+    },
+    {
+      "name": "phone/normal/dark : aucun média en lecture",
+      "ok": true,
+      "detail": "0"
+    },
+    {
+      "name": "phone/normal/light : page sans scroll horizontal",
+      "ok": true,
+      "detail": "1920/1920"
+    },
+    {
+      "name": "phone/normal/light : GUI sans scroll horizontal",
+      "ok": true,
+      "detail": "440/440"
+    },
+    {
+      "name": "phone/normal/light : aucun média en lecture",
+      "ok": true,
+      "detail": "0"
+    },
+    {
+      "name": "phone/normal/glass : page sans scroll horizontal",
+      "ok": true,
+      "detail": "1920/1920"
+    },
+    {
+      "name": "phone/normal/glass : GUI sans scroll horizontal",
+      "ok": true,
+      "detail": "440/440"
+    },
+    {
+      "name": "phone/normal/glass : aucun média en lecture",
+      "ok": true,
+      "detail": "0"
+    },
+    {
+      "name": "phone/normal : 0 erreur console / page",
+      "ok": true,
+      "detail": "0"
+    },
+    {
+      "name": "phone/scene-reel/dark : page sans scroll horizontal",
+      "ok": true,
+      "detail": "1920/1920"
+    },
+    {
+      "name": "phone/scene-reel/dark : GUI sans scroll horizontal",
+      "ok": true,
+      "detail": "440/440"
+    },
+    {
+      "name": "phone/scene-reel/dark : aucun média en lecture",
+      "ok": true,
+      "detail": "0"
+    },
+    {
+      "name": "phone/scene-reel/light : page sans scroll horizontal",
+      "ok": true,
+      "detail": "1920/1920"
+    },
+    {
+      "name": "phone/scene-reel/light : GUI sans scroll horizontal",
+      "ok": true,
+      "detail": "440/440"
+    },
+    {
+      "name": "phone/scene-reel/light : aucun média en lecture",
+      "ok": true,
+      "detail": "0"
+    },
+    {
+      "name": "phone/scene-reel/glass : page sans scroll horizontal",
+      "ok": true,
+      "detail": "1920/1920"
+    },
+    {
+      "name": "phone/scene-reel/glass : GUI sans scroll horizontal",
+      "ok": true,
+      "detail": "440/440"
+    },
+    {
+      "name": "phone/scene-reel/glass : aucun média en lecture",
+      "ok": true,
+      "detail": "0"
+    },
+    {
+      "name": "phone/scene-reel : 0 erreur console / page",
+      "ok": true,
+      "detail": "0"
+    },
+    {
+      "name": "phone/scene-responsive/dark : page sans scroll horizontal",
+      "ok": true,
+      "detail": "1920/1920"
+    },
+    {
+      "name": "phone/scene-responsive/dark : GUI sans scroll horizontal",
+      "ok": true,
+      "detail": "440/440"
+    },
+    {
+      "name": "phone/scene-responsive/dark : aucun média en lecture",
+      "ok": true,
+      "detail": "0"
+    },
+    {
+      "name": "phone/scene-responsive/light : page sans scroll horizontal",
+      "ok": true,
+      "detail": "1920/1920"
+    },
+    {
+      "name": "phone/scene-responsive/light : GUI sans scroll horizontal",
+      "ok": true,
+      "detail": "440/440"
+    },
+    {
+      "name": "phone/scene-responsive/light : aucun média en lecture",
+      "ok": true,
+      "detail": "0"
+    },
+    {
+      "name": "phone/scene-responsive/glass : page sans scroll horizontal",
+      "ok": true,
+      "detail": "1920/1920"
+    },
+    {
+      "name": "phone/scene-responsive/glass : GUI sans scroll horizontal",
+      "ok": true,
+      "detail": "440/440"
+    },
+    {
+      "name": "phone/scene-responsive/glass : aucun média en lecture",
+      "ok": true,
+      "detail": "0"
+    },
+    {
+      "name": "phone/scene-responsive : 0 erreur console / page",
+      "ok": true,
+      "detail": "0"
+    },
+    {
+      "name": "phone/plein-ecran : non applicable (jamais de Plein écran sur smartphone)",
+      "ok": true,
+      "detail": "ignoré"
+    }
+  ],
+  "errors": [],
+  "external": [
+    "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css",
+    "https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap",
+    "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,500;1,700&display=swap",
+    "https://fonts.googleapis.com/css2?family=Parisienne&display=swap",
+    "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=600&q=80",
+    "https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&w=600&q=80",
+    "https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=600&q=80",
+    "https://assets.mixkit.co/videos/24728/24728-720.mp4",
+    "https://images.unsplash.com/photo-1549488344-1f9b8d2bd1f3?auto=format&fit=crop&w=600&q=80",
+    "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=600&q=80",
+    "https://images.unsplash.com/photo-1558002038-1055907df827?auto=format&fit=crop&w=600&q=80",
+    "https://images.unsplash.com/photo-1598899134739-24c46f58b8c0?auto=format&fit=crop&w=600&q=80",
+    "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=600&q=80",
+    "https://api.open-meteo.com/v1/forecast?latitude=46.3117&longitude=7.4806&daily=weathercode,temperature_2m_max,temperature_2m_min&timezone=Europe/Zurich",
+    "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css",
+    "https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap",
+    "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,500;1,700&display=swap",
+    "https://fonts.googleapis.com/css2?family=Parisienne&display=swap",
+    "https://assets.mixkit.co/videos/24728/24728-720.mp4",
+    "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=600&q=80",
+    "https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&w=600&q=80",
+    "https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=600&q=80",
+    "https://images.unsplash.com/photo-1549488344-1f9b8d2bd1f3?auto=format&fit=crop&w=600&q=80",
+    "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=600&q=80",
+    "https://images.unsplash.com/photo-1558002038-1055907df827?auto=format&fit=crop&w=600&q=80",
+    "https://images.unsplash.com/photo-1598899134739-24c46f58b8c0?auto=format&fit=crop&w=600&q=80",
+    "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=600&q=80",
+    "https://api.open-meteo.com/v1/forecast?latitude=46.3117&longitude=7.4806&daily=weathercode,temperature_2m_max,temperature_2m_min&timezone=Europe/Zurich",
+    "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css",
+    "https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap",
+    "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,500;1,700&display=swap",
+    "https://fonts.googleapis.com/css2?family=Parisienne&display=swap",
+    "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=600&q=80",
+    "https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&w=600&q=80",
+    "https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=600&q=80",
+    "https://assets.mixkit.co/videos/24728/24728-720.mp4",
+    "https://images.unsplash.com/photo-1549488344-1f9b8d2bd1f3?auto=format&fit=crop&w=600&q=80",
+    "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=600&q=80",
+    "https://images.unsplash.com/photo-1558002038-1055907df827?auto=format&fit=crop&w=600&q=80",
+    "https://images.unsplash.com/photo-1598899134739-24c46f58b8c0?auto=format&fit=crop&w=600&q=80",
+    "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=600&q=80",
+    "https://api.open-meteo.com/v1/forecast?latitude=46.3117&longitude=7.4806&daily=weathercode,temperature_2m_max,temperature_2m_min&timezone=Europe/Zurich",
+    "https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap",
+    "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css",
+    "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,500;1,700&display=swap",
+    "https://fonts.googleapis.com/css2?family=Parisienne&display=swap",
+    "https://api.open-meteo.com/v1/forecast?latitude=46.3117&longitude=7.4806&daily=weathercode,temperature_2m_max,temperature_2m_min&timezone=Europe/Zurich",
+    "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css",
+    "https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap",
+    "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,500;1,700&display=swap",
+    "https://fonts.googleapis.com/css2?family=Parisienne&display=swap",
+    "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=600&q=80",
+    "https://assets.mixkit.co/videos/24728/24728-720.mp4",
+    "https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&w=600&q=80",
+    "https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=600&q=80",
+    "https://images.unsplash.com/photo-1549488344-1f9b8d2bd1f3?auto=format&fit=crop&w=600&q=80",
+    "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=600&q=80",
+    "https://images.unsplash.com/photo-1558002038-1055907df827?auto=format&fit=crop&w=600&q=80",
+    "https://images.unsplash.com/photo-1598899134739-24c46f58b8c0?auto=format&fit=crop&w=600&q=80",
+    "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=600&q=80",
+    "https://api.open-meteo.com/v1/forecast?latitude=46.3117&longitude=7.4806&daily=weathercode,temperature_2m_max,temperature_2m_min&timezone=Europe/Zurich",
+    "https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap",
+    "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,500;1,700&display=swap",
+    "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css",
+    "https://fonts.googleapis.com/css2?family=Parisienne&display=swap",
+    "https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&w=600&q=80",
+    "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=600&q=80",
+    "https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=600&q=80",
+    "https://images.unsplash.com/photo-1549488344-1f9b8d2bd1f3?auto=format&fit=crop&w=600&q=80",
+    "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=600&q=80",
+    "https://images.unsplash.com/photo-1558002038-1055907df827?auto=format&fit=crop&w=600&q=80",
+    "https://assets.mixkit.co/videos/24728/24728-720.mp4",
+    "https://images.unsplash.com/photo-1598899134739-24c46f58b8c0?auto=format&fit=crop&w=600&q=80",
+    "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=600&q=80",
+    "https://api.open-meteo.com/v1/forecast?latitude=46.3117&longitude=7.4806&daily=weathercode,temperature_2m_max,temperature_2m_min&timezone=Europe/Zurich",
+    "https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap",
+    "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css",
+    "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,500;1,700&display=swap",
+    "https://fonts.googleapis.com/css2?family=Parisienne&display=swap",
+    "https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&w=600&q=80",
+    "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=600&q=80",
+    "https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=600&q=80",
+    "https://images.unsplash.com/photo-1549488344-1f9b8d2bd1f3?auto=format&fit=crop&w=600&q=80",
+    "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=600&q=80",
+    "https://images.unsplash.com/photo-1558002038-1055907df827?auto=format&fit=crop&w=600&q=80",
+    "https://assets.mixkit.co/videos/24728/24728-720.mp4",
+    "https://images.unsplash.com/photo-1598899134739-24c46f58b8c0?auto=format&fit=crop&w=600&q=80",
+    "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=600&q=80",
+    "https://api.open-meteo.com/v1/forecast?latitude=46.3117&longitude=7.4806&daily=weathercode,temperature_2m_max,temperature_2m_min&timezone=Europe/Zurich",
+    "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css",
+    "https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap",
+    "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,500;1,700&display=swap",
+    "https://fonts.googleapis.com/css2?family=Parisienne&display=swap",
+    "https://api.open-meteo.com/v1/forecast?latitude=46.3117&longitude=7.4806&daily=weathercode,temperature_2m_max,temperature_2m_min&timezone=Europe/Zurich",
+    "https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap",
+    "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css",
+    "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,500;1,700&display=swap",
+    "https://fonts.googleapis.com/css2?family=Parisienne&display=swap",
+    "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=600&q=80",
+    "https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&w=600&q=80",
+    "https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=600&q=80",
+    "https://images.unsplash.com/photo-1549488344-1f9b8d2bd1f3?auto=format&fit=crop&w=600&q=80",
+    "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=600&q=80",
+    "https://images.unsplash.com/photo-1558002038-1055907df827?auto=format&fit=crop&w=600&q=80",
+    "https://images.unsplash.com/photo-1598899134739-24c46f58b8c0?auto=format&fit=crop&w=600&q=80",
+    "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=600&q=80",
+    "https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap",
+    "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,500;1,700&display=swap",
+    "https://fonts.googleapis.com/css2?family=Parisienne&display=swap",
+    "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css",
+    "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=600&q=80",
+    "https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&w=600&q=80",
+    "https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=600&q=80",
+    "https://images.unsplash.com/photo-1549488344-1f9b8d2bd1f3?auto=format&fit=crop&w=600&q=80",
+    "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=600&q=80",
+    "https://images.unsplash.com/photo-1558002038-1055907df827?auto=format&fit=crop&w=600&q=80",
+    "https://images.unsplash.com/photo-1598899134739-24c46f58b8c0?auto=format&fit=crop&w=600&q=80",
+    "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=600&q=80",
+    "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css",
+    "https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap",
+    "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,500;1,700&display=swap",
+    "https://fonts.googleapis.com/css2?family=Parisienne&display=swap",
+    "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=600&q=80",
+    "https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&w=600&q=80",
+    "https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=600&q=80",
+    "https://images.unsplash.com/photo-1549488344-1f9b8d2bd1f3?auto=format&fit=crop&w=600&q=80",
+    "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=600&q=80",
+    "https://images.unsplash.com/photo-1558002038-1055907df827?auto=format&fit=crop&w=600&q=80",
+    "https://images.unsplash.com/photo-1598899134739-24c46f58b8c0?auto=format&fit=crop&w=600&q=80",
+    "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=600&q=80"
+  ]
+}

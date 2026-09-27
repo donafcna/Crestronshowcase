@@ -19,7 +19,8 @@ export function enrichRoom(R, M) {
       box(features,mat,w/2,h+.06,.27,w-.52,.025,.045);
     }else if(circuit===3){
       // Sconces sit clear of both the window aperture and the television.
-      const positions=type==='repas'?[.5,d-.5]:[.45,d-.48];
+      // Salle de bains : appliques dégagées de la douche (fond) et du sèche-serviettes (avant).
+      const positions=type==='repas'?[.5,d-.5]:type==='sdb'?[d*.35,d*.65]:[.45,d-.48];
       for(const z of positions){
         box(features,M.alu,.24,1.92,z,.18,.4,.19);
         fixture=box(features,mat,.25,2.13,z,.16,.022,.16);
@@ -52,7 +53,9 @@ export function enrichRoom(R, M) {
     body.userData.animated=true;ring.userData.animated=true;
     R.speakers.push({body,ring,group:s,phase:R.speakers.length*.7,kind,model});
   }
-  if(type==='cinema'){
+  if(R.cfg.av===false){
+    // Pièce sans audio-vidéo dans la configuration : aucune enceinte.
+  }else if(type==='cinema'){
     speaker('center',w/2,.115,.42);
     for(const side of [-1,1]){
       speaker('front',side<0?1.4:w-1.4,.45,.45,0,'tower');
@@ -78,6 +81,10 @@ export function enrichRoom(R, M) {
     speaker('corner',type==='suite'?1.3:.45,.45,.5,0,'tower');speaker('corner',w-.45,.45,.5,0,'tower');
   }else if(type==='bureau'){
     speaker('corner',.45,.45,.5,0,'tower');
+  }else if(type==='cuisine'&&R.cfg.tv===false){
+    // Cuisine « enceintes seulement » : deux encastrés au plafond, hors de la hotte.
+    speaker('ceiling',w*.3,2.94,d*.6,0);speaker('ceiling',w*.75,2.94,d*.6,0);
+    R.speakers.slice(-2).forEach(s=>{s.group.rotation.x=Math.PI/2;});
   }else if(type==='sauna'){
     // Moisture-resistant wall speaker in the shared vestibule, outside both cabins.
     speaker('wellness',.29,2.25,d-1.05,Math.PI/2);
@@ -96,7 +103,14 @@ export function enrichRoom(R, M) {
     for(const side of [-1,1])box(q,M.mur,cx+side*span/2,1.05,-1.1,.15,2.3,2.1);
     for(let i=0;i<4;i++)cyl(q,M.plante,cx-span*.3+i*span*.2,.2,-1.7,.14,.4);
   }
-  if(niveau===0&&!R.ext){
+  if(R.ext&&R.cfg.balcon){
+    // Terrasse d'angle du duplex : garde-corps vitrés sur les deux côtés ouverts, au-dessus du vide.
+    box(g,M.verreExt,w-.06,.5,d/2,.12,1.0,d);box(g,M.verreExt,w/2,.5,d-.06,w,1.0,.12);
+    box(g,M.alu,w-.06,1.02,d/2,.08,.04,d);box(g,M.alu,w/2,1.02,d-.06,w,.04,.08);
+    for(let z=.2;z<d;z+=1.6)box(g,M.alu,w-.06,.1,z,.09,.2,.05);
+    for(let x=.2;x<w;x+=1.6)box(g,M.alu,x,.1,d-.06,.05,.2,.09);
+  }
+  if(niveau===0&&!R.ext&&R.cfg.banne!==false){
     // South-facing retractable awning, retained in the room cutaway.
     const aw=new T.Group();aw.name='Store banne extérieur';R.win.group.add(aw);
     aw.rotation.y=Math.PI;aw.position.x=R.win.x*2;

@@ -1,0 +1,63 @@
+/* Bouton OFF audio / video (join 200, section Sources) : jetons partages, tous les chassis.
+   Decision Donatien 28.09.2026 : ROUGE sur toutes les interfaces. Etat repos = anneau rouge (invitation a
+   eteindre) ; etat selectionne (= tout eteint) = rouge plein, icone blanche — comme l'iPhone depuis toujours.
+   Remplace l'aspect « veille » gris de la dalle du 10.09.2026. Consomme par :
+   - dalle / iPad / XPanel : <ch5-button customClass="power-off-btn" receiveStateSelected="200"> (index.html) ;
+   - iPhone : <button id="power-off-btn-mobile"> + .selected (iphone.html).
+   Contrastes icone/fond : #fff sur #dc2626 = 4,8:1, #fff sur #b91c1c = 6,5:1. Couleurs en !important :
+   les deux HTML portent des regles internes en !important sur ces boutons. */
+body#app-body {
+    --av-off-idle-bg: rgba(220, 38, 38, 0.18);
+    --av-off-idle-border: #ef4444;
+    --av-off-active-bg: #dc2626;
+    --av-off-active-border: #fecaca;
+    --av-off-active-icon: %23ffffff;
+    --av-off-glow: 0 0 16px rgba(220, 38, 38, 0.55);
+}
+body#app-body.theme-light {
+    --av-off-idle-bg: rgba(185, 28, 28, 0.10);
+    --av-off-idle-border: #b91c1c;
+    --av-off-active-bg: #b91c1c;
+    --av-off-active-border: #7f1d1d;
+    --av-off-glow: 0 0 12px rgba(185, 28, 28, 0.35);
+}
+/* Dalle, iPad, XPanel — etat selectionne */
+body#app-body ch5-button[customClass~="power-off-btn"][selected="true"],
+body#app-body ch5-button[customClass~="power-off-btn"].ch5-button--selected,
+body#app-body ch5-button[customClass~="power-off-btn"][selected="true"] .ch5-button,
+body#app-body ch5-button[customClass~="power-off-btn"].ch5-button--selected .ch5-button,
+body#app-body ch5-button[customClass~="power-off-btn"][selected="true"] button,
+body#app-body ch5-button[customClass~="power-off-btn"].ch5-button--selected button,
+body#app-body ch5-button[customClass~="power-off-btn"][selected="true"] .cb-btn,
+body#app-body ch5-button[customClass~="power-off-btn"].ch5-button--selected .cb-btn {
+    background-color: var(--av-off-active-bg) !important;
+    background: var(--av-off-active-bg) url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23ffffff"><path d="M13 3h-2v10h2V3zm4.83 2.17l-1.42 1.42C17.99 7.86 19 9.81 19 12c0 3.87-3.13 7-7 7s-7-3.13-7-7c0-2.19 1.01-4.14 2.58-5.42L6.17 5.17C4.23 6.82 3 9.26 3 12c0 4.97 4.03 9 9 9s9-4.03 9-9c0-2.74-1.23-5.18-3.17-6.83z"/></svg>') no-repeat center / 28px 28px !important;
+    border: 2px solid var(--av-off-active-border) !important;
+    box-shadow: var(--av-off-glow) !important;
+    opacity: 1 !important;
+    transform: none !important;
+}
+/* Dalle en theme Clair : index.html repeint l'icone en noir sur tout power-off-btn (regle plus tardive) ; on repasse devant. */
+body#app-body.theme-light ch5-button[customClass~="power-off-btn"][selected="true"],
+body#app-body.theme-light ch5-button[customClass~="power-off-btn"].ch5-button--selected,
+body#app-body.theme-light ch5-button[customClass~="power-off-btn"][selected="true"] .ch5-button,
+body#app-body.theme-light ch5-button[customClass~="power-off-btn"].ch5-button--selected .ch5-button,
+body#app-body.theme-light ch5-button[customClass~="power-off-btn"][selected="true"] button,
+body#app-body.theme-light ch5-button[customClass~="power-off-btn"].ch5-button--selected button,
+body#app-body.theme-light ch5-button[customClass~="power-off-btn"][selected="true"] .cb-btn,
+body#app-body.theme-light ch5-button[customClass~="power-off-btn"].ch5-button--selected .cb-btn {
+    background-color: var(--av-off-active-bg) !important;
+    background: var(--av-off-active-bg) url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23ffffff"><path d="M13 3h-2v10h2V3zm4.83 2.17l-1.42 1.42C17.99 7.86 19 9.81 19 12c0 3.87-3.13 7-7 7s-7-3.13-7-7c0-2.19 1.01-4.14 2.58-5.42L6.17 5.17C4.23 6.82 3 9.26 3 12c0 4.97 4.03 9 9 9s9-4.03 9-9c0-2.74-1.23-5.18-3.17-6.83z"/></svg>') no-repeat center / 28px 28px !important;
+    border: 2px solid var(--av-off-active-border) !important;
+    box-shadow: var(--av-off-glow) !important;
+    opacity: 1 !important;
+    transform: none !important;
+}
+/* iPhone — etat selectionne (le theme Clair repeint l'icone en noir sur .power-off-btn-mobile : on la remet en blanc) */
+body#app-body #power-off-btn-mobile.power-off-btn-mobile.selected,
+body#app-body.theme-light #power-off-btn-mobile.power-off-btn-mobile.selected {
+    background-color: var(--av-off-active-bg) !important;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="%23ffffff"><path d="M288 32c0-17.7-14.3-32-32-32s-32 14.3-32 32V256c0 17.7 14.3 32 32 32s32-14.3 32-32V32zM143.5 120.6c13.6-11.3 15.4-31.5 4.1-45.1s-31.5-15.4-45.1-4.1C43.9 120.3 0 183 0 256c0 141.4 114.6 256 256 256s256-114.6 256-256c0-73-43.9-135.7-102.5-179.6c-13.6-10.3-33.8-8.5-45.1 4.1s-8.5 33.8 4.1 45.1C412.1 165.6 448 206.6 448 256c0 106-86 192-192 192S64 362 64 256c0-49.4 35.9-90.4 84.5-125.6h-5z"/></svg>') !important;
+    border: 2px solid var(--av-off-active-border) !important;
+    box-shadow: var(--av-off-glow) !important;
+}

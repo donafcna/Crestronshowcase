@@ -1,0 +1,321 @@
+{
+  "version": "2026-09-27-residence-1",
+  "checks": [
+    "Moteur chargé, version 2026-09-27-residence-1",
+    "Vue d'ensemble : triangles > 0 (162236, 101 appels)",
+    "Enveloppe résidence fermée au départ",
+    "Éclairage de façade présent (33 appliques)",
+    "Façade allumée de nuit",
+    "17 pièces construites",
+    "Pièce 1 zoomée, enveloppe effacée",
+    "Retour vue fermée",
+    "Pièce 1 Salon (salon) : zoom actif, TV=true, enceintes=5, moteurs=volet/store/rideau",
+    "Pièce 2 Salle à manger (repas) : zoom actif, TV=false, enceintes=2, moteurs=volet/store/rideau",
+    "Pièce 3 Cuisine (cuisine) : zoom actif, TV=false, enceintes=2, moteurs=volet/store/rideau",
+    "Pièce 4 Entrée & couloir (entree) : zoom actif, TV=false, enceintes=0, moteurs=aucun",
+    "Pièce 5 WC (wc) : zoom actif, TV=false, enceintes=0, moteurs=aucun",
+    "Pièce 6 Buanderie (buanderie) : zoom actif, TV=false, enceintes=0, moteurs=aucun",
+    "Pièce 7 Chambre principale (suite) : zoom actif, TV=true, enceintes=2, moteurs=volet/store/rideau",
+    "Pièce 8 Salle de bains principale (sdb) : zoom actif, TV=false, enceintes=0, moteurs=volet/store/rideau",
+    "Pièce 9 Bureau (bureau) : zoom actif, TV=false, enceintes=0, moteurs=volet/store/rideau",
+    "Pièce 10 Salle TV (chambre) : zoom actif, TV=true, enceintes=2, moteurs=volet/store/rideau",
+    "Pièce 11 Salle de bains TV (sdb) : zoom actif, TV=false, enceintes=0, moteurs=aucun",
+    "Pièce 12 Hall & escalier (escalier) : zoom actif, TV=false, enceintes=0, moteurs=aucun",
+    "Pièce 13 Chambre Twin (chambre) : zoom actif, TV=true, enceintes=2, moteurs=volet/store/rideau",
+    "Pièce 14 Salle de bains Twin (sdb) : zoom actif, TV=false, enceintes=0, moteurs=volet/store/rideau",
+    "Pièce 15 Chambre VIP (suite) : zoom actif, TV=true, enceintes=2, moteurs=volet/store/rideau",
+    "Pièce 16 Salle de bains VIP (sdb) : zoom actif, TV=false, enceintes=0, moteurs=aucun",
+    "Pièce 17 Balcons & terrasses (terrasse) : zoom actif, TV=false, enceintes=0, moteurs=store",
+    "Salle à manger et cuisine sans TV mais avec enceintes",
+    "Cinq pièces avec TV (sept AV dont deux en enceintes seules)",
+    "Pièces intérieures sans lumière du jour",
+    "Rideaux + voilage fermés : lumière du jour réduite",
+    "Aucune erreur console ni exception (0)"
+  ],
+  "screenshots": [
+    "overview-day.png",
+    "overview-night.png",
+    "overview-exploded.png",
+    "room-1-salon.png",
+    "room-3-cuisine.png",
+    "room-4-entree.png",
+    "room-5-wc.png",
+    "room-6-buanderie.png",
+    "room-8-sdb-principale.png",
+    "room-12-hall-escalier.png",
+    "room-17-terrasse.png"
+  ],
+  "metrics": {
+    "overview": {
+      "frames": 16,
+      "renderedFrames": 28,
+      "medianMs": 30.33333333333303,
+      "p95Ms": 133.30000000000018,
+      "pixelRatio": 1,
+      "drawCalls": 101,
+      "triangles": 162236,
+      "zone": {
+        "x": 0,
+        "y": 0,
+        "w": 1280,
+        "h": 800
+      }
+    },
+    "room1": {
+      "active": 1,
+      "phase": "room",
+      "tv": true,
+      "speakers": 5,
+      "hvac": true,
+      "shades": [
+        "volet",
+        "store",
+        "rideau"
+      ],
+      "daylight": 1,
+      "type": "salon",
+      "nom": "Salon"
+    },
+    "room2": {
+      "active": 2,
+      "phase": "room",
+      "tv": false,
+      "speakers": 2,
+      "hvac": true,
+      "shades": [
+        "volet",
+        "store",
+        "rideau"
+      ],
+      "daylight": 1,
+      "type": "repas",
+      "nom": "Salle à manger"
+    },
+    "room3": {
+      "active": 3,
+      "phase": "room",
+      "tv": false,
+      "speakers": 2,
+      "hvac": true,
+      "shades": [
+        "volet",
+        "store",
+        "rideau"
+      ],
+      "daylight": 1,
+      "type": "cuisine",
+      "nom": "Cuisine"
+    },
+    "room4": {
+      "active": 4,
+      "phase": "room",
+      "tv": false,
+      "speakers": 0,
+      "hvac": false,
+      "shades": [],
+      "daylight": 0,
+      "type": "entree",
+      "nom": "Entrée & couloir"
+    },
+    "room5": {
+      "active": 5,
+      "phase": "room",
+      "tv": false,
+      "speakers": 0,
+      "hvac": false,
+      "shades": [],
+      "daylight": 0,
+      "type": "wc",
+      "nom": "WC"
+    },
+    "room6": {
+      "active": 6,
+      "phase": "room",
+      "tv": false,
+      "speakers": 0,
+      "hvac": false,
+      "shades": [],
+      "daylight": 0,
+      "type": "buanderie",
+      "nom": "Buanderie"
+    },
+    "room7": {
+      "active": 7,
+      "phase": "room",
+      "tv": true,
+      "speakers": 2,
+      "hvac": true,
+      "shades": [
+        "volet",
+        "store",
+        "rideau"
+      ],
+      "daylight": 1,
+      "type": "suite",
+      "nom": "Chambre principale"
+    },
+    "room8": {
+      "active": 8,
+      "phase": "room",
+      "tv": false,
+      "speakers": 0,
+      "hvac": true,
+      "shades": [
+        "volet",
+        "store",
+        "rideau"
+      ],
+      "daylight": 1,
+      "type": "sdb",
+      "nom": "Salle de bains principale"
+    },
+    "room9": {
+      "active": 9,
+      "phase": "room",
+      "tv": false,
+      "speakers": 0,
+      "hvac": true,
+      "shades": [
+        "volet",
+        "store",
+        "rideau"
+      ],
+      "daylight": 1,
+      "type": "bureau",
+      "nom": "Bureau"
+    },
+    "room10": {
+      "active": 10,
+      "phase": "room",
+      "tv": true,
+      "speakers": 2,
+      "hvac": true,
+      "shades": [
+        "volet",
+        "store",
+        "rideau"
+      ],
+      "daylight": 1,
+      "type": "chambre",
+      "nom": "Salle TV"
+    },
+    "room11": {
+      "active": 11,
+      "phase": "room",
+      "tv": false,
+      "speakers": 0,
+      "hvac": true,
+      "shades": [],
+      "daylight": 0,
+      "type": "sdb",
+      "nom": "Salle de bains TV"
+    },
+    "room12": {
+      "active": 12,
+      "phase": "room",
+      "tv": false,
+      "speakers": 0,
+      "hvac": false,
+      "shades": [],
+      "daylight": 0,
+      "type": "escalier",
+      "nom": "Hall & escalier"
+    },
+    "room13": {
+      "active": 13,
+      "phase": "room",
+      "tv": true,
+      "speakers": 2,
+      "hvac": true,
+      "shades": [
+        "volet",
+        "store",
+        "rideau"
+      ],
+      "daylight": 1,
+      "type": "chambre",
+      "nom": "Chambre Twin"
+    },
+    "room14": {
+      "active": 14,
+      "phase": "room",
+      "tv": false,
+      "speakers": 0,
+      "hvac": true,
+      "shades": [
+        "volet",
+        "store",
+        "rideau"
+      ],
+      "daylight": 1,
+      "type": "sdb",
+      "nom": "Salle de bains Twin"
+    },
+    "room15": {
+      "active": 15,
+      "phase": "room",
+      "tv": true,
+      "speakers": 2,
+      "hvac": true,
+      "shades": [
+        "volet",
+        "store",
+        "rideau"
+      ],
+      "daylight": 1,
+      "type": "suite",
+      "nom": "Chambre VIP"
+    },
+    "room16": {
+      "active": 16,
+      "phase": "room",
+      "tv": false,
+      "speakers": 0,
+      "hvac": true,
+      "shades": [],
+      "daylight": 0,
+      "type": "sdb",
+      "nom": "Salle de bains VIP"
+    },
+    "room17": {
+      "active": 17,
+      "phase": "room",
+      "tv": false,
+      "speakers": 0,
+      "hvac": false,
+      "shades": [
+        "store"
+      ],
+      "daylight": 1,
+      "type": "terrasse",
+      "nom": "Balcons & terrasses"
+    },
+    "room": {
+      "frames": 75,
+      "renderedFrames": 407,
+      "medianMs": 37.63333333330229,
+      "p95Ms": 207.23333333332266,
+      "pixelRatio": 1,
+      "drawCalls": 111,
+      "triangles": 170192,
+      "zone": {
+        "x": 0,
+        "y": 0,
+        "w": 1280,
+        "h": 800
+      },
+      "tv3D": {
+        "mode": "3d",
+        "version": "stadiums-1",
+        "width": 640,
+        "height": 360,
+        "programmes": 1,
+        "draws": 76,
+        "currentKind": "film",
+        "venues": {}
+      }
+    }
+  },
+  "status": "passed",
+  "errors": []
+}
