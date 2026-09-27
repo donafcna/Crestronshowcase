@@ -26,10 +26,19 @@ try{
     window.__guidedTrace=[];
     const stamp=()=>performance.timeOrigin+performance.now();
     const record=e=>window.__guidedTrace.push({...e,at:stamp()});
-    window.addEventListener('ftv:control',e=>{if(e.detail?.name==='selectRoom'&&e.detail.value!=='all')record({type:'zone',id:e.detail.value});});
+    // Observe the native call at the press, before handlers recreate controls.
+    // Forward unchanged; do not synthesize extra clicks or invoke a preset here.
+    const nativeClick=HTMLElement.prototype.click;
+    HTMLElement.prototype.click=function(...args){
+      const b=this.closest?.('[data-preset],[data-scene]');
+      if(b)record({type:'scene',id:b.dataset.preset||b.dataset.scene});
+      return nativeClick.apply(this,args);
+    };
+    window.addEventListener('ftv:control',e=>{
+      if(e.detail?.name==='selectRoom'&&e.detail.value!=='all')record({type:'zone',id:e.detail.value});
+      if(e.detail?.name==='scene')record({type:'feedback',id:e.detail.value});
+    });
     document.addEventListener('click',e=>{
-      const b=e.target.closest?.('[data-preset],[data-scene]');
-      if(b&&!e.isTrusted)record({type:'scene',id:b.dataset.preset||b.dataset.scene});
       const link=e.target.closest?.('.sidebar-nav .sector-btn');
       if(link)record({type:'entry',id:link.getAttribute('href')});
     },true);
@@ -64,6 +73,10 @@ try{
    assert.ok(result.cursorAfterEntry>=2950,'cursor must not start before the 3-second wait');
    assert.ok(result.cursorAfterEntry<30000,'no previous 60-second idle gate on yacht');
    result.checks.push('menu entry, first zone, one-second first scene, five-second continuation');
+   if(!isRestaurant){
+    const feedback=await gui.evaluate(()=>window.__guidedTrace.filter(e=>e.type==='feedback'));
+    for(const press of [first,second])assert.ok(feedback.some(f=>f.id===press.id&&f.at>=press.at&&f.at-press.at<500),'scene press must reach real GUI feedback');
+   }
    if(sector==='yacht'){
      assert.equal(await gui.evaluate(()=>window.ftvYachtExteriorGui.state.automatic),true);
      result.checks.push('guided scene clicks preserve exterior Auto');
