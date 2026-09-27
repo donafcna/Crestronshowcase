@@ -421,3 +421,7 @@ Les quinze caméras rapprochées de Kyoto Gardens sont relevées et chaque zone 
 ## 27/09/2026 — Démonstration Boutique et variation 2.2.9
 
 Après la vue générale et en l’absence d’interaction, le curseur de démonstration sélectionne « Hall & escalier d’apparat », puis presse Ouverture, Réception, Rendez-vous privé et Fermeture avec cinq secondes entre les actions. Les valeurs lumineuses de chaque scène sont interpolées sur trois secondes dans la maquette 3D.
+
+## 27/09/2026 — Zoom Restaurant et délai Boutique 2.2.10
+
+Les quinze cadrages rapprochés du restaurant remplissent au maximum l’espace disponible tout en gardant leur sol visible. À l’ouverture de Boutique, la vue globale reste affichée pendant cinq secondes. Sans interaction, le curseur sélectionne ensuite le Hall et escalier d’apparat, puis les quatre scènes à cinq secondes d’intervalle.

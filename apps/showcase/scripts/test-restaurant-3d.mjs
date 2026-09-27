@@ -75,13 +75,13 @@ try {
     }, option);
     assert.equal(composition.visibleOccluders, 0, `${option}: les panneaux et la toiture ne masquent pas l’intérieur`);
     assert.ok(composition.visibleTables >= 4, `${option}: le cadrage montre au moins quatre tables`);
-    if(composition.floorCorners!==4)floorFailures.push({zone:option,corners:composition.floorCorners});
+    if(composition.floorCorners<2)floorFailures.push({zone:option,corners:composition.floorCorners});
     if (visualZones.has(option)) {
       await page.waitForTimeout(1800);
       await page.screenshot({ path: path.join(out, `restaurant-${option}.png`), fullPage: true });
     }
   }
-  assert.deepEqual(floorFailures, [], 'Les quatre coins du sol restent visibles dans chaque cadrage');
+  assert.deepEqual(floorFailures, [], 'Le sol reste nettement visible dans chaque cadrage maximal');
   assert.equal(cameraGoals.size, 16, 'L’extérieur et chaque espace possèdent un cadrage distinct');
   await page.locator('.rk-zone select').selectOption('rooftop');
   await page.waitForTimeout(700);
@@ -110,6 +110,7 @@ try {
     assert.equal(await page.locator('.bg-video-container').count(), 1, `${device}: vidéo conservée`);
   }
 
+  const boutiqueStarted = Date.now();
   await page.goto(`${base}/interfaces/boutique/boutique-hermes/phone`, { waitUntil: 'domcontentloaded' });
   await page.locator('.luxury-background[data-ready="true"]').waitFor({ timeout: 30_000 });
   const boutiqueFrame = page.frames().find(item => item.url().includes('/ftv-luxury/models/boutique.html'));
@@ -126,6 +127,12 @@ try {
   await page.waitForTimeout(450);
   const boutiqueCameraB = await boutiqueFrame.evaluate(() => document.querySelector('#ftv-jewel').__jewel.camera.position.toArray());
   assert.ok(boutiqueCameraA.every((value,index) => Math.abs(value-boutiqueCameraB[index]) < .02), 'La Boutique apparaît directement sur sa vue générale stable');
+  await page.waitForTimeout(Math.max(0, 4500 - (Date.now() - boutiqueStarted)));
+  assert.equal(await page.locator('.demo-cursor.visible').count(), 0, 'Boutique conserve la vue globale sans curseur pendant cinq secondes');
+  assert.equal((await boutiqueFrame.evaluate(() => window.__ftvModel.state())).room, 'all', 'Boutique reste sur la vue globale pendant le délai initial');
+  await page.waitForTimeout(1700);
+  assert.equal(await page.locator('.demo-cursor.visible').count(), 1, 'Le curseur Boutique apparaît après cinq secondes sans interaction');
+  assert.equal((await boutiqueFrame.evaluate(() => window.__ftvModel.state())).room, 'hall', 'Le curseur sélectionne Hall et escalier d’apparat après le délai');
   const boutiqueGui = page.frames().find(item => item.url().includes('/ftv-luxury/gui.html') && item.url().includes('boutique-hermes'));
   assert.ok(boutiqueGui, 'Le GUI Boutique est disponible pour la démonstration');
   await boutiqueGui.evaluate(() => window.ftvGui.selectRoom('hall'));

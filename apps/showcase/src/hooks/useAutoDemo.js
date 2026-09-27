@@ -477,7 +477,8 @@ export const useAutoDemo = ({ enabled, running, stageRef, guiKey, onCycleEnd, on
     };
 
     const run = async () => {
-      if (!villaDevice) await sleep(TIMING.startDelay, token);
+      const startDelay = guiKey.startsWith("boutique-hermes/") ? 5000 : TIMING.startDelay;
+      if (!villaDevice) await sleep(startDelay, token);
       if (token.cancelled) return;
 
       // Attendre que le GUI soit prêt (iframe chargée / simulateur monté).

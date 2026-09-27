@@ -29,3 +29,7 @@ La vue extérieure 2.2.6 rapproche la caméra au maximum utile : le domaine remp
 ## 27/09/2026 — Sols visibles dans les vues rapprochées, vitrine 2.2.8
 
 Les quinze cadrages de zone sont relevés pour offrir une vue plongeante plus lisible. Chaque espace reçoit un socle de sol clairement délimité sous son architecture propre. Un contrôle géométrique vérifie désormais que les quatre coins du sol restent visibles pour chaque vue zoomée.
+
+## 27/09/2026 — Cadrages rapprochés maximum, vitrine 2.2.10
+
+Les quinze caméras de zone utilisent désormais tout l’espace libre entre le smartphone et le sélecteur de supports. Chaque cible et chaque distance ont été recalculées individuellement afin de conserver le sol dans le cadre tout en rapprochant au maximum le mobilier.

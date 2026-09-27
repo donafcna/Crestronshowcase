@@ -221,7 +221,8 @@ const ShowcaseInner = ({ sectorId, projectId, device }) => {
       villaSessionRef.current = createVillaSession();
       setDemoEpoch(n => n + 1);
     }
-    if (villaDevice && (entry || first || automaticAdvance.current)) {
+    const boutiqueEntry = activeProject.id === "boutique-hermes" && first;
+    if ((villaDevice && (entry || first || automaticAdvance.current)) || boutiqueEntry) {
       clearTimeout(resumeTimer.current);
       setResumeAt(null); setDemoRunning(true);
     } else { setDemoRunning(false); armResume(); }
