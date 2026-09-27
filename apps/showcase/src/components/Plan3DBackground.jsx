@@ -1,9 +1,10 @@
 import { HotelBrassusBackground } from './HotelBrassusBackground';
 import { RestaurantBackground } from './RestaurantBackground';
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { BackgroundVideo } from "./BackgroundVideo";
 import { LuxuryBackground } from "../ftv-luxury/LuxuryBackground";
 import { LUXURY_MODELS } from "../ftv-luxury/modelProjects";
+import { createVillaEntry } from '../utils/villaEntry';
 
 import { VenueBackground } from '../venues/VenueBackground';
 import { VENUE_PROJECTS } from '../venues/state';
@@ -35,14 +36,41 @@ export const Plan3DBackground = (props) => props.projectId === 'hotel-brassus' ?
   ? <LuxuryBackground {...props} />
   : <VillaPlan3DBackground {...props} />;
 
+// Measure the same free-space viewport for startup and subsequent navigation.
+const villaViewport = (canvas, frame, stage) => {
+  if (!canvas || !frame) return null;
+  const c = canvas.getBoundingClientRect(), s = (frame.closest('.phone-device-frame') || frame).getBoundingClientRect();
+  if (c.width < 40 || c.height < 40 || s.width < 20 || s.height < 20) return null;
+  const side = stage?.querySelector('.workspace-device-sidebar');
+  const limitR = side ? side.getBoundingClientRect().left - 24 : c.right - 16;
+  const topEdge = Math.max(70, s.top - c.top + 8);
+  const right = { x: s.right - c.left + 24, y: topEdge, w: limitR - s.right - 24, h: Math.min(c.height - topEdge - 24, s.height - 16) };
+  const top = { x: 0, y: 70, w: Math.min(c.width, limitR - c.left), h: s.top - c.top - 86 };
+  const zone = right.w >= 260 ? right : (top.h >= 220 ? top : null);
+  const rect = zone && zone.w > 40 && zone.h > 40 ? zone : null;
+  return { rect, signature: [c.width, c.height, ...(rect ? Object.values(rect) : [0, 0, 0, 0])].map(v => v.toFixed(1)).join(':') };
+};
+
 const VillaPlan3DBackground = ({ projectId, stageRef, guiFrameRef, tourSessionRef }) => {
   const canvasRef = useRef(null);
   const apiRef = useRef(null);
+  const entryRef = useRef(null);
+  const restartRef = useRef(null);
+  const entrySessionRef = useRef(null);
   const [failed, setFailed] = useState(false);
+  const [ready, setReady] = useState(false);
+  const session = tourSessionRef?.current;
+
+  // Clicking Residential again creates a new tour session without unmounting
+  // this model. Re-arm the presentation before paint, but do not rebuild 3D.
+  useLayoutEffect(() => {
+    if (session?.overview && entrySessionRef.current !== session) restartRef.current?.();
+  }, [session]);
 
   // 1. Scène : chargée une fois par projet, disposée depuis le JSON
   useEffect(() => {
     let alive = true;
+    setReady(false);
     const url = PLAN3D_PROJECTS[projectId];
     if (!url || !canvasRef.current) return undefined;
     (async () => {
@@ -52,21 +80,51 @@ const VillaPlan3DBackground = ({ projectId, stageRef, guiFrameRef, tourSessionRe
           import(/* @vite-ignore */ `/plan3d/plan3d.js?v=${PLAN3D_VERSION}`),
         ]);
         if (!alive) return;
-        apiRef.current = mod.createPlan3D({ canvas: canvasRef.current, config, startOverview: tourSessionRef?.current.overview, environmentTime: () => tourSessionRef?.current.seconds() });
-        window.__plan3d = apiRef.current;   // point d'accès pour les tests Playwright et la console
-        window.dispatchEvent(new Event("plan3d-ready"));
+        const api = mod.createPlan3D({ canvas: canvasRef.current, config, startOverview: tourSessionRef?.current.overview !== false, environmentTime: () => tourSessionRef?.current.seconds() });
+        apiRef.current = api;
+        const startEntry = () => {
+          if (!alive || apiRef.current !== api) return;
+          entryRef.current?.dispose();
+          entrySessionRef.current = tourSessionRef?.current;
+          if (window.__plan3d === api) delete window.__plan3d;
+          if (canvasRef.current) canvasRef.current.style.opacity = '0';
+          setReady(false);
+          const overview = tourSessionRef?.current.overview !== false;
+          api.holdOverview(overview);
+          if (overview) { api.overview(); api.jump(); }
+          const entry = createVillaEntry({
+            api,
+            measure: () => villaViewport(canvasRef.current, guiFrameRef?.current, stageRef?.current),
+            isOverview: () => tourSessionRef?.current.overview !== false,
+            onReady: () => {
+              if (!alive || apiRef.current !== api || entryRef.current !== entry) return;
+              // Publish readiness only after the correctly framed image has
+              // rendered. The tour cannot consume its overview wait while loading.
+              window.__plan3d = api;
+              setReady(true);
+              window.dispatchEvent(new Event('plan3d-ready'));
+            },
+          });
+          api.entry = entry;
+          entryRef.current = entry;
+          entry.start();
+        };
+        restartRef.current = startEntry;
+        startEntry();
       } catch (e) {
-        console.warn("[Plan3D] scène indisponible", e);
+        console.warn('[Plan3D] scène indisponible', e);
         if (alive) setFailed(true);
       }
     })();
     return () => {
       alive = false;
+      restartRef.current = null; entrySessionRef.current = null;
+      entryRef.current?.dispose(); entryRef.current = null;
       if (apiRef.current) { apiRef.current.dispose(); if (window.__plan3d === apiRef.current) delete window.__plan3d; apiRef.current = null; }
     };
-  }, [projectId, tourSessionRef]);
+  }, [projectId, tourSessionRef, guiFrameRef, stageRef]);
 
-  // 2. Liaison au GUI (iframe rechargée à chaque pièce / support) + cadrage dans la zone libre
+  // 2. Liaison au GUI + cadrage. Only the initial presentation is instantaneous.
   useEffect(() => {
     const tick = () => {
       const api = apiRef.current;
@@ -75,18 +133,9 @@ const VillaPlan3DBackground = ({ projectId, stageRef, guiFrameRef, tourSessionRe
       const frame = guiFrameRef?.current;
       const win = frame && frame.contentWindow;
       if (win) api.attach(win);
-      // Zone libre : à droite du châssis (colonne des supports), sinon au-dessus ; sinon pas de fenêtre
-      const canvas = canvasRef.current;
-      if (!canvas || !frame) { api.setWindow(null); return; }
-      const c = canvas.getBoundingClientRect(), s = (frame.closest(".phone-device-frame") || frame).getBoundingClientRect();
-      // Zone libre : entre le châssis et la colonne des boutons (QR code, fiche, supports), jamais derrière elle
-      const side = stageRef?.current?.querySelector(".workspace-device-sidebar");
-      const limitR = side ? side.getBoundingClientRect().left - 24 : c.right - 16;
-      const topEdge = Math.max(70, s.top - c.top + 8);
-      const right = { x: s.right - c.left + 24, y: topEdge, w: limitR - s.right - 24, h: Math.min(c.height - topEdge - 24, s.height - 16) };
-      const top = { x: 0, y: 70, w: Math.min(c.width, limitR - c.left), h: s.top - c.top - 86 };
-      const zone = right.w >= 260 ? right : (top.h >= 220 ? top : null);
-      api.setWindow(zone && zone.w > 40 && zone.h > 40 ? zone : null);
+      if (entryRef.current && !entryRef.current.ready) { entryRef.current.update(); return; }
+      const layout = villaViewport(canvasRef.current, frame, stageRef?.current);
+      api.setWindow(layout?.rect || null);
     };
     tick();
     const id = setInterval(tick, 500);
@@ -111,18 +160,18 @@ const VillaPlan3DBackground = ({ projectId, stageRef, guiFrameRef, tourSessionRe
       const rect = canvas.getBoundingClientRect();
       apiRef.current.click(e.clientX - rect.left, e.clientY - rect.top);
     };
-    stage?.addEventListener("wheel", wheel, { passive: false });
-    stage?.addEventListener("click", click);
-    window.addEventListener("resize", tick);
-    window.addEventListener("plan3d-ready", tick);
-    return () => { clearInterval(id); window.removeEventListener("resize", tick); window.removeEventListener("plan3d-ready", tick); stage?.removeEventListener("wheel", wheel); stage?.removeEventListener("click", click); };
+    stage?.addEventListener('wheel', wheel, { passive: false });
+    stage?.addEventListener('click', click);
+    window.addEventListener('resize', tick);
+    window.addEventListener('plan3d-ready', tick);
+    return () => { clearInterval(id); window.removeEventListener('resize', tick); window.removeEventListener('plan3d-ready', tick); stage?.removeEventListener('wheel', wheel); stage?.removeEventListener('click', click); };
   }, [projectId, stageRef, guiFrameRef, tourSessionRef]);
 
   if (failed) return <BackgroundVideo />;
   return (
-    <div className="plan3d-bg-container" aria-hidden="true">
-      <canvas ref={canvasRef} className="plan3d-bg-canvas" />
+    <div className="plan3d-bg-container villa-entry-background" data-ready={ready} aria-hidden="true">
+      <canvas ref={canvasRef} className="plan3d-bg-canvas" style={{ opacity: ready ? 1 : 0 }} />
+      {!ready && <span className="luxury-background-loading">Chargement de la 3D…</span>}
     </div>
   );
 };
-

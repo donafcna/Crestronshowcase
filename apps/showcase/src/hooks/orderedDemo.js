@@ -1,4 +1,5 @@
 // Ordered, capability-aware tour. No random control clicks.
+import { GUIDED_DEMO_TIMING, isGuidedProject } from "./guidedDemoTiming.js";
 const text = el => (el.getAttribute('aria-label') || el.getAttribute('label') || el.textContent || '')
   .normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim().toLowerCase();
 const categories = {
@@ -15,18 +16,43 @@ export async function runOrderedDemo({ gui, token, sleep, moveTo, act, setCursor
       && gui.win.getComputedStyle(el).visibility !== 'hidden';
   });
   const q = selector => shown(selector)[0];
-  const perform = async (el, wait = 1300, click = true) => {
+  let lastPressAt = 0;
+  const perform = async (target, wait = 1300, click = true, deadline = Infinity) => {
+    const resolve = () => typeof target === 'function' ? target() : target;
+    let el = resolve();
     if (!el || token.cancelled) return false;
-    if (!visible(el, gui)) {
-      // Reveal the target before moving the pointer, including nested clipped
-      // panels in a scaled chassis. Instant avoids racing CSS smooth scrolling.
+    const settle = visible(el, gui) ? 150 : 250;
+    if (settle === 250) {
       el.scrollIntoView({ block: 'center', inline: 'nearest', behavior: 'instant' });
-      await sleep(250, token);
-    } else await sleep(150, token);
-    if (token.cancelled || !visible(el, gui) || !await moveTo(el, gui)) return false;
-    if (click && !token.cancelled) await act(el, gui);
+    }
+    await sleep(Math.max(0, Math.min(settle, deadline - performance.now())), token);
+    if (token.cancelled || !visible(el, gui)) return false;
+    const moved = await moveTo(el, gui, deadline);
+    if (token.cancelled) return false;
+    // A day/night scene can rebuild the yacht controls during cursor travel.
+    // Resolve guided buttons again rather than pressing a detached old node.
+    const live = resolve();
+    if (live !== el) {
+      el = live;
+      if (!el || !visible(el, gui) || !await moveTo(el, gui, deadline)) return false;
+    } else if (!moved) return false;
+    if (Number.isFinite(deadline)) await sleep(Math.max(0, deadline - performance.now()), token);
+    if (token.cancelled) return false;
+    if (click) { lastPressAt = performance.now(); await act(el, gui); }
     await sleep(wait, token);
     return !token.cancelled;
+  };
+  // Deadlines refer to presses, not to the end of their visual release. The
+  // 1 s gap includes cursor travel; subsequent presses remain 5 s apart.
+  const scheduleFromFirstZone = () => {
+    let nextPress = lastPressAt + GUIDED_DEMO_TIMING.firstSceneDelay;
+    return async action => {
+      await sleep(Math.max(0, nextPress - performance.now() - 1000), token);
+      if (token.cancelled) return false;
+      const complete = await action(nextPress);
+      nextPress = lastPressAt + GUIDED_DEMO_TIMING.stepDelay;
+      return complete;
+    };
   };
   const explicit = async (name, wait) => perform(all(`[data-demo-action="${name}"]`)[0], wait);
   const close = async () => { await explicit('close', 300); };
@@ -39,62 +65,68 @@ export async function runOrderedDemo({ gui, token, sleep, moveTo, act, setCursor
     const heading = shown('h2,h3,h4,.card-title,.ap-ctrl-head,.vl-label').find(el => categories[name].test(text(el)));
     return perform(heading, 1400, false);
   };
-  if(gui.root.querySelector('.rk-ui')){
-    const selector=gui.root.querySelector('.rk-zone select');
-    const selectZone=async id=>{
-      if(!selector||!await perform(selector,0,false))return false;
-      setCursor?.(c=>({...c,pulse:c.pulse+1,pressed:true}));
-      if(gui.win.__restaurantGui?.selectZone)gui.win.__restaurantGui.selectZone(id);
+  if (gui.root.querySelector('.rk-ui')) {
+    const selector = gui.root.querySelector('.rk-zone select');
+    if (!selector) return false;
+    const selectZone = async (id, deadline = Infinity) => {
+      if (!await perform(selector, 0, false, deadline)) return false;
+      setCursor?.(c => ({ ...c, pulse: c.pulse + 1, pressed: true }));
+      lastPressAt = performance.now();
+      if (gui.win.__restaurantGui?.selectZone) gui.win.__restaurantGui.selectZone(id);
       else {
-        const setter=Object.getOwnPropertyDescriptor(gui.win.HTMLSelectElement.prototype,'value')?.set;
-        setter?.call(selector,id);
-        selector.dispatchEvent(new gui.win.Event('input',{bubbles:true}));
-        selector.dispatchEvent(new gui.win.Event('change',{bubbles:true}));
+        const setter = Object.getOwnPropertyDescriptor(gui.win.HTMLSelectElement.prototype, 'value')?.set;
+        setter?.call(selector, id);
+        selector.dispatchEvent(new gui.win.Event('input', { bubbles: true }));
+        selector.dispatchEvent(new gui.win.Event('change', { bubbles: true }));
       }
-      await sleep(160,token);setCursor?.(c=>({...c,pressed:false}));return !token.cancelled;
+      await sleep(160, token); setCursor?.(c => ({ ...c, pressed: false }));
+      return !token.cancelled;
     };
-    const rooms=[...selector.options].map(option=>({id:option.value,name:option.textContent})).filter(zone=>zone.id!=='exterior');
-    if(!await selectZone(rooms[0].id))return false;
-    let nextPress=performance.now()+5000;
-    const waitForPress=async action=>{await sleep(Math.max(0,nextPress-performance.now()-850),token);if(token.cancelled)return false;const complete=await action();nextPress+=5000;return complete;};
-    for(let roomIndex=0;roomIndex<rooms.length;roomIndex++){
-      if(roomIndex>0&&!await waitForPress(()=>selectZone(rooms[roomIndex].id)))return false;
-      for(const id of ['dinner','rooftop','welcome'])if(!await waitForPress(()=>perform(gui.root.querySelector(`[data-scene="${id}"]`),0)))return false;
+    const rooms = [...selector.options].map(option => ({ id: option.value, name: option.textContent })).filter(zone => zone.id !== 'exterior');
+    if (!rooms.length || !await selectZone(rooms[0].id)) return false;
+    const waitForPress = scheduleFromFirstZone();
+    for (let roomIndex = 0; roomIndex < rooms.length; roomIndex++) {
+      if (roomIndex > 0 && !await waitForPress(at => selectZone(rooms[roomIndex].id, at))) return false;
+      for (const id of ['dinner', 'rooftop', 'welcome']) {
+        if (!await waitForPress(at => perform(() => gui.root.querySelector(`[data-scene="${id}"]`), 0, true, at))) return false;
+      }
     }
-    if(!await waitForPress(()=>selectZone('exterior')))return false;
-    if(!await waitForPress(()=>perform(gui.root.querySelector('[data-scene="closed"]'),0)))return false;
-    gui.win.__restaurantGui?.applyAllScene?.('closed');await sleep(5000,token);return !token.cancelled;
+    if (!await waitForPress(at => selectZone('exterior', at))) return false;
+    if (!await waitForPress(at => perform(() => gui.root.querySelector('[data-scene="closed"]'), 0, true, at))) return false;
+    gui.win.__restaurantGui?.applyAllScene?.('closed');
+    await sleep(GUIDED_DEMO_TIMING.stepDelay, token);
+    return !token.cancelled;
   }
   // The luxury scenes use a native room selector and a same-origin GUI API.
   if (gui.win.ftvGui) {
     const api = gui.win.ftvGui;
-    if(api.config.project==='boutique-hermes'){
-      const selector=gui.doc.getElementById('zone');
-      const selectRoom=async id=>{
-        if(!selector||!await perform(selector,0,false))return false;
-        setCursor?.(c=>({...c,pulse:c.pulse+1,pressed:true}));
+    if (isGuidedProject(api.config.project)) {
+      const yacht = api.config.project === 'yacht-monaco';
+      const rooms = api.config.rooms;
+      const selector = gui.doc.getElementById('zone');
+      if (!selector || !rooms.length) return false;
+      const selectRoom = async (id, deadline = Infinity) => {
+        if (!await perform(selector, 0, false, deadline)) return false;
+        setCursor?.(c => ({ ...c, pulse: c.pulse + 1, pressed: true }));
+        lastPressAt = performance.now();
         api.selectRoom(id);
-        await sleep(160,token);
-        setCursor?.(c=>({...c,pressed:false}));
+        await sleep(160, token);
+        setCursor?.(c => ({ ...c, pressed: false }));
         return !token.cancelled;
       };
-      if(!await selectRoom('hall'))return false;
-      let nextPress=performance.now()+5000;
-      const waitForPress=async action=>{
-        await sleep(Math.max(0,nextPress-performance.now()-850),token);
-        if(token.cancelled)return false;
-        const complete=await action();nextPress+=5000;return complete;
-      };
-      const sceneOrder=['private','gala','opening'];
-      for(let roomIndex=0;roomIndex<api.config.rooms.length;roomIndex++){
-        if(roomIndex>0&&!await waitForPress(()=>selectRoom(api.config.rooms[roomIndex].id)))return false;
-        for(const id of sceneOrder){
-          if(!await waitForPress(()=>perform(gui.doc.querySelector(`[data-preset="${id}"]`),0)))return false;
+      if (!await selectRoom(yacht ? rooms[0].id : 'hall')) return false;
+      const waitForPress = scheduleFromFirstZone();
+      const sceneOrder = yacht ? ['sunset', 'dinner', 'cruise'] : ['private', 'gala', 'opening'];
+      for (let roomIndex = 0; roomIndex < rooms.length; roomIndex++) {
+        if (roomIndex > 0 && !await waitForPress(at => selectRoom(rooms[roomIndex].id, at))) return false;
+        for (const id of sceneOrder) {
+          if (!await waitForPress(at => perform(() => gui.doc.querySelector(`[data-preset="${id}"]`), 0, true, at))) return false;
         }
       }
-      if(!await waitForPress(()=>selectRoom('all')))return false;
-      if(!await waitForPress(()=>perform(gui.doc.querySelector('[data-preset="closed"]'),0)))return false;
-      await sleep(5000,token);
+      if (!await waitForPress(at => selectRoom('all', at))) return false;
+      const closing = yacht ? 'night' : 'closed';
+      if (!await waitForPress(at => perform(() => gui.doc.querySelector(`[data-preset="${closing}"]`), 0, true, at))) return false;
+      await sleep(GUIDED_DEMO_TIMING.stepDelay, token);
       return !token.cancelled;
     }
     for (const room of api.config.rooms.slice(0, 3)) {
