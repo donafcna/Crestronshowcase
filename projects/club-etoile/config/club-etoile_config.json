@@ -1,0 +1,240 @@
+{
+  "meta": {
+    "projet": "Club Étoile",
+    "integrateur": "Fréquence TV",
+    "version": "1.0.1",
+    "mode": "deploiement",
+    "dateModification": "2026-09-27",
+    "langueReference": "fr",
+    "guiShowcase": "club-etoile",
+    "aide": [
+      "Source unique du projet Club Étoile : étages, salles, fonctionnalités actives par salle, globaux club, contrat de joins.",
+      "Le C# (slot 1) lit ce fichier dans /user/club-etoile_config.json au démarrage ; le générateur SIMPL (tools/generate_slot2.js) le lit aussi.",
+      "Une fonctionnalité absente ou 'actif: false' n'est ni affichée par le GUI, ni câblée dans le SIMPL, ni routée par le C#.",
+      "Tous les joins de pilotage sont GLOBAUX et identiques dans toutes les salles : l'analogique 10 (Room_Select#) porte la salle visée (0 = tout le club) et permet au slot 2 de bufferiser.",
+      "Les 4 circuits d'éclairage d'une salle ne sont pas pilotés un par un : ils sont DÉRIVÉS de l'ambiance (scène × intensité × coefficient du circuit) et poussés au slot 2 dans le bloc salle.",
+      "Ne jamais modifier 'contrat' sans mettre à jour Joins.cs (C#) : tools/check-contract.js vérifie la cohérence."
+    ]
+  },
+
+  "club": {
+    "nom": "L'Étoile Club",
+    "sousTitre": "3 niveaux · 3 grandes salles · DJ",
+    "toutLeClub": "Tout le club",
+    "scenesDescription": "Scènes d'ambiance par salle (Scene_Signature/Party/Calm/Off d51-54 sur la salle visée). facteur = multiplicateur appliqué à l'intensité de la salle (loi du simulateur venue.js : party 1,25, signature 0,8, calm 0,3, off 0). Niveau d'un circuit = clamp(intensité × facteur × coefficient du circuit, 0..100).",
+    "scenes": [
+      { "id": 1, "cle": "signature", "nom": "Signature", "facteur": 0.8 },
+      { "id": 2, "cle": "party",     "nom": "Festif",    "facteur": 1.25 },
+      { "id": 3, "cle": "calm",      "nom": "Doux",      "facteur": 0.3 },
+      { "id": 4, "cle": "off",       "nom": "Éteint",    "facteur": 0 }
+    ],
+    "sceneInitiale": "signature",
+    "intensiteInitiale": 75,
+    "sceneMixte": "Ambiances mixtes",
+
+    "affluenceDescription": "Crowd_Cozy/Busy/Packed d111-113 (interlock). Chaque niveau pose la ventilation (HVAC_Fan# a20, ensuite réglable) et la consigne calculée (HVAC_Setpoint# a21, × 10 sur le join).",
+    "affluence": [
+      { "id": 1, "cle": "cozy",   "nom": "Calme",            "detail": "< 200 p.",  "ventilation": 35,  "consigne": 21.0 },
+      { "id": 2, "cle": "busy",   "nom": "Normal",           "detail": "200-1000 p.", "ventilation": 65,  "consigne": 19.0 },
+      { "id": 3, "cle": "packed", "nom": "Forte affluence",  "detail": "> 1000 p.", "ventilation": 100, "consigne": 17.0 }
+    ],
+    "affluenceInitiale": "busy",
+    "cvc": { "actif": true, "temperatureInitiale": 19.0, "ctaEnLigneParDefaut": true, "texteEnLigne": "CTA en ligne", "texteHorsLigne": "CTA hors ligne" },
+
+    "audio": {
+      "actif": true,
+      "volumePisteInitial": 90,
+      "volumeBarInitial": 60,
+      "dbInitial": 102,
+      "seuilLimiteurDb": 105,
+      "simulerDb": true,
+      "simulationDescription": "Tant que le slot 2 n'a jamais envoyé Audio_Db_Actual# (a32), le C# simule la mesure toutes les secondes (CTimer) : dB = 10 + floor(volume piste × 0,95) ± 2. Dès la première mesure reçue, la simulation s'arrête et le DSP fait foi. Audio_Limiter (d131) = dB ≥ seuilLimiteurDb, ou Audio_Limiter_Actual haut.",
+      "texteLimiteurActif": "Limiteur actif · seuil atteint",
+      "texteLimiteurRepos": "Seuil 105 dB"
+    },
+
+    "effets": {
+      "actif": true,
+      "fumeeInitiale": false,
+      "strobeInitial": false,
+      "strobeFrequenceInitiale": 8,
+      "strobeFrequenceMin": 1,
+      "strobeFrequenceMax": 15,
+      "lyresInitiales": true,
+      "textes": { "fumeePret": "Machine CO2 : Prêt", "fumeeActive": "Machine CO2 : Jet Actif", "strobeActif": "Strobe : Actif", "strobeEteint": "Strobe : Éteint" }
+    },
+
+    "ecranDj": {
+      "actif": true,
+      "sourceInitiale": 1,
+      "sources": [
+        { "id": 1, "cle": "club_visual", "nom": "Visuels club" },
+        { "id": 2, "cle": "regie_hdmi",  "nom": "HDMI régie" },
+        { "id": 3, "cle": "cam_feed",    "nom": "Caméra live" },
+        { "id": 4, "cle": "logo",        "nom": "Logo" }
+      ]
+    },
+
+    "macrosDescription": "Raccourcis régie (d161-164). Chaque macro est recopiée sous son nom nu sur l'EISC, puis le C# pulse 250 ms les actions élémentaires qu'elle déclenche (Crowd_*, Strobe_*, Smoke_*) et pose les volumes ; les états tenus arrivent de toute façon dans le bloc club (Club_xxx_fb).",
+    "macros": {
+      "peakAlert":  { "nom": "Alerte Peak Affluence",  "affluence": "packed", "strobe": true,  "fumee": true },
+      "calmEnd":    { "nom": "Calme / Fin Service",    "affluence": "cozy",   "strobe": false, "fumee": false },
+      "allOff":     { "nom": "Extinction Son & Effets","affluence": "cozy",   "strobe": false, "fumee": false, "volumesZero": true },
+      "partyQuick": { "nom": "Soirée",                 "strobe": true,  "fumee": true }
+    },
+
+    "navigation": { "vueInitiale": "building", "salleInitiale": "original", "vues": ["building", "floor", "room"] }
+  },
+
+  "etages": [
+    { "id": "rdc",    "nom": "Rez-de-chaussée", "gui": 0 },
+    { "id": "etage1", "nom": "1er étage",       "gui": 1 },
+    { "id": "etage2", "nom": "2e étage",        "gui": 2 }
+  ],
+
+  "piecesDescription": "id = numéro de salle (1..10), utilisé par Room_Select# (a10) et par le bloc EISC 1000 + (id-1)*100. cle = identifiant texte du GUI showcase (club-rooms.json). intersystem = false → aucun bloc EISC câblé. 'ambiance' = scène + intensité de la salle ; 'eclairages' = circuits DÉRIVÉS de l'ambiance (coefficient par circuit), jamais pilotés un par un depuis les écrans ; pas d'audio ni de climat par salle (globaux club).",
+  "pieces": [
+    {
+      "id": 1, "cle": "original", "nom": "Studio 77 · Disco", "etage": "rdc", "couleur": "#ffb54a", "ambianceTexte": "Or & velours · Piste rétro · DJ", "intersystem": true,
+      "pilotages": {
+        "ambiance": { "actif": true, "etatInitial": { "scene": "signature", "intensite": 75 } },
+        "eclairages": { "actif": true, "derives": true, "circuits": [
+          { "cle": "piste",    "nom": "Piste de danse",        "gradable": true, "actif": true, "coefficient": 1.0 },
+          { "cle": "lyres",    "nom": "Lyres",                 "gradable": true, "actif": true, "coefficient": 1.0 },
+          { "cle": "barres",   "nom": "Barres LED murales",    "gradable": true, "actif": true, "coefficient": 0.9 },
+          { "cle": "boules",   "nom": "Boules à facettes",     "gradable": true, "actif": true, "coefficient": 0.7 }
+        ] }
+      }
+    },
+    {
+      "id": 2, "cle": "neon", "nom": "Neon Foundry · Electro", "etage": "etage1", "couleur": "#2ee7f2", "ambianceTexte": "Béton & acier · Portiques néon · DJ", "intersystem": true,
+      "pilotages": {
+        "ambiance": { "actif": true, "etatInitial": { "scene": "signature", "intensite": 75 } },
+        "eclairages": { "actif": true, "derives": true, "circuits": [
+          { "cle": "piste",    "nom": "Piste de danse",        "gradable": true, "actif": true, "coefficient": 1.0 },
+          { "cle": "lyres",    "nom": "Lyres",                 "gradable": true, "actif": true, "coefficient": 1.0 },
+          { "cle": "barres",   "nom": "Barres LED murales",    "gradable": true, "actif": true, "coefficient": 0.9 },
+          { "cle": "boules",   "nom": "Boules à facettes",     "gradable": true, "actif": true, "coefficient": 0.7 }
+        ] }
+      }
+    },
+    {
+      "id": 3, "cle": "sky", "nom": "Sky Garden · Panoramique", "etage": "etage2", "couleur": "#7fe0bb", "ambianceTexte": "Ivoire & jade · Piste ronde · DJ", "intersystem": true,
+      "pilotages": {
+        "ambiance": { "actif": true, "etatInitial": { "scene": "signature", "intensite": 75 } },
+        "eclairages": { "actif": true, "derives": true, "circuits": [
+          { "cle": "piste",    "nom": "Piste de danse",        "gradable": true, "actif": true, "coefficient": 1.0 },
+          { "cle": "lyres",    "nom": "Lyres",                 "gradable": true, "actif": true, "coefficient": 1.0 },
+          { "cle": "barres",   "nom": "Barres LED murales",    "gradable": true, "actif": true, "coefficient": 0.9 },
+          { "cle": "boules",   "nom": "Boules à facettes",     "gradable": true, "actif": true, "coefficient": 0.7 }
+        ] }
+      }
+    }
+  ],
+
+  "contrat": {
+    "version": "1.0",
+    "principe": [
+      "Tous les joins de pilotage sont globaux : le même numéro dans toutes les salles.",
+      "Le C# (slot 1) connaît la salle affichée par chaque écran (_activeRoomPerDevice, 0 = tout le club) : il applique l'action à cette salle (ou à toutes), pose Room_Select# (a10) sur l'EISC, puis recopie l'impulsion sur le même join. Le slot 2 route avec des buffers validés par Room_Active_nn (d101-110, un seul haut = a10 ; Room_Active_00 = d100 quand l'action vise tout le club).",
+      "Feedback des écrans : toujours calculé par le C#. Le slot 2 renvoie les mesures réelles par les entrées _Actual (blocs salle et globaux club) ; elles font foi dès réception.",
+      "Sur le symbole EISC : SORTIE = ce que le slot 2 reçoit (nom nu = action, Rnn_xxx_fb / Club_xxx_fb = état tenu par le C#) ; ENTRÉE = ce que le slot 2 renvoie (suffixe _Actual).",
+      "Bloc salle EISC : join = 1000 + (id-1)*100 + offset. Bloc club EISC : join = 500 + join global (états tenus des fonctions globales). Réservés aux échanges C# ↔ slot 2, jamais émis par un écran."
+    ],
+    "eisc": { "actif": true, "ipid": "0xF0", "adresseIp": "127.0.0.2", "slotCible": 2 },
+    "limites": { "piecesMax": 10, "circuitsMax": 8, "scenesMax": 4, "affluencesMax": 3, "sourcesEcranMax": 4 },
+
+    "signauxGlobaux": {
+      "digital": {
+        "51":      { "nom": "Scene_Signature",     "sens": "↔", "desc": "Ambiance « Signature » sur la salle visée (a10 ; 0 = toutes) ; fb tenu = scène active de la salle affichée" },
+        "52":      { "nom": "Scene_Party",         "sens": "↔", "desc": "Ambiance « Festif »" },
+        "53":      { "nom": "Scene_Calm",          "sens": "↔", "desc": "Ambiance « Doux »" },
+        "54":      { "nom": "Scene_Off",           "sens": "↔", "desc": "Ambiance « Éteint » (tous les circuits de la salle à 0)" },
+        "100":     { "nom": "Room_Select_All",     "sens": "↔", "desc": "Sélection « Tout le club » (Room_Select# = 0) ; fb = cet écran affiche tout le club. Sur l'EISC : Room_Active_00, haut quand l'action vise toutes les salles." },
+        "101-110": { "nom": "Room_Select_{n}",     "sens": "↔", "desc": "Sélection directe de la salle n (join = 100+n) ; fb = salle affichée par cet écran. Sur l'EISC : Room_Active_{n}, un seul haut, miroir de a10. Pose aussi l'étage et la vue « salle » de l'écran." },
+        "111":     { "nom": "Crowd_Cozy",          "sens": "↔", "desc": "Affluence « Calme » (< 200 p.) : ventilation 35 %, consigne 21,0 °C ; fb tenu (interlock)" },
+        "112":     { "nom": "Crowd_Busy",          "sens": "↔", "desc": "Affluence « Normal » : ventilation 65 %, consigne 19,0 °C ; fb tenu" },
+        "113":     { "nom": "Crowd_Packed",        "sens": "↔", "desc": "Affluence « Forte affluence » (> 1000 p.) : ventilation 100 %, consigne 17,0 °C ; fb tenu" },
+        "121":     { "nom": "HVAC_CTA_Online",     "sens": "←", "desc": "CTA en ligne (entrée EISC HVAC_CTA_Online_Actual ; haut par défaut tant que le slot 2 ne dit rien)" },
+        "131":     { "nom": "Audio_Limiter",       "sens": "←", "desc": "Limiteur déclenché : dB mesuré ≥ seuil (105) ou Audio_Limiter_Actual haut ; alerte rouge sur les écrans" },
+        "141":     { "nom": "Smoke_On",            "sens": "↔", "desc": "Machine CO2 : lancer le jet ; fb tenu = jet actif" },
+        "142":     { "nom": "Smoke_Off",           "sens": "↔", "desc": "Machine CO2 : stop ; fb tenu = prêt" },
+        "143":     { "nom": "Strobe_On",           "sens": "↔", "desc": "Stroboscope : lancer ; fb tenu = actif" },
+        "144":     { "nom": "Strobe_Off",          "sens": "↔", "desc": "Stroboscope : stop ; fb tenu = éteint" },
+        "145":     { "nom": "Lyres_On",            "sens": "↔", "desc": "Mouvement des lyres : marche ; fb tenu" },
+        "146":     { "nom": "Lyres_Off",           "sens": "↔", "desc": "Mouvement des lyres : arrêt ; fb tenu" },
+        "151-154": { "nom": "Screen_Source_{n}",   "sens": "↔", "desc": "Écran DJ : source n (1 Visuels club, 2 HDMI régie, 3 Caméra live, 4 Logo) ; fb tenu (interlock)" },
+        "161":     { "nom": "Macro_PeakAlert",     "sens": "↔", "desc": "Raccourci « Alerte Peak Affluence » = Crowd_Packed + Strobe_On + Smoke_On ; fb = les trois états réunis" },
+        "162":     { "nom": "Macro_CalmEnd",       "sens": "↔", "desc": "Raccourci « Calme / Fin Service » = Strobe_Off + Smoke_Off + Crowd_Cozy ; fb = strobe et fumée arrêtés (scène rapide « Calme » du smartphone)" },
+        "163":     { "nom": "Macro_AllOff",        "sens": "↔", "desc": "Raccourci « Extinction Son & Effets » = Strobe_Off + Smoke_Off + volumes piste et bar à 0 + Crowd_Cozy ; fb = tout éteint" },
+        "164":     { "nom": "Macro_PartyQuick",    "sens": "↔", "desc": "Scène rapide « Soirée » (smartphone) = Strobe_On + Smoke_On ; fb = strobe et fumée actifs" },
+        "171":     { "nom": "Club_View_Building",  "sens": "↔", "desc": "Vue « Bâtiment » (3D des 3 niveaux) sur cet écran ; fb tenu. Écrans seulement, jamais sur l'EISC." },
+        "172":     { "nom": "Club_View_Floor",     "sens": "↔", "desc": "Vue « Étage » (Club_Floor#) sur cet écran ; fb tenu. Écrans seulement." },
+        "173":     { "nom": "Club_View_Room",      "sens": "↔", "desc": "Vue « Salle » (salle affichée) sur cet écran ; fb tenu. Écrans seulement." },
+        "250":     { "nom": "Config_Resync",       "sens": "→", "desc": "Demande de (ré)envoi de la configuration JSON" }
+      },
+      "analog": {
+        "10":      { "nom": "Room_Select#",             "sens": "↔", "desc": "Salle affichée par cet écran (0 = tout le club, 1..10). Sur l'EISC : posé AVANT chaque recopie d'action → clé de bufferisation du slot 2" },
+        "11":      { "nom": "Room_Level#",              "sens": "↔", "desc": "« Intensité de la salle » (0-65535 sur le join, 0-100 % en interne) de la salle visée ; curseur → C# ; fb = intensité" },
+        "12":      { "nom": "Scene#",                   "sens": "←", "desc": "Scène active de la salle affichée (1..4 ; 0 = ambiances mixtes pour « Tout le club »)" },
+        "20":      { "nom": "HVAC_Fan#",                "sens": "↔", "desc": "Extraction d'air (0-100 %) ; posée par l'affluence puis réglable au curseur ; fb = valeur tenue (ou HVAC_Fan_Actual#)" },
+        "21":      { "nom": "HVAC_Setpoint#",           "sens": "←", "desc": "Consigne CVC × 10 (190 = 19,0 °C), calculée depuis l'affluence ; poussée au slot 2 dans le bloc club (Club_HVAC_Setpoint_fb#)" },
+        "22":      { "nom": "HVAC_Temperature#",        "sens": "←", "desc": "Température mesurée × 10 (entrée EISC HVAC_Temperature_Actual#)" },
+        "30":      { "nom": "Audio_Dancefloor_Volume#", "sens": "↔", "desc": "Volume piste (0-100) ; fb = valeur tenue" },
+        "31":      { "nom": "Audio_Bar_Volume#",        "sens": "↔", "desc": "Volume bar (0-100) ; fb = valeur tenue" },
+        "32":      { "nom": "Audio_Db#",                "sens": "←", "desc": "Niveau sonore mesuré (dB) : Audio_Db_Actual# du DSP ; simulé par le C# tant que rien n'est reçu (simulerDb)" },
+        "40":      { "nom": "Strobe_Freq#",             "sens": "↔", "desc": "Fréquence programmée du stroboscope (1-15 Hz, direct) ; fb = valeur tenue" },
+        "41":      { "nom": "Screen_Source#",           "sens": "←", "desc": "Source active de l'écran DJ (1..4)" },
+        "42":      { "nom": "Club_Floor#",              "sens": "↔", "desc": "Étage affiché par cet écran (0 = RDC, 1, 2) ; → change l'étage de la vue « Étage » ; fb = étage de la salle affichée. Écrans seulement, jamais sur l'EISC." },
+        "51-58":   { "nom": "Light_{n}_Level#",         "sens": "←", "desc": "Niveau dérivé du circuit n de la salle affichée (0-65535) : intensité × facteur de scène × coefficient. Lecture seule sur les écrans." },
+        "250":     { "nom": "Config_ChunkAck#",         "sens": "→", "desc": "Accusé de réception du chunk N de configuration" }
+      },
+      "serial": {
+        "10":      { "nom": "Room_Name$",          "sens": "←", "desc": "Nom de la salle affichée (« Tout le club » pour a10 = 0)" },
+        "11":      { "nom": "Room_Subtitle$",      "sens": "←", "desc": "« Signature · 75 % » / « Éteint » / « Ambiances mixtes »" },
+        "12":      { "nom": "Scene_Name$",         "sens": "←", "desc": "Nom de la scène active de la salle affichée / « Ambiances mixtes »" },
+        "13":      { "nom": "Club_Summary$",       "sens": "←", "desc": "« 3 niveaux · 3 grandes salles · DJ »" },
+        "14":      { "nom": "Room_Mood$",          "sens": "←", "desc": "Ambiance texte de la salle (« Or & velours · Piste rétro · DJ »)" },
+        "15":      { "nom": "Room_Color$",         "sens": "←", "desc": "Couleur signature de la salle (#rrggbb)" },
+        "20":      { "nom": "HVAC_Status$",        "sens": "←", "desc": "« CTA en ligne » / « CTA hors ligne »" },
+        "21":      { "nom": "Crowd_Name$",         "sens": "←", "desc": "Nom de l'affluence courante (Calme / Normal / Forte affluence)" },
+        "22":      { "nom": "Audio_Limiter_Text$", "sens": "←", "desc": "« Limiteur actif · seuil atteint » / « Seuil 105 dB »" },
+        "23":      { "nom": "Smoke_Status$",       "sens": "←", "desc": "« Machine CO2 : Prêt » / « Machine CO2 : Jet Actif »" },
+        "24":      { "nom": "Strobe_Status$",      "sens": "←", "desc": "« Strobe : Actif » / « Strobe : Éteint »" },
+        "25":      { "nom": "Screen_Source_Name$", "sens": "←", "desc": "Nom de la source active de l'écran DJ" },
+        "99":      { "nom": "Systeme_IpId$",       "sens": "←", "desc": "IP-ID de l'écran connecté" },
+        "101":     { "nom": "Systeme_CpzNom$",     "sens": "←", "desc": "Nom du CPZ" },
+        "102":     { "nom": "Systeme_CpzDate$",    "sens": "←", "desc": "Date de compilation du CPZ" },
+        "105":     { "nom": "Config_Json$",        "sens": "←", "desc": "Transport de la configuration (VCFG|i|n|payload)" },
+        "106":     { "nom": "Config_Hash$",        "sens": "←", "desc": "Empreinte de la configuration" }
+      }
+    },
+
+    "blocsPieces": {
+      "base": 1000, "taille": 100,
+      "desc": "Échanges C# ↔ slot 2 par salle 'intersystem'. _fb = tenu par le C# (sortie EISC, reçu par le slot 2) ; _Actual = mesure renvoyée par le slot 2 (entrée EISC). Seules les fonctionnalités actives de la salle sont câblées. 3 × 100 = joins 1000..1299 (socle 2732, piecesMax 10 → 1999).",
+      "digital": {
+        "1-8":    { "nom": "Light_{n}_On",   "fb": true, "actual": true,  "fonction": "eclairages", "desc": "Circuit dérivé allumé (> 0)" },
+        "11-14":  { "nom": "Scene_{n}",      "fb": true, "actual": true,  "fonction": "ambiance",   "desc": "Scène n tenue (1 Signature, 2 Festif, 3 Doux, 4 Éteint), un seul haut" },
+        "61":     { "nom": "Room_Displayed", "fb": true, "actual": false, "fonction": "*",          "desc": "La salle est affichée sur au moins un écran (ou tout le club)" }
+      },
+      "analog": {
+        "1-8":    { "nom": "Light_{n}_Level", "fb": true, "actual": true, "fonction": "eclairages", "desc": "0-65535, dérivé de l'ambiance" },
+        "11":     { "nom": "Room_Level",      "fb": true, "actual": true, "fonction": "ambiance",   "desc": "Intensité 0-65535" },
+        "12":     { "nom": "Scene",           "fb": true, "actual": true, "fonction": "ambiance",   "desc": "1..4" }
+      },
+      "serial": {
+        "10":     { "nom": "Room_Name", "fb": true, "fonction": "*" }
+      }
+    },
+
+    "signauxMaisonEisc": {
+      "desc": "Bloc « club » : fonctions globales (affluence, CVC, audio, effets, écran DJ). Actions en sortie EISC sous leur nom nu (même join que l'écran) ; états tenus par le C# en sortie sur le bloc club Club_xxx_fb (join = 500 + join global) ; états réels renvoyés par le slot 2 sur les entrées _Actual des joins globaux.",
+      "blocClub": { "base": 500, "desc": "Club_xxx_fb = 500 + join global ; sortie EISC. Nécessaire car les macros et l'affluence changent des états sans impulsion écran, et la consigne est calculée." },
+      "digitalFb": { "111": "Crowd_Cozy", "112": "Crowd_Busy", "113": "Crowd_Packed", "131": "Audio_Limiter", "141": "Smoke_On", "143": "Strobe_On", "145": "Lyres_On", "151-154": "Screen_Source_{n}" },
+      "analogFb":  { "20": "HVAC_Fan", "21": "HVAC_Setpoint", "30": "Audio_Dancefloor_Volume", "31": "Audio_Bar_Volume", "40": "Strobe_Freq", "41": "Screen_Source" },
+      "digitalActual": { "121": "HVAC_CTA_Online", "131": "Audio_Limiter", "141": "Smoke_On", "143": "Strobe_On", "145": "Lyres_On", "151-154": "Screen_Source_{n}" },
+      "analogActual":  { "20": "HVAC_Fan", "22": "HVAC_Temperature", "30": "Audio_Dancefloor_Volume", "31": "Audio_Bar_Volume", "32": "Audio_Db", "40": "Strobe_Freq" }
+    }
+  }
+}

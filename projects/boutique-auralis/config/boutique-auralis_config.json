@@ -1,0 +1,565 @@
+{
+  "meta": {
+    "projet": "Boutique Auralis",
+    "integrateur": "Fréquence TV",
+    "version": "1.0.1",
+    "mode": "deploiement",
+    "dateModification": "2026-09-27",
+    "langueReference": "fr",
+    "guiShowcase": "boutique-hermes",
+    "aide": ["Source unique du projet Boutique Auralis : niveaux, espaces, fonctionnalités actives par espace, fonctions boutique (stores, blanc, parfum, horaires), contrat de joins.", "Le C# (slot 1) lit ce fichier dans /user/boutique-auralis_config.json au démarrage ; le générateur SIMPL (tools/generate_slot2.js) le lit aussi.", "Une fonctionnalité absente ou 'actif: false' n'est ni affichée par le GUI, ni câblée dans le SIMPL, ni routée par le C#. Un circuit 'actif: false' garde son index (join global stable) mais n'existe ni en C# ni en SIMPL (lustre d'apparat : hall seulement).", "Tous les joins de pilotage sont GLOBAUX et identiques dans tous les espaces : l'analogique 10 (Room_Select#) porte l'espace visé (0 = toute la boutique) et permet au slot 2 de bufferiser. Les scènes s'appliquent à l'espace visé (ou à tous si a10 = 0).", "Ne jamais modifier 'contrat' sans mettre à jour Joins.cs (C#) : tools/check-contract.js vérifie la cohérence."]
+  },
+  "boutique": {
+    "nom": "Maison Auralis",
+    "sousTitre": "La maison de joaillerie",
+    "touteLaBoutique": "Toute la boutique",
+    "scenes": [
+      {
+        "id": 1,
+        "cle": "opening",
+        "nom": "Ouverture",
+        "note": "Éclat des collections",
+        "niveaux": { "cove": 45, "case": 100, "sconce": 35, "spot": 100, "path": 15, "chandelier": 60 }
+      },
+      {
+        "id": 2,
+        "cle": "gala",
+        "nom": "Réception",
+        "note": "Lumière de gala",
+        "niveaux": { "cove": 85, "case": 100, "sconce": 75, "spot": 65, "path": 55, "chandelier": 100 }
+      },
+      {
+        "id": 3,
+        "cle": "private",
+        "nom": "Rendez-vous privé",
+        "note": "Intimité & douceur",
+        "niveaux": { "cove": 35, "case": 85, "sconce": 45, "spot": 25, "path": 35, "chandelier": 50 }
+      },
+      {
+        "id": 4,
+        "cle": "closed",
+        "nom": "Fermeture",
+        "note": "Veille des vitrines",
+        "niveaux": { "cove": 5, "case": 8, "sconce": 0, "spot": 0, "path": 45, "chandelier": 0 }
+      }
+    ],
+    "sceneInitiale": "closed",
+    "scenePersonnalisee": "Ambiance personnalisée",
+    "eclairageGeneral": { "actif": true, "desc": "Lights_AllOn / Lights_AllOff : tous les circuits actifs de TOUS les espaces (bouton « Tout allumer / Tout éteindre » du GUI, jamais limité à a10)." },
+    "stores": {
+      "actif": true,
+      "facades": [
+        { "id": 1, "cle": "nord", "nom": "Nord" },
+        { "id": 2, "cle": "sud", "nom": "Sud" },
+        { "id": 3, "cle": "est", "nom": "Est" },
+        { "id": 4, "cle": "ouest", "nom": "Ouest" }
+      ],
+      "positions": { "open": 100, "half": 50, "close": 0 },
+      "positionInitiale": 100,
+      "impulsionMs": 250,
+      "desc": "Blinds_n_Open/Half/Close (n = façade, Blinds_All_* = toutes) : position tenue 100/50/0 % (0-65535 sur Blinds_n_Position#), impulsion Blinds_n_Up/Stop/Down 250 ms vers le moteur (bloc maison EISC). Un curseur sur Blinds_n_Position# est ramené à Open (≥ 75 %), Half ou Close (≤ 25 %)."
+    },
+    "blanc": {
+      "actif": true,
+      "min": 2700,
+      "max": 6500,
+      "pas": 100,
+      "initial": 3000,
+      "autoInitial": false,
+      "periodeMs": 60000,
+      "loiHoraire": [
+        { "avantHeure": 12, "kelvin": 3500 },
+        { "avantHeure": 16, "kelvin": 4500 }
+      ],
+      "kelvinDefaut": 3000,
+      "desc": "White_Temperature# en kelvins directs (2700-6500, pas 100). White_Auto (bascule) : loi horaire du simulateur recalculée par CTimer periodeMs (3500 K avant 12 h, 4500 K avant 16 h, 3000 K sinon) ; un réglage manuel désactive l'automatisme."
+    },
+    "parfum": {
+      "actif": true,
+      "etatInitial": { "diffusion": true, "fragrance": 1, "intensite": 30 },
+      "fragrances": [
+        { "id": 1, "nom": "Bois d’ambre" },
+        { "id": 2, "nom": "Agrumes" },
+        { "id": 3, "nom": "Thé blanc" }
+      ]
+    },
+    "horaires": {
+      "actif": true,
+      "etatInitial": { "actif": false, "ouverture": "09:00", "fermeture": "19:00" },
+      "pasMinutes": 15,
+      "periodeMs": 30000,
+      "sceneOuverture": "opening",
+      "sceneFermeture": "closed",
+      "desc": "Schedule_Opening# / Schedule_Closing# en minutes depuis minuit (0-1439) ; +/- pasMinutes par Schedule_*_Up/Down (bouclage sur 24 h). CTimer periodeMs : à l'heure d'ouverture → scène Ouverture sur toute la boutique, à l'heure de fermeture → Fermeture (une fois par minute, si Schedule_On) ; l'action automatique est recopiée sur l'EISC comme un appui depuis « Toute la boutique » (a10 = 0, Room_Active_00, impulsion Scene_x)."
+    },
+    "musique": {
+      "sources": [
+        { "id": 1, "nom": "Jazz & Bossa Nova" },
+        { "id": 2, "nom": "Lounge minimaliste" },
+        { "id": 3, "nom": "Classique acoustique" }
+      ]
+    }
+  },
+  "etages": [
+    { "id": "rdc", "nom": "Rez-de-chaussée", "gui": 0 },
+    { "id": "etage1", "nom": "Premier étage", "gui": 1 }
+  ],
+  "piecesDescription": "id = numéro d'espace (1..17), utilisé par Room_Select# (a10) et par le bloc EISC 1000 + (id-1)*100. cle = identifiant texte du GUI showcase (hall, r1..r6, u1..u8). intersystem = false → aucun bloc EISC câblé. Chaque pilotage porte 'actif' ; chaque circuit aussi (le canal 'chandelier' n'est actif que dans le hall) ; ce qui n'est pas déclaré n'existe pas.",
+  "pieces": [
+    {
+      "id": 1,
+      "cle": "hall",
+      "nom": "Hall & escalier d’apparat",
+      "etage": "rdc",
+      "intersystem": true,
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "circuits": [
+            { "cle": "case", "nom": "Vitrines sécurisées", "gradable": true, "actif": true, "niveauInitial": 8 },
+            { "cle": "cove", "nom": "Corniches", "gradable": true, "actif": true, "niveauInitial": 5 },
+            { "cle": "spot", "nom": "Spots", "gradable": true, "actif": true, "niveauInitial": 0 },
+            { "cle": "sconce", "nom": "Appliques", "gradable": true, "actif": true, "niveauInitial": 0 },
+            { "cle": "path", "nom": "Balisage au sol", "gradable": true, "actif": true, "niveauInitial": 45 },
+            { "cle": "chandelier", "nom": "Lustre d’apparat", "gradable": true, "actif": true, "niveauInitial": 0 }
+          ]
+        },
+        "audio": {
+          "actif": true,
+          "etatInitial": { "lecture": false, "source": 1, "volume": 35, "muet": false }
+        }
+      }
+    },
+    {
+      "id": 2,
+      "cle": "r1",
+      "nom": "Diamants & alliances",
+      "etage": "rdc",
+      "intersystem": true,
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "circuits": [
+            { "cle": "case", "nom": "Vitrines sécurisées", "gradable": true, "actif": true, "niveauInitial": 8 },
+            { "cle": "cove", "nom": "Corniches", "gradable": true, "actif": true, "niveauInitial": 5 },
+            { "cle": "spot", "nom": "Spots", "gradable": true, "actif": true, "niveauInitial": 0 },
+            { "cle": "sconce", "nom": "Appliques", "gradable": true, "actif": true, "niveauInitial": 0 },
+            { "cle": "path", "nom": "Balisage au sol", "gradable": true, "actif": true, "niveauInitial": 45 },
+            { "cle": "chandelier", "nom": "Lustre d’apparat", "gradable": true, "actif": false, "niveauInitial": 0 }
+          ]
+        },
+        "audio": {
+          "actif": true,
+          "etatInitial": { "lecture": false, "source": 1, "volume": 35, "muet": false }
+        }
+      }
+    },
+    {
+      "id": 3,
+      "cle": "r2",
+      "nom": "Galerie Éclat",
+      "etage": "rdc",
+      "intersystem": true,
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "circuits": [
+            { "cle": "case", "nom": "Vitrines sécurisées", "gradable": true, "actif": true, "niveauInitial": 8 },
+            { "cle": "cove", "nom": "Corniches", "gradable": true, "actif": true, "niveauInitial": 5 },
+            { "cle": "spot", "nom": "Spots", "gradable": true, "actif": true, "niveauInitial": 0 },
+            { "cle": "sconce", "nom": "Appliques", "gradable": true, "actif": true, "niveauInitial": 0 },
+            { "cle": "path", "nom": "Balisage au sol", "gradable": true, "actif": true, "niveauInitial": 45 },
+            { "cle": "chandelier", "nom": "Lustre d’apparat", "gradable": true, "actif": false, "niveauInitial": 0 }
+          ]
+        },
+        "audio": {
+          "actif": true,
+          "etatInitial": { "lecture": false, "source": 1, "volume": 35, "muet": false }
+        }
+      }
+    },
+    {
+      "id": 4,
+      "cle": "r3",
+      "nom": "Perles & Pétales",
+      "etage": "rdc",
+      "intersystem": true,
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "circuits": [
+            { "cle": "case", "nom": "Vitrines sécurisées", "gradable": true, "actif": true, "niveauInitial": 8 },
+            { "cle": "cove", "nom": "Corniches", "gradable": true, "actif": true, "niveauInitial": 5 },
+            { "cle": "spot", "nom": "Spots", "gradable": true, "actif": true, "niveauInitial": 0 },
+            { "cle": "sconce", "nom": "Appliques", "gradable": true, "actif": true, "niveauInitial": 0 },
+            { "cle": "path", "nom": "Balisage au sol", "gradable": true, "actif": true, "niveauInitial": 45 },
+            { "cle": "chandelier", "nom": "Lustre d’apparat", "gradable": true, "actif": false, "niveauInitial": 0 }
+          ]
+        },
+        "audio": {
+          "actif": true,
+          "etatInitial": { "lecture": false, "source": 1, "volume": 35, "muet": false }
+        }
+      }
+    },
+    {
+      "id": 5,
+      "cle": "r4",
+      "nom": "Haute joaillerie",
+      "etage": "rdc",
+      "intersystem": true,
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "circuits": [
+            { "cle": "case", "nom": "Vitrines sécurisées", "gradable": true, "actif": true, "niveauInitial": 8 },
+            { "cle": "cove", "nom": "Corniches", "gradable": true, "actif": true, "niveauInitial": 5 },
+            { "cle": "spot", "nom": "Spots", "gradable": true, "actif": true, "niveauInitial": 0 },
+            { "cle": "sconce", "nom": "Appliques", "gradable": true, "actif": true, "niveauInitial": 0 },
+            { "cle": "path", "nom": "Balisage au sol", "gradable": true, "actif": true, "niveauInitial": 45 },
+            { "cle": "chandelier", "nom": "Lustre d’apparat", "gradable": true, "actif": false, "niveauInitial": 0 }
+          ]
+        },
+        "audio": {
+          "actif": true,
+          "etatInitial": { "lecture": false, "source": 1, "volume": 35, "muet": false }
+        }
+      }
+    },
+    {
+      "id": 6,
+      "cle": "r5",
+      "nom": "Le Temps poétique",
+      "etage": "rdc",
+      "intersystem": true,
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "circuits": [
+            { "cle": "case", "nom": "Vitrines sécurisées", "gradable": true, "actif": true, "niveauInitial": 8 },
+            { "cle": "cove", "nom": "Corniches", "gradable": true, "actif": true, "niveauInitial": 5 },
+            { "cle": "spot", "nom": "Spots", "gradable": true, "actif": true, "niveauInitial": 0 },
+            { "cle": "sconce", "nom": "Appliques", "gradable": true, "actif": true, "niveauInitial": 0 },
+            { "cle": "path", "nom": "Balisage au sol", "gradable": true, "actif": true, "niveauInitial": 45 },
+            { "cle": "chandelier", "nom": "Lustre d’apparat", "gradable": true, "actif": false, "niveauInitial": 0 }
+          ]
+        },
+        "audio": {
+          "actif": true,
+          "etatInitial": { "lecture": false, "source": 1, "volume": 35, "muet": false }
+        }
+      }
+    },
+    {
+      "id": 7,
+      "cle": "r6",
+      "nom": "Salon des pierres",
+      "etage": "rdc",
+      "intersystem": true,
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "circuits": [
+            { "cle": "case", "nom": "Vitrines sécurisées", "gradable": true, "actif": true, "niveauInitial": 8 },
+            { "cle": "cove", "nom": "Corniches", "gradable": true, "actif": true, "niveauInitial": 5 },
+            { "cle": "spot", "nom": "Spots", "gradable": true, "actif": true, "niveauInitial": 0 },
+            { "cle": "sconce", "nom": "Appliques", "gradable": true, "actif": true, "niveauInitial": 0 },
+            { "cle": "path", "nom": "Balisage au sol", "gradable": true, "actif": true, "niveauInitial": 45 },
+            { "cle": "chandelier", "nom": "Lustre d’apparat", "gradable": true, "actif": false, "niveauInitial": 0 }
+          ]
+        },
+        "audio": {
+          "actif": true,
+          "etatInitial": { "lecture": false, "source": 1, "volume": 35, "muet": false }
+        }
+      }
+    },
+    {
+      "id": 8,
+      "cle": "u1",
+      "nom": "Salon privé Émeraude",
+      "etage": "etage1",
+      "intersystem": true,
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "circuits": [
+            { "cle": "case", "nom": "Vitrines sécurisées", "gradable": true, "actif": true, "niveauInitial": 8 },
+            { "cle": "cove", "nom": "Corniches", "gradable": true, "actif": true, "niveauInitial": 5 },
+            { "cle": "spot", "nom": "Spots", "gradable": true, "actif": true, "niveauInitial": 0 },
+            { "cle": "sconce", "nom": "Appliques", "gradable": true, "actif": true, "niveauInitial": 0 },
+            { "cle": "path", "nom": "Balisage au sol", "gradable": true, "actif": true, "niveauInitial": 45 },
+            { "cle": "chandelier", "nom": "Lustre d’apparat", "gradable": true, "actif": false, "niveauInitial": 0 }
+          ]
+        },
+        "audio": {
+          "actif": true,
+          "etatInitial": { "lecture": false, "source": 1, "volume": 35, "muet": false }
+        }
+      }
+    },
+    {
+      "id": 9,
+      "cle": "u2",
+      "nom": "Galerie de la nature",
+      "etage": "etage1",
+      "intersystem": true,
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "circuits": [
+            { "cle": "case", "nom": "Vitrines sécurisées", "gradable": true, "actif": true, "niveauInitial": 8 },
+            { "cle": "cove", "nom": "Corniches", "gradable": true, "actif": true, "niveauInitial": 5 },
+            { "cle": "spot", "nom": "Spots", "gradable": true, "actif": true, "niveauInitial": 0 },
+            { "cle": "sconce", "nom": "Appliques", "gradable": true, "actif": true, "niveauInitial": 0 },
+            { "cle": "path", "nom": "Balisage au sol", "gradable": true, "actif": true, "niveauInitial": 45 },
+            { "cle": "chandelier", "nom": "Lustre d’apparat", "gradable": true, "actif": false, "niveauInitial": 0 }
+          ]
+        },
+        "audio": {
+          "actif": true,
+          "etatInitial": { "lecture": false, "source": 1, "volume": 35, "muet": false }
+        }
+      }
+    },
+    {
+      "id": 10,
+      "cle": "u3",
+      "nom": "Cabinet de curiosités",
+      "etage": "etage1",
+      "intersystem": true,
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "circuits": [
+            { "cle": "case", "nom": "Vitrines sécurisées", "gradable": true, "actif": true, "niveauInitial": 8 },
+            { "cle": "cove", "nom": "Corniches", "gradable": true, "actif": true, "niveauInitial": 5 },
+            { "cle": "spot", "nom": "Spots", "gradable": true, "actif": true, "niveauInitial": 0 },
+            { "cle": "sconce", "nom": "Appliques", "gradable": true, "actif": true, "niveauInitial": 0 },
+            { "cle": "path", "nom": "Balisage au sol", "gradable": true, "actif": true, "niveauInitial": 45 },
+            { "cle": "chandelier", "nom": "Lustre d’apparat", "gradable": true, "actif": false, "niveauInitial": 0 }
+          ]
+        },
+        "audio": {
+          "actif": true,
+          "etatInitial": { "lecture": false, "source": 1, "volume": 35, "muet": false }
+        }
+      }
+    },
+    {
+      "id": 11,
+      "cle": "u4",
+      "nom": "Salon privé Rubis",
+      "etage": "etage1",
+      "intersystem": true,
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "circuits": [
+            { "cle": "case", "nom": "Vitrines sécurisées", "gradable": true, "actif": true, "niveauInitial": 8 },
+            { "cle": "cove", "nom": "Corniches", "gradable": true, "actif": true, "niveauInitial": 5 },
+            { "cle": "spot", "nom": "Spots", "gradable": true, "actif": true, "niveauInitial": 0 },
+            { "cle": "sconce", "nom": "Appliques", "gradable": true, "actif": true, "niveauInitial": 0 },
+            { "cle": "path", "nom": "Balisage au sol", "gradable": true, "actif": true, "niveauInitial": 45 },
+            { "cle": "chandelier", "nom": "Lustre d’apparat", "gradable": true, "actif": false, "niveauInitial": 0 }
+          ]
+        },
+        "audio": {
+          "actif": true,
+          "etatInitial": { "lecture": false, "source": 1, "volume": 35, "muet": false }
+        }
+      }
+    },
+    {
+      "id": 12,
+      "cle": "u5",
+      "nom": "Salon des fiançailles",
+      "etage": "etage1",
+      "intersystem": true,
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "circuits": [
+            { "cle": "case", "nom": "Vitrines sécurisées", "gradable": true, "actif": true, "niveauInitial": 8 },
+            { "cle": "cove", "nom": "Corniches", "gradable": true, "actif": true, "niveauInitial": 5 },
+            { "cle": "spot", "nom": "Spots", "gradable": true, "actif": true, "niveauInitial": 0 },
+            { "cle": "sconce", "nom": "Appliques", "gradable": true, "actif": true, "niveauInitial": 0 },
+            { "cle": "path", "nom": "Balisage au sol", "gradable": true, "actif": true, "niveauInitial": 45 },
+            { "cle": "chandelier", "nom": "Lustre d’apparat", "gradable": true, "actif": false, "niveauInitial": 0 }
+          ]
+        },
+        "audio": {
+          "actif": true,
+          "etatInitial": { "lecture": false, "source": 1, "volume": 35, "muet": false }
+        }
+      }
+    },
+    {
+      "id": 13,
+      "cle": "u6",
+      "nom": "Salon des signatures",
+      "etage": "etage1",
+      "intersystem": true,
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "circuits": [
+            { "cle": "case", "nom": "Vitrines sécurisées", "gradable": true, "actif": true, "niveauInitial": 8 },
+            { "cle": "cove", "nom": "Corniches", "gradable": true, "actif": true, "niveauInitial": 5 },
+            { "cle": "spot", "nom": "Spots", "gradable": true, "actif": true, "niveauInitial": 0 },
+            { "cle": "sconce", "nom": "Appliques", "gradable": true, "actif": true, "niveauInitial": 0 },
+            { "cle": "path", "nom": "Balisage au sol", "gradable": true, "actif": true, "niveauInitial": 45 },
+            { "cle": "chandelier", "nom": "Lustre d’apparat", "gradable": true, "actif": false, "niveauInitial": 0 }
+          ]
+        },
+        "audio": {
+          "actif": true,
+          "etatInitial": { "lecture": false, "source": 1, "volume": 35, "muet": false }
+        }
+      }
+    },
+    {
+      "id": 14,
+      "cle": "u7",
+      "nom": "Écrin Saphir",
+      "etage": "etage1",
+      "intersystem": true,
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "circuits": [
+            { "cle": "case", "nom": "Vitrines sécurisées", "gradable": true, "actif": true, "niveauInitial": 8 },
+            { "cle": "cove", "nom": "Corniches", "gradable": true, "actif": true, "niveauInitial": 5 },
+            { "cle": "spot", "nom": "Spots", "gradable": true, "actif": true, "niveauInitial": 0 },
+            { "cle": "sconce", "nom": "Appliques", "gradable": true, "actif": true, "niveauInitial": 0 },
+            { "cle": "path", "nom": "Balisage au sol", "gradable": true, "actif": true, "niveauInitial": 45 },
+            { "cle": "chandelier", "nom": "Lustre d’apparat", "gradable": true, "actif": false, "niveauInitial": 0 }
+          ]
+        },
+        "audio": {
+          "actif": true,
+          "etatInitial": { "lecture": false, "source": 1, "volume": 35, "muet": false }
+        }
+      }
+    },
+    {
+      "id": 15,
+      "cle": "u8",
+      "nom": "Salon des commandes",
+      "etage": "etage1",
+      "intersystem": true,
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "circuits": [
+            { "cle": "case", "nom": "Vitrines sécurisées", "gradable": true, "actif": true, "niveauInitial": 8 },
+            { "cle": "cove", "nom": "Corniches", "gradable": true, "actif": true, "niveauInitial": 5 },
+            { "cle": "spot", "nom": "Spots", "gradable": true, "actif": true, "niveauInitial": 0 },
+            { "cle": "sconce", "nom": "Appliques", "gradable": true, "actif": true, "niveauInitial": 0 },
+            { "cle": "path", "nom": "Balisage au sol", "gradable": true, "actif": true, "niveauInitial": 45 },
+            { "cle": "chandelier", "nom": "Lustre d’apparat", "gradable": true, "actif": false, "niveauInitial": 0 }
+          ]
+        },
+        "audio": {
+          "actif": true,
+          "etatInitial": { "lecture": false, "source": 1, "volume": 35, "muet": false }
+        }
+      }
+    }
+  ],
+  "contrat": {
+    "version": "1.0",
+    "principe": ["Tous les joins de pilotage sont globaux : le même numéro dans tous les espaces.", "Le C# (slot 1) connaît l'espace affiché par chaque écran (_activeRoomPerDevice, 0 = toute la boutique) : il applique l'action à cet espace (ou à tous), pose Room_Select# (a10) sur l'EISC, puis recopie l'impulsion sur le même join. Le slot 2 route avec des buffers validés par Room_Active_nn (d101-117, un seul haut = a10 ; Room_Active_00 = d100 quand l'action vise toute la boutique).", "Les scènes suivent a10 : Scene_x depuis un écran sur « Salon des pierres » ne touche que cet espace ; depuis « Toute la boutique », tous les espaces (comportement du simulateur).", "Fonctions boutique (stores, éclairage général, blanc, parfum, horaires) : globales par nature, un seul état pour toute la boutique ; a10 est posé mais n'a pas d'effet sur elles.", "Feedback des écrans : toujours calculé par le C#. Le slot 2 renvoie les mesures réelles par les entrées _Actual (blocs espace et bloc maison) ; elles font foi dès réception.", "Sur le symbole EISC : SORTIE = ce que le slot 2 reçoit (nom nu = action, Rnn_xxx_fb = état tenu par le C#, analogiques boutique tenus) ; ENTRÉE = ce que le slot 2 renvoie (suffixe _Actual).", "Bloc espace EISC : join = 1000 + (id-1)*100 + offset. Réservé aux échanges C# ↔ slot 2, jamais émis par un écran."],
+    "eisc": { "actif": true, "ipid": "0xF0", "adresseIp": "127.0.0.2", "slotCible": 2 },
+    "limites": { "piecesMax": 17, "circuitsMax": 8, "sourcesMax": 8, "facadesMax": 4, "fragrancesMax": 8 },
+    "signauxGlobaux": {
+      "digital": {
+        "51": { "nom": "Scene_Opening", "sens": "↔", "desc": "Scène « Ouverture » sur l'espace affiché (tous si a10 = 0) ; fb tenu = scène active de l'espace affiché" },
+        "52": { "nom": "Scene_Gala", "sens": "↔", "desc": "Scène « Réception »" },
+        "53": { "nom": "Scene_Private", "sens": "↔", "desc": "Scène « Rendez-vous privé »" },
+        "54": { "nom": "Scene_Closed", "sens": "↔", "desc": "Scène « Fermeture »" },
+        "100": { "nom": "Room_Select_All", "sens": "↔", "desc": "Sélection « Toute la boutique » (Room_Select# = 0) ; fb = cet écran affiche toute la boutique. Sur l'EISC : Room_Active_00, haut quand l'action vise tous les espaces." },
+        "151": { "nom": "Lights_AllOn", "sens": "↔", "desc": "Éclairage général : tous les circuits actifs de tous les espaces à 100 % ; fb = tout allumé" },
+        "152": { "nom": "Lights_AllOff", "sens": "↔", "desc": "Éclairage général : tous les circuits à 0 ; fb = tout éteint" },
+        "175": { "nom": "Blinds_All_Open", "sens": "↔", "desc": "Ouvrir toutes les façades ; fb = les 4 façades ouvertes" },
+        "185": { "nom": "Blinds_All_Half", "sens": "↔", "desc": "Mi-hauteur toutes façades ; fb = les 4 façades à 50 %" },
+        "195": { "nom": "Blinds_All_Close", "sens": "↔", "desc": "Fermer toutes façades ; fb = les 4 façades fermées" },
+        "201": { "nom": "White_Auto", "sens": "↔", "desc": "Bascule du cycle horaire du blanc ; fb tenu = automatisme actif (entrée EISC White_Auto_Actual)" },
+        "211": { "nom": "Scent_On", "sens": "↔", "desc": "Diffusion du parfum activée ; fb tenu (interlock avec Scent_Off, entrée EISC Scent_On_Actual)" },
+        "212": { "nom": "Scent_Off", "sens": "↔", "desc": "Diffusion arrêtée ; fb tenu" },
+        "231": { "nom": "Schedule_On", "sens": "↔", "desc": "Cycle horaire ouverture / fermeture activé ; fb tenu (interlock)" },
+        "232": { "nom": "Schedule_Off", "sens": "↔", "desc": "Cycle horaire désactivé ; fb tenu" },
+        "233": { "nom": "Schedule_Opening_Up", "sens": "→", "desc": "Heure d'ouverture + pasMinutes (15 min, bouclage 24 h)" },
+        "234": { "nom": "Schedule_Opening_Down", "sens": "→", "desc": "Heure d'ouverture − pasMinutes" },
+        "235": { "nom": "Schedule_Closing_Up", "sens": "→", "desc": "Heure de fermeture + pasMinutes" },
+        "236": { "nom": "Schedule_Closing_Down", "sens": "→", "desc": "Heure de fermeture − pasMinutes" },
+        "250": { "nom": "Config_Resync", "sens": "→", "desc": "Demande de (ré)envoi de la configuration JSON" },
+        "261": { "nom": "Music_PlayPause", "sens": "↔", "desc": "Lecture / pause ; fb tenu = en lecture" },
+        "262": { "nom": "Music_Mute", "sens": "↔", "desc": "Coupe le son (volume conservé) ; fb tenu = muet" },
+        "101-117": { "nom": "Room_Select_{n}", "sens": "↔", "desc": "Sélection directe de l'espace n (join = 100+n) ; fb = espace affiché par cet écran. Sur l'EISC : Room_Active_{n}, un seul haut, miroir de a10." },
+        "161-168": { "nom": "Light_{n}_Toggle", "sens": "↔", "desc": "Bascule 0/100 % du circuit n (1..8) de l'espace affiché (tous si a10 = 0) ; fb = circuit allumé (> 0)" },
+        "171-174": { "nom": "Blinds_{n}_Open", "sens": "↔", "desc": "Ouvrir les stores de la façade n (1 nord, 2 sud, 3 est, 4 ouest) → 100 % + impulsion Blinds_n_Up ; fb = façade ouverte" },
+        "181-184": { "nom": "Blinds_{n}_Half", "sens": "↔", "desc": "Mi-hauteur façade n → 50 % + impulsion Blinds_n_Stop ; fb = 50 %" },
+        "191-194": { "nom": "Blinds_{n}_Close", "sens": "↔", "desc": "Fermer façade n → 0 % + impulsion Blinds_n_Down ; fb = façade fermée" },
+        "221-228": { "nom": "Scent_Fragrance_{n}", "sens": "↔", "desc": "Fragrance n (1 Bois d’ambre, 2 Agrumes, 3 Thé blanc) ; fb tenu = fragrance choisie (interlock, entrée EISC Scent_Fragrance_n_Actual)" },
+        "241-248": { "nom": "Music_Source_{n}", "sens": "↔", "desc": "Source audio n (1..3) dans l'espace affiché (tous si a10 = 0, démarre la lecture) ; fb = source active" }
+      },
+      "analog": {
+        "10": { "nom": "Room_Select#", "sens": "↔", "desc": "Espace affiché par cet écran (0 = toute la boutique, 1..17). Sur l'EISC : posé AVANT chaque recopie d'action → clé de bufferisation du slot 2" },
+        "21": { "nom": "White_Temperature#", "sens": "↔", "desc": "Température de couleur du blanc en kelvins directs (2700-6500, pas 100) ; un réglage manuel coupe White_Auto ; tenu sur l'EISC, entrée White_Temperature_Actual#" },
+        "22": { "nom": "Scent_Diffusion#", "sens": "↔", "desc": "Intensité de diffusion du parfum (0-100) ; tenu sur l'EISC, entrée Scent_Diffusion_Actual#" },
+        "23": { "nom": "Schedule_Opening#", "sens": "↔", "desc": "Heure d'ouverture en minutes depuis minuit (0-1439) ; tenu sur l'EISC" },
+        "24": { "nom": "Schedule_Closing#", "sens": "↔", "desc": "Heure de fermeture en minutes depuis minuit (0-1439) ; tenu sur l'EISC" },
+        "26": { "nom": "Scene#", "sens": "←", "desc": "0 = ambiance personnalisée, 1..4 = scène active de l'espace affiché (toute la boutique : scène commune aux 15 espaces, sinon 0)" },
+        "30": { "nom": "Music_Volume#", "sens": "↔", "desc": "Volume musique de l'espace (0-100)" },
+        "41": { "nom": "Room_LightsAvg#", "sens": "←", "desc": "Niveau moyen des circuits actifs de l'espace affiché (0-100, tuile « Éclairage moyen N % »)" },
+        "42": { "nom": "Room_LightsOn#", "sens": "←", "desc": "Circuits allumés dans l'espace affiché" },
+        "43": { "nom": "Boutique_LightsOn#", "sens": "←", "desc": "Nombre de circuits allumés dans toute la boutique" },
+        "250": { "nom": "Config_ChunkAck#", "sens": "→", "desc": "Accusé de réception du chunk N de configuration" },
+        "11-18": { "nom": "Light_{n}_Level#", "sens": "↔", "desc": "Niveau du circuit n (0-65535) ; curseur → C# ; fb = niveau" },
+        "31-34": { "nom": "Blinds_{n}_Position#", "sens": "↔", "desc": "Position des stores de la façade n (0-65535, 65535 = ouvert) ; curseur → ramené à Open / Half / Close ; fb = position tenue ; tenu sur l'EISC, entrée Blinds_n_Position_Actual#" }
+      },
+      "serial": {
+        "10": { "nom": "Room_Name$", "sens": "←", "desc": "Nom de l'espace affiché (« Toute la boutique » pour a10 = 0)" },
+        "11": { "nom": "Room_Subtitle$", "sens": "←", "desc": "« Éteint » / « Éclairage moyen N % »" },
+        "12": { "nom": "Scene_Name$", "sens": "←", "desc": "Nom de la scène active de l'espace affiché / « Ambiance personnalisée »" },
+        "13": { "nom": "Boutique_Summary$", "sens": "←", "desc": "« 2 niveaux · 15 espaces »" },
+        "14": { "nom": "Schedule_Opening$", "sens": "←", "desc": "Heure d'ouverture « HH:MM »" },
+        "15": { "nom": "Schedule_Closing$", "sens": "←", "desc": "Heure de fermeture « HH:MM »" },
+        "16": { "nom": "Scent_Fragrance_Name$", "sens": "←", "desc": "Nom de la fragrance choisie" },
+        "20": { "nom": "Music_Source_Name$", "sens": "←", "desc": "Nom de la source audio de l'espace affiché" },
+        "99": { "nom": "Systeme_IpId$", "sens": "←", "desc": "IP-ID de l'écran connecté" },
+        "101": { "nom": "Systeme_CpzNom$", "sens": "←", "desc": "Nom du CPZ" },
+        "102": { "nom": "Systeme_CpzDate$", "sens": "←", "desc": "Date de compilation du CPZ" },
+        "105": { "nom": "Config_Json$", "sens": "←", "desc": "Transport de la configuration (VCFG|i|n|payload)" },
+        "106": { "nom": "Config_Hash$", "sens": "←", "desc": "Empreinte de la configuration" }
+      }
+    },
+    "blocsPieces": {
+      "base": 1000,
+      "taille": 100,
+      "desc": "Échanges C# ↔ slot 2 par espace 'intersystem'. _fb = tenu par le C# (sortie EISC, reçu par le slot 2) ; _Actual = mesure renvoyée par le slot 2 (entrée EISC). Seuls les circuits actifs de l'espace sont câblés. 15 × 100 = joins 1000..2499 (socle 2732, piecesMax 17 → 2699).",
+      "digital": {
+        "11": { "nom": "Room_Displayed", "fb": true, "actual": false, "fonction": "*", "desc": "L'espace est affiché sur au moins un écran (ou toute la boutique)" },
+        "21": { "nom": "Music_Playing", "fb": true, "actual": true, "fonction": "audio" },
+        "22": { "nom": "Music_Muted", "fb": true, "actual": true, "fonction": "audio" },
+        "1-8": { "nom": "Light_{n}_On", "fb": true, "actual": true, "fonction": "eclairages" }
+      },
+      "analog": {
+        "21": { "nom": "Music_Volume", "fb": true, "actual": true, "fonction": "audio" },
+        "22": { "nom": "Music_Source", "fb": true, "actual": true, "fonction": "audio", "desc": "1..8" },
+        "25": { "nom": "Scene", "fb": true, "actual": false, "fonction": "eclairages", "desc": "0 = personnalisée, 1..4 = scène active de l'espace" },
+        "1-8": { "nom": "Light_{n}_Level", "fb": true, "actual": true, "fonction": "eclairages" }
+      },
+      "serial": {
+        "10": { "nom": "Room_Name", "fb": true, "fonction": "*" }
+      }
+    },
+    "signauxMaisonEisc": {
+      "desc": "Bloc maison (fonctions boutique globales). Actions en sortie EISC (nom nu, mêmes joins que les écrans) ; analogiques tenus par le C# en sortie ; le slot 2 renvoie l'état réel sur les entrées _Actual des mêmes joins. digitalPulse = impulsions 250 ms du C# vers les moteurs de stores (sortie EISC seule, jamais sur un écran).",
+      "digitalActual": { "201": "White_Auto", "211": "Scent_On", "221-228": "Scent_Fragrance_{n}" },
+      "analogActual": { "21": "White_Temperature", "22": "Scent_Diffusion", "31-34": "Blinds_{n}_Position" },
+      "digitalPulse": { "301-304": "Blinds_{n}_Up", "311-314": "Blinds_{n}_Stop", "321-324": "Blinds_{n}_Down" }
+    }
+  }
+}

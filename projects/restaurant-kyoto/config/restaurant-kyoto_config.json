@@ -1,0 +1,512 @@
+{
+  "meta": {
+    "projet": "Restaurant Kyoto Gardens",
+    "integrateur": "Fréquence TV",
+    "version": "1.0.1",
+    "mode": "deploiement",
+    "dateModification": "2026-09-27",
+    "langueReference": "fr",
+    "guiShowcase": "sushi-bar-kyoto",
+    "aide": [
+      "Source unique du projet Restaurant Kyoto Gardens : zones, circuits par zone, scènes par zone, globaux restaurant (climat, musique, service), contrat de joins.",
+      "Le C# (slot 1) lit ce fichier dans /user/restaurant-kyoto_config.json au démarrage ; le générateur SIMPL (tools/generate_slot2.js) le lit aussi.",
+      "Une fonctionnalité absente ou 'actif: false' n'est ni affichée par le GUI, ni câblée dans le SIMPL, ni routée par le C#. Un circuit 'actif: false' garde son index (join global stable) mais n'existe ni en C# ni en SIMPL.",
+      "Tous les joins de pilotage sont GLOBAUX et identiques dans toutes les zones : l'analogique 10 (Room_Select#) porte la zone visée (0 = tout le restaurant) et permet au slot 2 de bufferiser.",
+      "Les scènes sont PAR ZONE : Scene_x (d51-55) s'applique à la zone visée par a10 ; a10 = 0 = toutes les zones (applyAllScene du GUI).",
+      "Ne jamais modifier 'contrat' sans mettre à jour Joins.cs (C#) : tools/check-contract.js vérifie la cohérence."
+    ]
+  },
+  "restaurant": {
+    "nom": "Kyoto Gardens",
+    "sousTitre": "Restaurant gastronomique · 15 pavillons",
+    "toutLeRestaurant": "Tout le restaurant",
+    "scenePersonnalisee": "Personnalisée",
+    "sceneInitiale": "closed",
+    "scenesDescription": "Scène par zone. 'niveaux' = % par clé de circuit (tables/bar/pergola/plants). La zone 'exterieur: true' affiche les libellés de 'libellesScenesExterieur' (mêmes ids, mêmes niveaux).",
+    "scenes": [
+      {
+        "id": 1,
+        "cle": "welcome",
+        "nom": "Accueil",
+        "note": "Ouverture chaleureuse",
+        "niveaux": { "tables": 72, "bar": 76, "pergola": 45, "plants": 55 }
+      },
+      {
+        "id": 2,
+        "cle": "dinner",
+        "nom": "Dîner",
+        "note": "Tables et bar tamisés",
+        "niveaux": { "tables": 48, "bar": 62, "pergola": 35, "plants": 40 }
+      },
+      {
+        "id": 3,
+        "cle": "rooftop",
+        "nom": "Rooftop",
+        "note": "Pergola et végétation",
+        "niveaux": { "tables": 60, "bar": 52, "pergola": 88, "plants": 82 }
+      },
+      {
+        "id": 4,
+        "cle": "cleaning",
+        "nom": "Nettoyage",
+        "note": "Éclairage fonctionnel",
+        "niveaux": { "tables": 100, "bar": 100, "pergola": 100, "plants": 65 }
+      },
+      {
+        "id": 5,
+        "cle": "closed",
+        "nom": "Fermeture",
+        "note": "Balisage de sécurité",
+        "niveaux": { "tables": 0, "bar": 8, "pergola": 0, "plants": 18 }
+      }
+    ],
+    "libellesScenesExterieur": {
+      "welcome": { "nom": "Accueil", "note": "Façades et entrée" },
+      "dinner": { "nom": "Allées", "note": "Lampadaires et lanternes" },
+      "rooftop": { "nom": "Jardins", "note": "Spots de sol et végétation" },
+      "cleaning": { "nom": "Tout allumé", "note": "Tous les circuits à 100 %" },
+      "closed": { "nom": "Veille", "note": "Balisage de sécurité" }
+    },
+    "climat": {
+      "actif": true,
+      "desc": "Global (non zoné). Consigne × 10 sur les joins (215 = 21,5 °C). Mesure et air neuf renvoyés par le slot 2 (HVAC_Temperature_Actual#, HVAC_FreshAir_Actual#).",
+      "consigne": { "min": 18, "max": 25, "pas": 0.5 },
+      "etatInitial": { "consigne": 21.5, "temperature": 21.2, "airNeuf": 68 }
+    },
+    "musique": {
+      "actif": true,
+      "desc": "Global (non zoné). Volume 0..volumeMax direct sur le join. Source fixe (titre / sous-titre), lecture-pause, égaliseur en interlock.",
+      "volumeMax": 80,
+      "titre": "Kyoto After Dark",
+      "sousTitre": "Jazz contemporain",
+      "eq": [
+        { "id": 1, "nom": "Lounge" },
+        { "id": 2, "nom": "Dining" },
+        { "id": 3, "nom": "Live" }
+      ],
+      "etatInitial": { "lecture": true, "volume": 38, "eq": 1 }
+    },
+    "service": {
+      "actif": true,
+      "desc": "Service en salle : état 0..3 (Service_State#), texte Service_Text$. Couverts renvoyés par le slot 2 (Covers_Actual#).",
+      "etats": [
+        { "id": 0, "cle": "fluide", "nom": "Fluide", "texte": "Service fluide" },
+        { "id": 1, "cle": "sommelier", "nom": "Sommelier", "texte": "Service sommelier" },
+        { "id": 2, "cle": "accueil", "nom": "Accueil", "texte": "Service accueil" },
+        { "id": 3, "cle": "cuisine", "nom": "Cuisine", "texte": "Service cuisine" }
+      ],
+      "etatInitial": "fluide",
+      "couvertsInitial": 32
+    }
+  },
+  "etages": [
+    { "id": "restaurant", "nom": "Restaurant" }
+  ],
+  "piecesDescription": "id = numéro de zone (1..17), utilisé par Room_Select# (a10) et par le bloc EISC 1000 + (id-1)*100. cle = identifiant texte du GUI showcase (exterior, accueil, …). exterieur = true → libellés de scène extérieurs. intersystem = false → aucun bloc EISC câblé. Chaque pilotage porte 'actif' ; chaque circuit aussi ; ce qui n'est pas déclaré n'existe pas. Pas d'audio ni de climat par zone : ils sont globaux (bloc 'restaurant').",
+  "pieces": [
+    {
+      "id": 1,
+      "cle": "exterior",
+      "nom": "Extérieur",
+      "etage": "restaurant",
+      "exterieur": true,
+      "intersystem": true,
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "circuits": [
+            { "cle": "tables", "nom": "Appliques des clôtures", "gradable": true, "actif": true, "niveauInitial": 0 },
+            { "cle": "bar", "nom": "Lampadaires et lanternes", "gradable": true, "actif": true, "niveauInitial": 8 },
+            { "cle": "pergola", "nom": "Spots de sol", "gradable": true, "actif": true, "niveauInitial": 0 },
+            { "cle": "plants", "nom": "Chemins et jardins", "gradable": true, "actif": true, "niveauInitial": 18 }
+          ]
+        }
+      }
+    },
+    {
+      "id": 2,
+      "cle": "accueil",
+      "nom": "Accueil",
+      "etage": "restaurant",
+      "exterieur": false,
+      "intersystem": true,
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "circuits": [
+            { "cle": "tables", "nom": "Suspensions et lustres", "gradable": true, "actif": true, "niveauInitial": 0 },
+            { "cle": "bar", "nom": "Appliques et corniches", "gradable": true, "actif": true, "niveauInitial": 8 },
+            { "cle": "pergola", "nom": "Spots plafond", "gradable": true, "actif": true, "niveauInitial": 0 },
+            { "cle": "plants", "nom": "Balises et éclairage décoratif", "gradable": true, "actif": true, "niveauInitial": 18 }
+          ]
+        }
+      }
+    },
+    {
+      "id": 3,
+      "cle": "dining",
+      "nom": "Salle vitrée",
+      "etage": "restaurant",
+      "exterieur": false,
+      "intersystem": true,
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "circuits": [
+            { "cle": "tables", "nom": "Suspensions et lustres", "gradable": true, "actif": true, "niveauInitial": 0 },
+            { "cle": "bar", "nom": "Appliques et corniches", "gradable": true, "actif": true, "niveauInitial": 8 },
+            { "cle": "pergola", "nom": "Spots plafond", "gradable": true, "actif": true, "niveauInitial": 0 },
+            { "cle": "plants", "nom": "Balises et éclairage décoratif", "gradable": true, "actif": true, "niveauInitial": 18 }
+          ]
+        }
+      }
+    },
+    {
+      "id": 4,
+      "cle": "bar",
+      "nom": "Bar minéral",
+      "etage": "restaurant",
+      "exterieur": false,
+      "intersystem": true,
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "circuits": [
+            { "cle": "tables", "nom": "Suspensions et lustres", "gradable": true, "actif": true, "niveauInitial": 0 },
+            { "cle": "bar", "nom": "Appliques et corniches", "gradable": true, "actif": true, "niveauInitial": 8 },
+            { "cle": "pergola", "nom": "Spots plafond", "gradable": true, "actif": true, "niveauInitial": 0 },
+            { "cle": "plants", "nom": "Balises et éclairage décoratif", "gradable": true, "actif": true, "niveauInitial": 18 }
+          ]
+        }
+      }
+    },
+    {
+      "id": 5,
+      "cle": "kitchen",
+      "nom": "Cuisine ouverte",
+      "etage": "restaurant",
+      "exterieur": false,
+      "intersystem": true,
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "circuits": [
+            { "cle": "tables", "nom": "Suspensions et lustres", "gradable": true, "actif": true, "niveauInitial": 0 },
+            { "cle": "bar", "nom": "Appliques et corniches", "gradable": true, "actif": true, "niveauInitial": 8 },
+            { "cle": "pergola", "nom": "Spots plafond", "gradable": true, "actif": true, "niveauInitial": 0 },
+            { "cle": "plants", "nom": "Balises et éclairage décoratif", "gradable": true, "actif": true, "niveauInitial": 18 }
+          ]
+        }
+      }
+    },
+    {
+      "id": 6,
+      "cle": "cellar",
+      "nom": "Cave à vins",
+      "etage": "restaurant",
+      "exterieur": false,
+      "intersystem": true,
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "circuits": [
+            { "cle": "tables", "nom": "Suspensions et lustres", "gradable": true, "actif": true, "niveauInitial": 0 },
+            { "cle": "bar", "nom": "Appliques et corniches", "gradable": true, "actif": true, "niveauInitial": 8 },
+            { "cle": "pergola", "nom": "Spots plafond", "gradable": true, "actif": true, "niveauInitial": 0 },
+            { "cle": "plants", "nom": "Balises et éclairage décoratif", "gradable": true, "actif": true, "niveauInitial": 18 }
+          ]
+        }
+      }
+    },
+    {
+      "id": 7,
+      "cle": "private",
+      "nom": "Salon privé",
+      "etage": "restaurant",
+      "exterieur": false,
+      "intersystem": true,
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "circuits": [
+            { "cle": "tables", "nom": "Suspensions et lustres", "gradable": true, "actif": true, "niveauInitial": 0 },
+            { "cle": "bar", "nom": "Appliques et corniches", "gradable": true, "actif": true, "niveauInitial": 8 },
+            { "cle": "pergola", "nom": "Spots plafond", "gradable": true, "actif": true, "niveauInitial": 0 },
+            { "cle": "plants", "nom": "Balises et éclairage décoratif", "gradable": true, "actif": true, "niveauInitial": 18 }
+          ]
+        }
+      }
+    },
+    {
+      "id": 8,
+      "cle": "signature",
+      "nom": "Salle signature",
+      "etage": "restaurant",
+      "exterieur": false,
+      "intersystem": true,
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "circuits": [
+            { "cle": "tables", "nom": "Suspensions et lustres", "gradable": true, "actif": true, "niveauInitial": 0 },
+            { "cle": "bar", "nom": "Appliques et corniches", "gradable": true, "actif": true, "niveauInitial": 8 },
+            { "cle": "pergola", "nom": "Spots plafond", "gradable": true, "actif": true, "niveauInitial": 0 },
+            { "cle": "plants", "nom": "Balises et éclairage décoratif", "gradable": true, "actif": true, "niveauInitial": 18 }
+          ]
+        }
+      }
+    },
+    {
+      "id": 9,
+      "cle": "teppanyaki",
+      "nom": "Teppanyaki",
+      "etage": "restaurant",
+      "exterieur": false,
+      "intersystem": true,
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "circuits": [
+            { "cle": "tables", "nom": "Suspensions et lustres", "gradable": true, "actif": true, "niveauInitial": 0 },
+            { "cle": "bar", "nom": "Appliques et corniches", "gradable": true, "actif": true, "niveauInitial": 8 },
+            { "cle": "pergola", "nom": "Spots plafond", "gradable": true, "actif": true, "niveauInitial": 0 },
+            { "cle": "plants", "nom": "Balises et éclairage décoratif", "gradable": true, "actif": true, "niveauInitial": 18 }
+          ]
+        }
+      }
+    },
+    {
+      "id": 10,
+      "cle": "lounge",
+      "nom": "Lounge",
+      "etage": "restaurant",
+      "exterieur": false,
+      "intersystem": true,
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "circuits": [
+            { "cle": "tables", "nom": "Suspensions et lustres", "gradable": true, "actif": true, "niveauInitial": 0 },
+            { "cle": "bar", "nom": "Appliques et corniches", "gradable": true, "actif": true, "niveauInitial": 8 },
+            { "cle": "pergola", "nom": "Spots plafond", "gradable": true, "actif": true, "niveauInitial": 0 },
+            { "cle": "plants", "nom": "Balises et éclairage décoratif", "gradable": true, "actif": true, "niveauInitial": 18 }
+          ]
+        }
+      }
+    },
+    {
+      "id": 11,
+      "cle": "gallery",
+      "nom": "Galerie",
+      "etage": "restaurant",
+      "exterieur": false,
+      "intersystem": true,
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "circuits": [
+            { "cle": "tables", "nom": "Suspensions et lustres", "gradable": true, "actif": true, "niveauInitial": 0 },
+            { "cle": "bar", "nom": "Appliques et corniches", "gradable": true, "actif": true, "niveauInitial": 8 },
+            { "cle": "pergola", "nom": "Spots plafond", "gradable": true, "actif": true, "niveauInitial": 0 },
+            { "cle": "plants", "nom": "Balises et éclairage décoratif", "gradable": true, "actif": true, "niveauInitial": 18 }
+          ]
+        }
+      }
+    },
+    {
+      "id": 12,
+      "cle": "belvedere",
+      "nom": "Belvédère",
+      "etage": "restaurant",
+      "exterieur": false,
+      "intersystem": true,
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "circuits": [
+            { "cle": "tables", "nom": "Suspensions et lustres", "gradable": true, "actif": true, "niveauInitial": 0 },
+            { "cle": "bar", "nom": "Appliques et corniches", "gradable": true, "actif": true, "niveauInitial": 8 },
+            { "cle": "pergola", "nom": "Spots plafond", "gradable": true, "actif": true, "niveauInitial": 0 },
+            { "cle": "plants", "nom": "Balises et éclairage décoratif", "gradable": true, "actif": true, "niveauInitial": 18 }
+          ]
+        }
+      }
+    },
+    {
+      "id": 13,
+      "cle": "terrace",
+      "nom": "Terrasse",
+      "etage": "restaurant",
+      "exterieur": false,
+      "intersystem": true,
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "circuits": [
+            { "cle": "tables", "nom": "Suspensions et lustres", "gradable": true, "actif": true, "niveauInitial": 0 },
+            { "cle": "bar", "nom": "Appliques et corniches", "gradable": true, "actif": true, "niveauInitial": 8 },
+            { "cle": "pergola", "nom": "Spots plafond", "gradable": true, "actif": true, "niveauInitial": 0 },
+            { "cle": "plants", "nom": "Balises et éclairage décoratif", "gradable": true, "actif": true, "niveauInitial": 18 }
+          ]
+        }
+      }
+    },
+    {
+      "id": 14,
+      "cle": "rooftop",
+      "nom": "Rooftop",
+      "etage": "restaurant",
+      "exterieur": false,
+      "intersystem": true,
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "circuits": [
+            { "cle": "tables", "nom": "Suspensions et lustres", "gradable": true, "actif": true, "niveauInitial": 0 },
+            { "cle": "bar", "nom": "Appliques et corniches", "gradable": true, "actif": true, "niveauInitial": 8 },
+            { "cle": "pergola", "nom": "Spots plafond", "gradable": true, "actif": true, "niveauInitial": 0 },
+            { "cle": "plants", "nom": "Balises et éclairage décoratif", "gradable": true, "actif": true, "niveauInitial": 18 }
+          ]
+        }
+      }
+    },
+    {
+      "id": 15,
+      "cle": "pergola",
+      "nom": "Pergola",
+      "etage": "restaurant",
+      "exterieur": false,
+      "intersystem": true,
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "circuits": [
+            { "cle": "tables", "nom": "Suspensions et lustres", "gradable": true, "actif": true, "niveauInitial": 0 },
+            { "cle": "bar", "nom": "Appliques et corniches", "gradable": true, "actif": true, "niveauInitial": 8 },
+            { "cle": "pergola", "nom": "Spots plafond", "gradable": true, "actif": true, "niveauInitial": 0 },
+            { "cle": "plants", "nom": "Balises et éclairage décoratif", "gradable": true, "actif": true, "niveauInitial": 18 }
+          ]
+        }
+      }
+    },
+    {
+      "id": 16,
+      "cle": "garden",
+      "nom": "Jardin suspendu",
+      "etage": "restaurant",
+      "exterieur": false,
+      "intersystem": true,
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "circuits": [
+            { "cle": "tables", "nom": "Suspensions et lustres", "gradable": true, "actif": true, "niveauInitial": 0 },
+            { "cle": "bar", "nom": "Appliques et corniches", "gradable": true, "actif": true, "niveauInitial": 8 },
+            { "cle": "pergola", "nom": "Spots plafond", "gradable": true, "actif": true, "niveauInitial": 0 },
+            { "cle": "plants", "nom": "Balises et éclairage décoratif", "gradable": true, "actif": true, "niveauInitial": 18 }
+          ]
+        }
+      }
+    }
+  ],
+  "contrat": {
+    "version": "1.0",
+    "principe": [
+      "Tous les joins de pilotage sont globaux : le même numéro dans toutes les zones.",
+      "Le C# (slot 1) connaît la zone affichée par chaque écran (_activeRoomPerDevice, 0 = tout le restaurant) : il applique l'action à cette zone (ou à toutes), pose Room_Select# (a10) sur l'EISC, puis recopie l'impulsion sur le même join. Le slot 2 route avec des buffers validés par Room_Active_nn (d101-117, un seul haut = a10 ; Room_Active_00 = d100 quand l'action vise tout le restaurant).",
+      "Feedback des écrans : toujours calculé par le C#. Le slot 2 renvoie les mesures réelles par les entrées _Actual (blocs zone et globaux restaurant) ; elles font foi dès réception.",
+      "Sur le symbole EISC : SORTIE = ce que le slot 2 reçoit (nom nu = action, Rnn_xxx_fb = état tenu par le C#) ; ENTRÉE = ce que le slot 2 renvoie (suffixe _Actual).",
+      "Bloc zone EISC : join = 1000 + (id-1)*100 + offset. Réservé aux échanges C# ↔ slot 2, jamais émis par un écran.",
+      "Scènes PAR ZONE (Scene_x appliquée à la zone a10 ; a10 = 0 = toutes). Climat, musique, service et couverts sont globaux (bloc 'restaurant')."
+    ],
+    "eisc": { "actif": true, "ipid": "0xF0", "adresseIp": "127.0.0.2", "slotCible": 2 },
+    "limites": { "piecesMax": 17, "circuitsMax": 8, "scenesMax": 5, "eqMax": 3, "servicesMax": 4 },
+    "signauxGlobaux": {
+      "digital": {
+        "51": { "nom": "Scene_Welcome", "sens": "↔", "desc": "Scène « Accueil » sur la zone affichée (a10 ; 0 = toutes les zones) ; fb tenu = scène active de la zone affichée" },
+        "52": { "nom": "Scene_Dinner", "sens": "↔", "desc": "Scène « Dîner » (extérieur : « Allées »)" },
+        "53": { "nom": "Scene_Rooftop", "sens": "↔", "desc": "Scène « Rooftop » (extérieur : « Jardins »)" },
+        "54": { "nom": "Scene_Cleaning", "sens": "↔", "desc": "Scène « Nettoyage » (extérieur : « Tout allumé »)" },
+        "55": { "nom": "Scene_Closed", "sens": "↔", "desc": "Scène « Fermeture » (extérieur : « Veille »)" },
+        "100": { "nom": "Room_Select_All", "sens": "↔", "desc": "Sélection « Tout le restaurant » (Room_Select# = 0) ; fb = cet écran affiche tout le restaurant. Sur l'EISC : Room_Active_00, haut quand l'action vise toutes les zones." },
+        "101-117": { "nom": "Room_Select_{n}", "sens": "↔", "desc": "Sélection directe de la zone n (join = 100+n) ; fb = zone affichée par cet écran. Sur l'EISC : Room_Active_{n}, un seul haut, miroir de a10." },
+        "151": { "nom": "Lights_AllOn", "sens": "↔", "desc": "Tous les circuits de la zone affichée à 100 % ; fb = tous allumés" },
+        "152": { "nom": "Lights_AllOff", "sens": "↔", "desc": "Tous les circuits à 0 ; fb = tous éteints" },
+        "161-168": { "nom": "Light_{n}_Toggle", "sens": "↔", "desc": "Bascule 0/100 % du circuit n (1..8) ; fb = circuit allumé (> 0)" },
+        "181": { "nom": "HVAC_Setpoint_Up", "sens": "→", "desc": "Consigne +pas (0,5 °C), bornée 18-25" },
+        "182": { "nom": "HVAC_Setpoint_Down", "sens": "→", "desc": "Consigne −pas" },
+        "241": { "nom": "Music_PlayPause", "sens": "↔", "desc": "Lecture / pause ; fb tenu = en lecture (entrée EISC Music_PlayPause_Actual = lecture réelle)" },
+        "243-245": { "nom": "Music_EQ_{n}", "sens": "↔", "desc": "Égaliseur n (1 Lounge, 2 Dining, 3 Live) ; fb tenu (interlock)" },
+        "250": { "nom": "Config_Resync", "sens": "→", "desc": "Demande de (ré)envoi de la configuration JSON" },
+        "261": { "nom": "Service_Fluide", "sens": "↔", "desc": "« Tout traité » : service fluide (état 0) ; fb tenu (interlock)" },
+        "262": { "nom": "Service_Sommelier", "sens": "↔", "desc": "Appel sommelier (état 1) ; fb tenu" },
+        "263": { "nom": "Service_Accueil", "sens": "↔", "desc": "Appel accueil (état 2) ; fb tenu" },
+        "264": { "nom": "Service_Cuisine", "sens": "↔", "desc": "Appel cuisine (état 3) ; fb tenu" }
+      },
+      "analog": {
+        "10": { "nom": "Room_Select#", "sens": "↔", "desc": "Zone affichée par cet écran (0 = tout le restaurant, 1..17). Sur l'EISC : posé AVANT chaque recopie d'action → clé de bufferisation du slot 2" },
+        "11-18": { "nom": "Light_{n}_Level#", "sens": "↔", "desc": "Niveau du circuit n (0-65535) ; curseur → C# (scène de la zone → personnalisée) ; fb = niveau" },
+        "26": { "nom": "Scene#", "sens": "←", "desc": "Scène active de la zone affichée : 0 = personnalisée, 1..5" },
+        "30": { "nom": "Music_Volume#", "sens": "↔", "desc": "Volume musique du restaurant (0-80, borne volumeMax)" },
+        "41": { "nom": "Room_LightsAvg#", "sens": "←", "desc": "Niveau moyen des circuits actifs de la zone affichée (0-100)" },
+        "42": { "nom": "Room_LightsOn#", "sens": "←", "desc": "Circuits allumés dans la zone affichée" },
+        "43": { "nom": "Restaurant_LightsOn#", "sens": "←", "desc": "Nombre de circuits allumés dans tout le restaurant" },
+        "60": { "nom": "HVAC_Setpoint#", "sens": "↔", "desc": "Consigne × 10 (215 = 21,5 °C), bornée 180-250, arrondie au pas" },
+        "61": { "nom": "HVAC_Temperature#", "sens": "←", "desc": "Température mesurée × 10 (entrée EISC HVAC_Temperature_Actual#, défaut 212)" },
+        "62": { "nom": "HVAC_FreshAir#", "sens": "←", "desc": "Air neuf mesuré en % (entrée EISC HVAC_FreshAir_Actual#, défaut 68)" },
+        "80": { "nom": "Service_State#", "sens": "←", "desc": "État du service : 0 Fluide, 1 Sommelier, 2 Accueil, 3 Cuisine" },
+        "81": { "nom": "Covers#", "sens": "←", "desc": "Couverts en salle (entrée EISC Covers_Actual#, défaut 32)" },
+        "250": { "nom": "Config_ChunkAck#", "sens": "→", "desc": "Accusé de réception du chunk N de configuration" }
+      },
+      "serial": {
+        "10": { "nom": "Room_Name$", "sens": "←", "desc": "Nom de la zone affichée (« Tout le restaurant » pour a10 = 0)" },
+        "11": { "nom": "Room_Subtitle$", "sens": "←", "desc": "« Éteint » / « Éclairage moyen N % »" },
+        "12": { "nom": "Scene_Name$", "sens": "←", "desc": "Nom de la scène active de la zone affichée (libellé extérieur pour la zone Extérieur) / « Personnalisée »" },
+        "13": { "nom": "Restaurant_Summary$", "sens": "←", "desc": "« Restaurant gastronomique · 15 pavillons »" },
+        "20": { "nom": "Music_Title$", "sens": "←", "desc": "Titre en cours (« Kyoto After Dark »)" },
+        "21": { "nom": "Music_Sub$", "sens": "←", "desc": "Sous-titre (« Jazz contemporain »)" },
+        "30": { "nom": "Service_Text$", "sens": "←", "desc": "« Service fluide » / « Service sommelier » / …" },
+        "99": { "nom": "Systeme_IpId$", "sens": "←", "desc": "IP-ID de l'écran connecté" },
+        "101": { "nom": "Systeme_CpzNom$", "sens": "←", "desc": "Nom du CPZ" },
+        "102": { "nom": "Systeme_CpzDate$", "sens": "←", "desc": "Date de compilation du CPZ" },
+        "105": { "nom": "Config_Json$", "sens": "←", "desc": "Transport de la configuration (VCFG|i|n|payload)" },
+        "106": { "nom": "Config_Hash$", "sens": "←", "desc": "Empreinte de la configuration" }
+      }
+    },
+    "blocsPieces": {
+      "base": 1000,
+      "taille": 100,
+      "desc": "Échanges C# ↔ slot 2 par zone 'intersystem'. _fb = tenu par le C# (sortie EISC, reçu par le slot 2) ; _Actual = mesure renvoyée par le slot 2 (entrée EISC). Seuls les circuits actifs de la zone sont câblés. 16 × 100 = joins 1000..2599 (socle 2732, 17 zones max).",
+      "digital": {
+        "1-8": { "nom": "Light_{n}_On", "fb": true, "actual": true, "fonction": "eclairages" },
+        "11": { "nom": "Room_Displayed", "fb": true, "actual": false, "fonction": "*", "desc": "La zone est affichée sur au moins un écran (ou tout le restaurant)" }
+      },
+      "analog": {
+        "1-8": { "nom": "Light_{n}_Level", "fb": true, "actual": true, "fonction": "eclairages" },
+        "20": { "nom": "Scene", "fb": true, "actual": true, "fonction": "eclairages", "desc": "Scène active de la zone : 0 = personnalisée, 1..5 ; un _Actual change le marqueur de scène, pas les niveaux" }
+      },
+      "serial": {
+        "10": { "nom": "Room_Name", "fb": true, "fonction": "*" }
+      }
+    },
+    "signauxMaisonEisc": {
+      "desc": "Bloc 'restaurant' (globaux non zonés, clé conservée du modèle ftv-home) : climat, musique, service, couverts. Actions en sortie EISC (nom nu) ; le slot 2 renvoie l'état réel sur les entrées _Actual des mêmes joins. HVAC_Temperature / HVAC_FreshAir / Service_State / Covers n'ont pas d'action : entrée seule.",
+      "digitalActual": {
+        "241": "Music_PlayPause",
+        "243-245": "Music_EQ_{n}",
+        "261": "Service_Fluide",
+        "262": "Service_Sommelier",
+        "263": "Service_Accueil",
+        "264": "Service_Cuisine"
+      },
+      "analogActual": {
+        "30": "Music_Volume",
+        "60": "HVAC_Setpoint",
+        "61": "HVAC_Temperature",
+        "62": "HVAC_FreshAir",
+        "80": "Service_State",
+        "81": "Covers"
+      }
+    }
+  }
+}

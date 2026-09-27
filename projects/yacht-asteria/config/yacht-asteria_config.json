@@ -1,0 +1,1037 @@
+{
+  "meta": {
+    "projet": "Yacht Asteria",
+    "integrateur": "Fréquence TV",
+    "version": "1.0.1",
+    "mode": "deploiement",
+    "dateModification": "2026-09-27",
+    "langueReference": "fr",
+    "guiShowcase": "yacht-monaco",
+    "aide": ["Source unique du projet Yacht Asteria : ponts,  espaces,  fonctionnalités actives par espace,  contrat de joins.", "Le C# (slot 1) lit ce fichier dans /user/yacht-asteria_config.json au démarrage ; le générateur SIMPL (tools/generate_slot2.js) le lit aussi.", "Une fonctionnalité absente ou 'actif: false' n'est ni affichée par le GUI,  ni câblée dans le SIMPL,  ni routée par le C#. Un circuit 'actif: false' garde son index (join global stable) mais n'existe ni en C# ni en SIMPL.", "Tous les joins de pilotage sont GLOBAUX et identiques dans tous les espaces : l'analogique 10 (Room_Select#) porte l'espace visé (0 = tout le yacht) et permet au slot 2 de bufferiser.", "Ne jamais modifier 'contrat' sans mettre à jour Joins.cs (C#) : tools/check-contract.js vérifie la cohérence."]
+  },
+  "yacht": {
+    "nom": "M/Y Asteria",
+    "sousTitre": "Une résidence sur la mer",
+    "toutLeYacht": "Tout le yacht",
+    "scenes": [
+      {
+        "id": 1,
+        "cle": "cruise",
+        "nom": "Croisière",
+        "note": "Lumière de jour",
+        "niveaux": { "cove": 65, "spot": 70, "accent": 55, "night": 20, "pool": 50 }
+      },
+      {
+        "id": 2,
+        "cle": "sunset",
+        "nom": "Sunset",
+        "note": "L'heure dorée",
+        "niveaux": { "cove": 85, "spot": 55, "accent": 75, "night": 55, "pool": 80 }
+      },
+      {
+        "id": 3,
+        "cle": "dinner",
+        "nom": "Dîner à bord",
+        "note": "Réception en soirée",
+        "niveaux": { "cove": 100, "spot": 55, "accent": 85, "night": 70, "pool": 100 }
+      },
+      {
+        "id": 4,
+        "cle": "night",
+        "nom": "Nuit",
+        "note": "Circulation douce",
+        "niveaux": { "cove": 18, "spot": 5, "accent": 10, "night": 75, "pool": 50 }
+      }
+    ],
+    "sceneInitiale": "cruise",
+    "scenePersonnalisee": "Ambiance personnalisée",
+    "couleurs": {
+      "initiale": "#ffd7a2",
+      "presets": [
+        { "id": 1, "nom": "Champagne", "hex": "#ffd7a2" },
+        { "id": 2, "nom": "Lagon", "hex": "#7de0d8" },
+        { "id": 3, "nom": "Azur", "hex": "#77aaf2" },
+        { "id": 4, "nom": "Améthyste", "hex": "#bf8dde" }
+      ]
+    },
+    "effets": {
+      "initial": "off",
+      "vitesseInitiale": 35,
+      "periodeMs": 350,
+      "desc": "Cycle calculé par le C# (CTimer periodeMs) : pas += 0,012 + vitesse × 0,0003 ; couleur = couleurs[floor(pas) mod n], poussée sur Color_R#/G#/B# (écrans + EISC).",
+      "liste": [
+        {
+          "id": 1,
+          "cle": "blue_wave",
+          "nom": "Vague bleue",
+          "couleurs": ["#61c3df", "#81d7d0", "#72a3df"]
+        },
+        {
+          "id": 2,
+          "cle": "rainbow",
+          "nom": "Couleurs douces",
+          "couleurs": ["#81cfc5", "#91b0df", "#c0a4d4", "#ddc69e"]
+        },
+        {
+          "id": 3,
+          "cle": "champagne",
+          "nom": "Reflets champagne",
+          "couleurs": ["#ffe6ba", "#ffd1a1", "#f4dbb3"]
+        }
+      ]
+    },
+    "cycleAutomatique": true,
+    "cycleJourNuit": { "desc": "Le slot 2 (horloge astronomique) tient Daylight_Day_Actual / Daylight_Night_Actual ; sur front montant le C# applique la scène.", "jour": "cruise", "nuit": "dinner" },
+    "musique": {
+      "sources": [
+        { "id": 1, "nom": "Horizon Lounge" },
+        { "id": 2, "nom": "Chill Out Beats" },
+        { "id": 3, "nom": "Club Session" },
+        { "id": 4, "nom": "Discours VIP" }
+      ]
+    }
+  },
+  "etages": [
+    { "id": "lower", "nom": "Pont inférieur", "gui": 0 },
+    { "id": "main", "nom": "Pont principal", "gui": 1 },
+    { "id": "owner", "nom": "Pont propriétaire", "gui": 2 },
+    { "id": "bridge", "nom": "Pont passerelle", "gui": 3 },
+    { "id": "sun", "nom": "Sun deck", "gui": 4 }
+  ],
+  "piecesDescription": "id = numéro d'espace (1..40), utilisé par Room_Select# (a10) et par le bloc EISC 500 + (id-1)*50. cle = identifiant texte du GUI showcase (\"0\"..\"36\", id = cle + 1). intersystem = false → aucun bloc EISC câblé. Chaque pilotage porte 'actif' ; chaque circuit aussi (le canal 'pool' n'est actif que dans les espaces avec bassin) ; ce qui n'est pas déclaré n'existe pas.",
+  "pieces": [
+    {
+      "id": 1,
+      "cle": "0",
+      "nom": "Beach club",
+      "etage": "lower",
+      "intersystem": true,
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "circuits": [
+            { "cle": "cove", "nom": "Corniches & bandeaux", "gradable": true, "actif": true, "niveauInitial": 65 },
+            { "cle": "spot", "nom": "Spots de plafond", "gradable": true, "actif": true, "niveauInitial": 70 },
+            { "cle": "accent", "nom": "Appliques", "gradable": true, "actif": true, "niveauInitial": 55 },
+            { "cle": "night", "nom": "Balisage de nuit", "gradable": true, "actif": true, "niveauInitial": 20 },
+            { "cle": "pool", "nom": "Piscines", "gradable": true, "actif": true, "niveauInitial": 50 }
+          ]
+        },
+        "audio": {
+          "actif": true,
+          "etatInitial": { "lecture": false, "source": 1, "volume": 35, "muet": false }
+        }
+      }
+    },
+    {
+      "id": 2,
+      "cle": "1",
+      "nom": "Spa & massage",
+      "etage": "lower",
+      "intersystem": true,
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "circuits": [
+            { "cle": "cove", "nom": "Corniches & bandeaux", "gradable": true, "actif": true, "niveauInitial": 65 },
+            { "cle": "spot", "nom": "Spots de plafond", "gradable": true, "actif": true, "niveauInitial": 70 },
+            { "cle": "accent", "nom": "Appliques", "gradable": true, "actif": true, "niveauInitial": 55 },
+            { "cle": "night", "nom": "Balisage de nuit", "gradable": true, "actif": true, "niveauInitial": 20 },
+            { "cle": "pool", "nom": "Piscines", "gradable": true, "actif": false, "niveauInitial": 0 }
+          ]
+        },
+        "audio": {
+          "actif": true,
+          "etatInitial": { "lecture": false, "source": 1, "volume": 35, "muet": false }
+        }
+      }
+    },
+    {
+      "id": 3,
+      "cle": "2",
+      "nom": "Fitness",
+      "etage": "lower",
+      "intersystem": true,
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "circuits": [
+            { "cle": "cove", "nom": "Corniches & bandeaux", "gradable": true, "actif": true, "niveauInitial": 65 },
+            { "cle": "spot", "nom": "Spots de plafond", "gradable": true, "actif": true, "niveauInitial": 70 },
+            { "cle": "accent", "nom": "Appliques", "gradable": true, "actif": true, "niveauInitial": 55 },
+            { "cle": "night", "nom": "Balisage de nuit", "gradable": true, "actif": true, "niveauInitial": 20 },
+            { "cle": "pool", "nom": "Piscines", "gradable": true, "actif": false, "niveauInitial": 0 }
+          ]
+        },
+        "audio": {
+          "actif": true,
+          "etatInitial": { "lecture": false, "source": 1, "volume": 35, "muet": false }
+        }
+      }
+    },
+    {
+      "id": 4,
+      "cle": "3",
+      "nom": "Cinéma",
+      "etage": "lower",
+      "intersystem": true,
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "circuits": [
+            { "cle": "cove", "nom": "Corniches & bandeaux", "gradable": true, "actif": true, "niveauInitial": 65 },
+            { "cle": "spot", "nom": "Spots de plafond", "gradable": true, "actif": true, "niveauInitial": 70 },
+            { "cle": "accent", "nom": "Appliques", "gradable": true, "actif": true, "niveauInitial": 55 },
+            { "cle": "night", "nom": "Balisage de nuit", "gradable": true, "actif": true, "niveauInitial": 20 },
+            { "cle": "pool", "nom": "Piscines", "gradable": true, "actif": false, "niveauInitial": 0 }
+          ]
+        },
+        "audio": {
+          "actif": true,
+          "etatInitial": { "lecture": false, "source": 1, "volume": 35, "muet": false }
+        }
+      }
+    },
+    {
+      "id": 5,
+      "cle": "4",
+      "nom": "Machines",
+      "etage": "lower",
+      "intersystem": true,
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "circuits": [
+            { "cle": "cove", "nom": "Corniches & bandeaux", "gradable": true, "actif": true, "niveauInitial": 65 },
+            { "cle": "spot", "nom": "Spots de plafond", "gradable": true, "actif": true, "niveauInitial": 70 },
+            { "cle": "accent", "nom": "Appliques", "gradable": true, "actif": true, "niveauInitial": 55 },
+            { "cle": "night", "nom": "Balisage de nuit", "gradable": true, "actif": true, "niveauInitial": 20 },
+            { "cle": "pool", "nom": "Piscines", "gradable": true, "actif": false, "niveauInitial": 0 }
+          ]
+        },
+        "audio": {
+          "actif": true,
+          "etatInitial": { "lecture": false, "source": 1, "volume": 35, "muet": false }
+        }
+      }
+    },
+    {
+      "id": 6,
+      "cle": "5",
+      "nom": "Mess équipage",
+      "etage": "lower",
+      "intersystem": true,
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "circuits": [
+            { "cle": "cove", "nom": "Corniches & bandeaux", "gradable": true, "actif": true, "niveauInitial": 65 },
+            { "cle": "spot", "nom": "Spots de plafond", "gradable": true, "actif": true, "niveauInitial": 70 },
+            { "cle": "accent", "nom": "Appliques", "gradable": true, "actif": true, "niveauInitial": 55 },
+            { "cle": "night", "nom": "Balisage de nuit", "gradable": true, "actif": true, "niveauInitial": 20 },
+            { "cle": "pool", "nom": "Piscines", "gradable": true, "actif": false, "niveauInitial": 0 }
+          ]
+        },
+        "audio": {
+          "actif": true,
+          "etatInitial": { "lecture": false, "source": 1, "volume": 35, "muet": false }
+        }
+      }
+    },
+    {
+      "id": 7,
+      "cle": "6",
+      "nom": "Buanderie",
+      "etage": "lower",
+      "intersystem": true,
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "circuits": [
+            { "cle": "cove", "nom": "Corniches & bandeaux", "gradable": true, "actif": true, "niveauInitial": 65 },
+            { "cle": "spot", "nom": "Spots de plafond", "gradable": true, "actif": true, "niveauInitial": 70 },
+            { "cle": "accent", "nom": "Appliques", "gradable": true, "actif": true, "niveauInitial": 55 },
+            { "cle": "night", "nom": "Balisage de nuit", "gradable": true, "actif": true, "niveauInitial": 20 },
+            { "cle": "pool", "nom": "Piscines", "gradable": true, "actif": false, "niveauInitial": 0 }
+          ]
+        },
+        "audio": {
+          "actif": true,
+          "etatInitial": { "lecture": false, "source": 1, "volume": 35, "muet": false }
+        }
+      }
+    },
+    {
+      "id": 8,
+      "cle": "7",
+      "nom": "Cabines équipage",
+      "etage": "lower",
+      "intersystem": true,
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "circuits": [
+            { "cle": "cove", "nom": "Corniches & bandeaux", "gradable": true, "actif": true, "niveauInitial": 65 },
+            { "cle": "spot", "nom": "Spots de plafond", "gradable": true, "actif": true, "niveauInitial": 70 },
+            { "cle": "accent", "nom": "Appliques", "gradable": true, "actif": true, "niveauInitial": 55 },
+            { "cle": "night", "nom": "Balisage de nuit", "gradable": true, "actif": true, "niveauInitial": 20 },
+            { "cle": "pool", "nom": "Piscines", "gradable": true, "actif": false, "niveauInitial": 0 }
+          ]
+        },
+        "audio": {
+          "actif": true,
+          "etatInitial": { "lecture": false, "source": 1, "volume": 35, "muet": false }
+        }
+      }
+    },
+    {
+      "id": 9,
+      "cle": "8",
+      "nom": "Réserve & racks AV",
+      "etage": "lower",
+      "intersystem": true,
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "circuits": [
+            { "cle": "cove", "nom": "Corniches & bandeaux", "gradable": true, "actif": true, "niveauInitial": 65 },
+            { "cle": "spot", "nom": "Spots de plafond", "gradable": true, "actif": true, "niveauInitial": 70 },
+            { "cle": "accent", "nom": "Appliques", "gradable": true, "actif": true, "niveauInitial": 55 },
+            { "cle": "night", "nom": "Balisage de nuit", "gradable": true, "actif": true, "niveauInitial": 20 },
+            { "cle": "pool", "nom": "Piscines", "gradable": true, "actif": false, "niveauInitial": 0 }
+          ]
+        },
+        "audio": {
+          "actif": true,
+          "etatInitial": { "lecture": false, "source": 1, "volume": 35, "muet": false }
+        }
+      }
+    },
+    {
+      "id": 10,
+      "cle": "9",
+      "nom": "Équipage avant",
+      "etage": "lower",
+      "intersystem": true,
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "circuits": [
+            { "cle": "cove", "nom": "Corniches & bandeaux", "gradable": true, "actif": true, "niveauInitial": 65 },
+            { "cle": "spot", "nom": "Spots de plafond", "gradable": true, "actif": true, "niveauInitial": 70 },
+            { "cle": "accent", "nom": "Appliques", "gradable": true, "actif": true, "niveauInitial": 55 },
+            { "cle": "night", "nom": "Balisage de nuit", "gradable": true, "actif": true, "niveauInitial": 20 },
+            { "cle": "pool", "nom": "Piscines", "gradable": true, "actif": false, "niveauInitial": 0 }
+          ]
+        },
+        "audio": {
+          "actif": true,
+          "etatInitial": { "lecture": false, "source": 1, "volume": 35, "muet": false }
+        }
+      }
+    },
+    {
+      "id": 11,
+      "cle": "10",
+      "nom": "Terrasse arrière & bassin",
+      "etage": "main",
+      "intersystem": true,
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "circuits": [
+            { "cle": "cove", "nom": "Corniches & bandeaux", "gradable": true, "actif": true, "niveauInitial": 65 },
+            { "cle": "spot", "nom": "Spots de plafond", "gradable": true, "actif": true, "niveauInitial": 70 },
+            { "cle": "accent", "nom": "Appliques", "gradable": true, "actif": true, "niveauInitial": 55 },
+            { "cle": "night", "nom": "Balisage de nuit", "gradable": true, "actif": true, "niveauInitial": 20 },
+            { "cle": "pool", "nom": "Piscines", "gradable": true, "actif": true, "niveauInitial": 50 }
+          ]
+        },
+        "audio": {
+          "actif": true,
+          "etatInitial": { "lecture": false, "source": 1, "volume": 35, "muet": false }
+        }
+      }
+    },
+    {
+      "id": 12,
+      "cle": "11",
+      "nom": "Grand salon",
+      "etage": "main",
+      "intersystem": true,
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "circuits": [
+            { "cle": "cove", "nom": "Corniches & bandeaux", "gradable": true, "actif": true, "niveauInitial": 65 },
+            { "cle": "spot", "nom": "Spots de plafond", "gradable": true, "actif": true, "niveauInitial": 70 },
+            { "cle": "accent", "nom": "Appliques", "gradable": true, "actif": true, "niveauInitial": 55 },
+            { "cle": "night", "nom": "Balisage de nuit", "gradable": true, "actif": true, "niveauInitial": 20 },
+            { "cle": "pool", "nom": "Piscines", "gradable": true, "actif": false, "niveauInitial": 0 }
+          ]
+        },
+        "audio": {
+          "actif": true,
+          "etatInitial": { "lecture": false, "source": 1, "volume": 35, "muet": false }
+        }
+      }
+    },
+    {
+      "id": 13,
+      "cle": "12",
+      "nom": "Salle à manger",
+      "etage": "main",
+      "intersystem": true,
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "circuits": [
+            { "cle": "cove", "nom": "Corniches & bandeaux", "gradable": true, "actif": true, "niveauInitial": 65 },
+            { "cle": "spot", "nom": "Spots de plafond", "gradable": true, "actif": true, "niveauInitial": 70 },
+            { "cle": "accent", "nom": "Appliques", "gradable": true, "actif": true, "niveauInitial": 55 },
+            { "cle": "night", "nom": "Balisage de nuit", "gradable": true, "actif": true, "niveauInitial": 20 },
+            { "cle": "pool", "nom": "Piscines", "gradable": true, "actif": false, "niveauInitial": 0 }
+          ]
+        },
+        "audio": {
+          "actif": true,
+          "etatInitial": { "lecture": false, "source": 1, "volume": 35, "muet": false }
+        }
+      }
+    },
+    {
+      "id": 14,
+      "cle": "13",
+      "nom": "Atrium & escalier",
+      "etage": "main",
+      "intersystem": true,
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "circuits": [
+            { "cle": "cove", "nom": "Corniches & bandeaux", "gradable": true, "actif": true, "niveauInitial": 65 },
+            { "cle": "spot", "nom": "Spots de plafond", "gradable": true, "actif": true, "niveauInitial": 70 },
+            { "cle": "accent", "nom": "Appliques", "gradable": true, "actif": true, "niveauInitial": 55 },
+            { "cle": "night", "nom": "Balisage de nuit", "gradable": true, "actif": true, "niveauInitial": 20 },
+            { "cle": "pool", "nom": "Piscines", "gradable": true, "actif": false, "niveauInitial": 0 }
+          ]
+        },
+        "audio": {
+          "actif": true,
+          "etatInitial": { "lecture": false, "source": 1, "volume": 35, "muet": false }
+        }
+      }
+    },
+    {
+      "id": 15,
+      "cle": "14",
+      "nom": "Cuisine principale",
+      "etage": "main",
+      "intersystem": true,
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "circuits": [
+            { "cle": "cove", "nom": "Corniches & bandeaux", "gradable": true, "actif": true, "niveauInitial": 65 },
+            { "cle": "spot", "nom": "Spots de plafond", "gradable": true, "actif": true, "niveauInitial": 70 },
+            { "cle": "accent", "nom": "Appliques", "gradable": true, "actif": true, "niveauInitial": 55 },
+            { "cle": "night", "nom": "Balisage de nuit", "gradable": true, "actif": true, "niveauInitial": 20 },
+            { "cle": "pool", "nom": "Piscines", "gradable": true, "actif": false, "niveauInitial": 0 }
+          ]
+        },
+        "audio": {
+          "actif": true,
+          "etatInitial": { "lecture": false, "source": 1, "volume": 35, "muet": false }
+        }
+      }
+    },
+    {
+      "id": 16,
+      "cle": "15",
+      "nom": "Suite VIP",
+      "etage": "main",
+      "intersystem": true,
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "circuits": [
+            { "cle": "cove", "nom": "Corniches & bandeaux", "gradable": true, "actif": true, "niveauInitial": 65 },
+            { "cle": "spot", "nom": "Spots de plafond", "gradable": true, "actif": true, "niveauInitial": 70 },
+            { "cle": "accent", "nom": "Appliques", "gradable": true, "actif": true, "niveauInitial": 55 },
+            { "cle": "night", "nom": "Balisage de nuit", "gradable": true, "actif": true, "niveauInitial": 20 },
+            { "cle": "pool", "nom": "Piscines", "gradable": true, "actif": false, "niveauInitial": 0 }
+          ]
+        },
+        "audio": {
+          "actif": true,
+          "etatInitial": { "lecture": false, "source": 1, "volume": 35, "muet": false }
+        }
+      }
+    },
+    {
+      "id": 17,
+      "cle": "16",
+      "nom": "Suite invités bâbord",
+      "etage": "main",
+      "intersystem": true,
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "circuits": [
+            { "cle": "cove", "nom": "Corniches & bandeaux", "gradable": true, "actif": true, "niveauInitial": 65 },
+            { "cle": "spot", "nom": "Spots de plafond", "gradable": true, "actif": true, "niveauInitial": 70 },
+            { "cle": "accent", "nom": "Appliques", "gradable": true, "actif": true, "niveauInitial": 55 },
+            { "cle": "night", "nom": "Balisage de nuit", "gradable": true, "actif": true, "niveauInitial": 20 },
+            { "cle": "pool", "nom": "Piscines", "gradable": true, "actif": false, "niveauInitial": 0 }
+          ]
+        },
+        "audio": {
+          "actif": true,
+          "etatInitial": { "lecture": false, "source": 1, "volume": 35, "muet": false }
+        }
+      }
+    },
+    {
+      "id": 18,
+      "cle": "17",
+      "nom": "Suite invités tribord",
+      "etage": "main",
+      "intersystem": true,
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "circuits": [
+            { "cle": "cove", "nom": "Corniches & bandeaux", "gradable": true, "actif": true, "niveauInitial": 65 },
+            { "cle": "spot", "nom": "Spots de plafond", "gradable": true, "actif": true, "niveauInitial": 70 },
+            { "cle": "accent", "nom": "Appliques", "gradable": true, "actif": true, "niveauInitial": 55 },
+            { "cle": "night", "nom": "Balisage de nuit", "gradable": true, "actif": true, "niveauInitial": 20 },
+            { "cle": "pool", "nom": "Piscines", "gradable": true, "actif": false, "niveauInitial": 0 }
+          ]
+        },
+        "audio": {
+          "actif": true,
+          "etatInitial": { "lecture": false, "source": 1, "volume": 35, "muet": false }
+        }
+      }
+    },
+    {
+      "id": 19,
+      "cle": "18",
+      "nom": "Salon avant",
+      "etage": "main",
+      "intersystem": true,
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "circuits": [
+            { "cle": "cove", "nom": "Corniches & bandeaux", "gradable": true, "actif": true, "niveauInitial": 65 },
+            { "cle": "spot", "nom": "Spots de plafond", "gradable": true, "actif": true, "niveauInitial": 70 },
+            { "cle": "accent", "nom": "Appliques", "gradable": true, "actif": true, "niveauInitial": 55 },
+            { "cle": "night", "nom": "Balisage de nuit", "gradable": true, "actif": true, "niveauInitial": 20 },
+            { "cle": "pool", "nom": "Piscines", "gradable": true, "actif": false, "niveauInitial": 0 }
+          ]
+        },
+        "audio": {
+          "actif": true,
+          "etatInitial": { "lecture": false, "source": 1, "volume": 35, "muet": false }
+        }
+      }
+    },
+    {
+      "id": 20,
+      "cle": "19",
+      "nom": "Dîner extérieur",
+      "etage": "owner",
+      "intersystem": true,
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "circuits": [
+            { "cle": "cove", "nom": "Corniches & bandeaux", "gradable": true, "actif": true, "niveauInitial": 65 },
+            { "cle": "spot", "nom": "Spots de plafond", "gradable": true, "actif": true, "niveauInitial": 70 },
+            { "cle": "accent", "nom": "Appliques", "gradable": true, "actif": true, "niveauInitial": 55 },
+            { "cle": "night", "nom": "Balisage de nuit", "gradable": true, "actif": true, "niveauInitial": 20 },
+            { "cle": "pool", "nom": "Piscines", "gradable": true, "actif": false, "niveauInitial": 0 }
+          ]
+        },
+        "audio": {
+          "actif": true,
+          "etatInitial": { "lecture": false, "source": 1, "volume": 35, "muet": false }
+        }
+      }
+    },
+    {
+      "id": 21,
+      "cle": "20",
+      "nom": "Sky lounge",
+      "etage": "owner",
+      "intersystem": true,
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "circuits": [
+            { "cle": "cove", "nom": "Corniches & bandeaux", "gradable": true, "actif": true, "niveauInitial": 65 },
+            { "cle": "spot", "nom": "Spots de plafond", "gradable": true, "actif": true, "niveauInitial": 70 },
+            { "cle": "accent", "nom": "Appliques", "gradable": true, "actif": true, "niveauInitial": 55 },
+            { "cle": "night", "nom": "Balisage de nuit", "gradable": true, "actif": true, "niveauInitial": 20 },
+            { "cle": "pool", "nom": "Piscines", "gradable": true, "actif": false, "niveauInitial": 0 }
+          ]
+        },
+        "audio": {
+          "actif": true,
+          "etatInitial": { "lecture": false, "source": 1, "volume": 35, "muet": false }
+        }
+      }
+    },
+    {
+      "id": 22,
+      "cle": "21",
+      "nom": "Galerie centrale",
+      "etage": "owner",
+      "intersystem": true,
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "circuits": [
+            { "cle": "cove", "nom": "Corniches & bandeaux", "gradable": true, "actif": true, "niveauInitial": 65 },
+            { "cle": "spot", "nom": "Spots de plafond", "gradable": true, "actif": true, "niveauInitial": 70 },
+            { "cle": "accent", "nom": "Appliques", "gradable": true, "actif": true, "niveauInitial": 55 },
+            { "cle": "night", "nom": "Balisage de nuit", "gradable": true, "actif": true, "niveauInitial": 20 },
+            { "cle": "pool", "nom": "Piscines", "gradable": true, "actif": false, "niveauInitial": 0 }
+          ]
+        },
+        "audio": {
+          "actif": true,
+          "etatInitial": { "lecture": false, "source": 1, "volume": 35, "muet": false }
+        }
+      }
+    },
+    {
+      "id": 23,
+      "cle": "22",
+      "nom": "Suite propriétaire",
+      "etage": "owner",
+      "intersystem": true,
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "circuits": [
+            { "cle": "cove", "nom": "Corniches & bandeaux", "gradable": true, "actif": true, "niveauInitial": 65 },
+            { "cle": "spot", "nom": "Spots de plafond", "gradable": true, "actif": true, "niveauInitial": 70 },
+            { "cle": "accent", "nom": "Appliques", "gradable": true, "actif": true, "niveauInitial": 55 },
+            { "cle": "night", "nom": "Balisage de nuit", "gradable": true, "actif": true, "niveauInitial": 20 },
+            { "cle": "pool", "nom": "Piscines", "gradable": true, "actif": false, "niveauInitial": 0 }
+          ]
+        },
+        "audio": {
+          "actif": true,
+          "etatInitial": { "lecture": false, "source": 1, "volume": 35, "muet": false }
+        }
+      }
+    },
+    {
+      "id": 24,
+      "cle": "23",
+      "nom": "Salle de bain propriétaire",
+      "etage": "owner",
+      "intersystem": true,
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "circuits": [
+            { "cle": "cove", "nom": "Corniches & bandeaux", "gradable": true, "actif": true, "niveauInitial": 65 },
+            { "cle": "spot", "nom": "Spots de plafond", "gradable": true, "actif": true, "niveauInitial": 70 },
+            { "cle": "accent", "nom": "Appliques", "gradable": true, "actif": true, "niveauInitial": 55 },
+            { "cle": "night", "nom": "Balisage de nuit", "gradable": true, "actif": true, "niveauInitial": 20 },
+            { "cle": "pool", "nom": "Piscines", "gradable": true, "actif": false, "niveauInitial": 0 }
+          ]
+        },
+        "audio": {
+          "actif": true,
+          "etatInitial": { "lecture": false, "source": 1, "volume": 35, "muet": false }
+        }
+      }
+    },
+    {
+      "id": 25,
+      "cle": "24",
+      "nom": "Dressing propriétaire",
+      "etage": "owner",
+      "intersystem": true,
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "circuits": [
+            { "cle": "cove", "nom": "Corniches & bandeaux", "gradable": true, "actif": true, "niveauInitial": 65 },
+            { "cle": "spot", "nom": "Spots de plafond", "gradable": true, "actif": true, "niveauInitial": 70 },
+            { "cle": "accent", "nom": "Appliques", "gradable": true, "actif": true, "niveauInitial": 55 },
+            { "cle": "night", "nom": "Balisage de nuit", "gradable": true, "actif": true, "niveauInitial": 20 },
+            { "cle": "pool", "nom": "Piscines", "gradable": true, "actif": false, "niveauInitial": 0 }
+          ]
+        },
+        "audio": {
+          "actif": true,
+          "etatInitial": { "lecture": false, "source": 1, "volume": 35, "muet": false }
+        }
+      }
+    },
+    {
+      "id": 26,
+      "cle": "25",
+      "nom": "Suite familiale",
+      "etage": "owner",
+      "intersystem": true,
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "circuits": [
+            { "cle": "cove", "nom": "Corniches & bandeaux", "gradable": true, "actif": true, "niveauInitial": 65 },
+            { "cle": "spot", "nom": "Spots de plafond", "gradable": true, "actif": true, "niveauInitial": 70 },
+            { "cle": "accent", "nom": "Appliques", "gradable": true, "actif": true, "niveauInitial": 55 },
+            { "cle": "night", "nom": "Balisage de nuit", "gradable": true, "actif": true, "niveauInitial": 20 },
+            { "cle": "pool", "nom": "Piscines", "gradable": true, "actif": false, "niveauInitial": 0 }
+          ]
+        },
+        "audio": {
+          "actif": true,
+          "etatInitial": { "lecture": false, "source": 1, "volume": 35, "muet": false }
+        }
+      }
+    },
+    {
+      "id": 27,
+      "cle": "26",
+      "nom": "Terrasse privée & jacuzzi",
+      "etage": "owner",
+      "intersystem": true,
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "circuits": [
+            { "cle": "cove", "nom": "Corniches & bandeaux", "gradable": true, "actif": true, "niveauInitial": 65 },
+            { "cle": "spot", "nom": "Spots de plafond", "gradable": true, "actif": true, "niveauInitial": 70 },
+            { "cle": "accent", "nom": "Appliques", "gradable": true, "actif": true, "niveauInitial": 55 },
+            { "cle": "night", "nom": "Balisage de nuit", "gradable": true, "actif": true, "niveauInitial": 20 },
+            { "cle": "pool", "nom": "Piscines", "gradable": true, "actif": true, "niveauInitial": 50 }
+          ]
+        },
+        "audio": {
+          "actif": true,
+          "etatInitial": { "lecture": false, "source": 1, "volume": 35, "muet": false }
+        }
+      }
+    },
+    {
+      "id": 28,
+      "cle": "27",
+      "nom": "Terrasse panoramique",
+      "etage": "bridge",
+      "intersystem": true,
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "circuits": [
+            { "cle": "cove", "nom": "Corniches & bandeaux", "gradable": true, "actif": true, "niveauInitial": 65 },
+            { "cle": "spot", "nom": "Spots de plafond", "gradable": true, "actif": true, "niveauInitial": 70 },
+            { "cle": "accent", "nom": "Appliques", "gradable": true, "actif": true, "niveauInitial": 55 },
+            { "cle": "night", "nom": "Balisage de nuit", "gradable": true, "actif": true, "niveauInitial": 20 },
+            { "cle": "pool", "nom": "Piscines", "gradable": true, "actif": false, "niveauInitial": 0 }
+          ]
+        },
+        "audio": {
+          "actif": true,
+          "etatInitial": { "lecture": false, "source": 1, "volume": 35, "muet": false }
+        }
+      }
+    },
+    {
+      "id": 29,
+      "cle": "28",
+      "nom": "Salon observation",
+      "etage": "bridge",
+      "intersystem": true,
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "circuits": [
+            { "cle": "cove", "nom": "Corniches & bandeaux", "gradable": true, "actif": true, "niveauInitial": 65 },
+            { "cle": "spot", "nom": "Spots de plafond", "gradable": true, "actif": true, "niveauInitial": 70 },
+            { "cle": "accent", "nom": "Appliques", "gradable": true, "actif": true, "niveauInitial": 55 },
+            { "cle": "night", "nom": "Balisage de nuit", "gradable": true, "actif": true, "niveauInitial": 20 },
+            { "cle": "pool", "nom": "Piscines", "gradable": true, "actif": false, "niveauInitial": 0 }
+          ]
+        },
+        "audio": {
+          "actif": true,
+          "etatInitial": { "lecture": false, "source": 1, "volume": 35, "muet": false }
+        }
+      }
+    },
+    {
+      "id": 30,
+      "cle": "29",
+      "nom": "Lobby supérieur",
+      "etage": "bridge",
+      "intersystem": true,
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "circuits": [
+            { "cle": "cove", "nom": "Corniches & bandeaux", "gradable": true, "actif": true, "niveauInitial": 65 },
+            { "cle": "spot", "nom": "Spots de plafond", "gradable": true, "actif": true, "niveauInitial": 70 },
+            { "cle": "accent", "nom": "Appliques", "gradable": true, "actif": true, "niveauInitial": 55 },
+            { "cle": "night", "nom": "Balisage de nuit", "gradable": true, "actif": true, "niveauInitial": 20 },
+            { "cle": "pool", "nom": "Piscines", "gradable": true, "actif": false, "niveauInitial": 0 }
+          ]
+        },
+        "audio": {
+          "actif": true,
+          "etatInitial": { "lecture": false, "source": 1, "volume": 35, "muet": false }
+        }
+      }
+    },
+    {
+      "id": 31,
+      "cle": "30",
+      "nom": "Cabine capitaine",
+      "etage": "bridge",
+      "intersystem": true,
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "circuits": [
+            { "cle": "cove", "nom": "Corniches & bandeaux", "gradable": true, "actif": true, "niveauInitial": 65 },
+            { "cle": "spot", "nom": "Spots de plafond", "gradable": true, "actif": true, "niveauInitial": 70 },
+            { "cle": "accent", "nom": "Appliques", "gradable": true, "actif": true, "niveauInitial": 55 },
+            { "cle": "night", "nom": "Balisage de nuit", "gradable": true, "actif": true, "niveauInitial": 20 },
+            { "cle": "pool", "nom": "Piscines", "gradable": true, "actif": false, "niveauInitial": 0 }
+          ]
+        },
+        "audio": {
+          "actif": true,
+          "etatInitial": { "lecture": false, "source": 1, "volume": 35, "muet": false }
+        }
+      }
+    },
+    {
+      "id": 32,
+      "cle": "31",
+      "nom": "Bureau navigation",
+      "etage": "bridge",
+      "intersystem": true,
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "circuits": [
+            { "cle": "cove", "nom": "Corniches & bandeaux", "gradable": true, "actif": true, "niveauInitial": 65 },
+            { "cle": "spot", "nom": "Spots de plafond", "gradable": true, "actif": true, "niveauInitial": 70 },
+            { "cle": "accent", "nom": "Appliques", "gradable": true, "actif": true, "niveauInitial": 55 },
+            { "cle": "night", "nom": "Balisage de nuit", "gradable": true, "actif": true, "niveauInitial": 20 },
+            { "cle": "pool", "nom": "Piscines", "gradable": true, "actif": false, "niveauInitial": 0 }
+          ]
+        },
+        "audio": {
+          "actif": true,
+          "etatInitial": { "lecture": false, "source": 1, "volume": 35, "muet": false }
+        }
+      }
+    },
+    {
+      "id": 33,
+      "cle": "32",
+      "nom": "Passerelle",
+      "etage": "bridge",
+      "intersystem": true,
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "circuits": [
+            { "cle": "cove", "nom": "Corniches & bandeaux", "gradable": true, "actif": true, "niveauInitial": 65 },
+            { "cle": "spot", "nom": "Spots de plafond", "gradable": true, "actif": true, "niveauInitial": 70 },
+            { "cle": "accent", "nom": "Appliques", "gradable": true, "actif": true, "niveauInitial": 55 },
+            { "cle": "night", "nom": "Balisage de nuit", "gradable": true, "actif": true, "niveauInitial": 20 },
+            { "cle": "pool", "nom": "Piscines", "gradable": true, "actif": false, "niveauInitial": 0 }
+          ]
+        },
+        "audio": {
+          "actif": true,
+          "etatInitial": { "lecture": false, "source": 1, "volume": 35, "muet": false }
+        }
+      }
+    },
+    {
+      "id": 34,
+      "cle": "33",
+      "nom": "Solarium",
+      "etage": "sun",
+      "intersystem": true,
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "circuits": [
+            { "cle": "cove", "nom": "Corniches & bandeaux", "gradable": true, "actif": true, "niveauInitial": 65 },
+            { "cle": "spot", "nom": "Spots de plafond", "gradable": true, "actif": true, "niveauInitial": 70 },
+            { "cle": "accent", "nom": "Appliques", "gradable": true, "actif": true, "niveauInitial": 55 },
+            { "cle": "night", "nom": "Balisage de nuit", "gradable": true, "actif": true, "niveauInitial": 20 },
+            { "cle": "pool", "nom": "Piscines", "gradable": true, "actif": false, "niveauInitial": 0 }
+          ]
+        },
+        "audio": {
+          "actif": true,
+          "etatInitial": { "lecture": false, "source": 1, "volume": 35, "muet": false }
+        }
+      }
+    },
+    {
+      "id": 35,
+      "cle": "34",
+      "nom": "Bar & cuisine extérieure",
+      "etage": "sun",
+      "intersystem": true,
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "circuits": [
+            { "cle": "cove", "nom": "Corniches & bandeaux", "gradable": true, "actif": true, "niveauInitial": 65 },
+            { "cle": "spot", "nom": "Spots de plafond", "gradable": true, "actif": true, "niveauInitial": 70 },
+            { "cle": "accent", "nom": "Appliques", "gradable": true, "actif": true, "niveauInitial": 55 },
+            { "cle": "night", "nom": "Balisage de nuit", "gradable": true, "actif": true, "niveauInitial": 20 },
+            { "cle": "pool", "nom": "Piscines", "gradable": true, "actif": false, "niveauInitial": 0 }
+          ]
+        },
+        "audio": {
+          "actif": true,
+          "etatInitial": { "lecture": false, "source": 1, "volume": 35, "muet": false }
+        }
+      }
+    },
+    {
+      "id": 36,
+      "cle": "35",
+      "nom": "Lounge couvert",
+      "etage": "sun",
+      "intersystem": true,
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "circuits": [
+            { "cle": "cove", "nom": "Corniches & bandeaux", "gradable": true, "actif": true, "niveauInitial": 65 },
+            { "cle": "spot", "nom": "Spots de plafond", "gradable": true, "actif": true, "niveauInitial": 70 },
+            { "cle": "accent", "nom": "Appliques", "gradable": true, "actif": true, "niveauInitial": 55 },
+            { "cle": "night", "nom": "Balisage de nuit", "gradable": true, "actif": true, "niveauInitial": 20 },
+            { "cle": "pool", "nom": "Piscines", "gradable": true, "actif": false, "niveauInitial": 0 }
+          ]
+        },
+        "audio": {
+          "actif": true,
+          "etatInitial": { "lecture": false, "source": 1, "volume": 35, "muet": false }
+        }
+      }
+    },
+    {
+      "id": 37,
+      "cle": "36",
+      "nom": "Piscine du sun deck",
+      "etage": "sun",
+      "intersystem": true,
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "circuits": [
+            { "cle": "cove", "nom": "Corniches & bandeaux", "gradable": true, "actif": true, "niveauInitial": 65 },
+            { "cle": "spot", "nom": "Spots de plafond", "gradable": true, "actif": true, "niveauInitial": 70 },
+            { "cle": "accent", "nom": "Appliques", "gradable": true, "actif": true, "niveauInitial": 55 },
+            { "cle": "night", "nom": "Balisage de nuit", "gradable": true, "actif": true, "niveauInitial": 20 },
+            { "cle": "pool", "nom": "Piscines", "gradable": true, "actif": true, "niveauInitial": 50 }
+          ]
+        },
+        "audio": {
+          "actif": true,
+          "etatInitial": { "lecture": false, "source": 1, "volume": 35, "muet": false }
+        }
+      }
+    }
+  ],
+  "contrat": {
+    "version": "1.0",
+    "principe": ["Tous les joins de pilotage sont globaux : le même numéro dans tous les espaces.", "Le C# (slot 1) connaît l'espace affiché par chaque écran (_activeRoomPerDevice,  0 = tout le yacht) : il applique l'action à cet espace (ou à tous),  pose Room_Select# (a10) sur l'EISC,  puis recopie l'impulsion sur le même join. Le slot 2 route avec des buffers validés par Room_Active_nn (d101-140,  un seul haut = a10 ; Room_Active_00 = d100 quand l'action vise tout le yacht).", "Feedback des écrans : toujours calculé par le C#. Le slot 2 renvoie les mesures réelles par les entrées _Actual des blocs espace ; elles font foi dès réception.", "Sur le symbole EISC : SORTIE = ce que le slot 2 reçoit (nom nu = action,  Rnn_xxx_fb = état tenu par le C#) ; ENTRÉE = ce que le slot 2 renvoie (suffixe _Actual).", "Bloc espace EISC : join = 500 + (id-1)*50 + offset. Réservé aux échanges C# ↔ slot 2,  jamais émis par un écran."],
+    "eisc": { "actif": true, "ipid": "0xF0", "adresseIp": "127.0.0.2", "slotCible": 2 },
+    "limites": { "piecesMax": 40, "circuitsMax": 8, "sourcesMax": 8, "couleursMax": 8 },
+    "signauxGlobaux": {
+      "digital": {
+        "51": { "nom": "Scene_Cruise", "sens": "↔", "desc": "Scène « Croisière » sur tout le yacht ; fb tenu = scène active" },
+        "52": { "nom": "Scene_Sunset", "sens": "↔", "desc": "Scène « Sunset »" },
+        "53": { "nom": "Scene_Dinner", "sens": "↔", "desc": "Scène « Dîner à bord »" },
+        "54": { "nom": "Scene_Night", "sens": "↔", "desc": "Scène « Nuit »" },
+        "100": { "nom": "Room_Select_All", "sens": "↔", "desc": "Sélection « Tout le yacht » (Room_Select# = 0) ; fb = cet écran affiche tout le yacht. Sur l'EISC : Room_Active_00, haut quand l'action vise tous les espaces." },
+        "151": { "nom": "Lights_AllOn", "sens": "↔", "desc": "Tous les circuits de l'espace affiché à 100 % ; fb = tous allumés" },
+        "152": { "nom": "Lights_AllOff", "sens": "↔", "desc": "Tous les circuits à 0 ; fb = tous éteints" },
+        "211": { "nom": "Effect_Off", "sens": "↔", "desc": "Lumière fixe (couleur choisie) ; fb tenu (interlock)" },
+        "212": { "nom": "Effect_BlueWave", "sens": "↔", "desc": "Effet « Vague bleue » ; fb tenu" },
+        "213": { "nom": "Effect_Rainbow", "sens": "↔", "desc": "Effet « Couleurs douces » ; fb tenu" },
+        "214": { "nom": "Effect_Champagne", "sens": "↔", "desc": "Effet « Reflets champagne » ; fb tenu" },
+        "221": { "nom": "Daylight_Day", "sens": "←", "desc": "Jour (horloge astronomique du slot 2, entrée Daylight_Day_Actual) ; cycle auto → scène « Croisière » sur le front montant" },
+        "222": { "nom": "Daylight_Night", "sens": "←", "desc": "Nuit (Daylight_Night_Actual) ; cycle auto → scène « Dîner à bord » sur le front montant" },
+        "241": { "nom": "Music_PlayPause", "sens": "↔", "desc": "Lecture / pause ; fb tenu = en lecture" },
+        "242": { "nom": "Music_Mute", "sens": "↔", "desc": "Coupe le son ; fb tenu = muet" },
+        "250": { "nom": "Config_Resync", "sens": "→", "desc": "Demande de (ré)envoi de la configuration JSON" },
+        "101-140": { "nom": "Room_Select_{n}", "sens": "↔", "desc": "Sélection directe de l'espace n (join = 100+n) ; fb = espace affiché par cet écran. Sur l'EISC : Room_Active_{n}, un seul haut, miroir de a10." },
+        "161-168": { "nom": "Light_{n}_Toggle", "sens": "↔", "desc": "Bascule 0/100 % du circuit n (1..8) ; fb = circuit allumé (> 0)" },
+        "201-208": { "nom": "Color_Preset_{n}", "sens": "↔", "desc": "Couleur préréglée n des bandeaux (1 Champagne, 2 Lagon, 3 Azur, 4 Améthyste) ; fb = couleur courante égale au preset" },
+        "231-238": { "nom": "Music_Source_{n}", "sens": "↔", "desc": "Source audio n (1..4) dans l'espace affiché (démarre la lecture) ; fb = source active" }
+      },
+      "analog": {
+        "10": { "nom": "Room_Select#", "sens": "↔", "desc": "Espace affiché par cet écran (0 = tout le yacht, 1..40). Sur l'EISC : posé AVANT chaque recopie d'action → clé de bufferisation du slot 2" },
+        "21": { "nom": "Color_R#", "sens": "↔", "desc": "Composante rouge des bandeaux (0-255) ; en effet actif, poussée par le cycle C#" },
+        "22": { "nom": "Color_G#", "sens": "↔", "desc": "Composante verte (0-255)" },
+        "23": { "nom": "Color_B#", "sens": "↔", "desc": "Composante bleue (0-255)" },
+        "24": { "nom": "Speed#", "sens": "↔", "desc": "Vitesse de transition des effets (0-100)" },
+        "25": { "nom": "Effect#", "sens": "←", "desc": "0 = fixe, 1 = Vague bleue, 2 = Couleurs douces, 3 = Reflets champagne" },
+        "26": { "nom": "Scene#", "sens": "←", "desc": "0 = ambiance personnalisée, 1..4 = scène active" },
+        "30": { "nom": "Music_Volume#", "sens": "↔", "desc": "Volume musique de l'espace (0-100)" },
+        "41": { "nom": "Room_LightsAvg#", "sens": "←", "desc": "Niveau moyen des circuits actifs de l'espace affiché (0-100, tuile « Éclairage moyen N % »)" },
+        "42": { "nom": "Room_LightsOn#", "sens": "←", "desc": "Circuits allumés dans l'espace affiché" },
+        "43": { "nom": "Yacht_LightsOn#", "sens": "←", "desc": "Nombre de circuits allumés sur tout le yacht" },
+        "250": { "nom": "Config_ChunkAck#", "sens": "→", "desc": "Accusé de réception du chunk N de configuration" },
+        "11-18": { "nom": "Light_{n}_Level#", "sens": "↔", "desc": "Niveau du circuit n (0-65535) ; curseur → C# ; fb = niveau" }
+      },
+      "serial": {
+        "10": { "nom": "Room_Name$", "sens": "←", "desc": "Nom de l'espace affiché (« Tout le yacht » pour a10 = 0)" },
+        "11": { "nom": "Room_Subtitle$", "sens": "←", "desc": "« Éteint » / « Éclairage moyen N % »" },
+        "12": { "nom": "Scene_Name$", "sens": "←", "desc": "Nom de la scène active / « Ambiance personnalisée »" },
+        "13": { "nom": "Yacht_Summary$", "sens": "←", "desc": "« 5 ponts · 37 espaces »" },
+        "20": { "nom": "Music_Source_Name$", "sens": "←", "desc": "Nom de la source audio de l'espace affiché" },
+        "22": { "nom": "Color_Hex$", "sens": "←", "desc": "Couleur courante des bandeaux (#rrggbb)" },
+        "99": { "nom": "Systeme_IpId$", "sens": "←", "desc": "IP-ID de l'écran connecté" },
+        "101": { "nom": "Systeme_CpzNom$", "sens": "←", "desc": "Nom du CPZ" },
+        "102": { "nom": "Systeme_CpzDate$", "sens": "←", "desc": "Date de compilation du CPZ" },
+        "105": { "nom": "Config_Json$", "sens": "←", "desc": "Transport de la configuration (VCFG|i|n|payload)" },
+        "106": { "nom": "Config_Hash$", "sens": "←", "desc": "Empreinte de la configuration" }
+      }
+    },
+    "blocsPieces": {
+      "base": 500,
+      "taille": 50,
+      "desc": "Échanges C# ↔ slot 2 par espace 'intersystem'. _fb = tenu par le C# (sortie EISC, reçu par le slot 2) ; _Actual = mesure renvoyée par le slot 2 (entrée EISC). Seuls les circuits actifs de l'espace sont câblés. 37 × 50 = joins 500..2349 (socle 2732).",
+      "digital": {
+        "11": { "nom": "Room_Displayed", "fb": true, "actual": false, "fonction": "*", "desc": "L'espace est affiché sur au moins un écran (ou tout le yacht)" },
+        "21": { "nom": "Music_Playing", "fb": true, "actual": true, "fonction": "audio" },
+        "22": { "nom": "Music_Muted", "fb": true, "actual": true, "fonction": "audio" },
+        "1-8": { "nom": "Light_{n}_On", "fb": true, "actual": true, "fonction": "eclairages" }
+      },
+      "analog": {
+        "21": { "nom": "Music_Volume", "fb": true, "actual": true, "fonction": "audio" },
+        "22": { "nom": "Music_Source", "fb": true, "actual": true, "fonction": "audio", "desc": "1..8" },
+        "1-8": { "nom": "Light_{n}_Level", "fb": true, "actual": true, "fonction": "eclairages" }
+      },
+      "serial": {
+        "10": { "nom": "Room_Name", "fb": true, "fonction": "*" }
+      }
+    },
+    "signauxMaisonEisc": {
+      "desc": "Signaux yacht (globaux par nature, clé conservée du modèle ftv-home) : couleur, effet, vitesse et cycle jour/nuit. Actions en sortie EISC (nom nu) ; le slot 2 renvoie l'état réel sur les entrées _Actual des mêmes joins. Daylight_* n'a pas d'action : entrée seule, fournie par l'horloge astronomique du slot 2.",
+      "digitalActual": { "221": "Daylight_Day", "222": "Daylight_Night" },
+      "analogActual": { "21": "Color_R", "22": "Color_G", "23": "Color_B", "24": "Speed", "25": "Effect" }
+    }
+  }
+}
