@@ -316,12 +316,13 @@
   background: #080b11;
 }
 
-/* Floating controls pill */
+/* Bandeau de retour : toujours visible, sous la barre de menu de la GUI */
 .demo-player-controls {
-  position: fixed;
-  top: calc(env(safe-area-inset-top) + 10px);
-  left: 50%;
-  transform: translateX(-50%);
+  position: relative;
+  flex: none;
+  align-self: center;
+  margin: 6px auto 4px;
+  max-width: calc(100% - 16px);
   display: flex;
   align-items: center;
   gap: 10px;
@@ -334,16 +335,6 @@
   color: #e2e8f0;
   transition: opacity 0.35s ease, transform 0.35s ease;
   z-index: 650;
-}
-
-.demo-player-controls.hidden {
-  opacity: 0;
-  transform: translateX(-50%) translateY(-10px);
-  pointer-events: none;
-}
-
-.demo-player-controls.visible {
-  opacity: 1;
 }
 
 .demo-ctrl-btn {

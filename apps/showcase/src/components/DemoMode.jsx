@@ -1,4 +1,4 @@
-import React, { Suspense, useState, useEffect, useCallback } from "react";
+import React, { Suspense, useState, useEffect } from "react";
 import { Icons } from "../icons";
 import { useTranslation } from "../context/LanguageContext";
 import { projects, sectors, getProjectName } from "../data/showcaseProjects";
@@ -49,16 +49,6 @@ const renderIcon = (iconName, size = 16, className = "") => {
 /* ------------------------------------------------------------------ */
 const DemoPlayer = ({ project, deviceType, onBack, onToggleDevice }) => {
   const { lang, t } = useTranslation();
-  const [controlsVisible, setControlsVisible] = useState(true);
-
-  // Masquage automatique des contrôles flottants
-  useEffect(() => {
-    if (!controlsVisible) return;
-    const timer = setTimeout(() => setControlsVisible(false), 4500);
-    return () => clearTimeout(timer);
-  }, [controlsVisible]);
-
-  const showControls = useCallback(() => setControlsVisible(true), []);
 
   const Simulator = getSimulator(project);
 
@@ -68,7 +58,7 @@ const DemoPlayer = ({ project, deviceType, onBack, onToggleDevice }) => {
       : project.embedUrl;
 
   return (
-    <div className="demo-player" onPointerDown={showControls}>
+    <div className="demo-player">
       <div className="demo-player-screen">
         {Simulator ? (
           <Suspense fallback={<SimulatorFallback />}>
@@ -84,10 +74,8 @@ const DemoPlayer = ({ project, deviceType, onBack, onToggleDevice }) => {
         ) : null}
       </div>
 
-      {/* Contrôles flottants */}
-      <div
-        className={`demo-player-controls ${controlsVisible ? "visible" : "hidden"}`}
-      >
+      {/* Bandeau de retour permanent, sous la barre de menu de la GUI */}
+      <div className="demo-player-controls">
         <button className="demo-ctrl-btn" onClick={onBack} aria-label={t("demo_back")}>
           {renderIcon("ChevronLeft", 20)}
         </button>

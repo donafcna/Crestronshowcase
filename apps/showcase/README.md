@@ -495,3 +495,11 @@ Kyoto Rooftop passe à quinze espaces sur trois niveaux et une emprise environ q
 Kyoto abandonne le bâtiment rectangulaire au profit de quinze pavillons aux formes et couvertures distinctes, reliés par des promenades paysagères. Chaque zone zoomée montre sa propre implantation d'au moins quatre tables et seize chaises, ainsi que des balises au sol, appliques murales, spots et lignes lumineuses au plafond.
 
 Les scènes iPhone Hotel Brassus sont émises avant le rafraîchissement de l'interface et leur contraste dans la maquette est renforcé. Le fondu reste de quatre secondes ; l'écart mesuré entre Total et Éteint dépasse un facteur 100 sur les matériaux lumineux.
+
+## 27/09/2026 — Vue 3D en premier et bandeau de retour permanent 2.2.14
+
+Les GUI Boutique Auralis et M/Y Asteria ouvrent sur l'onglet Vue 3D, placé en première position de la barre du bas sur iPhone et de la colonne de gauche sur les autres supports. La maquette 3D s'affiche désormais dans la carte du GUI sur tous les supports hors dalle murale, y compris quand le modèle de fond du site est actif : les commandes partent alors vers les deux vues.
+
+Le bloc « Exploration 3D » (intitulé, sous-titre et puces de niveaux) et la liste « Explorer la 3D » disparaissent hors dalle murale ; la navigation entre espaces passe uniquement par le menu déroulant « Espace sélectionné » et le bouton de vue d'ensemble. Le bouton d'export de capture du modèle est retiré de toutes les interfaces.
+
+En mode démo mobile, le bandeau de retour ne se masque plus après 4,5 secondes : il devient une barre fixe en bas de l'écran, sous la barre de menu de la GUI, sans recouvrement.
