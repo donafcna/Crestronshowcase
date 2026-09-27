@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Icons } from '../icons';
 import './phone.css';
-export function VenuePhone({ name, subtitle, tabs, active, onTab, children }) {
+export function VenuePhone({ name, subtitle, headerExtra, tabs, active, onTab, children }) {
   const [theme,setTheme]=useState('dark');
-  return <section className="venue-phone" data-theme={theme}><header><span className="venue-eyebrow">FRÉQUENCE TV · CONTROL</span><h1>{name}</h1><p>{subtitle}</p><button className="venue-theme" aria-label="Changer le thème" onClick={()=>setTheme(t=>t==='dark'?'light':t==='light'?'glass':'dark')}>{({dark:'Sombre',light:'Clair',glass:'Verre'})[theme]}</button></header><nav aria-label="Commandes">{tabs.map(([id,label,icon])=>{const Icon=Icons[icon];return <button key={id} aria-pressed={active===id} onClick={()=>onTab(id)}><Icon size={18}/><span>{label}</span></button>})}</nav><main>{children}</main><footer>Simulation · Aucun équipement connecté</footer></section>;
+  return <section className="venue-phone" data-theme={theme}><header><span className="venue-eyebrow">FRÉQUENCE TV · CONTROL</span><h1>{name}</h1><p>{subtitle}</p>{headerExtra}<button className="venue-theme" aria-label="Changer le thème" onClick={()=>setTheme(t=>t==='dark'?'light':t==='light'?'glass':'dark')}>{({dark:'Sombre',light:'Clair',glass:'Verre'})[theme]}</button></header><nav aria-label="Commandes">{tabs.map(([id,label,icon])=>{const Icon=Icons[icon];return <button key={id} aria-pressed={active===id} onClick={()=>onTab(id)}><Icon size={18}/><span>{label}</span></button>})}</nav><main>{children}</main><footer>Simulation · Aucun équipement connecté</footer></section>;
 }
 export const Card=({title,children})=><section className="venue-card"><h2>{title}</h2>{children}</section>;
 export const Choices=({value,options,onChange})=><div className="venue-choices">{options.map(([id,label])=><button key={id} aria-pressed={value===id} onClick={()=>onChange(id)}>{label}</button>)}</div>;

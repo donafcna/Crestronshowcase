@@ -1,7 +1,7 @@
 import React, { Suspense, useState, useEffect, useCallback } from "react";
 import { Icons } from "../icons";
 import { useTranslation } from "../context/LanguageContext";
-import { projects, getProjectName } from "../data/showcaseProjects";
+import { projects, sectors, getProjectName } from "../data/showcaseProjects";
 import "../demo.css";
 
 import { getSimulator } from "./simulatorRegistry";
@@ -109,6 +109,7 @@ const DemoPlayer = ({ project, deviceType, onBack, onToggleDevice }) => {
 /* ------------------------------------------------------------------ */
 const DemoLauncher = ({ deviceType, onOpenProject }) => {
   const { t, lang, changeLanguage, supportedLangs } = useTranslation();
+  const [selectedSector, setSelectedSector] = useState("all");
   const [isStandalone] = useState(
     () =>
       window.matchMedia("(display-mode: standalone)").matches ||
@@ -147,6 +148,14 @@ const DemoLauncher = ({ deviceType, onOpenProject }) => {
         </div>
       </header>
 
+      <label className="demo-sector-filter">
+        <span>{t("nav_sectors")}</span>
+        <select value={selectedSector} onChange={(e) => setSelectedSector(e.target.value)} aria-label={t("nav_sectors")}>
+          <option value="all">{t("demo_all_sectors")}</option>
+          {sectors.map((sector) => <option key={sector.id} value={sector.id}>{sectorName(sector.id)}</option>)}
+        </select>
+      </label>
+
       {!isStandalone && (
         <div className="demo-install-hint">
           {renderIcon("Share2", 18, "hint-icon")}
@@ -155,7 +164,7 @@ const DemoLauncher = ({ deviceType, onOpenProject }) => {
       )}
 
       <main className="demo-project-grid">
-        {projects.filter(proj => supportsDemoDevice(proj, deviceType)).map((proj) => (
+        {projects.filter(proj => supportsDemoDevice(proj, deviceType) && (selectedSector === "all" || proj.sectors.includes(selectedSector))).map((proj) => (
           <button
             key={proj.id}
             className="demo-project-card"

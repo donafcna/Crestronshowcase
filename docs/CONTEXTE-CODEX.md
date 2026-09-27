@@ -1,5 +1,17 @@
 # Reprise Codex — Crestron CH5 Cowork
 
+## 26/09/2026 — Yacht Asteria
+
+Vue générale recentrée à droite du châssis iPhone. Les vues de zones sont relevées et accompagnées d'un bandeau de coque sous le pont pour matérialiser la hauteur au-dessus de l'eau. La molette offre deux vues : vers le bas, yacht complet ; vers le haut, dernière zone sélectionnée, ou première zone par défaut. Les mouvements de caméra sont ralentis. Cycle environnemental propre au yacht : 30 secondes de jour puis 30 secondes de nuit, avec une seconde de fondu incluse à la fin de chaque phase.
+
+Affinage 2.1.12 : vues de zones légèrement élargies, cible de caméra abaissée et flanc de coque porté à 2,5 m sous chaque pont afin que la hauteur au-dessus de l'eau reste visible dans toutes les zones.
+
+Affinage 2.1.13 : le flanc atteint 4,2 m et la caméra adopte un angle plus latéral. En vue de zone, les deux ponts inférieurs sont relevés à 5,5 m dans cette présentation en coupe, afin que le volume de coque reste visible même autour du Beach club.
+
+## 26/09/2026 — Boutique Auralis
+
+Sushi Bar Kyoto appartient uniquement au secteur Restaurant et n'apparaît plus dans le bandeau Boutique. La molette alterne entre vue complète et dernière zone sélectionnée, avec « Hall & escalier d’apparat » comme repli initial. Les transitions de caméra sont ralenties.
+
 ## 26/09/2026 — Hotel Brassus
 
 Ajout demandé par Donatien dans Hôtellerie avec le vrai GUI de l'Hôtel des Horlogers et une maquette basée sur ses plans locaux. Site 2.1.0, source CH5 2.12.16 importée depuis la distribution compilée fournie. Travail isolé des modifications locales Villa Crans. Détails, synchronisation reproductible, limites architecturales et recette : `apps/showcase/docs/hotel-brassus.md`. Source HDH sur le Bureau et programmes matériels préservés. Ne pas interpréter les valeurs de démonstration comme la configuration du site client.
@@ -355,3 +367,73 @@ Demande de Donatien : smartphones et tablettes affichent seulement le catalogue 
 ## 26/09/2026 — Hotel Brassus, enveloppe et caméra 2.1.3
 
 Enveloppe extérieure inspirée du bâtiment réel ajoutée à la maquette interprétée. Vue complète avec murs, vitrages, bois, toitures/terrasses végétalisées, liaisons inclinées et photovoltaïque ; coupe au passage dans un espace. Caméra par zone avec transitions de type Villa Crans. Molette vers le bas : bâtiment complet en un geste. Molette vers le haut : zoom progressif sur la dernière zone. Sources visuelles officielles Hôtel des Horlogers/BIG/CCHE et Swiss Arc documentées dans `apps/showcase/docs/hotel-brassus.md`.
+
+## 26/09/2026 — Auditorium Richmond, lumière et vidéo 2.1.4
+
+Ajout de quinze faisceaux/projecteurs et seize bandeaux LED synchronisés dans le modèle 3D. Les changements de scène et de couleur utilisent un fondu interpolé de quatre secondes. Sur Smartphone, l'enregistrement est intégré à la carte PTZ ; la prévisualisation d'estrade suit pan, tilt, recentrage et zoom. La page Écran propose quatre simulations cohérentes jusque sur la texture du mur LED 3D : climat, présentatrice fictive du journal de 20 h, salle live et logo officiel Fréquence TV. Build, lint, interactions, absence de défilement interne, contenu 3D et durée du fondu vérifiés localement.
+
+L'Étoile Club utilise un menu de zone sous son titre. La molette choisit uniquement la vue bâtiment ou la dernière salle sélectionnée, avec interpolation de caméra. L'onglet Espaces est remplacé par Écran ; quatre sources vidéo modifient directement la texture du modèle 3D. Les aperçus sous les boutons sont supprimés sur les Smartphones du club et de l'auditorium. Les enseignes propres aux salles du club sont placées derrière l'écran vidéo afin de ne pas masquer la source active.
+
+## 26/09/2026 — Hotel Brassus, éclairages et rideaux 2.1.5
+
+Ajout dans toutes les pièces de 783 éléments lumineux (corniches, spots, appliques, balises basses et luminaires suspendus), avec vingt sources volumétriques. Les scènes 0/35/70/100 % agissent sur la pièce sélectionnée. Cycle automatique de dix secondes jour puis dix secondes nuit. Les deux stores de Bar, Restaurant et Séminaires animent des rideaux sur les vitrages. Navigation réduite à deux vues : bâtiment complet ou dernière pièce centrée. Recette locale : niveaux 0/100 %, progression des rideaux, cadrages 150/30 et bascule jour/nuit vérifiés sans erreur JavaScript.
+
+## 26/09/2026 — Filtre de secteurs mobile 2.1.6
+
+Ajout au catalogue tactile d'un sélecteur de secteurs sous le logo Fréquence TV. Le filtre conserve uniquement les projets compatibles avec le téléphone ou la tablette et appartenant au secteur choisi. Le libellé « Interfaces Crestron CH5 — Frequence TV » devient « Interface Crestron CH5 » dans les trois langues du catalogue.
+
+## 26/09/2026 — Kyoto Rooftop et Hotel Brassus 2.2.0
+
+Le projet Sushi Bar Kyoto reçoit une maquette conceptuelle de restaurant de luxe à deux niveaux, inspirée des deux images remises : salle vitrée et sombre, bar architectural, salon privé, terrasse, escalier extérieur et rooftop végétalisé sous pergola. Le GUI est réorganisé autour des espaces, scènes, quatre circuits lumineux, confort, audio et service. Le Smartphone affiche la maquette 3D synchronisée ; Dalle TSW et Tablette gardent la vidéo. L'interface iPhone Hotel Brassus reprend les couleurs vert profond, vert sélection, blanc et or du GUI CH5 des grands supports. Compilation, lint et douze contrôles navigateur réussis sans erreur.
+
+## 26/09/2026 — Feedback Hotel Brassus et Kyoto agrandi 2.2.1
+
+Sur l'iPhone Hotel Brassus, tous les boutons inactifs utilisent le vert cyan foncé du CH5 avec texte blanc. Tous les états actifs utilisent le dégradé sombre et le double contour or, y compris la navigation et les pages Audio, Rideaux et Température. Kyoto Rooftop atteint environ 74 × 54 unités, trois niveaux et quinze espaces sélectionnables. Chaque espace a une destination de caméra distincte et les autres pièces s'effacent pendant le zoom. La molette alterne la vue complète et la dernière pièce.
+
+## 27/09/2026 — Kyoto Gardens et visibilité des scènes Hotel Brassus 2.2.2
+
+Kyoto est redessiné comme un domaine de quinze pavillons non rectangulaires reliés par des promenades. Les quinze combinaisons de forme, couverture et mobilier sont distinctes ; chaque zone comprend au minimum quatre tables, seize chaises, huit balises au sol, huit appliques et des luminaires de plafond. Les quinze cadrages et la navigation à la molette sont conservés.
+
+Pour Hotel Brassus, l'envoi d'une scène iPhone précède désormais le nouveau rendu du bouton et les émissions ainsi que les sources ponctuelles de la maquette sont renforcées sans supprimer le fondu de quatre secondes. La recette mesure bien 100 puis 0 % sur la zone Bar, avec une intensité émissive de 4,29 puis 0,034.
+
+## 27/09/2026 — Pénombre et lumière naturelle Hotel Brassus 2.2.3
+
+La maquette combine désormais la scène d'éclairage avec la position des rideaux. Une pièce éteinte dont les rideaux sont fermés passe dans une pénombre presque noire qui laisse seulement apparaître les silhouettes du mobilier. L'ouverture progressive des rideaux retire cette pénombre et fait entrer une lumière chaude depuis les vitrages, avec un faisceau et une source directionnelle adaptés au cycle jour/nuit. La recette automatisée vérifie les deux états extrêmes ainsi que les transitions des rideaux.
+
+## 27/09/2026 — Kyoto Gardens et entrée stable Boutique 2.2.4
+
+Kyoto Gardens reçoit une enveloppe architecturale complète et un jardin extérieur éclairé. Les axes des quinze pavillons sont corrigés ; Cave à vins, Salon privé, Salle signature, Teppanyaki, Lounge, Galerie, Belvédère et Terrasse sont enrichis et recadrés. Les vues rapprochées masquent les éléments architecturaux qui obstruent le mobilier. Les quarante contrôles de recette vérifient notamment quinze cadrages distincts, au moins quatre tables visibles par zone, 497 éléments d'architecture extérieure, deux rayonnages de cave et cinq canapés dans le Lounge.
+
+L'entrée Boutique masque désormais toute construction ou transition de caméra et révèle directement la vue générale finale à deux niveaux. Le message interne « Préparation des salons et des lumières » est supprimé. L'entrée Restaurant sélectionne explicitement le châssis Smartphone et sa maquette 3D.
+
+## 27/09/2026 — Éclairages extérieurs et par pièce Restaurant 2.2.5
+
+Kyoto Gardens s’ouvre sur une vue générale frontale depuis l’entrée. La maquette ajoute un réseau extérieur dense d’appliques de clôture, lampadaires, lanternes, spots de sol et balises de jardin. Le GUI Smartphone propose une zone « Extérieur », quatre circuits dédiés et une scène « Tout allumé ». Les quinze pièces disposent des mêmes quatre familles d’éclairage, isolées zone par zone. Les contrôles navigateur vérifient seize cadrages, 866 éléments d’architecture extérieure et l’indépendance des circuits.
+
+## 27/09/2026 — Vue générale frontale Boutique 2.2.7
+
+La vue générale Smartphone de la Boutique Auralis est alignée dans l’axe de l’entrée et présente les deux niveaux de face. Les vues rapprochées des salons et le comportement de la molette restent inchangés.
+
+## 27/09/2026 — Sols Restaurant toujours visibles 2.2.8
+
+Les quinze caméras rapprochées de Kyoto Gardens sont relevées et chaque zone reçoit un socle de sol contrasté. La recette projette les quatre coins de chaque sol dans la caméra et exige qu’ils restent tous dans le cadre, en plus des contrôles existants sur les tables et les éléments occultants.
+
+## 27/09/2026 — Démonstration Boutique et variation 2.2.9
+
+Après la vue générale et en l’absence d’interaction, le curseur de démonstration sélectionne « Hall & escalier d’apparat », puis presse Ouverture, Réception, Rendez-vous privé et Fermeture avec cinq secondes entre les actions. Les valeurs lumineuses de chaque scène sont interpolées sur trois secondes dans la maquette 3D.
+
+## 27/09/2026 — Zoom Restaurant et délai Boutique 2.2.10
+
+Les quinze cadrages rapprochés du restaurant remplissent au maximum l’espace disponible tout en gardant leur sol visible. À l’ouverture de Boutique, la vue globale reste affichée pendant cinq secondes. Sans interaction, le curseur sélectionne ensuite le Hall et escalier d’apparat, puis les quatre scènes à cinq secondes d’intervalle.
+
+## 27/09/2026 — Parcours complet Boutique 2.2.11
+
+Boutique s’ouvre en vue globale avec la scène Fermeture dans tous les espaces. Après cinq secondes sans interaction, le curseur visite le Hall puis chacun des quatorze salons. Dans chaque pièce il applique Rendez-vous privé, Réception et Ouverture, avec cinq secondes entre chaque action. La fin du parcours revient à la vue globale et réapplique Fermeture à toute la boutique.
+
+Restaurant suit le même parcours : vue globale en Fermeture, cinq secondes d’attente, puis visite des quinze pavillons avec Dîner, Rooftop et Accueil toutes les cinq secondes. La séquence se termine sur la vue globale avec Fermeture appliquée à toutes les zones.
+
+## 27/09/2026 — Indicateur audio Hotel Brassus 2.2.12
+
+L’onglet Audio de l’iPhone Hotel Brassus affiche désormais six barres animées pendant la lecture. L’animation s’arrête et l’état « Audio coupé » apparaît lorsque le son est coupé ou que le volume atteint zéro.
+
+En version 2.2.13, les barres sont entièrement masquées lorsque le son est coupé ou que le volume atteint zéro, au lieu de rester visibles à l’arrêt.

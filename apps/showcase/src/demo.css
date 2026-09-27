@@ -94,6 +94,38 @@
   padding: 8px 12px;
 }
 
+.demo-sector-filter {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 2px 20px 6px;
+  color: #94a3b8;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.demo-sector-filter select {
+  width: 100%;
+  min-height: 44px;
+  padding: 9px 38px 9px 12px;
+  border: 1px solid rgba(129, 140, 248, 0.38);
+  border-radius: 12px;
+  color: #f1f5f9;
+  background: #172039;
+  font: 600 0.88rem/1.2 var(--font-sans);
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+.demo-sector-filter select:focus-visible { outline: 3px solid #818cf8; outline-offset: 2px; }
+.demo-sector-filter option { color: #f1f5f9; background: #172039; }
+
+@media (max-width: 520px) {
+  .demo-sector-filter { margin-inline: 16px; }
+}
+
 .demo-install-hint {
   display: flex;
   align-items: center;

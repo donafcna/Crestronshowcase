@@ -1,4 +1,5 @@
 import { HotelBrassusBackground } from './HotelBrassusBackground';
+import { RestaurantBackground } from './RestaurantBackground';
 import React, { useEffect, useRef, useState } from "react";
 import { BackgroundVideo } from "./BackgroundVideo";
 import { LuxuryBackground } from "../ftv-luxury/LuxuryBackground";
@@ -24,11 +25,11 @@ export const PLAN3D_RULES = [
   { device: "phone" },                       // smartphone : toujours
 ];
 export const plan3dEnabled = (projectId, device, windowW) =>
-  !!(projectId === 'hotel-brassus' || PLAN3D_PROJECTS[projectId] || LUXURY_MODELS[projectId] || VENUE_PROJECTS[projectId]) &&
+  !!(projectId === 'hotel-brassus' || projectId === 'sushi-bar-kyoto' || PLAN3D_PROJECTS[projectId] || LUXURY_MODELS[projectId] || VENUE_PROJECTS[projectId]) &&
   PLAN3D_RULES.some((r) => (!r.device || r.device === device) &&
     (r.minWidth === undefined || windowW >= r.minWidth) && (r.maxWidth === undefined || windowW <= r.maxWidth));
 
-export const Plan3DBackground = (props) => props.projectId === 'hotel-brassus' ? <HotelBrassusBackground {...props} /> : VENUE_PROJECTS[props.projectId]
+export const Plan3DBackground = (props) => props.projectId === 'hotel-brassus' ? <HotelBrassusBackground {...props} /> : props.projectId === 'sushi-bar-kyoto' ? <RestaurantBackground {...props} /> : VENUE_PROJECTS[props.projectId]
   ? <VenueBackground {...props} />
   : LUXURY_MODELS[props.projectId]
   ? <LuxuryBackground {...props} />

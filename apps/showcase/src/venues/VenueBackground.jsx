@@ -28,7 +28,7 @@ export function VenueBackground({ projectId, stageRef }) {
     });
     // The venue renderer retains its bounded camera distance. Fractional deltas
     // now permit fine trackpad movement instead of treating every event as a notch.
-    const wheel=projectId==='club-etoile'?zoomWheel:e=>{if(!loaded||e.ctrlKey||e.target.closest('button,input,a,iframe,.phone-device-frame,.workspace-device-sidebar,.projects-strip'))return;e.preventDefault();send('zoom',{delta:Math.sign(e.deltaY)})};
+    const wheel=projectId==='club-etoile'?e=>{if(!loaded||e.ctrlKey||e.target.closest('button,input,a,iframe,.phone-device-frame,.workspace-device-sidebar,.projects-strip'))return;e.preventDefault();const view=e.deltaY>0?'building':'room';window.dispatchEvent(new CustomEvent('ftv-club-view',{detail:view}))}:e=>{if(!loaded||e.ctrlKey||e.target.closest('button,input,a,iframe,.phone-device-frame,.workspace-device-sidebar,.projects-strip'))return;e.preventDefault();send('zoom',{delta:Math.sign(e.deltaY)})};
     window.addEventListener('message',message);window.addEventListener('ftv-venue-state',update);document.addEventListener('visibilitychange',visibility);stage.addEventListener('wheel',wheel,{passive:false});
     const ro=new ResizeObserver(layout);ro.observe(stage);const timer=setInterval(layout,500);
     send('hello');

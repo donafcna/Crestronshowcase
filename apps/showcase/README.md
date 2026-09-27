@@ -1,5 +1,17 @@
 # Premier commit 19/7/2026 13h00
 
+## 26/09/2026 — Yacht Asteria : cadrages et cycle
+
+La vue générale du yacht est recentrée dans l'espace libre à côté de l'iPhone. Les vues de zones adoptent un angle plus haut et montrent un bandeau de coque sous le pont afin de conserver un repère d'altitude au-dessus de l'eau. La molette alterne entre deux états : vers le bas, yacht entièrement dézoomé ; vers le haut, dernière zone sélectionnée, ou première zone par défaut. Les déplacements de caméra sont ralentis. Le cycle automatique dure désormais 30 secondes de jour et 30 secondes de nuit, fondu final compris dans chaque moitié.
+
+Le cadrage rapproché 2.1.12 élargit ensuite la vue et expose un flanc de coque de 2,5 m sous le pont sélectionné. L'espace reste lisible tandis que la séparation verticale avec l'eau devient immédiatement visible.
+
+Affinage 2.1.13 après contrôle visuel : flanc porté à 4,2 m, angle de caméra abaissé et pont inférieur présenté à 5,5 m au-dessus de l'eau dans la vue en coupe. Le volume turquoise doit occuper une bande latérale clairement visible, y compris pour le Beach club.
+
+## 26/09/2026 — Boutique Auralis : navigation
+
+Sushi Bar Kyoto est retiré du secteur Boutique et reste disponible dans Restaurant. La molette alterne entre la vue complète et la dernière zone sélectionnée ; sans sélection préalable, elle ouvre « Hall & escalier d’apparat » au rez-de-chaussée. Les transitions de caméra sont ralenties.
+
 Perte de toutes les données la veille et première reconstitution des fichiers. 
 
 Premiers tests sur Ecrans 21.5': dimensionnement des périphériques OK pour tous les projets et secteurs d'activités. 
@@ -451,3 +463,35 @@ Demande de Donatien : smartphones et tablettes affichent seulement le catalogue 
 ## 26/09/2026 — Hotel Brassus, enveloppe et caméra 2.1.3
 
 Enveloppe 3D complète inspirée du bâtiment construit : murs, vitrages, bois, dalles, toits végétalisés, rampes et panneaux photovoltaïques. Les dimensions extérieures restent interprétées depuis les plans AV partiels. Caméra alignée sur Villa Crans : transition par espace, molette descendante vers la vue complète, molette montante progressive vers la dernière zone. Sept cibles distinctes et conservation de la sélection.
+
+## 26/09/2026 — Auditorium Richmond, lumière et vidéo 2.1.4
+
+Les scènes d'éclairage pilotent désormais quinze projecteurs et seize bandeaux LED dans la salle 3D avec un fondu continu de quatre secondes. La page Caméras regroupe le bouton REC, les choix PTZ, le zoom, le recentrage et une image simulée de l'estrade qui suit les mouvements. La section Captation séparée est supprimée. Les quatre boutons du mur LED pilotent directement la présentation climatique, la présentatrice fictive du journal de 20 h, la vue live de la salle ou le logo officiel Fréquence TV sur l'écran 3D, sans aperçu supplémentaire sous les commandes Smartphone. Aucun équipement réel n'est commandé.
+
+L'Étoile Club sélectionne désormais le bâtiment ou une salle depuis un menu sous le titre. La molette alterne entre la vue complète et la dernière salle avec un déplacement progressif de la caméra. L'ancien onglet Espaces devient Écran et propose quatre sources directement synchronisées sur l'écran du modèle 3D, sans vignette sous les boutons. Les enseignes Studio 77, Neon Foundry et Sky Garden restent derrière la surface vidéo pour ne plus masquer la source active.
+
+## 26/09/2026 — Hotel Brassus, éclairages et rideaux 2.1.5
+
+Toutes les pièces de la maquette reçoivent corniches, spots, appliques, balises basses, suspensions ou chandeliers. Les scènes du Smartphone modulent la luminosité de la pièce sélectionnée. Le décor alterne dix secondes jour et dix secondes nuit. Les Stores du Bar, du Restaurant et des Séminaires ferment et ouvrent des rideaux visibles. La molette commute uniquement entre l'hôtel complet et la dernière pièce centrée.
+
+## 26/09/2026 — Filtre de secteurs mobile 2.1.6
+
+Le catalogue iPhone et tablette affiche sous le logo Fréquence TV un menu déroulant de secteurs. Le choix filtre immédiatement les projets compatibles avec le support courant. Le sous-titre est raccourci en « Interface Crestron CH5 ».
+
+## 26/09/2026 — Kyoto Rooftop et palette Hotel Brassus 2.2.0
+
+Le Sushi Bar Kyoto adopte un restaurant de luxe sur deux niveaux avec salle vitrée, bar, salon privé, terrasse et rooftop sous pergola. Son nouveau GUI pilote les zones, cinq scènes et quatre groupes lumineux synchronisés avec la maquette. Le modèle 3D apparaît derrière la version Smartphone ; Dalle TSW et Tablette conservent la vidéo. Description et limites : `docs/restaurant-kyoto-rooftop.md`.
+
+Le GUI iPhone de l'Hotel Brassus reprend la palette du CH5 des autres supports : vert profond `#283b32`, vert de sélection `#517866`, fond clair et accent or `#d2ab21`. Les fonctions et la maquette restent inchangées.
+
+## 26/09/2026 — Feedback Hotel Brassus et extension Kyoto 2.2.1
+
+Tous les boutons de l'iPhone Hotel Brassus utilisent le même feedback que le CH5 : état inactif vert cyan foncé avec texte blanc, état actif en dégradé très sombre avec double contour or. La règle couvre Éclairages, Audio, Rideaux, Température et la navigation basse.
+
+Kyoto Rooftop passe à quinze espaces sur trois niveaux et une emprise environ quatre fois supérieure. Chaque espace possède un mouvement de caméra distinct et s'isole lors du zoom. Molette descendante : vue complète ; molette montante : retour sur la dernière pièce sélectionnée.
+
+## 27/09/2026 — Kyoto Gardens et éclairages Hotel Brassus 2.2.2
+
+Kyoto abandonne le bâtiment rectangulaire au profit de quinze pavillons aux formes et couvertures distinctes, reliés par des promenades paysagères. Chaque zone zoomée montre sa propre implantation d'au moins quatre tables et seize chaises, ainsi que des balises au sol, appliques murales, spots et lignes lumineuses au plafond.
+
+Les scènes iPhone Hotel Brassus sont émises avant le rafraîchissement de l'interface et leur contraste dans la maquette est renforcé. Le fondu reste de quatre secondes ; l'écart mesuré entre Total et Éteint dépasse un facteur 100 sur les matériaux lumineux.

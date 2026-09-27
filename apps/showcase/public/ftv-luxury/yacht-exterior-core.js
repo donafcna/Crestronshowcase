@@ -1,5 +1,5 @@
 /* Asteria showcase: pure lighting/geometry data, shared by the model, GUI and tests.
- * Yacht-only timing: 10 s daylight + 10 s night, each including a 1 s closing fade.
+ * Yacht-only timing: 30 s daylight + 30 s night, each including a 1 s closing fade.
  * Villa Crans keeps its independent 30 / 10 / 30 / 10 s environment cycle.
  * This is a demonstration, not a navigation-light or electrical installation design.
  */
@@ -54,8 +54,8 @@
   }));
   const byId = Object.fromEntries(circuits.map(c => [c.id, c]));
   const groups = { signature: 'Signature & ponts', paths: 'Passages & escaliers', water: 'Eau & bien-être', hospitality: 'Terrasses & bar', party: 'Soirée & lyres' };
-  // 9 s hold + 1 s transition per half: dinner at 10 s, cruise at 20 s.
-  const timing = Object.freeze({ day: 9, dusk: 1, night: 9, dawn: 1, total: 20 });
+  // 29 s hold + 1 s transition per half: dinner at 30 s, cruise at 60 s.
+  const timing = Object.freeze({ day: 29, dusk: 1, night: 29, dawn: 1, total: 60 });
   const clamp = (value, min = 0, max = 100) => Math.max(min, Math.min(max, value));
   const ease = value => { const t = clamp(value, 0, 1); return t * t * (3 - 2 * t); };
   function cycle(seconds) {

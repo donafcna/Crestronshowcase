@@ -477,7 +477,9 @@ export const useAutoDemo = ({ enabled, running, stageRef, guiKey, onCycleEnd, on
     };
 
     const run = async () => {
-      if (!villaDevice) await sleep(TIMING.startDelay, token);
+      const guidedBuilding = guiKey.startsWith("boutique-hermes/") || guiKey.startsWith("sushi-bar-kyoto/");
+      const startDelay = guidedBuilding ? 5000 : TIMING.startDelay;
+      if (!villaDevice) await sleep(startDelay, token);
       if (token.cancelled) return;
 
       // Attendre que le GUI soit prêt (iframe chargée / simulateur monté).
@@ -500,7 +502,7 @@ export const useAutoDemo = ({ enabled, running, stageRef, guiKey, onCycleEnd, on
         if (complete && !token.cancelled) onCycleEndRef.current?.();
         return;
       }
-      const complete = await runOrderedDemo({ gui, token, sleep, moveTo, act,
+      const complete = await runOrderedDemo({ gui, token, sleep, moveTo, act, setCursor,
         visible: (el, g) => isVisible(el, g.win) && !isCovered(el, g.doc) });
       if (complete && !token.cancelled) onCycleEndRef.current?.();
     };
