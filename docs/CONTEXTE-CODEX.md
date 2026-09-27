@@ -409,3 +409,7 @@ L'entrée Boutique masque désormais toute construction ou transition de caméra
 ## 27/09/2026 — Éclairages extérieurs et par pièce Restaurant 2.2.5
 
 Kyoto Gardens s’ouvre sur une vue générale frontale depuis l’entrée. La maquette ajoute un réseau extérieur dense d’appliques de clôture, lampadaires, lanternes, spots de sol et balises de jardin. Le GUI Smartphone propose une zone « Extérieur », quatre circuits dédiés et une scène « Tout allumé ». Les quinze pièces disposent des mêmes quatre familles d’éclairage, isolées zone par zone. Les contrôles navigateur vérifient seize cadrages, 866 éléments d’architecture extérieure et l’indépendance des circuits.
+
+## 27/09/2026 — Vue générale frontale Boutique 2.2.7
+
+La vue générale Smartphone de la Boutique Auralis est alignée dans l’axe de l’entrée et présente les deux niveaux de face. Les vues rapprochées des salons et le comportement de la molette restent inchangés.

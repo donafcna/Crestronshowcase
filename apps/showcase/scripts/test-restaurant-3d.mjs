@@ -113,6 +113,7 @@ try {
   assert.ok(boutiqueFrame, 'La maquette Boutique est chargée');
   await boutiqueFrame.waitForFunction(() => window.__ftvModel?.state);
   assert.deepEqual(await boutiqueFrame.evaluate(() => window.__ftvModel.state()), { room:'all',floor:'both',view:'overview' });
+  assert.equal(await boutiqueFrame.evaluate(() => document.querySelector('#ftv-jewel').__jewel.desiredPosition[0]), 0, 'La vue générale Boutique est strictement frontale');
   assert.equal(await boutiqueFrame.locator('.j-loader').textContent(), '', 'Aucun message de préparation interne n’est affiché');
   const boutiqueCameraA = await boutiqueFrame.evaluate(() => document.querySelector('#ftv-jewel').__jewel.camera.position.toArray());
   await page.waitForTimeout(450);
