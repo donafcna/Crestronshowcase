@@ -1,11 +1,13 @@
-// Real navigation/cursor events. No fake clock and no change to production timing.
+// Real menu, GUI and native cursor clicks, with the unmodified wall clock.
+// Hold only 3D animation AFTER its real startup to isolate command timing from
+// SwiftShader saturation. This is not a laptop frame-rate/latency benchmark.
 import { chromium } from 'playwright';
 import assert from 'node:assert/strict';
 import { mkdir, writeFile } from 'node:fs/promises';
 const base=process.env.BASE_URL||'http://127.0.0.1:4173';
 const out=process.env.TEST_OUTPUT||'test-results/guided-entry';
 await mkdir(out,{recursive:true});
-const report={base,cases:[],errors:[]};
+const report={base,rendering:'real startup, then 3D frames held during command timing',cases:[],errors:[]};
 let activePage;
 const browser=await chromium.launch({headless:true,args:['--no-sandbox','--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader']});
 try{
@@ -26,8 +28,20 @@ try{
     window.__guidedTrace=[];
     const stamp=()=>performance.timeOrigin+performance.now();
     const record=e=>window.__guidedTrace.push({...e,at:stamp()});
-    // Observe the native call at the press, before handlers recreate controls.
-    // Forward unchanged; do not synthesize extra clicks or invoke a preset here.
+    if(window!==window.top){
+      const raf=window.requestAnimationFrame.bind(window);
+      window.requestAnimationFrame=callback=>raf(time=>{
+        if(window.__guidedHoldFrames&&(window.__ftvModel||window.__restaurant3d)){
+          (window.__guidedPendingFrames||=[]).push(callback);return;
+        }
+        callback(time);
+      });
+      window.__guidedResumeFrames=()=>{
+        window.__guidedHoldFrames=false;
+        const pending=window.__guidedPendingFrames||[];window.__guidedPendingFrames=[];
+        pending.forEach(callback=>raf(callback));
+      };
+    }
     const nativeClick=HTMLElement.prototype.click;
     HTMLElement.prototype.click=function(...args){
       const b=this.closest?.('[data-preset],[data-scene]');
@@ -48,10 +62,15 @@ try{
         watchedApi=window.__restaurantGui;const select=watchedApi.selectZone;
         watchedApi.selectZone=id=>{record({type:'zone',id});return select(id);};
       }
+      if(window===window.top){
+        const bg=document.querySelector('.luxury-background');
+        const win=bg?.querySelector('.luxury-background-frame')?.contentWindow;
+        if(bg?.dataset.ready==='true'&&win)win.__guidedHoldFrames=true;
+      }
       const c=document.querySelector('.demo-cursor.visible');
       if(c&&!window.__firstCursorAt)window.__firstCursorAt=stamp();
     };
-    new MutationObserver(inspect).observe(document,{childList:true,subtree:true,attributes:true,attributeFilter:['class']});
+    new MutationObserver(inspect).observe(document,{childList:true,subtree:true,attributes:true,attributeFilter:['class','data-ready']});
    },{theme});
    await page.goto(base+'/contact?lang=fr',{waitUntil:'domcontentloaded'});
    await page.locator(`.sidebar-nav .sector-btn[href="/interfaces/${sector}"]`).click();
@@ -61,9 +80,7 @@ try{
    const read=()=>gui.evaluate(()=>window.__guidedTrace.filter(e=>e.type==='zone'||e.type==='scene'));
    await gui.waitForFunction(()=>window.__guidedTrace.filter(e=>e.type==='scene').length>=2,null,{polling:100,timeout:45000});
    result.events=await read();
-   const z=result.events.find(e=>e.type==='zone');
-   const first=result.events.find(e=>e.type==='scene');
-   const second=result.events.filter(e=>e.type==='scene')[1];
+   const z=result.events.find(e=>e.type==='zone'),first=result.events.find(e=>e.type==='scene'),second=result.events.filter(e=>e.type==='scene')[1];
    assert.equal(z.id,firstZone);assert.equal(first.id,scenes[0]);assert.equal(second.id,scenes[1]);
    result.firstGap=first.at-z.at;result.nextGap=second.at-first.at;
    assert.ok(result.firstGap>=950&&result.firstGap<1700,`First gap ${result.firstGap} ms`);
@@ -81,16 +98,12 @@ try{
      assert.equal(await gui.evaluate(()=>window.ftvYachtExteriorGui.state.automatic),true);
      result.checks.push('guided scene clicks preserve exterior Auto');
    }
-   const control=isRestaurant?'.rk-zone select':'#zone';
-   await gui.locator(control).click();
-   await page.keyboard.press('Escape');
+   await gui.locator(isRestaurant?'.rk-zone select':'#zone').click();await page.keyboard.press('Escape');
    const count=(await read()).filter(e=>e.type==='scene').length;
-   await page.waitForTimeout(5500);
-   assert.equal((await read()).filter(e=>e.type==='scene').length,count);
+   await page.waitForTimeout(5500);assert.equal((await read()).filter(e=>e.type==='scene').length,count);
    result.checks.push('manual interaction cancels the next automatic press');
    if(mode==='scene'){
-     await page.locator('.btn-exit-fullscreen-device-corner').click();
-     await page.waitForTimeout(500);
+     await page.locator('.btn-exit-fullscreen-device-corner').click();await page.waitForTimeout(500);
      await page.locator('.demo-countdown').click();
      const nextGui=isRestaurant?page:await (await page.locator('iframe.ftv-luxury-interface').elementHandle()).contentFrame();
      const old=await nextGui.evaluate(()=>window.__guidedTrace.length);
@@ -100,7 +113,7 @@ try{
      assert.equal(scene.id,scenes[0]);assert.ok(scene.at-zone.at>=950&&scene.at-zone.at<1700);
      result.checks.push('same first-scene timing in Mode Scene');
    }
-   for(const f of page.frames())await f.evaluate(()=>{if(window.__ftvModel)window.__ftvPaused=true;}).catch(()=>{});
+   // Captures document GUI state; 3D frames were held, not a visual fidelity test.
    await page.screenshot({path:`${out}/${sector}-${theme}-${mode}.png`,timeout:90000});
    await context.close();console.log(JSON.stringify(result));
   }
@@ -114,7 +127,7 @@ try{
    report.diagnostics.push(await f.evaluate(()=>({url:location.href,trace:window.__guidedTrace,cursorAt:window.__firstCursorAt,
     guiReady:window.ftvGui?.ready,guiState:window.ftvGui?.state,model:window.__ftvModel?.state?.(),
     background:document.querySelector('.luxury-background')?.dataset.ready,countdown:document.querySelector('.demo-countdown')?.textContent,
-    controls:[...document.querySelectorAll('#zone,[data-preset]')].map(el=>{const r=el.getBoundingClientRect();const top=document.elementFromPoint(r.x+r.width/2,r.y+r.height/2);return {id:el.id||el.dataset.preset,connected:el.isConnected,rect:r.toJSON(),coveredBy:top?.outerHTML.slice(0,300),visibility:getComputedStyle(el).visibility};})
+    controls:[...document.querySelectorAll('#zone,[data-preset]')].map(el=>{const r=el.getBoundingClientRect();const top=document.elementFromPoint(r.x+r.width/2,r.y+r.height/2);return {id:el.id||el.dataset.preset,rect:r.toJSON(),coveredBy:top?.outerHTML.slice(0,250)};})
    })).catch(error=>({url:f.url(),error:String(error)})));
    await f.evaluate(()=>{if(window.__ftvModel)window.__ftvPaused=true;}).catch(()=>{});
   }
