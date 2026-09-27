@@ -34,7 +34,7 @@ try {
   assert.ok(frame, 'Le modèle 3D restaurant est chargé');
   await frame.waitForFunction(() => window.__restaurant3d?.building);
   assert.ok(await frame.evaluate(() => { let count=0;window.__restaurant3d.building.traverse(()=>count++);return count>1200 }), 'Le modèle contient le mobilier et l’architecture');
-  assert.equal(await page.locator('.rk-zone option').count(), 15, 'Le GUI propose quinze espaces');
+  assert.equal(await page.locator('.rk-zone option').count(), 16, 'Le GUI propose l’extérieur et quinze espaces');
   const dimensions = await frame.evaluate(() => { const size=new THREE.Vector3();new THREE.Box3().setFromObject(window.__restaurant3d.building).getSize(size);return size.toArray() });
   assert.ok(dimensions[0] * dimensions[2] >= 4400, 'Le restaurant couvre plus de quatre fois l’emprise initiale');
   const roomDesigns = await frame.evaluate(() => ({
@@ -52,12 +52,21 @@ try {
   assert.ok(architecturalDetails.exterior > 100, 'La vue générale comprend façades, jardin et éclairages extérieurs');
   assert.ok(architecturalDetails.wineRacks >= 2, 'La cave à vins contient des rayonnages modélisés');
   assert.ok(architecturalDetails.loungeSofas >= 5, 'Le lounge contient plusieurs ensembles de canapés');
+  assert.deepEqual(await frame.evaluate(() => window.__restaurant3d.desiredPosition), [0,54,116], 'La vue générale est cadrée de face depuis l’entrée');
+  await page.locator('.rk-zone select').selectOption('exterior');
+  const circuitBefore = await frame.evaluate(() => ({ exterior:window.__restaurant3d.circuitMaterials.exterior.tables.emissiveIntensity, dining:window.__restaurant3d.circuitMaterials.dining.tables.emissiveIntensity }));
+  await page.locator('.rk-slider input').first().fill('0');
+  await page.waitForTimeout(100);
+  const circuitAfter = await frame.evaluate(() => ({ exterior:window.__restaurant3d.circuitMaterials.exterior.tables.emissiveIntensity, dining:window.__restaurant3d.circuitMaterials.dining.tables.emissiveIntensity }));
+  assert.ok(circuitAfter.exterior < .03 && Math.abs(circuitAfter.dining-circuitBefore.dining) < .001, 'Le circuit extérieur varie sans modifier les pièces');
+  await page.locator('.rk-scenes button').filter({ hasText: 'Accueil' }).click();
   const cameraGoals = new Set();
   const visualZones = new Set(['cellar','private','signature','teppanyaki','lounge','gallery','belvedere','terrace']);
   for (const option of await page.locator('.rk-zone option').evaluateAll(items => items.map(item => item.value))) {
     await page.locator('.rk-zone select').selectOption(option);
     await page.waitForTimeout(25);
     cameraGoals.add(await frame.evaluate(() => window.__restaurant3d.desiredPosition.join(',')));
+    if (option === 'exterior') continue;
     const composition = await frame.evaluate(id => {
       const model=window.__restaurant3d,group=model.roomGroups[id],zone=model.zones[id],camera=new THREE.PerspectiveCamera(35,1.65,.1,340);
       camera.position.fromArray(model.desiredPosition);camera.lookAt(new THREE.Vector3(...zone.target));camera.updateMatrixWorld(true);camera.updateProjectionMatrix();group.updateMatrixWorld(true);
@@ -70,7 +79,7 @@ try {
       await page.screenshot({ path: path.join(out, `restaurant-${option}.png`), fullPage: true });
     }
   }
-  assert.equal(cameraGoals.size, 15, 'Chaque espace possède un cadrage de caméra distinct');
+  assert.equal(cameraGoals.size, 16, 'L’extérieur et chaque espace possèdent un cadrage distinct');
   await page.locator('.rk-zone select').selectOption('rooftop');
   await page.waitForTimeout(700);
   assert.equal(await frame.evaluate(() => window.__restaurant3d.modelState.zone), 'rooftop');
@@ -88,7 +97,7 @@ try {
   assert.equal(await frame.evaluate(() => window.__restaurant3d.modelState.view), 'focus', 'La molette montante revient à la dernière zone');
   await page.locator('.rk-scenes button').filter({ hasText: 'Rooftop' }).click();
   await page.waitForTimeout(2400);
-  assert.equal(await frame.evaluate(() => window.__restaurant3d.modelState.levels.pergola), 88);
+  assert.equal(await frame.evaluate(() => window.__restaurant3d.modelState.zoneLevels.rooftop.pergola), 88);
   await page.screenshot({ path: path.join(out, 'restaurant-phone.png'), fullPage: true });
 
   for (const device of ['wallpanel', 'tablet']) {
@@ -161,7 +170,7 @@ try {
   assert.ok(buttonStates.filter(state => state.pressed === 'true').every(state => state.image.startsWith('radial-gradient') && state.border === 'rgb(210, 171, 33)'));
   await page.screenshot({ path: path.join(out, 'hotel-brassus-phone.png'), fullPage: true });
   assert.deepEqual(errors, []);
-  console.log(JSON.stringify({ checks: 40, dimensions, cameraGoals:cameraGoals.size, roomDesigns:{combinations:roomDesigns.combinations,zones:Object.keys(roomDesigns.furniture).length}, architecturalDetails, hotelLighting:{on:hotelOn,off:hotelOff,dark:hotelDark,natural:hotelNatural}, palette, buttonStates:buttonStates.length, errors }, null, 2));
+  console.log(JSON.stringify({ checks: 43, dimensions, cameraGoals:cameraGoals.size, roomDesigns:{combinations:roomDesigns.combinations,zones:Object.keys(roomDesigns.furniture).length}, architecturalDetails, hotelLighting:{on:hotelOn,off:hotelOff,dark:hotelDark,natural:hotelNatural}, palette, buttonStates:buttonStates.length, errors }, null, 2));
 } finally {
   await browser.close();
   if (server.listening) server.close();

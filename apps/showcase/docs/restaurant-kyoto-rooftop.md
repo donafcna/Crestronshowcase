@@ -19,3 +19,7 @@ La vue générale devient un domaine fermé et paysager : enceintes minérales, 
 La Cave à vins reçoit deux grands rayonnages remplis de bouteilles et des tables de dégustation. Le Salon privé, la Salle signature, le Teppanyaki, le Lounge, la Galerie, le Belvédère et la Terrasse disposent de compositions dédiées. Le Lounge comprend cinq canapés, plusieurs tables basses, lampadaires et un bar. Pour les quinze vues rapprochées, les toitures, façades, enseignes, toiles et bandeaux susceptibles de masquer la pièce sont retirés. Chaque caméra surplombe l'espace et conserve au moins quatre tables visibles.
 
 Restaurant ouvre désormais le support Smartphone par défaut avec la maquette 3D. Les grands supports conservent leur vidéo.
+
+## 27/09/2026 — Façade frontale et éclairages par zone, vitrine 2.2.5
+
+La vue générale regarde désormais le domaine depuis l’entrée principale. Le jardin et les clôtures reçoivent un réseau dense d’appliques, lampadaires, lanternes, spots de sol et balises de cheminement. L’interface ajoute « Extérieur » aux zones, avec quatre circuits et cinq scènes dont « Tout allumé ». Chacune des quinze pièces possède aussi ses propres circuits de suspensions, appliques et corniches, spots plafond et balises décoratives. Les réglages sont indépendants : modifier l’extérieur ou une pièce ne change pas les autres zones.

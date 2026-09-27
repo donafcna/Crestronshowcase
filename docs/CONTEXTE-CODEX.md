@@ -405,3 +405,7 @@ La maquette combine désormais la scène d'éclairage avec la position des ridea
 Kyoto Gardens reçoit une enveloppe architecturale complète et un jardin extérieur éclairé. Les axes des quinze pavillons sont corrigés ; Cave à vins, Salon privé, Salle signature, Teppanyaki, Lounge, Galerie, Belvédère et Terrasse sont enrichis et recadrés. Les vues rapprochées masquent les éléments architecturaux qui obstruent le mobilier. Les quarante contrôles de recette vérifient notamment quinze cadrages distincts, au moins quatre tables visibles par zone, 497 éléments d'architecture extérieure, deux rayonnages de cave et cinq canapés dans le Lounge.
 
 L'entrée Boutique masque désormais toute construction ou transition de caméra et révèle directement la vue générale finale à deux niveaux. Le message interne « Préparation des salons et des lumières » est supprimé. L'entrée Restaurant sélectionne explicitement le châssis Smartphone et sa maquette 3D.
+
+## 27/09/2026 — Éclairages extérieurs et par pièce Restaurant 2.2.5
+
+Kyoto Gardens s’ouvre sur une vue générale frontale depuis l’entrée. La maquette ajoute un réseau extérieur dense d’appliques de clôture, lampadaires, lanternes, spots de sol et balises de jardin. Le GUI Smartphone propose une zone « Extérieur », quatre circuits dédiés et une scène « Tout allumé ». Les quinze pièces disposent des mêmes quatre familles d’éclairage, isolées zone par zone. Les contrôles navigateur vérifient seize cadrages, 866 éléments d’architecture extérieure et l’indépendance des circuits.
