@@ -8,9 +8,11 @@ import { Link, buildShowcasePath } from "../router";
 
 // Film vitrine : grands écrans uniquement. Sur petit écran, la vidéo n'est
 // pas rendue du tout (aucun téléchargement) et l'accueil garde compteurs + bandeau.
-const FILM_SRC = "/videos/ftv-film-v1.mp4";
-const FILM_POSTER = "/videos/ftv-film-v1-poster.jpg";
+const FILM_SRC = "/videos/ftv-film-v2.mp4";
+const FILM_POSTER = "/videos/ftv-film-v2-poster.jpg";
 const FILM_QUERY = "(min-width: 900px)";
+// Fin du film : la dernière image reste affichée ce temps-là avant le rebouclage.
+const FILM_HOLD_MS = 5000;
 
 const useMediaQuery = (query) => {
   const get = () => typeof window !== "undefined" && window.matchMedia(query).matches;
@@ -27,14 +29,29 @@ const useMediaQuery = (query) => {
 
 const FeaturedFilm = ({ label, ctaTo, ctaText, ctaIcon }) => {
   const ref = useRef(null);
+  const holdRef = useRef(0);
   const reduced = useMediaQuery("(prefers-reduced-motion: reduce)");
   useEffect(() => {
     const v = ref.current;
-    if (!v || reduced) return;
+    if (!v || reduced) return undefined;
     v.muted = true;
     const p = v.play();
     if (p && p.catch) p.catch(() => {});
+    return () => window.clearTimeout(holdRef.current);
   }, [reduced]);
+  // Pas d'attribut loop : on gèle sur la dernière image, puis on relance au début.
+  const handleEnded = () => {
+    const v = ref.current;
+    if (!v || reduced) return;
+    window.clearTimeout(holdRef.current);
+    holdRef.current = window.setTimeout(() => {
+      const el = ref.current;
+      if (!el) return;
+      el.currentTime = 0;
+      const p = el.play();
+      if (p && p.catch) p.catch(() => {});
+    }, FILM_HOLD_MS);
+  };
   return (
     <section className="dash-film glass-panel" aria-label={label}>
       <video
@@ -44,8 +61,8 @@ const FeaturedFilm = ({ label, ctaTo, ctaText, ctaIcon }) => {
         poster={FILM_POSTER}
         autoPlay={!reduced}
         muted
-        loop
         playsInline
+        onEnded={handleEnded}
         preload={reduced ? "none" : "auto"}
         controls={reduced}
         aria-label={label}
