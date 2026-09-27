@@ -23,3 +23,5 @@ Restaurant ouvre désormais le support Smartphone par défaut avec la maquette 3
 ## 27/09/2026 — Façade frontale et éclairages par zone, vitrine 2.2.5
 
 La vue générale regarde désormais le domaine depuis l’entrée principale. Le jardin et les clôtures reçoivent un réseau dense d’appliques, lampadaires, lanternes, spots de sol et balises de cheminement. L’interface ajoute « Extérieur » aux zones, avec quatre circuits et cinq scènes dont « Tout allumé ». Chacune des quinze pièces possède aussi ses propres circuits de suspensions, appliques et corniches, spots plafond et balises décoratives. Les réglages sont indépendants : modifier l’extérieur ou une pièce ne change pas les autres zones.
+
+La vue extérieure 2.2.6 rapproche la caméra au maximum utile : le domaine remplit maintenant le cadre disponible tout en conservant la façade, les clôtures et les lampadaires entièrement visibles.

@@ -52,7 +52,7 @@ try {
   assert.ok(architecturalDetails.exterior > 100, 'La vue générale comprend façades, jardin et éclairages extérieurs');
   assert.ok(architecturalDetails.wineRacks >= 2, 'La cave à vins contient des rayonnages modélisés');
   assert.ok(architecturalDetails.loungeSofas >= 5, 'Le lounge contient plusieurs ensembles de canapés');
-  assert.deepEqual(await frame.evaluate(() => window.__restaurant3d.desiredPosition), [0,54,116], 'La vue générale est cadrée de face depuis l’entrée');
+  assert.deepEqual(await frame.evaluate(() => window.__restaurant3d.desiredPosition), [0,38,82], 'La vue générale est cadrée de face et remplit le cadre');
   await page.locator('.rk-zone select').selectOption('exterior');
   const circuitBefore = await frame.evaluate(() => ({ exterior:window.__restaurant3d.circuitMaterials.exterior.tables.emissiveIntensity, dining:window.__restaurant3d.circuitMaterials.dining.tables.emissiveIntensity }));
   await page.locator('.rk-slider input').first().fill('0');
