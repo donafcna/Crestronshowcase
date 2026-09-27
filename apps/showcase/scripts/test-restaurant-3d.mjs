@@ -183,7 +183,7 @@ try {
   assert.ok(await phone.locator('.audio-meter i').evaluateAll(bars => bars.every(bar => getComputedStyle(bar).animationPlayState === 'running')), 'Les barres sont animées pendant la lecture');
   await phone.locator('#mute').click();
   assert.equal(await phone.locator('#audio-status-label').textContent(), 'Audio coupé', 'La coupure du son est clairement indiquée');
-  assert.ok(await phone.locator('.audio-meter i').evaluateAll(bars => bars.every(bar => getComputedStyle(bar).animationPlayState === 'paused')), 'Les barres s’arrêtent lorsque le son est coupé');
+  assert.equal(await phone.locator('.audio-meter').isHidden(), true, 'Les barres disparaissent complètement lorsque le son est coupé');
   await phone.locator('#mute').click();
   await phone.locator('nav button[data-tab="lighting"]').click();
   const hotelModel = page.frames().find(item => item.url().includes('/showcases/hotel-brassus/model.html'));

@@ -435,3 +435,5 @@ Restaurant suit le même parcours : vue globale en Fermeture, cinq secondes d’
 ## 27/09/2026 — Indicateur audio Hotel Brassus 2.2.12
 
 L’onglet Audio de l’iPhone Hotel Brassus affiche désormais six barres animées pendant la lecture. L’animation s’arrête et l’état « Audio coupé » apparaît lorsque le son est coupé ou que le volume atteint zéro.
+
+En version 2.2.13, les barres sont entièrement masquées lorsque le son est coupé ou que le volume atteint zéro, au lieu de rester visibles à l’arrêt.
