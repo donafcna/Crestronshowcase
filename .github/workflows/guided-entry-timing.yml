@@ -5,7 +5,10 @@ on:
     paths:
       - 'apps/showcase/src/hooks/**'
       - 'apps/showcase/src/components/Showcase.jsx'
+      - 'apps/showcase/src/components/Plan3DBackground.jsx'
+      - 'apps/showcase/src/utils/villaEntry.js'
       - 'apps/showcase/scripts/test-guided-entry-*.mjs'
+      - 'apps/showcase/scripts/test-villa-entry*.mjs'
       - '.github/workflows/guided-entry-timing.yml'
 permissions:
   contents: read
@@ -23,7 +26,7 @@ jobs:
           node-version: '24'
           cache: npm
           cache-dependency-path: apps/showcase/package-lock.json
-      - run: node --test scripts/test-guided-entry-timing.mjs
+      - run: node --test scripts/test-guided-entry-timing.mjs scripts/test-villa-entry.mjs
       - run: npm ci
       - run: npm run build
       - run: npm run lint
@@ -32,23 +35,29 @@ jobs:
           npm install --prefix "$RUNNER_TEMP/guided-tools" --no-save playwright@1.57.0
           ln -s "$RUNNER_TEMP/guided-tools/node_modules/playwright" node_modules/playwright
           "$RUNNER_TEMP/guided-tools/node_modules/.bin/playwright" install --with-deps chromium > /tmp/guided-browser.log 2>&1
-      - name: Review local menu and cursor timing
+      - name: Review local entries and cursor timing
         if: github.ref != 'refs/heads/main'
         run: |
           npm run preview -- --host 127.0.0.1 --port 4173 > /tmp/guided-preview.log 2>&1 &
           for i in $(seq 1 30); do curl -fsS http://127.0.0.1:4173/ >/dev/null && break; sleep 1; done
-          node scripts/test-guided-entry-browser.mjs
+          status=0
+          node scripts/test-villa-entry-browser.mjs || status=1
+          node scripts/test-guided-entry-browser.mjs || status=1
+          exit "$status"
       - name: Review actual production after publication
         if: github.ref == 'refs/heads/main'
         env:
           BASE_URL: https://crestrongui.vercel.app
-          TEST_OUTPUT: test-results/guided-entry-production
           SMOKE: '1'
-        run: node scripts/test-guided-entry-browser.mjs
+        run: |
+          status=0
+          TEST_OUTPUT=test-results/villa-entry-production node scripts/test-villa-entry-browser.mjs || status=1
+          TEST_OUTPUT=test-results/guided-entry-production node scripts/test-guided-entry-browser.mjs || status=1
+          exit "$status"
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: guided-entry-review
-          path: apps/showcase/test-results/guided-entry*/
+          path: apps/showcase/test-results/
           retention-days: 7
           if-no-files-found: warn
