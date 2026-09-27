@@ -178,6 +178,14 @@ try {
   const phone = await phoneElement?.contentFrame();
   assert.ok(phone, 'L’interface iPhone Hotel Brassus est chargée');
   await phone.waitForSelector('.scene');
+  await phone.locator('nav button[data-tab="audio"]').click();
+  assert.equal(await phone.locator('.audio-meter i').count(), 6, 'L’onglet Audio affiche six barres de niveau');
+  assert.ok(await phone.locator('.audio-meter i').evaluateAll(bars => bars.every(bar => getComputedStyle(bar).animationPlayState === 'running')), 'Les barres sont animées pendant la lecture');
+  await phone.locator('#mute').click();
+  assert.equal(await phone.locator('#audio-status-label').textContent(), 'Audio coupé', 'La coupure du son est clairement indiquée');
+  assert.ok(await phone.locator('.audio-meter i').evaluateAll(bars => bars.every(bar => getComputedStyle(bar).animationPlayState === 'paused')), 'Les barres s’arrêtent lorsque le son est coupé');
+  await phone.locator('#mute').click();
+  await phone.locator('nav button[data-tab="lighting"]').click();
   const hotelModel = page.frames().find(item => item.url().includes('/showcases/hotel-brassus/model.html'));
   assert.ok(hotelModel, 'La maquette Hotel Brassus est chargée');
   await hotelModel.waitForFunction(() => window.HDH_MODEL?.roomLighting?.get('bar'));

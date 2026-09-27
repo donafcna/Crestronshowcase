@@ -431,3 +431,7 @@ Les quinze cadrages rapprochés du restaurant remplissent au maximum l’espace 
 Boutique s’ouvre en vue globale avec la scène Fermeture dans tous les espaces. Après cinq secondes sans interaction, le curseur visite le Hall puis chacun des quatorze salons. Dans chaque pièce il applique Rendez-vous privé, Réception et Ouverture, avec cinq secondes entre chaque action. La fin du parcours revient à la vue globale et réapplique Fermeture à toute la boutique.
 
 Restaurant suit le même parcours : vue globale en Fermeture, cinq secondes d’attente, puis visite des quinze pavillons avec Dîner, Rooftop et Accueil toutes les cinq secondes. La séquence se termine sur la vue globale avec Fermeture appliquée à toutes les zones.
+
+## 27/09/2026 — Indicateur audio Hotel Brassus 2.2.12
+
+L’onglet Audio de l’iPhone Hotel Brassus affiche désormais six barres animées pendant la lecture. L’animation s’arrête et l’état « Audio coupé » apparaît lorsque le son est coupé ou que le volume atteint zéro.
