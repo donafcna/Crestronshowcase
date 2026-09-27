@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import vm from 'node:vm';
 import { runOrderedDemo } from '../src/hooks/orderedDemo.js';
-import { GUIDED_DEMO_TIMING, isGuidedProject } from '../src/hooks/guidedDemoTiming.js';
+import { GUIDED_DEMO_TIMING, guidedStartDelay, isGuidedProject } from '../src/hooks/guidedDemoTiming.js';
 const catalogContext={window:{}};
 vm.runInNewContext(readFileSync(new URL('../public/ftv-luxury/catalog.js', import.meta.url),'utf8'),catalogContext);
 const catalog=JSON.parse(JSON.stringify(catalogContext.window.FTV_CATALOG));
@@ -44,7 +44,10 @@ test('three sectors share a 3-second start, others are not changed',()=>{
  const hook=readFileSync(new URL('../src/hooks/useAutoDemo.js',import.meta.url),'utf8');
  const host=readFileSync(new URL('../src/components/Showcase.jsx',import.meta.url),'utf8');
  assert.match(hook,/isGuidedProject\(guiKey.split\("\/"\)\[0\]\)/);
- assert.match(hook,/guidedBuilding \? GUIDED_DEMO_TIMING.startDelay : TIMING.startDelay/);
+ assert.match(hook,/guidedBuilding \? guidedStartDelay\(guiKey.split\("\/"\)\[0\]\) : TIMING.startDelay/);
+ assert.equal(guidedStartDelay('boutique-hermes'),10000);
+ assert.equal(guidedStartDelay('yacht-monaco'),10000);
+ assert.equal(guidedStartDelay('sushi-bar-kyoto'),3000);
  assert.match(host,/const guidedEntry = isGuidedProject\(activeProject.id\) && first/);
 });
 for(const [project,scenes,closing] of [['boutique',['private','gala','opening'],'closed'],['restaurant',['dinner','rooftop','welcome'],'closed'],['yacht',['sunset','dinner','cruise'],'night']]){

@@ -511,3 +511,11 @@ Le parcours guidé de Boutique et Yacht repartait à vide depuis l'ouverture sur
 Le bandeau de retour du mode démo passe en haut de l'écran, au-dessus de la GUI, toujours sans masquage automatique.
 
 Sur l'accueil, l'espace entre le bloc d'accroche et le film tombe de 30 à 10 px et le film se dimensionne sur la hauteur réellement disponible, centré horizontalement : il tient en entier dans la fenêtre de 1280 x 720 à 1920 x 1200 sans défilement.
+
+## 27/09/2026 — Boutique par espace, stores et yacht de jour 2.2.16
+
+Boutique et Yacht laissent dix secondes au visiteur avant l'entrée du curseur ; Restaurant garde son entrée courte.
+
+Boutique : une scène ne s'applique qu'à l'espace sélectionné, « Toute la boutique » restant le seul choix qui agit partout ; la vue d'ensemble montre donc les zones allumées et les zones éteintes. Le cadrage d'un espace s'élargit (champ de 74°, caméra reculée dans la pièce) pour montrer la salle entière. Chaque salon reçoit des luminaires et du mobilier distincts — suspensions, rail de spots, lampadaires, console, banquette, tapis — tandis que les bandeaux LED au sol et en corniche font désormais le tour des quatre côtés de chaque espace, aux deux niveaux. Les façades des deux niveaux reçoivent des baies vitrées avec stores motorisés : une section « Stores & éclairage général » pilote les quatre façades ou toutes à la fois en ouvert, mi-hauteur ou fermé, et allume ou éteint l'ensemble du bâtiment.
+
+Yacht : la maquette embarquée dans le châssis reste en plein jour et cadre uniquement l'espace choisi ; le cycle jour / nuit continue sur le modèle de fond du site.

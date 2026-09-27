@@ -76,10 +76,12 @@
         case 'level': if (m.id === 'all' || api.floors.some(r => String(r.id) === String(m.id))) api.level(m.id); break;
         case 'overview': api.overview(); break;
         case 'zoom': if (Number.isFinite(m.delta)) api.zoom?.(m.delta); break;
-        case 'scene': api.scene(m.key); break;
+        case 'scene': api.scene(m.key, typeof m.scope === 'string' ? m.scope : 'all'); break;
         case 'lighting': if (m.values && typeof m.values === 'object') api.lighting(m.values, m.scope || 'all'); break;
         case 'color': api.color(m.value); break;
         case 'capture': api.capture(); break;
+        case 'blinds': api.blinds?.(m.position, m.facade); break;
+        case 'all-lights': api.allLights?.(m.on === true); break;
         case 'environment-time': if (Number.isFinite(m.seconds) && m.seconds >= 0) api.environmentTime?.(m.seconds); break;
         case 'exterior': if (!exteriorError) api.exterior?.(m.command); break;
         case 'hello': ready(); break;

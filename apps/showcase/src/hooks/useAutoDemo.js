@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { runVillaTour } from "./villaTour";
 import { runOrderedDemo } from "./orderedDemo";
-import { GUIDED_DEMO_TIMING, isGuidedProject } from "./guidedDemoTiming";
+import { GUIDED_DEMO_TIMING, guidedStartDelay, isGuidedProject } from "./guidedDemoTiming";
 
 // ----------------------------------------------------------------------------
 // Démo automatique d'une interface.
@@ -479,7 +479,7 @@ export const useAutoDemo = ({ enabled, running, stageRef, guiKey, onCycleEnd, on
 
     const run = async () => {
       const guidedBuilding = isGuidedProject(guiKey.split("/")[0]);
-      const startDelay = guidedBuilding ? GUIDED_DEMO_TIMING.startDelay : TIMING.startDelay;
+      const startDelay = guidedBuilding ? guidedStartDelay(guiKey.split("/")[0]) : TIMING.startDelay;
       if (!villaDevice) await sleep(startDelay, token);
       if (token.cancelled) return;
 

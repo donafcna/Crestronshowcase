@@ -194,6 +194,9 @@
     dusk: new T.Color('#d7997b')
   };
   let seconds = 0, last = performance.now(), externalSeconds = null, externalAt = last, fixed = null, sentAt = 0, signature = '';
+  // Maquette embarquee dans le chassis : plein jour en permanence. Le cycle
+  // jour / nuit reste l'affaire du modele de fond du site.
+  if (new URLSearchParams(location.search).get('chassis') === '1') fixed = 6;
   const motion = matchMedia('(prefers-reduced-motion: reduce)');
   function sendState(force = false) {
     const now = performance.now(); if (!force && now - sentAt < 350) return;
