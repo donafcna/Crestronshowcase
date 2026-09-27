@@ -1,5 +1,38 @@
 # Villa Crans CH5 — journal des versions
 
+## v4.7 — 27/09/2026 — iPhone : scenes de la fenetre Circuits, HVAC et wellness en `<button>` ; vitrine regeneree (a compiler : CH5 seul)
+
+| Artefact | Etat de ce lot |
+|---|---|
+| CH5 source | `src/iphone.html`, `src/themes/room-controls.css` (jetons HVAC partages), nouveau `src/themes/scene-controls.css` — **a recompiler**, cibles web + tsw + **mobile** ; `index.html` inchange |
+| CPZ slot 1 | inchange, 1.0.195.0 (v4.5) |
+| Config | `meta.version` 1.0.206 (v4.6 = 1.0.205 non compile : si les deux lots partent dans le meme build, aligner sur la version que `deploy.ps1` ecrit dans `version.json`) |
+| Showcase | copie `apps/showcase/public/showcases/villa-gemini-frequencetv/` regeneree par `sync-villa-crans.py` — elle etait restee **avant v4.4** (Centralisation, partitions et ce lot arrivent ensemble) ; `sync-villa-crans.py` copie desormais toutes les `themes/*-controls.css` (alarm-controls.css manquait a la vitrine) ; **non poussee**, GO de Donatien |
+| Batterie | `tools/qa-v47.mjs` : 3 themes × {fenetre Circuits, HVAC, Sauna, Hammam} × etats (repos, chaque bouton selectionne, scenes memorisees) × {iPhone 16 Pro 402×874, iPhone 18 Pro Max 440×956} × {deploiement, showcase} : **69/69 VERT** a chaque passe (contraste >= 4:1, cibles >= 40 px, 0 debordement, 0 scroll H, 0 erreur console hors artefact WebXPanel du banc) ; chaine appui → etat verifiee (14 impulsions ↑↓ emises vers le pont natif, retour d'etat → `.selected` sur les deux jeux de scenes) ; planche-contact `docs/verification/2026-09-27-v47-boutons-iphone/` |
+
+**Cloture de la conversion iPhone commencee en v4.4.** Derniers `<ch5-button>` a etat de `iphone.html` : scenes 51-54 de la fenetre
+Circuits, HVAC ON/OFF/AUTO/1/2/3 (610-615), sauna et hammam ON/OFF (620-621, 624-625). Meme methode que v4.4 et v4.6 :
+`<button id="circuit-scene-btn-5x" class="scene-cmd-btn" data-join>` et `<button id="hvac-cmd-btn-NNN" class="hvac-cmd-btn">`,
+`pressDigital(N)` a l'appui, `subscribeState` → `toggleSelected` au retour. Restent en `<ch5-button>` sur l'iPhone : les impulsions
+sans etat (49/50, 622/623, 626/627, telecommandes, lecteur 251-253) — rien a afficher, rien a convertir.
+
+**Deux jeux de boutons de scene, une seule chaine.** Le second jeu (fenetre Circuits) n'a plus d'`id` en collision : `circuit-scene-btn-5x`
+a cote de `scene-btn-5x`. Sont couverts sur les deux : abonnement 51-54, libelles traduits de `villa_config.json`, pastille « scene memorisee »
+(`data-saved`), appui long (`SCENE_SEL` + `sceneIdxOf` lit `data-join` avant l'`id`), blocage du menu contextuel iOS.
+
+**Correction au niveau du systeme.** `room-controls.css` : jetons `--hvac-{idle,active}-{bg,text,border}` par theme sur `.hvac-controls`,
+consommes par le `<ch5-button>` de la dalle / iPad / XPanel (memes valeurs qu'avant, rendu identique) et par le `.hvac-cmd-btn` de l'iPhone.
+`scene-controls.css` : jetons `--scene-*` sur `#circuits-overlay`, or #c49a45 comme `.scene-btn-mobile`, OFF rouge (l'ancien
+`--ch5-button-selected-background-color:#dc2626`).
+
+**Defaut preexistant corrige au passage.** Batterie « avant » : les 4 scenes selectionnees de la fenetre Circuits tombaient a **3,31:1** en
+theme Clair (vert CH5 par defaut sous le texte fonce de la regle generique) — 5 controles rouges, 0 apres.
+
+**Decisions par defaut.** Couleurs des scenes reprises de la page principale (or) plutot que du vert Centralisation ; +/- laisses en
+`<ch5-button>` ; batterie passee aussi au format iPhone 18 Pro Max (reference commune posee le 26/09 dans `apps/showcase/CLAUDE.md`)
+sans changer le vocabulaire fige du projet ; compilation et push laisses a Donatien.
+
+
 ## v4.6 — 22/09/2026 — partitions d'alarme de l'iPhone en `<button>` ; cloture du retard Centralisation (a compiler : CH5 seul)
 
 | Artefact | Etat de ce lot |

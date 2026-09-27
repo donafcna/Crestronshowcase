@@ -10,15 +10,36 @@ body#app-body .curtain-open .btn-curtain-open,body#app-body .curtain-close .btn-
 @supports not ((mask:url()) or (-webkit-mask:url())) { .curtain-open::after,.curtain-close::after { content:none; } .curtain-open .ch5-button--label,.curtain-close .ch5-button--label,.curtain-open label,.curtain-close label { visibility:visible!important; } body#app-body .curtain-open,body#app-body .curtain-close { font-size:inherit!important; } }
 .curtain-open { --curtain-arrow:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 32'%3E%3Cpath d='M15 2 1 16l14 14V20h10v10l14-14L25 2v10H15z'/%3E%3C/svg%3E"); }
 .curtain-close { --curtain-arrow:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 32'%3E%3Cpath d='m1 2 14 14L1 30V20H0v-8h1zm38 0L25 16l14 14V20h1v-8h-1z'/%3E%3C/svg%3E"); }
+/* HVAC / wellness : un seul jeu de jetons par theme, consomme par le <ch5-button> (dalle, iPad,
+   XPanel) et par le <button class="hvac-cmd-btn"> de l'iPhone (v4.7, 27.09.2026 : ON/OFF/AUTO/1/2/3
+   610-615 et ON/OFF sauna-hammam 620-621 / 624-625 passent par pressDigital + subscribeState +
+   .selected, comme les scenes, la Centralisation v4.4 et les partitions v4.6 — sur Crestron One le
+   <ch5-button> n'affichait ni l'appui ni l'etat). Les +/- restent des <ch5-button> a impulsion. */
+body#app-body .hvac-controls {
+  --hvac-idle-bg:#252b34; --hvac-idle-text:#f1f5f9; --hvac-idle-border:#8b98a5;
+  --hvac-active-bg:#10b981; --hvac-active-text:#052e16; --hvac-active-border:#10b981;
+}
+body#app-body.theme-light .hvac-controls {
+  --hvac-idle-bg:#e2e8f0; --hvac-idle-text:#1e293b; --hvac-idle-border:#64748b;
+  --hvac-active-bg:#047857; --hvac-active-text:#ffffff; --hvac-active-border:#047857;
+}
 .hvac-controls { display:none; }
 .hvac-extended .hvac-controls { display:grid;gap:7px;width:100%;max-width:400px;margin:8px auto 0; }
 .hvac-controls .hvac-row { display:flex;gap:6px; }
-.hvac-controls .hvac-row ch5-button { flex:1;min-width:0; }
-body#app-body .hvac-controls .cb-btn { width:100%!important;min-height:44px!important;height:44px!important;box-sizing:border-box;background:#252b34!important;border:1px solid #8b98a5!important;color:#f1f5f9!important;border-radius:7px!important;box-shadow:none!important;transition:none!important; }
+.hvac-controls .hvac-row ch5-button,.hvac-controls .hvac-row .hvac-cmd-btn { flex:1;min-width:0; }
+body#app-body .hvac-controls .cb-btn { width:100%!important;min-height:44px!important;height:44px!important;box-sizing:border-box;background:var(--hvac-idle-bg)!important;border:1px solid var(--hvac-idle-border)!important;color:var(--hvac-idle-text)!important;border-radius:7px!important;box-shadow:none!important;transition:none!important; }
 body#app-body .hvac-controls .ch5-button--label,body#app-body .hvac-controls label { color:inherit!important;font-size:.85rem!important;line-height:1.15!important;font-weight:600!important;transition:none!important; }
-body#app-body .hvac-controls ch5-button[selected="true"] .cb-btn { background:#10b981!important;color:#052e16!important;border-color:#10b981!important;box-shadow:inset 0 -3px #052e16!important; }
-body#app-body.theme-light .hvac-controls .cb-btn { background:#e2e8f0!important;color:#1e293b!important;border-color:#64748b!important; }
-body#app-body.theme-light .hvac-controls ch5-button[selected="true"] .cb-btn { background:#047857!important;color:#fff!important;border-color:#047857!important;box-shadow:inset 0 -3px #fff!important; }
+body#app-body .hvac-controls ch5-button[selected="true"] .cb-btn { background:var(--hvac-active-bg)!important;color:var(--hvac-active-text)!important;border-color:var(--hvac-active-border)!important;box-shadow:inset 0 -3px var(--hvac-active-text)!important; }
+body#app-body .hvac-controls .hvac-cmd-btn {
+  width:100%;min-height:44px;height:44px;padding:0 6px;box-sizing:border-box;
+  background:var(--hvac-idle-bg)!important;border:1px solid var(--hvac-idle-border)!important;color:var(--hvac-idle-text)!important;
+  border-radius:7px;font-family:inherit;font-size:.85rem;font-weight:600!important;line-height:1.15;white-space:normal;text-align:center;
+  cursor:pointer;box-shadow:none!important;transition:none;-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none;user-select:none;
+}
+body#app-body .hvac-controls .hvac-cmd-btn:active,
+body#app-body .hvac-controls .hvac-cmd-btn.selected { background:var(--hvac-active-bg)!important;color:var(--hvac-active-text)!important;border-color:var(--hvac-active-border)!important;box-shadow:inset 0 -3px var(--hvac-active-text)!important; }
+body#app-body .hvac-controls .hvac-cmd-btn.selected { font-weight:800!important; }
+body#app-body .hvac-controls .hvac-cmd-btn:focus-visible { outline:3px solid var(--hvac-active-border);outline-offset:2px; }
 .hvac-controls .hvac-caption { color:var(--text-primary);font-size:.85rem;font-weight:600;text-align:left; }
 html.hvac-extended #panel-hvac .temp-container { gap:12px!important;justify-content:center!important; }
 html.hvac-extended #card-cvc { padding:12px 16px!important; }

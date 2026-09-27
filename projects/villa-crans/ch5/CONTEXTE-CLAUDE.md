@@ -1,55 +1,54 @@
 # VillaCrans — contexte pour Claude (lire en premier, économise les tokens)
 
-## 21/09/2026 — source iPhone C1 et publication vitrine
+## 27/09/2026 — v4.7 : conversion iPhone terminée (CH5 à compiler, vitrine régénérée non poussée)
+- **Sur l'iPhone (Crestron One), tout bouton à état est un `<button>`** : `pressDigital(N)` à l'appui, `subscribeState` → `toggleSelected` au retour,
+  classe `.selected`. Le `<ch5-button receiveStateSelected>` n'y affiche ni l'appui ni l'état (5-20 s de retard, v4.4). Convertis : Centralisation
+  401-411 (v4.4), partitions 301-312 (v4.6), scènes fenêtre Circuits 51-54 + HVAC 610-615 + sauna/hammam 620-621/624-625 (v4.7). Restent en
+  `<ch5-button>` les impulsions sans état (49/50, 622/623, 626/627, télécommandes, 251-253). La dalle (`index.html`) garde ses `<ch5-button>`.
+- Jetons par thème dans les CSS partagés, consommés par les deux formes : `global-controls.css` (`--global-*`), `alarm-controls.css` (`--alarm-*`),
+  `room-controls.css` (`--hvac-*` sur `.hvac-controls`), `scene-controls.css` (`--scene-*` sur `#circuits-overlay`). Couleurs en `!important`
+  à cause de la règle générique `.theme-light .custom-overlay-panel button` d'`iphone.html`.
+- Deux jeux de boutons de scène sur l'iPhone : `scene-btn-5x` (page) et `circuit-scene-btn-5x` (fenêtre Circuits) ; abonnement, libellés
+  traduits, pastille `data-saved`, appui long (`SCENE_SEL`, `sceneIdxOf` lit `data-join`) couvrent les deux.
+- Batterie réutilisable `tools/qa-v47.mjs <page> <dossier> [--w 440 --h 956] [--base]` (pont natif factice `JSInterface` → vérifie l'émission,
+  `CrComLib.bridgeReceiveBooleanFromNative` → vérifie le retour). Artefact du banc à ignorer : `panelInstance.initialize is not a function`.
+- Référence smartphone commune posée le 26/09 dans `apps/showcase/CLAUDE.md` : **iPhone 18 Pro Max 440×956** (GUI 440×863) ; le vocabulaire
+  figé du projet dit encore iPhone 16 Pro — tester les deux tant que Donatien n'a pas tranché.
+- `sync-villa-crans.py` copie toutes les `themes/*-controls.css`. La vitrine était restée avant v4.4 : régénérée le 27/09 (v4.4+v4.6+v4.7), non poussée.
 
-Le diagnostic `CENT-20260921-1` est intégré à `src/iphone.html`, puis synchronisé vers le showcase à la demande de Donatien. Aucun changement de commandes/joins/styles. Build site, lint et 14 tests du diagnostic réussis ; tests matériels et rendu iOS non effectués. Les 4 échecs de qualification générale existaient sur le commit initial (versions 1.0.201/1.0.196). C# C1 fourni dans le ZIP séparé, non intégré au dépôt dans ce lot web ; aucun CH5Z/CPZ/LPZ compilé ou déployé. Voir le journal showcase et `docs/verification/2026-09-21-centralisation-c1/`.
+## 21-22/09/2026 — v4.2 → v4.6 (détail : CHANGELOG)
+- **Retard Centralisation iPhone résolu (v4.5, CPZ 1.0.195.0)** : `PulseRoomDigital` écrivait 168 impulsions de bloc de pièce vers chaque
+  panel sur TOUT OUVRIR / TOUT FERMER ; il n'écrit plus que sur l'EISC. Depuis v4 seul le slot 2 lit les joins ≥ 1000 (`PushRoomFeedback` idem, v4.2).
+- **`deploy.ps1 -Target mobile`** (Crestron One télécharge son projet depuis le CP4 : `ch5-cli -t mobile`) ; la cible `web` compare `version.js`
+  servi et `version.json`. **Tout test sur un support commence par lire la version dans Réglages** ; sans relevé, ce n'est pas un test.
+- Lot C1 (Codex, 21/09) : diagnostic intégré à `iphone.html`, C# non intégré (sauvegardé dans `_backups/ControlSystem_C1_2026-09-21.cs`).
+- Deux jeux de boutons de scène iPhone (page + fenêtre Circuits) : tout gestionnaire couvre les deux. Valider un JSON comme l'outil qui le
+  consomme (`ConvertFrom-Json` refuse deux clés identiques à la casse près → `tools/quality/validate-config.mjs`). `meta.tracesConsole` /
+  `tracesLatence` = false hors mesure (lus au boot, sans recompiler).
 
-## 18/09/2026 (soir) — v4.2 : appui long fenêtre Circuits, feedback des panels allégé (à compiler : CH5 + CPZ 1.0.193.0)
-- **Deux jeux de boutons de scène sur l'iPhone** : `<button id="scene-btn-5x">` de la page principale ET `<ch5-button customClass="scene-btn" data-join="5x">` de la fenêtre Circuits. Tout gestionnaire de scène doit couvrir les deux (`SCENE_SEL` / `sceneBtnOf` / `sceneIdxOf`), comme la dalle qui lit `sendEventOnClick`. L'appui long n'était écouté que sur la page principale : il ne se passait rien là où l'on règle les curseurs.
-- **Aucune GUI ne lit un join ≥ 1000** depuis `blocsPiecesGui.actif=false` (vérifié par recherche sur les deux HTML). `PushRoomFeedback` n'envoie donc plus le bloc de pièce qu'à l'**EISC** : une commande globale écrivait ~900 joins inutiles par panel (`BroadcastFeedbackToAll` → `PushAllRoomsFeedback`), d'où des secondes de retard sur l'XPanel iPhone en WiFi. L'instantané global aux panels affichant la pièce est inchangé.
-- Règle : **valider un JSON comme le fera l'outil qui le consomme** — `ConvertFrom-Json` (PowerShell 5.1, `deploy.ps1`) refuse deux clés d'un même objet identiques à la casse près (`MUSIQUE`/`Musique`), là où `JSON.parse` et Python les acceptent. Contrôlé par `tools/quality/validate-config.mjs`.
-- `meta.tracesConsole = false` : plus de lignes [DECOUPLE] / [BLOC PIECE] / [V4] au Debugger, sans recompiler (lu au boot, `ControlSystem.cs` l. 485).
-- Vercel est resté au build du 17.09 : les défauts d'affichage allemand vus sur le site (bouton SCHLIESSEN qui sort de l'en-tête, scènes en français) sont **déjà corrigés en local**, pas poussés.
-
-## 18/09/2026 (après-midi) — P1 Reprise : contrat v4.1 documenté, config purgée, outillage Codex re-basé (session Cowork « Crestron CH5 », commit sur main, pas poussé)
-- **Deux sessions Claude ont travaillé le même jour** : l'autre a livré v1.0.186 → 1.0.191 → traductions (nuit) ; cette session a archivé son working tree (commit `f9804689`, branche `backup/crestron-local-2026-09-18` poussée) puis livré P1 par-dessus. Avant toute livraison : `git status`, jamais deux sessions en écriture en même temps (leçon du 5/9).
-- **Passation du 17.09** (`docs/PASSATION-2026-09-17.docx`) : trois piliers Showcase / AV Channel Projects / Academy, roadmap P0→P4. Rapport P0 et annexe contrat : docs du projet Cowork `80-p0-reprise`, `81-p0-contrat-joins`. Vocabulaire : **Crans-Montana**, jamais « Grand Montana » (renommé dans `tools/quality` et `docs/industrialisation`).
-- `villa_config.json` : `meta.version` aligné sur `version.json` (**1.0.196**) ; `blocsPiecesGui.mapping.analog` complété 81-90 (= `V4AnalogOffsets`) ; sources renommées comme dans le GUI (Apple TV / Sky Q / Swisscom / IPTV / MUSIQUE — les libellés du GUI sont en dur dans les HTML) ; **noms de test purgés** (scènes REPAS2 / TOTAL3 / vulgaires → REPAS / TOTAL / AMBIANCE, source « Box pirate », 11 clés orphelines de `traductions`, `AMBIANCE` ajouté en 4 langues). `src/villa_config.*` et copie vitrine régénérés (`clean_config` de `sync-villa-crans.py`). `generate_slot2.js` sur copie : **SMW identique**, pas de LPZ à refaire pour ce lot.
-- **Docs** : `03_CONTRAT_JOINS.md` retitré v4.1 avec un §0 « Principe v4 » (§1/§5/§6 marqués historiques) ; `README_SLOT2.md` renommé `Project_Slot2`, section « État v4.1 » (ce que le slot 2 reçoit / renvoie, entrées EISC mortes, offsets sans nom), la section « logique à câbler » du 16.09 est **corrigée** (le feedback vient du C#, pas d'interlocks slot 2) ; `04_SIMPL_SLOT2.md` bandeau historique. Vérité : le C# ignore les entrées EISC globales `Source_Select_n`, `Audio_Mute`, `Motor_n_*`, `Shades_Scene_n`, `Circuit_n#`, `Room_Select#` ; il lit 41/42, 44/45, 301-312, 410/411 et les `_Actual` par pièce.
-- **`tools/quality` (Codex) re-basé** : `validate-config` accepte 20 circuits, `audit.mjs` lit `Project_Slot2.smw`, `runtime-v4.json` = profil `crans-montana-v4.1-gui1.0.196-csharp1.0.192.0` (13 empreintes recalculées), exemple Villa Léman réaligné ; **43/43 tests node verts** (`node --test tools/quality/quality.test.mjs tools/quality/compatibility.test.mjs`, React requis dans `apps/showcase/node_modules`). Bêta Alexandre : profil `docs/verification/2026-09-18-beta-alexandre/` (0 défaut `--release`), notice mise à jour ; **binaires à compiler par Donatien** (README du dossier).
-- Chantiers Core identifiés, non traités : type de source non paramétrable (Apple TV / Sky Q / Swisscom / IPTV figés dans HTML, C# l. 2153, GEN l. 222) ; offsets +41..57 / +81..92 poussés par `PushRoomFeedback` sans nom EISC ; générateur qui duplique les plages au lieu de lire `signauxGlobaux` ; bornes HVAC, presets, IP-ID en dur dans le C#. Doc projet Cowork `81-p0-contrat-joins`, § 4.
-
-## 18/09/2026 (nuit, autre session) — traductions complètes + appui long iPhone (à compiler : dalle, web, mobile)
-- Deux mécanismes : textes fixes = `data-i18n` + dictionnaires fr/en/es/de/ru de chaque HTML (`window.villaI18n`) ; noms venant de `villa_config.json` = `traductions.<lang>[texte FR]` via `villaTranslateName()` (`data-tname` pour un texte fixe). **Tout nouveau libellé passe par l'un des deux** ; le mode CVC (sériel 33, FR côté C#) se traduit à l'affichage, jamais par `data-ch5-textcontent`. iPhone : appui long fiabilisé côté iOS, en-têtes `clamp()`, `global-controls.css` point de rupture 480 px.
-
-## 18/09/2026 (soir, autre session) — contrat v4.1 : scènes mémorisées par le C#, 20 circuits (v1.0.191 : CH5 TSW + XPanel et CPZ chargés, validés ; LPZ compilé 18/09 05:20, recette Debugger à faire)
-- Scènes : 💾 → sériel 421 `{p,s,c[%]}` (compact) → `/user/scenes_<pièce>.json` ; rappel = bouton 51-54 seul, le C# impose les niveaux (scène mémorisée > table `niveaux` ; « le slot 2 fait foi » seulement au démarrage) ; marqueurs 💾 = d421-424. Plus de `localStorage` de scène (showcase `local-feedback.js` simule le C#). 20 circuits : joins 71-90, `MaxCircuits`, bloc pièce a+71..+90, `MAX_CIRCUITS`. SMW : bloc éclairage par pièce (`Rxx_Lighting_SceneN_fb` / `_Actual`, `Rxx_Circuit_N_fb#` / `_Actual#`).
-- Règles apprises : **le CP4 tronque à 119 caractères tout sériel émis par un écran** → jamais de JSON long des panneaux vers le C# ; sur une ligne partagée jamais de largeur fixe (flex + minimum) ; ne jamais animer `visibility` ; les HTML du dépôt sont en CRLF.
-
-## 17/09/2026 — feuille de route (conversation vocale ChatGPT ; détail : docs du projet Cowork 00, 10, 30, 60)
-- Nom : **Crans-Montana**, jamais « Grand Montana » ; « Villa Gemini » = même projet.
-- Étapes : V1 stable → bêta Alexandre (chaque blocage = à simplifier ou à passer dans `villa_config.json`) → « Core Fréquence TV » réutilisable → toutes les GUI du showcase au niveau Villa Crans → livrable client. Horizon 1–2 mois.
-- Architecture cible : CH5 + C# générique maintenus par l'IA ; le programmeur ne touche que le JSON de config et SIMPL. Critère : un programmeur SIMPL qui ne connaît ni CH5 ni C# déploie seul.
-- Premier chantier : audit de la Villa Crans (design system, composants, interactions, points de rupture, animations, contraintes physiques) + contrat de données JSON ↔ C# ↔ SIMPL ↔ CH5.
-- Qualité en amont : cohérence architecturale/physique → AV → graphique/fonctionnelle ; chaque correction devient une règle écrite, puis un contrôle automatique si possible.
-
-## 17/09/2026 (soir) — lot 1.0.183 : OFF, mute, logs PRESETS, tuiles pressées (détail : CHANGELOG)
-- **Un `<ch5-button sendEventOnClick="N">` émet SEUL l'impulsion** : jamais de `publishEvent('b',N,true)` en plus dans son `onclick` (2 fronts, `true` jamais relâché). `sendPowerOff` (200) et `toggleMute` (55) n'émettent plus ; l'état vient du `receiveStateSelected`.
-- **Un join sans nom dans le slot 2 est invisible au debugger** : vérifier `generate_slot2.js` d'abord. Logs de repli C# → `Trace()`. Faders du preset global = `<input type="range">` locaux, émission à « Enregistrer » (s420). `avReleaseTilesSoon()` relâche les tuiles sources.
-- `deploy.ps1 -Target web` : rappel de certificat compilé + repli `curl.exe -k`. Recette : `node tools/recette-off-sources.mjs http://localhost:4179 apres <dossier>` + `tools/check_contrast_dom.mjs --root … --min 4`.
-- Réseau de Donatien : **CP4 192.168.1.200, TSW 192.168.1.16** ; banc bureau CP4 192.168.3.109. iPhone : IP-ID 0x06 par défaut **non enregistré** → passer par les QR (`?ipId=0x1N&room=N`, 0x11-0x1E) sinon hors ligne. Réserve : `iphone.html` `toggleMute` publie un niveau 55 hors `<ch5-button>`.
-
-## 17/09/2026 — rooms-1, GUI 1.0.180 : décors, wellness et voisinage (détail : CHANGELOG)
-Local technique au sous-sol (17 pièces vitrine), **sous-sol sans fenêtres**, wellness sauna/hammam cloisonné, garage, voisinage et paysage ; 4 programmes TV 3D partagés 640×360, ondes audio selon le volume. GUI : onglets HVAC/Sauna/Hammam, ON/OFF indépendants, sauna 60–100 °C, hammam 90–100 %, HVAC 16–28 °C ; joins d620–627, a/s62–65, C# `WellnessState`, EISC nommés (`docs/WELLNESS-2026-09-17.md`). CH5Z + CPZ 1.0.180.0 compilés, LPZ non compilé, rien déployé dans ce lot. Preuves : `Claude outputs/room-revision/livraison`.
+## 17-18/09/2026 — contrat v4.1, P1, traductions (détail : CHANGELOG, docs projet Cowork 80/81)
+- **Jamais deux sessions en écriture en même temps** : `git status` avant toute livraison (deux sessions le 18/09 ; archive `backup/crestron-local-2026-09-18`).
+- Contrat v4.1 : scènes mémorisées par le C# (💾 → sériel 421 `{p,s,c[%]}`, marqueurs d421-424, plus de `localStorage`), 20 circuits (71-90).
+  **Le CP4 tronque à 119 caractères tout sériel émis par un écran.** Le C# ignore les entrées EISC globales `Source_Select_n`, `Audio_Mute`,
+  `Motor_n_*`, `Shades_Scene_n`, `Circuit_n#`, `Room_Select#` ; il lit 41/42, 44/45, 301-312, 410/411 et les `_Actual` par pièce.
+- Traductions : textes fixes = `data-i18n` + dictionnaires fr/en/es/de/ru (`window.villaI18n`) ; noms de `villa_config.json` = `traductions.<lang>[FR]`
+  via `villaTranslateName()`. Tout nouveau libellé passe par l'un des deux. Nom du projet : **Crans-Montana**, jamais « Grand Montana ».
+- **Un `<ch5-button sendEventOnClick>` émet seul l'impulsion** (jamais de `publishEvent` en plus dans son `onclick`). Un join sans nom dans le
+  slot 2 est invisible au debugger (`generate_slot2.js` d'abord). Réseau : CP4 192.168.1.200, TSW 192.168.1.16, banc bureau 192.168.3.109 ;
+  iPhone : IP-ID 0x06 non enregistré → QR `?ipId=0x1N&room=N`.
+- Feuille de route (17/09) : V1 stable → bêta Alexandre → « Core Fréquence TV » réutilisable (CH5 + C# génériques, le programmeur ne touche
+  que le JSON et SIMPL) → toutes les GUI du showcase au niveau Villa Crans. Chantiers Core ouverts : type de source non paramétrable,
+  offsets +41..57 / +81..92 sans nom EISC, générateur qui duplique les plages, bornes HVAC / presets / IP-ID en dur dans le C#.
+- Wellness (17/09, GUI 1.0.180) : onglets HVAC/Sauna/Hammam, joins d620-627, a/s62-65, `WellnessState` C#, `docs/WELLNESS-2026-09-17.md`.
 
 ## Les 4 artefacts à suivre (convention validée le 13.09.2026)
 Quatre versions à tenir alignées, ici et en tête de chaque entrée du CHANGELOG.
 | Artefact | Version | Compilation |
 |---|---|---|
-| CH5 `.ch5z` (TSW + XPanel) | source **1.0.196** (`version.json` = `meta.version`) ; installé 1.0.191 (TSW .1.16, XPanel CP4 .1.200) ; lot traductions **à compiler** | `deploy.ps1 -Target web` (CP4 192.168.1.200) / `-Target tsw -TswHost 192.168.1.16` — incrémente `version.json` à chaque build, puis aligner `meta.version` |
-| CPZ slot 1 (C#) | 1.0.191.0 chargé ; source `AssemblyInfo` 1.0.192.0 | SIMPL# Pro + `deploy.ps1 -Target cp4` |
-| LPZ slot 2 (SIMPL) | v4.1 compilé 18/09 05:20 (`Project_Slot2.lpz`), **jamais testé sur matériel** ; SMW inchangé par P1 | F12 sur `Project_Slot2.smw` puis charger |
-| Showcase Vercel | prod = `74cd4a41` (17.09) ; copie locale à jour (lots 18/09 + P1), **non poussée** | `sync-villa-crans.py` puis push `main` → Vercel |
+| CH5 `.ch5z` (TSW + XPanel + mobile) | source **1.0.206** (`meta.version`) ; `version.json` 1.0.204 = dernier build ; installé 1.0.204 (TSW .1.16, XPanel CP4 .1.200, Crestron One) ; **v4.6 + v4.7 à compiler** (`-Target web`, `tsw`, `mobile`) | `deploy.ps1` incrémente `version.json` à chaque build, puis aligner `meta.version` |
+| CPZ slot 1 (C#) | 1.0.195.0 (v4.5) compilé et chargé ; aucun changement C# depuis | SIMPL# Pro + `deploy.ps1 -Target cp4` |
+| LPZ slot 2 (SIMPL) | v4.1 compilé 18/09 05:20 (`Project_Slot2.lpz`), **jamais testé sur matériel** ; SMW inchangé depuis | F12 sur `Project_Slot2.smw` puis charger |
+| Showcase Vercel | prod = `74cd4a41` (17.09) ; copie locale régénérée le 27/09 (v4.4 → v4.7), **non poussée** | `sync-villa-crans.py` puis push `main` → Vercel |
 
 `meta.version` du `villa_config.json` s'aligne à la main sur la version du build.
 
@@ -116,18 +115,10 @@ Pièges : un style en ligne `!important` ne se reprend pas en CSS (le retirer du
 - Outillage conteneur : `device_commit_files` avec un chemin de sortie neuf ; `src/villa_config.json` = copie de build,
   la source est `villa_config.json` racine.
 ## Plan 3D (16.09.2026) — fond de page du SITE, le GUI des châssis ne change jamais
-**Vidéo par défaut** ; `apps/showcase/src/components/Plan3DBackground.jsx` ne la remplace que dans
-les cas de `PLAN3D_RULES` (`{device,minWidth,maxWidth}` — aujourd'hui : châssis Smartphone ; l'utilisateur
-teste d'autres tailles d'écran et dira quoi ajouter). 3D active ⇒ châssis calé à gauche (`.plan3d-on`,
-`--chassis-scale`), pièce cadrée avant la colonne des boutons. Deux scènes (extérieurs / pièces) : la
-lumière du jour de la pièce suit ses motorisations (`daylight()`), moteurs visibles avec voyants, montagnes
-en relief unique (sans scintillement), TV détaillée (écran 1024×576). `public/plan3d/plan3d.js` (Three.js `public/plan3d/vendor/`, `import()` à l'exécution) et
-`public/plan3d/villa-crans.json` (disposition, style). Lit le GUI **à travers l'iframe** (même
-origine) : CrComLib (a10, a71-80, d150-156, d155, a31/s33), clics `ch5-button[data-join]` (211-216,
-Sky 500+, IPTV 530+, Swisscom 574+, stores 61-69, moteurs 81-98), `animateGroupBlinds`. Villa plein
-fond, pièce active cadrée dans la zone libre à droite du châssis (`api.setWindow`). `window.__plan3d`
-= API (`jump()` termine les mouvements). Détail dans `apps/showcase/CLAUDE.md`. **Malentendu du
-16.09 à ne pas répéter** : une demande « plan 3D / fond d'écran » vise le site Vercel, jamais le GUI.
+Vidéo par défaut ; `apps/showcase/src/components/Plan3DBackground.jsx` ne la remplace que dans les cas de `PLAN3D_RULES` (aujourd'hui :
+châssis Smartphone). 3D active ⇒ châssis calé à gauche (`.plan3d-on`, `--chassis-scale`). `public/plan3d/plan3d.js` (Three.js) lit le GUI
+à travers l'iframe (CrComLib a10, a71-80, d150-156, clics `ch5-button[data-join]`), API `window.__plan3d`. Détail : `apps/showcase/CLAUDE.md`.
+**Malentendu du 16.09 à ne pas répéter** : une demande « plan 3D / fond d'écran » vise le site Vercel, jamais le GUI.
 ## Vitrine (apps/showcase, crestrongui.vercel.app)
 Copie régénérée par `python apps/showcase/scripts/sync-villa-crans.py <chemin>/projects/villa-crans/ch5/src` (jamais éditée à la main) ; `meta.mode = "showcase"`, feedback simulé par `js/local-feedback.js`, curseur de démo. Le script copie aussi `js/villa-joins.js` ; `js/local-feedback.js` est propre à la vitrine.
 **Barre d'outils (14.09.2026) : QR code · Fiche PDF.** « Présentation » retiré (la bulle « Reprise
@@ -146,8 +137,11 @@ La démo automatique démarre désormais sur **tous les supports** (elle était 
 6. **Jamais deux clés d'un même objet JSON qui ne diffèrent que par la casse** (`MUSIQUE` / `Musique` dans `traductions`) : `ConvertFrom-Json` de PowerShell 5.1 refuse le fichier et `deploy.ps1` s'arrête avant le build, alors que `JSON.parse` et Python les acceptent en silence. Contrôlé désormais par `tools/quality/validate-config.mjs`.
 
 ## Reste à faire
-1. **Push de `main`** (2 commits locaux : archive + P1) → déploie la vitrine (traductions) sur Vercel ; vérifier en ligne ensuite. Attendre le GO de Donatien.
-2. LPZ v4.1 : charger `Project_Slot2.lpz` et recette Debugger (rappel de scène → `Rxx_Circuit_N_fb#`, 💾 → aucun join, dalle ↔ iPad, progreset). Compiler le lot traductions (`-Target web`, `-Target tsw`) puis aligner `meta.version`.
-3. Bêta Alexandre : `prepare-project` + CH5Z / CPZ 1.0.192.0 / LPZ depuis `docs/verification/2026-09-18-beta-alexandre/README.md`, manifeste des binaires, recette A01-A12.
-4. Core (P2) : `sourcesAudioVideo[].type` lu par HTML / C# / générateur ; nommer les offsets +41..57 / +81..92 dans `generate_slot2.js` (puis F12) ; générateur lisant `signauxGlobaux` ; supprimer les 2010 `R*_` v3 du SMW ; commentaires C# « 10 circuits » (l. 1854, 2089) et v3 (l. 1791) au prochain recompilé.
-5. Recette matérielle du lot 1.0.183 (OFF → `AV_Off_fb` ↑↓, mute une bascule, tuiles relâchées) ; iPhone Crestron One « connecting » (IP-ID 0x06 non enregistré → QR `?ipId=0x1N&room=N`).
+1. **Compiler v4.6 + v4.7** (`deploy.ps1 -Target web`, `tsw`, `mobile`), relever la version dans Réglages sur l'iPhone, puis aligner `meta.version`.
+   Recette iPhone : partitions, scènes de la fenêtre Circuits (appui, état, appui long 💾), HVAC ON/OFF/ventilation, sauna/hammam.
+2. **Push de `main`** (commits locaux + vitrine régénérée v4.4 → v4.7) → Vercel ; vérifier en ligne. Attendre le GO de Donatien.
+3. LPZ v4.1 : charger `Project_Slot2.lpz` et recette Debugger (rappel de scène → `Rxx_Circuit_N_fb#`, 💾 → aucun join, dalle ↔ iPad, progreset).
+4. Bêta Alexandre : `prepare-project` + binaires depuis `docs/verification/2026-09-18-beta-alexandre/README.md`, recette A01-A12.
+5. Core (P2) : `sourcesAudioVideo[].type` lu par HTML / C# / générateur ; nommer les offsets +41..57 / +81..92 dans `generate_slot2.js` ;
+   générateur lisant `signauxGlobaux` ; supprimer les 2010 `R*_` v3 du SMW ; commentaires C# « 10 circuits » et v3 au prochain recompilé.
+6. Trancher la référence smartphone (iPhone 16 Pro du vocabulaire figé vs iPhone 18 Pro Max du 26/09) et l'écrire aux deux endroits.

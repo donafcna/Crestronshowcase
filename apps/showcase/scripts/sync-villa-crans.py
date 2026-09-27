@@ -150,11 +150,13 @@ def main() -> None:
 
     patch_html(src / "index.html", DEST / "index.html")
     patch_html(src / "iphone.html", DEST / "iphone.html")
-    shutil.copy(src / "themes" / "global-controls.css", DEST / "themes" / "global-controls.css")
-    shutil.copy(src / "themes" / "room-controls.css", DEST / "themes" / "room-controls.css")
+    # Feuilles de composants partagés (global-, alarm-, scene-, room-, wellness-controls.css…) :
+    # toutes celles de la source, pour qu'un composant ajouté à la GUI (v4.6 alarm, v4.7 scene)
+    # ne manque jamais à la vitrine.
+    for css in sorted((src / "themes").glob("*-controls.css")):
+        shutil.copy(css, DEST / "themes" / css.name)
     shutil.copy(src / "js" / "room-controls.js", DEST / "js" / "room-controls.js")
     shutil.copy(src / "js" / "wellness-controls.js", DEST / "js" / "wellness-controls.js")
-    shutil.copy(src / "themes" / "wellness-controls.css", DEST / "themes" / "wellness-controls.css")
     for name in ("version.js", "build_date.json"):
         if (src / name).exists():
             shutil.copy(src / name, DEST / name)

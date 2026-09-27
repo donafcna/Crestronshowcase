@@ -1,0 +1,85 @@
+/* Scenes d'eclairage de la fenetre Circuits (iPhone) : jetons partages, un seul jeu de couleurs par
+   theme. v4.7 (27.09.2026). Les quatre <ch5-button customClass="scene-btn"> 51-54 deviennent des
+   <button class="scene-cmd-btn"> (pressDigital + subscribeState + .selected), meme chaine que les
+   scenes de la page principale (.scene-btn-mobile), la Centralisation (v4.4) et les partitions (v4.6).
+   Memes couleurs que .scene-btn-mobile : or #c49a45 pour une scene active, rouge pour OFF (l'ancien
+   <ch5-button> portait --ch5-button-selected-background-color:#dc2626). Contrastes texte/fond >= 4:1
+   dans les trois themes (verifies). Couleurs en !important : iphone.html porte une regle generique
+   `.theme-light .custom-overlay-panel button { ... !important }` (meme raison que alarm-controls). */
+body#app-body #circuits-overlay {
+    --scene-idle-bg: rgba(255, 255, 255, 0.06);
+    --scene-idle-text: #e2e8f0;
+    --scene-idle-border: rgba(255, 255, 255, 0.22);
+    --scene-active-bg: rgba(196, 154, 69, 0.22);
+    --scene-active-text: #ffffff;
+    --scene-active-border: #c49a45;
+    --scene-off-active-bg: #dc2626;
+    --scene-off-active-text: #ffffff;
+    --scene-off-active-border: #fecaca;
+}
+body#app-body.theme-light #circuits-overlay {
+    --scene-idle-bg: rgba(15, 23, 42, 0.06);
+    --scene-idle-text: #0f172a;
+    --scene-idle-border: rgba(15, 23, 42, 0.20);
+    --scene-active-bg: #fdf3dc;
+    --scene-active-text: #1f2937;
+    --scene-active-border: #a16207;
+    --scene-off-active-bg: #b91c1c;
+    --scene-off-active-text: #ffffff;
+    --scene-off-active-border: #7f1d1d;
+}
+body#app-body #circuits-overlay .scene-cmd-btn {
+    min-width: 0;
+    width: 100%;
+    height: 46px;
+    min-height: 44px;
+    padding: 0 4px;
+    border-radius: 8px;
+    border: 2px solid var(--scene-idle-border) !important;
+    background: var(--scene-idle-bg) !important;
+    color: var(--scene-idle-text) !important;
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 600 !important;
+    line-height: 1.15;
+    white-space: normal;
+    text-align: center;
+    overflow: hidden;
+    cursor: pointer;
+    box-sizing: border-box;
+    box-shadow: none !important;
+    transition: none;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    user-select: none;
+}
+body#app-body #circuits-overlay .scene-cmd-btn:active,
+body#app-body #circuits-overlay .scene-cmd-btn.selected {
+    background: var(--scene-active-bg) !important;
+    color: var(--scene-active-text) !important;
+    border-color: var(--scene-active-border) !important;
+}
+body#app-body #circuits-overlay .scene-cmd-btn--off:active,
+body#app-body #circuits-overlay .scene-cmd-btn--off.selected {
+    background: var(--scene-off-active-bg) !important;
+    color: var(--scene-off-active-text) !important;
+    border-color: var(--scene-off-active-border) !important;
+}
+body#app-body #circuits-overlay .scene-cmd-btn.selected {
+    font-weight: 800 !important;
+    box-shadow: 0 0 10px rgba(196, 154, 69, 0.35) !important;
+}
+body#app-body #circuits-overlay .scene-cmd-btn--off.selected {
+    box-shadow: none !important;
+}
+/* Pastille « scene memorisee » : meme code que .scene-btn-mobile (definie dans iphone.html). */
+body#app-body #circuits-overlay .scene-cmd-btn:focus-visible {
+    outline: 3px solid var(--scene-active-border);
+    outline-offset: 2px;
+}
+@media (max-width: 480px) {
+    body#app-body #circuits-overlay .scene-cmd-btn {
+        padding: 0 2px;
+        font-size: 0.8rem;
+    }
+}
