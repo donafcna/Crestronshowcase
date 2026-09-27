@@ -36,7 +36,7 @@
     for(let t=-w/2;t<=w/2;t+=2.4)box(g,x+t,1.55,z+d/2,.08,2.8,.12,'wood');
     label(g,name,x,3.25,z-d/2+.3);
     const zone=/BAR/.test(name)?'bar':/LOBBY/.test(name)?'entrance':/RESTAURANT/.test(name)?'restaurant':/PETIT SALON/.test(name)?'salon':/PRIVÉE/.test(name)?'pdr':/SÉMINAIRE/.test(name)?'seminar':g.userData.id==='250'?'wellness':`${g.userData.id}-${name}`;
-    const lighting=roomLighting.get(zone)||{materials:[],points:[],level:65,scene:null,fade:null};roomLighting.set(zone,lighting);
+    const lighting=roomLighting.get(zone)||{materials:[],points:[],darkness:[],natural:[],beams:[],level:65,blinds:0,scene:null,fade:null};roomLighting.set(zone,lighting);
     const fixture=(type,color=0xffc477,factor=1)=>{let item=lighting.materials.find(v=>v.type===type);if(!item){item={type,factor,material:new T.MeshStandardMaterial({color,emissive:color,emissiveIntensity:factor,roughness:.28})};lighting.materials.push(item);}return item.material;};
     const cornice=fixture('cornice',0xffbd70,1.15),spot=fixture('spot',0xffe2b0,1.6),wall=fixture('wall',0xffb86b,1.3),nightlight=fixture('nightlight',0xffa85a,.85),pendant=fixture('pendant',0xffcf86,1.8);
     // Cornices, ceiling spots, wall sconces, foot-level nightlights and pendants.
@@ -46,6 +46,15 @@
     for(let a=-w/2+.8;a<w/2;a+=1.65)lights.push(box(g,x+a,.27,z-d/2+.2,.2,.12,.08,nightlight));
     const chandelierCount=w>13?3:w>8?2:1;for(let i=0;i<chandelierCount;i++){const px=x+(i-(chandelierCount-1)/2)*Math.min(5,w/3);round(g,px,2.25,z,.025,.92,'metal');for(let arm=0;arm<6;arm++){const angle=arm*Math.PI/3,bulb=round(g,px+Math.cos(angle)*.5,1.82,z+Math.sin(angle)*.5,.1,.16,pendant);lights.push(bulb);}lights.push(round(g,px,1.9,z,.14,.2,pendant));}
     const point=new T.PointLight(0xffc77e,1,Math.max(w,d)*1.2,2);point.position.set(x,2.3,z);g.add(point);lighting.points.push(point);
+    // Daylight enters from the glazed valley façade. A dark veil on that same
+    // plane produces near-black silhouettes only when the room is off and its
+    // curtains are closed.
+    const darkMat=new T.MeshBasicMaterial({color:0x000000,transparent:true,opacity:0,depthWrite:false,side:T.DoubleSide});
+    const darkScreen=meshEffect(g,new T.PlaneGeometry(w,2.75),darkMat,x,1.48,z+d/2+.28);darkScreen.renderOrder=12;lighting.darkness.push(darkScreen);
+    const darkCanopy=meshEffect(g,new T.BoxGeometry(w,.04,d),darkMat.clone(),x,3.08,z);darkCanopy.userData.darknessScale=.86;darkCanopy.renderOrder=13;lighting.darkness.push(darkCanopy);
+    const beamMat=new T.MeshBasicMaterial({color:0xffe4b5,transparent:true,opacity:.12,depthWrite:false,blending:T.AdditiveBlending,side:T.DoubleSide});
+    const beam=meshEffect(g,new T.BoxGeometry(w*.78,2.05,d*.68),beamMat,x,1.35,z+d*.12);beam.renderOrder=4;lighting.beams.push(beam);
+    const daylight=new T.SpotLight(0xffe3b5,5.5,Math.max(16,d*2.1),Math.PI/3,.55,1.2);daylight.position.set(x,3,z+d/2+2.2);daylight.target.position.set(x,.65,z-d*.18);g.add(daylight,daylight.target);lighting.natural.push(daylight);
     if(['bar','entrance','restaurant','salon','pdr','wellness','seminar'].includes(zone)){const panels=[];for(const side of [-1,1]){const panel=box(g,x+side*(w/2-.22),1.42,z+d/2+.1,.38,2.38,.12,'curtain');panel.userData={curtain:true,side,center:x,width:w};for(let fold=-4;fold<=4;fold++){const stripe=box(panel,fold*.105,0,.58,.018,1.02,.05,'curtainFold');stripe.userData.curtainPart=true;}panels.push(panel);}curtains.set(zone,(curtains.get(zone)||[]).concat(panels));}
     if(kind==='restaurant'){for(let xx=x-w/2+2;xx<x+w/2-1;xx+=3.5)for(let zz=z-d/2+2;zz<z+d/2-1;zz+=3.4)table(g,xx,zz,.8);}
     if(kind==='lounge'){sofa(g,x-1,z,3);sofa(g,x+2,z-2,2);round(g,x,.45,z+1,.8,.12);plant(g,x+w/2-1,z-d/2+1);}
@@ -58,6 +67,7 @@
     if(kind==='suite'){box(g,x+1,.4,z,2,.6,2.4,'oak');box(g,x+1,.75,z,1.9,.25,2.3,'linen');box(g,x+1,1.1,z-1.15,2.1,1.2,.15,'wood');for(let dx of [.5,1.5])box(g,x+dx,.95,z-.75,.75,.12,.5,'linen');table(g,x-w/2+2,z+1,.65);box(g,x+w/2-1,.5,z+1,1.2,.6,2,'stone');plant(g,x-w/2+.7,z-d/2+.7);}
     const roof=box(g,x,2.95,z,w+.3,.22,d+.3,'green');roofs.push(roof);
   }
+  function meshEffect(parent,geometry,material,x,y,z){const m=new T.Mesh(geometry,material);m.position.set(x,y,z);m.userData.lightingEffect=true;parent.add(m);return m;}
   function level(id,y,z,rooms){const g=new T.Group();g.position.set(0,y,z);g.userData.id=id;scene.add(g);levels[id]=g;box(g,0,-.22,0,46,.4,11,'stone');box(g,0,-.15,6.4,46,.25,2,'wood');for(const r of rooms)room(g,...r);return g;}
   level('250',-7.8,18,[[-18,0,8,8,'VESTIAIRES',''],[-9,0,9,8,'ACCUEIL · HAMMAM','lounge'],[0,0,8,8,'SAUNA','sauna'],[8,0,7,8,'RELAX','relax'],[17,0,10,8,'FITNESS / YOGA','fitness']]);
   level('350',-3.92,6,[[-9,0,26,8,'303 · RESTAURANT','restaurant'],[8,0,8,8,'PETIT SALON','lounge'],[17,0,10,8,'SALLE PRIVÉE','private']]);
@@ -104,7 +114,7 @@
   // Batch furniture independently for each level; keep roofs and lighting controllable.
   function batch(group,deep=true){
     group.updateMatrixWorld(true);const groups=new Map(),inverse=group.matrixWorld.clone().invert();
-    const collect=o=>{if(!o.isMesh||o.isInstancedMesh||o.userData.curtain||o.userData.curtainPart||roofs.includes(o)||lights.includes(o))return;const key=o.geometry.uuid+o.material.uuid;if(!groups.has(key))groups.set(key,[]);groups.get(key).push(o);};
+    const collect=o=>{if(!o.isMesh||o.isInstancedMesh||o.userData.curtain||o.userData.curtainPart||o.userData.lightingEffect||roofs.includes(o)||lights.includes(o))return;const key=o.geometry.uuid+o.material.uuid;if(!groups.has(key))groups.set(key,[]);groups.get(key).push(o);};
     if(deep)group.traverse(collect);else group.children.forEach(collect);
     for(const list of groups.values()){if(list.length<2)continue;const inst=new T.InstancedMesh(list[0].geometry,list[0].material,list.length);list.forEach((m,i)=>{inst.setMatrixAt(i,new T.Matrix4().multiplyMatrices(inverse,m.matrixWorld));m.removeFromParent();});inst.instanceMatrix.needsUpdate=true;group.add(inst);}
   }
@@ -134,10 +144,11 @@
   canvas.onpointerdown=e=>{drag={x:e.clientX,y:e.clientY};canvas.setPointerCapture(e.pointerId)};
   canvas.onpointermove=e=>{if(!drag)return;theta-=(e.clientX-drag.x)*.006;phi=Math.max(.22,Math.min(1.4,phi+(e.clientY-drag.y)*.004));drag={x:e.clientX,y:e.clientY};};canvas.onpointerup=canvas.onpointercancel=()=>{drag=null};
   canvas.addEventListener('wheel',e=>{e.preventDefault();if(background)return;if(e.deltaY>0)overview();else focus(selectedId,selectedZone);},{passive:false});
-  function paintRoomLighting(group,level){group.level=level;group.materials.forEach(item=>{item.material.emissiveIntensity=item.factor*(.03+level/27);item.material.color.setHex(level?item.material.emissive.getHex():0x211e1b)});group.points.forEach(light=>{light.intensity=level*.13});}
+  function updateRoomEnvironment(group){const closed=Math.max(0,Math.min(1,(group.blinds||0)/100)),off=1-Math.max(0,Math.min(1,group.level/100)),dayFactor=night?.08:1;const blackness=Math.min(.965,off*closed*.965);group.darkness.forEach(screen=>{screen.material.opacity=blackness*(screen.userData.darknessScale??1);screen.visible=blackness>.008});group.natural.forEach(light=>{light.intensity=(1-closed)*5.8*dayFactor});group.beams.forEach(beam=>{beam.material.opacity=(1-closed)*.16*dayFactor;beam.visible=beam.material.opacity>.005});}
+  function paintRoomLighting(group,level){group.level=level;group.materials.forEach(item=>{item.material.emissiveIntensity=item.factor*(.03+level/27);item.material.color.setHex(level?item.material.emissive.getHex():0x211e1b)});group.points.forEach(light=>{light.intensity=level*.13});updateRoomEnvironment(group);}
   function setRoomLighting(zone,level,sceneId=null){const group=roomLighting.get(zone);if(!group)return;const targetLevel=Math.max(0,Math.min(100,Number(level)||0)),sceneChanged=sceneId!==null&&sceneId!==group.scene;if(sceneChanged){group.fade={from:group.level,to:targetLevel,start:performance.now(),duration:4000};group.scene=sceneId;}else if(!group.fade||sceneId===null){group.fade=null;group.scene=sceneId;paintRoomLighting(group,targetLevel);}}
-  function updateRoomLighting(now){roomLighting.forEach(group=>{if(!group.fade)return;const q=Math.min(1,(now-group.fade.start)/group.fade.duration),k=q*q*(3-2*q);paintRoomLighting(group,T.MathUtils.lerp(group.fade.from,group.fade.to,k));if(q>=1)group.fade=null;});}
-  function setCurtains(zone,closed){const value=Math.max(0,Math.min(100,Number(closed)||0))/100;for(const panel of curtains.get(zone)||[]){const width=.38+(panel.userData.width/2-.38)*value;panel.scale.x=width;panel.position.x=panel.userData.center+panel.userData.side*(panel.userData.width/2-width/2);}}
+  function updateRoomLighting(now){roomLighting.forEach(group=>{if(group.fade){const q=Math.min(1,(now-group.fade.start)/group.fade.duration),k=q*q*(3-2*q);paintRoomLighting(group,T.MathUtils.lerp(group.fade.from,group.fade.to,k));if(q>=1)group.fade=null;}else updateRoomEnvironment(group);});}
+  function setCurtains(zone,closed){const percent=Math.max(0,Math.min(100,Number(closed)||0)),value=percent/100;for(const panel of curtains.get(zone)||[]){const width=.38+(panel.userData.width/2-.38)*value;panel.scale.x=width;panel.position.x=panel.userData.center+panel.userData.side*(panel.userData.width/2-width/2);}const group=roomLighting.get(zone);if(group){group.blinds=percent;updateRoomEnvironment(group);}}
   window.addEventListener('message',e=>{if(e.origin!==location.origin||e.source!==parent)return;const m=e.data;if(m?.channel==='hdh-view'){if(typeof m.visible==='boolean')visible=m.visible;if(m.viewport)viewport=m.viewport;if(Number.isFinite(m.zoom)){if(m.zoom>0)overview();else focus(selectedId,selectedZone);}}if(m?.channel==='hdh-demo'){const z=zoneTargets[m.zone],id=z?.id;if(background&&m.focus&&id&&m.zone!==window.HDH_ZONE){window.HDH_ZONE=m.zone;focus(id,m.zone)}setRoomLighting(m.zone,m.level,m.scene);setCurtains(m.zone,m.blinds);}});
   window.addEventListener('keydown',e=>{if(e.key==='Escape')parent.postMessage({channel:'hdh-close'},location.origin)});
   let last=0;

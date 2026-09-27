@@ -94,6 +94,17 @@ try {
   await page.waitForTimeout(4200);
   const hotelOff = await hotelModel.evaluate(() => { const room=window.HDH_MODEL.roomLighting.get('bar');return { level:room.level, intensity:room.materials[0].material.emissiveIntensity } });
   assert.ok(hotelOn.level > 99 && hotelOff.level < 1 && hotelOn.intensity > hotelOff.intensity * 20, 'Les scènes iPhone pilotent visiblement les éclairages du plan 3D');
+  await phone.locator('nav button[data-tab="blinds"]').click();
+  for (const button of await phone.locator('button[data-action="2"]').all()) await button.click();
+  await page.waitForTimeout(5300);
+  const hotelDark = await hotelModel.evaluate(() => { const room=window.HDH_MODEL.roomLighting.get('bar');return { blinds:room.blinds, darkness:room.darkness[0].material.opacity, natural:room.natural[0].intensity, beam:room.beams[0].material.opacity } });
+  assert.ok(hotelDark.blinds > 99 && hotelDark.darkness > .92 && hotelDark.natural < .05 && hotelDark.beam < .005, 'Rideaux fermés et scène éteinte plongent la pièce dans le noir');
+  await page.screenshot({ path: path.join(out, 'hotel-dark-curtains.png'), fullPage: true });
+  for (const button of await phone.locator('button[data-action="0"]').all()) await button.click();
+  await page.waitForTimeout(5300);
+  const hotelNatural = await hotelModel.evaluate(() => { const room=window.HDH_MODEL.roomLighting.get('bar');return { blinds:room.blinds, darkness:room.darkness[0].material.opacity, natural:room.natural[0].intensity, beam:room.beams[0].material.opacity } });
+  assert.ok(hotelNatural.blinds < 1 && hotelNatural.darkness < .01 && hotelNatural.natural > .4 && hotelNatural.beam > .005, 'L’ouverture des rideaux rétablit la lumière naturelle');
+  await page.screenshot({ path: path.join(out, 'hotel-natural-light.png'), fullPage: true });
   const palette = await phone.evaluate(() => ({
     bg: getComputedStyle(document.body).getPropertyValue('--bg').trim(),
     ink: getComputedStyle(document.body).getPropertyValue('--ink').trim(),
@@ -114,7 +125,7 @@ try {
   assert.ok(buttonStates.filter(state => state.pressed === 'true').every(state => state.image.startsWith('radial-gradient') && state.border === 'rgb(210, 171, 33)'));
   await page.screenshot({ path: path.join(out, 'hotel-brassus-phone.png'), fullPage: true });
   assert.deepEqual(errors, []);
-  console.log(JSON.stringify({ checks: 28, dimensions, cameraGoals:cameraGoals.size, roomDesigns:{combinations:roomDesigns.combinations,zones:Object.keys(roomDesigns.furniture).length}, hotelLighting:{on:hotelOn,off:hotelOff}, palette, buttonStates:buttonStates.length, errors }, null, 2));
+  console.log(JSON.stringify({ checks: 32, dimensions, cameraGoals:cameraGoals.size, roomDesigns:{combinations:roomDesigns.combinations,zones:Object.keys(roomDesigns.furniture).length}, hotelLighting:{on:hotelOn,off:hotelOff,dark:hotelDark,natural:hotelNatural}, palette, buttonStates:buttonStates.length, errors }, null, 2));
 } finally {
   await browser.close();
   if (server.listening) server.close();

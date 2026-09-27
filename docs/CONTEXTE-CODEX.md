@@ -395,3 +395,7 @@ Sur l'iPhone Hotel Brassus, tous les boutons inactifs utilisent le vert cyan fon
 Kyoto est redessiné comme un domaine de quinze pavillons non rectangulaires reliés par des promenades. Les quinze combinaisons de forme, couverture et mobilier sont distinctes ; chaque zone comprend au minimum quatre tables, seize chaises, huit balises au sol, huit appliques et des luminaires de plafond. Les quinze cadrages et la navigation à la molette sont conservés.
 
 Pour Hotel Brassus, l'envoi d'une scène iPhone précède désormais le nouveau rendu du bouton et les émissions ainsi que les sources ponctuelles de la maquette sont renforcées sans supprimer le fondu de quatre secondes. La recette mesure bien 100 puis 0 % sur la zone Bar, avec une intensité émissive de 4,29 puis 0,034.
+
+## 27/09/2026 — Pénombre et lumière naturelle Hotel Brassus 2.2.3
+
+La maquette combine désormais la scène d'éclairage avec la position des rideaux. Une pièce éteinte dont les rideaux sont fermés passe dans une pénombre presque noire qui laisse seulement apparaître les silhouettes du mobilier. L'ouverture progressive des rideaux retire cette pénombre et fait entrer une lumière chaude depuis les vitrages, avec un faisceau et une source directionnelle adaptés au cycle jour/nuit. La recette automatisée vérifie les deux états extrêmes ainsi que les transitions des rideaux.

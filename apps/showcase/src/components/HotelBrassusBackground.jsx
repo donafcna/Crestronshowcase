@@ -18,5 +18,5 @@ export function HotelBrassusBackground({stageRef,guiFrameRef}) {
   window.addEventListener('message',receive);document.addEventListener('visibilitychange',visibility);stage.addEventListener('wheel',wheel,{passive:false});const ro=new ResizeObserver(layout);ro.observe(stage);const timer=setInterval(layout,400);
   return()=>{wheel.dispose();ro.disconnect();clearInterval(timer);window.removeEventListener('message',receive);document.removeEventListener('visibilitychange',visibility);stage.removeEventListener('wheel',wheel)};
  },[stageRef,guiFrameRef]);
- return <div className="plan3d-bg-container luxury-background" data-ready={ready}><iframe ref={frame} className="luxury-background-frame" src="/showcases/hotel-brassus/model.html?background=1&v=2.2.2" title="Maquette 3D de Hotel Brassus" tabIndex={-1} aria-hidden="true"/>{!ready&&<span className="luxury-background-loading" role="status">Chargement de la 3D…</span>}</div>;
+ return <div className="plan3d-bg-container luxury-background" data-ready={ready}><iframe ref={frame} className="luxury-background-frame" src="/showcases/hotel-brassus/model.html?background=1&v=2.2.3" title="Maquette 3D de Hotel Brassus" tabIndex={-1} aria-hidden="true"/>{!ready&&<span className="luxury-background-loading" role="status">Chargement de la 3D…</span>}</div>;
 }
