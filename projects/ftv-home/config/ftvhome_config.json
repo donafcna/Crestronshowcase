@@ -1,0 +1,340 @@
+{
+  "meta": {
+    "projet": "FTV Home",
+    "integrateur": "Fréquence TV",
+    "version": "1.0.0",
+    "mode": "deploiement",
+    "dateModification": "2026-09-27",
+    "langueReference": "fr",
+    "aide": [
+      "Source unique du projet FTV Home : pièces, fonctionnalités actives par pièce, contrat de joins.",
+      "Le C# (slot 1) lit ce fichier dans /user/ftvhome_config.json au démarrage ; le générateur SIMPL (tools/generate_slot2.js) le lit aussi.",
+      "Une fonctionnalité absente ou 'actif: false' n'est ni affichée par le GUI, ni câblée dans le SIMPL, ni routée par le C#.",
+      "Tous les joins de pilotage sont GLOBAUX et identiques dans toutes les pièces : l'analogique 10 (Room_Select#) porte la pièce visée et permet au slot 2 de bufferiser.",
+      "Ne jamais modifier 'contrat' sans mettre à jour Joins.cs (C#) : tools/check-contract.js vérifie la cohérence."
+    ]
+  },
+
+  "maison": {
+    "nom": "Villa du Léman",
+    "etatBandeau": "Portail fermé · Toutes les portes verrouillées · Alarme au repos",
+    "scenes": [
+      { "id": 1, "cle": "arrive",  "nom": "J'arrive",   "eclairages": { "defaut": 0, "pieces": { "living": 65, "kitchen": 65 } }, "occultants": null,   "verrouiller": false, "musiqueStop": false },
+      { "id": 2, "cle": "morning", "nom": "Bonjour",    "eclairages": { "defaut": 0, "pieces": { "kitchen": 85, "dining": 85 } }, "occultants": 100,    "verrouiller": false, "musiqueStop": false },
+      { "id": 3, "cle": "night",   "nom": "Bonne nuit", "eclairages": { "defaut": 0, "pieces": {} },                          "occultants": 0,      "verrouiller": true,  "musiqueStop": true },
+      { "id": 4, "cle": "leave",   "nom": "Je pars",    "eclairages": { "defaut": 0, "pieces": {} },                          "occultants": null,   "verrouiller": true,  "musiqueStop": true }
+    ],
+    "acces": { "actif": true, "porteEntree": true, "portail": true, "garage": true, "garageFermetureMs": 1800 },
+    "piscine": { "actif": true },
+    "spa": { "actif": true },
+    "video": {
+      "actif": true,
+      "ecrans": [
+        { "id": 1, "nom": "Séjour — écran principal",            "piece": "living" },
+        { "id": 2, "nom": "Séjour — au-dessus de la cheminée",   "piece": "living" },
+        { "id": 3, "nom": "Home cinéma — projecteur",            "piece": "cinema" },
+        { "id": 4, "nom": "Chambre parentale",                   "piece": "master" }
+      ],
+      "sources": [
+        { "id": 1, "nom": "TV / IPTV",         "chaines": true },
+        { "id": 2, "nom": "Apple TV" },
+        { "id": 3, "nom": "Lecteur Blu-ray" },
+        { "id": 4, "nom": "PC / Présentation" },
+        { "id": 5, "nom": "Vidéosurveillance" }
+      ],
+      "chaines": [
+        { "id": 1, "numero": "201", "nom": "RTS 1" },
+        { "id": 2, "numero": "202", "nom": "RTS 2" },
+        { "id": 3, "numero": "203", "nom": "Léman Bleu" },
+        { "id": 4, "numero": "204", "nom": "Info" },
+        { "id": 5, "numero": "205", "nom": "Sport" },
+        { "id": 6, "numero": "206", "nom": "Cinéma" },
+        { "id": 7, "numero": "207", "nom": "Docs" },
+        { "id": 8, "numero": "208", "nom": "Musique" }
+      ]
+    },
+    "musique": {
+      "services": [
+        { "id": 1, "nom": "Multiroom" },
+        { "id": 2, "nom": "Radio" },
+        { "id": 3, "nom": "Streaming" },
+        { "id": 4, "nom": "Bibliothèque" },
+        { "id": 5, "nom": "Entrée ligne" }
+      ],
+      "favoris": [
+        { "id": 1, "titre": "Couleur 3",         "sousTitre": "Radio",        "couleur": "#6d3bf5" },
+        { "id": 2, "titre": "Jazz du soir",      "sousTitre": "Streaming",    "couleur": "#1ea7d6" },
+        { "id": 3, "titre": "Playlist Terrasse", "sousTitre": "Multiroom",    "couleur": "#e8a317" },
+        { "id": 4, "titre": "Classique",         "sousTitre": "Bibliothèque", "couleur": "#2fa877" },
+        { "id": 5, "titre": "Option Musique",    "sousTitre": "Radio",        "couleur": "#e2624f" },
+        { "id": 6, "titre": "Deep Focus",        "sousTitre": "Streaming",    "couleur": "#3d4a5c" }
+      ]
+    }
+  },
+
+  "etages": [
+    { "id": "ground",  "nom": "Rez-de-chaussée" },
+    { "id": "outside", "nom": "Extérieur" },
+    { "id": "upper",   "nom": "Étage" }
+  ],
+
+  "piecesDescription": "id = numéro de pièce (1..30), utilisé par Room_Select# (a10) et par le bloc EISC 1000 + (id-1)*100. cle = identifiant texte du GUI. intersystem = false → aucun bloc EISC câblé pour cette pièce. Chaque pilotage porte 'actif' ; ce qui n'est pas déclaré n'existe pas.",
+  "pieces": [
+    {
+      "id": 1, "cle": "living", "nom": "Séjour", "etage": "ground", "intersystem": true, "favori": true,
+      "pilotages": {
+        "eclairages": { "actif": true, "circuits": [
+          { "nom": "Spots plafond", "gradable": true,  "niveauInitial": 70 },
+          { "nom": "Corniche LED",  "gradable": true,  "niveauInitial": 35 },
+          { "nom": "Liseuses",      "gradable": false, "niveauInitial": 0 }
+        ] },
+        "occultants": { "actif": true, "moteurs": [
+          { "nom": "Baie vitrée", "positionInitiale": 100 },
+          { "nom": "Rideaux",     "positionInitiale": 60 }
+        ] },
+        "cvc": { "actif": true, "consigne": { "min": 16, "max": 30, "pas": 0.5 }, "etatInitial": { "temperature": 22.4, "consigne": 21.5, "mode": "cool", "ventilation": "auto", "planificationPause": false, "humidite": 44, "controleHumidite": true } },
+        "video": { "actif": true, "ecranParDefaut": 1 },
+        "audio": { "actif": true, "etatInitial": { "lecture": true, "favori": 1, "volume": 32 } },
+        "serrure": { "actif": true, "etatInitial": { "verrouillee": true } }
+      }
+    },
+    {
+      "id": 2, "cle": "kitchen", "nom": "Cuisine", "etage": "ground", "intersystem": true, "favori": false,
+      "pilotages": {
+        "eclairages": { "actif": true, "circuits": [
+          { "nom": "Plafonnier",  "gradable": true,  "niveauInitial": 100 },
+          { "nom": "Sous-meubles","gradable": false, "niveauInitial": 100 }
+        ] },
+        "occultants": { "actif": true, "moteurs": [ { "nom": "Store cuisine", "positionInitiale": 100 } ] },
+        "cvc": { "actif": false },
+        "video": { "actif": false },
+        "audio": { "actif": true },
+        "serrure": { "actif": false }
+      }
+    },
+    {
+      "id": 3, "cle": "dining", "nom": "Salle à manger", "etage": "ground", "intersystem": true, "favori": false,
+      "pilotages": {
+        "eclairages": { "actif": true, "circuits": [
+          { "nom": "Suspension", "gradable": true, "niveauInitial": 55 },
+          { "nom": "Appliques",  "gradable": true, "niveauInitial": 0 }
+        ] },
+        "occultants": { "actif": true, "moteurs": [ { "nom": "Voilage", "positionInitiale": 100 } ] },
+        "cvc": { "actif": true, "consigne": { "min": 16, "max": 30, "pas": 0.5 }, "etatInitial": { "temperature": 21.8, "consigne": 21, "mode": "auto", "ventilation": "auto", "planificationPause": false, "humidite": 42, "controleHumidite": false } },
+        "video": { "actif": false },
+        "audio": { "actif": true },
+        "serrure": { "actif": false }
+      }
+    },
+    {
+      "id": 4, "cle": "cinema", "nom": "Home cinéma", "etage": "ground", "intersystem": true, "favori": false,
+      "pilotages": {
+        "eclairages": { "actif": true, "circuits": [
+          { "nom": "Balisage marches", "gradable": true, "niveauInitial": 20 },
+          { "nom": "Corniche",         "gradable": true, "niveauInitial": 0 }
+        ] },
+        "occultants": { "actif": true, "moteurs": [ { "nom": "Écran occultant", "positionInitiale": 0 } ] },
+        "cvc": { "actif": true, "consigne": { "min": 16, "max": 30, "pas": 0.5 }, "etatInitial": { "temperature": 20.9, "consigne": 20.5, "mode": "cool", "ventilation": "on", "planificationPause": true, "humidite": 40, "controleHumidite": false } },
+        "video": { "actif": true, "ecranParDefaut": 3 },
+        "audio": { "actif": true },
+        "serrure": { "actif": false }
+      }
+    },
+    {
+      "id": 5, "cle": "terrace", "nom": "Terrasse", "etage": "outside", "intersystem": true, "favori": false,
+      "pilotages": {
+        "eclairages": { "actif": true, "circuits": [ { "nom": "Balisage", "gradable": true, "niveauInitial": 0 } ] },
+        "occultants": { "actif": true, "moteurs": [ { "nom": "Pergola bioclimatique", "positionInitiale": 45 } ] },
+        "cvc": { "actif": false },
+        "video": { "actif": false },
+        "audio": { "actif": true },
+        "serrure": { "actif": false }
+      }
+    },
+    {
+      "id": 6, "cle": "pool", "nom": "Piscine", "etage": "outside", "intersystem": true, "favori": true,
+      "pilotages": {
+        "eclairages": { "actif": true, "circuits": [ { "nom": "Éclairage immergé", "gradable": true, "niveauInitial": 0 } ] },
+        "occultants": { "actif": false },
+        "cvc": { "actif": false },
+        "video": { "actif": false },
+        "audio": { "actif": true },
+        "serrure": { "actif": false }
+      }
+    },
+    {
+      "id": 7, "cle": "master", "nom": "Chambre parentale", "etage": "upper", "intersystem": true, "favori": true,
+      "pilotages": {
+        "eclairages": { "actif": true, "circuits": [
+          { "nom": "Plafonnier", "gradable": true, "niveauInitial": 0 },
+          { "nom": "Chevets",    "gradable": true, "niveauInitial": 40 }
+        ] },
+        "occultants": { "actif": true, "moteurs": [
+          { "nom": "Volet",            "positionInitiale": 0 },
+          { "nom": "Rideau occultant", "positionInitiale": 0 }
+        ] },
+        "cvc": { "actif": true, "consigne": { "min": 16, "max": 30, "pas": 0.5 }, "etatInitial": { "temperature": 20.2, "consigne": 19.5, "mode": "heat", "ventilation": "auto", "planificationPause": false, "humidite": 46, "controleHumidite": true } },
+        "video": { "actif": true, "ecranParDefaut": 4 },
+        "audio": { "actif": true },
+        "serrure": { "actif": false }
+      }
+    },
+    {
+      "id": 8, "cle": "guest", "nom": "Chambre d'amis", "etage": "upper", "intersystem": true, "favori": false,
+      "pilotages": {
+        "eclairages": { "actif": true, "circuits": [ { "nom": "Plafonnier", "gradable": true, "niveauInitial": 0 } ] },
+        "occultants": { "actif": true, "moteurs": [ { "nom": "Volet", "positionInitiale": 100 } ] },
+        "cvc": { "actif": true, "consigne": { "min": 16, "max": 30, "pas": 0.5 }, "etatInitial": { "temperature": 19.4, "consigne": 18, "mode": "heat", "ventilation": "auto", "planificationPause": true, "humidite": 45, "controleHumidite": false } },
+        "video": { "actif": false },
+        "audio": { "actif": false },
+        "serrure": { "actif": false }
+      }
+    }
+  ],
+
+  "contrat": {
+    "version": "1.0",
+    "principe": [
+      "Tous les joins de pilotage sont globaux : le même numéro dans toutes les pièces.",
+      "Le C# (slot 1) connaît la pièce affichée par chaque écran (_activeRoomPerDevice) : il applique l'action à cette pièce, pose Room_Select# (a10) sur l'EISC, puis recopie l'impulsion sur le même join. Le slot 2 route avec des buffers validés par Room_Active_nn (d11-40, un seul haut = a10).",
+      "Feedback des écrans : toujours calculé par le C#. Le slot 2 renvoie les mesures réelles par les entrées _Actual des blocs pièce ; elles font foi dès réception.",
+      "Sur le symbole EISC : SORTIE = ce que le slot 2 reçoit (nom nu = action, Rnn_xxx_fb = état tenu par le C#) ; ENTRÉE = ce que le slot 2 renvoie (suffixe _Actual).",
+      "Bloc pièce EISC : join = 1000 + (id-1)*100 + offset. Réservé aux échanges C# ↔ slot 2, jamais émis par un écran."
+    ],
+    "eisc": { "actif": true, "ipid": "0xF0", "adresseIp": "127.0.0.2", "slotCible": 2 },
+    "limites": { "piecesMax": 30, "circuitsMax": 20, "moteursMax": 8, "ecransMax": 8, "sourcesMax": 8, "chainesMax": 8, "servicesMax": 8, "favorisMax": 8 },
+
+    "signauxGlobaux": {
+      "digital": {
+        "11-40":   { "nom": "Room_Select_{n}",            "sens": "↔", "desc": "Sélection directe de la pièce n (join = 10+n) ; fb = pièce affichée par cet écran. Sur l'EISC : Room_Active_{n}, un seul haut, miroir de a10." },
+        "51":      { "nom": "Scene_Arrive",               "sens": "↔", "desc": "Scène maison « J'arrive » ; fb = impulsion 1,4 s « Scène appliquée »" },
+        "52":      { "nom": "Scene_Morning",              "sens": "↔", "desc": "Scène « Bonjour »" },
+        "53":      { "nom": "Scene_Night",                "sens": "↔", "desc": "Scène « Bonne nuit »" },
+        "54":      { "nom": "Scene_Leave",                "sens": "↔", "desc": "Scène « Je pars »" },
+        "55":      { "nom": "Room_Off",                   "sens": "↔", "desc": "Éteindre la pièce affichée (éclairages, musique, écrans vidéo)" },
+        "101":     { "nom": "Lights_AllOn",               "sens": "↔", "desc": "Tous les circuits de la pièce à 100 % ; fb = tous allumés" },
+        "102":     { "nom": "Lights_AllOff",              "sens": "↔", "desc": "Tous les circuits à 0 ; fb = tous éteints" },
+        "103":     { "nom": "Lights_DimUp",               "sens": "→", "desc": "Tous les circuits +20 %" },
+        "104":     { "nom": "Lights_DimDown",             "sens": "→", "desc": "Tous les circuits −20 %" },
+        "111-130": { "nom": "Light_{n}_Toggle",           "sens": "↔", "desc": "Bascule 0/100 % du circuit n (1..20) ; fb = circuit allumé (> 0)" },
+        "141":     { "nom": "Shades_AllOpen",             "sens": "↔", "desc": "Tous les occultants de la pièce à 100 % ; fb = tous ouverts" },
+        "142":     { "nom": "Shades_AllClose",            "sens": "↔", "desc": "Tous à 0 % ; fb = tous fermés" },
+        "151-158": { "nom": "Shade_{n}_Up",               "sens": "↔", "desc": "Monter l'occultant n (1..8) → 100 % ; fb = position 100 %" },
+        "161-168": { "nom": "Shade_{n}_Stop",             "sens": "↔", "desc": "Stop → position mi-course 50 % ; fb = 50 %" },
+        "171-178": { "nom": "Shade_{n}_Down",             "sens": "↔", "desc": "Descendre → 0 % ; fb = 0 %" },
+        "181":     { "nom": "HVAC_Setpoint_Up",           "sens": "→", "desc": "Consigne +pas (0,5 °C), bornée min/max" },
+        "182":     { "nom": "HVAC_Setpoint_Down",         "sens": "→", "desc": "Consigne −pas" },
+        "183":     { "nom": "HVAC_Mode_Heat",             "sens": "↔", "desc": "Mode Chauffage ; fb tenu" },
+        "184":     { "nom": "HVAC_Mode_Cool",             "sens": "↔", "desc": "Mode Rafraîchissement ; fb tenu" },
+        "185":     { "nom": "HVAC_Mode_Auto",             "sens": "↔", "desc": "Mode Automatique ; fb tenu" },
+        "186":     { "nom": "HVAC_Mode_Next",             "sens": "→", "desc": "Rotation Chauffage → Rafraîchissement → Automatique (bouton unique du GUI)" },
+        "187":     { "nom": "HVAC_Fan_Auto",              "sens": "↔", "desc": "Ventilateur automatique ; fb tenu" },
+        "188":     { "nom": "HVAC_Fan_On",                "sens": "↔", "desc": "Ventilateur continu ; fb tenu" },
+        "189":     { "nom": "HVAC_Schedule_Run",          "sens": "↔", "desc": "Planification en cours ; fb tenu" },
+        "190":     { "nom": "HVAC_Schedule_Hold",         "sens": "↔", "desc": "Planification en pause (maintien manuel) ; fb tenu" },
+        "191":     { "nom": "HVAC_Humidity_On",           "sens": "↔", "desc": "Contrôle de l'humidité activé ; fb tenu" },
+        "192":     { "nom": "HVAC_Humidity_Off",          "sens": "↔", "desc": "Contrôle de l'humidité désactivé ; fb tenu" },
+        "201":     { "nom": "Lock_Lock",                  "sens": "↔", "desc": "Verrouiller la serrure de la pièce ; fb tenu = verrouillée" },
+        "202":     { "nom": "Lock_Unlock",                "sens": "↔", "desc": "Déverrouiller ; fb tenu = déverrouillée" },
+        "211":     { "nom": "Access_FrontDoor_Lock",      "sens": "↔", "desc": "Maison : porte d'entrée verrouillée (fb tenu)" },
+        "212":     { "nom": "Access_FrontDoor_Unlock",    "sens": "↔", "desc": "Maison : porte d'entrée déverrouillée (fb tenu)" },
+        "213":     { "nom": "Access_Gate_Close",          "sens": "↔", "desc": "Maison : portail fermé (fb tenu)" },
+        "214":     { "nom": "Access_Gate_Open",           "sens": "↔", "desc": "Maison : portail ouvert (fb tenu)" },
+        "215":     { "nom": "Access_Garage_Open",         "sens": "↔", "desc": "Maison : garage ouvert (fb tenu)" },
+        "216":     { "nom": "Access_Garage_Close",        "sens": "↔", "desc": "Maison : garage fermé (fb tenu)" },
+        "217":     { "nom": "Access_Garage_Closing",      "sens": "←", "desc": "Maison : « Fermeture en cours… » (tenu pendant garageFermetureMs)" },
+        "221":     { "nom": "Pool_On",                    "sens": "↔", "desc": "Filtration piscine activée (fb tenu)" },
+        "222":     { "nom": "Pool_Off",                   "sens": "↔", "desc": "Piscine désactivée (fb tenu)" },
+        "223":     { "nom": "Spa_On",                     "sens": "↔", "desc": "Spa activé (fb tenu)" },
+        "224":     { "nom": "Spa_Off",                    "sens": "↔", "desc": "Spa désactivé (fb tenu)" },
+        "231-238": { "nom": "Video_Display_{n}_Select",   "sens": "↔", "desc": "Écran n devient la cible de la feuille Vidéo de cet écran ; fb = écran ciblé" },
+        "241-248": { "nom": "Video_Display_{n}_On",       "sens": "↔", "desc": "Allumer l'écran n (source TV par défaut) ; fb tenu = allumé" },
+        "251-258": { "nom": "Video_Display_{n}_Off",      "sens": "↔", "desc": "Éteindre l'écran n ; fb tenu = éteint" },
+        "261-268": { "nom": "Video_Source_{n}",           "sens": "↔", "desc": "Router la source n vers l'écran ciblé (et l'allumer) ; fb = source active sur l'écran ciblé" },
+        "271-278": { "nom": "Video_Channel_{n}",          "sens": "↔", "desc": "Chaîne n (source TV seulement) ; fb = chaîne active" },
+        "281-288": { "nom": "Music_Service_{n}",          "sens": "↔", "desc": "Service audio n dans la pièce affichée (démarre la lecture) ; fb = service actif" },
+        "291-298": { "nom": "Music_Fav_{n}",              "sens": "↔", "desc": "Lance le favori n ; fb = favori en cours" },
+        "301":     { "nom": "Music_Prev",                 "sens": "→", "desc": "Précédent" },
+        "302":     { "nom": "Music_PlayPause",            "sens": "↔", "desc": "Lecture / pause ; fb tenu = en lecture" },
+        "303":     { "nom": "Music_Next",                 "sens": "→", "desc": "Suivant" },
+        "304":     { "nom": "Music_Mute",                 "sens": "↔", "desc": "Coupe le son (volume 0) ; fb tenu = muet" },
+        "250":     { "nom": "Config_Resync",              "sens": "→", "desc": "Demande de (ré)envoi de la configuration JSON" }
+      },
+      "analog": {
+        "10":      { "nom": "Room_Select#",               "sens": "↔", "desc": "Pièce affichée par cet écran (1..30). Sur l'EISC : posé AVANT chaque recopie d'action → clé de bufferisation du slot 2" },
+        "11-30":   { "nom": "Light_{n}_Level#",           "sens": "↔", "desc": "Niveau du circuit n (0-65535) ; curseur → C# ; fb = niveau" },
+        "31-38":   { "nom": "Shade_{n}_Position#",        "sens": "↔", "desc": "Position de l'occultant n (0-65535, 65535 = ouvert)" },
+        "40":      { "nom": "Video_Display_Target#",      "sens": "↔", "desc": "Écran ciblé par la feuille Vidéo (1..8)" },
+        "41-48":   { "nom": "Video_Display_{n}_Volume#",  "sens": "↔", "desc": "Volume de l'écran n (0-100)" },
+        "49":      { "nom": "Video_Volume#",              "sens": "↔", "desc": "Volume de l'écran ciblé (0-100)" },
+        "51-58":   { "nom": "Video_Display_{n}_Source#",  "sens": "←", "desc": "Source active de l'écran n (0 = éteint, 1..8)" },
+        "59":      { "nom": "Video_Channel#",             "sens": "←", "desc": "Chaîne active (1..8, 0 = aucune)" },
+        "60":      { "nom": "HVAC_Setpoint#",             "sens": "↔", "desc": "Consigne × 10 (215 = 21,5 °C)" },
+        "61":      { "nom": "HVAC_Temperature#",          "sens": "←", "desc": "Température mesurée × 10" },
+        "62":      { "nom": "HVAC_Mode#",                 "sens": "←", "desc": "1 = Chauffage, 2 = Rafraîchissement, 3 = Automatique" },
+        "63":      { "nom": "HVAC_Fan#",                  "sens": "←", "desc": "0 = Automatique, 1 = Continu" },
+        "64":      { "nom": "HVAC_Humidity#",             "sens": "←", "desc": "Hygrométrie mesurée (%)" },
+        "70":      { "nom": "Music_Volume#",              "sens": "↔", "desc": "Volume musique de la pièce (0-100)" },
+        "71":      { "nom": "House_LightsOn#",            "sens": "←", "desc": "Nombre de circuits allumés dans la maison" },
+        "72":      { "nom": "House_ShadesOpen#",          "sens": "←", "desc": "Nombre d'occultants ouverts (> 5 %) dans la maison" },
+        "73":      { "nom": "Room_LightsOn#",             "sens": "←", "desc": "Circuits allumés dans la pièce affichée" },
+        "74":      { "nom": "Room_ShadesOpen#",           "sens": "←", "desc": "Occultants ouverts dans la pièce affichée" },
+        "250":     { "nom": "Config_ChunkAck#",           "sens": "→", "desc": "Accusé de réception du chunk N de configuration" }
+      },
+      "serial": {
+        "10":      { "nom": "Room_Name$",                 "sens": "←", "desc": "Nom de la pièce affichée" },
+        "11":      { "nom": "Room_Subtitle$",             "sens": "←", "desc": "« 2 éclairages allumés » / « Tous les éclairages éteints »" },
+        "20":      { "nom": "Music_Title$",               "sens": "←", "desc": "Titre en cours" },
+        "21":      { "nom": "Music_Sub$",                 "sens": "←", "desc": "Sous-titre « Radio · Séjour »" },
+        "22":      { "nom": "Music_Tint$",                "sens": "←", "desc": "Couleur de pochette (#rrggbb)" },
+        "23":      { "nom": "Video_Source_Name$",         "sens": "←", "desc": "Nom de la source active sur l'écran ciblé" },
+        "30":      { "nom": "House_Status$",              "sens": "←", "desc": "Bandeau d'état de la maison" },
+        "99":      { "nom": "Systeme_IpId$",              "sens": "←", "desc": "IP-ID de l'écran connecté" },
+        "101":     { "nom": "Systeme_CpzNom$",            "sens": "←", "desc": "Nom du CPZ" },
+        "102":     { "nom": "Systeme_CpzDate$",           "sens": "←", "desc": "Date de compilation du CPZ" },
+        "105":     { "nom": "Config_Json$",               "sens": "←", "desc": "Transport de la configuration (VCFG|i|n|payload)" },
+        "106":     { "nom": "Config_Hash$",               "sens": "←", "desc": "Empreinte de la configuration" }
+      }
+    },
+
+    "blocsPieces": {
+      "base": 1000, "taille": 100,
+      "desc": "Échanges C# ↔ slot 2 par pièce 'intersystem'. _fb = tenu par le C# (sortie EISC, reçu par le slot 2) ; _Actual = mesure renvoyée par le slot 2 (entrée EISC). Seules les fonctionnalités actives de la pièce sont câblées.",
+      "digital": {
+        "1-20":   { "nom": "Light_{n}_On",    "fb": true, "actual": true,  "fonction": "eclairages" },
+        "21-28":  { "nom": "Shade_{n}_Up",    "fb": true, "actual": false, "fonction": "occultants", "desc": "Impulsion vers le moteur" },
+        "31-38":  { "nom": "Shade_{n}_Stop",  "fb": true, "actual": false, "fonction": "occultants" },
+        "41-48":  { "nom": "Shade_{n}_Down",  "fb": true, "actual": false, "fonction": "occultants" },
+        "51":     { "nom": "Lock_Locked",     "fb": true, "actual": true,  "fonction": "serrure" },
+        "52":     { "nom": "HVAC_Heat",       "fb": true, "actual": true,  "fonction": "cvc" },
+        "53":     { "nom": "HVAC_Cool",       "fb": true, "actual": true,  "fonction": "cvc" },
+        "54":     { "nom": "HVAC_Auto",       "fb": true, "actual": true,  "fonction": "cvc" },
+        "55":     { "nom": "HVAC_FanOn",      "fb": true, "actual": true,  "fonction": "cvc" },
+        "56":     { "nom": "HVAC_Hold",       "fb": true, "actual": true,  "fonction": "cvc" },
+        "57":     { "nom": "HVAC_Humidity",   "fb": true, "actual": true,  "fonction": "cvc" },
+        "61":     { "nom": "Room_Displayed",  "fb": true, "actual": false, "fonction": "*", "desc": "La pièce est affichée sur au moins un écran" },
+        "71":     { "nom": "Music_Playing",   "fb": true, "actual": true,  "fonction": "audio" },
+        "72":     { "nom": "Music_Muted",     "fb": true, "actual": true,  "fonction": "audio" }
+      },
+      "analog": {
+        "11-30":  { "nom": "Light_{n}_Level",    "fb": true, "actual": true, "fonction": "eclairages" },
+        "31-38":  { "nom": "Shade_{n}_Position", "fb": true, "actual": true, "fonction": "occultants" },
+        "60":     { "nom": "HVAC_Setpoint",      "fb": true, "actual": true, "fonction": "cvc", "desc": "× 10" },
+        "61":     { "nom": "HVAC_Temperature",   "fb": false,"actual": true, "fonction": "cvc", "desc": "× 10, mesure du thermostat" },
+        "64":     { "nom": "HVAC_Humidity",      "fb": false,"actual": true, "fonction": "cvc", "desc": "% mesuré" },
+        "70":     { "nom": "Music_Volume",       "fb": true, "actual": true, "fonction": "audio" },
+        "75":     { "nom": "Music_Service",      "fb": true, "actual": true, "fonction": "audio", "desc": "1..8" },
+        "76":     { "nom": "Music_Fav",          "fb": true, "actual": true, "fonction": "audio", "desc": "1..8, 0 = aucun" }
+      },
+      "serial": {
+        "10":     { "nom": "Room_Name",  "fb": true, "fonction": "*" }
+      }
+    },
+
+    "signauxMaisonEisc": {
+      "desc": "Les fonctions maison (accès, piscine, spa, écrans vidéo) sont globales par nature : leurs actions arrivent sur l'EISC en sortie (nom nu) et le slot 2 renvoie l'état réel sur les entrées _Actual des mêmes joins.",
+      "digitalActual": { "211": "Access_FrontDoor_Locked", "213": "Access_Gate_Closed", "215": "Access_Garage_Open", "217": "Access_Garage_Closing", "221": "Pool_On", "223": "Spa_On", "241-248": "Video_Display_{n}_On" },
+      "analogActual":  { "41-48": "Video_Display_{n}_Volume", "51-58": "Video_Display_{n}_Source", "59": "Video_Channel" }
+    }
+  }
+}

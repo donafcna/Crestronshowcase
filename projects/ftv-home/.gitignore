@@ -1,0 +1,13 @@
+simpl-sharp/packages/
+simpl-sharp/**/bin/
+simpl-sharp/**/obj/
+simpl-sharp/.vs/
+simpl/simpl-windows/SPlsWork/
+simpl/simpl-windows/*.backup-*.smw
+*.ASV
+*.lpz
+*.cpz
+*.sig
+*.dip
+*.smft
+*.hash
