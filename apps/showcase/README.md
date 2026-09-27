@@ -503,3 +503,11 @@ Les GUI Boutique Auralis et M/Y Asteria ouvrent sur l'onglet Vue 3D, placé en p
 Le bloc « Exploration 3D » (intitulé, sous-titre et puces de niveaux) et la liste « Explorer la 3D » disparaissent hors dalle murale ; la navigation entre espaces passe uniquement par le menu déroulant « Espace sélectionné » et le bouton de vue d'ensemble. Le bouton d'export de capture du modèle est retiré de toutes les interfaces.
 
 En mode démo mobile, le bandeau de retour ne se masque plus après 4,5 secondes : il devient une barre fixe en bas de l'écran, sous la barre de menu de la GUI, sans recouvrement.
+
+## 27/09/2026 — Entrée guidée rétablie, bandeau en haut, film recentré 2.2.15
+
+Le parcours guidé de Boutique et Yacht repartait à vide depuis l'ouverture sur la Vue 3D : le moteur attendait au moins trois cibles cliquables, qui n'existent que sur l'onglet Commandes. Un parcours guidé pilote la GUI par son API : il démarre désormais dès que l'interface est prête. Le curseur ouvre lui-même l'onglet Lumière avant la première zone, puis revient sur la Vue 3D à la fin du cycle. Avec le modèle de fond du site, la maquette du châssis se charge deux secondes plus tard afin que les deux scènes WebGL ne s'initialisent pas en même temps.
+
+Le bandeau de retour du mode démo passe en haut de l'écran, au-dessus de la GUI, toujours sans masquage automatique.
+
+Sur l'accueil, l'espace entre le bloc d'accroche et le film tombe de 30 à 10 px et le film se dimensionne sur la hauteur réellement disponible, centré horizontalement : il tient en entier dans la fenêtre de 1280 x 720 à 1920 x 1200 sans défilement.

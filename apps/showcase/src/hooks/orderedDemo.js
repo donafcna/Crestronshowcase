@@ -114,6 +114,11 @@ export async function runOrderedDemo({ gui, token, sleep, moveTo, act, setCursor
         setCursor?.(c => ({ ...c, pressed: false }));
         return !token.cancelled;
       };
+      // La GUI s'ouvre sur l'onglet Vue 3D : les scènes n'existent dans le DOM
+      // qu'une fois l'onglet Lumière ouvert. Le curseur l'ouvre lui-même.
+      const tabButton = name => () => [...(gui.doc.querySelectorAll?.(`[data-tab="${name}"]`) || [])]
+        .find(el => { const r = el.getBoundingClientRect(); return r.width > 5 && r.height > 5; });
+      if (api.state?.tab !== 'light' && tabButton('light')() && !await perform(tabButton('light'), 400)) return false;
       if (!await selectRoom(yacht ? rooms[0].id : 'hall')) return false;
       const waitForPress = scheduleFromFirstZone();
       const sceneOrder = yacht ? ['sunset', 'dinner', 'cruise'] : ['private', 'gala', 'opening'];
@@ -127,6 +132,8 @@ export async function runOrderedDemo({ gui, token, sleep, moveTo, act, setCursor
       const closing = yacht ? 'night' : 'closed';
       if (!await waitForPress(at => perform(() => gui.doc.querySelector(`[data-preset="${closing}"]`), 0, true, at))) return false;
       await sleep(GUIDED_DEMO_TIMING.stepDelay, token);
+      // Retour sur la Vue 3D, l'onglet d'accueil de ces deux GUI.
+      if (tabButton('model')()) await perform(tabButton('model'), 400);
       return !token.cancelled;
     }
     for (const room of api.config.rooms.slice(0, 3)) {

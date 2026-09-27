@@ -489,7 +489,10 @@ export const useAutoDemo = ({ enabled, running, stageRef, guiKey, onCycleEnd, on
       let gui = null;
       for (let i = 0; i < 180 && !token.cancelled; i++) {
         gui = resolveGui(stage);
-        if (gui && collect(gui).actions.length >= 3 && (!guidedBuilding || !gui.win.ftvGui || gui.win.ftvGui.ready) && (!villaDevice || (gui.win.Villa?.ready && gui.doc.URL.includes(villaDevice === "phone" ? "/iphone.html" : "/index.html")))) break;
+        // Un parcours guidé pilote la GUI par son API : il n'a pas besoin du
+        // seuil de cibles cliquables, qui n'est vrai que sur l'onglet Commandes.
+        const guidedReady = guidedBuilding && !!gui?.win.ftvGui?.ready;
+        if (gui && (guidedReady || collect(gui).actions.length >= 3) && (!guidedBuilding || !gui.win.ftvGui || gui.win.ftvGui.ready) && (!villaDevice || (gui.win.Villa?.ready && gui.doc.URL.includes(villaDevice === "phone" ? "/iphone.html" : "/index.html")))) break;
         gui = null;
         await sleep(250, token);
       }

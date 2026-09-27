@@ -316,12 +316,12 @@
   background: #080b11;
 }
 
-/* Bandeau de retour : toujours visible, sous la barre de menu de la GUI */
+/* Bandeau de retour : toujours visible, en haut, au-dessus de la GUI */
 .demo-player-controls {
   position: relative;
   flex: none;
   align-self: center;
-  margin: 6px auto 4px;
+  margin: 4px auto 6px;
   max-width: calc(100% - 16px);
   display: flex;
   align-items: center;

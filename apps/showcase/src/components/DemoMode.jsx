@@ -59,6 +59,21 @@ const DemoPlayer = ({ project, deviceType, onBack, onToggleDevice }) => {
 
   return (
     <div className="demo-player">
+      {/* Bandeau de retour permanent, au-dessus de la GUI */}
+      <div className="demo-player-controls">
+        <button className="demo-ctrl-btn" onClick={onBack} aria-label={t("demo_back")}>
+          {renderIcon("ChevronLeft", 20)}
+        </button>
+        <span className="demo-ctrl-title">{getProjectName(project, lang)}</span>
+        {nextDemoDevice(project, deviceType) !== deviceType && <button
+          className="demo-ctrl-btn"
+          onClick={onToggleDevice}
+          aria-label={t("demo_toggle_device")}
+        >
+          {renderIcon(deviceType === "phone" ? "Smartphone" : "Tablet", 18)}
+        </button>}
+      </div>
+
       <div className="demo-player-screen">
         {Simulator ? (
           <Suspense fallback={<SimulatorFallback />}>
@@ -72,21 +87,6 @@ const DemoPlayer = ({ project, deviceType, onBack, onToggleDevice }) => {
             sandbox="allow-scripts allow-same-origin"
           />
         ) : null}
-      </div>
-
-      {/* Bandeau de retour permanent, sous la barre de menu de la GUI */}
-      <div className="demo-player-controls">
-        <button className="demo-ctrl-btn" onClick={onBack} aria-label={t("demo_back")}>
-          {renderIcon("ChevronLeft", 20)}
-        </button>
-        <span className="demo-ctrl-title">{getProjectName(project, lang)}</span>
-        {nextDemoDevice(project, deviceType) !== deviceType && <button
-          className="demo-ctrl-btn"
-          onClick={onToggleDevice}
-          aria-label={t("demo_toggle_device")}
-        >
-          {renderIcon(deviceType === "phone" ? "Smartphone" : "Tablet", 18)}
-        </button>}
       </div>
     </div>
   );

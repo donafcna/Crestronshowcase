@@ -1,11 +1,18 @@
 /* Film vitrine de l'accueil — remplace compteurs + bandeau « Réalisation en vedette » au-dessus de 900 px. */
+/* Espace voulu entre le bloc d'accroche et le film ; le conteneur du tableau
+   de bord espace ses sections de 30 px, d'où le retrait. Le film occupe la
+   hauteur réellement disponible et reste centré quelle que soit la fenêtre. */
 .dash-film {
+  --dash-film-gap: 10px;
+  --dash-film-reserve: 200px;
   position: relative;
   flex: 0 0 auto;
-  width: 100%;
+  margin-top: calc(var(--dash-film-gap) - 30px);
+  margin-inline: auto;
+  width: min(100%, calc((100dvh - var(--dash-film-reserve)) * 16 / 9));
   min-height: 240px;
   aspect-ratio: 16 / 9;
-  max-height: 72vh;
+  max-height: calc(100dvh - var(--dash-film-reserve));
   padding: 0;
   overflow: hidden;
   background: #0b0d12;

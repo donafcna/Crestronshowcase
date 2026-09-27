@@ -30,7 +30,11 @@ if(panel2D){
  const overview=document.createElement('div');overview.id='space-overview';document.querySelector('.model-viewport').appendChild(overview);
  document.querySelector('.model-bottom span').textContent='Sélectionnez un espace pour le piloter';
  $('expand').hidden=true;
-}else{if(externalModel)$('app').classList.add('external-model');if(window.FTV_INLINE_MODEL)$('model').srcdoc=window.FTV_INLINE_MODEL;else $('model').src=`models/${kind}.html`;}
+}else{if(externalModel)$('app').classList.add('external-model');const loadModel=()=>{if(window.FTV_INLINE_MODEL)$('model').srcdoc=window.FTV_INLINE_MODEL;else $('model').src=`models/${kind}.html`;};
+// Avec le modele de fond du site, on laisse celui-ci s'initialiser avant de
+// charger la maquette du chassis : deux scenes WebGL au meme instant retardent
+// l'entree en demonstration.
+if(externalModel)setTimeout(loadModel,2000);else loadModel();}
 $('model').addEventListener('load',()=>command('hello'));
 let loadTimeout=panel2D?null:setTimeout(()=>{if(!modelReady){$('model-loading').textContent='La vue 3D prend plus de temps à charger. Vérifiez que WebGL est activé.';}},25000);
 let spacePage=0,spaceFloor='all';
