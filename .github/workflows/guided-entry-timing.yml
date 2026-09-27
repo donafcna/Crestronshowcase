@@ -1,0 +1,22 @@
+name: Guided entry timing review
+on:
+  push:
+    branches: [codex/guided-entry-3s-20260927]
+permissions:
+  contents: read
+jobs:
+  timing-review:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Save exact source snapshot for review
+        run: |
+          mkdir -p /tmp/guided-entry-source
+          git archive --format=tar.gz HEAD AGENTS.md docs/CONTEXTE-CODEX.md docs/SUIVI-3D-2026-09-16.md apps/showcase/CLAUDE.md apps/showcase/README.md apps/showcase/src apps/showcase/scripts apps/showcase/public/ftv-luxury apps/showcase/package.json apps/showcase/package-lock.json .github/workflows > /tmp/guided-entry-source/source.tar.gz
+          git rev-parse HEAD > /tmp/guided-entry-source/revision.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: guided-entry-source
+          path: /tmp/guided-entry-source/
+          retention-days: 7
