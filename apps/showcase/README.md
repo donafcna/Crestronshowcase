@@ -537,3 +537,7 @@ Boutique : plus d'applique ni de décor mural sur les murs de façade vitrés ; 
 L'onglet Vue 3D des GUI Boutique et Yacht est mis de côté : masqué par défaut, il revient avec le suffixe `/5` dans l'adresse et disparaît avec `/6` (mémorisé par navigateur). Le modèle 3D de fond du site n'est pas concerné.
 
 Barre des projets : le bouton « + » et la description défilante disparaissent, les flèches du clavier ne peuvent plus rester bloquées dessus. Mode Dev : le bandeau de mesures d'écran s'affiche aussi sur l'accueil. Mode démo iPhone : la GUI occupe toute la hauteur, seul un bouton rond de retour reste en haut à gauche.
+
+## 27/09/2026 — Entrée guidée à quatre secondes 2.2.19
+
+Boutique et Restaurant laissent quatre secondes au visiteur avant l'entrée du curseur ; le Yacht reste à dix secondes.

@@ -45,9 +45,9 @@ test('three sectors share a 3-second start, others are not changed',()=>{
  const host=readFileSync(new URL('../src/components/Showcase.jsx',import.meta.url),'utf8');
  assert.match(hook,/isGuidedProject\(guiKey.split\("\/"\)\[0\]\)/);
  assert.match(hook,/guidedBuilding \? guidedStartDelay\(guiKey.split\("\/"\)\[0\]\) : TIMING.startDelay/);
- assert.equal(guidedStartDelay('boutique-hermes'),10000);
+ assert.equal(guidedStartDelay('boutique-hermes'),4000);
  assert.equal(guidedStartDelay('yacht-monaco'),10000);
- assert.equal(guidedStartDelay('sushi-bar-kyoto'),3000);
+ assert.equal(guidedStartDelay('sushi-bar-kyoto'),4000);
  assert.match(host,/const guidedEntry = isGuidedProject\(activeProject.id\) && first/);
 });
 for(const [project,scenes,closing] of [['boutique',['private','gala','opening'],'closed'],['restaurant',['dinner','rooftop','welcome'],'closed'],['yacht',['sunset','dinner','cruise'],'night']]){
