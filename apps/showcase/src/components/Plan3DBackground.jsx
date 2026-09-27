@@ -1,6 +1,6 @@
 import { HotelBrassusBackground } from './HotelBrassusBackground';
 import { RestaurantBackground } from './RestaurantBackground';
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { BackgroundVideo } from "./BackgroundVideo";
 import { LuxuryBackground } from "../ftv-luxury/LuxuryBackground";
 import { LUXURY_MODELS } from "../ftv-luxury/modelProjects";
@@ -55,8 +55,17 @@ const VillaPlan3DBackground = ({ projectId, stageRef, guiFrameRef, tourSessionRe
   const canvasRef = useRef(null);
   const apiRef = useRef(null);
   const entryRef = useRef(null);
+  const restartRef = useRef(null);
+  const entrySessionRef = useRef(null);
   const [failed, setFailed] = useState(false);
   const [ready, setReady] = useState(false);
+  const session = tourSessionRef?.current;
+
+  // Clicking Residential again creates a new tour session without unmounting
+  // this model. Re-arm the presentation before paint, but do not rebuild 3D.
+  useLayoutEffect(() => {
+    if (session?.overview && entrySessionRef.current !== session) restartRef.current?.();
+  }, [session]);
 
   // 1. Scène : chargée une fois par projet, disposée depuis le JSON
   useEffect(() => {
@@ -73,22 +82,35 @@ const VillaPlan3DBackground = ({ projectId, stageRef, guiFrameRef, tourSessionRe
         if (!alive) return;
         const api = mod.createPlan3D({ canvas: canvasRef.current, config, startOverview: tourSessionRef?.current.overview !== false, environmentTime: () => tourSessionRef?.current.seconds() });
         apiRef.current = api;
-        const entry = createVillaEntry({
-          api,
-          measure: () => villaViewport(canvasRef.current, guiFrameRef?.current, stageRef?.current),
-          isOverview: () => tourSessionRef?.current.overview !== false,
-          onReady: () => {
-            if (!alive || apiRef.current !== api) return;
-            // Publish readiness only after the correctly framed image has really
-            // rendered, so the tour's overview timer cannot expire during loading.
-            window.__plan3d = api;
-            setReady(true);
-            window.dispatchEvent(new Event('plan3d-ready'));
-          },
-        });
-        api.entry = entry;
-        entryRef.current = entry;
-        entry.start();
+        const startEntry = () => {
+          if (!alive || apiRef.current !== api) return;
+          entryRef.current?.dispose();
+          entrySessionRef.current = tourSessionRef?.current;
+          if (window.__plan3d === api) delete window.__plan3d;
+          if (canvasRef.current) canvasRef.current.style.opacity = '0';
+          setReady(false);
+          const overview = tourSessionRef?.current.overview !== false;
+          api.holdOverview(overview);
+          if (overview) { api.overview(); api.jump(); }
+          const entry = createVillaEntry({
+            api,
+            measure: () => villaViewport(canvasRef.current, guiFrameRef?.current, stageRef?.current),
+            isOverview: () => tourSessionRef?.current.overview !== false,
+            onReady: () => {
+              if (!alive || apiRef.current !== api || entryRef.current !== entry) return;
+              // Publish readiness only after the correctly framed image has
+              // rendered. The tour cannot consume its overview wait while loading.
+              window.__plan3d = api;
+              setReady(true);
+              window.dispatchEvent(new Event('plan3d-ready'));
+            },
+          });
+          api.entry = entry;
+          entryRef.current = entry;
+          entry.start();
+        };
+        restartRef.current = startEntry;
+        startEntry();
       } catch (e) {
         console.warn('[Plan3D] scène indisponible', e);
         if (alive) setFailed(true);
@@ -96,6 +118,7 @@ const VillaPlan3DBackground = ({ projectId, stageRef, guiFrameRef, tourSessionRe
     })();
     return () => {
       alive = false;
+      restartRef.current = null; entrySessionRef.current = null;
       entryRef.current?.dispose(); entryRef.current = null;
       if (apiRef.current) { apiRef.current.dispose(); if (window.__plan3d === apiRef.current) delete window.__plan3d; apiRef.current = null; }
     };

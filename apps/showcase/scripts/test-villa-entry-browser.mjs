@@ -19,6 +19,7 @@ try{
   const sample=()=>{
    const canvas=document.querySelector('.villa-entry-background canvas');
    const parent=canvas?.parentElement,api=window.__plan3d;
+   if(canvas&&Number(getComputedStyle(canvas).opacity)===0)window.__villaVisibleFrames=[];
    if(canvas&&Number(getComputedStyle(canvas).opacity)>0){
     const frame={at:performance.now(),ready:parent?.dataset.ready,nav:api?.navigation(),entry:api?.entry?.state()};
     const list=window.__villaVisibleFrames;
@@ -27,22 +28,12 @@ try{
    nativeRaf(sample);
   };nativeRaf(sample);
  });
- for(const scenario of ['first-menu-entry','return-from-menu','resize-during-entry']){
-  if(scenario==='return-from-menu')await page.locator('a[href="/contact"]').first().click();
-  else await page.goto(base+'/contact?lang=fr',{waitUntil:'domcontentloaded'});
-  await page.evaluate(()=>{window.__villaVisibleFrames=[];});
-  await page.locator('.sidebar-nav .sector-btn[href="/interfaces/residentiel"]').click();
-  if(scenario==='resize-during-entry'){
-   await page.waitForSelector('.villa-entry-background canvas',{state:'attached'});
-   await page.setViewportSize({width:1440,height:950});
-  }
+ const verify = async scenario => {
   await page.waitForFunction(()=>window.__plan3d?.entry?.ready,null,{polling:100});
   await page.waitForTimeout(900);
   const data=await page.evaluate(()=>({frames:window.__villaVisibleFrames,pose:__plan3d.entry.state().pose,metrics:__plan3d.metrics(),nav:__plan3d.navigation()}));
   assert.ok(data.frames.length>0,'at least one real visible frame');
   const first=data.frames[0];assert.equal(first.ready,'true');assert.equal(first.nav.phase,'overview-closed');assert.equal(first.nav.moving,false);
-  // Validate every available startup frame, without requiring a minimum FPS
-  // from the CPU-only renderer. The number actually sampled stays in the report.
   const relevant=data.frames.filter(f=>f.at-first.at<750);
   for(const f of relevant){
    assert.equal(f.nav.phase,'overview-closed');assert.equal(f.nav.moving,false);
@@ -52,11 +43,30 @@ try{
   assert.ok(data.metrics.zone.w>260&&data.metrics.zone.h>100);
   report.cases.push({scenario,firstFrame:first,visibleSamples:relevant.length,checks:['complete villa in first visible frame','no initial camera movement','final free-space viewport applied']});
   await page.screenshot({path:`${out}/${scenario}.png`,timeout:90000});
+ };
+ for(const scenario of ['first-menu-entry','return-from-menu','resize-during-entry']){
+  if(scenario==='return-from-menu')await page.locator('a[href="/contact"]').first().click();
+  else await page.goto(base+'/contact?lang=fr',{waitUntil:'domcontentloaded'});
+  await page.evaluate(()=>{window.__villaVisibleFrames=[];});
+  await page.locator('.sidebar-nav .sector-btn[href="/interfaces/residentiel"]').click();
+  if(scenario==='resize-during-entry'){
+   await page.waitForSelector('.villa-entry-background canvas',{state:'attached'});
+   await page.setViewportSize({width:1440,height:950});
+  }
+  await verify(scenario);
  }
- // The startup-only gate must not disable later model navigation.
  await page.locator('.device-stage').click({position:{x:5,y:5}});
  const focus=await page.evaluate(()=>{__plan3d.holdOverview(false);__plan3d.setRoom(Object.keys(__plan3d.rooms)[0]);return __plan3d.navigation();});
  assert.notEqual(focus.phase,'overview-closed');
+ await page.waitForFunction(()=>__plan3d.navigation().phase==='room',null,{polling:100,timeout:45000});
+ // Repeat the sector click while the model is already mounted and zoomed.
+ await page.evaluate(()=>{window.__previousVillaGate=__plan3d.entry;});
+ await page.locator('.sidebar-nav .sector-btn[href="/interfaces/residentiel"]').click();
+ await page.waitForFunction(()=>window.__plan3d?.entry?.ready&&__plan3d.entry!==window.__previousVillaGate,null,{polling:100});
+ await verify('same-sector-reentry-from-room');
+ // The entry-only snap must not disable later model navigation.
+ await page.locator('.device-stage').click({position:{x:5,y:5}});
+ await page.evaluate(()=>{__plan3d.holdOverview(false);__plan3d.setRoom(Object.keys(__plan3d.rooms)[0]);});
  await page.waitForFunction(()=>__plan3d.navigation().phase==='room',null,{polling:100,timeout:45000});
  const returning=await page.evaluate(()=>{__plan3d.overview();return __plan3d.navigation();});
  assert.equal(returning.moving,true,'later overview still animates');
