@@ -1,22 +1,54 @@
 name: Guided entry timing review
 on:
   push:
-    branches: [codex/guided-entry-3s-20260927]
+    branches: [codex/guided-entry-3s-20260927, main]
+    paths:
+      - 'apps/showcase/src/hooks/**'
+      - 'apps/showcase/src/components/Showcase.jsx'
+      - 'apps/showcase/scripts/test-guided-entry-*.mjs'
+      - '.github/workflows/guided-entry-timing.yml'
 permissions:
   contents: read
 jobs:
   timing-review:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: apps/showcase
     steps:
       - uses: actions/checkout@v4
-      - name: Save exact source snapshot for review
-        run: |
-          mkdir -p /tmp/guided-entry-source
-          git archive --format=tar.gz HEAD AGENTS.md docs/CONTEXTE-CODEX.md docs/SUIVI-3D-2026-09-16.md apps/showcase/CLAUDE.md apps/showcase/README.md apps/showcase/src apps/showcase/scripts apps/showcase/public/ftv-luxury apps/showcase/package.json apps/showcase/package-lock.json .github/workflows > /tmp/guided-entry-source/source.tar.gz
-          git rev-parse HEAD > /tmp/guided-entry-source/revision.txt
-      - uses: actions/upload-artifact@v4
+      - uses: actions/setup-node@v4
         with:
-          name: guided-entry-source
-          path: /tmp/guided-entry-source/
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: apps/showcase/package-lock.json
+      - run: node --test scripts/test-guided-entry-timing.mjs
+      - run: npm ci
+      - run: npm run build
+      - run: npm run lint
+      - name: Install isolated browser tooling
+        run: |
+          npm install --prefix "$RUNNER_TEMP/guided-tools" --no-save playwright@1.57.0
+          ln -s "$RUNNER_TEMP/guided-tools/node_modules/playwright" node_modules/playwright
+          "$RUNNER_TEMP/guided-tools/node_modules/.bin/playwright" install --with-deps chromium > /tmp/guided-browser.log 2>&1
+      - name: Review local menu and cursor timing
+        if: github.ref != 'refs/heads/main'
+        run: |
+          npm run preview -- --host 127.0.0.1 --port 4173 > /tmp/guided-preview.log 2>&1 &
+          for i in $(seq 1 30); do curl -fsS http://127.0.0.1:4173/ >/dev/null && break; sleep 1; done
+          node scripts/test-guided-entry-browser.mjs
+      - name: Review actual production after publication
+        if: github.ref == 'refs/heads/main'
+        env:
+          BASE_URL: https://crestrongui.vercel.app
+          TEST_OUTPUT: test-results/guided-entry-production
+          SMOKE: '1'
+        run: node scripts/test-guided-entry-browser.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: guided-entry-review
+          path: apps/showcase/test-results/guided-entry*/
           retention-days: 7
+          if-no-files-found: warn
