@@ -172,6 +172,10 @@
       // Cornice remains as a fine perimeter line in the cutaway view.
       rectFrame(g,0,3.57,0,r.w-.1,r.d-.1,.032,.035,M.cove);
       facadeWindows(g,r);
+      // Nappe lumineuse au sol : depuis la vue d'ensemble, elle distingue
+      // immediatement un espace allume d'un espace eteint.
+      lightWash(g,0,.035,0,r.w-.45,r.d-.45,-PI/2,'cove');
+      lightWash(g,0,.045,0,r.w-1.4,r.d-1.4,-PI/2,'spot');
       // Chaque espace recoit un mobilier et des luminaires differents ; seuls
       // les bandeaux LED du sol et des corniches restent communs.
       const style=rooms.indexOf(r)%5,accent=M[r.color]||M.jade;

@@ -519,3 +519,11 @@ Boutique et Yacht laissent dix secondes au visiteur avant l'entrée du curseur ;
 Boutique : une scène ne s'applique qu'à l'espace sélectionné, « Toute la boutique » restant le seul choix qui agit partout ; la vue d'ensemble montre donc les zones allumées et les zones éteintes. Le cadrage d'un espace s'élargit (champ de 74°, caméra reculée dans la pièce) pour montrer la salle entière. Chaque salon reçoit des luminaires et du mobilier distincts — suspensions, rail de spots, lampadaires, console, banquette, tapis — tandis que les bandeaux LED au sol et en corniche font désormais le tour des quatre côtés de chaque espace, aux deux niveaux. Les façades des deux niveaux reçoivent des baies vitrées avec stores motorisés : une section « Stores & éclairage général » pilote les quatre façades ou toutes à la fois en ouvert, mi-hauteur ou fermé, et allume ou éteint l'ensemble du bâtiment.
 
 Yacht : la maquette embarquée dans le châssis reste en plein jour et cadre uniquement l'espace choisi ; le cycle jour / nuit continue sur le modèle de fond du site.
+
+## 27/09/2026 — La scène par espace tient dans le temps 2.2.17
+
+Une scène appliquée à un salon était bien limitée à cet espace, mais revenir à « Toute la boutique » renvoyait aussitôt l'éclairage de la zone globale à chaque pièce : tout redevenait uniforme et la fonction paraissait inopérante. La sélection d'un espace n'émet plus de commande d'éclairage globale ; seule une scène ou l'éclairage général appliqués à « Toute la boutique » touchent l'ensemble du bâtiment.
+
+Chaque salon reçoit deux nappes lumineuses au sol, indexées sur les corniches et les spots : depuis la vue d'ensemble, un espace allumé se distingue immédiatement d'un espace éteint.
+
+Les commandes de stores et d'éclairage général sont désormais relayées au modèle 3D de fond du site, qui les ignorait faute d'être déclarées dans la liste des commandes autorisées.

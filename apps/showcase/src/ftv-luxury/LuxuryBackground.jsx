@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import './background.css';
 import { LUXURY_MODELS } from './modelProjects';
 const channel = 'ftv-luxury/v1';
-const commands = new Set(['hello', 'select', 'level', 'overview', 'scene', 'lighting', 'color', 'capture', 'visibility', 'resize', 'exterior', 'zoom']);
+const commands = new Set(['hello', 'select', 'level', 'overview', 'scene', 'lighting', 'color', 'capture', 'visibility', 'resize', 'exterior', 'zoom', 'blinds', 'all-lights']);
 const controls = 'iframe,button,a,input,select,textarea,.workspace-device-sidebar,.phone-device-frame,.projects-strip';
 const ENTRY_VERSION = '2026-09-27-boutique-tour-5';
 
