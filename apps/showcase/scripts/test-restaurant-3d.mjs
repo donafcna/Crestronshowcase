@@ -61,6 +61,7 @@ try {
   assert.ok(circuitAfter.exterior < .03 && Math.abs(circuitAfter.dining-circuitBefore.dining) < .001, 'Le circuit extérieur varie sans modifier les pièces');
   await page.locator('.rk-scenes button').filter({ hasText: 'Accueil' }).click();
   const cameraGoals = new Set();
+  const floorFailures = [];
   const visualZones = new Set(['cellar','private','signature','teppanyaki','lounge','gallery','belvedere','terrace']);
   for (const option of await page.locator('.rk-zone option').evaluateAll(items => items.map(item => item.value))) {
     await page.locator('.rk-zone select').selectOption(option);
@@ -70,15 +71,17 @@ try {
     const composition = await frame.evaluate(id => {
       const model=window.__restaurant3d,group=model.roomGroups[id],zone=model.zones[id],camera=new THREE.PerspectiveCamera(35,1.65,.1,340);
       camera.position.fromArray(model.desiredPosition);camera.lookAt(new THREE.Vector3(...zone.target));camera.updateMatrixWorld(true);camera.updateProjectionMatrix();group.updateMatrixWorld(true);
-      let tables=0,visibleTables=0,visibleOccluders=0;group.traverse(item=>{if(item.userData.cameraOccluder&&item.visible)visibleOccluders++;if(item.name==='table'){tables++;const p=new THREE.Vector3();item.getWorldPosition(p);p.project(camera);if(Math.abs(p.x)<.92&&Math.abs(p.y)<.92&&p.z>-1&&p.z<1)visibleTables++;}});return {tables,visibleTables,visibleOccluders};
+      let tables=0,visibleTables=0,visibleOccluders=0,floorCorners=0,floor;group.traverse(item=>{if(item.userData.cameraOccluder&&item.visible)visibleOccluders++;if(item.name==='room-floor')floor=item;if(item.name==='table'){tables++;const p=new THREE.Vector3();item.getWorldPosition(p);p.project(camera);if(Math.abs(p.x)<.92&&Math.abs(p.y)<.92&&p.z>-1&&p.z<1)visibleTables++;}});if(floor){const box=new THREE.Box3().setFromObject(floor),min=box.min,max=box.max;for(const x of [min.x,max.x])for(const z of [min.z,max.z]){const p=new THREE.Vector3(x,max.y,z).project(camera);if(Math.abs(p.x)<.96&&Math.abs(p.y)<.96&&p.z>-1&&p.z<1)floorCorners++;}}return {tables,visibleTables,visibleOccluders,floorCorners};
     }, option);
     assert.equal(composition.visibleOccluders, 0, `${option}: les panneaux et la toiture ne masquent pas l’intérieur`);
     assert.ok(composition.visibleTables >= 4, `${option}: le cadrage montre au moins quatre tables`);
+    if(composition.floorCorners!==4)floorFailures.push({zone:option,corners:composition.floorCorners});
     if (visualZones.has(option)) {
       await page.waitForTimeout(1800);
       await page.screenshot({ path: path.join(out, `restaurant-${option}.png`), fullPage: true });
     }
   }
+  assert.deepEqual(floorFailures, [], 'Les quatre coins du sol restent visibles dans chaque cadrage');
   assert.equal(cameraGoals.size, 16, 'L’extérieur et chaque espace possèdent un cadrage distinct');
   await page.locator('.rk-zone select').selectOption('rooftop');
   await page.waitForTimeout(700);
@@ -112,13 +115,33 @@ try {
   const boutiqueFrame = page.frames().find(item => item.url().includes('/ftv-luxury/models/boutique.html'));
   assert.ok(boutiqueFrame, 'La maquette Boutique est chargée');
   await boutiqueFrame.waitForFunction(() => window.__ftvModel?.state);
-  assert.deepEqual(await boutiqueFrame.evaluate(() => window.__ftvModel.state()), { room:'all',floor:'both',view:'overview' });
+  const boutiqueEntryState = await boutiqueFrame.evaluate(() => window.__ftvModel.state());
+  assert.deepEqual(
+    { room:boutiqueEntryState.room,floor:boutiqueEntryState.floor,view:boutiqueEntryState.view },
+    { room:'all',floor:'both',view:'overview' }
+  );
   assert.equal(await boutiqueFrame.evaluate(() => document.querySelector('#ftv-jewel').__jewel.desiredPosition[0]), 0, 'La vue générale Boutique est strictement frontale');
   assert.equal(await boutiqueFrame.locator('.j-loader').textContent(), '', 'Aucun message de préparation interne n’est affiché');
   const boutiqueCameraA = await boutiqueFrame.evaluate(() => document.querySelector('#ftv-jewel').__jewel.camera.position.toArray());
   await page.waitForTimeout(450);
   const boutiqueCameraB = await boutiqueFrame.evaluate(() => document.querySelector('#ftv-jewel').__jewel.camera.position.toArray());
   assert.ok(boutiqueCameraA.every((value,index) => Math.abs(value-boutiqueCameraB[index]) < .02), 'La Boutique apparaît directement sur sa vue générale stable');
+  const boutiqueGui = page.frames().find(item => item.url().includes('/ftv-luxury/gui.html') && item.url().includes('boutique-hermes'));
+  assert.ok(boutiqueGui, 'Le GUI Boutique est disponible pour la démonstration');
+  await boutiqueGui.evaluate(() => window.ftvGui.selectRoom('hall'));
+  await page.waitForTimeout(100);
+  assert.equal((await boutiqueFrame.evaluate(() => window.__ftvModel.state())).room, 'hall', 'La démonstration peut sélectionner le Hall et escalier d’apparat');
+  const fadeStart = await boutiqueFrame.evaluate(() => document.querySelector('#ftv-jewel').__jewel.vals.cove);
+  await boutiqueGui.evaluate(() => window.ftvGui.applyPreset('closed'));
+  await page.waitForTimeout(120);
+  assert.equal((await boutiqueFrame.evaluate(() => window.__ftvModel.state())).lightFade?.duration, 3000, 'Chaque scène Boutique utilise une variation de trois secondes');
+  await page.waitForTimeout(1400);
+  const fadeMiddle = await boutiqueFrame.evaluate(() => document.querySelector('#ftv-jewel').__jewel.vals.cove);
+  assert.ok(fadeMiddle < fadeStart && fadeMiddle > 5, 'La lumière Boutique varie progressivement entre les scènes');
+  await page.waitForTimeout(1800);
+  assert.ok(Math.abs(await boutiqueFrame.evaluate(() => document.querySelector('#ftv-jewel').__jewel.vals.cove)-5) < .2, 'La variation Boutique atteint sa valeur finale après trois secondes');
+  await boutiqueGui.evaluate(() => window.ftvGui.selectRoom('all'));
+  await page.waitForTimeout(1000);
   await page.screenshot({ path: path.join(out, 'boutique-stable-entry.png'), fullPage: true });
   await page.locator('a[href="/interfaces/restaurant"]').click();
   await page.waitForFunction(() => location.pathname.endsWith('/interfaces/restaurant/sushi-bar-kyoto/phone'));

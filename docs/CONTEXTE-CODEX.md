@@ -413,3 +413,11 @@ Kyoto Gardens s’ouvre sur une vue générale frontale depuis l’entrée. La m
 ## 27/09/2026 — Vue générale frontale Boutique 2.2.7
 
 La vue générale Smartphone de la Boutique Auralis est alignée dans l’axe de l’entrée et présente les deux niveaux de face. Les vues rapprochées des salons et le comportement de la molette restent inchangés.
+
+## 27/09/2026 — Sols Restaurant toujours visibles 2.2.8
+
+Les quinze caméras rapprochées de Kyoto Gardens sont relevées et chaque zone reçoit un socle de sol contrasté. La recette projette les quatre coins de chaque sol dans la caméra et exige qu’ils restent tous dans le cadre, en plus des contrôles existants sur les tables et les éléments occultants.
+
+## 27/09/2026 — Démonstration Boutique et variation 2.2.9
+
+Après la vue générale et en l’absence d’interaction, le curseur de démonstration sélectionne « Hall & escalier d’apparat », puis presse Ouverture, Réception, Rendez-vous privé et Fermeture avec cinq secondes entre les actions. Les valeurs lumineuses de chaque scène sont interpolées sur trois secondes dans la maquette 3D.

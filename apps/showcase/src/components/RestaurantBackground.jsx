@@ -55,7 +55,7 @@ export function RestaurantBackground({ stageRef }) {
   }, [stageRef]);
 
   return <div className="plan3d-bg-container luxury-background restaurant-background" data-ready={ready}>
-    <iframe ref={frameRef} className="luxury-background-frame" src="/restaurant-lumiere/model.html?v=2.2.6" title="Maquette 3D du restaurant Kyoto Gardens" tabIndex={-1} aria-hidden="true" />
+    <iframe ref={frameRef} className="luxury-background-frame" src="/restaurant-lumiere/model.html?v=2.2.8" title="Maquette 3D du restaurant Kyoto Gardens" tabIndex={-1} aria-hidden="true" />
     {!ready && <span className="luxury-background-loading" role="status">Création du restaurant 3D…</span>}
   </div>;
 }

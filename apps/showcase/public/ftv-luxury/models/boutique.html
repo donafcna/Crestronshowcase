@@ -193,29 +193,33 @@
     function zoom(f){animating=false;let v=camera.position.clone().sub(target);v.multiplyScalar(f);const max=state.view==='room'?16:100,min=state.view==='room'?1.2:5;v.setLength(Math.max(min,Math.min(max,v.length())));camera.position.copy(target).add(v);desiredPos.copy(camera.position);dirty=true;}
     canvas.addEventListener('wheel',e=>{e.preventDefault();if(e.deltaY>0){state.floor='both';overview()}else if(e.deltaY<0){if(lastRoomId==='hall')view('entrance');else chooseRoom(lastRoomId)}setTimeout(()=>window.__ftvEmit?.(),0)},{passive:false});
     const resize=()=>{let w=stage.clientWidth,h=stage.clientHeight;if(w<=0||h<=0)return;renderer.setSize(w,h);camera.aspect=w/h;camera.updateProjectionMatrix();dirty=true;if(state.view==='overview')overview();};new ResizeObserver(resize).observe(stage);resize();
-    function frame(t){requestAnimationFrame(frame);if(document.hidden||window.__ftvPaused)return;if(t-last<30)return;const dt=t-last;last=t;if(animating){const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;camera.position.lerp(desiredPos,reduced?1:Math.min(1,1-Math.exp(-dt/420)));target.lerp(desiredTarget,reduced?1:Math.min(1,1-Math.exp(-dt/420)));if(camera.position.distanceTo(desiredPos)<.02&&target.distanceTo(desiredTarget)<.02){camera.position.copy(desiredPos);target.copy(desiredTarget);animating=false;}cutWalls();dirty=true;}if(dirty){camera.lookAt(target);renderer.render(scene,camera);dirty=false;}}
+    function frame(t){requestAnimationFrame(frame);if(document.hidden||window.__ftvPaused)return;if(t-last<30)return;const dt=t-last;last=t;stepFtvSceneFade(t);if(animating){const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;camera.position.lerp(desiredPos,reduced?1:Math.min(1,1-Math.exp(-dt/420)));target.lerp(desiredTarget,reduced?1:Math.min(1,1-Math.exp(-dt/420)));if(camera.position.distanceTo(desiredPos)<.02&&target.distanceTo(desiredTarget)<.02){camera.position.copy(desiredPos);target.copy(desiredTarget);animating=false;}cutWalls();dirty=true;}if(dirty){camera.lookAt(target);renderer.render(scene,camera);dirty=false;}}
     lights();overview();camera.position.copy(desiredPos);target.copy(desiredTarget);camera.lookAt(target);camera.updateMatrixWorld(true);cutWalls();animating=false;renderer.render(scene,camera);loader.hidden=true;requestAnimationFrame(frame);
     root.dataset.ready='true';root.__jewel={state,rooms,scene,model,camera,renderer,vals,chooseRoom,view,overview,groups,connections,get desiredPosition(){return desiredPos.toArray()},stats:()=>renderer.info.render};
 const ftvRoomLights=new Map();
 for(const r of rooms){const byKey={};const clones=new Map();r.group.traverse(o=>{if(!o.isMesh||!o.material)return;for(const [channel,entries] of Object.entries(lightMats)){const source=entries.find(v=>v.m===o.material);if(!source)continue;const old=o.material;if(!clones.has(old.uuid)){const m=old.clone();clones.set(old.uuid,m);(byKey[channel]??=[]).push({...source,m});}o.material=clones.get(old.uuid);break;}});ftvRoomLights.set(r.id,byKey);}
 const ftvZoneValues=new Map();
-function ftvJewelLighting(values,scope='all'){
+let ftvLightFade=null;
+function ftvJewelLighting(values,scope='all',preserveScene=false){
  const valid=Object.fromEntries(Object.entries(values).filter(([k,v])=>Object.hasOwn(vals,k)&&Number.isFinite(v)).map(([k,v])=>[k,Math.max(0,Math.min(100,v))]));
- if(scope==='all'||scope==='hall'){Object.assign(vals,valid);state.scene='custom';lights();}
+ if(ftvLightFade&&!preserveScene&&scope==='all'){Object.assign(ftvLightFade.to,valid);return;}
+ if(scope==='all'||scope==='hall'){Object.assign(vals,valid);if(!preserveScene)state.scene='custom';lights();}
  for(const r of rooms){if(scope!=='all'&&scope!==r.id)continue;const saved={...vals,...ftvZoneValues.get(r.id),...valid};ftvZoneValues.set(r.id,saved);for(const [k,list] of Object.entries(ftvRoomLights.get(r.id))){const v=saved[k]/100;for(const item of list){if(item.base!==undefined){item.m.emissiveIntensity=item.base*v;item.m.color.copy(item.color).multiplyScalar(.1+.9*v);}else item.m.opacity=item.opacity*v;}}}
  if(state.room){const v=ftvZoneValues.get(state.room.id)||vals;detailLight.intensity=(v.case+v.cove+v.spot)/300*14;}
  dirty=true;
 }
+function startFtvSceneFade(key){const names={opening:'day',gala:'gala',private:'intimate',closed:'night',off:'night'},sceneName=names[key]||'day',to={...(presets[sceneName]||presets.day)};if(key==='off')Object.keys(to).forEach(k=>to[k]=0);ftvLightFade={from:{...vals},to,started:performance.now(),duration:3000,sceneName};state.scene=sceneName;dirty=true;}
+function stepFtvSceneFade(now){if(!ftvLightFade)return;const f=ftvLightFade,t=Math.min(1,Math.max(0,(now-f.started)/f.duration)),ease=t*t*(3-2*t),current={};for(const k of Object.keys(f.to))current[k]=f.from[k]+(f.to[k]-f.from[k])*ease;ftvJewelLighting(current,'all',true);if(t>=1){Object.assign(vals,f.to);state.scene=f.sceneName;ftvLightFade=null;lights();}}
 window.__ftvModel={project:'boutique-hermes',catalog:rooms.map(r=>({id:r.id,name:r.n.split(' · ')[1],floor:r.f})),floors:[{id:0,name:'Rez-de-chaussée',short:'RDC'},{id:1,name:'Salons privés',short:'1er étage'}],
  select:id=>{if(id==='all'){state.floor='both';overview();}else if(id==='hall')view('entrance');else chooseRoom(id);},
  level:id=>{state.floor=id==='all'?'both':String(id);overview();},
  overview:()=>{state.floor='both';overview();},
- scene:key=>{const names={opening:'day',gala:'gala',private:'intimate',closed:'night',off:'night'};state.scene=names[key]||'day';Object.assign(vals,presets[state.scene]);if(key==='off')Object.keys(vals).forEach(k=>vals[k]=0);lights();ftvJewelLighting(vals);},
+ scene:startFtvSceneFade,
  lighting:ftvJewelLighting,
  color:(hex)=>{if(!/^#[0-9a-f]{6}$/i.test(hex))return;for(const key of ['cove','case','sconce','spot']){for(const x of lightMats[key])if(x.m.emissive)x.m.emissive.set(hex);for(const group of ftvRoomLights.values())for(const x of group[key]||[])if(x.m.emissive)x.m.emissive.set(hex);}dirty=true;},
  viewport:v=>{const first=!window.__ftvViewport;window.__ftvViewport=v;camera.setViewOffset(v.w,v.h,-v.x,-v.y,stage.clientWidth,stage.clientHeight);if(state.view==='overview')overview();if(first){camera.position.copy(desiredPos);target.copy(desiredTarget);camera.lookAt(target);camera.updateMatrixWorld(true);cutWalls();animating=false;renderer.render(scene,camera);}dirty=true;},
  pick:(x,y)=>{if(state.view!=='overview')return;pointer.set(x/stage.clientWidth*2-1,-y/stage.clientHeight*2+1);ray.setFromCamera(pointer,camera);const hits=ray.intersectObjects(hitFloors.filter(o=>o.parent.visible&&groups[o.userData.room.f].visible));if(hits.length)chooseRoom(hits[0].object.userData.room.id);},
- state:()=>({room:state.room?.id||(state.view==='entrance'?'hall':'all'),floor:state.floor,view:state.view}),capture:()=>$('[data-action="capture"]').click()};
+ state:()=>({room:state.room?.id||(state.view==='entrance'?'hall':'all'),floor:state.floor,view:state.view,lightFade:ftvLightFade?{duration:ftvLightFade.duration,started:ftvLightFade.started}:null}),capture:()=>$('[data-action="capture"]').click()};
 canvas.addEventListener('pointerup',()=>setTimeout(()=>window.__ftvEmit?.(),0));
 
   })();

@@ -7,7 +7,7 @@ const categories = {
   hvac: /^(hvac|climat|temperature|chauffage|climate|klima|heizung)/,
   av: /^(audio|video|media|sources|musique|music|medien|sonorisation)/,
 };
-export async function runOrderedDemo({ gui, token, sleep, moveTo, act, visible }) {
+export async function runOrderedDemo({ gui, token, sleep, moveTo, act, setCursor, visible }) {
   const all = selector => [...gui.root.querySelectorAll(selector)];
   const shown = selector => all(selector).filter(el => {
     const r = el.getBoundingClientRect(), slider = el.matches('input[type="range"],ch5-slider');
@@ -42,6 +42,24 @@ export async function runOrderedDemo({ gui, token, sleep, moveTo, act, visible }
   // The luxury scenes use a native room selector and a same-origin GUI API.
   if (gui.win.ftvGui) {
     const api = gui.win.ftvGui;
+    if(api.config.project==='boutique-hermes'){
+      const selector=gui.doc.getElementById('zone');
+      if(selector&&await perform(selector,0,false)){
+        setCursor?.(c=>({...c,pulse:c.pulse+1,pressed:true}));
+        api.selectRoom('hall');
+        await sleep(160,token);
+        setCursor?.(c=>({...c,pressed:false}));
+      }
+      let nextPress=performance.now()+5000;
+      for(const preset of api.config.presets){
+        if(token.cancelled)return false;
+        const button=gui.doc.querySelector(`[data-preset="${preset.id}"]`);
+        await sleep(Math.max(0,nextPress-performance.now()-850),token);
+        await perform(button,0);
+        nextPress+=5000;
+      }
+      return !token.cancelled;
+    }
     for (const room of api.config.rooms.slice(0, 3)) {
       if (token.cancelled) return false;
       api.selectRoom(room.id);

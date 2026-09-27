@@ -500,7 +500,7 @@ export const useAutoDemo = ({ enabled, running, stageRef, guiKey, onCycleEnd, on
         if (complete && !token.cancelled) onCycleEndRef.current?.();
         return;
       }
-      const complete = await runOrderedDemo({ gui, token, sleep, moveTo, act,
+      const complete = await runOrderedDemo({ gui, token, sleep, moveTo, act, setCursor,
         visible: (el, g) => isVisible(el, g.win) && !isCovered(el, g.doc) });
       if (complete && !token.cancelled) onCycleEndRef.current?.();
     };
