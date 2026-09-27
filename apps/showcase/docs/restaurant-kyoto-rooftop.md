@@ -11,3 +11,11 @@ Chaque choix du GUI possède un cadrage de caméra propre et isole visuellement 
 Le fond 3D est réservé au support Smartphone. Dalle TSW, Tablette et autres grands supports conservent la vidéo d'arrière-plan. Le modèle est procédural et optimisé pour la démonstration web ; il ne constitue pas une étude architecturale.
 
 Vérification locale : compilation et lint réussis, quinze architectures et quinze caméras distinctes, mobilier minimum par zone, éclairages de sol/mur/plafond, emprise, isolation des pavillons, deux sens de molette, scène Rooftop, synchronisation lumineuse, présence de la vidéo sur Dalle et Tablette, absence d'erreur navigateur.
+
+## 27/09/2026 — Architecture extérieure et cadrages, vitrine 2.2.4
+
+La vue générale devient un domaine fermé et paysager : enceintes minérales, façades vitrées, toitures complètes, pergolas, bassin, plantations, promenades balisées, appliques, bandeaux de rive et lanternes sur poteaux. Les coordonnées des quinze pavillons utilisent désormais correctement les axes hauteur et profondeur, ce qui supprime les salles enterrées ou flottantes et les artefacts de sol associés.
+
+La Cave à vins reçoit deux grands rayonnages remplis de bouteilles et des tables de dégustation. Le Salon privé, la Salle signature, le Teppanyaki, le Lounge, la Galerie, le Belvédère et la Terrasse disposent de compositions dédiées. Le Lounge comprend cinq canapés, plusieurs tables basses, lampadaires et un bar. Pour les quinze vues rapprochées, les toitures, façades, enseignes, toiles et bandeaux susceptibles de masquer la pièce sont retirés. Chaque caméra surplombe l'espace et conserve au moins quatre tables visibles.
+
+Restaurant ouvre désormais le support Smartphone par défaut avec la maquette 3D. Les grands supports conservent leur vidéo.

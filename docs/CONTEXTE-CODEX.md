@@ -399,3 +399,9 @@ Pour Hotel Brassus, l'envoi d'une scène iPhone précède désormais le nouveau 
 ## 27/09/2026 — Pénombre et lumière naturelle Hotel Brassus 2.2.3
 
 La maquette combine désormais la scène d'éclairage avec la position des rideaux. Une pièce éteinte dont les rideaux sont fermés passe dans une pénombre presque noire qui laisse seulement apparaître les silhouettes du mobilier. L'ouverture progressive des rideaux retire cette pénombre et fait entrer une lumière chaude depuis les vitrages, avec un faisceau et une source directionnelle adaptés au cycle jour/nuit. La recette automatisée vérifie les deux états extrêmes ainsi que les transitions des rideaux.
+
+## 27/09/2026 — Kyoto Gardens et entrée stable Boutique 2.2.4
+
+Kyoto Gardens reçoit une enveloppe architecturale complète et un jardin extérieur éclairé. Les axes des quinze pavillons sont corrigés ; Cave à vins, Salon privé, Salle signature, Teppanyaki, Lounge, Galerie, Belvédère et Terrasse sont enrichis et recadrés. Les vues rapprochées masquent les éléments architecturaux qui obstruent le mobilier. Les quarante contrôles de recette vérifient notamment quinze cadrages distincts, au moins quatre tables visibles par zone, 497 éléments d'architecture extérieure, deux rayonnages de cave et cinq canapés dans le Lounge.
+
+L'entrée Boutique masque désormais toute construction ou transition de caméra et révèle directement la vue générale finale à deux niveaux. Le message interne « Préparation des salons et des lumières » est supprimé. L'entrée Restaurant sélectionne explicitement le châssis Smartphone et sa maquette 3D.

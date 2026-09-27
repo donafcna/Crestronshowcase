@@ -45,11 +45,30 @@ try {
   assert.equal(roomDesigns.combinations, 15, 'Les quinze zones ont une architecture et une implantation uniques');
   assert.ok(Object.values(roomDesigns.furniture).every(room => room.tables >= 4 && room.chairs >= 16), 'Chaque zone contient plusieurs tables et chaises');
   assert.ok(Object.values(roomDesigns.lights).every(room => room.floor >= 8 && room.wall >= 8 && room.ceiling >= 8), 'Chaque zone reçoit des éclairages de sol, mur et plafond');
+  const architecturalDetails = await frame.evaluate(() => {
+    const countNamed = (id,name) => { let count=0;window.__restaurant3d.roomGroups[id].traverse(item => { if(item.name===name)count++ });return count };
+    return { exterior:window.__restaurant3d.overviewArchitecture.children.length, wineRacks:countNamed('cellar','wine-rack'), loungeSofas:countNamed('lounge','sofa') };
+  });
+  assert.ok(architecturalDetails.exterior > 100, 'La vue générale comprend façades, jardin et éclairages extérieurs');
+  assert.ok(architecturalDetails.wineRacks >= 2, 'La cave à vins contient des rayonnages modélisés');
+  assert.ok(architecturalDetails.loungeSofas >= 5, 'Le lounge contient plusieurs ensembles de canapés');
   const cameraGoals = new Set();
+  const visualZones = new Set(['cellar','private','signature','teppanyaki','lounge','gallery','belvedere','terrace']);
   for (const option of await page.locator('.rk-zone option').evaluateAll(items => items.map(item => item.value))) {
     await page.locator('.rk-zone select').selectOption(option);
     await page.waitForTimeout(25);
     cameraGoals.add(await frame.evaluate(() => window.__restaurant3d.desiredPosition.join(',')));
+    const composition = await frame.evaluate(id => {
+      const model=window.__restaurant3d,group=model.roomGroups[id],zone=model.zones[id],camera=new THREE.PerspectiveCamera(35,1.65,.1,340);
+      camera.position.fromArray(model.desiredPosition);camera.lookAt(new THREE.Vector3(...zone.target));camera.updateMatrixWorld(true);camera.updateProjectionMatrix();group.updateMatrixWorld(true);
+      let tables=0,visibleTables=0,visibleOccluders=0;group.traverse(item=>{if(item.userData.cameraOccluder&&item.visible)visibleOccluders++;if(item.name==='table'){tables++;const p=new THREE.Vector3();item.getWorldPosition(p);p.project(camera);if(Math.abs(p.x)<.92&&Math.abs(p.y)<.92&&p.z>-1&&p.z<1)visibleTables++;}});return {tables,visibleTables,visibleOccluders};
+    }, option);
+    assert.equal(composition.visibleOccluders, 0, `${option}: les panneaux et la toiture ne masquent pas l’intérieur`);
+    assert.ok(composition.visibleTables >= 4, `${option}: le cadrage montre au moins quatre tables`);
+    if (visualZones.has(option)) {
+      await page.waitForTimeout(1800);
+      await page.screenshot({ path: path.join(out, `restaurant-${option}.png`), fullPage: true });
+    }
   }
   assert.equal(cameraGoals.size, 15, 'Chaque espace possède un cadrage de caméra distinct');
   await page.locator('.rk-zone select').selectOption('rooftop');
@@ -78,6 +97,23 @@ try {
     assert.equal(await page.locator('.restaurant-background').count(), 0, `${device}: pas de modèle 3D`);
     assert.equal(await page.locator('.bg-video-container').count(), 1, `${device}: vidéo conservée`);
   }
+
+  await page.goto(`${base}/interfaces/boutique/boutique-hermes/phone`, { waitUntil: 'domcontentloaded' });
+  await page.locator('.luxury-background[data-ready="true"]').waitFor({ timeout: 30_000 });
+  const boutiqueFrame = page.frames().find(item => item.url().includes('/ftv-luxury/models/boutique.html'));
+  assert.ok(boutiqueFrame, 'La maquette Boutique est chargée');
+  await boutiqueFrame.waitForFunction(() => window.__ftvModel?.state);
+  assert.deepEqual(await boutiqueFrame.evaluate(() => window.__ftvModel.state()), { room:'all',floor:'both',view:'overview' });
+  assert.equal(await boutiqueFrame.locator('.j-loader').textContent(), '', 'Aucun message de préparation interne n’est affiché');
+  const boutiqueCameraA = await boutiqueFrame.evaluate(() => document.querySelector('#ftv-jewel').__jewel.camera.position.toArray());
+  await page.waitForTimeout(450);
+  const boutiqueCameraB = await boutiqueFrame.evaluate(() => document.querySelector('#ftv-jewel').__jewel.camera.position.toArray());
+  assert.ok(boutiqueCameraA.every((value,index) => Math.abs(value-boutiqueCameraB[index]) < .02), 'La Boutique apparaît directement sur sa vue générale stable');
+  await page.screenshot({ path: path.join(out, 'boutique-stable-entry.png'), fullPage: true });
+  await page.locator('a[href="/interfaces/restaurant"]').click();
+  await page.waitForFunction(() => location.pathname.endsWith('/interfaces/restaurant/sushi-bar-kyoto/phone'));
+  assert.equal(await page.locator('.phone-device-frame').count(), 1, 'Restaurant ouvre le châssis Smartphone');
+  await page.locator('.restaurant-background[data-ready="true"]').waitFor({ timeout: 30_000 });
 
   await page.goto(`${base}/interfaces/hotellerie/hotel-brassus/phone`, { waitUntil: 'domcontentloaded' });
   const phoneElement = await page.locator('iframe[src*="/showcases/hotel-brassus/phone.html"]').first().elementHandle({ timeout: 30_000 });
@@ -125,7 +161,7 @@ try {
   assert.ok(buttonStates.filter(state => state.pressed === 'true').every(state => state.image.startsWith('radial-gradient') && state.border === 'rgb(210, 171, 33)'));
   await page.screenshot({ path: path.join(out, 'hotel-brassus-phone.png'), fullPage: true });
   assert.deepEqual(errors, []);
-  console.log(JSON.stringify({ checks: 32, dimensions, cameraGoals:cameraGoals.size, roomDesigns:{combinations:roomDesigns.combinations,zones:Object.keys(roomDesigns.furniture).length}, hotelLighting:{on:hotelOn,off:hotelOff,dark:hotelDark,natural:hotelNatural}, palette, buttonStates:buttonStates.length, errors }, null, 2));
+  console.log(JSON.stringify({ checks: 40, dimensions, cameraGoals:cameraGoals.size, roomDesigns:{combinations:roomDesigns.combinations,zones:Object.keys(roomDesigns.furniture).length}, architecturalDetails, hotelLighting:{on:hotelOn,off:hotelOff,dark:hotelDark,natural:hotelNatural}, palette, buttonStates:buttonStates.length, errors }, null, 2));
 } finally {
   await browser.close();
   if (server.listening) server.close();

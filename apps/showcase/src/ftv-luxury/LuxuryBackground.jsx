@@ -4,7 +4,7 @@ import { LUXURY_MODELS } from './modelProjects';
 const channel = 'ftv-luxury/v1';
 const commands = new Set(['hello', 'select', 'level', 'overview', 'scene', 'lighting', 'color', 'capture', 'visibility', 'resize', 'exterior', 'zoom']);
 const controls = 'iframe,button,a,input,select,textarea,.workspace-device-sidebar,.phone-device-frame,.projects-strip';
-const ENTRY_VERSION = '2026-09-21-first-frame-1';
+const ENTRY_VERSION = '2026-09-27-stable-entry-2';
 
 /** Reveal the yacht only after a frame has actually rendered in the free viewport. */
 export function LuxuryBackground({ projectId, stageRef, tourSessionRef }) {
@@ -12,7 +12,7 @@ export function LuxuryBackground({ projectId, stageRef, tourSessionRef }) {
   const [attempt, setAttempt] = useState(0);
   const [readyFor, setReadyFor] = useState(null);
   const [failure, setFailure] = useState(null);
-  const instance = `${projectId}:${attempt}`, yacht = projectId === 'yacht-monaco';
+  const instance = `${projectId}:${attempt}`, yacht = projectId === 'yacht-monaco', boutique = projectId === 'boutique-hermes', gated = yacht || boutique;
   // Keyed state also prevents the previous project's ready=true on the first render.
   const ready = readyFor === instance;
   useEffect(() => {
@@ -24,10 +24,10 @@ export function LuxuryBackground({ projectId, stageRef, tourSessionRef }) {
     const send = (type, payload = {}) => frame.contentWindow?.postMessage({ channel, project: projectId, type, ...payload }, origin);
     const relay = message => gui()?.contentWindow?.postMessage(message, origin);
     let previous = '', loaded = false, shown = false, failed = false, guiReady = false;
-    let candidate = '', stableSince = 0, pending = null, revision = 0, raf = 0;
+    let candidate = '', stableSince = 0, pending = null, revision = 0, raf = 0, revealTimer = 0;
     const nonce = `${instance}:${performance.now()}`;
-    const fail = text => { failed = true; cancelAnimationFrame(raf); setFailure({ instance, text }); };
-    const timeout = yacht ? setTimeout(() => fail('Le yacht ne peut pas encore être affiché. Réessayez le chargement.'), 30000) : null;
+    const fail = text => { failed = true; cancelAnimationFrame(raf); clearTimeout(revealTimer); setFailure({ instance, text }); };
+    const timeout = gated ? setTimeout(() => fail(`${yacht ? 'Le yacht' : 'La boutique'} ne peut pas encore être affiché${yacht ? '' : 'e'}. Réessayez le chargement.`), 30000) : null;
     const measure = () => {
       const canvas = frame.getBoundingClientRect();
       const phone = stage.querySelector('.phone-device-frame')?.getBoundingClientRect();
@@ -47,7 +47,7 @@ export function LuxuryBackground({ projectId, stageRef, tourSessionRef }) {
       if (yacht && Number.isFinite(seconds) && seconds >= 0) send('environment-time', { seconds });
       const value = measure();
       if (!value) return;
-      if (yacht && !shown) {
+      if (gated && !shown) {
         // Wait for the GUI bootstrap and actual chassis/font geometry, not a
         // fixed multi-second delay. Re-sample while CSS layout is settling.
         const guiInitialized = guiReady || gui()?.contentWindow?.ftvGui?.ready;
@@ -55,7 +55,16 @@ export function LuxuryBackground({ projectId, stageRef, tourSessionRef }) {
         if (candidate !== value.signature) { candidate = value.signature; stableSince = performance.now(); pending = null; return; }
         if (performance.now() - stableSince < 120 || pending) return;
         pending = { id: `${nonce}:${++revision}`, signature: value.signature };
-        send('present', { viewport: value.viewport, requestId: pending.id });
+        if (yacht) send('present', { viewport: value.viewport, requestId: pending.id });
+        else {
+          previous = value.signature; send('viewport', { viewport: value.viewport });
+          revealTimer = setTimeout(() => {
+            const current = measure();
+            if (!failed && pending?.signature === current?.signature) {
+              shown = true; clearTimeout(timeout); cancelAnimationFrame(raf); setReadyFor(instance);
+            } else { pending = null; candidate = ''; layout(); }
+          }, 80);
+        }
       } else if (value.signature !== previous) {
         previous = value.signature; send('viewport', { viewport: value.viewport });
       }
@@ -69,8 +78,8 @@ export function LuxuryBackground({ projectId, stageRef, tourSessionRef }) {
         if (data.type === 'model-ready') {
           if (!loaded) {
             loaded = true; previous = '';
-            if (!yacht) { shown = true; setReadyFor(instance); }
-            else if (!data.presentation) fail('Le module de cadrage du yacht est indisponible. Réessayez le chargement.');
+            if (!gated) { shown = true; setReadyFor(instance); }
+            else if (yacht && !data.presentation) fail('Le module de cadrage du yacht est indisponible. Réessayez le chargement.');
             layout();
           }
         }
@@ -90,8 +99,8 @@ export function LuxuryBackground({ projectId, stageRef, tourSessionRef }) {
           if (!commands.has(command?.type)) return;
           // Bootstrap overview/selection must finish before requesting the
           // first visible frame. Do not reset this gate on periodic hello.
-          if (yacht && !shown && ['overview', 'select', 'level', 'resize'].includes(command.type)) {
-            candidate = ''; pending = null; stableSince = performance.now();
+          if (gated && !shown && ['overview', 'select', 'level', 'resize'].includes(command.type)) {
+            clearTimeout(revealTimer); candidate = ''; pending = null; stableSince = performance.now();
           }
           frame.contentWindow?.postMessage({ ...command, channel, project: projectId }, origin);
         }
@@ -99,7 +108,7 @@ export function LuxuryBackground({ projectId, stageRef, tourSessionRef }) {
     };
     let lastWheel = 0, accumulated = 0;
     const wheel = event => {
-      if (!loaded || (yacht && !shown) || document.hidden || event.ctrlKey || event.metaKey || event.target.closest(controls) || Math.abs(event.deltaX) > Math.abs(event.deltaY)) return;
+      if (!loaded || (gated && !shown) || document.hidden || event.ctrlKey || event.metaKey || event.target.closest(controls) || Math.abs(event.deltaX) > Math.abs(event.deltaY)) return;
       event.preventDefault();
       if (Math.sign(accumulated) !== Math.sign(event.deltaY)) accumulated = 0;
       accumulated += event.deltaY * (event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? innerHeight : 1);
@@ -112,7 +121,7 @@ export function LuxuryBackground({ projectId, stageRef, tourSessionRef }) {
       lastWheel = performance.now(); accumulated = 0;
     };
     const click = event => {
-      if (!loaded || (yacht && !shown) || event.button !== 0 || event.ctrlKey || event.metaKey || event.target.closest(controls)) return;
+      if (!loaded || (gated && !shown) || event.button !== 0 || event.ctrlKey || event.metaKey || event.target.closest(controls)) return;
       const bounds = frame.getBoundingClientRect();
       send('pick', { x: event.clientX - bounds.left, y: event.clientY - bounds.top });
     };
@@ -124,20 +133,20 @@ export function LuxuryBackground({ projectId, stageRef, tourSessionRef }) {
     stage.addEventListener('click', click);
     const observer = new ResizeObserver(layout); observer.observe(stage);
     const timer = setInterval(layout, 300);
-    if (yacht) raf = requestAnimationFrame(entryTick);
+    if (gated) raf = requestAnimationFrame(entryTick);
     hello();
     return () => {
-      clearTimeout(timeout); cancelAnimationFrame(raf);
+      clearTimeout(timeout); clearTimeout(revealTimer); cancelAnimationFrame(raf);
       clearInterval(timer); observer.disconnect();
       window.removeEventListener('message', message); window.removeEventListener('resize', layout);
       frame.removeEventListener('load', hello);
       stage.removeEventListener('wheel', wheel); stage.removeEventListener('click', click);
     };
-  }, [projectId, stageRef, tourSessionRef, instance, yacht]);
+  }, [projectId, stageRef, tourSessionRef, instance, yacht, boutique, gated]);
   return (
     <div className={`plan3d-bg-container luxury-background${yacht ? ' yacht-background' : ''}`} data-ready={ready}>
       <iframe key={instance} ref={frameRef} className="luxury-background-frame"
-        style={yacht ? { opacity: ready ? 1 : 0 } : undefined}
+        style={gated ? { opacity: ready ? 1 : 0 } : undefined}
         src={`/ftv-luxury/models/${LUXURY_MODELS[projectId]}.html?background=1&entry=${ENTRY_VERSION}&attempt=${attempt}`}
         title={yacht ? 'Asteria — modèle 3D en arrière-plan' : 'Boutique Auralis — modèle 3D en arrière-plan'}
         tabIndex={-1} aria-hidden="true" />

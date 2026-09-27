@@ -19,7 +19,7 @@
         <div class="j-tools"><button type="button" data-action="plan">Vue de dessus</button><button type="button" data-action="capture">Photo</button></div>
       </div>
       <div class="j-stage" role="group" aria-label="Maquette 3D de la bijouterie : hall, escalier, salons et vitrines">
-        <div class="j-loader">Préparation des salons et des lumières…</div>
+        <div class="j-loader" aria-hidden="true"></div>
         <div class="j-stamp"><div class="j-kicker" data-kicker>Rez-de-chaussée</div><div class="j-title" data-title>Les salons de joaillerie</div></div>
         <div class="j-viewbuttons"><button type="button" data-view="overview" aria-pressed="true">Ensemble</button><button type="button" data-view="entrance" aria-pressed="false">Entrée & lustre</button><button type="button" data-view="stair" aria-pressed="false">Escalier</button></div>
       </div>
@@ -58,7 +58,7 @@
     const M={}, batches=new Map(), clipping=[], roomModels=[], hitFloors=[], labelSprites=[], ceilings=[];
     const lightMats={cove:[],case:[],sconce:[],spot:[],path:[],chandelier:[]};
     const vals={cove:85,case:100,sconce:75,spot:65,path:55,chandelier:100};
-    const state={floor:'0',view:'overview',room:null,labels:true,scene:'gala',plan:false};let lastRoomId='hall';
+    const state={floor:'both',view:'overview',room:null,labels:true,scene:'gala',plan:false};let lastRoomId='hall';
     function mat(name,color,metal=0,rough=.6){return M[name]=new T.MeshStandardMaterial({color,metalness:metal,roughness:rough});}
     mat('ivory',0xece4d1,0,.48);mat('panel',0xd4cab5,0,.67);mat('gold',0xb8924b,.82,.22);mat('darkgold',0x786039,.78,.33);mat('jade',0x668875,.05,.68);mat('ink',0x15342f,.1,.62);mat('velvet',0x123c37,0,.98);mat('red',0xad9690,0,.9);mat('blue',0x8fa9a1,0,.9);mat('black',0x161e1b,.1,.58);mat('silver',0xd8e1e4,.86,.18);mat('service',0x869189,0,.8);mat('plinth',0x35473e,.1,.7);mat('pearl',0xf9edd6,.28,.22);mat('ruby',0xa8234b,.4,.08);mat('sapphire',0x1f68aa,.4,.06);mat('emerald',0x079774,.4,.07);
     M.glass=new T.MeshPhysicalMaterial({color:0xddebea,metalness:.06,roughness:.05,transparent:true,opacity:.13,depthWrite:false,side:T.DoubleSide});
@@ -194,7 +194,7 @@
     canvas.addEventListener('wheel',e=>{e.preventDefault();if(e.deltaY>0){state.floor='both';overview()}else if(e.deltaY<0){if(lastRoomId==='hall')view('entrance');else chooseRoom(lastRoomId)}setTimeout(()=>window.__ftvEmit?.(),0)},{passive:false});
     const resize=()=>{let w=stage.clientWidth,h=stage.clientHeight;if(w<=0||h<=0)return;renderer.setSize(w,h);camera.aspect=w/h;camera.updateProjectionMatrix();dirty=true;if(state.view==='overview')overview();};new ResizeObserver(resize).observe(stage);resize();
     function frame(t){requestAnimationFrame(frame);if(document.hidden||window.__ftvPaused)return;if(t-last<30)return;const dt=t-last;last=t;if(animating){const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;camera.position.lerp(desiredPos,reduced?1:Math.min(1,1-Math.exp(-dt/420)));target.lerp(desiredTarget,reduced?1:Math.min(1,1-Math.exp(-dt/420)));if(camera.position.distanceTo(desiredPos)<.02&&target.distanceTo(desiredTarget)<.02){camera.position.copy(desiredPos);target.copy(desiredTarget);animating=false;}cutWalls();dirty=true;}if(dirty){camera.lookAt(target);renderer.render(scene,camera);dirty=false;}}
-    lights();overview();loader.hidden=true;requestAnimationFrame(frame);
+    lights();overview();camera.position.copy(desiredPos);target.copy(desiredTarget);camera.lookAt(target);camera.updateMatrixWorld(true);cutWalls();animating=false;renderer.render(scene,camera);loader.hidden=true;requestAnimationFrame(frame);
     root.dataset.ready='true';root.__jewel={state,rooms,scene,model,camera,renderer,vals,chooseRoom,view,overview,groups,connections,stats:()=>renderer.info.render};
 const ftvRoomLights=new Map();
 for(const r of rooms){const byKey={};const clones=new Map();r.group.traverse(o=>{if(!o.isMesh||!o.material)return;for(const [channel,entries] of Object.entries(lightMats)){const source=entries.find(v=>v.m===o.material);if(!source)continue;const old=o.material;if(!clones.has(old.uuid)){const m=old.clone();clones.set(old.uuid,m);(byKey[channel]??=[]).push({...source,m});}o.material=clones.get(old.uuid);break;}});ftvRoomLights.set(r.id,byKey);}
@@ -213,7 +213,7 @@ window.__ftvModel={project:'boutique-hermes',catalog:rooms.map(r=>({id:r.id,name
  scene:key=>{const names={opening:'day',gala:'gala',private:'intimate',closed:'night',off:'night'};state.scene=names[key]||'day';Object.assign(vals,presets[state.scene]);if(key==='off')Object.keys(vals).forEach(k=>vals[k]=0);lights();ftvJewelLighting(vals);},
  lighting:ftvJewelLighting,
  color:(hex)=>{if(!/^#[0-9a-f]{6}$/i.test(hex))return;for(const key of ['cove','case','sconce','spot']){for(const x of lightMats[key])if(x.m.emissive)x.m.emissive.set(hex);for(const group of ftvRoomLights.values())for(const x of group[key]||[])if(x.m.emissive)x.m.emissive.set(hex);}dirty=true;},
- viewport:v=>{window.__ftvViewport=v;camera.setViewOffset(v.w,v.h,-v.x,-v.y,stage.clientWidth,stage.clientHeight);if(state.view==='overview')overview();dirty=true;},
+ viewport:v=>{const first=!window.__ftvViewport;window.__ftvViewport=v;camera.setViewOffset(v.w,v.h,-v.x,-v.y,stage.clientWidth,stage.clientHeight);if(state.view==='overview')overview();if(first){camera.position.copy(desiredPos);target.copy(desiredTarget);camera.lookAt(target);camera.updateMatrixWorld(true);cutWalls();animating=false;renderer.render(scene,camera);}dirty=true;},
  pick:(x,y)=>{if(state.view!=='overview')return;pointer.set(x/stage.clientWidth*2-1,-y/stage.clientHeight*2+1);ray.setFromCamera(pointer,camera);const hits=ray.intersectObjects(hitFloors.filter(o=>o.parent.visible&&groups[o.userData.room.f].visible));if(hits.length)chooseRoom(hits[0].object.userData.room.id);},
  state:()=>({room:state.room?.id||(state.view==='entrance'?'hall':'all'),floor:state.floor,view:state.view}),capture:()=>$('[data-action="capture"]').click()};
 canvas.addEventListener('pointerup',()=>setTimeout(()=>window.__ftvEmit?.(),0));
