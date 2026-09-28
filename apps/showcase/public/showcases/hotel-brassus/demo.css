@@ -12,3 +12,5 @@ html body #circuitsbtn_clear_lighting { min-width:44px;min-height:44px; }
 html[data-hdh-theme="sombre"] body #av-page .level { color:#23392e!important; }
 html[data-hdh-theme="sombre"] body #lighting-page .container-lightingcircuits h4,
 html[data-hdh-theme="sombre"] body #lighting-page .container-lightingcircuits .valuecircuit { color:#23392e!important; }
+/* Espaces sans stores (Entrée/Lobby, Petit salon, PDR, Wellness) : pas d'onglet Stores. */
+html.hdh-no-blinds body .list-item:has(ch5-button[onrelease*="'blinds'"]) { display:none!important; }

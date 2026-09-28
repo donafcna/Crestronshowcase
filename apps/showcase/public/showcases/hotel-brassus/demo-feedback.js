@@ -65,6 +65,8 @@
     feedback('b',170,true);feedback('b',194,true);feedback('b',141,true);
     feedback('s',161,'Écran 1');feedback('s',162,'Écran 2');
     const blinds=['bar','restaurant','seminar'].includes(zone);
+    // Sans stores dans l'espace : l'onglet Stores du menu du bas disparait (demo.css).
+    document.documentElement.classList.toggle('hdh-no-blinds',!blinds);
     if(blinds)for(let i=1;i<=2;i++){feedback('s',1300+i,'Store '+i);feedback('b',2000+i,true);feedback('b',540+i,true);}
     feedback('b',2,true);
     window.HDH_DEMO={zone,values,feedback,command};

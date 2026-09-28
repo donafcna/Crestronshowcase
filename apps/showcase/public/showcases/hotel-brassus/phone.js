@@ -10,8 +10,8 @@
  theme.value=['clair','sombre'].includes(params.get('theme'))?params.get('theme'):'actuel';document.body.dataset.theme=theme.value;theme.onchange=()=>{document.body.dataset.theme=theme.value};
  const emit=(focus=false)=>{const s=state[zone];parent.postMessage({focus,channel:'hdh-demo',zone,level:s.lights.reduce((a,b)=>a+b)/4,scene:s.scene,blinds:s.blinds.reduce((a,b)=>a+b)/s.blinds.length},location.origin)};
  zoneEl.onchange=()=>{zone=zoneEl.value;circuits=false;render();emit(true)};
- function render(){const s=state[zone],hasBlinds=['bar','entrance','restaurant','salon','pdr','wellness','seminar'].includes(zone);if(tab==='blinds'&&!hasBlinds)tab='lighting';
- nav.innerHTML=Object.entries({lighting:'Éclairages',audio:'Audio',blinds:'Rideaux',temperature:'Température'}).map(([k,v])=>`<button data-tab="${k}" aria-pressed="${tab===k}" ${k==='blinds'&&!hasBlinds?'disabled':''}>${icon(k)}${v}</button>`).join('');
+ function render(){const s=state[zone],hasBlinds=['bar','restaurant','seminar'].includes(zone);if(tab==='blinds'&&!hasBlinds)tab='lighting';
+ nav.innerHTML=Object.entries({lighting:'Éclairages',audio:'Audio',blinds:'Rideaux',temperature:'Température'}).filter(([k])=>k!=='blinds'||hasBlinds).map(([k,v])=>`<button data-tab="${k}" aria-pressed="${tab===k}" ${k==='blinds'&&!hasBlinds?'disabled':''}>${icon(k)}${v}</button>`).join('');
  nav.querySelectorAll('button').forEach(b=>b.onclick=()=>{tab=b.dataset.tab;circuits=false;render()});
  let html='';
  if(tab==='lighting'){html='<div class="eyebrow">Créer votre ambiance</div><h1>Éclairages</h1>';
