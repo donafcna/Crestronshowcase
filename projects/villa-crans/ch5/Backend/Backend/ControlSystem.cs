@@ -1464,7 +1464,9 @@ namespace VillaFrequenceTvAutomation
             // transport média +58..+60 = joins logiques 251-253, moteurs +61..+78 = joins 81-98).
             // Le relais vers le slot 2 est déjà assuré par le passe-plat de MirrorSignalToEisc :
             // il n'y a plus d'écho à fabriquer ici (c'est lui qui laissait les joins moteurs hauts).
-            if ((offset >= 1 && offset <= 9) || (offset >= 58 && offset <= 78))
+            // v5.0 : lamelles (offsets +25..34, +37..40, +46..49 = joins logiques 111-128), memes regles que les moteurs.
+            bool isSlats = (offset >= 25 && offset <= 34) || (offset >= 37 && offset <= 40) || (offset >= 46 && offset <= 49);
+            if ((offset >= 1 && offset <= 9) || (offset >= 58 && offset <= 78) || isSlats)
             {
                 // v4 : un mouvement de store dans une pièce invalide la commande globale retenue.
                 if (offset >= 1 && offset <= 9) ClearGlobalSelection(shades: true);
@@ -1791,7 +1793,12 @@ namespace VillaFrequenceTvAutomation
             { 150, 51 }, { 151, 52 }, { 152, 53 }, { 153, 54 }, { 154, 55 }, { 155, 56 }, { 156, 57 },
             { 251, 58 }, { 252, 59 }, { 253, 60 },
             { 81, 61 }, { 82, 62 }, { 83, 63 }, { 84, 64 }, { 85, 65 }, { 86, 66 }, { 87, 67 }, { 88, 68 }, { 89, 69 },
-            { 90, 70 }, { 91, 71 }, { 92, 72 }, { 93, 73 }, { 94, 74 }, { 95, 75 }, { 96, 76 }, { 97, 77 }, { 98, 78 }
+            { 90, 70 }, { 91, 71 }, { 92, 72 }, { 93, 73 }, { 94, 74 }, { 95, 75 }, { 96, 76 }, { 97, 77 }, { 98, 78 },
+            // v5.0 (28.09.2026) : lamelles des moteurs 1..6, joins logiques 111-128 (Horaire/Stop/Antihoraire),
+            // offsets de bloc = seuls creneaux libres du bloc de 100 : +25..34, +37..40, +46..49
+            // (= contrat.blocsPieces Piece.<id>.Moteur.Lamelles.A/B/C). Impulsions sans etat.
+            { 111, 25 }, { 112, 26 }, { 113, 27 }, { 114, 28 }, { 115, 29 }, { 116, 30 }, { 117, 31 }, { 118, 32 }, { 119, 33 },
+            { 120, 34 }, { 121, 37 }, { 122, 38 }, { 123, 39 }, { 124, 40 }, { 125, 46 }, { 126, 47 }, { 127, 48 }, { 128, 49 }
         };
         private static readonly Dictionary<ushort, uint> V4AnalogOffsets = new Dictionary<ushort, uint>
         {

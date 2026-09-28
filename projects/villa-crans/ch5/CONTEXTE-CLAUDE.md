@@ -1,5 +1,13 @@
 # VillaCrans — contexte pour Claude (lire en premier, économise les tokens)
 
+## 28/09/2026 — v5.0 Lamelles (CH5 + CPZ 1.0.196.0 à compiler, LPZ F12)
+- `pieces[].pilotages.moteurs.liste[i].lamelles: true` → rangée Horaire · Stop · Antihoraire sous Monter · Stop · Descendre, même conteneur
+  (`js/slats-controls.js` + `themes/slats-controls.css`, dalle `<ch5-button>` / iPhone `<button>`). Joins globaux **111-128** (triplets par moteur),
+  routés comme 81-98 ; offsets de bloc +25..34 / +37..40 / +46..49 ; `generate_slot2.js` ne câble que les moteurs qui ont des lamelles quelque part.
+- Règle apprise : sur le banc Chromium, **aucun `<ch5-button>` n'émet** (témoin 81 muet) — la chaîne n'est mesurable que sur les `<button>` ;
+  les classes de présentation vont sur l'hôte `<ch5-button>`, jamais dans `customClass` (recopié sur l'élément interne).
+- Modules partagés = `js/*-controls.js` + `themes/*-controls.css`, copiés en bloc par `sync-villa-crans.py`.
+
 ## 27/09/2026 — v4.7 : conversion iPhone terminée (CH5 à compiler, vitrine régénérée non poussée)
 - **Sur l'iPhone (Crestron One), tout bouton à état est un `<button>`** : `pressDigital(N)` à l'appui, `subscribeState` → `toggleSelected` au retour,
   classe `.selected`. Le `<ch5-button receiveStateSelected>` n'y affiche ni l'appui ni l'état (5-20 s de retard, v4.4). Convertis : Centralisation
@@ -43,15 +51,14 @@
 - Feuille de route (17/09) : V1 stable → bêta Alexandre → « Core Fréquence TV » réutilisable (CH5 + C# génériques, le programmeur ne touche
   que le JSON et SIMPL) → toutes les GUI du showcase au niveau Villa Crans. Chantiers Core ouverts : type de source non paramétrable,
   offsets +41..57 / +81..92 sans nom EISC, générateur qui duplique les plages, bornes HVAC / presets / IP-ID en dur dans le C#.
-- Wellness (17/09, GUI 1.0.180) : onglets HVAC/Sauna/Hammam, joins d620-627, a/s62-65, `WellnessState` C#, `docs/WELLNESS-2026-09-17.md`.
 
 ## Les 4 artefacts à suivre (convention validée le 13.09.2026)
 Quatre versions à tenir alignées, ici et en tête de chaque entrée du CHANGELOG.
 | Artefact | Version | Compilation |
 |---|---|---|
-| CH5 `.ch5z` (TSW + XPanel + mobile) | source **1.0.207** (`meta.version`) ; 1.0.206 (v4.7) compilé et déployé le 27/09 sur TSW .1.16, XPanel CP4 .1.200 et Crestron One ; **v4.8 + v4.9 à compiler** en un build = 1.0.207 (`-Target web`, `tsw`, `mobile`) | `deploy.ps1` incrémente `version.json` à chaque build, puis aligner `meta.version` |
-| CPZ slot 1 (C#) | 1.0.195.0 (v4.5) compilé et chargé ; aucun changement C# depuis | SIMPL# Pro + `deploy.ps1 -Target cp4` |
-| LPZ slot 2 (SIMPL) | v4.1 compilé 18/09 05:20 (`Project_Slot2.lpz`), **jamais testé sur matériel** ; SMW inchangé depuis | F12 sur `Project_Slot2.smw` puis charger |
+| CH5 `.ch5z` (TSW + XPanel + mobile) | source **1.0.208** (`meta.version`) ; 1.0.206 (v4.7) déployé le 27/09 sur TSW, XPanel et Crestron One ; 1.0.207 (v4.9) compilé par Donatien le 28/09 (à confirmer sur les supports) ; **v5.0 à compiler** = 1.0.208 | `deploy.ps1` incrémente `version.json` à chaque build, puis aligner `meta.version` |
+| CPZ slot 1 (C#) | 1.0.195.0 (v4.5) chargé ; source **1.0.196.0** (v5.0 lamelles) **à compiler** | SIMPL# Pro + `deploy.ps1 -Target cp4` |
+| LPZ slot 2 (SIMPL) | v4.1 compilé 18/09, **jamais testé sur matériel** ; SMW **régénéré le 28/09** (+24 signaux lamelles), **F12 à faire** | F12 sur `Project_Slot2.smw` puis charger |
 | Showcase Vercel | prod = `74cd4a41` (17.09) ; copie locale régénérée le 27/09 (v4.4 → v4.7), **non poussée** | `sync-villa-crans.py` puis push `main` → Vercel |
 
 ## Arborescence (monorepo, depuis la restructuration du 11.09.2026)
@@ -104,18 +111,11 @@ scènes, consigne, vacances, partitions ; le slot 2 pilote le matériel réel.
 Styles `mobile-xl` (fin de `<body>`), `mobile-ux` (moteurs animés, MutationObserver), blocs `mobile-lot-0915/0916` ; cibles ≥ 44 px, repli `@media (max-height: 700px)`. Entête = pièces + engrenage.
 Pièges : un style en ligne `!important` ne se reprend pas en CSS (le retirer du HTML) ; `ch5-button` → `width/height:100%` sur `> div` et `.cb-btn` ; `min-width:0` en grille ; les `customStyle` de `#source-control-overlay` sont `!important` un par un, ne pas les « nettoyer ».
 ## Lot smartphone 15-16.09.2026 — logique audio/vidéo et pièges CH5
-- **Un seul point d'entrée pour les sources : `window.avSelect(join)`** (IIFE `AV`, identique dalle / iPhone) :
-  confirmation musique / audio vidéo (`#audio-confirm-overlay`), `avOpenRemote` (ignore les événements non fiables →
-  tests en `page.click`), `avRender()` pose `selected` / `audio-active` / `audio-music`. Badge égaliseur animé
-  (`.tv-live-badge`) = source dont l'audio joue, sur tous les châssis.
-- **`customClass` n'est PAS recopié sur l'hôte** : sélecteur `ch5-button[customClass~="x"] .cb-btn`, jamais `ch5-button.x`.
-- Menu : pièces `actif:false` et `pagesSpeciales.video.actif=false` masqués par `villaPiecesActives(vc)`.
-- Retirés à la demande : PRESET (406) des stores globaux, raccourcis de scène de la config du preset global, sélecteur
-  de preset et ligne Climatisation du mode Vacances ; iPhone : grille sources 2 colonnes, Moteurs paginés.
-- **Après toute reconstruction HTML par script : compter les `<div>`**, chaque fenêtre enfant direct de `body`.
-  Sections conditionnelles par `applyPilotageVisibility`, jamais par heuristique sur le nom de la pièce.
-- Outillage conteneur : `device_commit_files` avec un chemin de sortie neuf ; `src/villa_config.json` = copie de build,
-  la source est `villa_config.json` racine.
+- **Un seul point d'entrée pour les sources : `window.avSelect(join)`** (IIFE `AV`, identique dalle / iPhone) : confirmation musique / audio vidéo,
+  `avOpenRemote` (tests en `page.click`), `avRender()` pose `selected` / `audio-active` / `audio-music` ; badge égaliseur `.tv-live-badge`.
+- **`customClass` n'est PAS recopié sur l'hôte** : sélecteur `ch5-button[customClass~="x"] .cb-btn`, jamais `ch5-button.x`. Menu : pièces `actif:false`
+  masquées par `villaPiecesActives(vc)`. Après toute reconstruction HTML par script : compter les `<div>`. Sections conditionnelles par
+  `applyPilotageVisibility`, jamais par heuristique sur le nom. `src/villa_config.json` = copie de build, la source est `villa_config.json` racine.
 ## Plan 3D (16.09.2026) — fond de page du SITE, le GUI des châssis ne change jamais
 Vidéo par défaut ; `apps/showcase/src/components/Plan3DBackground.jsx` ne la remplace que dans les cas de `PLAN3D_RULES` (aujourd'hui :
 châssis Smartphone). 3D active ⇒ châssis calé à gauche (`.plan3d-on`, `--chassis-scale`). `public/plan3d/plan3d.js` (Three.js) lit le GUI
@@ -139,7 +139,7 @@ La démo automatique démarre désormais sur **tous les supports** (elle était 
 6. **Jamais deux clés d'un même objet JSON qui ne diffèrent que par la casse** (`MUSIQUE` / `Musique` dans `traductions`) : `ConvertFrom-Json` de PowerShell 5.1 refuse le fichier et `deploy.ps1` s'arrête avant le build, alors que `JSON.parse` et Python les acceptent en silence. Contrôlé désormais par `tools/quality/validate-config.mjs`.
 
 ## Reste à faire
-1. **Compiler v4.8 + v4.9** (`deploy.ps1 -Target web`, `tsw`, `mobile`), relever la version dans Réglages sur l'iPhone, puis aligner `meta.version`.
+1. **Compiler v5.0** : CH5 (`deploy.ps1 -Target web`, `tsw`, `mobile`), relever la version dans Réglages sur l'iPhone, puis aligner `meta.version`.
    Recette iPhone : partitions, scènes de la fenêtre Circuits (appui, état, appui long 💾), HVAC ON/OFF/ventilation, sauna/hammam.
 2. **Push de `main`** (commits locaux + vitrine régénérée v4.4 → v4.7) → Vercel ; vérifier en ligne. Attendre le GO de Donatien.
 3. LPZ v4.1 : charger `Project_Slot2.lpz` et recette Debugger (rappel de scène → `Rxx_Circuit_N_fb#`, 💾 → aucun join, dalle ↔ iPad, progreset).

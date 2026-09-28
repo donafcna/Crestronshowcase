@@ -1,3 +1,10 @@
+## Lamelles (v5.0, 28.09.2026)
+
+Joins globaux 111-128 : `Motor_n_Tilt_CW_fb` / `Motor_n_Tilt_Stop_fb` / `Motor_n_Tilt_CCW_fb` = appui reçu de la GUI (sortie du symbole,
+après passage par le miroir du slot 1 qui pose `Room_Select#` a10), `Motor_n_Tilt_*` sans suffixe = feedback à renvoyer (entrée, non lu par le C#).
+Générés seulement pour les moteurs qui ont `lamelles: true` dans `villa_config.json` (au moins une pièce) : aujourd'hui moteurs 1, 2, 5, 6 → 24 signaux.
+À câbler comme les moteurs 81-98 : buffers sur a10 vers le moteur réel de la pièce ; impulsions, pas de tenue.
+
 # Project_Slot2.smw — programme SIMPL du slot 2 (contrat v4.1)
 
 ## État v4.1 (18/09/2026) — ce que le slot 2 reçoit, ce qu'il doit renvoyer

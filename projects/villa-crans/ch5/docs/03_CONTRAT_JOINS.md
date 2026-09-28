@@ -1,5 +1,15 @@
 # 03 — Contrat de joins v4.1
 
+## Extension lamelles — v5.0 du 28/09/2026
+
+- **Activation par moteur dans la config** : `pieces[].pilotages.moteurs.liste[i].lamelles = true` (défaut `false`, aucun changement pour les moteurs existants). Quand c'est vrai, la GUI ajoute dans le conteneur du moteur, sous Monter · Stop · Descendre, la rangée **Horaire · Stop · Antihoraire** (`js/slats-controls.js` + `themes/slats-controls.css`, dalle et iPhone).
+- **Joins globaux digitaux 111-128** (`Moteur.Lamelles`, `contrat.signauxGlobaux`) : triplets par moteur — 111/112/113 = moteur 1 Horaire/Stop/Antihoraire … 126/127/128 = moteur 6. Impulsions sans état, mêmes règles que 81-98 : le C# pose a10 = pièce affichée puis recopie le join sur l'EISC ; le slot 2 route par buffers sur `Room_Select#`. Aucun feedback attendu (le slot 2 peut renvoyer `Motor_n_Tilt_*` en entrée, le C# l'ignore).
+- **Bloc par pièce** (réservé pour un usage v3 / commandes globales futures) : le bloc de 100 n'a plus 18 offsets contigus libres → `Piece.<id>.Moteur.Lamelles.A/B/C` = **+25..34, +37..40, +46..49** dans cet ordre (M1 +25/26/27, M2 +28/29/30, M3 +31/32/33, M4 +34/37/38, M5 +39/40/46, M6 +47/48/49). Le nom du signal porte le sens, l'offset ne se voit pas dans le debugger.
+- **Slot 2** : `generate_slot2.js` câble `Motor_n_Tilt_CW` / `Tilt_Stop` / `Tilt_CCW` (entrée = feedback, `_fb` en sortie = appui reçu) **uniquement pour les moteurs qui ont `lamelles: true` dans au moins une pièce** (un join sans nom est invisible, un join inutile encombre). F12 après génération.
+- **C#** : `V4DigitalOffsets` étendue (111-128 → offsets ci-dessus), branche impulsions de `ApplyRoomDigitalCommand` élargie ; CPZ 1.0.196.0.
+- Config de test : lamelles sur les volets et stores de la pièce 2 (Chambre maman). Vitrine : `sync-villa-crans.py` les active sur tous les `volet` / `store`.
+
+
 ## Extension scènes d'éclairage + 20 circuits — v4.1 du 18/09/2026
 
 **Pourquoi.** Les scènes enregistrées (💾 / appui long) vivaient dans le `localStorage` de l'écran : invisibles des autres supports, perdues au reset, et au rappel le C# ne repositionnait plus les circuits dès que le slot 2 avait remonté un niveau (« le slot 2 fait foi »). Le C# devient le dépositaire des scènes.

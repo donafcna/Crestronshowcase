@@ -1,0 +1,39 @@
+/* Lamelles (v5.0, 28.09.2026) : rangée Horaire · Stop · Antihoraire sous Monter · Stop · Descendre,
+   dans le même conteneur que le moteur (js/slats-controls.js). Mêmes composants que les boutons
+   moteurs — `.scene-btn` (<ch5-button>, dalle) et `.shade-btn-mobile` (<button>, iPhone) — donc mêmes
+   jetons de thème ; cette feuille ne fait que l'empilement et l'icône. Icône = masque SVG en
+   ::after peint avec la couleur du texte (même technique que les flèches rideaux de
+   room-controls.css) : jamais d'emoji, aucun enfant injecté dans le <ch5-button>. Cibles >= 44 px. */
+.motor-btn-stack { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
+.slats-row { display: flex; gap: 8px; }
+#motors-container .overlay-item-row .slats-row { gap: 6px; }
+/* La carte moteur de la dalle a une hauteur fixe en ligne (74 px) : avec lamelles elle s'adapte au contenu. */
+#motors-container .has-slats { align-items: flex-start !important; height: auto !important; min-height: 74px; }
+#motors-container .has-slats > div:first-child { padding-top: 8px; }
+
+.slats-btn { position: relative; font-size: 0 !important; }
+button.slats-btn { min-width: 44px; min-height: 44px; }
+ch5-button.slats-btn .ch5-button--label, ch5-button.slats-btn label { visibility: hidden !important; }
+.slats-btn::after {
+  content: ''; position: absolute; inset: 0; margin: auto; width: 24px; height: 24px; pointer-events: none;
+  background: var(--text-primary, #f1f5f9);
+  -webkit-mask: var(--slats-icon) center / contain no-repeat; mask: var(--slats-icon) center / contain no-repeat;
+}
+body#app-body.theme-light .slats-btn::after { background: #0f172a; }
+.slats-cw   { --slats-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 4V1l4 4-4 4V6a6 6 0 1 0 6 6h2a8 8 0 1 1-8-8z'/%3E%3C/svg%3E"); }
+.slats-ccw  { --slats-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 4V1L8 5l4 4V6a6 6 0 1 1-6 6H4a8 8 0 1 0 8-8z'/%3E%3C/svg%3E"); }
+.slats-stop { --slats-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect x='6' y='6' width='12' height='12' rx='1.5'/%3E%3C/svg%3E"); }
+/* Sans prise en charge de mask (navigateur de la TSW) : on retombe sur un libellé texte. */
+@supports not ((mask: url()) or (-webkit-mask: url())) {
+  .slats-btn::after { content: none; }
+  .slats-btn { font-size: inherit !important; }
+  .slats-cw::before { content: '\21BB'; }  .slats-ccw::before { content: '\21BA'; }  .slats-stop::before { content: '\25A0'; }
+}
+
+/* Smartphone : deux rangées par moteur doivent tenir sans défilement (règle « aucun défilement ») —
+   rangée lamelles à 40 px (cible minimale du projet), empilement serré. */
+@media (max-width: 480px) {
+  .motor-btn-stack { gap: 3px; }
+  #motors-container .overlay-item-row .slats-row button.slats-btn { height: 40px !important; min-height: 40px; }
+  #motors-container .overlay-item-row.has-slats { padding-top: 4px !important; padding-bottom: 4px !important; }
+}

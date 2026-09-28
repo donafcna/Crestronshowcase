@@ -130,6 +130,9 @@ def clean_config(src: Path) -> dict:
         pl["eclairages"]["circuits"] = {"nombre": len(circ), "noms": circ}
         if p['id'] in (1, 2, 3, 14):
             pl['moteurs']['liste'][5] = {'nom': 'Store banne extérieur', 'type': 'store'}
+        # v5.0 : lamelles sur tous les volets et stores de la vitrine (rangée Horaire / Stop / Antihoraire)
+        for m in pl['moteurs'].get('liste', []):
+            m['lamelles'] = m.get('type') in ('volet', 'store')
         for k in ("moteurs", "cvc", "controlesGeneraux", "audioVideo"):
             pl[k]["actif"] = True
     for lang, d in c.get("traductions", {}).items():
@@ -155,8 +158,9 @@ def main() -> None:
     # ne manque jamais à la vitrine.
     for css in sorted((src / "themes").glob("*-controls.css")):
         shutil.copy(css, DEST / "themes" / css.name)
-    shutil.copy(src / "js" / "room-controls.js", DEST / "js" / "room-controls.js")
-    shutil.copy(src / "js" / "wellness-controls.js", DEST / "js" / "wellness-controls.js")
+    # Modules de composants partagés (room-, wellness-, slats-controls.js…) : tous ceux de la source.
+    for js in sorted((src / "js").glob("*-controls.js")):
+        shutil.copy(js, DEST / "js" / js.name)
     for name in ("version.js", "build_date.json"):
         if (src / name).exists():
             shutil.copy(src / name, DEST / name)

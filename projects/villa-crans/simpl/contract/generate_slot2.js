@@ -131,6 +131,19 @@ for (let mo = 1; mo <= 6; mo++) {
   din(b + 1, 'Motor_' + mo + '_Stop'); dout(b + 1, 'Motor_' + mo + '_Stop_fb');
   din(b + 2, 'Motor_' + mo + '_Down'); dout(b + 2, 'Motor_' + mo + '_Down_fb');
 }
+// v5.0 (28.09.2026) — Lamelles (111-128) : triplets Horaire/Stop/Antihoraire par moteur, memes
+// conventions que 81-98 (dout = appui recu de la GUI via le miroir du slot 1, din = feedback a
+// renvoyer). Cables uniquement pour les moteurs qui ont `lamelles: true` dans au moins une piece :
+// un join sans nom est invisible au debugger, un join inutile l'encombre.
+const TILT = ['Tilt_CW', 'Tilt_Stop', 'Tilt_CCW'];
+const slatsMotors = new Set();
+(villaCfg.pieces || []).forEach(p => ((p.pilotages && p.pilotages.moteurs && p.pilotages.moteurs.liste) || [])
+  .forEach((m, i) => { if (m && m.lamelles === true && i < 6) slatsMotors.add(i + 1); }));
+for (const mo of [...slatsMotors].sort()) {
+  const b = 111 + (mo - 1) * 3;
+  TILT.forEach((t, k) => { din(b + k, 'Motor_' + mo + '_' + t); dout(b + k, 'Motor_' + mo + '_' + t + '_fb'); });
+}
+console.log('Lamelles (v5.0) : moteurs ' + ([...slatsMotors].sort().join(', ') || 'aucun') + ' -> joins 111-128 cables par triplet.');
 // Sources A/V 0..5 (150-155)
 for (let s = 0; s <= 5; s++) { din(150 + s, 'Source_Select_' + s); dout(150 + s, 'Source_Select_' + s + '_fb'); }
 // 156 : l'audio revient a la source video (v1.0.166) — manquait dans toutes les generations.
@@ -228,6 +241,11 @@ OFF_D[57] = 'Source_AudioReturn';                                   // 156
 OFF_D[58] = 'Media_PlayPause';                                      // 251
 OFF_D[59] = 'Media_Next';                                           // 252
 OFF_D[60] = 'Media_Prev';                                           // 253
+// v5.0 : lamelles, offsets +25..34, +37..40, +46..49 (joins logiques 111-128)
+{
+  const seq = [25,26,27,28,29,30,31,32,33,34,37,38,39,40,46,47,48,49];
+  for (let mo = 1; mo <= 6; mo++) ['Tilt_CW', 'Tilt_Stop', 'Tilt_CCW'].forEach((t, k) => { OFF_D[seq[(mo - 1) * 3 + k]] = 'Motor_' + mo + '_' + t; });
+}
 for (let mo = 1; mo <= 6; mo++) {                                   // 81-98
   const b0 = 61 + (mo - 1) * 3;
   OFF_D[b0] = 'Motor_' + mo + '_Up';

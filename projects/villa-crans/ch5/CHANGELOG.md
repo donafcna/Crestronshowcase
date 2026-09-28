@@ -1,5 +1,33 @@
 # Villa Crans CH5 — journal des versions
 
+## v5.0 — 28/09/2026 — Lamelles : rangee Horaire / Stop / Antihoraire par moteur, activable dans villa_config.json (a compiler : CH5 web + tsw + mobile, CPZ 1.0.196.0, LPZ F12)
+
+| Artefact | Etat de ce lot |
+|---|---|
+| CH5 source | nouveaux `src/js/slats-controls.js` + `src/themes/slats-controls.css` (charges par `index.html` et `iphone.html`) — **a recompiler** |
+| CPZ slot 1 | `ControlSystem.cs` (`V4DigitalOffsets` 111-128, branche impulsions), `AssemblyInfo` **1.0.196.0** — **a recompiler** (SIMPL# Pro) |
+| LPZ slot 2 | `generate_slot2.js` etendu ; `Project_Slot2.smw` regenere (+24 signaux `Motor_{1,2,5,6}_Tilt_{CW,Stop,CCW}` / `_fb`) — **F12 puis charger** |
+| Config | `villa_config.json` : `pieces[].pilotages.moteurs.liste[i].lamelles` (defaut false ; test = volets + stores de la piece 2), `signauxGlobaux` `Moteur.Lamelles` 111-128, `blocsPieces` `Piece.<id>.Moteur.Lamelles.A/B/C`, `blocsPiecesGui.mapping.digital` 111-128, `meta.version` **1.0.208** |
+| Docs | `docs/03_CONTRAT_JOINS.md` (extension v5.0), `simpl/contract/README_SLOT2.md` |
+| Showcase | `sync-villa-crans.py` copie toutes les `js/*-controls.js` et active `lamelles` sur tous les volets / stores ; copie regeneree, non poussee |
+| Batterie | `tools/qa-lamelles.mjs` : 3 themes × {dalle 1920×1200, iPhone 402×874} × fenetre Moteurs × {piece 2 avec lamelles, piece 3 sans} — rangee presente exactement sur les moteurs `lamelles:true`, 3 boutons ≥ 40 px avec icone, aucune carte hors cadre, **aucun defilement sur smartphone**, contraste ≥ 4:1, 0 erreur console : **14/14 VERT** (deploiement) ; vitrine 13/14 (message pre-existant « WebXPanel non chargee » de la dalle vitrine). Chaine appui → impulsion 111/112/128 verifiee sur l'iPhone (<button>) ; sur le banc aucun <ch5-button> n'emet (temoin 81 muet aussi) : emission dalle a recetter sur materiel |
+
+**Demande Donatien.** Activer / desactiver les lamelles par moteur (volet ou store) dans le JSON ; si actives, ajouter dans le meme conteneur, sous
+Monter / Stop / Descendre, les boutons Horaire / Stop / Antihoraire ; joins ajoutes dans le SIMPL.
+
+**Architecture, au niveau du systeme.** Un module partage `slats-controls.js` (presentation seule, idempotent, MutationObserver + suivi de la piece
+affichee) trouve le groupe Monter/Stop/Descendre de chaque moteur de `#motors-container` et empile dessous la rangee lamelles : `<ch5-button>` sur
+la dalle (sendEventOnClick), `<button>` + `pressDigital` sur l'iPhone. Icones = masque SVG en `::after` (technique des fleches rideaux de
+`room-controls.css`), jamais d'emoji, aucun enfant injecte dans un `<ch5-button>`. Joins globaux 111-128 routes par le C# comme 81-98 (a10 puis
+miroir EISC) ; offsets de bloc +25..34 / +37..40 / +46..49 (le bloc de 100 n'a plus 18 offsets contigus). Le generateur ne cable que les moteurs
+qui ont des lamelles quelque part.
+
+**Decisions par defaut.** Impulsions sans etat ; la carte dalle passe de 74 px a hauteur auto quand elle a des lamelles ; smartphone : rangee
+lamelles a 40 px et empilement serre pour tenir sans defilement (6 moteurs dont 4 avec lamelles = 574 px disponibles) ; rideaux jamais de
+lamelles ; `customClass` reste `scene-btn` et les classes `slats-*` vont sur l'hote seul (customClass est recopie sur l'element interne et
+dedoublerait l'icone).
+
+
 ## v4.9 — 28/09/2026 — OFF eclairage en OR comme les autres scenes ; OFF audio/video en ROUGE sur toutes les interfaces (a compiler : CH5 seul, web + tsw + mobile)
 
 | Artefact | Etat de ce lot |
