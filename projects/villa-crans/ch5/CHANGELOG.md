@@ -1,5 +1,39 @@
 # Villa Crans CH5 — journal des versions
 
+## v5.1 — 28/09/2026 — Core au service d'un 2e projet (Appartement Crans-Montana) : cibles 40 px, Circuits 3/4 colonnes, contraste Clair iPhone, ville météo (a compiler : CH5 seul)
+
+| Artefact | Etat de ce lot |
+|---|---|
+| CH5 source | `src/index.html` + `src/iphone.html` → **1.0.209** (`version.json` = `meta.version`), **a recompiler** web + tsw + mobile |
+| CPZ slot 1 / LPZ slot 2 | inchanges |
+| Config | `meta.version` 1.0.209, rien d'autre |
+| Vitrine | copie Villa Crans resynchronisee + nouvelle vitrine `appartement-crans` |
+
+**Contexte.** Premier projet derive du Core sans une ligne de GUI/C# reecrite : `projects/appartement-crans/`
+(17 pieces, 101 circuits Lutron, 4 scenes par piece issues de la sequence d'operations de l'eclairagiste). La
+batterie sur cette config a revele quatre defauts du Core, corriges **au niveau du systeme** (bloc
+`<style id="touch-targets">` de `index.html`, regle de theme de `iphone.html`), jamais ecran par ecran :
+1. Cibles tactiles < 40 px (onglets LUMIERES / STORES 30 px, FERMER de la fenetre Circuits 35 px, boutons
+   d'enregistrement de scene 34 px de large) → 40 px minimum par surcharge `!important` des styles en ligne.
+2. Fenetre Circuits : au-dela de 10 circuits la 6e ligne sortait du cadre (defilement interne). `#circuits-container`
+   recoit `data-cols` au remplissage : 2 colonnes jusqu'a 10, 3 jusqu'a 15, 4 jusqu'a 20 (contrat v4.1). 11 circuits
+   verifies sans defilement sur dalle et tablette dans les 4 modes et les 3 themes.
+3. iPhone, theme Clair : libelles Alarme / Cameras / Global en `--text-secondary` sur fond teinte = 3,88:1 (Villa
+   Crans aussi). `body.theme-light .alarm-row span { color: var(--text-primary) }` (meme correction faite en parallele par le lot v4.7 iPhone ; fusionnee).
+4. Widget meteo fige sur Nyon (titre 5 langues + coordonnees Open-Meteo) : `widgets.meteoActualites.{ville,
+   latitude, longitude}` lus par le Core (titre a l'application de la langue et a l'arrivee de la config ; Nyon
+   reste la valeur par defaut, la Villa Crans ne change pas).
+
+**Verification.** Contraste `check-contrast-dom.mjs --min 4` : 0 defaut sur les deux vitrines (3 themes, page +
+fenetres + etats d'alarme, dalle et smartphone). Batterie site `scripts/test-appartement-crans-modes.cjs` :
+159/159 (3 themes × {Mode normal, Mode Scene Taille reelle, Mode Scene Responsive, Plein ecran} × {dalle, iPad,
+smartphone ; Plein ecran non applicable sur smartphone}). Batterie GUI `test-appartement-crans.cjs` : 70/70.
+Planche-contact avant/apres des ecrans Villa Crans touches : `apps/showcase/Claude outputs/appartement-crans/planche-core/`.
+Villa 3D (`test-plan3d*.cjs`) : memes resultats que le commit de depart dans cet environnement sans GPU (3 assertions
+GPU echouent avant comme apres, hors lot).
+
+**Reste connu (Core, non traite).** Poignees de curseur CH5 30 px ; piece sans audio-video : moitie basse de la page
+vide ; iPhone : familles Volets / Rideaux / Stores affichees meme sans volet ; libelles de sources figes dans le HTML.
 ## v5.0 — 28/09/2026 — Lamelles : rangee Horaire / Stop / Antihoraire par moteur, activable dans villa_config.json (a compiler : CH5 web + tsw + mobile, CPZ 1.0.196.0, LPZ F12)
 
 | Artefact | Etat de ce lot |

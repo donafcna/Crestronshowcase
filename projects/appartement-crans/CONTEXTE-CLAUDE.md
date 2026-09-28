@@ -73,5 +73,5 @@ Règle : tout le projet reste dans `projects/appartement-crans/` ; le Core et `a
 2. Recette Debugger (`docs/CONTRAT-JOINS.md` § recette) sur le banc bureau (CP4 192.168.3.109).
 3. Marques réelles des rideaux / stores et du CVC → drivers slot 2 ; modules Lutron HomeWorks QS avec les noms
    de zones de `circuits.lutron`.
-4. Recette visuelle : faite le 27.09 sur la vitrine (Core 1.0.207) ; à refaire sur matériel (dalle, iPad, iPhone).
+4. Recette visuelle : faite le 27.09 sur la vitrine (Core 1.0.209) ; à refaire sur matériel (dalle, iPad, iPhone).
 5. Quand le Core évolue : `python3 tools/assemble.py`, puis recompiler les trois artefacts.

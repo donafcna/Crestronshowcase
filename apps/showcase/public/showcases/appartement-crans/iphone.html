@@ -806,9 +806,13 @@
     <style id="touch-highlight">* { -webkit-tap-highlight-color: rgba(0, 0, 0, 0); }</style>
     <link rel="stylesheet" href="themes/global-controls.css">
     <link rel="stylesheet" href="themes/alarm-controls.css">
+    <link rel="stylesheet" href="themes/scene-controls.css">
+    <link rel="stylesheet" href="themes/av-controls.css">
+    <link rel="stylesheet" href="themes/slats-controls.css">
 <link rel="stylesheet" href="themes/room-controls.css">
 <link rel="stylesheet" href="themes/wellness-controls.css">
 <script defer src="js/room-controls.js"></script>
+<script defer src="js/slats-controls.js"></script>
 <script defer src="js/wellness-controls.js"></script>
     <!-- Vitrine : pas de processeur, indicateur de connexion masqué -->
     <style>#connection-status{display:none !important}</style>
@@ -941,15 +945,15 @@
 
                 <div class="hvac-controls" aria-label="Marche et ventilation">
                     <div class="hvac-row">
-                        <ch5-button label="ON" customClass="hvac-command" sendEventOnClick="610" receiveStateSelected="610" data-join="610"></ch5-button>
-                        <ch5-button label="OFF" customClass="hvac-command" sendEventOnClick="611" receiveStateSelected="611" data-join="611"></ch5-button>
+                        <button id="hvac-cmd-btn-610" class="hvac-cmd-btn" data-join="610" onclick="pressDigital(610)">ON</button>
+                        <button id="hvac-cmd-btn-611" class="hvac-cmd-btn" data-join="611" onclick="pressDigital(611)">OFF</button>
                     </div>
                     <div class="hvac-caption" data-i18n="ventilation">Ventilation</div>
                     <div class="hvac-row">
-                        <ch5-button label="AUTO" customClass="hvac-command" sendEventOnClick="612" receiveStateSelected="612" data-join="612"></ch5-button>
-                        <ch5-button label="1" customClass="hvac-command" sendEventOnClick="613" receiveStateSelected="613" data-join="613"></ch5-button>
-                        <ch5-button label="2" customClass="hvac-command" sendEventOnClick="614" receiveStateSelected="614" data-join="614"></ch5-button>
-                        <ch5-button label="3" customClass="hvac-command" sendEventOnClick="615" receiveStateSelected="615" data-join="615"></ch5-button>
+                        <button id="hvac-cmd-btn-612" class="hvac-cmd-btn" data-join="612" onclick="pressDigital(612)">AUTO</button>
+                        <button id="hvac-cmd-btn-613" class="hvac-cmd-btn" data-join="613" onclick="pressDigital(613)">1</button>
+                        <button id="hvac-cmd-btn-614" class="hvac-cmd-btn" data-join="614" onclick="pressDigital(614)">2</button>
+                        <button id="hvac-cmd-btn-615" class="hvac-cmd-btn" data-join="615" onclick="pressDigital(615)">3</button>
                     </div>
                 </div>
             </div>
@@ -957,12 +961,12 @@
  <div><div class="wellness-label" data-wellness-label="0">Température actuelle</div><div class="wellness-value"><span data-ch5-textcontent="64">--</span> °C</div></div>
  <div class="wellness-label"><span data-wellness-label="2">Consigne</span> <span class="wellness-range" data-wellness-range="sauna"></span></div>
  <div class="hvac-controls wellness-setpoint"><ch5-button label="−" customClass="hvac-command" sendEventOnClick="623" data-join="623"></ch5-button><div class="wellness-value"><span data-ch5-textcontent="62">--</span> °C</div><ch5-button label="+" customClass="hvac-command" sendEventOnClick="622" data-join="622"></ch5-button></div>
- <div class="hvac-controls"><div class="hvac-row"><ch5-button label="ON" customClass="hvac-command" sendEventOnClick="620" receiveStateSelected="620" data-join="620"></ch5-button><ch5-button label="OFF" customClass="hvac-command" sendEventOnClick="621" receiveStateSelected="621" data-join="621"></ch5-button></div></div>
+ <div class="hvac-controls"><div class="hvac-row"><button id="hvac-cmd-btn-620" class="hvac-cmd-btn" data-join="620" onclick="pressDigital(620)">ON</button><button id="hvac-cmd-btn-621" class="hvac-cmd-btn" data-join="621" onclick="pressDigital(621)">OFF</button></div></div>
  </div><div hidden data-climate-panel="hammam" class="wellness-panel">
  <div><div class="wellness-label" data-wellness-label="1">Humidité actuelle</div><div class="wellness-value"><span data-ch5-textcontent="65">--</span> %</div></div>
  <div class="wellness-label"><span data-wellness-label="2">Consigne</span> <span class="wellness-range" data-wellness-range="hammam"></span></div>
  <div class="hvac-controls wellness-setpoint"><ch5-button label="−" customClass="hvac-command" sendEventOnClick="627" data-join="627"></ch5-button><div class="wellness-value"><span data-ch5-textcontent="63">--</span> %</div><ch5-button label="+" customClass="hvac-command" sendEventOnClick="626" data-join="626"></ch5-button></div>
- <div class="hvac-controls"><div class="hvac-row"><ch5-button label="ON" customClass="hvac-command" sendEventOnClick="624" receiveStateSelected="624" data-join="624"></ch5-button><ch5-button label="OFF" customClass="hvac-command" sendEventOnClick="625" receiveStateSelected="625" data-join="625"></ch5-button></div></div>
+ <div class="hvac-controls"><div class="hvac-row"><button id="hvac-cmd-btn-624" class="hvac-cmd-btn" data-join="624" onclick="pressDigital(624)">ON</button><button id="hvac-cmd-btn-625" class="hvac-cmd-btn" data-join="625" onclick="pressDigital(625)">OFF</button></div></div>
  </div></div>
 
         <!-- ONGLET 3 : MULTIMEDIA -->
@@ -1025,10 +1029,10 @@
         <div style="padding: 10px 15px; border-top: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.2);">
             <p data-i18n="lighting_scenarios" style="margin: 0 0 8px 0; font-weight: bold; color: #eab308; font-size: 0.85rem; text-transform: uppercase;">Scénarios Éclairage :</p>
             <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px;">
-                <ch5-button label="TOTAL" customClass="scene-btn" style="height: 36px;" sendEventOnClick="54" receiveStateSelected="54" data-join="54" data-rjoin="54"></ch5-button>
-                <ch5-button label="REPAS" customClass="scene-btn" style="height: 36px;" sendEventOnClick="53" receiveStateSelected="53" data-join="53" data-rjoin="53"></ch5-button>
-                <ch5-button label="CINÉMA" customClass="scene-btn" style="height: 36px;" sendEventOnClick="52" receiveStateSelected="52" data-join="52" data-rjoin="52"></ch5-button>
-                <ch5-button label="OFF" customClass="scene-btn" style="height: 36px; --ch5-button-selected-background-color: #dc2626;" sendEventOnClick="51" receiveStateSelected="51" data-join="51" data-rjoin="51"></ch5-button>
+                <button id="circuit-scene-btn-54" class="scene-cmd-btn" data-join="54" onclick="pressDigital(54)">TOTAL</button>
+                <button id="circuit-scene-btn-53" class="scene-cmd-btn" data-join="53" onclick="pressDigital(53)">REPAS</button>
+                <button id="circuit-scene-btn-52" class="scene-cmd-btn" data-join="52" onclick="pressDigital(52)">CINÉMA</button>
+                <button id="circuit-scene-btn-51" class="scene-cmd-btn" data-join="51" onclick="pressDigital(51)">OFF</button>
             </div>
         </div>
     </div>
@@ -3110,6 +3114,8 @@
                         const label = window.villaTranslateName ? window.villaTranslateName(nomScene) : nomScene;
                         const b = document.getElementById('scene-btn-' + (50 + s));
                         if (b) b.textContent = label;
+                        const cb = document.getElementById('circuit-scene-btn-' + (50 + s));
+                        if (cb) cb.textContent = label;
                         document.querySelectorAll('ch5-button[customClass~="scene-btn"][data-join="' + (50 + s) + '"]').forEach(btn => btn.setAttribute('label', label));
                     }
                 }
@@ -3555,6 +3561,16 @@
                 [51, 52, 53, 54].forEach(join => {
                     CrComLib.subscribeState('b', join.toString(), (value) => {
                         toggleSelected('scene-btn-' + join, value);
+                        // v4.7 : second jeu de boutons de scene, fenetre Circuits (ex <ch5-button>).
+                        toggleSelected('circuit-scene-btn-' + join, value);
+                    });
+                });
+
+                // v4.7 : HVAC (610-615) et wellness sauna / hammam (620-621, 624-625) — meme chaine.
+                // Les +/- (49/50, 622/623, 626/627) sont des impulsions sans etat : inchanges.
+                [610, 611, 612, 613, 614, 615, 620, 621, 624, 625].forEach(join => {
+                    CrComLib.subscribeState('b', join.toString(), (value) => {
+                        toggleSelected('hvac-cmd-btn-' + join, value);
                     });
                 });
 
@@ -4015,8 +4031,8 @@
         .shade-control-row .shade-label, #motors-container .overlay-item-row > span:first-child { display: inline-flex; align-items: center; gap: 10px; }
 
         /* Scène mémorisée : pastille sur le bouton, même code couleur que la dalle */
-        .scene-btn-mobile { position: relative; }
-        .scene-btn-mobile[data-saved="true"]::after {
+        .scene-btn-mobile, .scene-cmd-btn { position: relative; }
+        .scene-btn-mobile[data-saved="true"]::after, .scene-cmd-btn[data-saved="true"]::after {
             content: ""; position: absolute; top: 6px; right: 8px;
             width: 8px; height: 8px; border-radius: 50%; background: #c49a45;
             box-shadow: 0 0 6px rgba(196, 154, 69, 0.8);
@@ -4209,9 +4225,10 @@
         function refreshMarks() {
             Object.keys(SCENE_JOINS).forEach(function (join) {
                 var idx = SCENE_JOINS[join];
-                var b = document.getElementById('scene-btn-' + join);
-                if (!b) return;
-                if (loadScene(idx)) b.setAttribute('data-saved', 'true'); else b.removeAttribute('data-saved');
+                [document.getElementById('scene-btn-' + join), document.getElementById('circuit-scene-btn-' + join)].forEach(function (b) {
+                    if (!b) return;
+                    if (loadScene(idx)) b.setAttribute('data-saved', 'true'); else b.removeAttribute('data-saved');
+                });
             });
         }
         function saveScene(idx, snap) {
@@ -4244,12 +4261,13 @@
         // donc c'est là qu'on enregistre : le gestionnaire couvre désormais les deux (la dalle le
         // faisait déjà en lisant sendEventOnClick). Avant, l'appui long n'était écouté que sur la
         // page principale et il ne se passait jamais rien dans la fenêtre Circuits.
-        var SCENE_SEL = '.scene-btn-mobile[id^="scene-btn-"], ch5-button[customClass~="scene-btn"]';
+        // v4.7 : les scenes de la fenetre Circuits sont des <button class="scene-cmd-btn" data-join="5x">.
+        var SCENE_SEL = '.scene-btn-mobile[id^="scene-btn-"], .scene-cmd-btn[data-join], ch5-button[customClass~="scene-btn"]';
         function sceneBtnOf(el) { return el && el.closest ? el.closest(SCENE_SEL) : null; }
         function sceneIdxOf(el) {
             var b = sceneBtnOf(el);
             if (!b) return 0;
-            var join = b.id ? b.id.replace('scene-btn-', '') : (b.getAttribute('data-join') || b.getAttribute('sendEventOnClick'));
+            var join = b.getAttribute('data-join') || b.getAttribute('sendEventOnClick') || (b.id ? b.id.replace('scene-btn-', '') : '');
             return SCENE_JOINS[join] || 0;
         }
         document.addEventListener('contextmenu', function (ev) {
@@ -4258,7 +4276,7 @@
         (function () {
             var st = document.createElement('style');
             // customClass n'est pas recopié sur l'hôte : viser l'attribut, et le .cb-btn interne.
-            st.textContent = '.scene-btn-mobile,ch5-button[customClass~="scene-btn"],ch5-button[customClass~="scene-btn"] .cb-btn'
+            st.textContent = '.scene-btn-mobile,.scene-cmd-btn,ch5-button[customClass~="scene-btn"],ch5-button[customClass~="scene-btn"] .cb-btn'
                 + '{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none;touch-action:manipulation}';
             document.head.appendChild(st);
         })();

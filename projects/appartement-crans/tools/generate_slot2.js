@@ -128,6 +128,16 @@ for (let mo = 1; mo <= MAX_MOTORS; mo++) {
   const b = 81 + (mo - 1) * 3;
   ['Up', 'Stop', 'Down'].forEach((k, i) => { din(b + i, 'Motor_' + mo + '_' + k); dout(b + i, 'Motor_' + mo + '_' + k + '_fb'); });
 }
+// Lamelles 111-128 (Core v5.0, 28.09.2026) : triplets Horaire / Stop / Antihoraire, cables seulement pour les
+// moteurs qui ont `lamelles: true` dans au moins une piece (aucun ici : rideaux et voilages Lutron sans lamelles).
+const slatsMotors = new Set();
+(cfg.pieces || []).forEach(p => ((p.pilotages && p.pilotages.moteurs && p.pilotages.moteurs.liste) || [])
+  .forEach((m, i) => { if (m && m.lamelles === true && i < MAX_MOTORS) slatsMotors.add(i + 1); }));
+for (const mo of [...slatsMotors].sort()) {
+  const b = 111 + (mo - 1) * 3;
+  ['Tilt_CW', 'Tilt_Stop', 'Tilt_CCW'].forEach((t, k) => { din(b + k, 'Motor_' + mo + '_' + t); dout(b + k, 'Motor_' + mo + '_' + t + '_fb'); });
+}
+console.log('Lamelles (v5.0) : moteurs ' + ([...slatsMotors].sort().join(', ') || 'aucun') + ' -> joins 111-128.');
 // Sources A/V 0..5 (150-155) + retour audio (156)
 for (let s = 0; s <= 5; s++) { din(150 + s, 'Source_Select_' + s); dout(150 + s, 'Source_Select_' + s + '_fb'); }
 din(156, 'Source_AudioReturn'); dout(156, 'Source_AudioReturn_fb');

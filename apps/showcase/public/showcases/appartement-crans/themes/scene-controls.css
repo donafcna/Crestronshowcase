@@ -1,0 +1,89 @@
+/* Scenes d'eclairage de la fenetre Circuits (iPhone) : jetons partages, un seul jeu de couleurs par
+   theme. v4.7 (27.09.2026). Les quatre <ch5-button customClass="scene-btn"> 51-54 deviennent des
+   <button class="scene-cmd-btn"> (pressDigital + subscribeState + .selected), meme chaine que les
+   scenes de la page principale (.scene-btn-mobile), la Centralisation (v4.4) et les partitions (v4.6).
+   Memes couleurs que .scene-btn-mobile : or #c49a45 pour TOUTE scene active, OFF compris
+   (decision Donatien 28.09.2026 : OFF eclairage = or comme les autres scenes, sur tous les chassis ;
+   l'ancien <ch5-button> forcait #dc2626, abandonne). Contrastes texte/fond >= 4:1
+   dans les trois themes (verifies). Couleurs en !important : iphone.html porte une regle generique
+   `.theme-light .custom-overlay-panel button { ... !important }` (meme raison que alarm-controls). */
+body#app-body #circuits-overlay {
+    --scene-idle-bg: rgba(255, 255, 255, 0.06);
+    --scene-idle-text: #e2e8f0;
+    --scene-idle-border: rgba(255, 255, 255, 0.22);
+    --scene-active-bg: rgba(196, 154, 69, 0.22);
+    --scene-active-text: #ffffff;
+    --scene-active-border: #c49a45;
+}
+body#app-body.theme-light #circuits-overlay {
+    --scene-idle-bg: rgba(15, 23, 42, 0.06);
+    --scene-idle-text: #0f172a;
+    --scene-idle-border: rgba(15, 23, 42, 0.20);
+    --scene-active-bg: #fdf3dc;
+    --scene-active-text: #1f2937;
+    --scene-active-border: #a16207;
+}
+body#app-body #circuits-overlay .scene-cmd-btn {
+    min-width: 0;
+    width: 100%;
+    height: 46px;
+    min-height: 44px;
+    padding: 0 4px;
+    border-radius: 8px;
+    border: 2px solid var(--scene-idle-border) !important;
+    background: var(--scene-idle-bg) !important;
+    color: var(--scene-idle-text) !important;
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 600 !important;
+    line-height: 1.15;
+    white-space: normal;
+    text-align: center;
+    overflow: hidden;
+    cursor: pointer;
+    box-sizing: border-box;
+    box-shadow: none !important;
+    transition: none;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    user-select: none;
+}
+body#app-body #circuits-overlay .scene-cmd-btn:active,
+body#app-body #circuits-overlay .scene-cmd-btn.selected {
+    background: var(--scene-active-bg) !important;
+    color: var(--scene-active-text) !important;
+    border-color: var(--scene-active-border) !important;
+}
+body#app-body #circuits-overlay .scene-cmd-btn.selected {
+    font-weight: 800 !important;
+    box-shadow: 0 0 10px rgba(196, 154, 69, 0.35) !important;
+}
+/* Pastille « scene memorisee » : meme code que .scene-btn-mobile (definie dans iphone.html). */
+body#app-body #circuits-overlay .scene-cmd-btn:focus-visible {
+    outline: 3px solid var(--scene-active-border);
+    outline-offset: 2px;
+}
+@media (max-width: 480px) {
+    body#app-body #circuits-overlay .scene-cmd-btn {
+        padding: 0 2px;
+        font-size: 0.8rem;
+    }
+}
+
+
+/* Dalle / iPad / XPanel en theme Clair : la regle generique d'index.html
+   « .theme-light .scene-btn:not([selected="true"]) » vise l'element interne, qui ne porte jamais
+   l'attribut selected (il est sur l'hote <ch5-button>) : elle repeignait donc AUSSI la scene
+   selectionnee en gris clair — une scene active etait invisible en Clair (constat batterie 28.09.2026).
+   Or sur fond clair : fond #c49a45, texte fonce (5,2:1), bordure ambre. */
+body#app-body.theme-light ch5-button[customClass~="scene-btn"][selected="true"] .scene-btn,
+body#app-body.theme-light ch5-button[customClass~="scene-btn"].ch5-button--selected .scene-btn {
+    background-color: #c49a45 !important;
+    border: 2px solid #a16207 !important;
+    color: #1f2937 !important;
+    box-shadow: 0 0 14px rgba(196, 154, 69, 0.45) !important;
+}
+body#app-body.theme-light ch5-button[customClass~="scene-btn"][selected="true"] .ch5-button--label,
+body#app-body.theme-light ch5-button[customClass~="scene-btn"].ch5-button--selected .ch5-button--label {
+    color: #1f2937 !important;
+}

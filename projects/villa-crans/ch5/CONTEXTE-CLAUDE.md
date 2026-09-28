@@ -1,5 +1,10 @@
 # VillaCrans — contexte pour Claude (lire en premier, économise les tokens)
 
+## 28/09/2026 — v5.1 : le Core sert un 2e projet, `projects/appartement-crans/` (à compiler : CH5 1.0.209)
+- **Appartement Crans-Montana** = Core Villa Crans + `villa_config.json` propre (17 pièces, 101 circuits Lutron, scènes OFF/JOUR/SOIR/NUIT par pièce). Rien de réécrit : `tools/assemble.py` copie `src/` + C# renommé, `tools/generate_slot2.js` génère un SMW depuis le socle nu. Toute correction se fait ICI puis se propage (`python3 tools/assemble.py`, `sync-appartement-crans.py`). Lire `projects/appartement-crans/CONTEXTE-CLAUDE.md`.
+- Corrections système du Core révélées par cette config : `<style id="touch-targets">` (onglets, FERMER, 💾 ≥ 40 px ; `#circuits-container[data-cols]` 2/3/4 colonnes selon 10/15/20 circuits, posé au remplissage) ; `body.theme-light .alarm-row span` (iPhone, Clair : 3,88:1 → texte principal) ; **ville météo** : `widgets.meteoActualites.{ville, latitude, longitude}` (Nyon par défaut, titre 5 langues remplacé, Open-Meteo).
+- Batterie : contraste 0 défaut sur les deux vitrines ; `apps/showcase/scripts/test-appartement-crans-modes.cjs` (159 contrôles, 3 thèmes × 4 modes × 3 châssis) et `test-appartement-crans.cjs` (70). Planche avant/après : `apps/showcase/scripts/planche-avant-apres.cjs` (référence = worktree du commit de départ sur le port 4174). Les tests `test-plan3d*.cjs` GPU échouent à l'identique avant/après sans GPU (SwiftShader) : non significatif.
+- Noms de pièces : le menu de gauche tronque au-delà de ~16 caractères sur dalle (183 px) — choisir des noms courts dans la config (« Suite parentale », « Bain parental ») plutôt que de toucher au CSS.
 ## 28/09/2026 — v5.0 Lamelles (CH5 + CPZ 1.0.196.0 à compiler, LPZ F12)
 - `pieces[].pilotages.moteurs.liste[i].lamelles: true` → rangée Horaire · Stop · Antihoraire sous Monter · Stop · Descendre, même conteneur
   (`js/slats-controls.js` + `themes/slats-controls.css`, dalle `<ch5-button>` / iPhone `<button>`). Joins globaux **111-128** (triplets par moteur),
@@ -28,15 +33,7 @@
   figé du projet dit encore iPhone 16 Pro — tester les deux tant que Donatien n'a pas tranché.
 - `sync-villa-crans.py` copie toutes les `themes/*-controls.css`. La vitrine était restée avant v4.4 : régénérée le 27/09 (v4.4+v4.6+v4.7), non poussée.
 
-## 21-22/09/2026 — v4.2 → v4.6 (détail : CHANGELOG)
-- **Retard Centralisation iPhone résolu (v4.5, CPZ 1.0.195.0)** : `PulseRoomDigital` écrivait 168 impulsions de bloc de pièce vers chaque
-  panel sur TOUT OUVRIR / TOUT FERMER ; il n'écrit plus que sur l'EISC. Depuis v4 seul le slot 2 lit les joins ≥ 1000 (`PushRoomFeedback` idem, v4.2).
-- **`deploy.ps1 -Target mobile`** (Crestron One télécharge son projet depuis le CP4 : `ch5-cli -t mobile`) ; la cible `web` compare `version.js`
-  servi et `version.json`. **Tout test sur un support commence par lire la version dans Réglages** ; sans relevé, ce n'est pas un test.
-- Lot C1 (Codex, 21/09) : diagnostic intégré à `iphone.html`, C# non intégré (sauvegardé dans `_backups/ControlSystem_C1_2026-09-21.cs`).
-- Deux jeux de boutons de scène iPhone (page + fenêtre Circuits) : tout gestionnaire couvre les deux. Valider un JSON comme l'outil qui le
-  consomme (`ConvertFrom-Json` refuse deux clés identiques à la casse près → `tools/quality/validate-config.mjs`). `meta.tracesConsole` /
-  `tracesLatence` = false hors mesure (lus au boot, sans recompiler).
+## 21-22/09/2026 — v4.2 → v4.6 : voir CHANGELOG (latence Centralisation, cible `mobile` de deploy.ps1, partitions iPhone en `<button>`).
 
 ## 17-18/09/2026 — contrat v4.1, P1, traductions (détail : CHANGELOG, docs projet Cowork 80/81)
 - **Jamais deux sessions en écriture en même temps** : `git status` avant toute livraison (deux sessions le 18/09 ; archive `backup/crestron-local-2026-09-18`).
@@ -56,13 +53,9 @@
 Quatre versions à tenir alignées, ici et en tête de chaque entrée du CHANGELOG.
 | Artefact | Version | Compilation |
 |---|---|---|
-| CH5 `.ch5z` (TSW + XPanel + mobile) | source **1.0.208** (`meta.version`) ; 1.0.206 (v4.7) déployé le 27/09 sur TSW, XPanel et Crestron One ; 1.0.207 (v4.9) compilé par Donatien le 28/09 (à confirmer sur les supports) ; **v5.0 à compiler** = 1.0.208 | `deploy.ps1` incrémente `version.json` à chaque build, puis aligner `meta.version` |
-| CPZ slot 1 (C#) | 1.0.195.0 (v4.5) chargé ; source **1.0.196.0** (v5.0 lamelles) **à compiler** | SIMPL# Pro + `deploy.ps1 -Target cp4` |
-| LPZ slot 2 (SIMPL) | v4.1 compilé 18/09, **jamais testé sur matériel** ; SMW **régénéré le 28/09** (+24 signaux lamelles), **F12 à faire** | F12 sur `Project_Slot2.smw` puis charger |
+| CH5 `.ch5z` (TSW + XPanel + mobile) | source **1.0.209** (v5.1, 28/09) ; 1.0.206 (v4.7) déployé le 27/09 sur TSW, XPanel et Crestron One ; 1.0.207 (v4.9) compilé par Donatien le 28/09 (à confirmer sur les supports) ; **v5.0 + v5.1 à compiler** en un build (`-Target web`, `tsw`, `mobile`) | `deploy.ps1` incrémente `version.json` à chaque build, puis aligner `meta.version` |
 | Showcase Vercel | prod = `74cd4a41` (17.09) ; copie locale régénérée le 27/09 (v4.4 → v4.7), **non poussée** | `sync-villa-crans.py` puis push `main` → Vercel |
 
-## Arborescence (monorepo, depuis la restructuration du 11.09.2026)
-`C:\dev\crestron\repo` — `projects/villa-crans/ch5` (GUI + C#, ce fichier à la racine) · `projects/villa-crans/simpl` (`contract/generate_slot2.js` → `simpl-windows/Project_Slot2.smw`, seul projet SIMPL ; l'historique `VillaCrans_Slot2.*` a été supprimé par Donatien le 17/09) · `apps/showcase` (site vitrine, clone de `donafcna/Crestronshowcase`, main → Vercel). Les anciens chemins `C:\Users\donat\Desktop\VillaCrans` et `VillaCrans SIMPL` ne sont plus utilisés.
 ## Fichiers qui comptent
 - `src/index.html` (dalle TSW-1070, iPad, XPanel) et `src/iphone.html` : SOURCE DE VÉRITÉ. Blocs `<style id="tablet-sidebar">` (menu de gauche groupé), `<style id="global-modals-xl">` (modales agrandies), `<style id="theme-readability">` / `<style id="theme-overlays">` (thèmes Sombre / Clair / Verre dépoli).
 - `src/js/villa-joins.js` : couche v3 (traduction par pièce) **désactivée** par `contrat.blocsPiecesGui.actif=false` ; sert encore à `villaPiecesActives(vc)` (pièces `actif:false` hors menus) et aux miroirs `data-join`.
@@ -139,7 +132,7 @@ La démo automatique démarre désormais sur **tous les supports** (elle était 
 6. **Jamais deux clés d'un même objet JSON qui ne diffèrent que par la casse** (`MUSIQUE` / `Musique` dans `traductions`) : `ConvertFrom-Json` de PowerShell 5.1 refuse le fichier et `deploy.ps1` s'arrête avant le build, alors que `JSON.parse` et Python les acceptent en silence. Contrôlé désormais par `tools/quality/validate-config.mjs`.
 
 ## Reste à faire
-1. **Compiler v5.0** : CH5 (`deploy.ps1 -Target web`, `tsw`, `mobile`), relever la version dans Réglages sur l'iPhone, puis aligner `meta.version`.
+1. **Compiler v5.0 + v5.1 (1.0.209)** : CH5 (`deploy.ps1 -Target web`, `tsw`, `mobile`) pour la Villa Crans ET l'Appartement Crans-Montana (`projects/appartement-crans`, après `python3 tools/assemble.py`), relever la version dans Réglages sur l'iPhone, puis aligner `meta.version`.
    Recette iPhone : partitions, scènes de la fenêtre Circuits (appui, état, appui long 💾), HVAC ON/OFF/ventilation, sauna/hammam.
 2. **Push de `main`** (commits locaux + vitrine régénérée v4.4 → v4.7) → Vercel ; vérifier en ligne. Attendre le GO de Donatien.
 3. LPZ v4.1 : charger `Project_Slot2.lpz` et recette Debugger (rappel de scène → `Rxx_Circuit_N_fb#`, 💾 → aucun join, dalle ↔ iPad, progreset).

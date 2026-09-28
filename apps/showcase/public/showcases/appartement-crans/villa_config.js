@@ -9,7 +9,7 @@ window.villaConfigEmbedded = {
     "tracesConsoleDescription": "false = le programme du slot 1 n'affiche en console que ses messages de diagnostic (démarrage, configuration, EISC, arrivée d'un périphérique, erreurs) et la GUI ne recopie plus ses console.log sur le sériel 100. Passer à true pour retrouver la trace complète des actions utilisateur pendant une mise au point ; un progreset suffit, aucune recompilation.",
     "tracesLatence": false,
     "tracesLatenceDescription": "Gouverne UNIQUEMENT les traces [LAT] du programme du slot 1 : une ligne par appui (ip, join, nombre de joins reellement ecrits, duree passee dans le programme). Le bandeau de latence de la GUI ne depend PAS de ce drapeau : villa_config.js est embarque dans le .ch5z au moment du build et le cache localStorage sert une copie figee, un drapeau de config n'atteindrait la GUI qu'apres le transfert complet du CP4, ou jamais. La GUI s'arme par geste : 5 appuis sur le titre CENTRALISATION en moins de 3 s, memorise par appareil, meme geste pour couper. Cote slot 1 un progreset suffit, aucune recompilation. A remettre a false apres la mesure.",
-    "dateModification": "2026-09-19",
+    "dateModification": "2026-09-28",
     "langueReference": "fr",
     "languesDisponibles": [
       "fr",
@@ -636,27 +636,33 @@ window.villaConfigEmbedded = {
           "liste": [
             {
               "nom": "Volet ext. 1",
-              "type": "volet"
+              "type": "volet",
+              "lamelles": false
             },
             {
               "nom": "Volet ext. 2",
-              "type": "volet"
+              "type": "volet",
+              "lamelles": false
             },
             {
               "nom": "Rideau ext. 1",
-              "type": "rideau"
+              "type": "rideau",
+              "lamelles": false
             },
             {
               "nom": "Rideau ext. 2",
-              "type": "rideau"
+              "type": "rideau",
+              "lamelles": false
             },
             {
               "nom": "Store 1",
-              "type": "store"
+              "type": "store",
+              "lamelles": false
             },
             {
               "nom": "Store 2",
-              "type": "store"
+              "type": "store",
+              "lamelles": false
             }
           ]
         },
@@ -760,27 +766,33 @@ window.villaConfigEmbedded = {
           "liste": [
             {
               "nom": "Volet ext. 1",
-              "type": "volet"
+              "type": "volet",
+              "lamelles": false
             },
             {
               "nom": "Volet ext. 2",
-              "type": "volet"
+              "type": "volet",
+              "lamelles": false
             },
             {
               "nom": "Rideau ext. 1",
-              "type": "rideau"
+              "type": "rideau",
+              "lamelles": false
             },
             {
               "nom": "Rideau ext. 2",
-              "type": "rideau"
+              "type": "rideau",
+              "lamelles": false
             },
             {
               "nom": "Store 1",
-              "type": "store"
+              "type": "store",
+              "lamelles": false
             },
             {
               "nom": "Store 2",
-              "type": "store"
+              "type": "store",
+              "lamelles": false
             }
           ]
         },
@@ -891,27 +903,33 @@ window.villaConfigEmbedded = {
           "liste": [
             {
               "nom": "Volet ext. 1",
-              "type": "volet"
+              "type": "volet",
+              "lamelles": false
             },
             {
               "nom": "Volet ext. 2",
-              "type": "volet"
+              "type": "volet",
+              "lamelles": false
             },
             {
               "nom": "Rideau ext. 1",
-              "type": "rideau"
+              "type": "rideau",
+              "lamelles": false
             },
             {
               "nom": "Rideau ext. 2",
-              "type": "rideau"
+              "type": "rideau",
+              "lamelles": false
             },
             {
               "nom": "Store 1",
-              "type": "store"
+              "type": "store",
+              "lamelles": false
             },
             {
               "nom": "Store 2",
-              "type": "store"
+              "type": "store",
+              "lamelles": false
             }
           ]
         },
@@ -1239,27 +1257,33 @@ window.villaConfigEmbedded = {
           "liste": [
             {
               "nom": "Volet ext. 1",
-              "type": "volet"
+              "type": "volet",
+              "lamelles": false
             },
             {
               "nom": "Volet ext. 2",
-              "type": "volet"
+              "type": "volet",
+              "lamelles": false
             },
             {
               "nom": "Rideau ext. 1",
-              "type": "rideau"
+              "type": "rideau",
+              "lamelles": false
             },
             {
               "nom": "Rideau ext. 2",
-              "type": "rideau"
+              "type": "rideau",
+              "lamelles": false
             },
             {
               "nom": "Store 1",
-              "type": "store"
+              "type": "store",
+              "lamelles": false
             },
             {
               "nom": "Store 2",
-              "type": "store"
+              "type": "store",
+              "lamelles": false
             }
           ]
         },
@@ -1701,27 +1725,33 @@ window.villaConfigEmbedded = {
           "liste": [
             {
               "nom": "Volet ext. 1",
-              "type": "volet"
+              "type": "volet",
+              "lamelles": false
             },
             {
               "nom": "Volet ext. 2",
-              "type": "volet"
+              "type": "volet",
+              "lamelles": false
             },
             {
               "nom": "Rideau ext. 1",
-              "type": "rideau"
+              "type": "rideau",
+              "lamelles": false
             },
             {
               "nom": "Rideau ext. 2",
-              "type": "rideau"
+              "type": "rideau",
+              "lamelles": false
             },
             {
               "nom": "Store 1",
-              "type": "store"
+              "type": "store",
+              "lamelles": false
             },
             {
               "nom": "Store 2",
-              "type": "store"
+              "type": "store",
+              "lamelles": false
             }
           ]
         },
@@ -1839,27 +1869,33 @@ window.villaConfigEmbedded = {
           "liste": [
             {
               "nom": "Volet ext. 1",
-              "type": "volet"
+              "type": "volet",
+              "lamelles": false
             },
             {
               "nom": "Volet ext. 2",
-              "type": "volet"
+              "type": "volet",
+              "lamelles": false
             },
             {
               "nom": "Rideau ext. 1",
-              "type": "rideau"
+              "type": "rideau",
+              "lamelles": false
             },
             {
               "nom": "Rideau ext. 2",
-              "type": "rideau"
+              "type": "rideau",
+              "lamelles": false
             },
             {
               "nom": "Store 1",
-              "type": "store"
+              "type": "store",
+              "lamelles": false
             },
             {
               "nom": "Store 2",
-              "type": "store"
+              "type": "store",
+              "lamelles": false
             }
           ]
         },
@@ -2183,27 +2219,33 @@ window.villaConfigEmbedded = {
           "liste": [
             {
               "nom": "Volet ext. 1",
-              "type": "volet"
+              "type": "volet",
+              "lamelles": false
             },
             {
               "nom": "Volet ext. 2",
-              "type": "volet"
+              "type": "volet",
+              "lamelles": false
             },
             {
               "nom": "Rideau ext. 1",
-              "type": "rideau"
+              "type": "rideau",
+              "lamelles": false
             },
             {
               "nom": "Rideau ext. 2",
-              "type": "rideau"
+              "type": "rideau",
+              "lamelles": false
             },
             {
               "nom": "Store 1",
-              "type": "store"
+              "type": "store",
+              "lamelles": false
             },
             {
               "nom": "Store 2",
-              "type": "store"
+              "type": "store",
+              "lamelles": false
             }
           ]
         },
@@ -2527,27 +2569,33 @@ window.villaConfigEmbedded = {
           "liste": [
             {
               "nom": "Volet ext. 1",
-              "type": "volet"
+              "type": "volet",
+              "lamelles": false
             },
             {
               "nom": "Volet ext. 2",
-              "type": "volet"
+              "type": "volet",
+              "lamelles": false
             },
             {
               "nom": "Rideau ext. 1",
-              "type": "rideau"
+              "type": "rideau",
+              "lamelles": false
             },
             {
               "nom": "Rideau ext. 2",
-              "type": "rideau"
+              "type": "rideau",
+              "lamelles": false
             },
             {
               "nom": "Store 1",
-              "type": "store"
+              "type": "store",
+              "lamelles": false
             },
             {
               "nom": "Store 2",
-              "type": "store"
+              "type": "store",
+              "lamelles": false
             }
           ]
         },
@@ -3061,7 +3109,7 @@ window.villaConfigEmbedded = {
     }
   },
   "contrat": {
-    "version": "v4.1 (18.09.2026) — scènes d'éclairage mémorisées par le C#, 20 circuits par pièce, sur la base v4 (15.09.2026 : joins de pilotage globaux, routage SIMPL par buffers)",
+    "version": "v4.1 (18.09.2026) — scènes d'éclairage mémorisées par le C#, 20 circuits par pièce, sur la base v4 (15.09.2026 : joins de pilotage globaux, routage SIMPL par buffers) ; v5.0 (28.09.2026) : lamelles moteurs 111-128",
     "alarme": {
       "description": "Centrale d'alarme de la villa. Le code de reference n'est plus code en dur ni dans le JavaScript du panel ni dans le C# : le GUI envoie la saisie sur le serial 43, le C# la relaie telle quelle a l'EISC du slot 2 (serial 43) et attend le verdict de la vraie centrale (digital 44 = accepte, 45 = refuse). Si le slot 2 ne repond pas dans le delai ci-dessous, le C# tranche localement avec codeParDefaut.",
       "codeParDefaut": "1234",
@@ -3257,6 +3305,15 @@ window.villaConfigEmbedded = {
         "direction": "bidirectionnel",
         "eiscJoinDebut": 81,
         "description": "Moteurs 1..6 : triplets Monter/Stop/Descendre (81,82,83 = moteur 1 ... 96,97,98 = moteur 6)"
+      },
+      {
+        "contractName": "Moteur.Lamelles",
+        "type": "digital",
+        "joinDebut": 111,
+        "nombre": 18,
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 111,
+        "description": "v5.0 (28.09.2026) Lamelles des moteurs 1..6 : triplets Horaire/Stop/Antihoraire (111,112,113 = moteur 1 ... 126,127,128 = moteur 6). Impulsions sans etat, routees sur la piece affichee (a10) comme les moteurs 81-98. Affichees par la GUI seulement si pieces[].pilotages.moteurs.liste[i].lamelles = true."
       },
       {
         "contractName": "Systeme.IpId",
@@ -3999,6 +4056,30 @@ window.villaConfigEmbedded = {
           "nombre": 4,
           "direction": "sortie",
           "description": "Consigne sauna, humidité cible hammam, température mesurée sauna, humidité mesurée hammam. -- tant que le driver ne fournit pas la mesure."
+        },
+        {
+          "contractName": "Piece.<id>.Moteur.Lamelles.A",
+          "type": "digital",
+          "offsetDebut": 25,
+          "nombre": 10,
+          "direction": "bidirectionnel",
+          "description": "v5.0 Lamelles moteurs 1..3 + moteur 4 Horaire : +25/26/27 = M1 Horaire/Stop/Antihoraire, +28/29/30 = M2, +31/32/33 = M3, +34 = M4 Horaire (suite en +37..40 et +46..49 : plus de 18 offsets contigus libres dans le bloc de 100)."
+        },
+        {
+          "contractName": "Piece.<id>.Moteur.Lamelles.B",
+          "type": "digital",
+          "offsetDebut": 37,
+          "nombre": 4,
+          "direction": "bidirectionnel",
+          "description": "v5.0 Lamelles : +37 = M4 Stop, +38 = M4 Antihoraire, +39/40 = M5 Horaire/Stop."
+        },
+        {
+          "contractName": "Piece.<id>.Moteur.Lamelles.C",
+          "type": "digital",
+          "offsetDebut": 46,
+          "nombre": 4,
+          "direction": "bidirectionnel",
+          "description": "v5.0 Lamelles : +46 = M5 Antihoraire, +47/48/49 = M6 Horaire/Stop/Antihoraire."
         }
       ]
     },
@@ -4124,7 +4205,25 @@ window.villaConfigEmbedded = {
           "624": 15,
           "625": 16,
           "626": 17,
-          "627": 18
+          "627": 18,
+          "111": 25,
+          "112": 26,
+          "113": 27,
+          "114": 28,
+          "115": 29,
+          "116": 30,
+          "117": 31,
+          "118": 32,
+          "119": 33,
+          "120": 34,
+          "121": 37,
+          "122": 38,
+          "123": 39,
+          "124": 40,
+          "125": 46,
+          "126": 47,
+          "127": 48,
+          "128": 49
         },
         "analog": {
           "31": 31,

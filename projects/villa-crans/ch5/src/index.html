@@ -3152,6 +3152,17 @@
         #cameras-grid-container > div { aspect-ratio: auto !important; height: 100% !important; min-height: 0 !important; border-radius: 12px !important; }
         #cameras-grid-container > div > div:nth-child(3), #cameras-grid-container > div > div:nth-child(4), #cameras-grid-container > div > div:nth-child(5) { font-size: 1rem !important; padding: 6px 12px !important; }
     </style>
+    <style id="touch-targets">
+        /* Cibles tactiles >= 40 px (batterie de contrôle, 27.09.2026) — correction au niveau du système :
+           les styles en ligne de ces boutons (30 / 34 / 35 px) sont surchargés ici, jamais écran par écran. */
+        #tab-lights-btn, #tab-shades-btn { height: 40px !important; }
+        button[onclick="closeCircuitsModal()"] { min-height: 40px !important; }
+        button[onclick^="saveCurrentScene"] { min-width: 40px !important; }
+        /* Fenêtre Circuits : 2 colonnes jusqu'à 10 circuits, 3 jusqu'à 15, 4 jusqu'à 20 (contrat v4.1),
+           pour que tous les curseurs restent visibles sans défilement (data-cols posé au remplissage). */
+        #circuits-container[data-cols="3"] { grid-template-columns: repeat(3, 1fr) !important; gap: 14px !important; }
+        #circuits-container[data-cols="4"] { grid-template-columns: repeat(4, 1fr) !important; gap: 12px !important; }
+    </style>
     <style id="theme-readability">
         /* --- Liste des pièces : le thème CH5 par défaut force le libellé en blanc --- */
         ch5-button[customClass~="room-selector-btn"] .ch5-button--label { color: var(--text-primary) !important; }
@@ -5877,7 +5888,11 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
             try {
                 localStorage.setItem('crestron_lang', lang);
             } catch (e) {}
-            const dict = translations[lang] || translations['fr'];
+            const dict = Object.assign({}, translations[lang] || translations['fr']);
+            // Ville du widget météo lue dans villa_config.json (widgets.meteoActualites.ville) : « Nyon »
+            // n'est que la valeur historique de la Villa Crans (27.09.2026, projet Appartement Crans-Montana).
+            const meteoCfg = window.villaConfig && window.villaConfig.widgets && window.villaConfig.widgets.meteoActualites;
+            if (meteoCfg && meteoCfg.ville && dict.weather_title) dict.weather_title = dict.weather_title.replace(/Nyon|Нион/, meteoCfg.ville);
             
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const key = el.getAttribute('data-i18n');
@@ -7330,6 +7345,7 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
             if (circuitsContainer) {
                 circuitsContainer.innerHTML = '';
                 const circuits = config.roomCircuits[roomId.toString()] || config.circuits;
+                circuitsContainer.dataset.cols = circuits.length <= 10 ? '2' : (circuits.length <= 15 ? '3' : '4');
                 circuits.forEach((circ, index) => {
                     const card = document.createElement('div');
                     card.style = "background: rgba(255,255,255,0.02); padding: 12px 18px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.05);";
@@ -7957,6 +7973,11 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
                 // que la liste des pièces utilise toute la hauteur de la colonne.
                 const weather = document.getElementById('weather-widget');
                 if (weather) weather.style.display = widgetOn('meteoActualites') ? '' : 'none';
+                // Ville du widget (widgets.meteoActualites.ville) : appliquée aussi quand la config arrive après la langue
+                const mcv = window.villaConfig && window.villaConfig.widgets && window.villaConfig.widgets.meteoActualites;
+                if (mcv && mcv.ville) document.querySelectorAll('[data-i18n="weather_title"]').forEach(el => {
+                    if (/Nyon|Нион/.test(el.textContent)) el.textContent = el.textContent.replace(/Nyon|Нион/, mcv.ville);
+                });
                 setTimeout(updateRoomScrollArrows, 80);
                 const bannerOn = widgetOn('bandeauActualites');
                 const banner = document.getElementById('news-banner');
@@ -9955,8 +9976,10 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
         }
 
         function fetchLiveWeather() {
-            // Coordonnées de Nyon (Vaud, CH) : Lat 46.3833, Long 6.2348
-            const url = 'https://api.open-meteo.com/v1/forecast?latitude=46.3833&longitude=6.2348&daily=weathercode,temperature_2m_max,temperature_2m_min&timezone=Europe/Zurich';
+            // Coordonnées par défaut : Nyon (Vaud, CH) ; surcharge par villa_config.json widgets.meteoActualites.{latitude,longitude}
+            const mc = (window.villaConfig && window.villaConfig.widgets && window.villaConfig.widgets.meteoActualites) || {};
+            const lat = Number(mc.latitude) || 46.3833, lon = Number(mc.longitude) || 6.2348;
+            const url = 'https://api.open-meteo.com/v1/forecast?latitude=' + lat + '&longitude=' + lon + '&daily=weathercode,temperature_2m_max,temperature_2m_min&timezone=Europe/Zurich';
             
             const xhr = new XMLHttpRequest();
             xhr.open('GET', url, true);
