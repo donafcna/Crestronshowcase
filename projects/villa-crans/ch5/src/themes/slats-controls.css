@@ -5,7 +5,13 @@
    ::after peint avec la couleur du texte (même technique que les flèches rideaux de
    room-controls.css) : jamais d'emoji, aucun enfant injecté dans le <ch5-button>. Cibles >= 44 px. */
 .motor-btn-stack { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
-.slats-row { display: flex; gap: 8px; }
+.slats-row { display: flex; gap: 8px; align-items: center; position: relative; }
+/* v5.1 : libellé « Lamelle » (traduit) à gauche des boutons, même style que le libellé du moteur.
+   Hors flux : il occupe l'espace libre sous le nom du moteur, sans élargir la colonne de boutons
+   (sinon le nom du moteur passe sur deux lignes sur smartphone). */
+.slats-title { position: absolute; right: calc(100% + 10px); top: 50%; transform: translateY(-50%);
+  color: var(--text-secondary); font-weight: 700; font-size: 0.95rem; white-space: nowrap; pointer-events: none; }
+body#app-body.theme-light .slats-title { color: #334155; }
 #motors-container .overlay-item-row .slats-row { gap: 6px; }
 /* La carte moteur de la dalle a une hauteur fixe en ligne (74 px) : avec lamelles elle s'adapte au contenu. */
 #motors-container .has-slats { align-items: flex-start !important; height: auto !important; min-height: 74px; }
@@ -34,6 +40,7 @@ body#app-body.theme-light .slats-btn::after { background: #0f172a; }
    rangée lamelles à 40 px (cible minimale du projet), empilement serré. */
 @media (max-width: 480px) {
   .motor-btn-stack { gap: 3px; }
+  .slats-title { font-size: 0.8rem; right: calc(100% + 6px); }
   #motors-container .overlay-item-row .slats-row button.slats-btn { height: 40px !important; min-height: 40px; }
   #motors-container .overlay-item-row.has-slats { padding-top: 4px !important; padding-bottom: 4px !important; }
 }

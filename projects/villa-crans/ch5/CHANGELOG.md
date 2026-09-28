@@ -1,5 +1,25 @@
 # Villa Crans CH5 — journal des versions
 
+## v5.2 — 28/09/2026 — libelle « Lamelle » (traduit) a gauche de chaque rangee de lamelles (a compiler : CH5 seul, web + tsw + mobile)
+
+| Artefact | Etat de ce lot |
+|---|---|
+| CH5 source | `src/js/slats-controls.js` (libelle + traductions + suivi de la langue), `src/themes/slats-controls.css` — **a recompiler** ; HTML inchanges |
+| CPZ / LPZ | inchanges (1.0.196.0 / SMW du 28.09 a compiler depuis v5.0) |
+| Config | `meta.version` 1.0.210 (le lot v5.1 « Core pour l'Appartement Crans-Montana » d'une autre session a pris 1.0.209) |
+| Showcase | regeneree, poussee avec ce lot |
+| Batterie | `tools/qa-lamelles.mjs` : 16/16 VERT — en plus de v5.0 : libelle present sur chaque rangee, non tronque, ne chevauche pas le nom du moteur, nom du moteur sur une ligne ; langues FR « Lamelle » / EN « Slats » / DE « Lamellen » / retour FR, dalle et iPhone |
+
+**Demande Donatien.** Pour tous les pilotages de lamelles, le texte « Lamelle » a gauche des boutons, traduit dans la langue choisie.
+Libelle `.slats-title` cree par `slats-controls.js`, traduit via `currentLang` des deux GUI (fr Lamelle, en Slats, de Lamellen, es Lamas,
+ru Ламели), mis a jour a chaque changement de langue (aria-label des boutons compris). Place **hors flux** (`position:absolute` a gauche de la
+rangee) : il occupe l'espace libre sous le nom du moteur sans elargir la colonne de boutons — la premiere version en flux faisait passer
+« Volet ext. 1 » sur deux lignes sur l'iPhone (vu sur la planche-contact, corrige avant livraison).
+
+**Decisions par defaut.** Singulier « Lamelle » en francais comme demande, pluriel naturel dans les autres langues ; meme style que le nom du
+moteur (`--text-secondary`, gras) ; dans la vitrine, le GUI suit sa propre langue (Reglages), pas le selecteur de langue du site.
+
+
 ## v5.1 — 28/09/2026 — Core au service d'un 2e projet (Appartement Crans-Montana) : cibles 40 px, Circuits 3/4 colonnes, contraste Clair iPhone, ville météo (a compiler : CH5 seul)
 
 | Artefact | Etat de ce lot |
@@ -34,6 +54,7 @@ GPU echouent avant comme apres, hors lot).
 
 **Reste connu (Core, non traite).** Poignees de curseur CH5 30 px ; piece sans audio-video : moitie basse de la page
 vide ; iPhone : familles Volets / Rideaux / Stores affichees meme sans volet ; libelles de sources figes dans le HTML.
+
 ## v5.0 — 28/09/2026 — Lamelles : rangee Horaire / Stop / Antihoraire par moteur, activable dans villa_config.json (a compiler : CH5 web + tsw + mobile, CPZ 1.0.196.0, LPZ F12)
 
 | Artefact | Etat de ce lot |

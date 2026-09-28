@@ -24,16 +24,30 @@
     var item = m.liste && m.liste[motorIdx - 1];
     return !!(item && item.lamelles === true);
   }
-  function labelFor(kind) {
-    var lang = 'fr';
-    try { var ls = document.getElementById('lang-select'); lang = (ls && ls.value) || localStorage.getItem('crestron_lang') || 'fr'; } catch (e) { }
-    var T = { fr: ['Lamelles sens horaire', 'Arrêt lamelles', 'Lamelles sens antihoraire'],
-              en: ['Slats clockwise', 'Stop slats', 'Slats anticlockwise'],
-              de: ['Lamellen im Uhrzeigersinn', 'Lamellen Stopp', 'Lamellen gegen den Uhrzeigersinn'],
-              es: ['Lamas sentido horario', 'Parar lamas', 'Lamas sentido antihorario'],
-              ru: ['Ламели по часовой', 'Стоп ламели', 'Ламели против часовой'] };
-    var t = T[lang] || T.fr;
-    return kind === 'cw' ? t[0] : kind === 'stop' ? t[1] : t[2];
+  // Langue affichée : variable `currentLang` des deux GUI (applyLanguage), sinon la valeur mémorisée.
+  function currentLanguage() {
+    try { if (typeof currentLang !== 'undefined' && currentLang) return String(currentLang); } catch (e) { }
+    try { return localStorage.getItem('crestron_lang_iphone') || localStorage.getItem('crestron_lang') || 'fr'; } catch (e) { return 'fr'; }
+  }
+  var T = {
+    fr: { titre: 'Lamelle',   cw: 'Lamelles sens horaire',       stop: 'Arrêt lamelles', ccw: 'Lamelles sens antihoraire' },
+    en: { titre: 'Slats',     cw: 'Slats clockwise',             stop: 'Stop slats',     ccw: 'Slats anticlockwise' },
+    de: { titre: 'Lamellen',  cw: 'Lamellen im Uhrzeigersinn',   stop: 'Lamellen Stopp', ccw: 'Lamellen gegen den Uhrzeigersinn' },
+    es: { titre: 'Lamas',     cw: 'Lamas sentido horario',       stop: 'Parar lamas',    ccw: 'Lamas sentido antihorario' },
+    ru: { titre: 'Ламели',    cw: 'Ламели по часовой',           stop: 'Стоп ламели',    ccw: 'Ламели против часовой' }
+  };
+  function dict() { var l = currentLanguage().slice(0, 2).toLowerCase(); return T[l] || T.fr; }
+  function labelFor(kind) { return dict()[kind]; }
+  // Met à jour le libellé « Lamelle » et les aria-label de toutes les rangées (changement de langue).
+  function translateRows() {
+    var d = dict();
+    document.querySelectorAll('.slats-row').forEach(function (row) {
+      var t = row.querySelector('.slats-title'); if (t && t.textContent !== d.titre) t.textContent = d.titre;
+      row.querySelectorAll('.slats-btn').forEach(function (b) {
+        var k = b.classList.contains('slats-cw') ? 'cw' : b.classList.contains('slats-ccw') ? 'ccw' : 'stop';
+        if (b.getAttribute('aria-label') !== d[k]) b.setAttribute('aria-label', d[k]);
+      });
+    });
   }
   // Un bouton par sens : <ch5-button> sur les châssis CH5 (dalle), <button> + pressDigital sur l'iPhone.
   function makeButton(kind, join, native) {
@@ -104,6 +118,11 @@
       row.className = 'slats-row';
       row.setAttribute('data-motor', String(i));
       var b = BASE + (i - 1) * 3;
+      // Libellé à gauche des boutons (v5.1) : « Lamelle », traduit dans la langue affichée.
+      var title = document.createElement('span');
+      title.className = 'slats-title';
+      title.textContent = labelFor('titre');
+      row.appendChild(title);
       row.appendChild(makeButton('cw', b, native));
       row.appendChild(makeButton('stop', b + 1, native));
       row.appendChild(makeButton('ccw', b + 2, native));
@@ -130,7 +149,11 @@
     // Changement de pièce : la dalle ne régénère pas ses cartes (libellés mis à jour en place) —
     // on suit la pièce affichée et on rejoue dès qu'elle change.
     var lastRoom = currentRoomId();
-    setInterval(function () { var r = currentRoomId(); if (r !== lastRoom) { lastRoom = r; equip(); } }, 400);
+    var lastLang = currentLanguage();
+    setInterval(function () {
+      var r = currentRoomId(); if (r !== lastRoom) { lastRoom = r; equip(); }
+      var l = currentLanguage(); if (l !== lastLang) { lastLang = l; translateRows(); }
+    }, 400);
     window.villaSlatsRefresh = schedule;
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();

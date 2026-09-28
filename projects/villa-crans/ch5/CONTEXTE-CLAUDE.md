@@ -12,6 +12,7 @@
 - Règle apprise : sur le banc Chromium, **aucun `<ch5-button>` n'émet** (témoin 81 muet) — la chaîne n'est mesurable que sur les `<button>` ;
   les classes de présentation vont sur l'hôte `<ch5-button>`, jamais dans `customClass` (recopié sur l'élément interne).
 - Modules partagés = `js/*-controls.js` + `themes/*-controls.css`, copiés en bloc par `sync-villa-crans.py`.
+- v5.2 : libellé « Lamelle » (traduit, `currentLang`) à gauche de la rangée, **hors flux** pour ne pas élargir la colonne de boutons.
 
 ## 27/09/2026 — v4.7 : conversion iPhone terminée (CH5 à compiler, vitrine régénérée non poussée)
 - **Sur l'iPhone (Crestron One), tout bouton à état est un `<button>`** : `pressDigital(N)` à l'appui, `subscribeState` → `toggleSelected` au retour,
@@ -53,7 +54,7 @@
 Quatre versions à tenir alignées, ici et en tête de chaque entrée du CHANGELOG.
 | Artefact | Version | Compilation |
 |---|---|---|
-| CH5 `.ch5z` (TSW + XPanel + mobile) | source **1.0.209** (v5.1, 28/09) ; 1.0.206 (v4.7) déployé le 27/09 sur TSW, XPanel et Crestron One ; 1.0.207 (v4.9) compilé par Donatien le 28/09 (à confirmer sur les supports) ; **v5.0 + v5.1 à compiler** en un build (`-Target web`, `tsw`, `mobile`) | `deploy.ps1` incrémente `version.json` à chaque build, puis aligner `meta.version` |
+| CH5 `.ch5z` (TSW + XPanel + mobile) | source **1.0.210** (v5.2, 28/09 ; v5.1 = 1.0.209 Core pour l'Appartement Crans-Montana) ; 1.0.206 (v4.7) déployé le 27/09 sur TSW, XPanel et Crestron One ; 1.0.207 (v4.9) compilé par Donatien le 28/09 (à confirmer sur les supports) ; **v5.0 + v5.1 + v5.2 à compiler** en un build (`-Target web`, `tsw`, `mobile`) | `deploy.ps1` incrémente `version.json` à chaque build, puis aligner `meta.version` |
 | Showcase Vercel | prod = `74cd4a41` (17.09) ; copie locale régénérée le 27/09 (v4.4 → v4.7), **non poussée** | `sync-villa-crans.py` puis push `main` → Vercel |
 
 ## Fichiers qui comptent
@@ -132,7 +133,7 @@ La démo automatique démarre désormais sur **tous les supports** (elle était 
 6. **Jamais deux clés d'un même objet JSON qui ne diffèrent que par la casse** (`MUSIQUE` / `Musique` dans `traductions`) : `ConvertFrom-Json` de PowerShell 5.1 refuse le fichier et `deploy.ps1` s'arrête avant le build, alors que `JSON.parse` et Python les acceptent en silence. Contrôlé désormais par `tools/quality/validate-config.mjs`.
 
 ## Reste à faire
-1. **Compiler v5.0 + v5.1 (1.0.209)** : CH5 (`deploy.ps1 -Target web`, `tsw`, `mobile`) pour la Villa Crans ET l'Appartement Crans-Montana (`projects/appartement-crans`, après `python3 tools/assemble.py`), relever la version dans Réglages sur l'iPhone, puis aligner `meta.version`.
+1. **Compiler v5.0 + v5.1 + v5.2 (1.0.210)** : CH5 (`deploy.ps1 -Target web`, `tsw`, `mobile`) pour la Villa Crans ET l'Appartement Crans-Montana (`projects/appartement-crans`, après `python3 tools/assemble.py`), relever la version dans Réglages sur l'iPhone, puis aligner `meta.version`.
    Recette iPhone : partitions, scènes de la fenêtre Circuits (appui, état, appui long 💾), HVAC ON/OFF/ventilation, sauna/hammam.
 2. **Push de `main`** (commits locaux + vitrine régénérée v4.4 → v4.7) → Vercel ; vérifier en ligne. Attendre le GO de Donatien.
 3. LPZ v4.1 : charger `Project_Slot2.lpz` et recette Debugger (rappel de scène → `Rxx_Circuit_N_fb#`, 💾 → aucun join, dalle ↔ iPad, progreset).

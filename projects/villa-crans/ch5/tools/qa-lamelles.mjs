@@ -34,6 +34,11 @@ window.__slats = function (root, expected) {
     if (want && !row) { out.missing.push(i); continue; }
     if (!want && row) { out.extra.push(i); continue; }
     if (!row) continue;
+    const ti = row.querySelector(':scope > .slats-title');
+    if (!ti || !ti.textContent.trim()) out.missing.push(i + ':libellé');
+    else { const tr = ti.getBoundingClientRect(); if (ti.scrollWidth > ti.clientWidth + 1 || tr.left < box.left - 1) out.outside.push(i + ':libellé');
+      const card = row.closest('.overlay-item-row, .has-slats'); const nm = card && [...card.querySelectorAll('span')].find(sp => sp !== ti && !sp.closest('.slats-row, ch5-button, button') && sp.textContent.trim());
+      if (nm) { const nr = nm.getBoundingClientRect(); if (!(tr.right <= nr.left || tr.left >= nr.right || tr.bottom <= nr.top || tr.top >= nr.bottom)) out.outside.push(i + ':chevauche nom'); if (nr.height > 30) out.outside.push(i + ':nom sur 2 lignes (' + Math.round(nr.height) + 'px, ' + (nm.id || nm.textContent.trim().slice(0, 12)) + ')'); } }
     const btns = row.querySelectorAll(':scope > .slats-btn'); if (btns.length !== 3) out.missing.push(i + ':' + btns.length);
     btns.forEach(b => { const r = b.getBoundingClientRect(); if (r.width < 40 || r.height < 40) out.small.push(i + ':' + Math.round(r.width) + 'x' + Math.round(r.height));
       if (r.right > box.right + 1 || r.left < box.left - 1) out.outside.push(i);
@@ -82,17 +87,25 @@ async function run(kind) {
   };
   const chain = { m1_cw: await press('.slats-row[data-motor="1"] .slats-cw', 111), m1_stop: await press('.slats-row[data-motor="1"] .slats-stop', 112), m6_ccw: await press('.slats-row[data-motor="6"] .slats-ccw', 128),
     temoin_m1_up: await press(isDalle ? '#motors-container ch5-button[sendEventOnClick="81"]' : '#motors-container .overlay-item-row:first-child .shade-btn-mobile', 81) };
+  const langs = {};
+  for (const [lg, attendu] of [['fr', 'Lamelle'], ['en', 'Slats'], ['de', 'Lamellen'], ['fr', 'Lamelle']]) {
+    await p.evaluate(l => { if (window.changeLanguage) window.changeLanguage(l); else if (window.applyLanguage) window.applyLanguage(l); }, lg);
+    await p.waitForTimeout(700);
+    const vu = await p.evaluate(() => [...document.querySelectorAll('#motors-container .slats-title')].map(e => e.textContent.trim()));
+    langs[lg + (langs[lg] ? '-retour' : '')] = vu.length && vu.every(v => v === attendu) ? 'OK « ' + attendu + ' »' : 'KO ' + JSON.stringify(vu.slice(0, 2));
+  }
+  rows.push({ ctx: `${kind}/langues`, chain: langs, ok: Object.values(langs).every(v => v.startsWith('OK')) });
   // Sur le banc (Chromium sans hôte Crestron), AUCUN <ch5-button> n'émet — pas même le témoin 81 ni les scènes statiques ;
   // l'émission des <ch5-button> est vérifiée sur matériel (v4.x). La chaîne n'est donc mesurable que pour les <button> (iPhone).
   const mesurable = chain.temoin_m1_up.startsWith('impulsion');
   if (!mesurable) chain.note = 'témoin 81 muet sur le banc : émission <ch5-button> non mesurable ici (vérifiée sur matériel)';
-  rows.push({ ctx: `${kind}/chaine`, chain, ok: mesurable ? Object.values(chain).every(v => v.startsWith('impulsion')) : true });
+  rows.push({ ctx: `${kind}/chaine`, chain, ok: mesurable ? Object.values(chain).filter(v => v !== chain.note).every(v => v.startsWith('impulsion')) : true });
   await closeMotors(); await p.close();
 }
 await run('dalle'); await run('iphone');
 await b.close();
 const bad = rows.filter(r => !r.ok);
-const L = [`# Lamelles v5.0 — ${rows.length} contrôles, ${bad.length} en défaut`, '', '| Contexte | Rangées lamelles (manquantes / en trop / < 40 px / hors cadre / sans icône) | Défilement fenêtre | Contraste < 4:1 | Scroll H | Erreurs console | Résultat |', '|---|---|---|---|---|---|---|'];
+const L = [`# Lamelles v5.2 — ${rows.length} contrôles, ${bad.length} en défaut`, '', '| Contexte | Rangées lamelles (manquantes / en trop / < 40 px / hors cadre / sans icône) | Défilement fenêtre | Contraste < 4:1 | Scroll H | Erreurs console | Résultat |', '|---|---|---|---|---|---|---|'];
 for (const r of rows) {
   if (r.chain) { L.push(`| ${r.ctx} | ${Object.entries(r.chain).map(([k, v]) => k + ' : ' + v).join('<br>')} | — | — | — | — | ${r.ok ? 'VERT' : '**ROUGE**'} |`); continue; }
   const s = r.s; L.push(`| ${r.ctx} | ${[s.missing, s.extra, s.small, s.outside, s.iconless].map(a => a.length ? a.join(',') : '0').join(' / ')} | ${s.scrolls ? 'OUI ' + s.scrolls : 'non'} | ${r.contrast.length ? r.contrast.map(c => `${c.c}:1 « ${c.t} »`).join('<br>') : '0'} | ${r.hscroll ? 'OUI' : 'non'} | ${r.errs.length ? r.errs.join('<br>') : '0'} | ${r.ok ? 'VERT' : '**ROUGE**'} |`);
