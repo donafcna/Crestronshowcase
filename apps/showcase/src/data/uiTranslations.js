@@ -9,6 +9,7 @@
 export const uiTranslations = {
   fr: {
     demo_back: "Retour aux démos",
+    demo_rotate: "Tournez votre iPhone en portrait : cette interface est conçue pour ce seul format.",
     demo_toggle_device: "Basculer téléphone / tablette",
     demo_unsupported: "Cette interface n’est pas prévue pour ce support. Retrouvez ses supports disponibles sur le site complet.",
     demo_unknown: "Démo introuvable",
@@ -85,6 +86,7 @@ export const uiTranslations = {
   },
   en: {
     demo_back: "Back to demos",
+    demo_rotate: "Turn your iPhone to portrait: this interface is designed for that format only.",
     demo_toggle_device: "Switch phone / tablet",
     demo_unsupported: "This interface is not designed for this device. Find its available devices on the full site.",
     demo_unknown: "Demo not found",
@@ -161,6 +163,7 @@ export const uiTranslations = {
   },
   de: {
     demo_back: "Zurück zu den Demos",
+    demo_rotate: "Drehen Sie Ihr iPhone ins Hochformat: diese Oberfläche ist nur dafür ausgelegt.",
     demo_toggle_device: "Telefon / Tablet wechseln",
     demo_unsupported: "Diese Oberfläche ist für dieses Gerät nicht vorgesehen. Die unterstützten Geräte finden Sie auf der vollständigen Website.",
     demo_unknown: "Demo nicht gefunden",

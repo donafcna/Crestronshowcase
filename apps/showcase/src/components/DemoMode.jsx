@@ -50,6 +50,15 @@ const renderIcon = (iconName, size = 16, className = "") => {
 const DemoPlayer = ({ project, deviceType, onBack }) => {
   const { lang, t } = useTranslation();
 
+  // GUI téléphone : portrait uniquement. Verrou d'orientation quand le système
+  // l'accorde (PWA installée, Android) ; sinon un écran demande de tourner l'appareil.
+  useEffect(() => {
+    if (deviceType !== "phone") return undefined;
+    const orientation = window.screen?.orientation;
+    if (orientation?.lock) orientation.lock("portrait").catch(() => {});
+    return () => { try { orientation?.unlock?.(); } catch { /* ignore */ } };
+  }, [deviceType]);
+
   const Simulator = getSimulator(project);
 
   const embedSrc =
@@ -63,6 +72,13 @@ const DemoPlayer = ({ project, deviceType, onBack }) => {
       <button className="demo-ctrl-btn demo-back-btn" onClick={onBack} aria-label={t("demo_back")}>
         {renderIcon("ChevronLeft", 20)}
       </button>
+
+      {deviceType === "phone" && (
+        <div className="demo-rotate-lock" role="alert">
+          {renderIcon("Smartphone", 44, "demo-rotate-icon")}
+          <p>{t("demo_rotate")}</p>
+        </div>
+      )}
 
       <div className="demo-player-screen">
         {Simulator ? (

@@ -400,3 +400,25 @@
   font-size: 3rem;
   font-weight: 800;
 }
+
+/* GUI téléphone en paysage : la GUI est masquée et l'écran demande le portrait. */
+.demo-rotate-lock { display: none; }
+@media (orientation: landscape) and (max-height: 520px) {
+  .demo-rotate-lock {
+    position: absolute;
+    inset: 0;
+    z-index: 700;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    padding: 24px;
+    text-align: center;
+    background: #080b11;
+    color: #e2e8f0;
+    font-size: 1rem;
+  }
+  .demo-rotate-icon { transform: rotate(90deg); opacity: .9; }
+  .demo-rotate-lock + .demo-player-screen { visibility: hidden; }
+}

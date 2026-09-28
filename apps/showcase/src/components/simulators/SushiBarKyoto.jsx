@@ -14,7 +14,7 @@ const sceneLevels = {
   rooftop:{tables:60,bar:52,pergola:88,plants:82}, cleaning:{tables:100,bar:100,pergola:100,plants:65}, closed:{tables:0,bar:8,pergola:0,plants:18},
 };
 const circuitLabels = {
-  exterior:[['tables','Appliques des clôtures'],['bar','Lampadaires et lanternes'],['pergola','Spots de sol'],['plants','Chemins et jardins']],
+  exterior:[['tables','Appliques de façade et clôture'],['bar','Lampadaires et lanternes'],['pergola','Spots de sol'],['plants','Chemins et jardins']],
   default:[['tables','Suspensions et lustres'],['bar','Appliques et corniches'],['pergola','Spots plafond'],['plants','Balises et éclairage décoratif']],
 };
 const Icon = ({name,size=17}) => { const C=Icons[name]||Icons.Circle; return <C size={size}/>; };

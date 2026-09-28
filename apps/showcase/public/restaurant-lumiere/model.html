@@ -71,27 +71,79 @@ function staircase(x,z,fromY){
  // Rappel lumineux sur chaque volee.
  for(let i=0;i<steps/2;i++){box(q,-3.15,(i+1)*rise/steps+.02,-2.6+i*run,.08,.05,run,glow.exterior);box(q,3.15,rise/2+(i+1)*rise/steps+.02,-2.6+(steps/2-i)*run+landing,.08,.05,run,glow.exterior);}
 }
-LEVELS.forEach((y,i)=>levelPlate(y,i));
+// Murs de facade : soubassement plein, bandeau vitre, linteau ; la facade avant
+// du rez-de-chaussee est entierement vitree autour de la porte d'entree.
+function facadeWall(x,y,z,len,rot,index,frontGlazed=false,doorAt=null){
+ const q=new T.Group();q.position.set(x,y,z);q.rotation.y=rot;q.userData.level=index;structure.add(q);
+ if(frontGlazed){
+  const n=Math.round(len/4);
+  for(let i=0;i<n;i++){const cx=(i-(n-1)/2)*(len/n);if(doorAt!==null&&Math.abs(cx-doorAt)<2.4)continue;box(q,cx,2.2,0,len/n-.25,3.9,.12,M.glass);}
+  for(let i=0;i<=n;i++){const cx=(i-n/2)*(len/n);if(doorAt!==null&&Math.abs(cx-doorAt)<2.1)continue;box(q,cx,2.2,0,.22,4.0,.30,M.metal);}
+  box(q,0,4.22,0,len,.28,.36,M.charcoal);box(q,0,.12,0,len,.24,.3,M.charcoal);
+  return q;
+ }
+ box(q,0,.6,0,len,1.2,.34,M.charcoal);box(q,0,2.2,0,len,2.0,.14,M.glass);box(q,0,3.75,0,len,1.1,.34,M.charcoal);
+ for(let cx=-len/2+2;cx<len/2;cx+=4)box(q,cx,2.2,0,.18,2.0,.32,M.metal);
+ return q;
+}
+LEVELS.forEach((y,i)=>{levelPlate(y,i);const P=PLATES[i];
+ facadeWall(P.x,y,P.z-P.d/2+.17,P.w,0,i);
+ facadeWall(P.x-P.w/2+.17,y,P.z,P.d,Math.PI/2,i);
+ facadeWall(P.x+P.w/2-.17,y,P.z,P.d,Math.PI/2,i);
+ if(i===0)facadeWall(P.x,y,P.z+P.d/2-.17,P.w,0,i,true,-P.x);
+});
+// Toit a debord au-dessus des salles du dernier niveau ; le jardin suspendu reste a ciel ouvert.
+{const y=LEVELS[2]+4.3,q=new T.Group();q.userData.level=2;structure.add(q);const roof=box(q,1,y,-1,88,.36,17,M.charcoal);roof.castShadow=false;box(q,1,y+.22,-1,86,.08,15,M.stone).castShadow=false;
+ for(const dz of [-1,1])box(q,1,y-.14,-1+dz*8.5,88,.08,.14,glow.exterior);for(const dx of [-1,1])box(q,1+dx*44,y-.14,-1,.14,.08,17,glow.exterior);
+ for(let x=-40;x<=42;x+=8.2)box(q,x,y-2.2,7.2,.32,4.4,.32,M.metal);}
 staircase(40,3,0);staircase(40,-1,4.8);
+// Entree principale : double porte vitree, auvent, marches et tapis lumineux vers le parvis.
+{const q=new T.Group();q.userData.level=0;structure.add(q);const z=PLATES[0].z+PLATES[0].d/2;
+ for(const sx of [-1,1]){box(q,sx*1.0,1.55,z-.05,1.85,3.1,.08,M.glass);box(q,sx*1.0,1.55,z-.05,1.95,3.2,.06,M.gold).material=M.gold;box(q,sx*.35,1.5,z+.02,.06,.9,.05,M.gold);}
+ box(q,0,3.3,z-.05,4.3,.2,.2,M.gold);box(q,0,3.4,z-.02,4.0,.06,.08,glow.exterior);
+ const canopy=box(q,0,4.75,z+1.9,9.5,.28,4.2,M.charcoal);canopy.castShadow=false;box(q,0,4.55,z+3.9,9.5,.08,.14,glow.exterior);
+ for(const sx of [-1,1])box(q,sx*4.3,2.4,z+3.6,.3,4.8,.3,M.metal);
+ for(let i=0;i<3;i++){box(q,0,-.12-i*.16,z+.6+i*.55,9.0,.16,.55,M.stone);box(q,0,-.06-i*.16,z+.34+i*.55,9.0,.03,.08,glow.exterior);}
+ box(q,0,-.5,z+6.5,6.0,.06,8.0,M.stone);for(const sx of [-1,1])box(q,sx*3.1,-.45,z+6.5,.12,.05,8.0,glow.exterior);}
 for(const s of specs){const [id,name,x,y,z,w,d,shape,pattern,rot,canopy]=s,g=new T.Group();g.name=id;g.position.set(x,y,z);g.rotation.y=rot;building.add(g);roomGroups[id]=g;platform(g,shape,w,d);shell(g,shape,w,d,canopy);furniture(g,pattern,w,d);specialDecor(g,id,w,d);lighting(g,w,d,id==='bar'||id==='rooftop'||id==='teppanyaki'?'bar':canopy==='pergola'?'pergola':'tables');sign(g,name,w,d)}
+// Appliques de facade : circuit « Appliques de facade et cloture » de la zone Exterieur.
+const facadeLights=new T.Group();facadeLights.name='Appliques de facade';overviewArchitecture.add(facadeLights);
+function sconce(x,y,z,rot){const q=new T.Group();q.position.set(x,y,z);q.rotation.y=rot;facadeLights.add(q);box(q,0,0,0,.22,.42,.12,M.metal);box(q,0,.28,.06,.16,.14,.14,glow.tables);box(q,0,-.28,.06,.16,.14,.14,glow.tables);}
+LEVELS.forEach((y,i)=>{const P=PLATES[i],h=y+2.9;
+ for(let x=-P.w/2+3;x<P.w/2;x+=4.2)sconce(P.x+x,h,P.z-P.d/2-.2,Math.PI);
+ for(let z=-P.d/2+3;z<P.d/2;z+=4.2){sconce(P.x-P.w/2-.2,h,P.z+z,-Math.PI/2);sconce(P.x+P.w/2+.2,h,P.z+z,Math.PI/2);}
+ if(i===0)for(let x=-P.w/2+3;x<P.w/2;x+=4.2){if(Math.abs(x+P.x)<5.5)continue;sconce(P.x+x,h,P.z+P.d/2+.24,0);}
+});
+// Domaine : mur bas surmonte d'une grille, portail a deux vantaux dans l'axe de l'entree, parking.
+{const E={x:0,z:4,w:100,d:68},top=E.z+E.d/2,bottom=E.z-E.d/2;
+ const segment=(cx,cz,len,rot)=>{const q=new T.Group();q.position.set(cx,0,cz);q.rotation.y=rot;overviewArchitecture.add(q);box(q,0,.35,0,len,.7,.4,M.stone);for(let i=-len/2;i<=len/2;i+=2.5){box(q,i,1.45,0,.12,1.5,.12,M.metal);}box(q,0,2.22,0,len,.08,.16,M.metal);};
+ segment(-25.5-11.5,top,26,0);segment(25.5+11.5,top,26,0);segment(0,bottom,E.w,0);segment(-E.w/2,E.z,E.d,Math.PI/2);segment(E.w/2,E.z,E.d,Math.PI/2);
+ // Portail : deux piliers, deux vantaux entrouverts, eclairage.
+ for(const sx of [-1,1]){box(overviewArchitecture,sx*12.5,1.4,top,.9,2.8,.9,M.stone);box(overviewArchitecture,sx*12.5,2.95,top,1.1,.3,1.1,M.metal);box(overviewArchitecture,sx*12.5,3.25,top,.4,.35,.4,glow.tables);
+  const leaf=new T.Group();leaf.position.set(sx*12.0,0,top);leaf.rotation.y=sx*.55;overviewArchitecture.add(leaf);box(leaf,-sx*5.5,1.35,0,11,2.3,.08,M.metal);for(let i=1;i<11;i+=1.1)box(leaf,-sx*i,1.35,0,.08,2.3,.12,M.metal);box(leaf,-sx*5.5,2.55,0,11,.12,.16,M.gold);}
+ // Parking entre le portail et le parvis : marquage au sol, vehicules, candelabres.
+ box(overviewArchitecture,0,-.14,29.5,44,.06,15,M.charcoal);
+ for(let i=0;i<=7;i++){box(overviewArchitecture,-21+i*6,-.09,25,.14,.02,5.6,M.cream);box(overviewArchitecture,-21+i*6,-.09,34,.14,.02,5.6,M.cream);}
+ const car=(x,z,color)=>{const q=new T.Group();q.position.set(x,0,z);overviewArchitecture.add(q);box(q,0,.35,0,2.0,.7,4.4,color);box(q,0,.95,-.2,1.8,.55,2.4,M.metal);for(const sx of [-1,1])for(const sz of [-1,1])cyl(q,sx*.95,.3,sz*1.4,.32,.25,M.metal,14).rotation.z=Math.PI/2;box(q,0,.5,2.22,1.5,.12,.04,glow.exterior);};
+ car(-18,25,M.cream);car(-6,25,M.charcoal);car(6,25,M.blue);car(12,34,M.red);car(-12,34,M.stone);car(18,34,M.charcoal);
+ for(const x of [-24,-8,8,24])lantern(x,29.5,4.4,true);}
 // Luxury architecture and illuminated landscape shown in the full-building view.
 function path(x,z,w,d,rot=0,y=.08){const o=box(overviewArchitecture,x,y,z,w,.16,d,M.wood);o.rotation.y=rot;for(let i=-w/2+1;i<w/2;i+=2.2){const lamp=box(overviewArchitecture,x+i*Math.cos(rot),y+.13,z-i*Math.sin(rot),.16,.12,.16,glow.exterior);lamp.rotation.y=rot}return o}
 function lantern(x,z,h=3.2,light=false){cyl(overviewArchitecture,x,h/2,z,.075,h,M.metal,12);box(overviewArchitecture,x,h+.05,z,.58,.72,.58,M.gold);box(overviewArchitecture,x,h+.05,z,.4,.52,.4,glow.bar);box(overviewArchitecture,x,.18,z,.72,.18,.72,M.charcoal);if(light){const p=new T.PointLight(0xffbd72,3.5,14,1.7);p.position.set(x,h,z);overviewArchitecture.add(p);pointLights.push({p,group:'bar',zone:'exterior'})}}
 function groundSpot(x,z,light=false){cyl(overviewArchitecture,x,.12,z,.24,.18,M.metal,16);const face=cyl(overviewArchitecture,x,.23,z,.17,.04,glow.pergola,16);face.rotation.x=.08;if(light){const p=new T.PointLight(0xffd09a,1.75,8,2);p.position.set(x,.38,z);overviewArchitecture.add(p);pointLights.push({p,group:'pergola',zone:'exterior'})}}
 function facadeLine(x,z,w,d,rot=0){const q=new T.Group();q.position.set(x,0,z);q.rotation.y=rot;q.scale.y=.32;overviewArchitecture.add(q);box(q,0,1.5,0,w,2.8,d,M.stone);for(let i=-w/2+1;i<w/2;i+=1.75){box(q,i,1.5,-d*.58,.24,.58,.14,glow.tables);box(q,i,2.55,-d*.56,.1,.1,.18,glow.tables)}box(q,0,3.05,-d*.54,w*.96,.09,.14,glow.tables)}
-path(0,26,72,3,0);for(const p of [[-24,32,3,11,-.35,.08],[24,32,3,11,.35,.08]])path(...p);
-box(overviewArchitecture,0,-.42,4,104,.45,72,M.charcoal);box(overviewArchitecture,0,-.22,4,100,.12,68,M.moss);facadeLine(0,36,96,.38,0);facadeLine(-49,4,66,.38,Math.PI/2);facadeLine(49,4,66,.38,Math.PI/2);
-for(let x=-38,i=0;x<=38;x+=5.1,i++){lantern(x,29.5,3.35,i%2===0);groundSpot(x+1.6,23.4,i%3===0)}for(let z=-19,i=0;z<=21;z+=4.6,i++){lantern(-46.5,z,3.05,i%2===0);lantern(46.5,z,3.05,i%2===1);groundSpot(-44.8,z+1.4,i%3===0);groundSpot(44.8,z-1.4,i%3===1)}
+path(-30,29.5,3,15,Math.PI/2);path(30,29.5,3,15,Math.PI/2);
+box(overviewArchitecture,0,-.42,4,104,.45,72,M.charcoal);box(overviewArchitecture,0,-.22,4,100,.12,68,M.moss);
+for(let x=-38,i=0;x<=38;x+=5.1,i++){groundSpot(x+1.6,21.4,i%3===0)}for(let z=-19,i=0;z<=21;z+=4.6,i++){lantern(-46.5,z,3.05,i%2===0);lantern(46.5,z,3.05,i%2===1);groundSpot(-44.8,z+1.4,i%3===0);groundSpot(44.8,z-1.4,i%3===1)}
 // Grande entrée frontale, bornes de cheminement et balisage architectural très lisible.
-for(const x of [-18,-12,-6,0,6,12,18]){lantern(x,38.2,4.1,true);groundSpot(x-2.2,34.8,true);groundSpot(x+2.2,34.8,false)}
-for(let z=22;z<=36;z+=3.25){groundSpot(-6.2,z,Math.round(z)%2===0);groundSpot(6.2,z,Math.round(z)%2!==0)}
-for(const [x,z] of [[-36,24],[-28,30],[28,30],[36,24]]){lantern(x,z,3.65,true);for(const dx of [-1.5,1.5])groundSpot(x+dx,z-1.2,false)}
-for(let i=0;i<15;i++)plant(overviewArchitecture,-40+i*5.8,-27-(i%3)*3.2,.75+(i%2)*.18);for(let i=0;i<12;i++)plant(overviewArchitecture,-36+i*6.4,33-(i%2)*3,.65);
-const pond=cyl(overviewArchitecture,0,-.10,30,7,.18,M.blue,48);pond.scale.z=.5;for(let a=0;a<Math.PI*2;a+=Math.PI/5){const x=Math.cos(a)*8,z=30+Math.sin(a)*4;box(overviewArchitecture,x,-.04,z,.24,.13,.24,glow.exterior)}
+for(const x of [-18,-6,6,18]){lantern(x,41.5,4.1,true);}
+for(const [x,z] of [[-40,24],[-40,32],[40,24],[40,32]]){lantern(x,z,3.65,true);for(const dx of [-1.5,1.5])groundSpot(x+dx,z-1.2,false)}
+for(let i=0;i<15;i++)plant(overviewArchitecture,-40+i*5.8,-24-(i%3)*2.6,.75+(i%2)*.18);for(let i=0;i<6;i++){plant(overviewArchitecture,-46,-20+i*8,.65);plant(overviewArchitecture,46,-20+i*8,.65);}
+const pond=cyl(overviewArchitecture,-46,-.10,26,3.2,.18,M.blue,48);pond.scale.z=1.6;for(let a=0;a<Math.PI*2;a+=Math.PI/5){const x=-46+Math.cos(a)*3.8,z=26+Math.sin(a)*6;box(overviewArchitecture,x,-.04,z,.24,.13,.24,glow.exterior)}
 const baseCircuit=new Map([[glow.tables,'tables'],[glow.bar,'bar'],[glow.pergola,'pergola'],[glow.plants,'plants'],[glow.exterior,'plants']]);
 function isolateCircuits(group,zone){const mats={};group.traverse(o=>{if(!o.isMesh)return;const key=baseCircuit.get(o.material);if(!key)return;if(!mats[key]){mats[key]=o.material.clone();mats[key].name=`${zone}-${key}`}o.material=mats[key]});circuitMaterials[zone]=mats}
 for(const [id,g]of Object.entries(roomGroups))isolateCircuits(g,id);isolateCircuits(overviewArchitecture,'exterior');
-const overview={target:[3,5,0],pos:[8,44,96]};let current='exterior',view='overview',target=new T.Vector3(...overview.target),desiredTarget=target.clone(),desiredPos=new T.Vector3(...overview.pos);camera.position.copy(desiredPos);
+const overview={target:[2,4,4],pos:[6,56,116]};let current='exterior',view='overview',target=new T.Vector3(...overview.target),desiredTarget=target.clone(),desiredPos=new T.Vector3(...overview.pos);camera.position.copy(desiredPos);
 function focus(id,mode='focus'){if(id==='exterior'){current='exterior';mode='overview'}else current=zones[id]?id:current;view=mode;overviewArchitecture.visible=mode==='overview';const zoneLevel=current==='exterior'?2:LEVELS.indexOf(specs.find(s=>s[0]===current)?.[3]??0);for(const o of structure.children)o.visible=mode==='overview'||(o.userData.level??0)<=zoneLevel;ceilings.visible=mode!=='overview';for(const o of ceilings.children)o.visible=mode!=='overview'&&(o.userData.level??0)<zoneLevel;for(const [roomId,g]of Object.entries(roomGroups)){g.visible=mode==='overview'||roomId===current;g.traverse(o=>{if(o.userData.cameraOccluder)o.visible=mode==='overview'||roomId!==current})}if(mode==='overview'){desiredTarget.set(...overview.target);desiredPos.set(...overview.pos);return}const z=zones[current],[a,distance,height]=z.camera,t=z.target;desiredTarget.set(...t);desiredPos.set(t[0]+Math.sin(a)*distance,t[1]+height,t[2]+Math.cos(a)*distance)}
 function applyZoneLevels(zone,v={}){const mats=circuitMaterials[zone]||{};for(const [key,m]of Object.entries(mats)){const n=Number.isFinite(v[key])?v[key]:60;m.emissiveIntensity=.02+n/100*4.6}for(const l of pointLights){if(l.zone!==zone)continue;const n=Number.isFinite(v[l.group])?v[l.group]:60;l.p.intensity=.02+n/100*6.5}}
 function applyLevels(v={},zone=current){applyZoneLevels(zone,v)}
@@ -100,6 +152,6 @@ const defaultLevels={tables:72,bar:76,pergola:45,plants:55},modelState={zone:'ex
 const channel='ftv-restaurant/v1';addEventListener('message',e=>{if(e.origin!==location.origin||e.data?.channel!==channel)return;if(e.data.type==='viewport')viewport=e.data.viewport;else if(e.data.type==='view'){modelState.view=e.data.view;focus(modelState.zone,e.data.view)}else if(e.data.type==='state'){if(e.data.zone){modelState.zone=e.data.zone;modelState.view=e.data.zone==='exterior'?'overview':'focus';focus(e.data.zone,modelState.view)}if(e.data.zoneLevels){modelState.zoneLevels={...modelState.zoneLevels,...e.data.zoneLevels};for(const [id,levels]of Object.entries(e.data.zoneLevels))applyZoneLevels(id,levels)}else if(e.data.levels){modelState.levels={...modelState.levels,...e.data.levels};applyLevels(e.data.levels,e.data.zone||modelState.zone)}}});parent.postMessage({channel,type:'ready'},location.origin);
 let last=performance.now();function frame(now){requestAnimationFrame(frame);const dt=Math.min(.05,(now-last)/1000);last=now;const a=1-Math.exp(-dt*1.45);camera.position.lerp(desiredPos,a);target.lerp(desiredTarget,a);camera.lookAt(target);if(viewport)camera.setViewOffset(viewport.w,viewport.h,-viewport.x-viewport.w*.025,-viewport.y,innerWidth,innerHeight);else camera.clearViewOffset();renderer.render(scene,camera)}requestAnimationFrame(frame);
 // Banc de verification : une image rendue a la demande, sans attendre la boucle.
-window.__ftvRestaurantModel={snapshot(){renderer.render(scene,camera);return renderer.domElement.toDataURL('image/png')},settle(){camera.position.copy(desiredPos);target.copy(desiredTarget);camera.lookAt(target)},look(pos,tgt){desiredPos.set(...pos);desiredTarget.set(...tgt);camera.position.copy(desiredPos);target.copy(desiredTarget);camera.lookAt(target)},state:()=>({...modelState})};
+window.__ftvRestaurantModel={snapshot(){renderer.render(scene,camera);return renderer.domElement.toDataURL('image/png')},settle(){camera.position.copy(desiredPos);target.copy(desiredTarget);camera.lookAt(target)},look(pos,tgt){desiredPos.set(...pos);desiredTarget.set(...tgt);camera.position.copy(desiredPos);target.copy(desiredTarget);camera.lookAt(target)},state:()=>({...modelState}),facadeLights(){let t=0,n=0;facadeLights.traverse(o=>{if(o.isMesh&&o.material?.emissive&&o.material.name.startsWith('exterior')){t+=o.material.emissiveIntensity;n++;}});return {intensiteMoyenne:+(t/Math.max(1,n)).toFixed(2),materiaux:n};}};
 })();
 </script></body></html>
