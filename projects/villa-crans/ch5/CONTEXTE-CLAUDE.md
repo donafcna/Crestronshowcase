@@ -5,14 +5,18 @@
 - Corrections système du Core révélées par cette config : `<style id="touch-targets">` (onglets, FERMER, 💾 ≥ 40 px ; `#circuits-container[data-cols]` 2/3/4 colonnes selon 10/15/20 circuits, posé au remplissage) ; `body.theme-light .alarm-row span` (iPhone, Clair : 3,88:1 → texte principal) ; **ville météo** : `widgets.meteoActualites.{ville, latitude, longitude}` (Nyon par défaut, titre 5 langues remplacé, Open-Meteo).
 - Batterie : contraste 0 défaut sur les deux vitrines ; `apps/showcase/scripts/test-appartement-crans-modes.cjs` (159 contrôles, 3 thèmes × 4 modes × 3 châssis) et `test-appartement-crans.cjs` (70). Planche avant/après : `apps/showcase/scripts/planche-avant-apres.cjs` (référence = worktree du commit de départ sur le port 4174). Les tests `test-plan3d*.cjs` GPU échouent à l'identique avant/après sans GPU (SwiftShader) : non significatif.
 - Noms de pièces : le menu de gauche tronque au-delà de ~16 caractères sur dalle (183 px) — choisir des noms courts dans la config (« Suite parentale », « Bain parental ») plutôt que de toucher au CSS.
-## 28/09/2026 — v5.0 Lamelles (CH5 + CPZ 1.0.196.0 à compiler, LPZ F12)
-- `pieces[].pilotages.moteurs.liste[i].lamelles: true` → rangée Horaire · Stop · Antihoraire sous Monter · Stop · Descendre, même conteneur
-  (`js/slats-controls.js` + `themes/slats-controls.css`, dalle `<ch5-button>` / iPhone `<button>`). Joins globaux **111-128** (triplets par moteur),
-  routés comme 81-98 ; offsets de bloc +25..34 / +37..40 / +46..49 ; `generate_slot2.js` ne câble que les moteurs qui ont des lamelles quelque part.
-- Règle apprise : sur le banc Chromium, **aucun `<ch5-button>` n'émet** (témoin 81 muet) — la chaîne n'est mesurable que sur les `<button>` ;
-  les classes de présentation vont sur l'hôte `<ch5-button>`, jamais dans `customClass` (recopié sur l'élément interne).
-- Modules partagés = `js/*-controls.js` + `themes/*-controls.css`, copiés en bloc par `sync-villa-crans.py`.
-- v5.2 : libellé « Lamelle » (traduit, `currentLang`) à gauche de la rangée, **hors flux** pour ne pas élargir la colonne de boutons.
+## 29/09/2026 — v5.3 fenêtre Moteurs (CH5 1.0.212 + CPZ 1.0.197.0 à compiler, LPZ F12)
+- Composant partagé `js/motors-controls.js` + `themes/motors-controls.css` (remplace `slats-controls.*`) : rend `#motors-container` des deux GUI
+  depuis `pieces[].pilotages.moteurs` = { nombre 1..12, liste[12] { nom, type volet|rideau|store, lamelles } }. Le **type** choisit icône et
+  pictogrammes (plus de « 3-4 = rideau » en dur : `animateBlind`, `VUX`, icônes de groupe lisent `villaMotorType(i)`).
+- Joins : Monter/Stop/Descendre 81-98 (1-6) + **129-146** (7-12) ; lamelles 111-128 + **157-174**. 7-12 = joins globaux routés a10 (C# : plage
+  ajoutée à `roomDigital`), **aucun offset de bloc** (bloc de 100 plein, blocs non câblés côté SIMPL depuis v4).
+- **Aucun défilement** : pagination gloutonne mesurée (≤ 6 cartes, tant que tout tient), flèches dans l'en-tête (dalle/iPad) ou au-dessus des
+  presets (iPhone), masquées sur une page. Pas de `:has()` (navigateur TSW) : classes `mc-large` / `mc-phone` posées par le module.
+- Icône lamelles = variante A « profil » (B/C via `window.VILLA_SLATS_ICON`). Batterie `tools/qa-moteurs-v53.mjs` (40 contrôles) + `smoke-v53.mjs`.
+- Règles apprises : sur le banc, **aucun `<ch5-button>` n'émet** (chaîne mesurable seulement sur les `<button>` iPhone) ; classes de présentation
+  sur l'hôte `<ch5-button>`, jamais dans `customClass`. Sur l'iPhone, la pièce affichée = `localStorage.active_room_iphone` (le `#room-select` peut
+  retarder). Modules partagés `js/*-controls.js` + `themes/*-controls.css` copiés en bloc par `sync-villa-crans.py`.
 
 ## 27/09/2026 — v4.7 : conversion iPhone terminée (CH5 à compiler, vitrine régénérée non poussée)
 - **Sur l'iPhone (Crestron One), tout bouton à état est un `<button>`** : `pressDigital(N)` à l'appui, `subscribeState` → `toggleSelected` au retour,
@@ -54,7 +58,7 @@
 Quatre versions à tenir alignées, ici et en tête de chaque entrée du CHANGELOG.
 | Artefact | Version | Compilation |
 |---|---|---|
-| CH5 `.ch5z` (TSW + XPanel + mobile) | source **1.0.210** (v5.2, 28/09 ; v5.1 = 1.0.209 Core pour l'Appartement Crans-Montana) ; 1.0.206 (v4.7) déployé le 27/09 sur TSW, XPanel et Crestron One ; 1.0.207 (v4.9) compilé par Donatien le 28/09 (à confirmer sur les supports) ; **v5.0 + v5.1 + v5.2 à compiler** en un build (`-Target web`, `tsw`, `mobile`) | `deploy.ps1` incrémente `version.json` à chaque build, puis aligner `meta.version` |
+| CH5 `.ch5z` (TSW + XPanel + mobile) | source **1.0.212** (v5.3, 29/09) ; 1.0.211 (v5.2) compilé par Donatien le 29/09 : CP4 OK, TSW en échec SFTP (port 22, ping OK) ; **v5.3 à compiler** en un build (`-Target web`, `tsw`, `mobile`) | `deploy.ps1` incrémente `version.json` à chaque build, puis aligner `meta.version` |
 | Showcase Vercel | prod = `74cd4a41` (17.09) ; copie locale régénérée le 27/09 (v4.4 → v4.7), **non poussée** | `sync-villa-crans.py` puis push `main` → Vercel |
 
 ## Fichiers qui comptent
@@ -133,7 +137,7 @@ La démo automatique démarre désormais sur **tous les supports** (elle était 
 6. **Jamais deux clés d'un même objet JSON qui ne diffèrent que par la casse** (`MUSIQUE` / `Musique` dans `traductions`) : `ConvertFrom-Json` de PowerShell 5.1 refuse le fichier et `deploy.ps1` s'arrête avant le build, alors que `JSON.parse` et Python les acceptent en silence. Contrôlé désormais par `tools/quality/validate-config.mjs`.
 
 ## Reste à faire
-1. **Compiler v5.0 + v5.1 + v5.2 (1.0.210)** : CH5 (`deploy.ps1 -Target web`, `tsw`, `mobile`) pour la Villa Crans ET l'Appartement Crans-Montana (`projects/appartement-crans`, après `python3 tools/assemble.py`), relever la version dans Réglages sur l'iPhone, puis aligner `meta.version`.
+1. **Compiler v5.3 (1.0.212)** : CH5 (`deploy.ps1 -Target web`, `tsw`, `mobile`), CPZ 1.0.197.0 + `-Target cp4`, F12 `Project_Slot2.smw`. Propager le Core à l'Appartement Crans-Montana (`python3 tools/assemble.py`) et y revérifier la fenêtre Moteurs. Supprimer `src/js/slats-controls.js`, `src/themes/slats-controls.css` (+ copies vitrine) : remplacés par `motors-controls.*`.
    Recette iPhone : partitions, scènes de la fenêtre Circuits (appui, état, appui long 💾), HVAC ON/OFF/ventilation, sauna/hammam.
 2. **Push de `main`** (commits locaux + vitrine régénérée v4.4 → v4.7) → Vercel ; vérifier en ligne. Attendre le GO de Donatien.
 3. LPZ v4.1 : charger `Project_Slot2.lpz` et recette Debugger (rappel de scène → `Rxx_Circuit_N_fb#`, 💾 → aucun join, dalle ↔ iPad, progreset).

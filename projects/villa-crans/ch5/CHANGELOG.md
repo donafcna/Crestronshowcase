@@ -1,5 +1,33 @@
 # Villa Crans CH5 — journal des versions
 
+## v5.3 — 29/09/2026 — fenetre Moteurs : 12 moteurs par piece, pagination sans defilement, icones animees, lamelles partout (a compiler : CH5 + CPZ + SMW)
+
+| Artefact | Etat de ce lot |
+|---|---|
+| CH5 source | nouveau composant partage `src/js/motors-controls.js` + `src/themes/motors-controls.css` (remplacent `slats-controls.*`), `index.html` / `iphone.html` branches dessus — **a recompiler** web + tsw + mobile |
+| CPZ slot 1 | `ControlSystem.cs` : 129-146 et 157-174 posent a10 comme 81-98 — **1.0.197.0 a compiler** |
+| LPZ slot 2 | `generate_slot2.js` : `Motor_7..12_Up/Stop/Down` (129-146) + `Tilt_*` des moteurs a lamelles (157-174), +60 signaux — **F12 a faire** |
+| Config | `meta.version` 1.0.212 ; `moteurs.nombre` = 12 et 12 entrees dans chaque piece (Volet ext. 3, Rideau ext. 3, Store 3, Volet ext. 4, Rideau ext. 4, Store 4 ajoutes) ; `lamelles` vrai sur tous les volets et stores ; `signauxGlobaux` Moteur.Commande.Extension 129-146, Moteur.Lamelles.Extension 157-174 |
+| Showcase | regeneree (sync supprime aussi les anciens `slats-controls.*` de la vitrine) |
+| Batterie | `tools/qa-moteurs-v53.mjs` : 40/40 VERT deploiement, 40/40 VERT vitrine (3 themes x dalle 1920x1200 / iPad 1180x820 / iPhone 402x874 x 1, 6, 7, 12 moteurs x chaque page) ; `tools/smoke-v53.mjs` : toutes les fenetres, 0 erreur |
+
+**Demandes Donatien.** (1) Lamelles invisibles sur la TSW et l'iPhone : seule la piece 2 les avait (valeur de test v5.0) → activees sur
+tous les volets et stores. (2) Carte moteur : nom centre verticalement et aligne a gauche, libelle « Lamelle » supprime, icone animee du
+volet / rideau / store a gauche de Monter-Stop-Descendre, nouvelle icone animee de lamelles (pivotent dans le sens de la commande) a gauche
+des lamelles. (3) Fenetre agrandie (96 % x 94 % de l'ecran) : plus rien ne deborde. (4) Jusqu'a 12 moteurs par piece, nombre choisi dans le
+JSON, 6 au plus par page, fleches gauche / droite + indicateur, aucun defilement.
+
+**Regles.** Le type (`volet` / `rideau` / `store`) de chaque entree choisit l'icone et les pictogrammes (plus de position 3-4 = rideau en dur ;
+`animateBlind`, `VUX` et les icones de groupe lisent le type). Pagination gloutonne mesuree : une page se remplit tant que tout tient dans la
+hauteur visible (6 cartes au plus) — 2 pages de 6 sur la dalle et l'iPad, 3 pages sur l'iPhone. Fleches dans l'en-tete (dalle / iPad), rangee
+centree au-dessus des presets (iPhone). Couleurs d'icones en jetons (`--mc-c` / `--mc-f`), plus soutenues en theme Clair. « Fermer » et les
+commandes groupees de cette fenetre passent a 44 px (etaient a 35).
+
+**Decisions par defaut.** Icone lamelles : variante A « profil » (3 variantes sur la planche, B « face », C « profil + fleche »,
+`window.VILLA_SLATS_ICON`). Pas de bloc d'extension EISC 4000+ : les blocs piece ne sont plus cables cote SIMPL depuis le contrat v4 et le bloc de
+100 est plein — les moteurs 7-12 passent par joins globaux routes a10, comme 81-98. Les presets globaux « shade_ » (fenetre Controle global)
+restent limites aux moteurs 1-6 cote C#. Vitrine : message WebXPanel absent passe de `console.error` a `console.info` en `meta.mode = showcase`.
+
 ## v5.2 — 28/09/2026 — libelle « Lamelle » (traduit) a gauche de chaque rangee de lamelles (a compiler : CH5 seul, web + tsw + mobile)
 
 | Artefact | Etat de ce lot |

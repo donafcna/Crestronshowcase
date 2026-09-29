@@ -825,7 +825,11 @@ namespace VillaFrequenceTvAutomation
                 bool roomDigital = args.Sig.Type == eSigType.Bool && args.Sig.BoolValue
                     && (V4DigitalOffsets.ContainsKey((ushort)join)
                         || (join >= 211 && join <= 220) || (join >= 500 && join <= 527)
-                        || (join >= 530 && join <= 557) || (join >= 560 && join <= 600));
+                        || (join >= 530 && join <= 557) || (join >= 560 && join <= 600)
+                        // v5.3 (29.09.2026) : moteurs 7..12 (129-146) et leurs lamelles (157-174). Impulsions sans
+                        // etat routees par a10 comme 81-98 ; pas d'offset de bloc (bloc de 100 plein, blocs
+                        // pieces non cables cote SIMPL depuis le contrat v4).
+                        || (join >= 129 && join <= 146) || (join >= 157 && join <= 174));
                 bool roomAnalog = args.Sig.Type == eSigType.UShort && join != 53
                     && (join == 21 || V4AnalogOffsets.ContainsKey((ushort)join));
                 if (roomDigital || roomAnalog)

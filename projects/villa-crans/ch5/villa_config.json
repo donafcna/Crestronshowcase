@@ -2,7 +2,7 @@
   "meta": {
     "projet": "Villa Crans",
     "integrateur": "Fréquence TV",
-    "version": "1.0.210",
+    "version": "1.0.212",
     "mode": "deploiement",
     "modeDescription": "'deploiement' = GUI livré chez le client : les feedbacks viennent du CP4 (C# slot 1 + SIMPL slot 2) via js/webxpanel.js / CrComLib, aucune simulation. 'showcase' = copie pour le site crestrongui.vercel.app : posé UNIQUEMENT par scripts/sync-villa-crans.py du dépôt Crestronshowcase, feedbacks simulés dans le navigateur (js/local-feedback.js), curseur de démo géré par le site (jamais par le GUI). Ne jamais mettre 'showcase' ici. Voir docs/08_WORKFLOW_SHOWCASE.md.",
     "tracesConsole": false,
@@ -67,27 +67,63 @@
     "moteurs": [
       {
         "nom": "Volet ext. 1",
-        "type": "volet"
+        "type": "volet",
+        "lamelles": true
       },
       {
         "nom": "Volet ext. 2",
-        "type": "volet"
+        "type": "volet",
+        "lamelles": true
       },
       {
         "nom": "Rideau ext. 1",
-        "type": "rideau"
+        "type": "rideau",
+        "lamelles": false
       },
       {
         "nom": "Rideau ext. 2",
-        "type": "rideau"
+        "type": "rideau",
+        "lamelles": false
       },
       {
         "nom": "Store 1",
-        "type": "store"
+        "type": "store",
+        "lamelles": true
       },
       {
         "nom": "Store 2",
-        "type": "store"
+        "type": "store",
+        "lamelles": true
+      },
+      {
+        "nom": "Volet ext. 3",
+        "type": "volet",
+        "lamelles": true
+      },
+      {
+        "nom": "Rideau ext. 3",
+        "type": "rideau",
+        "lamelles": false
+      },
+      {
+        "nom": "Store 3",
+        "type": "store",
+        "lamelles": true
+      },
+      {
+        "nom": "Volet ext. 4",
+        "type": "volet",
+        "lamelles": true
+      },
+      {
+        "nom": "Rideau ext. 4",
+        "type": "rideau",
+        "lamelles": false
+      },
+      {
+        "nom": "Store 4",
+        "type": "store",
+        "lamelles": true
       }
     ],
     "scenesStores": [
@@ -246,17 +282,17 @@
         },
         "moteurs": {
           "actif": false,
-          "nombre": 6,
+          "nombre": 12,
           "liste": [
             {
               "nom": "Volet ext. 1",
               "type": "volet",
-              "lamelles": false
+              "lamelles": true
             },
             {
               "nom": "Volet ext. 2",
               "type": "volet",
-              "lamelles": false
+              "lamelles": true
             },
             {
               "nom": "Rideau ext. 1",
@@ -271,12 +307,42 @@
             {
               "nom": "Store 1",
               "type": "store",
-              "lamelles": false
+              "lamelles": true
             },
             {
               "nom": "Store 2",
               "type": "store",
+              "lamelles": true
+            },
+            {
+              "nom": "Volet ext. 3",
+              "type": "volet",
+              "lamelles": true
+            },
+            {
+              "nom": "Rideau ext. 3",
+              "type": "rideau",
               "lamelles": false
+            },
+            {
+              "nom": "Store 3",
+              "type": "store",
+              "lamelles": true
+            },
+            {
+              "nom": "Volet ext. 4",
+              "type": "volet",
+              "lamelles": true
+            },
+            {
+              "nom": "Rideau ext. 4",
+              "type": "rideau",
+              "lamelles": false
+            },
+            {
+              "nom": "Store 4",
+              "type": "store",
+              "lamelles": true
             }
           ]
         },
@@ -374,7 +440,7 @@
         },
         "moteurs": {
           "actif": true,
-          "nombre": 6,
+          "nombre": 12,
           "liste": [
             {
               "nom": "Volet ext. 1",
@@ -403,6 +469,36 @@
             },
             {
               "nom": "Store 2",
+              "type": "store",
+              "lamelles": true
+            },
+            {
+              "nom": "Volet ext. 3",
+              "type": "volet",
+              "lamelles": true
+            },
+            {
+              "nom": "Rideau ext. 3",
+              "type": "rideau",
+              "lamelles": false
+            },
+            {
+              "nom": "Store 3",
+              "type": "store",
+              "lamelles": true
+            },
+            {
+              "nom": "Volet ext. 4",
+              "type": "volet",
+              "lamelles": true
+            },
+            {
+              "nom": "Rideau ext. 4",
+              "type": "rideau",
+              "lamelles": false
+            },
+            {
+              "nom": "Store 4",
               "type": "store",
               "lamelles": true
             }
@@ -502,17 +598,17 @@
         },
         "moteurs": {
           "actif": true,
-          "nombre": 6,
+          "nombre": 12,
           "liste": [
             {
               "nom": "Volet ext. 1",
               "type": "volet",
-              "lamelles": false
+              "lamelles": true
             },
             {
               "nom": "Volet ext. 2",
               "type": "volet",
-              "lamelles": false
+              "lamelles": true
             },
             {
               "nom": "Rideau ext. 1",
@@ -527,12 +623,42 @@
             {
               "nom": "Store 1",
               "type": "store",
-              "lamelles": false
+              "lamelles": true
             },
             {
               "nom": "Store 2",
               "type": "store",
+              "lamelles": true
+            },
+            {
+              "nom": "Volet ext. 3",
+              "type": "volet",
+              "lamelles": true
+            },
+            {
+              "nom": "Rideau ext. 3",
+              "type": "rideau",
               "lamelles": false
+            },
+            {
+              "nom": "Store 3",
+              "type": "store",
+              "lamelles": true
+            },
+            {
+              "nom": "Volet ext. 4",
+              "type": "volet",
+              "lamelles": true
+            },
+            {
+              "nom": "Rideau ext. 4",
+              "type": "rideau",
+              "lamelles": false
+            },
+            {
+              "nom": "Store 4",
+              "type": "store",
+              "lamelles": true
             }
           ]
         },
@@ -630,17 +756,17 @@
         },
         "moteurs": {
           "actif": false,
-          "nombre": 6,
+          "nombre": 12,
           "liste": [
             {
               "nom": "Volet ext. 1",
               "type": "volet",
-              "lamelles": false
+              "lamelles": true
             },
             {
               "nom": "Volet ext. 2",
               "type": "volet",
-              "lamelles": false
+              "lamelles": true
             },
             {
               "nom": "Rideau ext. 1",
@@ -655,12 +781,42 @@
             {
               "nom": "Store 1",
               "type": "store",
-              "lamelles": false
+              "lamelles": true
             },
             {
               "nom": "Store 2",
               "type": "store",
+              "lamelles": true
+            },
+            {
+              "nom": "Volet ext. 3",
+              "type": "volet",
+              "lamelles": true
+            },
+            {
+              "nom": "Rideau ext. 3",
+              "type": "rideau",
               "lamelles": false
+            },
+            {
+              "nom": "Store 3",
+              "type": "store",
+              "lamelles": true
+            },
+            {
+              "nom": "Volet ext. 4",
+              "type": "volet",
+              "lamelles": true
+            },
+            {
+              "nom": "Rideau ext. 4",
+              "type": "rideau",
+              "lamelles": false
+            },
+            {
+              "nom": "Store 4",
+              "type": "store",
+              "lamelles": true
             }
           ]
         },
@@ -758,17 +914,17 @@
         },
         "moteurs": {
           "actif": true,
-          "nombre": 6,
+          "nombre": 12,
           "liste": [
             {
               "nom": "Volet ext. 1",
               "type": "volet",
-              "lamelles": false
+              "lamelles": true
             },
             {
               "nom": "Volet ext. 2",
               "type": "volet",
-              "lamelles": false
+              "lamelles": true
             },
             {
               "nom": "Rideau ext. 1",
@@ -783,12 +939,42 @@
             {
               "nom": "Store 1",
               "type": "store",
-              "lamelles": false
+              "lamelles": true
             },
             {
               "nom": "Store 2",
               "type": "store",
+              "lamelles": true
+            },
+            {
+              "nom": "Volet ext. 3",
+              "type": "volet",
+              "lamelles": true
+            },
+            {
+              "nom": "Rideau ext. 3",
+              "type": "rideau",
               "lamelles": false
+            },
+            {
+              "nom": "Store 3",
+              "type": "store",
+              "lamelles": true
+            },
+            {
+              "nom": "Volet ext. 4",
+              "type": "volet",
+              "lamelles": true
+            },
+            {
+              "nom": "Rideau ext. 4",
+              "type": "rideau",
+              "lamelles": false
+            },
+            {
+              "nom": "Store 4",
+              "type": "store",
+              "lamelles": true
             }
           ]
         },
@@ -886,17 +1072,17 @@
         },
         "moteurs": {
           "actif": true,
-          "nombre": 6,
+          "nombre": 12,
           "liste": [
             {
               "nom": "Volet ext. 1",
               "type": "volet",
-              "lamelles": false
+              "lamelles": true
             },
             {
               "nom": "Volet ext. 2",
               "type": "volet",
-              "lamelles": false
+              "lamelles": true
             },
             {
               "nom": "Rideau ext. 1",
@@ -911,12 +1097,42 @@
             {
               "nom": "Store 1",
               "type": "store",
-              "lamelles": false
+              "lamelles": true
             },
             {
               "nom": "Store 2",
               "type": "store",
+              "lamelles": true
+            },
+            {
+              "nom": "Volet ext. 3",
+              "type": "volet",
+              "lamelles": true
+            },
+            {
+              "nom": "Rideau ext. 3",
+              "type": "rideau",
               "lamelles": false
+            },
+            {
+              "nom": "Store 3",
+              "type": "store",
+              "lamelles": true
+            },
+            {
+              "nom": "Volet ext. 4",
+              "type": "volet",
+              "lamelles": true
+            },
+            {
+              "nom": "Rideau ext. 4",
+              "type": "rideau",
+              "lamelles": false
+            },
+            {
+              "nom": "Store 4",
+              "type": "store",
+              "lamelles": true
             }
           ]
         },
@@ -1014,17 +1230,17 @@
         },
         "moteurs": {
           "actif": true,
-          "nombre": 6,
+          "nombre": 12,
           "liste": [
             {
               "nom": "Volet ext. 1",
               "type": "volet",
-              "lamelles": false
+              "lamelles": true
             },
             {
               "nom": "Volet ext. 2",
               "type": "volet",
-              "lamelles": false
+              "lamelles": true
             },
             {
               "nom": "Rideau ext. 1",
@@ -1039,12 +1255,42 @@
             {
               "nom": "Store 1",
               "type": "store",
-              "lamelles": false
+              "lamelles": true
             },
             {
               "nom": "Store 2",
               "type": "store",
+              "lamelles": true
+            },
+            {
+              "nom": "Volet ext. 3",
+              "type": "volet",
+              "lamelles": true
+            },
+            {
+              "nom": "Rideau ext. 3",
+              "type": "rideau",
               "lamelles": false
+            },
+            {
+              "nom": "Store 3",
+              "type": "store",
+              "lamelles": true
+            },
+            {
+              "nom": "Volet ext. 4",
+              "type": "volet",
+              "lamelles": true
+            },
+            {
+              "nom": "Rideau ext. 4",
+              "type": "rideau",
+              "lamelles": false
+            },
+            {
+              "nom": "Store 4",
+              "type": "store",
+              "lamelles": true
             }
           ]
         },
@@ -1142,17 +1388,17 @@
         },
         "moteurs": {
           "actif": true,
-          "nombre": 6,
+          "nombre": 12,
           "liste": [
             {
               "nom": "Volet ext. 1",
               "type": "volet",
-              "lamelles": false
+              "lamelles": true
             },
             {
               "nom": "Volet ext. 2",
               "type": "volet",
-              "lamelles": false
+              "lamelles": true
             },
             {
               "nom": "Rideau ext. 1",
@@ -1167,12 +1413,42 @@
             {
               "nom": "Store 1",
               "type": "store",
-              "lamelles": false
+              "lamelles": true
             },
             {
               "nom": "Store 2",
               "type": "store",
+              "lamelles": true
+            },
+            {
+              "nom": "Volet ext. 3",
+              "type": "volet",
+              "lamelles": true
+            },
+            {
+              "nom": "Rideau ext. 3",
+              "type": "rideau",
               "lamelles": false
+            },
+            {
+              "nom": "Store 3",
+              "type": "store",
+              "lamelles": true
+            },
+            {
+              "nom": "Volet ext. 4",
+              "type": "volet",
+              "lamelles": true
+            },
+            {
+              "nom": "Rideau ext. 4",
+              "type": "rideau",
+              "lamelles": false
+            },
+            {
+              "nom": "Store 4",
+              "type": "store",
+              "lamelles": true
             }
           ]
         },
@@ -1270,17 +1546,17 @@
         },
         "moteurs": {
           "actif": true,
-          "nombre": 6,
+          "nombre": 12,
           "liste": [
             {
               "nom": "Volet ext. 1",
               "type": "volet",
-              "lamelles": false
+              "lamelles": true
             },
             {
               "nom": "Volet ext. 2",
               "type": "volet",
-              "lamelles": false
+              "lamelles": true
             },
             {
               "nom": "Rideau ext. 1",
@@ -1295,12 +1571,42 @@
             {
               "nom": "Store 1",
               "type": "store",
-              "lamelles": false
+              "lamelles": true
             },
             {
               "nom": "Store 2",
               "type": "store",
+              "lamelles": true
+            },
+            {
+              "nom": "Volet ext. 3",
+              "type": "volet",
+              "lamelles": true
+            },
+            {
+              "nom": "Rideau ext. 3",
+              "type": "rideau",
               "lamelles": false
+            },
+            {
+              "nom": "Store 3",
+              "type": "store",
+              "lamelles": true
+            },
+            {
+              "nom": "Volet ext. 4",
+              "type": "volet",
+              "lamelles": true
+            },
+            {
+              "nom": "Rideau ext. 4",
+              "type": "rideau",
+              "lamelles": false
+            },
+            {
+              "nom": "Store 4",
+              "type": "store",
+              "lamelles": true
             }
           ]
         },
@@ -1398,17 +1704,17 @@
         },
         "moteurs": {
           "actif": true,
-          "nombre": 6,
+          "nombre": 12,
           "liste": [
             {
               "nom": "Volet ext. 1",
               "type": "volet",
-              "lamelles": false
+              "lamelles": true
             },
             {
               "nom": "Volet ext. 2",
               "type": "volet",
-              "lamelles": false
+              "lamelles": true
             },
             {
               "nom": "Rideau ext. 1",
@@ -1423,12 +1729,42 @@
             {
               "nom": "Store 1",
               "type": "store",
-              "lamelles": false
+              "lamelles": true
             },
             {
               "nom": "Store 2",
               "type": "store",
+              "lamelles": true
+            },
+            {
+              "nom": "Volet ext. 3",
+              "type": "volet",
+              "lamelles": true
+            },
+            {
+              "nom": "Rideau ext. 3",
+              "type": "rideau",
               "lamelles": false
+            },
+            {
+              "nom": "Store 3",
+              "type": "store",
+              "lamelles": true
+            },
+            {
+              "nom": "Volet ext. 4",
+              "type": "volet",
+              "lamelles": true
+            },
+            {
+              "nom": "Rideau ext. 4",
+              "type": "rideau",
+              "lamelles": false
+            },
+            {
+              "nom": "Store 4",
+              "type": "store",
+              "lamelles": true
             }
           ]
         },
@@ -1526,17 +1862,17 @@
         },
         "moteurs": {
           "actif": true,
-          "nombre": 6,
+          "nombre": 12,
           "liste": [
             {
               "nom": "Volet ext. 1",
               "type": "volet",
-              "lamelles": false
+              "lamelles": true
             },
             {
               "nom": "Volet ext. 2",
               "type": "volet",
-              "lamelles": false
+              "lamelles": true
             },
             {
               "nom": "Rideau ext. 1",
@@ -1551,12 +1887,42 @@
             {
               "nom": "Store 1",
               "type": "store",
-              "lamelles": false
+              "lamelles": true
             },
             {
               "nom": "Store 2",
               "type": "store",
+              "lamelles": true
+            },
+            {
+              "nom": "Volet ext. 3",
+              "type": "volet",
+              "lamelles": true
+            },
+            {
+              "nom": "Rideau ext. 3",
+              "type": "rideau",
               "lamelles": false
+            },
+            {
+              "nom": "Store 3",
+              "type": "store",
+              "lamelles": true
+            },
+            {
+              "nom": "Volet ext. 4",
+              "type": "volet",
+              "lamelles": true
+            },
+            {
+              "nom": "Rideau ext. 4",
+              "type": "rideau",
+              "lamelles": false
+            },
+            {
+              "nom": "Store 4",
+              "type": "store",
+              "lamelles": true
             }
           ]
         },
@@ -1654,17 +2020,17 @@
         },
         "moteurs": {
           "actif": true,
-          "nombre": 6,
+          "nombre": 12,
           "liste": [
             {
               "nom": "Volet ext. 1",
               "type": "volet",
-              "lamelles": false
+              "lamelles": true
             },
             {
               "nom": "Volet ext. 2",
               "type": "volet",
-              "lamelles": false
+              "lamelles": true
             },
             {
               "nom": "Rideau ext. 1",
@@ -1679,12 +2045,42 @@
             {
               "nom": "Store 1",
               "type": "store",
-              "lamelles": false
+              "lamelles": true
             },
             {
               "nom": "Store 2",
               "type": "store",
+              "lamelles": true
+            },
+            {
+              "nom": "Volet ext. 3",
+              "type": "volet",
+              "lamelles": true
+            },
+            {
+              "nom": "Rideau ext. 3",
+              "type": "rideau",
               "lamelles": false
+            },
+            {
+              "nom": "Store 3",
+              "type": "store",
+              "lamelles": true
+            },
+            {
+              "nom": "Volet ext. 4",
+              "type": "volet",
+              "lamelles": true
+            },
+            {
+              "nom": "Rideau ext. 4",
+              "type": "rideau",
+              "lamelles": false
+            },
+            {
+              "nom": "Store 4",
+              "type": "store",
+              "lamelles": true
             }
           ]
         },
@@ -1782,17 +2178,17 @@
         },
         "moteurs": {
           "actif": true,
-          "nombre": 6,
+          "nombre": 12,
           "liste": [
             {
               "nom": "Volet ext. 1",
               "type": "volet",
-              "lamelles": false
+              "lamelles": true
             },
             {
               "nom": "Volet ext. 2",
               "type": "volet",
-              "lamelles": false
+              "lamelles": true
             },
             {
               "nom": "Rideau ext. 1",
@@ -1807,12 +2203,42 @@
             {
               "nom": "Store 1",
               "type": "store",
-              "lamelles": false
+              "lamelles": true
             },
             {
               "nom": "Store 2",
               "type": "store",
+              "lamelles": true
+            },
+            {
+              "nom": "Volet ext. 3",
+              "type": "volet",
+              "lamelles": true
+            },
+            {
+              "nom": "Rideau ext. 3",
+              "type": "rideau",
               "lamelles": false
+            },
+            {
+              "nom": "Store 3",
+              "type": "store",
+              "lamelles": true
+            },
+            {
+              "nom": "Volet ext. 4",
+              "type": "volet",
+              "lamelles": true
+            },
+            {
+              "nom": "Rideau ext. 4",
+              "type": "rideau",
+              "lamelles": false
+            },
+            {
+              "nom": "Store 4",
+              "type": "store",
+              "lamelles": true
             }
           ]
         },
@@ -1926,17 +2352,17 @@
         },
         "moteurs": {
           "actif": true,
-          "nombre": 6,
+          "nombre": 12,
           "liste": [
             {
               "nom": "Volet ext. 1",
               "type": "volet",
-              "lamelles": false
+              "lamelles": true
             },
             {
               "nom": "Volet ext. 2",
               "type": "volet",
-              "lamelles": false
+              "lamelles": true
             },
             {
               "nom": "Rideau ext. 1",
@@ -1951,12 +2377,42 @@
             {
               "nom": "Store 1",
               "type": "store",
-              "lamelles": false
+              "lamelles": true
             },
             {
               "nom": "Store 2",
               "type": "store",
+              "lamelles": true
+            },
+            {
+              "nom": "Volet ext. 3",
+              "type": "volet",
+              "lamelles": true
+            },
+            {
+              "nom": "Rideau ext. 3",
+              "type": "rideau",
               "lamelles": false
+            },
+            {
+              "nom": "Store 3",
+              "type": "store",
+              "lamelles": true
+            },
+            {
+              "nom": "Volet ext. 4",
+              "type": "volet",
+              "lamelles": true
+            },
+            {
+              "nom": "Rideau ext. 4",
+              "type": "rideau",
+              "lamelles": false
+            },
+            {
+              "nom": "Store 4",
+              "type": "store",
+              "lamelles": true
             }
           ]
         },
@@ -2054,17 +2510,17 @@
         },
         "moteurs": {
           "actif": true,
-          "nombre": 6,
+          "nombre": 12,
           "liste": [
             {
               "nom": "Volet ext. 1",
               "type": "volet",
-              "lamelles": false
+              "lamelles": true
             },
             {
               "nom": "Volet ext. 2",
               "type": "volet",
-              "lamelles": false
+              "lamelles": true
             },
             {
               "nom": "Rideau ext. 1",
@@ -2079,12 +2535,42 @@
             {
               "nom": "Store 1",
               "type": "store",
-              "lamelles": false
+              "lamelles": true
             },
             {
               "nom": "Store 2",
               "type": "store",
+              "lamelles": true
+            },
+            {
+              "nom": "Volet ext. 3",
+              "type": "volet",
+              "lamelles": true
+            },
+            {
+              "nom": "Rideau ext. 3",
+              "type": "rideau",
               "lamelles": false
+            },
+            {
+              "nom": "Store 3",
+              "type": "store",
+              "lamelles": true
+            },
+            {
+              "nom": "Volet ext. 4",
+              "type": "volet",
+              "lamelles": true
+            },
+            {
+              "nom": "Rideau ext. 4",
+              "type": "rideau",
+              "lamelles": false
+            },
+            {
+              "nom": "Store 4",
+              "type": "store",
+              "lamelles": true
             }
           ]
         },
@@ -2766,7 +3252,7 @@
         "nombre": 18,
         "direction": "bidirectionnel",
         "eiscJoinDebut": 81,
-        "description": "Moteurs 1..6 : triplets Monter/Stop/Descendre (81,82,83 = moteur 1 ... 96,97,98 = moteur 6)"
+        "description": "Moteurs 1..6 : triplets Monter/Stop/Descendre (81,82,83 = moteur 1 ... 96,97,98 = moteur 6) — v5.3 : moteurs 7..12 sur 129-146 (Moteur.Commande.Extension)."
       },
       {
         "contractName": "Moteur.Lamelles",
@@ -2776,6 +3262,24 @@
         "direction": "bidirectionnel",
         "eiscJoinDebut": 111,
         "description": "v5.0 (28.09.2026) Lamelles des moteurs 1..6 : triplets Horaire/Stop/Antihoraire (111,112,113 = moteur 1 ... 126,127,128 = moteur 6). Impulsions sans etat, routees sur la piece affichee (a10) comme les moteurs 81-98. Affichees par la GUI seulement si pieces[].pilotages.moteurs.liste[i].lamelles = true."
+      },
+      {
+        "contractName": "Moteur.Commande.Extension",
+        "type": "digital",
+        "joinDebut": 129,
+        "nombre": 18,
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 129,
+        "description": "v5.3 (29.09.2026) Moteurs 7..12 : triplets Monter/Stop/Descendre (129,130,131 = moteur 7 ... 144,145,146 = moteur 12). Impulsions sans etat, routees sur la piece affichee (a10) comme 81-98. Pas d'offset de bloc piece (blocs desactives depuis le contrat v4, bloc de 100 plein)."
+      },
+      {
+        "contractName": "Moteur.Lamelles.Extension",
+        "type": "digital",
+        "joinDebut": 157,
+        "nombre": 18,
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 157,
+        "description": "v5.3 (29.09.2026) Lamelles des moteurs 7..12 : triplets Horaire/Stop/Antihoraire (157,158,159 = moteur 7 ... 172,173,174 = moteur 12). Memes regles que 111-128."
       },
       {
         "contractName": "Systeme.IpId",

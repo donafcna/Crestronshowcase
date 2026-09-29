@@ -161,6 +161,10 @@ def main() -> None:
     # Modules de composants partagés (room-, wellness-, slats-controls.js…) : tous ceux de la source.
     for js in sorted((src / "js").glob("*-controls.js")):
         shutil.copy(js, DEST / "js" / js.name)
+    # v5.3 : slats-controls.* remplacés par motors-controls.* (fenêtre Moteurs paginée, 12 moteurs).
+    for old in (DEST / "js" / "slats-controls.js", DEST / "themes" / "slats-controls.css"):
+        if old.exists():
+            old.unlink()
     for name in ("version.js", "build_date.json"):
         if (src / name).exists():
             shutil.copy(src / name, DEST / name)

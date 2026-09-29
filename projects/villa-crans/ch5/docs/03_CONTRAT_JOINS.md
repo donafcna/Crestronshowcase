@@ -1,3 +1,12 @@
+## Extension 12 moteurs — v5.3 du 29/09/2026
+
+- **Config** : `pieces[].pilotages.moteurs.nombre` = nombre de moteurs affichés (1 à 12, défaut 12), `liste` = 12 entrées (ordre : Volet ext. 1-2, Rideau ext. 1-2, Store 1-2, puis Volet ext. 3, Rideau ext. 3, Store 3, Volet ext. 4, Rideau ext. 4, Store 4). Le `type` de chaque entrée (volet / rideau / store) choisit l'icône et les pictogrammes des boutons ; `lamelles` reste par moteur (vrai par défaut sur volets et stores).
+- **Joins globaux digitaux 129-146** (`Moteur.Commande.Extension`) : moteurs 7..12, triplets Monter/Stop/Descendre (129/130/131 = moteur 7 … 144/145/146 = moteur 12).
+- **Joins globaux digitaux 157-174** (`Moteur.Lamelles.Extension`) : lamelles des moteurs 7..12, triplets Horaire/Stop/Antihoraire (157/158/159 = moteur 7 … 172/173/174 = moteur 12).
+- Mêmes règles que 81-98 / 111-128 : impulsions sans état, le C# pose a10 = pièce affichée puis recopie le join sur l'EISC, le slot 2 route par `Room_Select#`. **Pas d'offset de bloc pièce** : le bloc de 100 est plein et les blocs ne sont plus câblés côté SIMPL depuis le contrat v4 (`blocsPiecesGui.actif = false`).
+- **GUI** : fenêtre Moteurs paginée, 6 moteurs au plus par page (moins si la hauteur ne le permet pas, iPhone), flèches ‹ › et indicateur de page dans l'en-tête, aucune zone défilante.
+- **Slot 2** : `generate_slot2.js` câble `Motor_7..12_Up/Stop/Down` et les `Tilt_*` des moteurs à lamelles. C# : CPZ 1.0.197.0.
+
 # 03 — Contrat de joins v4.1
 
 ## Extension lamelles — v5.0 du 28/09/2026

@@ -1,3 +1,8 @@
+## Moteurs 7 à 12 (v5.3, 29.09.2026)
+
+Joins globaux 129-146 : `Motor_7_Up` … `Motor_12_Down` (+ `_fb`), mêmes conventions que 81-98. Lamelles des moteurs 7..12 : 157-174
+(`Motor_n_Tilt_CW/Stop/CCW`). Le nombre de moteurs câblés suit le plus grand `moteurs.nombre` de la config (12). F12 après génération.
+
 ## Lamelles (v5.0, 28.09.2026)
 
 Joins globaux 111-128 : `Motor_n_Tilt_CW_fb` / `Motor_n_Tilt_Stop_fb` / `Motor_n_Tilt_CCW_fb` = appui reçu de la GUI (sortie du symbole,

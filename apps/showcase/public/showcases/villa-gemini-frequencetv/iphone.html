@@ -808,11 +808,11 @@
     <link rel="stylesheet" href="themes/alarm-controls.css">
     <link rel="stylesheet" href="themes/scene-controls.css">
     <link rel="stylesheet" href="themes/av-controls.css">
-    <link rel="stylesheet" href="themes/slats-controls.css">
+    <link rel="stylesheet" href="themes/motors-controls.css">
 <link rel="stylesheet" href="themes/room-controls.css">
 <link rel="stylesheet" href="themes/wellness-controls.css">
 <script defer src="js/room-controls.js"></script>
-<script defer src="js/slats-controls.js"></script>
+<script defer src="js/motors-controls.js"></script>
 <script defer src="js/wellness-controls.js"></script>
     <!-- Vitrine : pas de processeur, indicateur de connexion masqué -->
     <style>#connection-status{display:none !important}</style>
@@ -3128,49 +3128,8 @@
                 const lightsTitleEl = document.getElementById('lights-room-title');
                 if (lightsTitleEl) lightsTitleEl.innerText = roomName;
 
-                // Re-générer les moteurs dynamiquement pour la pièce sélectionnée
-                const motorsContainer = document.getElementById('motors-container');
-                if (motorsContainer) {
-                    motorsContainer.innerHTML = '';
-                    const motors = config.roomMotors[roomId.toString()] || ["Moteur 1", "Moteur 2", "Moteur 3", "Moteur 4"];
-                    motors.forEach((motorName, idx) => {
-                        const item = document.createElement('div');
-                        item.className = "overlay-item overlay-item-row";
-                        item.style.background = "rgba(255,255,255,0.02)";
-                        
-                        const label = document.createElement('span');
-                        label.style = "font-weight: bold; color: var(--text-secondary); font-size: 0.85rem;";
-                        label.innerText = motorName;
-                        
-                        const btnGroup = document.createElement('div');
-                        btnGroup.style = "display: flex; gap: 4px;";
-                        
-                        const motorId = idx + 1;
-                        
-                        const up = document.createElement('button');
-                        up.className = "shade-btn-mobile";
-                        up.innerText = "▲";
-                        up.onclick = () => pressDigital(80 + motorId * 3 - 2);
-                        
-                        const stop = document.createElement('button');
-                        stop.className = "shade-btn-mobile";
-                        stop.innerText = "■";
-                        stop.onclick = () => pressDigital(80 + motorId * 3 - 1);
-                        
-                        const down = document.createElement('button');
-                        down.className = "shade-btn-mobile";
-                        down.innerText = "▼";
-                        down.onclick = () => pressDigital(80 + motorId * 3);
-                        
-                        btnGroup.appendChild(up);
-                        btnGroup.appendChild(stop);
-                        btnGroup.appendChild(down);
-                        
-                        item.appendChild(label);
-                        item.appendChild(btnGroup);
-                        motorsContainer.appendChild(item);
-                    });
-                }
+                // Moteurs : fenêtre paginée, 12 moteurs max par pièce (v5.3, js/motors-controls.js)
+                if (window.VillaMotors) window.VillaMotors.render();
 
                 // Re-générer les éclairages dynamiquement pour la pièce sélectionnée
                 const circuitsContainer = document.getElementById('circuits-container');
@@ -3374,7 +3333,7 @@
                         }
                         legacy.roomCircuits[String(p.id)] = circuits;
                         const mot = pil.moteurs || {};
-                        const nbM = Math.min(mot.nombre || 6, 6);
+                        const nbM = Math.min(mot.nombre || 6, 12);
                         const lstM = mot.liste || [];
                         const defM = defs.moteurs || [];
                         const motors = [];
@@ -4650,7 +4609,9 @@
         window.presetFamilleMoteurs = function (direction) {
             var j = FAMILLE_JOINS[familleActive] && FAMILLE_JOINS[familleActive][direction];
             if (j && typeof window.pressDigital === 'function') window.pressDigital(j);
-            if (typeof window.animerFamilleMoteurs === 'function') window.animerFamilleMoteurs(FAMILLE_KIND[familleActive], direction);
+            // v5.3 : icônes animées de la fenêtre Moteurs (js/motors-controls.js), par type de la config
+            if (window.VillaMotors) window.VillaMotors.animateType({ volets: 'volet', rideaux: 'rideau', stores: 'store' }[familleActive], direction);
+            else if (typeof window.animerFamilleMoteurs === 'function') window.animerFamilleMoteurs(FAMILLE_KIND[familleActive], direction);
         };
         window.rendrePageMoteurs = function () { page = 0; rendrePage(); };
         document.addEventListener('DOMContentLoaded', function () { installerPager(); });

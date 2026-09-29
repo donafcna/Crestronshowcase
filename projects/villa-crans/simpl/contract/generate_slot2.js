@@ -124,9 +124,14 @@ grp.forEach((g, gi) => {
 });
 // Purge des anciennes entrées I61..I69 issues des générations précédentes
 const purgeInputs = [49, 50, 61, 62, 63, 64, 65, 66, 67, 68, 69];
-// Moteurs 1..6 (81-98) : commandes + écho des appuis GUI
-for (let mo = 1; mo <= 6; mo++) {
-  const b = 81 + (mo - 1) * 3;
+// Moteurs 1..6 (81-98) + v5.3 moteurs 7..12 (129-146) : commandes + écho des appuis GUI
+const MAX_MOTEURS = 12;
+const motorBase = mo => (mo <= 6 ? 81 + (mo - 1) * 3 : 129 + (mo - 7) * 3);
+const slatsBase = mo => (mo <= 6 ? 111 + (mo - 1) * 3 : 157 + (mo - 7) * 3);
+const nbMoteursMax = Math.min(MAX_MOTEURS, Math.max(6, ...(villaCfg.pieces || []).map(p =>
+  (p.pilotages && p.pilotages.moteurs && p.pilotages.moteurs.actif !== false) ? (p.pilotages.moteurs.nombre || 6) : 0)));
+for (let mo = 1; mo <= nbMoteursMax; mo++) {
+  const b = motorBase(mo);
   din(b, 'Motor_' + mo + '_Up'); dout(b, 'Motor_' + mo + '_Up_fb');
   din(b + 1, 'Motor_' + mo + '_Stop'); dout(b + 1, 'Motor_' + mo + '_Stop_fb');
   din(b + 2, 'Motor_' + mo + '_Down'); dout(b + 2, 'Motor_' + mo + '_Down_fb');
@@ -138,12 +143,13 @@ for (let mo = 1; mo <= 6; mo++) {
 const TILT = ['Tilt_CW', 'Tilt_Stop', 'Tilt_CCW'];
 const slatsMotors = new Set();
 (villaCfg.pieces || []).forEach(p => ((p.pilotages && p.pilotages.moteurs && p.pilotages.moteurs.liste) || [])
-  .forEach((m, i) => { if (m && m.lamelles === true && i < 6) slatsMotors.add(i + 1); }));
-for (const mo of [...slatsMotors].sort()) {
-  const b = 111 + (mo - 1) * 3;
+  .forEach((m, i) => { if (m && m.lamelles === true && i < Math.min(MAX_MOTEURS, (p.pilotages.moteurs.nombre || 6))) slatsMotors.add(i + 1); }));
+for (const mo of [...slatsMotors].sort((a, b) => a - b)) {
+  const b = slatsBase(mo);
   TILT.forEach((t, k) => { din(b + k, 'Motor_' + mo + '_' + t); dout(b + k, 'Motor_' + mo + '_' + t + '_fb'); });
 }
-console.log('Lamelles (v5.0) : moteurs ' + ([...slatsMotors].sort().join(', ') || 'aucun') + ' -> joins 111-128 cables par triplet.');
+console.log('Moteurs (v5.3) : 1..' + nbMoteursMax + ' -> 81-98' + (nbMoteursMax > 6 ? ' + 129-' + (129 + (nbMoteursMax - 6) * 3 - 1) : '') + '.');
+console.log('Lamelles (v5.3) : moteurs ' + ([...slatsMotors].sort((a, b) => a - b).join(', ') || 'aucun') + ' -> joins 111-128 / 157-174 cables par triplet.');
 // Sources A/V 0..5 (150-155)
 for (let s = 0; s <= 5; s++) { din(150 + s, 'Source_Select_' + s); dout(150 + s, 'Source_Select_' + s + '_fb'); }
 // 156 : l'audio revient a la source video (v1.0.166) — manquait dans toutes les generations.
