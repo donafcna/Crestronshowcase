@@ -2,7 +2,7 @@
 
 ## SORTIES (slot 2 reçoit)
 
-### Digitaux (358)
+### Digitaux (224)
 d  11  Room_Select1_fb
 d  12  Room_Select2_fb
 d  13  Room_Select3_fb
@@ -33,16 +33,12 @@ d  37  Room_Select27_fb
 d  38  Room_Select28_fb
 d  39  Room_Select29_fb
 d  40  Room_Select30_fb
-d  41  Alarm_Arm_fb
-d  42  Alarm_Disarm_fb
-d  46  Alarm_Code_Clear
 d  49  HVAC_Setpoint_Up
 d  50  HVAC_Setpoint_Down
 d  51  Lighting_Scene1_fb
 d  52  Lighting_Scene2_fb
 d  53  Lighting_Scene3_fb
 d  54  Lighting_Scene4_fb
-d  55  Audio_Mute_fb
 d  61  Shades_Volets_Up
 d  62  Shades_Volets_Stop
 d  63  Shades_Volets_Down
@@ -70,43 +66,10 @@ d  95  Motor_5_Down_fb
 d  96  Motor_6_Up_fb
 d  97  Motor_6_Stop_fb
 d  98  Motor_6_Down_fb
-d 150  Source_Select_0_fb
-d 151  Source_Select_1_fb
-d 152  Source_Select_2_fb
-d 153  Source_Select_3_fb
-d 154  Source_Select_4_fb
-d 155  Source_Select_5_fb
-d 156  Source_AudioReturn_fb
-d 200  AV_Off_fb
 d 201  Shades_Scene_1_fb
 d 202  Shades_Scene_2_fb
 d 203  Shades_Scene_3_fb
 d 204  Shades_Scene_4_fb
-d 211  Remote_AppleTV_Up
-d 212  Remote_AppleTV_Down
-d 213  Remote_AppleTV_Left
-d 214  Remote_AppleTV_Right
-d 215  Remote_AppleTV_Ok
-d 216  Remote_AppleTV_Back
-d 217  Remote_AppleTV_Home
-d 218  Remote_AppleTV_Play
-d 219  Remote_AppleTV_Rew
-d 220  Remote_AppleTV_Fwd
-d 251  Media_PlayPause
-d 252  Media_Next
-d 253  Media_Prev
-d 301  Alarm_Part1_Arm_fb
-d 302  Alarm_Part1_Partial_fb
-d 303  Alarm_Part1_Disarm_fb
-d 304  Alarm_Part2_Arm_fb
-d 305  Alarm_Part2_Partial_fb
-d 306  Alarm_Part2_Disarm_fb
-d 307  Alarm_Part3_Arm_fb
-d 308  Alarm_Part3_Partial_fb
-d 309  Alarm_Part3_Disarm_fb
-d 310  Alarm_Part4_Arm_fb
-d 311  Alarm_Part4_Partial_fb
-d 312  Alarm_Part4_Disarm_fb
 d 401  Global_Lights_AllOn_fb
 d 402  Global_Lights_AllOff_fb
 d 403  Global_Lights_Eco_fb
@@ -118,103 +81,6 @@ d 408  Global_HVAC_Night_fb
 d 409  Global_HVAC_Frost_fb
 d 410  Global_Vacation_On_fb
 d 411  Global_Vacation_Off_fb
-d 500  Remote_SkyQ_Up
-d 501  Remote_SkyQ_Down
-d 502  Remote_SkyQ_Left
-d 503  Remote_SkyQ_Right
-d 504  Remote_SkyQ_Ok
-d 505  Remote_SkyQ_Back
-d 506  Remote_SkyQ_Menu
-d 507  Remote_SkyQ_Exit
-d 508  Remote_SkyQ_Live
-d 509  Remote_SkyQ_Dvr
-d 510  Remote_SkyQ_Guide
-d 511  Remote_SkyQ_Info
-d 512  Remote_SkyQ_Last
-d 513  Remote_SkyQ_PgUp
-d 514  Remote_SkyQ_PgDn
-d 515  Remote_SkyQ_ChUp
-d 516  Remote_SkyQ_ChDn
-d 517  Remote_SkyQ_Rew
-d 518  Remote_SkyQ_Play
-d 519  Remote_SkyQ_Fwd
-d 520  Remote_SkyQ_Pause
-d 521  Remote_SkyQ_Stop
-d 522  Remote_SkyQ_Replay
-d 523  Remote_SkyQ_Rec
-d 524  Remote_SkyQ_Yellow
-d 525  Remote_SkyQ_Blue
-d 526  Remote_SkyQ_Red
-d 527  Remote_SkyQ_Green
-d 530  Remote_IPTV_Up
-d 531  Remote_IPTV_Down
-d 532  Remote_IPTV_Left
-d 533  Remote_IPTV_Right
-d 534  Remote_IPTV_Ok
-d 535  Remote_IPTV_Back
-d 536  Remote_IPTV_Menu
-d 537  Remote_IPTV_Exit
-d 538  Remote_IPTV_Live
-d 539  Remote_IPTV_Dvr
-d 540  Remote_IPTV_Guide
-d 541  Remote_IPTV_Info
-d 542  Remote_IPTV_Last
-d 543  Remote_IPTV_PgUp
-d 544  Remote_IPTV_PgDn
-d 545  Remote_IPTV_ChUp
-d 546  Remote_IPTV_ChDn
-d 547  Remote_IPTV_Rew
-d 548  Remote_IPTV_Play
-d 549  Remote_IPTV_Fwd
-d 550  Remote_IPTV_Pause
-d 551  Remote_IPTV_Stop
-d 552  Remote_IPTV_Replay
-d 553  Remote_IPTV_Rec
-d 554  Remote_IPTV_Yellow
-d 555  Remote_IPTV_Blue
-d 556  Remote_IPTV_Red
-d 557  Remote_IPTV_Green
-d 560  Remote_Swisscom_Power
-d 561  Remote_Swisscom_Assistant
-d 562  Remote_Swisscom_Input
-d 563  Remote_Swisscom_Mute
-d 564  Remote_Swisscom_Rew
-d 565  Remote_Swisscom_Rec
-d 566  Remote_Swisscom_Fwd
-d 567  Remote_Swisscom_Replay
-d 568  Remote_Swisscom_Play
-d 569  Remote_Swisscom_Skip
-d 570  Remote_Swisscom_Back
-d 571  Remote_Swisscom_Home
-d 572  Remote_Swisscom_Guide
-d 573  Remote_Swisscom_Option
-d 574  Remote_Swisscom_Up
-d 575  Remote_Swisscom_Down
-d 576  Remote_Swisscom_Left
-d 577  Remote_Swisscom_Right
-d 578  Remote_Swisscom_Ok
-d 579  Remote_Swisscom_VolUp
-d 580  Remote_Swisscom_VolDn
-d 581  Remote_Swisscom_Mic
-d 582  Remote_Swisscom_PUp
-d 583  Remote_Swisscom_PDn
-d 584  Remote_Swisscom_Pip
-d 585  Remote_Swisscom_D0
-d 586  Remote_Swisscom_D1
-d 587  Remote_Swisscom_D2
-d 588  Remote_Swisscom_D3
-d 589  Remote_Swisscom_D4
-d 590  Remote_Swisscom_D5
-d 591  Remote_Swisscom_D6
-d 592  Remote_Swisscom_D7
-d 593  Remote_Swisscom_D8
-d 594  Remote_Swisscom_D9
-d 595  Remote_Swisscom_Txt
-d 596  Remote_Swisscom_Radio
-d 597  Remote_Swisscom_Red
-d 598  Remote_Swisscom_Green
-d 599  Remote_Swisscom_Yellow
-d 600  Remote_Swisscom_Blue
 d 610  HVAC_On_Cmd
 d 611  HVAC_Off_Cmd
 d 612  HVAC_Fan_Auto_Cmd
@@ -362,14 +228,12 @@ d2622  R17_Lighting_Scene2_fb
 d2623  R17_Lighting_Scene3_fb
 d2624  R17_Lighting_Scene4_fb
 
-### Analogiques (154)
+### Analogiques (151)
 a  10  Room_Selected#
 a  21  Lighting_Master_fb
 a  31  HVAC_Setpoint_fb
 a  32  HVAC_Temperature_fb
 a  33  HVAC_Mode_fb
-a  51  Source_Active_fb#
-a  52  Audio_Volume_fb#
 a  61  HVAC_FanSpeed_Cmd#
 a  71  Circuit_1_fb#
 a  72  Circuit_2_fb#
@@ -391,7 +255,6 @@ a  87  Circuit_17_fb#
 a  88  Circuit_18_fb#
 a  89  Circuit_19_fb#
 a  90  Circuit_20_fb#
-a 254  Media_Volume_fb#
 a1031  R01_HVAC_Setpoint_fb#
 a1033  R01_HVAC_FanSpeed_fb#
 a1071  R01_Circuit_1_fb#
@@ -518,12 +381,11 @@ a2671  R17_Circuit_1_fb#
 a2672  R17_Circuit_2_fb#
 a2673  R17_Circuit_3_fb#
 
-### Séries (41)
+### Séries (40)
 s  10  Room_Selected$
 s  32  HVAC_Temperature_fb$
 s  33  HVAC_Mode_fb$
 s  34  HVAC_Setpoint_fb$
-s  43  Alarm_Code$
 s1032  R01_HVAC_Temperature_fb$
 s1033  R01_HVAC_Mode_fb$
 s1034  R01_HVAC_Setpoint_fb$
@@ -563,7 +425,7 @@ s2534  R16_HVAC_Setpoint_fb$
 
 ## ENTRÉES (slot 2 renvoie)
 
-### Digitaux (163)
+### Digitaux (138)
 d  11  Room_Select1
 d  12  Room_Select2
 d  13  Room_Select3
@@ -594,15 +456,10 @@ d  37  Room_Select27
 d  38  Room_Select28
 d  39  Room_Select29
 d  40  Room_Select30
-d  41  Alarm_Arm
-d  42  Alarm_Disarm
-d  44  Alarm_Code_OK
-d  45  Alarm_Code_KO
 d  51  Lighting_Scene1
 d  52  Lighting_Scene2
 d  53  Lighting_Scene3
 d  54  Lighting_Scene4
-d  55  Audio_Mute
 d  81  Motor_1_Up
 d  82  Motor_1_Stop
 d  83  Motor_1_Down
@@ -621,30 +478,10 @@ d  95  Motor_5_Down
 d  96  Motor_6_Up
 d  97  Motor_6_Stop
 d  98  Motor_6_Down
-d 150  Source_Select_0
-d 151  Source_Select_1
-d 152  Source_Select_2
-d 153  Source_Select_3
-d 154  Source_Select_4
-d 155  Source_Select_5
-d 156  Source_AudioReturn
-d 200  AV_Off
 d 201  Shades_Scene_1
 d 202  Shades_Scene_2
 d 203  Shades_Scene_3
 d 204  Shades_Scene_4
-d 301  Alarm_Part1_Arm
-d 302  Alarm_Part1_Partial
-d 303  Alarm_Part1_Disarm
-d 304  Alarm_Part2_Arm
-d 305  Alarm_Part2_Partial
-d 306  Alarm_Part2_Disarm
-d 307  Alarm_Part3_Arm
-d 308  Alarm_Part3_Partial
-d 309  Alarm_Part3_Disarm
-d 310  Alarm_Part4_Arm
-d 311  Alarm_Part4_Partial
-d 312  Alarm_Part4_Disarm
 d 410  Global_Vacation_On
 d 411  Global_Vacation_Off
 d1021  R01_Lighting_Scene1_Actual
@@ -728,13 +565,11 @@ d2622  R17_Lighting_Scene2_Actual
 d2623  R17_Lighting_Scene3_Actual
 d2624  R17_Lighting_Scene4_Actual
 
-### Analogiques (164)
+### Analogiques (161)
 a  10  Room_Select#
 a  21  Lighting_Master
 a  31  HVAC_Setpoint
 a  33  HVAC_Mode
-a  51  Source_Active#
-a  52  Audio_Volume#
 a  71  Circuit_1#
 a  72  Circuit_2#
 a  73  Circuit_3#
@@ -755,7 +590,6 @@ a  87  Circuit_17#
 a  88  Circuit_18#
 a  89  Circuit_19#
 a  90  Circuit_20#
-a 254  Media_Volume#
 a1031  R01_HVAC_Setpoint#
 a1032  R01_HVAC_Temperature#
 a1033  R01_HVAC_FanSpeed_Actual#

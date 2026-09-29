@@ -28,7 +28,14 @@ window.villaConfigEmbedded = {
       "Un pilotage avec \"actif\": false masque toute la section correspondante dans le GUI pour cette pièce.",
       "ICONES : chaque piece a un champ icone (emoji affiche dans le menu de gauche). Choisir dans valeursParDefaut.iconesDisponibles et copier-coller."
     ],
-    "description": "Duplex de 350 m² (niveaux 9 et 10) dans une résidence hôtelière de Crans-Montana : 17 zones, éclairage Lutron HomeWorks QS (DALI + phase) avec niveaux par scène issus de la séquence d'opérations Lutron, rideaux motorisés Lutron, CVC par pièce, audio-vidéo B&O. GUI CH5, C# et générateur SIMPL = Core Villa Crans (contrat v4.1) ; seul ce fichier change.",
+    "description": "Duplex de 350 m² (niveaux 9 et 10) dans une résidence hôtelière de Crans-Montana : 17 zones, éclairage Lutron HomeWorks QS (DALI + phase) avec niveaux par scène issus de la séquence d'opérations Lutron, rideaux motorisés Lutron, CVC par pièce. Interface Connect (liste des pièces, tuiles-curseurs, scènes, stores, climat) ; aucune fonction audio-vidéo, alarme ni caméra (29.09.2026). GUI CH5, C# et générateur SIMPL = Core Villa Crans (contrat v4.1) ; seul ce fichier change.",
+    "interface": "connect",
+    "interfaceDescription": "'connect' = interface Connect du Core (themes/connect.css + js/connect-ui.js, v5.4) ; absent ou 'villa' = interface Villa Crans d'origine.",
+    "fonctionsRetirees": [
+      "audioVideo",
+      "alarme",
+      "cameras"
+    ],
     "coreOrigine": "projects/villa-crans/ch5 (GUI + C#) et projects/villa-crans/simpl/contract (générateur)"
   },
   "valeursParDefaut": {
@@ -69,27 +76,63 @@ window.villaConfigEmbedded = {
     "moteurs": [
       {
         "nom": "Volet ext. 1",
-        "type": "volet"
+        "type": "volet",
+        "lamelles": true
       },
       {
         "nom": "Volet ext. 2",
-        "type": "volet"
+        "type": "volet",
+        "lamelles": true
       },
       {
         "nom": "Rideau ext. 1",
-        "type": "rideau"
+        "type": "rideau",
+        "lamelles": false
       },
       {
         "nom": "Rideau ext. 2",
-        "type": "rideau"
+        "type": "rideau",
+        "lamelles": false
       },
       {
         "nom": "Store 1",
-        "type": "store"
+        "type": "store",
+        "lamelles": true
       },
       {
         "nom": "Store 2",
-        "type": "store"
+        "type": "store",
+        "lamelles": true
+      },
+      {
+        "nom": "Volet ext. 3",
+        "type": "volet",
+        "lamelles": true
+      },
+      {
+        "nom": "Rideau ext. 3",
+        "type": "rideau",
+        "lamelles": false
+      },
+      {
+        "nom": "Store 3",
+        "type": "store",
+        "lamelles": true
+      },
+      {
+        "nom": "Volet ext. 4",
+        "type": "volet",
+        "lamelles": true
+      },
+      {
+        "nom": "Rideau ext. 4",
+        "type": "rideau",
+        "lamelles": false
+      },
+      {
+        "nom": "Store 4",
+        "type": "store",
+        "lamelles": true
       }
     ],
     "scenesStores": [
@@ -285,10 +328,10 @@ window.villaConfigEmbedded = {
         },
         "controlesGeneraux": {
           "actif": true,
-          "partitionsAlarme": 4
+          "partitionsAlarme": 0
         },
         "audioVideo": {
-          "actif": true,
+          "actif": false,
           "sources": [
             1,
             2,
@@ -407,10 +450,10 @@ window.villaConfigEmbedded = {
         },
         "controlesGeneraux": {
           "actif": true,
-          "partitionsAlarme": 4
+          "partitionsAlarme": 0
         },
         "audioVideo": {
-          "actif": true,
+          "actif": false,
           "sources": [
             1,
             2,
@@ -546,10 +589,10 @@ window.villaConfigEmbedded = {
         },
         "controlesGeneraux": {
           "actif": true,
-          "partitionsAlarme": 4
+          "partitionsAlarme": 0
         },
         "audioVideo": {
-          "actif": true,
+          "actif": false,
           "sources": [
             1,
             2,
@@ -637,12 +680,12 @@ window.villaConfigEmbedded = {
             {
               "nom": "Volet ext. 1",
               "type": "volet",
-              "lamelles": false
+              "lamelles": true
             },
             {
               "nom": "Volet ext. 2",
               "type": "volet",
-              "lamelles": false
+              "lamelles": true
             },
             {
               "nom": "Rideau ext. 1",
@@ -657,12 +700,42 @@ window.villaConfigEmbedded = {
             {
               "nom": "Store 1",
               "type": "store",
-              "lamelles": false
+              "lamelles": true
             },
             {
               "nom": "Store 2",
               "type": "store",
+              "lamelles": true
+            },
+            {
+              "nom": "Volet ext. 3",
+              "type": "volet",
+              "lamelles": true
+            },
+            {
+              "nom": "Rideau ext. 3",
+              "type": "rideau",
               "lamelles": false
+            },
+            {
+              "nom": "Store 3",
+              "type": "store",
+              "lamelles": true
+            },
+            {
+              "nom": "Volet ext. 4",
+              "type": "volet",
+              "lamelles": true
+            },
+            {
+              "nom": "Rideau ext. 4",
+              "type": "rideau",
+              "lamelles": false
+            },
+            {
+              "nom": "Store 4",
+              "type": "store",
+              "lamelles": true
             }
           ]
         },
@@ -690,7 +763,7 @@ window.villaConfigEmbedded = {
         },
         "controlesGeneraux": {
           "actif": true,
-          "partitionsAlarme": 4
+          "partitionsAlarme": 0
         },
         "audioVideo": {
           "actif": false,
@@ -767,12 +840,12 @@ window.villaConfigEmbedded = {
             {
               "nom": "Volet ext. 1",
               "type": "volet",
-              "lamelles": false
+              "lamelles": true
             },
             {
               "nom": "Volet ext. 2",
               "type": "volet",
-              "lamelles": false
+              "lamelles": true
             },
             {
               "nom": "Rideau ext. 1",
@@ -787,12 +860,42 @@ window.villaConfigEmbedded = {
             {
               "nom": "Store 1",
               "type": "store",
-              "lamelles": false
+              "lamelles": true
             },
             {
               "nom": "Store 2",
               "type": "store",
+              "lamelles": true
+            },
+            {
+              "nom": "Volet ext. 3",
+              "type": "volet",
+              "lamelles": true
+            },
+            {
+              "nom": "Rideau ext. 3",
+              "type": "rideau",
               "lamelles": false
+            },
+            {
+              "nom": "Store 3",
+              "type": "store",
+              "lamelles": true
+            },
+            {
+              "nom": "Volet ext. 4",
+              "type": "volet",
+              "lamelles": true
+            },
+            {
+              "nom": "Rideau ext. 4",
+              "type": "rideau",
+              "lamelles": false
+            },
+            {
+              "nom": "Store 4",
+              "type": "store",
+              "lamelles": true
             }
           ]
         },
@@ -820,7 +923,7 @@ window.villaConfigEmbedded = {
         },
         "controlesGeneraux": {
           "actif": true,
-          "partitionsAlarme": 4
+          "partitionsAlarme": 0
         },
         "audioVideo": {
           "actif": false,
@@ -904,12 +1007,12 @@ window.villaConfigEmbedded = {
             {
               "nom": "Volet ext. 1",
               "type": "volet",
-              "lamelles": false
+              "lamelles": true
             },
             {
               "nom": "Volet ext. 2",
               "type": "volet",
-              "lamelles": false
+              "lamelles": true
             },
             {
               "nom": "Rideau ext. 1",
@@ -924,12 +1027,42 @@ window.villaConfigEmbedded = {
             {
               "nom": "Store 1",
               "type": "store",
-              "lamelles": false
+              "lamelles": true
             },
             {
               "nom": "Store 2",
               "type": "store",
+              "lamelles": true
+            },
+            {
+              "nom": "Volet ext. 3",
+              "type": "volet",
+              "lamelles": true
+            },
+            {
+              "nom": "Rideau ext. 3",
+              "type": "rideau",
               "lamelles": false
+            },
+            {
+              "nom": "Store 3",
+              "type": "store",
+              "lamelles": true
+            },
+            {
+              "nom": "Volet ext. 4",
+              "type": "volet",
+              "lamelles": true
+            },
+            {
+              "nom": "Rideau ext. 4",
+              "type": "rideau",
+              "lamelles": false
+            },
+            {
+              "nom": "Store 4",
+              "type": "store",
+              "lamelles": true
             }
           ]
         },
@@ -957,7 +1090,7 @@ window.villaConfigEmbedded = {
         },
         "controlesGeneraux": {
           "actif": true,
-          "partitionsAlarme": 4
+          "partitionsAlarme": 0
         },
         "audioVideo": {
           "actif": false,
@@ -1132,10 +1265,10 @@ window.villaConfigEmbedded = {
         },
         "controlesGeneraux": {
           "actif": true,
-          "partitionsAlarme": 4
+          "partitionsAlarme": 0
         },
         "audioVideo": {
-          "actif": true,
+          "actif": false,
           "sources": [
             1,
             2,
@@ -1258,12 +1391,12 @@ window.villaConfigEmbedded = {
             {
               "nom": "Volet ext. 1",
               "type": "volet",
-              "lamelles": false
+              "lamelles": true
             },
             {
               "nom": "Volet ext. 2",
               "type": "volet",
-              "lamelles": false
+              "lamelles": true
             },
             {
               "nom": "Rideau ext. 1",
@@ -1278,12 +1411,42 @@ window.villaConfigEmbedded = {
             {
               "nom": "Store 1",
               "type": "store",
-              "lamelles": false
+              "lamelles": true
             },
             {
               "nom": "Store 2",
               "type": "store",
+              "lamelles": true
+            },
+            {
+              "nom": "Volet ext. 3",
+              "type": "volet",
+              "lamelles": true
+            },
+            {
+              "nom": "Rideau ext. 3",
+              "type": "rideau",
               "lamelles": false
+            },
+            {
+              "nom": "Store 3",
+              "type": "store",
+              "lamelles": true
+            },
+            {
+              "nom": "Volet ext. 4",
+              "type": "volet",
+              "lamelles": true
+            },
+            {
+              "nom": "Rideau ext. 4",
+              "type": "rideau",
+              "lamelles": false
+            },
+            {
+              "nom": "Store 4",
+              "type": "store",
+              "lamelles": true
             }
           ]
         },
@@ -1311,7 +1474,7 @@ window.villaConfigEmbedded = {
         },
         "controlesGeneraux": {
           "actif": true,
-          "partitionsAlarme": 4
+          "partitionsAlarme": 0
         },
         "audioVideo": {
           "actif": false,
@@ -1422,7 +1585,7 @@ window.villaConfigEmbedded = {
         },
         "controlesGeneraux": {
           "actif": true,
-          "partitionsAlarme": 4
+          "partitionsAlarme": 0
         },
         "audioVideo": {
           "actif": false,
@@ -1579,10 +1742,10 @@ window.villaConfigEmbedded = {
         },
         "controlesGeneraux": {
           "actif": true,
-          "partitionsAlarme": 4
+          "partitionsAlarme": 0
         },
         "audioVideo": {
-          "actif": true,
+          "actif": false,
           "sources": [
             1,
             2,
@@ -1726,12 +1889,12 @@ window.villaConfigEmbedded = {
             {
               "nom": "Volet ext. 1",
               "type": "volet",
-              "lamelles": false
+              "lamelles": true
             },
             {
               "nom": "Volet ext. 2",
               "type": "volet",
-              "lamelles": false
+              "lamelles": true
             },
             {
               "nom": "Rideau ext. 1",
@@ -1746,12 +1909,42 @@ window.villaConfigEmbedded = {
             {
               "nom": "Store 1",
               "type": "store",
-              "lamelles": false
+              "lamelles": true
             },
             {
               "nom": "Store 2",
               "type": "store",
+              "lamelles": true
+            },
+            {
+              "nom": "Volet ext. 3",
+              "type": "volet",
+              "lamelles": true
+            },
+            {
+              "nom": "Rideau ext. 3",
+              "type": "rideau",
               "lamelles": false
+            },
+            {
+              "nom": "Store 3",
+              "type": "store",
+              "lamelles": true
+            },
+            {
+              "nom": "Volet ext. 4",
+              "type": "volet",
+              "lamelles": true
+            },
+            {
+              "nom": "Rideau ext. 4",
+              "type": "rideau",
+              "lamelles": false
+            },
+            {
+              "nom": "Store 4",
+              "type": "store",
+              "lamelles": true
             }
           ]
         },
@@ -1779,7 +1972,7 @@ window.villaConfigEmbedded = {
         },
         "controlesGeneraux": {
           "actif": true,
-          "partitionsAlarme": 4
+          "partitionsAlarme": 0
         },
         "audioVideo": {
           "actif": false,
@@ -1870,12 +2063,12 @@ window.villaConfigEmbedded = {
             {
               "nom": "Volet ext. 1",
               "type": "volet",
-              "lamelles": false
+              "lamelles": true
             },
             {
               "nom": "Volet ext. 2",
               "type": "volet",
-              "lamelles": false
+              "lamelles": true
             },
             {
               "nom": "Rideau ext. 1",
@@ -1890,12 +2083,42 @@ window.villaConfigEmbedded = {
             {
               "nom": "Store 1",
               "type": "store",
-              "lamelles": false
+              "lamelles": true
             },
             {
               "nom": "Store 2",
               "type": "store",
+              "lamelles": true
+            },
+            {
+              "nom": "Volet ext. 3",
+              "type": "volet",
+              "lamelles": true
+            },
+            {
+              "nom": "Rideau ext. 3",
+              "type": "rideau",
               "lamelles": false
+            },
+            {
+              "nom": "Store 3",
+              "type": "store",
+              "lamelles": true
+            },
+            {
+              "nom": "Volet ext. 4",
+              "type": "volet",
+              "lamelles": true
+            },
+            {
+              "nom": "Rideau ext. 4",
+              "type": "rideau",
+              "lamelles": false
+            },
+            {
+              "nom": "Store 4",
+              "type": "store",
+              "lamelles": true
             }
           ]
         },
@@ -1923,7 +2146,7 @@ window.villaConfigEmbedded = {
         },
         "controlesGeneraux": {
           "actif": true,
-          "partitionsAlarme": 4
+          "partitionsAlarme": 0
         },
         "audioVideo": {
           "actif": false,
@@ -2080,10 +2303,10 @@ window.villaConfigEmbedded = {
         },
         "controlesGeneraux": {
           "actif": true,
-          "partitionsAlarme": 4
+          "partitionsAlarme": 0
         },
         "audioVideo": {
-          "actif": true,
+          "actif": false,
           "sources": [
             1,
             2,
@@ -2220,12 +2443,12 @@ window.villaConfigEmbedded = {
             {
               "nom": "Volet ext. 1",
               "type": "volet",
-              "lamelles": false
+              "lamelles": true
             },
             {
               "nom": "Volet ext. 2",
               "type": "volet",
-              "lamelles": false
+              "lamelles": true
             },
             {
               "nom": "Rideau ext. 1",
@@ -2240,12 +2463,42 @@ window.villaConfigEmbedded = {
             {
               "nom": "Store 1",
               "type": "store",
-              "lamelles": false
+              "lamelles": true
             },
             {
               "nom": "Store 2",
               "type": "store",
+              "lamelles": true
+            },
+            {
+              "nom": "Volet ext. 3",
+              "type": "volet",
+              "lamelles": true
+            },
+            {
+              "nom": "Rideau ext. 3",
+              "type": "rideau",
               "lamelles": false
+            },
+            {
+              "nom": "Store 3",
+              "type": "store",
+              "lamelles": true
+            },
+            {
+              "nom": "Volet ext. 4",
+              "type": "volet",
+              "lamelles": true
+            },
+            {
+              "nom": "Rideau ext. 4",
+              "type": "rideau",
+              "lamelles": false
+            },
+            {
+              "nom": "Store 4",
+              "type": "store",
+              "lamelles": true
             }
           ]
         },
@@ -2273,7 +2526,7 @@ window.villaConfigEmbedded = {
         },
         "controlesGeneraux": {
           "actif": true,
-          "partitionsAlarme": 4
+          "partitionsAlarme": 0
         },
         "audioVideo": {
           "actif": false,
@@ -2430,10 +2683,10 @@ window.villaConfigEmbedded = {
         },
         "controlesGeneraux": {
           "actif": true,
-          "partitionsAlarme": 4
+          "partitionsAlarme": 0
         },
         "audioVideo": {
-          "actif": true,
+          "actif": false,
           "sources": [
             1,
             2,
@@ -2570,12 +2823,12 @@ window.villaConfigEmbedded = {
             {
               "nom": "Volet ext. 1",
               "type": "volet",
-              "lamelles": false
+              "lamelles": true
             },
             {
               "nom": "Volet ext. 2",
               "type": "volet",
-              "lamelles": false
+              "lamelles": true
             },
             {
               "nom": "Rideau ext. 1",
@@ -2590,12 +2843,42 @@ window.villaConfigEmbedded = {
             {
               "nom": "Store 1",
               "type": "store",
-              "lamelles": false
+              "lamelles": true
             },
             {
               "nom": "Store 2",
               "type": "store",
+              "lamelles": true
+            },
+            {
+              "nom": "Volet ext. 3",
+              "type": "volet",
+              "lamelles": true
+            },
+            {
+              "nom": "Rideau ext. 3",
+              "type": "rideau",
               "lamelles": false
+            },
+            {
+              "nom": "Store 3",
+              "type": "store",
+              "lamelles": true
+            },
+            {
+              "nom": "Volet ext. 4",
+              "type": "volet",
+              "lamelles": true
+            },
+            {
+              "nom": "Rideau ext. 4",
+              "type": "rideau",
+              "lamelles": false
+            },
+            {
+              "nom": "Store 4",
+              "type": "store",
+              "lamelles": true
             }
           ]
         },
@@ -2623,7 +2906,7 @@ window.villaConfigEmbedded = {
         },
         "controlesGeneraux": {
           "actif": true,
-          "partitionsAlarme": 4
+          "partitionsAlarme": 0
         },
         "audioVideo": {
           "actif": false,
@@ -2741,7 +3024,7 @@ window.villaConfigEmbedded = {
         },
         "controlesGeneraux": {
           "actif": true,
-          "partitionsAlarme": 4
+          "partitionsAlarme": 0
         },
         "audioVideo": {
           "actif": false,
@@ -3114,7 +3397,8 @@ window.villaConfigEmbedded = {
       "description": "Centrale d'alarme de la villa. Le code de reference n'est plus code en dur ni dans le JavaScript du panel ni dans le C# : le GUI envoie la saisie sur le serial 43, le C# la relaie telle quelle a l'EISC du slot 2 (serial 43) et attend le verdict de la vraie centrale (digital 44 = accepte, 45 = refuse). Si le slot 2 ne repond pas dans le delai ci-dessous, le C# tranche localement avec codeParDefaut.",
       "codeParDefaut": "1234",
       "delaiReponseCentraleMs": 1200,
-      "note": "codeParDefaut n'est qu'un repli de mise en service : a changer sur site, ou a vider (\"\") pour refuser toute validation locale et n'accepter que le verdict de la centrale du slot 2."
+      "note": "codeParDefaut n'est qu'un repli de mise en service : a changer sur site, ou a vider (\"\") pour refuser toute validation locale et n'accepter que le verdict de la centrale du slot 2.",
+      "actif": false
     },
     "notes": [
       "CONTRAT v2 (22.08.2026) : Piece.Select etendu a 30 pieces (digitaux 11-40). Decalages : Eclairage.Scene 21-24 -> 51-54, AV.Mute 53 -> 55, CVC.ConsignePlus 35 -> 49, CVC.ConsigneMoins 36 -> 50, Meteo.EasterEgg 37 -> 56.",
@@ -3304,7 +3588,7 @@ window.villaConfigEmbedded = {
         "nombre": 18,
         "direction": "bidirectionnel",
         "eiscJoinDebut": 81,
-        "description": "Moteurs 1..6 : triplets Monter/Stop/Descendre (81,82,83 = moteur 1 ... 96,97,98 = moteur 6)"
+        "description": "Moteurs 1..6 : triplets Monter/Stop/Descendre (81,82,83 = moteur 1 ... 96,97,98 = moteur 6) — v5.3 : moteurs 7..12 sur 129-146 (Moteur.Commande.Extension)."
       },
       {
         "contractName": "Moteur.Lamelles",
@@ -3314,6 +3598,24 @@ window.villaConfigEmbedded = {
         "direction": "bidirectionnel",
         "eiscJoinDebut": 111,
         "description": "v5.0 (28.09.2026) Lamelles des moteurs 1..6 : triplets Horaire/Stop/Antihoraire (111,112,113 = moteur 1 ... 126,127,128 = moteur 6). Impulsions sans etat, routees sur la piece affichee (a10) comme les moteurs 81-98. Affichees par la GUI seulement si pieces[].pilotages.moteurs.liste[i].lamelles = true."
+      },
+      {
+        "contractName": "Moteur.Commande.Extension",
+        "type": "digital",
+        "joinDebut": 129,
+        "nombre": 18,
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 129,
+        "description": "v5.3 (29.09.2026) Moteurs 7..12 : triplets Monter/Stop/Descendre (129,130,131 = moteur 7 ... 144,145,146 = moteur 12). Impulsions sans etat, routees sur la piece affichee (a10) comme 81-98. Pas d'offset de bloc piece (blocs desactives depuis le contrat v4, bloc de 100 plein)."
+      },
+      {
+        "contractName": "Moteur.Lamelles.Extension",
+        "type": "digital",
+        "joinDebut": 157,
+        "nombre": 18,
+        "direction": "bidirectionnel",
+        "eiscJoinDebut": 157,
+        "description": "v5.3 (29.09.2026) Lamelles des moteurs 7..12 : triplets Horaire/Stop/Antihoraire (157,158,159 = moteur 7 ... 172,173,174 = moteur 12). Memes regles que 111-128."
       },
       {
         "contractName": "Systeme.IpId",

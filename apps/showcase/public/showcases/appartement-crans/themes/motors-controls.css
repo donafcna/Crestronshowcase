@@ -1,0 +1,119 @@
+/* Fenêtre Moteurs (v5.3, 29.09.2026) — composant partagé (js/motors-controls.js), dalle / iPad / XPanel
+   et iPhone. Remplace slats-controls.css. Jetons sur #motors-overlay ; aucun défilement : la hauteur
+   visible est découpée en pages par le module, le conteneur ne défile jamais. */
+#motors-overlay {
+  --mc-card-bg: rgba(255, 255, 255, 0.02);
+  --mc-card-border: rgba(255, 255, 255, 0.08);
+  --mc-name: var(--text-secondary, #94a3b8);
+  --mc-pager-bg: rgba(255, 255, 255, 0.06);
+  --mc-pager-border: rgba(255, 255, 255, 0.18);
+  --mc-pager-fg: var(--text-primary, #f1f5f9);
+  --mc-gap: 14px;
+  --mc-icon: 40px;
+}
+body#app-body.theme-light #motors-overlay {
+  --mc-card-bg: rgba(15, 23, 42, 0.05);
+  --mc-card-border: rgba(15, 23, 42, 0.12);
+  --mc-name: #334155;
+  --mc-pager-bg: rgba(15, 23, 42, 0.06);
+  --mc-pager-border: rgba(15, 23, 42, 0.2);
+  --mc-pager-fg: #0f172a;
+}
+/* Couleurs des icônes par type (jetons) : plus soutenues en thème clair, sinon le vert d'eau des stores disparaît. */
+.mc-card[data-type="volet"]  { --mc-c: #00b4c5; --mc-f: rgba(0, 180, 197, 0.45); }
+.mc-card[data-type="rideau"] { --mc-c: #38bdf8; --mc-f: rgba(56, 189, 248, 0.6); }
+.mc-card[data-type="store"]  { --mc-c: #a7f3d0; --mc-f: rgba(167, 243, 208, 0.5); }
+body#app-body.theme-light .mc-card[data-type="volet"]  { --mc-c: #0891b2; --mc-f: rgba(8, 145, 178, 0.35); }
+body#app-body.theme-light .mc-card[data-type="rideau"] { --mc-c: #0284c7; --mc-f: rgba(2, 132, 199, 0.4); }
+body#app-body.theme-light .mc-card[data-type="store"]  { --mc-c: #059669; --mc-f: rgba(5, 150, 105, 0.35); }
+.mc-icon .mc-stroke { stroke: var(--mc-c); }
+.mc-icon .mc-fill { fill: var(--mc-f); }
+.mc-icon .mc-solid { fill: var(--mc-c); }
+body#app-body.theme-glass #motors-overlay { --mc-name: #e2e8f0; --mc-card-bg: rgba(255, 255, 255, 0.06); }
+
+/* ---- Fenêtre agrandie (dalle, iPad, XPanel) : colonne flex, le conteneur prend la hauteur restante ---- */
+#motors-overlay[style*="display: block"], #motors-overlay[style*="display: flex"] { display: flex !important; flex-direction: column; }
+#motors-overlay.mc-large {
+  width: min(96vw, 1560px) !important; height: 94vh !important; max-height: 94vh !important; padding: 20px 24px !important;
+}
+#motors-overlay > div:first-child { flex: 0 0 auto; margin-bottom: 14px !important; padding-bottom: 12px !important; }
+#motors-overlay > div:last-child { flex: 0 0 auto; }
+/* Commandes groupées (Volet / Rideaux / Stores) compactées : la hauteur rendue va aux cartes. */
+#motors-overlay.mc-large > div:last-child { margin-top: 12px !important; padding-top: 8px !important; gap: 2px !important; }
+#motors-overlay.mc-large > div:last-child ch5-button { margin-top: 0 !important; margin-bottom: 0 !important; }
+#motors-container.mc-grid {
+  display: grid !important; grid-template-columns: 1fr 1fr; align-content: start; gap: var(--mc-gap) !important;
+  flex: 1 1 auto; min-height: 0; max-height: none !important; overflow: hidden !important; padding: 0 !important;
+}
+#motors-container.mc-grid.mc-mobile { grid-template-columns: 1fr; gap: 8px !important; }
+
+/* ---- Carte moteur ---- */
+.mc-card {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px; box-sizing: border-box; min-width: 0;
+  background: var(--mc-card-bg); border: 1px solid var(--mc-card-border); border-radius: 12px; padding: 10px 16px;
+}
+.mc-card[hidden] { display: none !important; }
+.mc-name {
+  flex: 1 1 auto; min-width: 0; align-self: center; text-align: left;
+  font-weight: 700; font-size: 1.15rem; line-height: 1.2; color: var(--mc-name); overflow-wrap: anywhere;
+}
+.mc-controls { flex: 0 0 auto; display: flex; flex-direction: column; gap: 8px; }
+.mc-row { display: flex; align-items: center; gap: 8px; }
+.mc-row > ch5-button { margin: 0 !important; }
+.mc-icon { width: var(--mc-icon); height: var(--mc-icon); flex: 0 0 var(--mc-icon); margin-right: 4px; }
+.mc-icon.mc-moving { animation: mc-pulse 1s ease-in-out infinite; }
+@keyframes mc-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.55; } }
+
+/* ---- Boutons lamelles : pictogramme en masque SVG peint à la couleur du texte (jamais d'emoji) ---- */
+.slats-btn { position: relative; font-size: 0 !important; }
+ch5-button.slats-btn .ch5-button--label, ch5-button.slats-btn label { visibility: hidden !important; }
+.slats-btn::after {
+  content: ''; position: absolute; inset: 0; margin: auto; width: 26px; height: 26px; pointer-events: none;
+  background: var(--text-primary, #f1f5f9);
+  -webkit-mask: var(--slats-icon) center / contain no-repeat; mask: var(--slats-icon) center / contain no-repeat;
+}
+body#app-body.theme-light .slats-btn::after { background: #0f172a; }
+.slats-cw   { --slats-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 4V1l4 4-4 4V6a6 6 0 1 0 6 6h2a8 8 0 1 1-8-8z'/%3E%3C/svg%3E"); }
+.slats-ccw  { --slats-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 4V1L8 5l4 4V6a6 6 0 1 1-6 6H4a8 8 0 1 0 8-8z'/%3E%3C/svg%3E"); }
+.slats-stop { --slats-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect x='6' y='6' width='12' height='12' rx='1.5'/%3E%3C/svg%3E"); }
+@supports not ((mask: url()) or (-webkit-mask: url())) {
+  .slats-btn::after { content: none; }
+  .slats-btn { font-size: inherit !important; }
+  .slats-cw::before { content: '\21BB'; }  .slats-ccw::before { content: '\21BA'; }  .slats-stop::before { content: '\25A0'; }
+}
+
+/* ---- Pagination : flèches dans l'en-tête, masquées sur une seule page ---- */
+.mc-pager { display: none; align-items: center; gap: 8px; margin-left: auto; margin-right: 12px; }
+.mc-pager.actif { display: inline-flex; }
+.mc-pager button {
+  width: 48px; height: 44px; border-radius: 10px; padding: 0; cursor: pointer; position: relative;
+  background: var(--mc-pager-bg); border: 1px solid var(--mc-pager-border); color: var(--mc-pager-fg);
+}
+.mc-pager button::after {
+  content: ''; position: absolute; inset: 0; margin: auto; width: 18px; height: 18px; background: currentColor;
+  -webkit-mask: var(--mc-chev) center / contain no-repeat; mask: var(--mc-chev) center / contain no-repeat;
+}
+.mc-pager .mc-prev { --mc-chev: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M15.5 3 6.5 12l9 9 2.1-2.1-6.9-6.9 6.9-6.9z'/%3E%3C/svg%3E"); }
+.mc-pager .mc-next { --mc-chev: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M8.5 3 6.4 5.1l6.9 6.9-6.9 6.9L8.5 21l9-9z'/%3E%3C/svg%3E"); }
+.mc-pager button:disabled { opacity: 0.35; cursor: default; }
+.mc-pager .mc-page { min-width: 36px; text-align: center; font-weight: 700; font-size: 0.95rem; color: var(--mc-pager-fg); }
+
+/* ---- iPhone : une colonne, cartes serrées, cibles >= 40 px ---- */
+#motors-container.mc-mobile .mc-card { padding: 6px 10px; gap: 8px; border-radius: 10px; }
+#motors-container.mc-mobile .mc-name { font-size: 0.9rem; }
+#motors-container.mc-mobile .mc-controls { gap: 5px; }
+#motors-container.mc-mobile .mc-row { gap: 5px; }
+#motors-container.mc-mobile .mc-icon { --mc-icon: 30px; margin-right: 2px; }
+#motors-container.mc-mobile .shade-btn-mobile { width: 52px !important; height: 42px !important; min-width: 44px; }
+#motors-container.mc-mobile .shade-btn-mobile:not(.curtain-open):not(.curtain-close):not(.slats-btn) { font-size: 1.1rem !important; }
+#motors-container.mc-mobile .slats-btn::after { width: 22px; height: 22px; }
+#motors-overlay.mc-phone .mc-pager { margin: 6px 0 0; gap: 10px; justify-content: center; flex: 0 0 auto; }
+#motors-overlay.mc-phone .mc-pager:not(.actif) { display: none; }
+#motors-overlay.mc-phone .mc-pager button { width: 44px; height: 40px; }
+#motors-overlay.mc-phone #motors-container.mc-grid { max-height: none !important; }
+
+/* Cibles tactiles >= 40 px dans la fenêtre (règle projet) : « Fermer » et les commandes groupées
+   étaient à 35 px sur la dalle / l'iPad. */
+#motors-overlay.mc-large button[onclick*="closeMotorsModal"] { height: 44px !important; min-width: 88px; }
+#motors-overlay.mc-large ch5-button[customClass*="preset-text-btn"] > .ch5-button,
+#motors-overlay.mc-large ch5-button[customClass*="preset-text-btn"] .cb-btn { min-height: 44px !important; height: 44px !important; }

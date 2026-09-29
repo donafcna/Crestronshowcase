@@ -184,3 +184,7 @@ Le fond 3D Hotel Brassus affiche l'enveloppe complète seulement en vue généra
 - Batterie « site » de référence : `scripts/test-appartement-crans-modes.cjs` (3 thèmes × Mode normal / Scène Taille réelle / Scène Responsive / Plein écran × dalle / iPad / smartphone). Planche avant/après : `scripts/planche-avant-apres.cjs --before <site de départ> --after <site courant> --project <id>` (worktree `git worktree add <dir> <commit>` servi sur 4174).
 - Fond 3D : `cfg.enveloppe = "residence"` → `public/plan3d/residence.js` ; disposition = `pieces[].plan3d` du projet, régénérée par `scripts/build-plan3d-appartement.mjs` (jamais de surcharge dans le script).
 - Tests 3D GPU (`test-plan3d*.cjs`) : sans GPU (SwiftShader) 3 assertions échouent à l'identique avant/après ; comparer toujours à la référence, ne pas « corriger » le moteur pour ces cas.
+
+## 29/09/2026 — interface Connect (Appartement Crans-Montana) et projets en retrait, vitrine 2.3.0
+- `meta.interface = "connect"` dans le JSON d'un projet issu du Core → `themes/connect.css` + `js/connect-ui.js` (API `window.ConnectUI` : `openRoom(id)`, `setTab(t)`, `state`). Le Core d'origine est masqué, pas supprimé. Tests : `test-appartement-crans.cjs`, `test-appartement-crans-modes.cjs` ; `check-contrast-dom.mjs` ne couvre pas Connect.
+- **Projets en retrait** : `src/data/retiredProjects.js` (Villa Nyon, Appartement Carouge, Appartement Eaux-Vives). Exclus du catalogue public, conservés dans le dépôt. « Ressort les projets maquettes mis en retrait » = retirer leurs identifiants de cette liste.

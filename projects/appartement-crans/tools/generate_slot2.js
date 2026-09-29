@@ -99,24 +99,29 @@ const sout = (j, n) => { if (j > CAP.s) throw new Error('série ' + j + ' hors c
 
 // ---------------------------------------------------------------- 3. signaux globaux (joins < 1000, contrat v4.1)
 const wellnessActif = !!(cfg.contrat && cfg.contrat.wellness && cfg.contrat.wellness.actif);
+// 29.09.2026 : A/V et alarme câblés seulement s'ils existent dans la configuration (interface Connect : aucun)
+const avActif = (cfg.pieces || []).some(p => p.actif !== false && p.pilotages && p.pilotages.audioVideo && p.pilotages.audioVideo.actif);
+const alarmeActif = !(cfg.contrat && cfg.contrat.alarme && cfg.contrat.alarme.actif === false);
 const MAX_ROOMS = 30, MAX_CIRCUITS = 20, MAX_MOTORS = 6;
 
 // Sélection de pièces 1..30 (d11-40) — dans le Core, 1..10 étaient « déjà câblés dans la base »
 for (let r = 1; r <= MAX_ROOMS; r++) { din(10 + r, 'Room_Select' + r); dout(10 + r, 'Room_Select' + r + '_fb'); }
 // Alarme : armement 41/42 (lus par le C#), code v3 s43 / d44-46
+if (alarmeActif) {
 din(41, 'Alarm_Arm'); dout(41, 'Alarm_Arm_fb');
 din(42, 'Alarm_Disarm'); dout(42, 'Alarm_Disarm_fb');
 sout(43, 'Alarm_Code$');            // le slot 2 REÇOIT le code saisi
 din(44, 'Alarm_Code_OK');           // le slot 2 répond : code valide
 din(45, 'Alarm_Code_KO');           // le slot 2 répond : code refusé
 dout(46, 'Alarm_Code_Clear');       // le slot 2 REÇOIT la demande d'effacement
+}
 // Consigne CVC +/- (49/50) : appuis reçus
 dout(49, 'HVAC_Setpoint_Up');
 dout(50, 'HVAC_Setpoint_Down');
 // Scènes d'éclairage 1..4 (51-54) — « déjà câblées » dans le Core
 for (let s = 1; s <= 4; s++) { din(50 + s, 'Lighting_Scene' + s); dout(50 + s, 'Lighting_Scene' + s + '_fb'); }
 // Mute (55)
-din(55, 'Audio_Mute'); dout(55, 'Audio_Mute_fb');
+if (avActif) { din(55, 'Audio_Mute'); dout(55, 'Audio_Mute_fb'); }
 // Stores groupés de la pièce active (61-69) : appuis reçus
 ['Volets', 'Rideaux', 'Stores'].forEach((g, gi) => {
   dout(61 + gi * 3, 'Shades_' + g + '_Up');
@@ -131,7 +136,8 @@ for (let mo = 1; mo <= MAX_MOTORS; mo++) {
 // Lamelles 111-128 (Core v5.0, 28.09.2026) : triplets Horaire / Stop / Antihoraire, cables seulement pour les
 // moteurs qui ont `lamelles: true` dans au moins une piece (aucun ici : rideaux et voilages Lutron sans lamelles).
 const slatsMotors = new Set();
-(cfg.pieces || []).forEach(p => ((p.pilotages && p.pilotages.moteurs && p.pilotages.moteurs.liste) || [])
+(cfg.pieces || []).filter(p => p.actif !== false && p.pilotages && p.pilotages.moteurs && p.pilotages.moteurs.actif !== false)
+  .forEach(p => ((p.pilotages.moteurs.liste) || [])
   .forEach((m, i) => { if (m && m.lamelles === true && i < MAX_MOTORS) slatsMotors.add(i + 1); }));
 for (const mo of [...slatsMotors].sort()) {
   const b = 111 + (mo - 1) * 3;
@@ -139,10 +145,12 @@ for (const mo of [...slatsMotors].sort()) {
 }
 console.log('Lamelles (v5.0) : moteurs ' + ([...slatsMotors].sort().join(', ') || 'aucun') + ' -> joins 111-128.');
 // Sources A/V 0..5 (150-155) + retour audio (156)
+if (avActif) {
 for (let s = 0; s <= 5; s++) { din(150 + s, 'Source_Select_' + s); dout(150 + s, 'Source_Select_' + s + '_fb'); }
 din(156, 'Source_AudioReturn'); dout(156, 'Source_AudioReturn_fb');
 // Extinction A/V (200)
 din(200, 'AV_Off'); dout(200, 'AV_Off_fb');
+}
 // Scènes de stores 1..4 (201-204)
 for (let s = 1; s <= 4; s++) { din(200 + s, 'Shades_Scene_' + s); dout(200 + s, 'Shades_Scene_' + s + '_fb'); }
 // Télécommandes (appuis reçus, joins identiques quelle que soit la pièce ; routage SIMPL par a10 + a51)
@@ -154,6 +162,7 @@ const TEL_SW = ['Power', 'Assistant', 'Input', 'Mute', 'Rew', 'Rec', 'Fwd', 'Rep
   'Skip', 'Back', 'Home', 'Guide', 'Option', 'Up', 'Down', 'Left', 'Right', 'Ok', 'VolUp',
   'VolDn', 'Mic', 'PUp', 'PDn', 'Pip', 'D0', 'D1', 'D2', 'D3', 'D4', 'D5', 'D6', 'D7', 'D8',
   'D9', 'Txt', 'Radio', 'Red', 'Green', 'Yellow', 'Blue'];
+if (avActif) {
 TEL_APPLE.forEach((k, i) => dout(211 + i, 'Remote_AppleTV_' + k));
 TEL_STB.forEach((k, i) => dout(500 + i, 'Remote_SkyQ_' + k));
 TEL_STB.forEach((k, i) => dout(530 + i, 'Remote_IPTV_' + k));
@@ -161,9 +170,10 @@ TEL_SW.forEach((k, i) => dout(560 + i, 'Remote_Swisscom_' + k));
 // Lecteur média (251-253, a254)
 dout(251, 'Media_PlayPause'); dout(252, 'Media_Next'); dout(253, 'Media_Prev');
 ain(254, 'Media_Volume#'); aout(254, 'Media_Volume_fb#');
+}
 // Partitions d'alarme 1..4 (301-312) : appuis reçus (_fb) ; état renvoyé (nom nu) lu par le C#
 const PART = ['Arm', 'Partial', 'Disarm'];
-for (let pa = 1; pa <= 4; pa++) for (let k = 0; k < 3; k++) {
+if (alarmeActif) for (let pa = 1; pa <= 4; pa++) for (let k = 0; k < 3; k++) {
   const j = 301 + (pa - 1) * 3 + k;
   din(j, 'Alarm_Part' + pa + '_' + PART[k]); dout(j, 'Alarm_Part' + pa + '_' + PART[k] + '_fb');
 }
@@ -189,8 +199,10 @@ ain(21, 'Lighting_Master'); aout(21, 'Lighting_Master_fb');
 ain(31, 'HVAC_Setpoint'); aout(31, 'HVAC_Setpoint_fb');
 aout(32, 'HVAC_Temperature_fb');
 ain(33, 'HVAC_Mode'); aout(33, 'HVAC_Mode_fb');
-ain(51, 'Source_Active#'); aout(51, 'Source_Active_fb#');
-ain(52, 'Audio_Volume#'); aout(52, 'Audio_Volume_fb#');
+if (avActif) {
+  ain(51, 'Source_Active#'); aout(51, 'Source_Active_fb#');
+  ain(52, 'Audio_Volume#'); aout(52, 'Audio_Volume_fb#');
+}
 // Circuits 1..20 (a71-90) : curseur de la pièce affichée (entrée morte côté C#, niveau tenu par le C#)
 for (let ci = 1; ci <= MAX_CIRCUITS; ci++) { ain(70 + ci, 'Circuit_' + ci + '#'); aout(70 + ci, 'Circuit_' + ci + '_fb#'); }
 // Sériels — « déjà câblés » dans le Core : s10 et s34
@@ -274,6 +286,7 @@ console.log('Appartement Crans-Montana — slot 2 : socle ' + (socleNu ? 'nu' : 
 console.log('Sorties (reçues par le slot 2) : ' + report.dOut + ' digitales, ' + report.aOut + ' analogiques, ' + report.sOut + ' séries');
 console.log('Entrées (renvoyées par le slot 2) : ' + report.dIn + ' digitales, ' + report.aIn + ' analogiques');
 for (const r of report.rooms) console.log('  bloc pièce ' + String(r.id).padStart(2, ' ') + ' « ' + r.nom + ' » base ' + r.base + ' : ' + r.signaux + ' signaux (' + r.det + ')');
+console.log('A/V : ' + (avActif ? 'câblé' : 'absent (150-156, 200, 211-600, 251-254, a51-52, 55 non câblés)') + ' ; alarme : ' + (alarmeActif ? 'câblée' : 'absente (41-46, 301-312 non câblés)'));
 console.log('Pièces exposées au slot 2 : ' + pieces.length + ' ; wellness : ' + (wellnessActif ? 'actif' : 'inactif (620-627 / a62-63 non câblés)'));
 console.log('Signaux nommés : ' + all.length + ' (' + newSignals.length + ' ajoutés, handles ' + (maxSgH + 1) + '..' + (nextH - 1) + ') ; I/O EISC : ' + iK.length + ' entrées, ' + oK.length + ' sorties');
 if (DRY) { console.log('(dry-run : rien écrit)'); process.exit(0); }

@@ -1,5 +1,6 @@
 // Public concept updates; existing catalogue entries remain in their original module.
 import { projects as existingProjects } from './projects.js';
+import { isRetiredProject } from './retiredProjects.js';
 export * from './projects.js';
 
 const concepts = [
@@ -110,10 +111,12 @@ const concepts = [
   }
 ];
 const conceptById = new Map(concepts.map(project => [project.id, project]));
-export const projects = existingProjects.map(project => {
+// Catalogue complet (projets en retrait compris) : réservé aux contrôles du dépôt.
+export const allProjects = existingProjects.map(project => {
   const updated = conceptById.get(project.id) || project;
   if (['yacht-monaco', 'boutique-hermes', 'sushi-bar-kyoto'].includes(project.id)) return { ...updated, defaultViewport: 'phone' };
   if (['auditorium-richmond', 'club-etoile'].includes(project.id)) return { ...updated, defaultViewport: 'phone', devices: [...updated.devices, 'ios_phone'] };
   return updated;
 });
-
+// Catalogue public : sans les projets mis en retrait (voir retiredProjects.js).
+export const projects = allProjects.filter(project => !isRetiredProject(project.id));

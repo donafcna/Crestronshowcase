@@ -1,5 +1,25 @@
 # Villa Crans CH5 — journal des versions
 
+## v5.4 — 29/09/2026 — interface « Connect » optionnelle (meta.interface) et fonctions A/V / alarme retirables par la configuration (a compiler : CH5 + CPZ)
+
+| Artefact | Etat de ce lot |
+|---|---|
+| CH5 source | `src/themes/connect.css`, `src/js/connect-ui.js` (nouveaux), `src/index.html` + `src/iphone.html` (2 lignes : chargement) — **a recompiler** web + tsw + mobile |
+| CPZ slot 1 | `Backend/Backend/ControlSystem.cs` : `LoadFeatureFlags`, `IsDisabledFeatureJoin` — **a recompiler** (non compile ici, pas de SDK) |
+| LPZ slot 2 | inchange pour la Villa |
+| Config | `meta.version` 1.0.213 (v5.3 moteurs d'une autre session = 1.0.212) ; Villa Crans sans `meta.interface` : GUI d'origine inchangee |
+| Vitrines | Villa Crans resynchronisee (fichiers Connect copies, inertes) ; Appartement Crans-Montana en interface Connect |
+
+**Demande Donatien (Appartement Crans-Montana).** Changer completement le style du GUI en s'inspirant au maximum d'une application
+d'eclairage residentielle grand public (iPhone / iPad) ; supprimer toutes les fonctions A/V et Alarme. Variante A retenue sur planche.
+Implementation au niveau du Core, activee par `meta.interface = "connect"` : liste des pieces, tuiles-curseurs (glisser = niveau,
+appui court = bascule), ambiances en pastilles, stores Monter / Arret / Descendre, climat (consigne, marche / arret, ventilation),
+scenes globales, reglages (theme, langue) ; onglets bas ; themes Clair / Sombre / Verre depoli ; FR / EN / DE ; icones SVG, aucun son.
+Reinterpretation : aucun logo, nom, icone ni couleur d'editeur. Le Core d'origine reste charge (transport de config, abonnements) mais masque.
+
+**Decisions par defaut.** Etat « allume » de la liste des pieces seulement pour la piece affichee (les joins de circuits sont ceux de la
+piece active : aucun retour fiable des autres pieces) ; onglet Stores = toutes les pieces, une commande sur une autre piece la selectionne
+d'abord ; theme Clair par defaut si aucun theme memorise ; contraste de chaque texte >= 4,5:1 vise (batterie : >= 4:1 verifie).
 ## v5.3 — 29/09/2026 — fenetre Moteurs : 12 moteurs par piece, pagination sans defilement, icones animees, lamelles partout (a compiler : CH5 + CPZ + SMW)
 
 | Artefact | Etat de ce lot |

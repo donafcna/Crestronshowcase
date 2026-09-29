@@ -1,38 +1,42 @@
 /**
- * Recette « Appartement Crans-Montana » (deuxième GUI CH5 réelle issue du Core, config-only).
+ * Recette fonctionnelle « Appartement Crans-Montana » — interface Connect du Core (v5.4, 29.09.2026).
  *
- * Pages dalle, tablette et smartphone du site, 3 thèmes du GUI ; contrôles :
- *   - 0 erreur console (hors ressources externes injoignables et message WebXPanel préexistant du Core) ;
- *   - démo automatique générique : pièces, scènes, sources réellement pressées, jamais un bouton déjà actif ;
- *   - les 17 pièces sont sélectionnables (dalle : boutons du menu ; smartphone : liste déroulante) ;
- *   - scène SOIR de la Chambre principale = niveaux villa_config sur a71+ ; scène OFF = tout à 0 ;
- *   - rideau du salon : feedback (impulsion sur le join du moteur) ;
- *   - source Apple TV : télécommande ouverte ; smartphone : fenêtre Circuits ouverte ;
- *   - aucun défilement horizontal, cibles ≥ 40 px (pièces / scènes / circuits), aucun média sonore.
+ * Dalle, tablette et smartphone du site ; contrôles :
+ *   - configuration : 17 pièces, meta.interface = "connect", aucune pièce A/V, alarme retirée ;
+ *   - interface Connect active, Core d'origine masqué, aucun texte A/V / alarme / caméra ;
+ *   - démo automatique : pièces, ambiances, tuiles, stores, climat réellement pressés ; jamais un bouton
+ *     déjà actif ; jamais de commande globale ;
+ *   - les 17 pièces sont sélectionnables (feedback Piece.Select a10) ;
+ *   - ambiance SOIR de la Suite parentale = niveaux villa_config sur a71+ ; OFF = tout à 0 ;
+ *   - tuile : glisser règle le niveau du circuit (a71), appui court bascule Éteint / 100 % ;
+ *   - store : impulsion sur le join du moteur (81 + 3 × n + 0/1/2) ;
+ *   - climat : +0,5 °C (d49 → a31), ventilation 2 (d614 → a61), arrêt (d611) ;
+ *   - scène globale « Tout éteindre » (d402) → circuits de la pièce à 0 ;
+ *   - langue EN : onglets traduits ;
+ *   - 0 erreur console (hors ressources externes et message WebXPanel préexistant du Core).
  *
  * Prérequis : npm run build && npx vite preview --port 4173
- * Usage : node scripts/test-appartement-crans.cjs [--base http://localhost:4173] [--out <dossier>]
+ * Usage : node scripts/test-appartement-crans.cjs [--base http://localhost:4173] [--out <dossier>] [--no-demo]
  */
 const { chromium } = require('playwright');
 const fs = require('node:fs');
 const path = require('node:path');
-const assert = require('node:assert/strict');
 
 const arg = (n, d) => { const i = process.argv.indexOf(n); return i > 0 ? process.argv[i + 1] : d; };
 const BASE = arg('--base', 'http://localhost:4173');
 const OUT = path.resolve(arg('--out', 'test-results/appartement-crans'));
+const NO_DEMO = process.argv.includes('--no-demo');
 fs.mkdirSync(OUT, { recursive: true });
 const PROJECT = 'appartement-crans';
-const THEMES = ['dark', 'light', 'glass'];
 const DEVICES = ['wallpanel', 'tablet', 'phone'];
 
-const report = { base: BASE, checks: [], failures: [], errors: [], external: [], legacy: [], matrix: [], demo: {} };
+const report = { base: BASE, checks: [], failures: [], errors: [], external: [], legacy: [], demo: {} };
 const check = (name, ok, detail) => {
   (ok ? report.checks : report.failures).push(name + (detail ? ' — ' + detail : ''));
   console.log((ok ? 'PASS ' : 'FAIL ') + name + (detail ? ' — ' + detail : ''));
 };
 const holdDemo = async page => {
-  const r = await page.evaluate(() => { const b = document.querySelector('.device-stage').getBoundingClientRect(); return [b.left + 5, b.top + 5]; });
+  const r = await page.evaluate(() => { const b = document.querySelector('.device-stage'); if (!b) return [5, 5]; const q = b.getBoundingClientRect(); return [q.left + 5, q.top + 5]; });
   await page.mouse.click(r[0], r[1]);
 };
 const guiFrame = page => page.frames().find(f => /\/showcases\/appartement-crans\/(index|iphone)\.html/.test(f.url()));
@@ -41,40 +45,25 @@ const wireConsole = page => {
   page.on('console', m => {
     if (m.type() !== 'error') return;
     const t = m.text();
-    if (/ERR_TUNNEL_CONNECTION_FAILED|ERR_NAME_NOT_RESOLVED|ERR_INTERNET_DISCONNECTED|net::ERR_/.test(t)) report.external.push(t.slice(0, 120));
+    if (/net::ERR_/.test(t)) report.external.push(t.slice(0, 120));
     else if (/WebXPanel|<path> attribute d/.test(t)) report.legacy.push(t.slice(0, 120));
     else report.errors.push(t.slice(0, 200));
   });
 };
 async function openDevice(page, device, { pause = true } = {}) {
-  await page.goto(`${BASE}/interfaces/residentiel/${PROJECT}/${device}`, { waitUntil: 'networkidle' });
-  await page.waitForFunction(() => document.querySelector('iframe')?.contentWindow?.Villa?.ready, null, { timeout: 60000 });
+  await page.goto(`${BASE}/interfaces/residentiel/${PROJECT}/${device}`, { waitUntil: 'load' });
+  await page.waitForFunction(() => { const w = document.querySelector('iframe')?.contentWindow; return w?.Villa?.ready && w?.ConnectUI?.active(); }, null, { timeout: 60000 });
   if (pause) { await holdDemo(page); await page.waitForTimeout(500); }
   return guiFrame(page);
 }
-// Mesures communes à chaque combinaison support × thème (GUI dans l'iframe, unités CSS du GUI).
-const AUDIT = () => {
-  const se = document.scrollingElement;
-  // Boutons de pièce / scène (dalle : ch5-button ; smartphone : boutons natifs) et curseurs de circuit.
-  // Un curseur est une piste fine par nature : on mesure sa poignée (noUi-handle) à titre d'information.
-  const measure = (el, kind) => { const h = el.tagName === 'CH5-BUTTON' ? (el.querySelector('button') || el) : el; const r = h.getBoundingClientRect(); return { kind, id: el.id || el.getAttribute('data-join') || el.className, w: Math.round(r.width), h: Math.round(r.height), vis: r.width > 0 && r.height > 0 && getComputedStyle(h).visibility !== 'hidden' }; };
-  const buttons = [...document.querySelectorAll('ch5-button[id^="room-btn-"], ch5-button[data-join="51"], ch5-button[data-join="52"], ch5-button[data-join="53"], ch5-button[data-join="54"], #room-select, .scene-btn-mobile')].map(el => measure(el, 'button')).filter(t => t.vis);
-  // Autres boutons de la fenêtre (Fermer, Enregistrer) : Core, à titre d'information.
-  const others = [...document.querySelectorAll('#circuits-overlay button, #circuits-overlay ch5-button')].map(el => measure(el, 'other')).filter(t => t.vis && Math.min(t.w, t.h) < 40).map(t => (t.id || 'bouton') + ' ' + t.w + 'x' + t.h);
-  const handles = [...document.querySelectorAll('#circuits-overlay .noUi-handle, #circuits-overlay input[type="range"]')].map(el => measure(el, 'handle')).filter(t => t.vis);
-  const targets = buttons.concat(handles);
-  const small = buttons.filter(t => Math.min(t.w, t.h) < 40);
-  const handleMin = handles.length ? Math.min(...handles.map(t => Math.min(t.w, t.h))) : null;
-  const media = [...document.querySelectorAll('audio, video')].filter(m => !m.paused && !m.muted).length;
-  const ctx = window.__audioContexts || 0;
-  return { scrollW: se.scrollWidth, clientW: se.clientWidth, targets: targets.length, small, handleMin, others, media, ctx, theme: document.body.className };
-};
+const sleep = ms => new Promise(r => setTimeout(r, ms));
 
 (async () => {
-  const browser = await chromium.launch();
+  const browser = await chromium.launch({ args: ['--use-gl=swiftshader', '--enable-unsafe-swiftshader'] });
 
-  // ---- 1. Démo automatique générique (dalle puis smartphone) : observation 45 s ---------------
-  for (const device of ['wallpanel', 'phone']) {
+  // ---- 1. Démo automatique (dalle puis smartphone) --------------------------------------------
+  const ONLY = arg('--demo-only', null);
+  if (!NO_DEMO) for (const device of (ONLY ? [ONLY] : ['wallpanel', 'phone'])) {
     const page = await browser.newPage({ viewport: { width: 1600, height: 1000 } });
     wireConsole(page);
     const events = report.demo[device] = [];
@@ -82,157 +71,129 @@ const AUDIT = () => {
     await openDevice(page, device, { pause: false });
     await page.evaluate(() => {
       const w = document.querySelector('iframe').contentWindow, d = w.document;
-      d.querySelector('#room-select')?.addEventListener('change', e => window.recordDemo({ at: Math.round(performance.now()), id: 'room-select', join: null, active: false, room: Number(e.target.value) }));
       let last = { el: null, at: 0 };
-      // État lu au pointerdown (premier événement du geste synthétique), avant que le moteur ne
-      // pose le feedback ; le clic final arrive après et verrait le bouton déjà sélectionné.
       d.addEventListener('pointerdown', e => {
         if (e.isTrusted) return;
-        const el = e.target.closest('ch5-button') || e.target.closest('button');
-        if (!el) return;
+        const el = e.target.closest('button, [data-cx-tile]');
+        if (!el || !el.closest('#cx-root')) return;
         if (last.el === el && performance.now() - last.at < 250) return;
         last = { el, at: performance.now() };
-        const active = el.getAttribute('selected') === 'true' || /ch5-button--selected|(^|\s)active(\s|$)/.test((el.querySelector('button') || el).className || '');
-        window.recordDemo({ at: Math.round(performance.now()), id: el.id || el.getAttribute('data-join') || el.textContent.trim().slice(0, 20), join: el.getAttribute('data-join'), active, room: w.Villa.activeRoom });
+        const active = el.getAttribute('aria-pressed') === 'true' || el.getAttribute('aria-current') === 'true' || el.getAttribute('aria-selected') === 'true';
+        const attrs = [...el.attributes].filter(a => a.name.startsWith('data-cx-')).map(a => a.name.slice(8) + '=' + a.value).join(' ');
+        window.recordDemo({ at: Math.round(performance.now()), attrs, active, room: w.Villa.activeRoom });
       }, true);
     });
-    // La démo d'un GUI hors Villa démarre après le délai d'inactivité du site : 10 s (dalle), 60 s (smartphone).
-    const observe = device === 'phone' ? 110000 : 45000;
+    const observe = device === 'phone' ? 160000 : 50000;
     await page.waitForTimeout(observe);
     const ev = events;
-    const rooms = new Set(ev.filter(e => /^room-btn-/.test(e.id)).map(e => e.id).concat(ev.filter(e => e.id === 'room-select').map(e => 'select:' + e.room)));
-    const scenes = ev.filter(e => ['51', '52', '53', '54'].includes(e.join) || /^scene-btn-5[1-4]$/.test(e.id));
-    const sources = ev.filter(e => /^15[1-5]$/.test(e.join) || /^source-btn-[1-5]$/.test(e.id));
-    const alreadyActive = ev.filter(e => e.active);
-    check(`Démo ${device} : le curseur presse des boutons du GUI`, ev.length >= 5, ev.length + ' appuis en ' + observe / 1000 + ' s');
-    check(`Démo ${device} : changement de pièce`, rooms.size >= 1, [...rooms].join(','));
-    check(`Démo ${device} : scènes d’éclairage pressées`, scenes.length >= 1, scenes.map(e => e.join || e.id).join(','));
-    check(`Démo ${device} : sources audio-vidéo pressées`, sources.length >= 1, sources.map(e => e.join || e.id).join(','));
-    check(`Démo ${device} : jamais un bouton déjà actif`, alreadyActive.length === 0, alreadyActive.map(e => e.id).join(',') || 'aucun');
-    check(`Démo ${device} : jamais Alarme / Réglages / extinction globale`, !ev.some(e => /alarm|settings|admin|^4\d\d$/.test(e.id + ' ' + e.join)), '');
+    const has = re => ev.filter(e => re.test(e.attrs));
+    check(`Démo ${device} : le curseur presse des commandes de l'interface`, ev.length >= 6, ev.length + ' appuis en ' + observe / 1000 + ' s');
+    check(`Démo ${device} : changement de pièce`, has(/^room=/).length >= 1, has(/^room=/).map(e => e.attrs).join(','));
+    check(`Démo ${device} : ambiances pressées`, has(/^scene=/).length >= 1, has(/^scene=/).map(e => e.attrs).join(','));
+    check(`Démo ${device} : tuile d'éclairage, store et climat pressés`, has(/^tile=/).length >= 1 && has(/^motor=/).length >= 1 && has(/^press=49/).length >= 1, '');
+    check(`Démo ${device} : jamais un bouton déjà actif`, ev.every(e => !e.active), ev.filter(e => e.active).map(e => e.attrs).join(',') || 'aucun');
+    check(`Démo ${device} : jamais de commande globale ni de réglage`, !ev.some(e => /global=|theme=|lang=/.test(e.attrs)), '');
     await page.screenshot({ path: path.join(OUT, `demo-${device}.png`) });
     await page.close();
   }
 
-  // ---- 2. Matrice supports × thèmes + contrôles fonctionnels ---------------------------------
-  for (const device of DEVICES) {
+  // ---- 2. Contrôles fonctionnels par support ---------------------------------------------------
+  for (const device of (ONLY ? [] : DEVICES)) {
     const page = await browser.newPage({ viewport: { width: 1600, height: 1000 }, deviceScaleFactor: 1 });
     wireConsole(page);
     const frame = await openDevice(page, device);
-    const phone = device === 'phone';
     const errorsBefore = report.errors.length;
-    for (const theme of THEMES) {
-      await holdDemo(page);
-      await frame.evaluate(t => window.changeTheme(t), theme);
-      await page.waitForTimeout(900);
-      const a = await frame.evaluate(AUDIT);
-      const ok = a.scrollW <= a.clientW && a.small.length === 0 && a.media === 0 && report.errors.length === errorsBefore;
-      report.matrix.push({ device, theme, page: 'page', ok, ...a });
-      check(`${device}/${theme}/page : pas de scroll horizontal, cibles ≥ 40 px, aucun son, 0 erreur`, ok,
-        `scroll ${a.scrollW}/${a.clientW}, ${a.targets} cibles, petites : ${a.small.map(s => s.id + ' ' + s.w + 'x' + s.h).join(' ') || 'aucune'}, médias ${a.media}`);
-      // Fenêtres : Circuits, Moteurs, Contrôle global (mêmes contrôles)
-      for (const [win, open] of [['circuits-overlay', 'openCircuitsModal'], ['motors-overlay', 'openMotorsModal'], ['global-control-overlay', 'openGlobalControlModal']]) {
-        await frame.evaluate(fn => { window.closeAllModals && window.closeAllModals(); window[fn] && window[fn](); }, open);
-        await page.waitForTimeout(400);
-        const shown = await frame.evaluate(id => { const el = document.getElementById(id); return !!el && getComputedStyle(el).display !== 'none'; }, win);
-        const b = await frame.evaluate(AUDIT);
-        const okw = shown && b.scrollW <= b.clientW && b.small.length === 0 && report.errors.length === errorsBefore;
-        report.matrix.push({ device, theme, page: win, ok: okw, ...b });
-        check(`${device}/${theme}/${win} : ouverte, pas de scroll horizontal, cibles ≥ 40 px, 0 erreur`, okw, (b.small.map(s => s.id + ' ' + s.w + 'x' + s.h).join(' ') || `${b.targets} cibles`) + (b.handleMin !== null ? `, poignée de curseur min ${b.handleMin} px` : '') + (b.others.length ? `, autres boutons Core < 40 px : ${[...new Set(b.others)].join(' ')}` : ''));
-        const box = await page.evaluate(() => { const r = document.querySelector('.device-screen').getBoundingClientRect(); return { x: r.left, y: r.top, width: r.width, height: r.height }; });
-        if (win === 'circuits-overlay') await page.screenshot({ path: path.join(OUT, `${device}-${theme}-circuits.png`), clip: box, animations: 'disabled' });
-        await frame.evaluate(() => { window.closeAllModals && window.closeAllModals(); document.querySelectorAll('.custom-overlay-panel').forEach(o => o.style.display = 'none'); });
+    const keep = setInterval(() => { holdDemo(page).catch(() => {}); }, 8000);
+    const click = sel => frame.evaluate(s => { const el = document.querySelector('#cx-root ' + s); if (!el) return false; el.click(); return true; }, sel);
+
+    const cfg = await frame.evaluate(() => { const c = window.villaConfigEmbedded; return { n: c.pieces.length, iface: c.meta.interface, av: c.pieces.filter(p => p.pilotages.audioVideo && p.pilotages.audioVideo.actif).length, alarme: c.contrat.alarme.actif, partitions: c.pieces.reduce((a, p) => a + ((p.pilotages.controlesGeneraux || {}).partitionsAlarme || 0), 0) }; });
+    check(`${device} : config 17 pièces, interface connect, 0 pièce A/V, alarme retirée`, cfg.n === 17 && cfg.iface === 'connect' && cfg.av === 0 && cfg.alarme === false && cfg.partitions === 0, JSON.stringify(cfg));
+    const ui = await frame.evaluate(() => ({ core: [...document.querySelectorAll('ch5-button, ch5-slider')].filter(e => e.getBoundingClientRect().width > 0).length, root: !!document.getElementById('cx-root'), tabs: document.querySelectorAll('#cx-root [data-cx-tab]').length }));
+    check(`${device} : interface Connect affichée, Core masqué, 5 onglets`, ui.root && ui.core === 0 && ui.tabs === 5, JSON.stringify(ui));
+
+    // 17 pièces sélectionnables
+    const sel = await frame.evaluate(async () => {
+      const ids = window.villaConfigEmbedded.pieces.map(p => p.id), ok = [];
+      for (const id of ids) {
+        window.ConnectUI.openRoom(id);
+        await new Promise(r => setTimeout(r, 120));
+        const title = document.querySelector('#cx-root .cx-head h1')?.textContent;
+        if (window.Villa.activeRoom === id && window.Villa.get('n', '10') === id && title === window.villaConfigEmbedded.pieces.find(p => p.id === id).nom) ok.push(id);
       }
-      const box = await page.evaluate(() => { const r = document.querySelector('.device-screen').getBoundingClientRect(); return { x: r.left, y: r.top, width: r.width, height: r.height }; });
-      await page.screenshot({ path: path.join(OUT, `${device}-${theme}-page.png`), clip: box, animations: 'disabled' });
-    }
-    await frame.evaluate(() => window.changeTheme('dark'));
-    await page.waitForTimeout(600);
-
-    // Contrôles fonctionnels
-    const cfg = await frame.evaluate(() => ({ n: window.villaConfigEmbedded.pieces.length, pieces: window.villaConfigEmbedded.pieces.map(p => ({ id: p.id, nom: p.nom, av: p.pilotages.audioVideo.actif, niveaux: p.pilotages.eclairages.scenes.niveaux, nb: p.pilotages.eclairages.circuits.nombre })) }));
-    check(`${device} : 17 pièces dans villaConfigEmbedded`, cfg.n === 17, String(cfg.n));
-    const select = async id => {
-      await holdDemo(page);
-      if (phone) { await frame.selectOption('#room-select', String(id)); }
-      else {
-        await frame.evaluate(id => document.getElementById('room-btn-' + id).scrollIntoView({ block: 'center' }), id);
-        await frame.locator(`#room-btn-${id} button`).click({ timeout: 10000 });
-      }
-      await frame.waitForFunction(id => window.Villa.activeRoom === id, id, { timeout: 5000 });
-      return frame.evaluate(id => ({ active: window.Villa.activeRoom, name: window.Villa.get('s', '10'), selected: window.Villa.get('b', String(10 + id)), title: (document.getElementById('room-title') || document.querySelector('#room-select option:checked') || document.querySelector('.room-title, [id*="room-name"], h1, h2'))?.textContent.trim() }), id);
-    };
-    let selectable = 0, names = [];
-    for (const p of cfg.pieces) {
-      const r = await select(p.id).catch(e => ({ error: e.message }));
-      if (r.active === p.id && r.selected && r.name === p.nom) selectable++; else names.push(p.id + ':' + (r.error || JSON.stringify(r)));
-    }
-    check(`${device} : les 17 pièces sont sélectionnables (feedback Piece.Select + nom)`, selectable === 17, names.join(' ') || '17/17');
-
-    // Scène SOIR de la Chambre principale (id 7) → a71..a80 = niveaux villa_config ; OFF → 0
-    const press = async join => {
-      await holdDemo(page);
-      if (phone) await frame.evaluate(j => window.pressDigital(j), Number(join));
-      else await frame.locator(`ch5-button[data-join="${join}"] button`).first().click({ timeout: 10000 });
-      await page.waitForTimeout(400);
-    };
-    await select(7);
-    await press('53');
-    const room7 = cfg.pieces.find(p => p.id === 7);
-    const levels = await frame.evaluate(n => window.Villa.SIG.CIRCUITS.slice(0, n).map(j => window.Villa.get('n', j)), room7.nb);
-    check(`${device} : scène SOIR Chambre principale → niveaux de la séquence Lutron sur a71+`, JSON.stringify(levels) === JSON.stringify(room7.niveaux[2]) && (await frame.evaluate(() => window.Villa.get('b', '53'))), levels.join(','));
-    if (!phone) {
-      const shown = await frame.evaluate(() => [...document.querySelectorAll('ch5-button[data-join="53"]')].some(b => b.getAttribute('selected') === 'true'));
-      check(`${device} : bouton SOIR affiché sélectionné (receiveStateSelected)`, shown, '');
-    }
-    await press('51');
-    const off = await frame.evaluate(n => window.Villa.SIG.CIRCUITS.slice(0, n).map(j => window.Villa.get('n', j)), room7.nb);
-    check(`${device} : scène OFF → tous les circuits à 0`, off.every(v => v === 0) && (await frame.evaluate(() => window.Villa.get('b', '51'))), off.join(','));
-
-    // Rideau du salon : le join du moteur (64 = rideaux fermer... famille rideaux 64-66 ; individuel 81+) émet une impulsion de feedback
-    await select(1);
-    const curtain = await frame.evaluate(async () => {
-      const seen = [];
-      const j = document.querySelector('#motors-overlay ch5-button[data-join], ch5-button[data-join="64"], ch5-button[data-join="66"]');
-      const join = j ? j.getAttribute('data-join') : '66';
-      const sub = window.Villa.on('b', join, v => seen.push(v));
-      window.Villa.press(join);
-      await new Promise(r => setTimeout(r, 400));
-      window.Villa.off('b', join, sub);
-      return { join, seen };
+      return ok.length;
     });
-    check(`${device} : rideau du salon → feedback (impulsion vrai puis faux sur le join ${curtain.join})`, curtain.seen.includes(true) && curtain.seen[curtain.seen.length - 1] === false, curtain.seen.join(','));
+    check(`${device} : les 17 pièces sont sélectionnables (a10 + titre)`, sel === 17, sel + '/17');
 
-    // Source Apple TV → télécommande ouverte (appui réel : le GUI ignore les clics synthétiques pour l'ouverture)
-    await select(10);
-    await press('200');
-    if (phone) {
-      await frame.evaluate(() => window.switchTab('audio'));
-      await page.waitForTimeout(400);
-      const fr = await page.evaluate(() => { const f = document.querySelector('.device-screen iframe'); const r = f.getBoundingClientRect(); return { left: r.left, top: r.top, scale: r.width / f.contentWindow.innerWidth }; });
-      const c = await frame.evaluate(() => { const r = document.getElementById('source-btn-1').getBoundingClientRect(); return { x: r.left + r.width / 2, y: r.top + r.height / 2 }; });
-      await page.mouse.click(fr.left + c.x * fr.scale, fr.top + c.y * fr.scale);
-    } else await press('151');
-    await page.waitForTimeout(700);
-    const remote = await frame.evaluate(() => ({ src: window.Villa.get('n', '51'), sel: window.Villa.get('b', '151'), remote: getComputedStyle(document.getElementById('source-control-overlay')).display !== 'none' }));
-    check(`${device} : source Apple TV → source 1 active et télécommande ouverte`, remote.src === 1 && remote.sel && remote.remote, JSON.stringify(remote));
-    await frame.evaluate(() => { window.closeAllModals && window.closeAllModals(); document.querySelectorAll('.custom-overlay-panel').forEach(o => o.style.display = 'none'); });
+    // Ambiance SOIR Suite parentale (7), puis OFF
+    await frame.evaluate(() => window.ConnectUI.openRoom(7)); await sleep(300);
+    await click('[data-cx-scene="3"]'); await sleep(500);
+    const soir = await frame.evaluate(() => { const p = window.villaConfigEmbedded.pieces.find(x => x.id === 7); const n = p.pilotages.eclairages.circuits.noms.length; return { got: Array.from({ length: n }, (_, i) => window.Villa.get('n', String(71 + i))), want: p.pilotages.eclairages.scenes.niveaux[2], pressed: document.querySelector('#cx-root [data-cx-scene="3"]').getAttribute('aria-pressed'), fill: document.querySelector('#cx-root [data-cx-tile="0"] .cx-fill').style.height }; });
+    check(`${device} : ambiance SOIR Suite parentale → niveaux de la séquence Lutron sur a71+, pastille active, tuile remplie`, JSON.stringify(soir.got) === JSON.stringify(soir.want) && soir.pressed === 'true' && soir.fill !== '0%', JSON.stringify(soir));
+    await click('[data-cx-scene="1"]'); await sleep(500);
+    const off = await frame.evaluate(() => Array.from({ length: 10 }, (_, i) => window.Villa.get('n', String(71 + i))));
+    check(`${device} : ambiance OFF → tous les circuits à 0`, off.every(v => !v), off.join(','));
 
-    if (phone) {
-      await frame.evaluate(() => window.switchTab('lights'));
-      await frame.evaluate(() => window.openCircuitsModal());
-      await page.waitForTimeout(500);
-      const circ = await frame.evaluate(() => { const o = document.getElementById('circuits-overlay'); return { open: getComputedStyle(o).display !== 'none', sliders: o.querySelectorAll('ch5-slider, input[type="range"]').length }; });
-      check('phone : fenêtre Circuits s’ouvre avec les curseurs de la pièce', circ.open && circ.sliders >= 5, JSON.stringify(circ));
-      await frame.evaluate(() => document.querySelectorAll('.custom-overlay-panel').forEach(o => o.style.display = 'none'));
-    }
+    // Tuile : glisser à mi-hauteur puis appui court
+    await frame.evaluate(() => window.ConnectUI.openRoom(1)); await sleep(300);
+    const drag = await frame.evaluate(async () => {
+      const t = document.querySelector('#cx-root [data-cx-tile="0"]'); t.scrollIntoView({ block: 'center' });
+      const r = t.getBoundingClientRect(), x = r.left + r.width / 2;
+      const fire = (type, y) => t.dispatchEvent(new PointerEvent(type, { bubbles: true, pointerId: 7, clientX: x, clientY: y, isPrimary: true }));
+      fire('pointerdown', r.bottom - 10);
+      for (let k = 1; k <= 6; k++) { fire('pointermove', r.bottom - 10 - k * (r.height / 2 - 10) / 6); await new Promise(z => setTimeout(z, 30)); }
+      fire('pointerup', r.top + r.height / 2);
+      await new Promise(z => setTimeout(z, 300));
+      const mid = window.Villa.get('n', '71');
+      fire('pointerdown', r.top + 20); fire('pointerup', r.top + 20);
+      await new Promise(z => setTimeout(z, 300));
+      const after = window.Villa.get('n', '71');
+      return { mid: Math.round(mid * 100 / 65535), after: Math.round(after * 100 / 65535), label: t.querySelector('.cx-tile-val').textContent };
+    });
+    check(`${device} : tuile — glisser règle ~50 %, appui court bascule`, Math.abs(drag.mid - 50) <= 8 && (drag.after === 0 || drag.after === 100) && drag.after !== drag.mid, JSON.stringify(drag));
+
+    // Store du salon : moteur 1 descendre → join 83
+    const motor = await frame.evaluate(async () => {
+      const seen = []; const id = CrComLib.subscribeState('b', '83', v => seen.push(v));
+      document.querySelector('#cx-root [data-cx-motor="1:0:2"]').click();
+      await new Promise(r => setTimeout(r, 400));
+      CrComLib.unsubscribeState('b', '83', id);
+      return seen;
+    });
+    check(`${device} : store « Rideau baie sud » descendre → impulsion sur le join 83`, motor.includes(true) && motor[motor.length - 1] === false, JSON.stringify(motor));
+
+    // Climat
+    await frame.evaluate(() => window.ConnectUI.setTab('climate')); await sleep(300);
+    const sp0 = await frame.evaluate(() => window.Villa.get('n', '31'));
+    await click('[data-cx-press="49"]'); await sleep(400);
+    await click('[data-cx-fan="2"]'); await sleep(300);
+    await click('[data-cx-hvac="611"]'); await sleep(300);
+    const clim = await frame.evaluate(() => ({ sp: window.Villa.get('n', '31'), fan: window.Villa.get('n', '61'), off: window.Villa.get('b', '611'), shown: document.querySelector('#cx-setpoint').textContent, fanOn: document.querySelector('#cx-root [data-cx-fan="2"]').getAttribute('aria-pressed') }));
+    check(`${device} : climat +0,5 °C, ventilation 2, arrêt`, clim.sp === sp0 + 5 && clim.fan === 2 && clim.off === true && clim.fanOn === 'true' && clim.shown.startsWith((clim.sp / 10).toFixed(1)), JSON.stringify({ sp0, ...clim }));
+    await click('[data-cx-hvac="610"]');
+
+    // Scène globale Tout éteindre
+    await frame.evaluate(() => { window.ConnectUI.openRoom(1); }); await sleep(200);
+    await click('[data-cx-scene="2"]'); await sleep(300);
+    await frame.evaluate(() => window.ConnectUI.setTab('scenes')); await sleep(200);
+    await click('[data-cx-global="402"]'); await sleep(600);
+    const allOff = await frame.evaluate(() => Array.from({ length: 5 }, (_, i) => window.Villa.get('n', String(71 + i))));
+    check(`${device} : scène globale « Tout éteindre » → circuits de la pièce à 0`, allOff.every(v => !v), allOff.join(','));
+
+    // Langue
+    await frame.evaluate(() => window.ConnectUI.setTab('settings')); await sleep(200);
+    await click('[data-cx-lang="en"]'); await sleep(300);
+    const en = await frame.evaluate(() => [...document.querySelectorAll('#cx-root [data-cx-tab]')].map(b => b.textContent.trim()).join('|'));
+    check(`${device} : langue EN → onglets traduits`, en === 'Rooms|Scenes|Shades|Climate|Settings', en);
+    await click('[data-cx-lang="fr"]'); await sleep(200);
+    await frame.evaluate(() => window.ConnectUI.openRoom(1)); await sleep(300);
+    await page.screenshot({ path: path.join(OUT, `fonctionnel-${device}.png`) });
+    check(`${device} : 0 erreur console / page`, report.errors.length === errorsBefore, report.errors.slice(errorsBefore, errorsBefore + 3).join(' | ') || '0');
+    clearInterval(keep);
     await page.close();
   }
 
   await browser.close();
-  check('0 erreur console / page (hors externes et WebXPanel préexistant)', report.errors.length === 0, report.errors.slice(0, 5).join(' | '));
-  report.status = report.failures.length ? 'failed' : 'passed';
-  fs.writeFileSync(path.join(OUT, 'results.json'), JSON.stringify(report, null, 2));
-  console.log(`\n${report.status.toUpperCase()} — ${report.checks.length} contrôles réussis, ${report.failures.length} échecs, ${report.external.length} ressources externes injoignables, ${report.legacy.length} messages WebXPanel préexistants`);
-  process.exit(report.failures.length ? 1 : 0);
-})().catch(e => { console.error(e); process.exit(1); });
+  fs.writeFileSync(path.join(OUT, 'report.json'), JSON.stringify(report, null, 2));
+  console.log(`\n${report.failures.length ? 'FAILED' : 'PASSED'} — ${report.checks.length} contrôles réussis, ${report.failures.length} échecs`);
+  process.exitCode = report.failures.length ? 1 : 0;
+})();

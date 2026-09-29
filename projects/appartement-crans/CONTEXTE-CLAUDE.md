@@ -1,13 +1,21 @@
 # Appartement Crans-Montana — contexte de reprise (< 100 lignes)
 
-Mis à jour le 27.09.2026 (v1.0.1 : noms courts, météo, vitrine publiée ; v1.0.0 premier assemblage). Dépôt public : le projet s'appelle uniquement
+Mis à jour le 29.09.2026 (v1.1.0 : interface Connect, A/V et alarme retirés ; v1.0.1 noms courts ; v1.0.0 premier assemblage). Dépôt public : le projet s'appelle uniquement
 « Appartement Crans-Montana » (`appartement-crans`), jamais de nom de client, d'opérateur ni d'adresse.
 
 ## Ce que c'est
 Premier projet client dérivé du **Core Villa Crans** (`projects/villa-crans`) : GUI CH5 (dalle / iPad / XPanel /
 iPhone), C# SIMPL# Pro slot 1 et SIMPL Windows slot 2 reliés par EISC F0 / 127.0.0.2, contrat de joins v4.1.
 **Rien n'est réécrit** : `villa_config.json` dimensionne tout (17 pièces, 101 circuits Lutron, 18 moteurs,
-13 pièces CVC, 8 pièces A/V), `tools/assemble.py` copie le Core et `tools/generate_slot2.js` génère le SMW.
+13 pièces CVC, **aucun A/V, aucune alarme, aucune caméra** depuis le 29.09), `tools/assemble.py` copie le Core et
+`tools/generate_slot2.js` génère le SMW.
+
+**Interface Connect (29.09.2026)** : `meta.interface = "connect"` active dans le Core (v5.4) `themes/connect.css` +
+`js/connect-ui.js` : style d'application résidentielle épurée (réinterprétation, aucun logo / nom / icône d'éditeur) —
+liste des pièces, tuiles-curseurs par circuit (glisser = niveau, appui court = bascule), ambiances en pastilles,
+stores Monter / Arrêt / Descendre, climat, scènes globales, réglages ; onglets bas Pièces · Scènes · Stores · Climat ·
+Réglages ; thèmes Clair (défaut) / Sombre / Verre dépoli. Le Core d'origine reste chargé mais masqué (mêmes joins
+v4.1). Villa Crans inchangée (pas de `meta.interface`).
 
 Règle : tout le projet reste dans `projects/appartement-crans/` ; le Core et `apps/showcase` ne sont pas touchés.
 
@@ -22,6 +30,9 @@ Règle : tout le projet reste dans `projects/appartement-crans/` ; le Core et `a
    `Project_Slot2.smw` : aucun résidu v3 (`R01_..R15_`), tous les signaux « déjà câblés dans la base » du Core
    sont écrits explicitement. Mêmes noms que le Core (vérifié par diff : identique hors wellness).
 4. Wellness désactivé (`contrat.wellness.actif=false`) : 620-627 / a62-63 non câblés, aucun bloc wellness.
+   A/V (`audioVideo.actif=false` partout) et alarme (`contrat.alarme.actif=false`, `partitionsAlarme=0`) retirés :
+   `generate_slot2.js` ne câble plus 41-46, 55, 150-156, 200, 211-600, 251-254, 301-312, a51-52 ; le C# (Core v5.4,
+   `IsDisabledFeatureJoin`) ignore ces joins à l'entrée.
 5. Noms : CH5 `appartementcrans` (ch5z, projet Crestron ONE, URL XPanel `/appartementcrans/`), assembly / namespace
    `AppartementCrans` 1.0.0.0, SMW `AppartementCrans_Slot2.smw`, `PrNm` idem, `CltNm=Appartement Crans-Montana`.
    Le fichier de config garde son nom `villa_config.json` (le C# lit `/user/villa_config.json`).
@@ -32,9 +43,10 @@ Règle : tout le projet reste dans `projects/appartement-crans/` ; le Core et `a
   (presets de scène lus dans `pilotages.eclairages.scenes.niveaux`).
 - Fond 3D : `public/plan3d/appartement-crans.json` régénéré par `scripts/build-plan3d-appartement.mjs` depuis
   `pieces[].plan3d` de ce projet (source unique) ; enveloppe `residence.js`.
-- Batteries : `scripts/test-appartement-crans.cjs` (GUI, 70) et `scripts/test-appartement-crans-modes.cjs`
-  (site : 3 thèmes × 4 modes × 3 châssis, 159) ; contraste `check-contrast-dom.mjs --root .../showcases/appartement-crans`.
-- Règle apprise : les noms de pièces doivent tenir en ~16 caractères (menu dalle), sinon le Core tronque.
+- Batteries (Connect) : `scripts/test-appartement-crans.cjs` (fonctionnel + démo, 45) et
+  `scripts/test-appartement-crans-modes.cjs` (3 thèmes × 4 modes × 3 châssis × 5-6 vues : contraste recomposé,
+  troncature, cibles ≥ 40 px, aucune trace A/V/alarme). `check-contrast-dom.mjs` ne s'applique plus (fenêtres du Core masquées).
+- Démo du site : branche Connect de `src/hooks/orderedDemo.js` (pièce → ambiance → tuile → store → Climat +0,5 °C).
 
 ## Fichiers qui comptent
 - `villa_config.json` (racine) ; `tools/build_config.py` + `lutron-seq-of-op.json` (ne pas modifier sauf bug).
@@ -45,14 +57,15 @@ Règle : tout le projet reste dans `projects/appartement-crans/` ; le Core et `a
   projet) et `..\simpl-sharp\AppartementCrans\bin\Debug\AppartementCrans.cpz`. Identifiants dans
   `ch5/deploy.secrets.psd1` (gabarit `deploy.secrets.example.psd1`, jamais commité).
 
-## État au 27.09.2026
+## État au 29.09.2026
 - `validate-config.mjs` : passed. `assemble.py` : VERT (855 fichiers CH5, 6 + 8 blocs `<script>` OK,
   `villa_config.js` embarqué 17 pièces mode `deploiement`). `check_slot2.js` : VERT (880 signaux, 327 entrées,
   553 sorties EISC, aucun doublon, EOL homogène LF).
 - **Rien n'est compilé** : pas de SDK dotnet dans l'environnement (C# non compilé), SMW jamais ouvert dans SIMPL
   Windows, aucun CH5Z/CPZ/LPZ, aucun matériel. Le C# est le Core 1.0.195.0 renommé : il compile dans le Core, le
   rename est vérifié par grep (aucune référence `Villaftv` / `VillaFrequenceTvAutomation` résiduelle).
-- Drivers slot 2 : aucun (Lutron HomeWorks QS, moteurs, B&O, CVC, alarme à câbler, voir `LIRE.md`).
+- SMW régénéré sans A/V ni alarme : 714 signaux, `check_slot2.js` VERT. C# Core v5.4 non compilé ici.
+- Drivers slot 2 : aucun (Lutron HomeWorks QS, moteurs, CVC à câbler, voir `LIRE.md`).
 
 ## Décisions prises par défaut (à confirmer)
 - `ch5/src` (41 Mo, copie du Core) n'est PAS versionné (`.gitignore`) : après un clone, `python3 tools/assemble.py`

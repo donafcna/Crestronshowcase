@@ -241,8 +241,12 @@ def build():
         "tracesLatence": False,
         "description": "Duplex de 350 m² (niveaux 9 et 10) dans une résidence hôtelière de Crans-Montana : 17 zones, "
                        "éclairage Lutron HomeWorks QS (DALI + phase) avec niveaux par scène issus de la séquence "
-                       "d'opérations Lutron, rideaux motorisés Lutron, CVC par pièce, audio-vidéo B&O. GUI CH5, C# et "
+                       "d'opérations Lutron, rideaux motorisés Lutron, CVC par pièce. Interface Connect (liste des pièces, tuiles-curseurs, "
+                       "scènes, stores, climat) ; aucune fonction audio-vidéo, alarme ni caméra (29.09.2026). GUI CH5, C# et "
                        "générateur SIMPL = Core Villa Crans (contrat v4.1) ; seul ce fichier change.",
+        "interface": "connect",
+        "interfaceDescription": "'connect' = interface Connect du Core (themes/connect.css + js/connect-ui.js, v5.4) ; absent ou 'villa' = interface Villa Crans d'origine.",
+        "fonctionsRetirees": ["audioVideo", "alarme", "cameras"],
         "coreOrigine": "projects/villa-crans/ch5 (GUI + C#) et projects/villa-crans/simpl/contract (générateur)",
     })
     cfg["valeursParDefaut"] = copy.deepcopy(core["valeursParDefaut"])
@@ -251,7 +255,7 @@ def build():
     cfg["sourcesAudioVideo"] = copy.deepcopy(core["sourcesAudioVideo"])
     cfg["scenesStores"] = copy.deepcopy(core["scenesStores"])
     cfg["widgets"] = copy.deepcopy(core["widgets"])
-    cfg["widgets"]["bandeauActualites"]["actif"] = True
+    cfg["widgets"]["bandeauActualites"]["actif"] = False
     cfg["widgets"]["meteoActualites"].update({"actif": True, "ville": "Crans-Montana", "latitude": 46.3117, "longitude": 7.4806,
         "description": "Widget meteo de la colonne de gauche ; ville/coordonnees lues par le Core (27.09.2026)"})
     pieces = []
@@ -277,7 +281,8 @@ def build():
                           "liste": mots if mots else copy.deepcopy(template["pilotages"]["moteurs"]["liste"])}
         pil["cvc"]["actif"] = r["cvc"]
         pil["controlesGeneraux"]["actif"] = True
-        pil["audioVideo"]["actif"] = r["av"]
+        pil["controlesGeneraux"]["partitionsAlarme"] = 0      # 29.09.2026 : alarme retirée du projet
+        pil["audioVideo"]["actif"] = False                    # 29.09.2026 : A/V retiré du projet
         if "wellness" in pil:
             del pil["wellness"]
         p["plan3d"] = r["plan3d"]
@@ -293,6 +298,7 @@ def build():
     cfg["traductions"] = tr
     cfg["contrat"] = copy.deepcopy(core["contrat"])
     cfg["contrat"]["wellness"]["actif"] = False
+    cfg["contrat"]["alarme"]["actif"] = False
     cfg["pagesSpeciales"] = copy.deepcopy(core["pagesSpeciales"])
     return cfg
 

@@ -1,10 +1,13 @@
 # VillaCrans — contexte pour Claude (lire en premier, économise les tokens)
 
-## 28/09/2026 — v5.1 : le Core sert un 2e projet, `projects/appartement-crans/` (à compiler : CH5 1.0.209)
-- **Appartement Crans-Montana** = Core Villa Crans + `villa_config.json` propre (17 pièces, 101 circuits Lutron, scènes OFF/JOUR/SOIR/NUIT par pièce). Rien de réécrit : `tools/assemble.py` copie `src/` + C# renommé, `tools/generate_slot2.js` génère un SMW depuis le socle nu. Toute correction se fait ICI puis se propage (`python3 tools/assemble.py`, `sync-appartement-crans.py`). Lire `projects/appartement-crans/CONTEXTE-CLAUDE.md`.
-- Corrections système du Core révélées par cette config : `<style id="touch-targets">` (onglets, FERMER, 💾 ≥ 40 px ; `#circuits-container[data-cols]` 2/3/4 colonnes selon 10/15/20 circuits, posé au remplissage) ; `body.theme-light .alarm-row span` (iPhone, Clair : 3,88:1 → texte principal) ; **ville météo** : `widgets.meteoActualites.{ville, latitude, longitude}` (Nyon par défaut, titre 5 langues remplacé, Open-Meteo).
-- Batterie : contraste 0 défaut sur les deux vitrines ; `apps/showcase/scripts/test-appartement-crans-modes.cjs` (159 contrôles, 3 thèmes × 4 modes × 3 châssis) et `test-appartement-crans.cjs` (70). Planche avant/après : `apps/showcase/scripts/planche-avant-apres.cjs` (référence = worktree du commit de départ sur le port 4174). Les tests `test-plan3d*.cjs` GPU échouent à l'identique avant/après sans GPU (SwiftShader) : non significatif.
-- Noms de pièces : le menu de gauche tronque au-delà de ~16 caractères sur dalle (183 px) — choisir des noms courts dans la config (« Suite parentale », « Bain parental ») plutôt que de toucher au CSS.
+## 29/09/2026 — v5.4 : interface « Connect » optionnelle + fonctions retirées par la config (à compiler : CH5 1.0.213, CPZ ; inclut v5.3)
+- `meta.interface = "connect"` → `themes/connect.css` + `js/connect-ui.js` (chargés en fin de `index.html` / `iphone.html`) : interface
+  d'application résidentielle épurée qui masque le Core (`html[data-iface=connect]`) et parle les mêmes joins v4.1 (d10+id, d51-54, a71-90,
+  d81-98, d201-204, a31/s32/d49/d50/d610-615/a61, d401-409). Sans ce drapeau (Villa Crans) : inerte. API `window.ConnectUI`.
+- C# : `LoadFeatureFlags` + `IsDisabledFeatureJoin` — `contrat.alarme.actif=false` ou aucune pièce `audioVideo.actif` → joins alarme / A/V
+  ignorés à l'entrée (ni traitement ni miroir EISC). Villa Crans inchangée (alarme et A/V présents).
+- `applyTheme` vide `body.className` : ne jamais porter un état d'interface sur `body` (Connect l'a sur `<html>`).
+
 ## 29/09/2026 — v5.3 fenêtre Moteurs (CH5 1.0.212 + CPZ 1.0.197.0 à compiler, LPZ F12)
 - Composant partagé `js/motors-controls.js` + `themes/motors-controls.css` (remplace `slats-controls.*`) : rend `#motors-container` des deux GUI
   depuis `pieces[].pilotages.moteurs` = { nombre 1..12, liste[12] { nom, type volet|rideau|store, lamelles } }. Le **type** choisit icône et
@@ -17,6 +20,10 @@
 - Règles apprises : sur le banc, **aucun `<ch5-button>` n'émet** (chaîne mesurable seulement sur les `<button>` iPhone) ; classes de présentation
   sur l'hôte `<ch5-button>`, jamais dans `customClass`. Sur l'iPhone, la pièce affichée = `localStorage.active_room_iphone` (le `#room-select` peut
   retarder). Modules partagés `js/*-controls.js` + `themes/*-controls.css` copiés en bloc par `sync-villa-crans.py`.
+
+## 28/09/2026 — v5.1 : le Core sert un 2e projet, `projects/appartement-crans/` (lire son `CONTEXTE-CLAUDE.md`)
+- Config propre + `tools/assemble.py` (copie `src/` + C# renommé) + `tools/generate_slot2.js` ; toute correction ICI puis `assemble.py` et `sync-appartement-crans.py`.
+- Système : `<style id="touch-targets">` (cibles ≥ 40 px, `#circuits-container[data-cols]`), contraste Clair iPhone, ville météo `widgets.meteoActualites`. Noms de pièces ≤ ~16 caractères (menu dalle).
 
 ## 27/09/2026 — v4.7 : conversion iPhone terminée (CH5 à compiler, vitrine régénérée non poussée)
 - **Sur l'iPhone (Crestron One), tout bouton à état est un `<button>`** : `pressDigital(N)` à l'appui, `subscribeState` → `toggleSelected` au retour,
@@ -32,13 +39,7 @@
   à cause de la règle générique `.theme-light .custom-overlay-panel button` d'`iphone.html`.
 - Deux jeux de boutons de scène sur l'iPhone : `scene-btn-5x` (page) et `circuit-scene-btn-5x` (fenêtre Circuits) ; abonnement, libellés
   traduits, pastille `data-saved`, appui long (`SCENE_SEL`, `sceneIdxOf` lit `data-join`) couvrent les deux.
-- Batterie réutilisable `tools/qa-v47.mjs <page> <dossier> [--w 440 --h 956] [--base]` (pont natif factice `JSInterface` → vérifie l'émission,
-  `CrComLib.bridgeReceiveBooleanFromNative` → vérifie le retour). Artefact du banc à ignorer : `panelInstance.initialize is not a function`.
-- Référence smartphone commune posée le 26/09 dans `apps/showcase/CLAUDE.md` : **iPhone 18 Pro Max 440×956** (GUI 440×863) ; le vocabulaire
-  figé du projet dit encore iPhone 16 Pro — tester les deux tant que Donatien n'a pas tranché.
-- `sync-villa-crans.py` copie toutes les `themes/*-controls.css`. La vitrine était restée avant v4.4 : régénérée le 27/09 (v4.4+v4.6+v4.7), non poussée.
-
-## 21-22/09/2026 — v4.2 → v4.6 : voir CHANGELOG (latence Centralisation, cible `mobile` de deploy.ps1, partitions iPhone en `<button>`).
+- Batterie `tools/qa-v47.mjs <page> <dossier> [--w --h --base]` (pont natif factice) ; smartphone de référence : iPhone 18 Pro Max 440×956 (cf. `apps/showcase/CLAUDE.md`).
 
 ## 17-18/09/2026 — contrat v4.1, P1, traductions (détail : CHANGELOG, docs projet Cowork 80/81)
 - **Jamais deux sessions en écriture en même temps** : `git status` avant toute livraison (deux sessions le 18/09 ; archive `backup/crestron-local-2026-09-18`).
@@ -60,7 +61,6 @@ Quatre versions à tenir alignées, ici et en tête de chaque entrée du CHANGEL
 |---|---|---|
 | CH5 `.ch5z` (TSW + XPanel + mobile) | source **1.0.212** (v5.3, 29/09) ; 1.0.211 (v5.2) compilé par Donatien le 29/09 : CP4 OK, TSW en échec SFTP (port 22, ping OK) ; **v5.3 à compiler** en un build (`-Target web`, `tsw`, `mobile`) | `deploy.ps1` incrémente `version.json` à chaque build, puis aligner `meta.version` |
 | Showcase Vercel | prod = `74cd4a41` (17.09) ; copie locale régénérée le 27/09 (v4.4 → v4.7), **non poussée** | `sync-villa-crans.py` puis push `main` → Vercel |
-
 ## Fichiers qui comptent
 - `src/index.html` (dalle TSW-1070, iPad, XPanel) et `src/iphone.html` : SOURCE DE VÉRITÉ. Blocs `<style id="tablet-sidebar">` (menu de gauche groupé), `<style id="global-modals-xl">` (modales agrandies), `<style id="theme-readability">` / `<style id="theme-overlays">` (thèmes Sombre / Clair / Verre dépoli).
 - `src/js/villa-joins.js` : couche v3 (traduction par pièce) **désactivée** par `contrat.blocsPiecesGui.actif=false` ; sert encore à `villaPiecesActives(vc)` (pièces `actif:false` hors menus) et aux miroirs `data-join`.
@@ -135,7 +135,6 @@ La démo automatique démarre désormais sur **tous les supports** (elle était 
 4. Node 23+ casse `ch5-cli` → `tools/ch5-compat.js` via `node --require`.
 5. Banc bureau : CP4 `192.168.3.109`, SFTP `FTV`, `-CP4Host <ip>` ; `-SkipContrast` / `-SkipBuild` ; `-ExecutionPolicy Bypass`.
 6. **Jamais deux clés d'un même objet JSON qui ne diffèrent que par la casse** (`MUSIQUE` / `Musique` dans `traductions`) : `ConvertFrom-Json` de PowerShell 5.1 refuse le fichier et `deploy.ps1` s'arrête avant le build, alors que `JSON.parse` et Python les acceptent en silence. Contrôlé désormais par `tools/quality/validate-config.mjs`.
-
 ## Reste à faire
 1. **Compiler v5.3 (1.0.212)** : CH5 (`deploy.ps1 -Target web`, `tsw`, `mobile`), CPZ 1.0.197.0 + `-Target cp4`, F12 `Project_Slot2.smw`. Propager le Core à l'Appartement Crans-Montana (`python3 tools/assemble.py`) et y revérifier la fenêtre Moteurs. Supprimer `src/js/slats-controls.js`, `src/themes/slats-controls.css` (+ copies vitrine) : remplacés par `motors-controls.*`.
    Recette iPhone : partitions, scènes de la fenêtre Circuits (appui, état, appui long 💾), HVAC ON/OFF/ventilation, sauna/hammam.

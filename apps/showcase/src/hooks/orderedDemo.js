@@ -65,6 +65,35 @@ export async function runOrderedDemo({ gui, token, sleep, moveTo, act, setCursor
     const heading = shown('h2,h3,h4,.card-title,.ap-ctrl-head,.vl-label').find(el => categories[name].test(text(el)));
     return perform(heading, 1400, false);
   };
+  // Interface Connect du Core (meta.interface = "connect", Appartement Crans-Montana) : trois pièces,
+  // chacune : pièce → ambiance non active → tuile d'éclairage → store (descendre puis monter) →
+  // onglet Climat (+0,5 °C) → retour Pièces. Jamais un bouton déjà actif, aucun A/V.
+  if (gui.doc.getElementById('cx-root') && gui.win.ConnectUI?.active()) {
+    const cx = gui.win.ConnectUI;
+    const find = selector => [...gui.doc.querySelectorAll('#cx-root ' + selector)].find(el => visible(el, gui) && !active(el));
+    const step = async (selector, dwell = 900) => {
+      if (token.cancelled) return false;
+      const el = find(selector);
+      return el ? perform(el, dwell) : !token.cancelled;
+    };
+    const visited = [];
+    for (let visit = 0; visit < 3 && !token.cancelled; visit++) {
+      if (!await step('[data-cx-tab="rooms"]', 700)) return false;
+      if (find('[data-cx-back]') && !await step('[data-cx-back]', 700)) return false;
+      const room = find(`[data-cx-room]:not([aria-current="true"])${visited.map(v => `:not([data-cx-room="${v}"])`).join('')}`);
+      if (!room) break;
+      visited.push(room.getAttribute('data-cx-room'));
+      if (!await perform(room, 1400)) return false;
+      if (!await step('[data-cx-scene="2"], [data-cx-scene="3"], [data-cx-scene="4"]', 1600)) return false;
+      if (!await step('[data-cx-tile]', 1200)) return false;
+      if (!await step('[data-cx-motor$=":0:2"]', 1400)) return false;
+      if (!await step('[data-cx-motor$=":0:0"]', 1000)) return false;
+      if (!await step('[data-cx-tab="climate"]', 900)) return false;
+      if (!await step('[data-cx-press="49"]', 1200)) return false;
+      if (cx.state.tab !== 'climate') break;
+    }
+    return !token.cancelled;
+  }
   // GUI CH5 issues du Core Villa Crans (moteur vitrine Villa.*) hors parcours villaTour :
   // pièces → éclairage (scène non active) → HVAC → sources → volume → OFF audio-vidéo, sans jamais
   // presser un bouton déjà actif. Dalle / tablette (index.html) et smartphone (iphone.html).

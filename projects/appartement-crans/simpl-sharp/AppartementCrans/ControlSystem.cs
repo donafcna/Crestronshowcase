@@ -360,6 +360,11 @@ namespace AppartementCrans
         private const uint AlarmCodeKoJoin = 45;      // digital, sortie (impulsion)
         private const uint AlarmCodeClearJoin = 46;   // digital, entrée
         private string _alarmReferenceCode = "";
+
+        // v5.3 (29.09.2026) : fonctions retirées par la configuration (interface Connect). Un projet
+        // sans A/V ni alarme ignore ces joins à l'entrée : ni traitement, ni miroir EISC.
+        private bool _alarmeActif = true;
+        private bool _avActif = true;
         private int _alarmPanelReplyMs = 1200;
         private string _alarmPendingCode = "";
         private bool _alarmVerdictPending = false;
@@ -567,6 +572,7 @@ namespace AppartementCrans
                 // dans le contrat et jamais codés en dur dans le programme.
                 BuildGlobalMirrorWhitelist();
                 LoadAlarmReferenceCode();
+                LoadFeatureFlags();
             }
             catch (Exception ex)
             {
@@ -643,6 +649,46 @@ namespace AppartementCrans
         /// Si le champ est absent ou vide, aucune validation locale n'est possible (tout est refusé) :
         /// mieux vaut un pavé inopérant qu'un code en dur dans le programme.
         /// </summary>
+        private void LoadFeatureFlags()
+        {
+            try
+            {
+                if (_villaConfig == null) return;
+                var alarme = _villaConfig["contrat"] != null ? _villaConfig["contrat"]["alarme"] : null;
+                _alarmeActif = !(alarme != null && alarme["actif"] != null && !(bool)alarme["actif"]);
+                bool av = false;
+                var pieces = _villaConfig["pieces"] as Newtonsoft.Json.Linq.JArray;
+                if (pieces != null)
+                    foreach (var p in pieces)
+                    {
+                        if (p["actif"] != null && !(bool)p["actif"]) continue;
+                        var a = p["pilotages"] != null ? p["pilotages"]["audioVideo"] : null;
+                        if (a != null && a["actif"] != null && (bool)a["actif"]) { av = true; break; }
+                    }
+                _avActif = av;
+                CrestronConsole.PrintLine("CONFIG: alarme {0}, audio-video {1}.", _alarmeActif ? "active" : "retiree", _avActif ? "actif" : "retire");
+            }
+            catch (Exception ex) { ErrorLog.Notice("Notice: CONFIG: lecture des fonctions actives impossible : {0}", ex.Message); }
+        }
+
+        /// <summary>v5.3 : vrai si le join appartient à une fonction retirée par la configuration.</summary>
+        private bool IsDisabledFeatureJoin(SigEventArgs args)
+        {
+            uint j = args.Sig.Number;
+            if (!_alarmeActif)
+            {
+                if (args.Sig.Type == eSigType.Bool && ((j >= 41 && j <= 46) || (j >= 301 && j <= 312))) return true;
+                if (args.Sig.Type == eSigType.String && j == AlarmCodeEntryJoin) return true;
+            }
+            if (!_avActif)
+            {
+                if (args.Sig.Type == eSigType.Bool && (j == 55 || (j >= 150 && j <= 156) || j == 200
+                    || (j >= 211 && j <= 220) || (j >= 251 && j <= 253) || (j >= 500 && j <= 600))) return true;
+                if (args.Sig.Type == eSigType.UShort && (j == 51 || j == 52 || j == 53 || j == 254)) return true;
+            }
+            return false;
+        }
+
         private void LoadAlarmReferenceCode()
         {
             try
@@ -826,7 +872,11 @@ namespace AppartementCrans
                 bool roomDigital = args.Sig.Type == eSigType.Bool && args.Sig.BoolValue
                     && (V4DigitalOffsets.ContainsKey((ushort)join)
                         || (join >= 211 && join <= 220) || (join >= 500 && join <= 527)
-                        || (join >= 530 && join <= 557) || (join >= 560 && join <= 600));
+                        || (join >= 530 && join <= 557) || (join >= 560 && join <= 600)
+                        // v5.3 (29.09.2026) : moteurs 7..12 (129-146) et leurs lamelles (157-174). Impulsions sans
+                        // etat routees par a10 comme 81-98 ; pas d'offset de bloc (bloc de 100 plein, blocs
+                        // pieces non cables cote SIMPL depuis le contrat v4).
+                        || (join >= 129 && join <= 146) || (join >= 157 && join <= 174));
                 bool roomAnalog = args.Sig.Type == eSigType.UShort && join != 53
                     && (join == 21 || V4AnalogOffsets.ContainsKey((ushort)join));
                 if (roomDigital || roomAnalog)
@@ -1672,6 +1722,9 @@ namespace AppartementCrans
 
             if (!_activeRoomPerDevice.ContainsKey(currentDevice.ID))
                 _activeRoomPerDevice[currentDevice.ID] = DefaultRoomForPanel(currentDevice.ID);
+
+            // v5.3 : A/V et alarme retirés par la configuration -> joins ignorés.
+            if (IsDisabledFeatureJoin(args)) return;
 
             // Miroir intersystem : passe-plat pour les blocs pièces (>= 1000, mêmes numéros de join
             // des deux côtés depuis le contrat v3), liste blanche contrat.signauxGlobaux en dessous.

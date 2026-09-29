@@ -161,6 +161,10 @@ def main() -> None:
     # Modules de composants partagés (room-, wellness-, slats-controls.js…) : tous ceux de la source.
     for js in sorted((src / "js").glob("*-controls.js")):
         shutil.copy(js, DEST / "js" / js.name)
+    # Interface Connect du Core (v5.4) : chargée par les deux HTML, inerte sans meta.interface = "connect".
+    for rel in ("js/connect-ui.js", "themes/connect.css"):
+        if (src / rel).exists():
+            shutil.copy(src / rel, DEST / rel)
     # v5.3 : slats-controls.* remplacés par motors-controls.* (fenêtre Moteurs paginée, 12 moteurs).
     for old in (DEST / "js" / "slats-controls.js", DEST / "themes" / "slats-controls.css"):
         if old.exists():
