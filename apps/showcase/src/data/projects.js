@@ -160,6 +160,59 @@ export const projects = [
     },
   },
   {
+    // GUI CH5 réelle : la tablette Crestron d'entrée du showroom Fréquence TV de Nyon, recréée à l'identique
+    // (projects/showroom-ftv-nyon). Vitrine régénérée par scripts/sync-showroom-ftv-nyon.py (jamais éditée à la main).
+    id: `showroom-ftv-nyon`,
+    name: `Showroom Fréquence TV Nyon`,
+    status: `realisation`,
+    client: `Fréquence TV`,
+    sectors: [`boutique`],
+    devices: [`crestron`, `ios_tablet`, `ios_phone`, `xpanel`],
+    isInteractive: false,
+    embedUrl: `/showcases/showroom-ftv-nyon/index.html`,
+    embedPhoneUrl: `/showcases/showroom-ftv-nyon/iphone.html`,
+    thumbnailUrl: `/showcases/showroom-ftv-nyon/img/rooms/showroom-bo.jpg`,
+    year: `2026`,
+    text: {
+      fr: {
+        description: `La tablette Crestron d'entrée de notre showroom de Nyon : 6 espaces sur 2 niveaux, éclairage par scènes, musique Deezer, Apple TV et caméra.`,
+        details: `L'interface Crestron Home de la dalle TSW-1070 installée à l'entrée du showroom Fréquence TV de Nyon, recréée en CH5 à l'identique pour la dalle, l'iPad, l'iPhone et le XPanel. Accueil « Fréquence TV » avec ses actions (Welcome, Goodbye, Party Time, Default Lights, Relax, B&O Products), page Rooms filtrée par étage, et pour chaque espace ses actions, l'éclairage (scènes, tous les circuits, variation circuit par circuit), la musique (lecteur, navigation, minuterie de veille), la vidéo Apple TV et la caméra du stock. Le même JSON pilote le GUI, le programme C# du slot 1 et le SIMPL du slot 2.`,
+        features: [
+          `6 espaces sur 2 niveaux : Aquarium, bureaux JURA et LAC, Open Space, showroom Bang & Olufsen, stock`,
+          `Actions maison et par pièce, scènes d'éclairage et 24 circuits gradables`,
+          `Lecteur musical avec navigation, favoris et minuterie de veille`,
+          `Télécommande Apple TV et caméra de surveillance`,
+          `Dalle TSW-1070, iPad, iPhone (Crestron One) et XPanel`,
+          `Une seule configuration JSON pour le GUI, le C# et le SIMPL`,
+        ],
+      },
+      en: {
+        description: `The Crestron panel at the entrance of our Nyon showroom: 6 spaces on 2 floors, scene lighting, Deezer music, Apple TV and camera.`,
+        details: `The Crestron Home interface of the TSW-1070 panel at the entrance of the Fréquence TV showroom in Nyon, recreated identically in CH5 for the wall panel, iPad, iPhone and XPanel. A "Fréquence TV" home page with its actions (Welcome, Goodbye, Party Time, Default Lights, Relax, B&O Products), a Rooms page filtered by floor and, for each space, its actions, lighting (scenes, all circuits, per-circuit dimming), music (player, browsing, sleep timer), Apple TV video and the stock-room camera. One JSON file drives the GUI, the slot 1 C# program and the slot 2 SIMPL program.`,
+        features: [
+          `6 spaces on 2 floors: Aquarium, JURA and LAC offices, Open Space, Bang & Olufsen showroom, stock room`,
+          `House and room actions, lighting scenes and 24 dimmable circuits`,
+          `Music player with browsing, favourites and sleep timer`,
+          `Apple TV remote and security camera`,
+          `TSW-1070 panel, iPad, iPhone (Crestron One) and XPanel`,
+          `One JSON configuration for the GUI, C# and SIMPL`,
+        ],
+      },
+      de: {
+        description: `Das Crestron-Panel am Eingang unseres Showrooms in Nyon: 6 Räume auf 2 Ebenen, Lichtszenen, Deezer-Musik, Apple TV und Kamera.`,
+        details: `Die Crestron-Home-Oberfläche des TSW-1070-Panels am Eingang des Fréquence-TV-Showrooms in Nyon, in CH5 originalgetreu nachgebaut für Wandpanel, iPad, iPhone und XPanel. Startseite „Fréquence TV“ mit ihren Aktionen (Welcome, Goodbye, Party Time, Default Lights, Relax, B&O Products), Raumseite nach Ebenen gefiltert und für jeden Raum seine Aktionen, die Beleuchtung (Szenen, alle Kreise, Dimmen je Kreis), Musik (Player, Navigation, Sleep-Timer), Apple-TV-Video und die Lagerkamera. Eine JSON-Datei steuert GUI, das C#-Programm in Slot 1 und das SIMPL-Programm in Slot 2.`,
+        features: [
+          `6 Räume auf 2 Ebenen: Aquarium, Büros JURA und LAC, Open Space, Bang-&-Olufsen-Showroom, Lager`,
+          `Haus- und Raumaktionen, Lichtszenen und 24 dimmbare Kreise`,
+          `Musikplayer mit Navigation, Favoriten und Sleep-Timer`,
+          `Apple-TV-Fernbedienung und Überwachungskamera`,
+          `TSW-1070-Panel, iPad, iPhone (Crestron One) und XPanel`,
+          `Eine JSON-Konfiguration für GUI, C# und SIMPL`,
+        ],
+      },
+    },
+  },
+  {
     id: `villa-gemini`,
     name: `Villa Nyon`,
     status: `concept`,

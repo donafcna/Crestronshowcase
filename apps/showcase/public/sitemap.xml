@@ -66,6 +66,11 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://crestrongui.vercel.app/interfaces/boutique/showroom-ftv-nyon</loc>
+    <lastmod>2026-09-29</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://crestrongui.vercel.app/interfaces/residentiel/crestron-home</loc>
     <lastmod>2026-09-29</lastmod>
     <priority>0.8</priority>

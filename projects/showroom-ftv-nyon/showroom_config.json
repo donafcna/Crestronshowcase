@@ -1,0 +1,1223 @@
+{
+  "meta": {
+    "projet": "Showroom FTV Nyon",
+    "integrateur": "Fréquence TV",
+    "version": "1.0.0",
+    "mode": "deploiement",
+    "dateModification": "2026-09-29",
+    "langue": "en",
+    "themeParDefaut": "dark",
+    "tracesConsole": false,
+    "aide": [
+      "Source unique du projet Showroom FTV Nyon : maison, pièces, actions, éclairages, musique, vidéo, caméras, contrat de joins.",
+      "Le GUI CH5 l'embarque (showroom_config.js, généré par tools/build.py) ; le C# slot 1 le lit dans /user/showroom_config.json ; tools/generate_slot2.js génère le SMW du slot 2 depuis ce fichier.",
+      "Images : chemins relatifs au dossier du GUI (img/...) ou URL absolue ; remplacer un fichier ou changer le chemin suffit.",
+      "meta.mode = deploiement (feedback C# + SIMPL) ou showcase (feedback simulé par js/local-feedback.js, vitrine seulement).",
+      "Ne jamais modifier contrat sans régénérer Joins.cs (node tools/gen_joins.js) : tools/check-contract.js vérifie la cohérence.",
+      "Effets des actions : scene (nom d'une scène de la pièce), musique (id de service) + favori ; actions maison : scenePieces (scène appliquée dans chaque pièce qui la possède, sinon niveauSansScene %), toutEteindre, pieces (restreint à ces pièces)."
+    ]
+  },
+  "maison": {
+    "nom": "Fréquence TV",
+    "photo": "img/rooms/frequence-tv.jpg",
+    "actions": [
+      {
+        "nom": "Welcome",
+        "icone": "door-open",
+        "couleur": "#7dd3fc",
+        "effets": {
+          "scenePieces": "Default Lights",
+          "niveauSansScene": 60
+        }
+      },
+      {
+        "nom": "Goodbye",
+        "icone": "log-out",
+        "couleur": "#fb7185",
+        "effets": {
+          "toutEteindre": true
+        }
+      },
+      {
+        "nom": "Party Time !",
+        "icone": "disc-3",
+        "couleur": "#c4b5fd",
+        "effets": {
+          "scenePieces": "Party Lights",
+          "niveauSansScene": 30,
+          "musique": 1,
+          "favori": 1,
+          "pieces": [
+            5
+          ]
+        }
+      },
+      {
+        "nom": "Default Lights",
+        "icone": "heart",
+        "couleur": "#fbbf24",
+        "effets": {
+          "scenePieces": "Default Lights",
+          "niveauSansScene": 60
+        }
+      },
+      {
+        "nom": "Relax",
+        "icone": "lightbulb",
+        "couleur": "#facc15",
+        "effets": {
+          "scenePieces": "Relax Lights",
+          "niveauSansScene": 30
+        }
+      },
+      {
+        "nom": "B&O Products",
+        "icone": "lightbulb",
+        "couleur": "#facc15",
+        "effets": {
+          "scenePieces": "B&O Products Lights",
+          "pieces": [
+            5
+          ]
+        }
+      }
+    ],
+    "controles": [
+      "lights",
+      "music",
+      "cameras"
+    ]
+  },
+  "etages": [
+    {
+      "id": "first",
+      "nom": "First Floor"
+    },
+    {
+      "id": "main",
+      "nom": "Main Floor"
+    }
+  ],
+  "musique": {
+    "services": [
+      {
+        "id": 1,
+        "nom": "Deezer",
+        "type": "streaming",
+        "icone": "deezer",
+        "compte": "Frequence",
+        "parcourir": [
+          "Flow",
+          "Charts",
+          "New Releases",
+          "Mixes",
+          "Genres",
+          "My Library"
+        ]
+      },
+      {
+        "id": 2,
+        "nom": "Apple TV",
+        "type": "remote",
+        "icone": "apple-tv"
+      }
+    ],
+    "favoris": [
+      {
+        "id": 1,
+        "nom": "Best of Deezer",
+        "service": 1,
+        "pochette": "img/covers/cover-1.svg"
+      },
+      {
+        "id": 2,
+        "nom": "Web Radio",
+        "service": 1,
+        "pochette": "img/covers/cover-2.svg"
+      },
+      {
+        "id": 3,
+        "nom": "Podcasts",
+        "service": 1,
+        "pochette": "img/covers/cover-3.svg"
+      }
+    ],
+    "pistes": [
+      {
+        "titre": "Northern Lights",
+        "artiste": "Studio Léman",
+        "album": "Lakeside Sessions",
+        "duree": 203,
+        "pochette": "img/covers/cover-1.svg"
+      },
+      {
+        "titre": "Blue Hour",
+        "artiste": "Nyon Collective",
+        "album": "Blue Hour",
+        "duree": 188,
+        "pochette": "img/covers/cover-2.svg"
+      },
+      {
+        "titre": "Paper Planes",
+        "artiste": "The Harbour Band",
+        "album": "Paper Planes",
+        "duree": 221,
+        "pochette": "img/covers/cover-3.svg"
+      },
+      {
+        "titre": "Midnight Tram",
+        "artiste": "Lina Arvo",
+        "album": "City Lines",
+        "duree": 176,
+        "pochette": "img/covers/cover-4.svg"
+      },
+      {
+        "titre": "Golden Fields",
+        "artiste": "Marée Haute",
+        "album": "Golden Fields",
+        "duree": 240,
+        "pochette": "img/covers/cover-5.svg"
+      },
+      {
+        "titre": "Velvet Room",
+        "artiste": "Kōji & The Keys",
+        "album": "Velvet Room",
+        "duree": 197,
+        "pochette": "img/covers/cover-6.svg"
+      }
+    ]
+  },
+  "video": {
+    "sources": [
+      {
+        "id": 1,
+        "nom": "Apple TV",
+        "type": "appletv",
+        "icone": "apple-tv"
+      }
+    ],
+    "telecommande": [
+      "Menu",
+      "Play/Pause",
+      "TV",
+      "Up",
+      "Down",
+      "Left",
+      "Right",
+      "Select"
+    ]
+  },
+  "cameras": [
+    {
+      "id": 1,
+      "nom": "Stock Camera",
+      "piece": 6,
+      "etage": "main",
+      "flux": "",
+      "image": "img/cameras/stock-camera.jpg"
+    }
+  ],
+  "pieces": [
+    {
+      "id": 1,
+      "cle": "aquarium",
+      "nom": "Aquarium",
+      "etage": "first",
+      "favori": false,
+      "photo": "img/rooms/aquarium.jpg",
+      "actions": [
+        {
+          "nom": "Relax",
+          "icone": "lightbulb",
+          "couleur": "#facc15",
+          "effets": {
+            "scene": "Relax Lights"
+          }
+        },
+        {
+          "nom": "Deezer",
+          "icone": "music-2",
+          "couleur": "#5eead4",
+          "effets": {
+            "musique": 1,
+            "favori": 1
+          }
+        },
+        {
+          "nom": "Web Radio",
+          "icone": "chart-no-axes-column",
+          "couleur": "#f1f5f9",
+          "effets": {
+            "musique": 1,
+            "favori": 2
+          }
+        },
+        {
+          "nom": "Podcasts",
+          "icone": "podcast",
+          "couleur": "#c4b5fd",
+          "effets": {
+            "musique": 1,
+            "favori": 3
+          }
+        }
+      ],
+      "services": [
+        "lights",
+        "music"
+      ],
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "scenes": [
+            {
+              "nom": "Relax Lights",
+              "icone": "lightbulb",
+              "couleur": "#facc15",
+              "niveaux": [
+                40
+              ]
+            }
+          ],
+          "circuits": [
+            {
+              "nom": "Spots",
+              "gradable": true,
+              "niveauInitial": 0
+            }
+          ]
+        },
+        "audio": {
+          "actif": true,
+          "services": [
+            1,
+            2
+          ],
+          "volumeInitial": 30
+        },
+        "video": {
+          "actif": false
+        }
+      }
+    },
+    {
+      "id": 2,
+      "cle": "bureau-jura",
+      "nom": "Bureau JURA",
+      "etage": "first",
+      "favori": false,
+      "photo": "img/rooms/bureau-jura.jpg",
+      "actions": [
+        {
+          "nom": "Deezer",
+          "icone": "music-2",
+          "couleur": "#5eead4",
+          "effets": {
+            "musique": 1,
+            "favori": 1
+          }
+        },
+        {
+          "nom": "Web Radio",
+          "icone": "chart-no-axes-column",
+          "couleur": "#f1f5f9",
+          "effets": {
+            "musique": 1,
+            "favori": 2
+          }
+        },
+        {
+          "nom": "Podcasts",
+          "icone": "podcast",
+          "couleur": "#c4b5fd",
+          "effets": {
+            "musique": 1,
+            "favori": 3
+          }
+        },
+        {
+          "nom": "Relax",
+          "icone": "lightbulb",
+          "couleur": "#facc15",
+          "effets": {
+            "scene": "Relax Lights"
+          }
+        }
+      ],
+      "services": [
+        "lights",
+        "music"
+      ],
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "scenes": [
+            {
+              "nom": "Relax Lights",
+              "icone": "lightbulb",
+              "couleur": "#facc15",
+              "niveaux": [
+                40
+              ]
+            }
+          ],
+          "circuits": [
+            {
+              "nom": "Plafonnier",
+              "gradable": true,
+              "niveauInitial": 0
+            }
+          ]
+        },
+        "audio": {
+          "actif": true,
+          "services": [
+            1,
+            2
+          ],
+          "volumeInitial": 30
+        },
+        "video": {
+          "actif": false
+        }
+      }
+    },
+    {
+      "id": 3,
+      "cle": "bureau-lac",
+      "nom": "Bureau LAC",
+      "etage": "first",
+      "favori": false,
+      "photo": "img/rooms/bureau-lac.jpg",
+      "actions": [
+        {
+          "nom": "Relax",
+          "icone": "lightbulb",
+          "couleur": "#facc15",
+          "effets": {
+            "scene": "Relax Lights"
+          }
+        }
+      ],
+      "services": [
+        "lights"
+      ],
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "scenes": [
+            {
+              "nom": "Relax Lights",
+              "icone": "lightbulb",
+              "couleur": "#facc15",
+              "niveaux": [
+                40
+              ]
+            }
+          ],
+          "circuits": [
+            {
+              "nom": "Plafonnier",
+              "gradable": true,
+              "niveauInitial": 0
+            }
+          ]
+        },
+        "audio": {
+          "actif": false
+        },
+        "video": {
+          "actif": false
+        }
+      }
+    },
+    {
+      "id": 4,
+      "cle": "open-space",
+      "nom": "Open Space",
+      "etage": "first",
+      "favori": false,
+      "photo": "img/rooms/open-space.jpg",
+      "actions": [
+        {
+          "nom": "Relax",
+          "icone": "lightbulb",
+          "couleur": "#facc15",
+          "effets": {
+            "scene": "Relax Lights"
+          }
+        }
+      ],
+      "services": [
+        "lights"
+      ],
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "scenes": [
+            {
+              "nom": "Relax Lights",
+              "icone": "lightbulb",
+              "couleur": "#facc15",
+              "niveaux": [
+                40,
+                40,
+                40,
+                30
+              ]
+            }
+          ],
+          "circuits": [
+            {
+              "nom": "Bureau Isabella",
+              "gradable": true,
+              "niveauInitial": 0
+            },
+            {
+              "nom": "Ilot 1",
+              "gradable": true,
+              "niveauInitial": 0
+            },
+            {
+              "nom": "Ilot 2",
+              "gradable": true,
+              "niveauInitial": 0
+            },
+            {
+              "nom": "Palier",
+              "gradable": true,
+              "niveauInitial": 0
+            }
+          ]
+        },
+        "audio": {
+          "actif": false
+        },
+        "video": {
+          "actif": false
+        }
+      }
+    },
+    {
+      "id": 5,
+      "cle": "showroom-bo",
+      "nom": "Showroom Bang & Olufsen",
+      "etage": "main",
+      "favori": false,
+      "photo": "img/rooms/showroom-bo.jpg",
+      "actions": [
+        {
+          "nom": "Party Time !",
+          "icone": "disc-3",
+          "couleur": "#c4b5fd",
+          "effets": {
+            "scene": "Party Lights",
+            "musique": 1,
+            "favori": 1
+          }
+        },
+        {
+          "nom": "Default Lights",
+          "icone": "heart",
+          "couleur": "#fbbf24",
+          "effets": {
+            "scene": "Default Lights"
+          }
+        },
+        {
+          "nom": "Relax",
+          "icone": "lightbulb",
+          "couleur": "#facc15",
+          "effets": {
+            "scene": "Relax Lights"
+          }
+        },
+        {
+          "nom": "B&O Products",
+          "icone": "lightbulb",
+          "couleur": "#facc15",
+          "effets": {
+            "scene": "B&O Products Lights"
+          }
+        },
+        {
+          "nom": "Test",
+          "icone": "zap",
+          "couleur": "#facc15",
+          "effets": {
+            "scene": "My scene 7"
+          }
+        }
+      ],
+      "services": [
+        "lights",
+        "music",
+        "video"
+      ],
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "scenes": [
+            {
+              "nom": "B&O Products Lights",
+              "icone": "lightbulb",
+              "couleur": "#facc15",
+              "niveaux": [
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                100,
+                20,
+                20,
+                60,
+                60
+              ]
+            },
+            {
+              "nom": "Default Lights",
+              "icone": "heart",
+              "couleur": "#fbbf24",
+              "niveaux": [
+                60,
+                60,
+                60,
+                60,
+                60,
+                60,
+                60,
+                60,
+                60,
+                80,
+                80,
+                80,
+                80
+              ]
+            },
+            {
+              "nom": "My scene 7",
+              "icone": "lightbulb",
+              "couleur": "#facc15",
+              "niveaux": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                100,
+                100,
+                100,
+                100,
+                0,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "nom": "Party Lights",
+              "icone": "disc-3",
+              "couleur": "#c4b5fd",
+              "niveaux": [
+                30,
+                30,
+                30,
+                30,
+                30,
+                30,
+                30,
+                30,
+                30,
+                0,
+                50,
+                100,
+                100
+              ]
+            },
+            {
+              "nom": "Relax Lights",
+              "icone": "lightbulb",
+              "couleur": "#facc15",
+              "niveaux": [
+                20,
+                20,
+                20,
+                20,
+                20,
+                20,
+                20,
+                20,
+                20,
+                30,
+                30,
+                20,
+                20
+              ]
+            }
+          ],
+          "circuits": [
+            {
+              "nom": "Accessoires B&O",
+              "gradable": true,
+              "niveauInitial": 0
+            },
+            {
+              "nom": "Beolab 18",
+              "gradable": true,
+              "niveauInitial": 0
+            },
+            {
+              "nom": "Beolab 28",
+              "gradable": true,
+              "niveauInitial": 0
+            },
+            {
+              "nom": "Beolab 50",
+              "gradable": true,
+              "niveauInitial": 0
+            },
+            {
+              "nom": "Beolab 8",
+              "gradable": true,
+              "niveauInitial": 0
+            },
+            {
+              "nom": "Beosound A9",
+              "gradable": true,
+              "niveauInitial": 0
+            },
+            {
+              "nom": "Beosound Balance",
+              "gradable": true,
+              "niveauInitial": 0
+            },
+            {
+              "nom": "Beosound Shape",
+              "gradable": true,
+              "niveauInitial": 0
+            },
+            {
+              "nom": "Beovision Contour",
+              "gradable": true,
+              "niveauInitial": 0
+            },
+            {
+              "nom": "Plafonnier Centre",
+              "gradable": true,
+              "niveauInitial": 0
+            },
+            {
+              "nom": "Plafonnier Pourtour",
+              "gradable": true,
+              "niveauInitial": 0
+            },
+            {
+              "nom": "Podium entrée",
+              "gradable": true,
+              "niveauInitial": 0
+            },
+            {
+              "nom": "Podium GE",
+              "gradable": true,
+              "niveauInitial": 0
+            }
+          ]
+        },
+        "audio": {
+          "actif": true,
+          "services": [
+            1,
+            2
+          ],
+          "volumeInitial": 35
+        },
+        "video": {
+          "actif": true,
+          "sources": [
+            1
+          ],
+          "volumeInitial": 30
+        }
+      }
+    },
+    {
+      "id": 6,
+      "cle": "stock",
+      "nom": "Stock",
+      "etage": "main",
+      "favori": false,
+      "photo": "img/rooms/stock.jpg",
+      "actions": [],
+      "services": [
+        "lights"
+      ],
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "scenes": [],
+          "circuits": [
+            {
+              "nom": "Atelier",
+              "gradable": true,
+              "niveauInitial": 0
+            },
+            {
+              "nom": "Mezzanine",
+              "gradable": true,
+              "niveauInitial": 0
+            },
+            {
+              "nom": "Rack",
+              "gradable": true,
+              "niveauInitial": 0
+            },
+            {
+              "nom": "Stock",
+              "gradable": true,
+              "niveauInitial": 0
+            }
+          ]
+        },
+        "audio": {
+          "actif": false
+        },
+        "video": {
+          "actif": false
+        }
+      }
+    }
+  ],
+  "contrat": {
+    "version": "1.0",
+    "principe": [
+      "Tous les joins de pilotage sont globaux : le même numéro dans toutes les pièces.",
+      "Le C# (slot 1) connaît la pièce affichée par chaque écran : il applique l'action à cette pièce, pose Room_Select# (a10) et Room_Active_nn sur l'EISC, puis recopie l'action sur le même join.",
+      "Feedback des écrans : calculé par le C# (déploiement) ou par js/local-feedback.js (vitrine) sur les mêmes joins.",
+      "Sur le symbole EISC : SORTIE = ce que le slot 2 reçoit (nom nu = action, Rnn_xxx_fb = état tenu par le C#) ; ENTRÉE = ce que le slot 2 renvoie (suffixe _Actual).",
+      "Bloc pièce EISC : join = 1000 + (id-1)*100 + offset. Réservé aux échanges C# ↔ slot 2, jamais émis par un écran."
+    ],
+    "eisc": {
+      "actif": true,
+      "ipid": "0xF0",
+      "adresseIp": "127.0.0.2",
+      "slotCible": 2
+    },
+    "ecrans": {
+      "tsw": {
+        "ipid": "0x03",
+        "modele": "TSW-1070"
+      },
+      "xpanel": {
+        "ipid": "0x04"
+      },
+      "ipad": {
+        "ipid": "0x05",
+        "projet": "showroomnyon"
+      },
+      "iphone": {
+        "ipid": "0x06",
+        "projet": "showroomnyon"
+      }
+    },
+    "limites": {
+      "piecesMax": 30,
+      "circuitsMax": 20,
+      "scenesMax": 8,
+      "actionsMax": 8,
+      "actionsMaisonMax": 8,
+      "servicesMax": 8,
+      "favorisMax": 8,
+      "sourcesMax": 8,
+      "camerasMax": 8,
+      "parcourirMax": 8
+    },
+    "signauxGlobaux": {
+      "digital": {
+        "11-40": {
+          "nom": "Room_Select_{n}",
+          "sens": "↔",
+          "desc": "Afficher la pièce n (join = 10+n) ; fb = pièce affichée par cet écran. Sur l'EISC : Room_Active_{n}, un seul haut, miroir de a10."
+        },
+        "51-58": {
+          "nom": "House_Action_{n}",
+          "sens": "↔",
+          "desc": "Action maison n (maison.actions[n-1] : Welcome, Goodbye…) ; fb = impulsion 1,4 s « action appliquée »"
+        },
+        "59": {
+          "nom": "Room_Off",
+          "sens": "↔",
+          "desc": "Bouton Marche/Arrêt de la barre du bas dans une pièce : éclairages à 0, musique et vidéo arrêtées"
+        },
+        "60": {
+          "nom": "House_AllOff",
+          "sens": "→",
+          "desc": "Bouton Marche/Arrêt de la barre du bas sur l'accueil : toute la maison éteinte"
+        },
+        "61-68": {
+          "nom": "Room_Action_{n}",
+          "sens": "↔",
+          "desc": "Action n de la pièce affichée (pieces[].actions[n-1]) ; fb = impulsion 1,4 s"
+        },
+        "71-78": {
+          "nom": "Light_Scene_{n}",
+          "sens": "↔",
+          "desc": "Scène d'éclairage n de la pièce affichée (niveaux dans pieces[].pilotages.eclairages.scenes[n-1].niveaux) ; fb tenu = scène active"
+        },
+        "101": {
+          "nom": "Lights_AllOn",
+          "sens": "↔",
+          "desc": "Tous les circuits de la pièce à 100 % ; fb = tous allumés"
+        },
+        "102": {
+          "nom": "Lights_AllOff",
+          "sens": "↔",
+          "desc": "Tous les circuits à 0 ; fb = tous éteints"
+        },
+        "103": {
+          "nom": "Lights_DimUp",
+          "sens": "→",
+          "desc": "All Lights + : tous les circuits +10 %"
+        },
+        "104": {
+          "nom": "Lights_DimDown",
+          "sens": "→",
+          "desc": "All Lights − : tous les circuits −10 %"
+        },
+        "111-130": {
+          "nom": "Light_{n}_Toggle",
+          "sens": "↔",
+          "desc": "Interrupteur du circuit n (1..20) : 0 ↔ dernier niveau (100 % par défaut) ; fb = circuit allumé"
+        },
+        "141": {
+          "nom": "House_Lights_AllOff",
+          "sens": "→",
+          "desc": "Accueil, tuile Lights : éteint tous les circuits de la maison"
+        },
+        "201-208": {
+          "nom": "Video_Remote_{n}",
+          "sens": "→",
+          "desc": "Télécommande Apple TV de la pièce : 1 Menu, 2 Lecture/Pause, 3 TV/Accueil, 4 Haut, 5 Bas, 6 Gauche, 7 Droite, 8 Sélection"
+        },
+        "231-238": {
+          "nom": "Camera_Select_{n}",
+          "sens": "↔",
+          "desc": "Afficher la caméra n ; fb = caméra affichée"
+        },
+        "251": {
+          "nom": "Video_Off",
+          "sens": "↔",
+          "desc": "Arrêt de la vidéo de la pièce ; fb tenu = vidéo arrêtée"
+        },
+        "261-268": {
+          "nom": "Video_Source_{n}",
+          "sens": "↔",
+          "desc": "Source vidéo n dans la pièce affichée (allume) ; fb = source active"
+        },
+        "281-288": {
+          "nom": "Music_Service_{n}",
+          "sens": "↔",
+          "desc": "Service audio n (musique.services[n-1]) dans la pièce affichée, démarre la lecture ; fb = service actif"
+        },
+        "291-298": {
+          "nom": "Music_Fav_{n}",
+          "sens": "↔",
+          "desc": "Favori n (musique.favoris[n-1]) ; fb = favori en cours"
+        },
+        "301": {
+          "nom": "Music_Prev",
+          "sens": "→",
+          "desc": "Piste précédente"
+        },
+        "302": {
+          "nom": "Music_PlayPause",
+          "sens": "↔",
+          "desc": "Lecture / pause ; fb tenu = en lecture"
+        },
+        "303": {
+          "nom": "Music_Next",
+          "sens": "→",
+          "desc": "Piste suivante"
+        },
+        "304": {
+          "nom": "Music_Mute",
+          "sens": "↔",
+          "desc": "Muet ; fb tenu = muet"
+        },
+        "305": {
+          "nom": "Music_Rewind",
+          "sens": "→",
+          "desc": "Retour de 15 s"
+        },
+        "306": {
+          "nom": "Music_Forward",
+          "sens": "→",
+          "desc": "Avance de 15 s"
+        },
+        "307": {
+          "nom": "Music_Like",
+          "sens": "↔",
+          "desc": "J'aime ; fb tenu"
+        },
+        "308": {
+          "nom": "Music_Dislike",
+          "sens": "↔",
+          "desc": "Je n'aime pas ; fb tenu"
+        },
+        "309": {
+          "nom": "Music_Shuffle",
+          "sens": "↔",
+          "desc": "Lecture aléatoire ; fb tenu"
+        },
+        "310": {
+          "nom": "Music_Repeat",
+          "sens": "↔",
+          "desc": "Répétition ; fb tenu"
+        },
+        "311": {
+          "nom": "Music_Off",
+          "sens": "↔",
+          "desc": "Arrêt de la musique de la pièce (bouton Marche/Arrêt du lecteur) ; fb tenu = arrêtée"
+        },
+        "312": {
+          "nom": "Music_SleepTimer_Toggle",
+          "sens": "↔",
+          "desc": "Minuterie de veille ; fb tenu = active"
+        },
+        "321-328": {
+          "nom": "Music_Browse_{n}",
+          "sens": "→",
+          "desc": "Rubrique n de « Parcourir » du service actif (Flow, Charts…)"
+        },
+        "401-430": {
+          "nom": "Room_{n}_LightsOn",
+          "sens": "←",
+          "desc": "Pièce n : au moins un circuit allumé (tuiles de la page Rooms, textes d'état)"
+        },
+        "431-460": {
+          "nom": "Room_{n}_MediaOn",
+          "sens": "←",
+          "desc": "Pièce n : musique ou vidéo en marche"
+        },
+        "470": {
+          "nom": "House_MusicPlaying",
+          "sens": "←",
+          "desc": "Au moins une pièce en lecture (tuile Music de l'accueil)"
+        },
+        "471": {
+          "nom": "House_LightsOn",
+          "sens": "←",
+          "desc": "Au moins un circuit allumé dans la maison"
+        }
+      },
+      "analog": {
+        "10": {
+          "nom": "Room_Select#",
+          "sens": "↔",
+          "desc": "Pièce affichée par cet écran (1..30). Sur l'EISC : posé AVANT chaque recopie d'action → clé de bufferisation du slot 2"
+        },
+        "11-30": {
+          "nom": "Light_{n}_Level#",
+          "sens": "↔",
+          "desc": "Niveau du circuit n (0-65535) ; curseur → C# ; fb = niveau"
+        },
+        "49": {
+          "nom": "Video_Volume#",
+          "sens": "↔",
+          "desc": "Volume vidéo de la pièce (0-100)"
+        },
+        "51": {
+          "nom": "Video_Source#",
+          "sens": "←",
+          "desc": "Source vidéo active de la pièce (0 = arrêt)"
+        },
+        "70": {
+          "nom": "Music_Volume#",
+          "sens": "↔",
+          "desc": "Volume musique de la pièce (0-100)"
+        },
+        "71": {
+          "nom": "Music_Position#",
+          "sens": "←",
+          "desc": "Position de lecture (s)"
+        },
+        "72": {
+          "nom": "Music_Duration#",
+          "sens": "←",
+          "desc": "Durée de la piste (s)"
+        },
+        "73": {
+          "nom": "Music_SleepTimer#",
+          "sens": "↔",
+          "desc": "Minuterie de veille (min, 0-120)"
+        },
+        "74": {
+          "nom": "Music_Service#",
+          "sens": "←",
+          "desc": "Service actif de la pièce (0 = arrêt)"
+        },
+        "75": {
+          "nom": "Music_Track#",
+          "sens": "←",
+          "desc": "Index de la piste en cours (1..n de musique.pistes)"
+        },
+        "76": {
+          "nom": "House_MediaRoom#",
+          "sens": "←",
+          "desc": "Pièce du lecteur « en cours » de la barre du bas (0 = aucune)"
+        },
+        "77": {
+          "nom": "Light_Scene#",
+          "sens": "←",
+          "desc": "Scène d'éclairage active de la pièce (0 = aucune)"
+        },
+        "78": {
+          "nom": "House_LightsOnCount#",
+          "sens": "←",
+          "desc": "Nombre de circuits allumés dans la maison"
+        },
+        "79": {
+          "nom": "Camera#",
+          "sens": "←",
+          "desc": "Caméra affichée (0 = aucune)"
+        }
+      },
+      "serial": {
+        "20": {
+          "nom": "Music_Title$",
+          "sens": "←",
+          "desc": "Titre en cours"
+        },
+        "21": {
+          "nom": "Music_Artist$",
+          "sens": "←",
+          "desc": "Artiste"
+        },
+        "22": {
+          "nom": "Music_Album$",
+          "sens": "←",
+          "desc": "Album"
+        },
+        "23": {
+          "nom": "Music_Cover$",
+          "sens": "←",
+          "desc": "Pochette (chemin relatif au GUI ou URL)"
+        },
+        "24": {
+          "nom": "Music_NowPlaying$",
+          "sens": "←",
+          "desc": "Barre du bas : « Deezer in Aquarium »"
+        },
+        "25": {
+          "nom": "Video_Source_Name$",
+          "sens": "←",
+          "desc": "Nom de la source vidéo active"
+        },
+        "26": {
+          "nom": "Camera_Url$",
+          "sens": "←",
+          "desc": "Flux de la caméra affichée (vide = image fixe de la config)"
+        },
+        "99": {
+          "nom": "Systeme_IpId$",
+          "sens": "←",
+          "desc": "IP-ID de l'écran connecté"
+        },
+        "101": {
+          "nom": "Systeme_CpzNom$",
+          "sens": "←",
+          "desc": "Nom du CPZ"
+        },
+        "102": {
+          "nom": "Systeme_CpzDate$",
+          "sens": "←",
+          "desc": "Date de compilation du CPZ"
+        }
+      }
+    },
+    "blocsPieces": {
+      "base": 1000,
+      "pas": 100,
+      "digital": {
+        "1-20": {
+          "nom": "Light_{n}_On",
+          "fb": true,
+          "actual": true,
+          "requis": "eclairages"
+        },
+        "31-38": {
+          "nom": "Light_Scene_{n}",
+          "fb": true,
+          "actual": false,
+          "requis": "eclairages"
+        },
+        "41-48": {
+          "nom": "Action_{n}",
+          "fb": true,
+          "actual": false,
+          "requis": "*",
+          "desc": "Impulsion : action n de la pièce déclenchée"
+        },
+        "61": {
+          "nom": "Room_Displayed",
+          "fb": true,
+          "actual": false,
+          "requis": "*"
+        },
+        "71": {
+          "nom": "Music_Playing",
+          "fb": true,
+          "actual": true,
+          "requis": "audio"
+        },
+        "72": {
+          "nom": "Music_Muted",
+          "fb": true,
+          "actual": true,
+          "requis": "audio"
+        },
+        "81": {
+          "nom": "Video_On",
+          "fb": true,
+          "actual": true,
+          "requis": "video"
+        }
+      },
+      "analog": {
+        "11-30": {
+          "nom": "Light_{n}_Level",
+          "fb": true,
+          "actual": true,
+          "requis": "eclairages"
+        },
+        "71": {
+          "nom": "Music_Volume",
+          "fb": true,
+          "actual": true,
+          "requis": "audio"
+        },
+        "72": {
+          "nom": "Music_Service",
+          "fb": true,
+          "actual": true,
+          "requis": "audio"
+        },
+        "81": {
+          "nom": "Video_Volume",
+          "fb": true,
+          "actual": true,
+          "requis": "video"
+        },
+        "82": {
+          "nom": "Video_Source",
+          "fb": true,
+          "actual": true,
+          "requis": "video"
+        }
+      }
+    }
+  }
+}

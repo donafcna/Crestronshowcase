@@ -77,3 +77,7 @@ Pour la V1/bêta Alexandre et la généralisation, lire docs/industrialisation/R
 ## 27/09/2026 — Appartement Crans-Montana : deuxième projet issu du Core
 
 `projects/appartement-crans/` (lire son `CONTEXTE-CLAUDE.md`) = Core Villa Crans + `villa_config.json` propre, assemblé par `tools/assemble.py` (CH5 + C# renommé) et `tools/generate_slot2.js` (SMW depuis le socle nu). Rien n'est édité dans les copies : corriger le Core, réassembler, resynchroniser les deux vitrines. Dépôt public : ce projet ne porte jamais de nom de client, d'opérateur hôtelier, d'adresse ni de personne. Noms de pièces courts (≈ 16 caractères) pour le menu de la dalle. Core 1.0.209 (v5.1) à compiler pour les deux projets.
+
+## 29/09/2026 — Showroom FTV Nyon : GUI Crestron Home recréée, contrat propre
+
+`projects/showroom-ftv-nyon/` (lire son `CONTEXTE-CLAUDE.md`) : GUI CH5 autonome (pas le Core Villa Crans) recréant la dalle d'entrée du showroom de Nyon, C# slot 1 et SIMPL slot 2 sur l'architecture FTV Home. Source unique `showroom_config.json` (contrat de joins compris ; `tools/gen_joins.js` génère `Joins.cs` et `docs/CONTRAT-JOINS.md`). Parité C# ↔ `js/local-feedback.js` contrôlée par `tools/parity/parity.js`. Vitrine : `apps/showcase/scripts/sync-showroom-ftv-nyon.py`.

@@ -1,0 +1,16 @@
+simpl-sharp/packages/
+simpl-sharp/**/bin/
+simpl-sharp/**/obj/
+simpl-sharp/.vs/
+simpl/simpl-windows/SPlsWork/
+simpl/simpl-windows/*.backup-*.smw
+*.ASV
+*.lpz
+*.cpz
+*.sig
+*.dip
+*.smft
+*.hash
+ch5/node_modules/
+ch5/dist/
+ch5/deploy.secrets.psd1
