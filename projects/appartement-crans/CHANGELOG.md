@@ -3,6 +3,9 @@
 Quatre artefacts à suivre : CH5 `appartementcrans.ch5z`, CPZ slot 1 `AppartementCrans.cpz`, LPZ slot 2
 `AppartementCrans_Slot2.lpz`, `villa_config.json`. Version source en tête de chaque entrée.
 
+## 1.1.1 — 29.09.2026 (CH5 source Core 1.0.214 / v5.5 ; rien compilé)
+- Plus de flash du GUI d'origine au chargement : interface Connect décidée dans le `<head>` (Core v5.5). Contrôle `test-connect-flash.cjs` 0 image.
+
 ## 1.1.0 — 29.09.2026 (config + SMW + vitrine ; CH5 source Core 1.0.213 / v5.4 ; rien compilé)
 - Interface entièrement restylée : `meta.interface = "connect"` (Core v5.4, `themes/connect.css` + `js/connect-ui.js`),
   style d'application résidentielle épurée : liste des pièces, tuiles-curseurs, ambiances, stores, climat, scènes

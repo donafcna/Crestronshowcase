@@ -7,6 +7,7 @@
 - C# : `LoadFeatureFlags` + `IsDisabledFeatureJoin` — `contrat.alarme.actif=false` ou aucune pièce `audioVideo.actif` → joins alarme / A/V
   ignorés à l'entrée (ni traitement ni miroir EISC). Villa Crans inchangée (alarme et A/V présents).
 - `applyTheme` vide `body.className` : ne jamais porter un état d'interface sur `body` (Connect l'a sur `<html>`).
+- v5.5 : `connect-boot` dans le `<head>` (après `villa_config.js`) pose `data-iface` avant tout rendu → aucun flash du Core ; contrôle `apps/showcase/scripts/test-connect-flash.cjs`.
 
 ## 29/09/2026 — v5.3 fenêtre Moteurs (CH5 1.0.212 + CPZ 1.0.197.0 à compiler, LPZ F12)
 - Composant partagé `js/motors-controls.js` + `themes/motors-controls.css` (remplace `slats-controls.*`) : rend `#motors-container` des deux GUI

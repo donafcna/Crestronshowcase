@@ -12,6 +12,12 @@
     <script src="config.js"></script>
     <!-- Configuration de dimensionnement embarquée (générée depuis villa_config.json par deploy.ps1) -->
     <script src="villa_config.js"></script>
+    <!-- v5.5 (29.09.2026) : interface Connect decidee des le <head>, avant tout rendu du Core (theme Clair
+         memorise s'il n'y en a aucun, avant que le Core n'impose Sombre) :
+         sans ce masquage precoce, le GUI d'origine (pieces par defaut de config.js) s'affichait
+         une fraction de seconde avant l'interface Connect. -->
+    <script id="connect-boot">(function(){try{var c=window.villaConfigEmbedded;if(!c||!c.meta||c.meta.interface!=="connect")return;var d=document.documentElement,t="",k=/iphone\.html$/i.test(location.pathname)?"crestron_theme_iphone":"crestron_theme";d.setAttribute("data-iface","connect");try{t=localStorage.getItem(k);if(!t){t="light";localStorage.setItem(k,t);}}catch(e){t="light";}d.setAttribute("data-cx-boot",t);}catch(e){}})();</script>
+    <style id="connect-boot-style">html[data-iface="connect"] body > *:not(#cx-root){display:none!important}html[data-iface="connect"],html[data-iface="connect"] body{background:#f2f2f4!important}html[data-cx-boot="dark"],html[data-cx-boot="dark"] body{background:#0b0b0d!important}html[data-cx-boot="glass"],html[data-cx-boot="glass"] body{background:#142033!important}</style>
     <script src="version.js"></script>
     <!-- Contrat de joins v3 : traduction des joins logiques en joins physiques par piece -->
     <script src="js/villa-joins.js"></script>

@@ -1,5 +1,20 @@
 # Villa Crans CH5 — journal des versions
 
+## v5.5 — 29/09/2026 — interface Connect : plus de flash du GUI d'origine au chargement (a compiler : CH5 seul)
+
+| Artefact | Etat de ce lot |
+|---|---|
+| CH5 source | `src/index.html` + `src/iphone.html` : `<script id="connect-boot">` + `<style id="connect-boot-style">` juste apres `villa_config.js` — **a recompiler** web + tsw + mobile |
+| CPZ / LPZ | inchanges |
+| Config | `meta.version` 1.0.214 |
+| Vitrines | les deux resynchronisees ; Villa Crans : bloc inerte (pas de `meta.interface`) |
+
+**Retour Donatien.** A chaque ouverture de l'Appartement Crans-Montana, le GUI Villa Crans apparaissait moins d'une seconde avant l'interface Connect.
+Cause : le masquage du Core ne s'appliquait qu'une fois `connect-ui.js` execute (fin de `<body>`, apres DOMContentLoaded) ; entre-temps le
+Core se peignait avec ses pieces par defaut (`config.js`). Correction systeme : l'interface est decidee dans le `<head>` des que
+`villa_config.js` est lu (`html[data-iface=connect]`), le Core est masque par une regle posee avant le `<body>`, fond au theme memorise.
+Controle `apps/showcase/scripts/test-connect-flash.cjs` : images avec le Core visible avant/apres = 2 a 7 / 0 (dalle, iPad, iPhone, 2 passages).
+
 ## v5.4 — 29/09/2026 — interface « Connect » optionnelle (meta.interface) et fonctions A/V / alarme retirables par la configuration (a compiler : CH5 + CPZ)
 
 | Artefact | Etat de ce lot |
