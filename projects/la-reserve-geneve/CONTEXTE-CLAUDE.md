@@ -1,6 +1,6 @@
 # La Réserve Genève — contexte de reprise (< 150 lignes)
 
-Mis à jour le 30.09.2026 (v1.0.1 : « iPod » renommé « Lecteur radio », alias de retour `aliasRetour`).
+Mis à jour le 30.09.2026 (v1.0.2 : « iPod » renommé « Lecteur radio » avec icône lecteur audio, alias de retour `aliasRetour`).
 
 ## Ce que c'est
 Refonte en CH5 des trois panneaux VT Pro (iPad, Crestron App) de La Réserve Genève — Bar, Fitness, Lodge — pour la

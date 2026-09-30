@@ -598,3 +598,7 @@ Recette : `scripts/test-la-reserve-geneve-modes.cjs` 177/177 (3 thèmes × 4 mod
 ## 30/09/2026 — La Réserve Genève 1.0.1 : « iPod » devient « Lecteur radio » 2.3.4
 
 Demande de Donatien : la source iPod du Bar s'appelle désormais « Lecteur radio » (GUI, fiche, captures). Mêmes joins ; alias de retour pour un processeur qui enverrait encore « iPod ». Batteries : GUI 342/342 vitrine et 234/234 déploiement, site 177/177.
+
+## 30/09/2026 — La Réserve Genève 1.0.2 : icône « Lecteur radio » 2.3.5
+
+Le baladeur de la source « Lecteur radio » (Bar) est remplacé par une icône de lecteur audio (poste radio, SVG `radio`). Batteries : GUI 342/342 vitrine et 234/234 déploiement, site 177/177.

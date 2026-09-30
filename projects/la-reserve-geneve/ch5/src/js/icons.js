@@ -8,6 +8,7 @@
     airplay: '<path d="M5 17H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-1"/><path d="M12 15l5 6H7z"/>',
     dj: '<circle cx="10" cy="12" r="7.5"/><circle cx="10" cy="12" r="2"/><path d="M19.5 3.5v11.5l-3 3"/><circle cx="19.5" cy="3.5" r="1"/>',
     ipod: '<rect x="6" y="2" width="12" height="20" rx="2.5"/><rect x="8.5" y="4.5" width="7" height="5" rx="1"/><circle cx="12" cy="15.5" r="3.2"/><circle cx="12" cy="15.5" r=".9"/>',
+    radio: '<path d="M7 7l10-4"/><rect x="3" y="7" width="18" height="13" rx="2.5"/><circle cx="8.5" cy="13.5" r="3"/><path d="M14.5 11h3.5M14.5 14h3.5M14.5 17h3.5"/>',
     music: '<path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/>',
     laptop: '<rect x="4" y="4" width="16" height="11" rx="1.5"/><path d="M2 19h20l-1.5-4h-17z"/>',
     tablet: '<rect x="4" y="2" width="16" height="20" rx="2.5"/><path d="M11 18.5h2"/>',
