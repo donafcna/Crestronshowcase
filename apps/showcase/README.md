@@ -586,3 +586,11 @@ Recette : `scripts/test-showroom-ftv-nyon-modes.cjs` 177/177 (3 thèmes × Mode 
 ## 29/09/2026 — Appartement Crans-Montana : plus de flash du GUI Villa au chargement 2.3.2
 
 Retour de Donatien : en ouvrant l'Appartement Crans-Montana, le GUI Villa Crans apparaissait une fraction de seconde. Corrigé dans le Core (v5.5) : l'interface Connect est décidée dans le `<head>` dès la lecture de `villa_config.js`, le GUI d'origine est masqué avant le premier rendu. Nouveau contrôle `scripts/test-connect-flash.cjs` (observation image par image depuis la page du site : 2 à 7 images avec le GUI d'origine avant, 0 après, dalle / tablette / smartphone).
+
+## 30/09/2026 — La Réserve Genève : refonte CH5 des panneaux Bar, Fitness et Lodge 2.3.3
+
+Nouveau projet `la-reserve-geneve` (secteur Hôtellerie, réalisation 2026), placé après l'Hotel Brassus : les trois panneaux VT Pro de l'hôtel (Bar, Fitness, Lodge) refaits en CH5 avec exactement les mêmes commandes (sources, pages de zones du Bar, Vol + / Vol − maintenus, Mute, niveau, Distribute / Off par groupe, extinction générale avec confirmation et progression, Exit), design épuré et trois thèmes que le client choisit dans les Réglages (Lac, Nuit, Spa). Le GUI est branché sur les joins des programmes SIMPL existants, sans C#. Source unique `projects/la-reserve-geneve` (voir son `CONTEXTE-CLAUDE.md`).
+
+Vitrine `public/showcases/la-reserve-geneve/` régénérée par `python3 scripts/sync-la-reserve-geneve.py ../../projects/la-reserve-geneve` (jamais éditée à la main ; `meta.mode = showcase`, sélecteur d'espace Bar / Fitness / Lodge visible, `webxpanel.js` et `ch5-components.js` retirés). Fiche FR / EN / DE `src/data/sheets/la-reserve-geneve.js`, 9 captures `public/sheets/la-reserve-geneve/`.
+
+Recette : `scripts/test-la-reserve-geneve-modes.cjs` 177/177 (3 thèmes × 4 modes × dalle / iPad / smartphone, Plein écran non applicable sur smartphone) ; batterie GUI `projects/la-reserve-geneve/ch5/tools/qa-reserve.cjs` 342/342 en vitrine et 234/234 en déploiement (3 espaces × 3 thèmes × 6 châssis, chaque écran et fenêtre). Build, lint et catalogue : aucun nouvel avertissement.

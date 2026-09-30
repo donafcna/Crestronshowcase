@@ -463,6 +463,59 @@ export const projects = [
   }
 },
   {
+    // La Réserve Genève — refonte CH5 des trois panneaux VT Pro (Bar, Fitness, Lodge), mappée sur les joins des
+    // programmes SIMPL existants (projects/la-reserve-geneve). Vitrine régénérée par scripts/sync-la-reserve-geneve.py.
+    id: `la-reserve-geneve`,
+    name: `La Réserve Genève`,
+    status: `realisation`,
+    client: `La Réserve Genève — Hotel & Spa`,
+    sectors: [`hotellerie`],
+    devices: [`crestron`, `ios_tablet`, `ios_phone`, `xpanel`],
+    isInteractive: false,
+    embedUrl: `/showcases/la-reserve-geneve/index.html`,
+    embedPhoneUrl: `/showcases/la-reserve-geneve/iphone.html`,
+    thumbnailUrl: `/sheets/la-reserve-geneve/02-bar-sous-sol.png`,
+    year: `2026`,
+    text: {
+      fr: {
+        description: `Refonte en CH5 des panneaux audio du Bar, du Fitness et du Lodge : mêmes commandes que l'interface VT Pro, design épuré et trois thèmes au choix.`,
+        details: `Les trois iPad de l'hôtel pilotaient la sonorisation Bose avec une interface VT Pro. La nouvelle GUI CH5 reprend exactement les mêmes boutons (sources, zones, volume et Mute, Distribute et Off par groupe, extinction générale avec confirmation) et se branche sur les joins des programmes SIMPL existants, sans C# : elle remplace le panneau VT Pro, rien d'autre. Le client choisit lui-même le thème (Lac, Nuit ou Spa) dans les Réglages. Une configuration JSON décrit les trois espaces ; un CH5 est produit par panneau.`,
+        features: [
+          `Bar : 12 zones sur deux niveaux (Rez-de-chaussée, Sous-sol), 4 sources`,
+          `Fitness : 5 zones, 5 sources ; Lodge : 6 zones dont micro, 4 sources`,
+          `Volume maintenu, Mute, niveau affiché en temps réel par zone`,
+          `Diffuser / Arrêt par groupe, extinction générale avec progression`,
+          `Trois thèmes au choix du client : Lac, Nuit, Spa`,
+          `Joins des programmes SIMPL existants, sans C# : remplace le panneau VT Pro`,
+        ],
+      },
+      en: {
+        description: `CH5 redesign of the Bar, Fitness and Lodge audio panels: the same controls as the VT Pro interface, a clean design and three themes to choose from.`,
+        details: `The hotel's three iPads controlled the Bose sound system through a VT Pro interface. The new CH5 GUI keeps exactly the same buttons (sources, zones, volume and mute, Distribute and Off per group, global shutdown with confirmation) and plugs into the joins of the existing SIMPL programs, with no C#: it replaces the VT Pro panel and nothing else. The client picks the theme (Lac, Nuit or Spa) in Settings. One JSON configuration describes the three spaces; one CH5 is built per panel.`,
+        features: [
+          `Bar: 12 zones on two levels (ground floor, basement), 4 sources`,
+          `Fitness: 5 zones, 5 sources; Lodge: 6 zones including a microphone, 4 sources`,
+          `Press-and-hold volume, mute and live level per zone`,
+          `Distribute / Off per group, global shutdown with progress bar`,
+          `Three client-selectable themes: Lac, Nuit, Spa`,
+          `Existing SIMPL program joins, no C#: replaces the VT Pro panel`,
+        ],
+      },
+      de: {
+        description: `CH5-Neugestaltung der Audio-Panels von Bar, Fitness und Lodge: dieselben Bedienelemente wie die VT-Pro-Oberfläche, klares Design und drei wählbare Designs.`,
+        details: `Die drei iPads des Hotels steuerten die Bose-Beschallung über eine VT-Pro-Oberfläche. Die neue CH5-GUI übernimmt genau dieselben Tasten (Quellen, Zonen, Lautstärke und Stummschaltung, Distribute und Off je Gruppe, Gesamtabschaltung mit Bestätigung) und nutzt die Joins der bestehenden SIMPL-Programme ohne C#: Sie ersetzt nur das VT-Pro-Panel. Der Kunde wählt das Design (Lac, Nuit oder Spa) selbst in den Einstellungen. Eine JSON-Konfiguration beschreibt die drei Bereiche; je Panel wird ein CH5 erzeugt.`,
+        features: [
+          `Bar: 12 Zonen auf zwei Ebenen (Erdgeschoss, Untergeschoss), 4 Quellen`,
+          `Fitness: 5 Zonen, 5 Quellen; Lodge: 6 Zonen inkl. Mikrofon, 4 Quellen`,
+          `Lautstärke per Halten, Stummschaltung und Live-Pegel je Zone`,
+          `Distribute / Off je Gruppe, Gesamtabschaltung mit Fortschrittsanzeige`,
+          `Drei vom Kunden wählbare Designs: Lac, Nuit, Spa`,
+          `Joins der bestehenden SIMPL-Programme, ohne C#: ersetzt das VT-Pro-Panel`,
+        ],
+      },
+    },
+  },
+  {
     id: `hotel-geneva`,
     name: `Palace 5* Genève`,
     status: `concept`,

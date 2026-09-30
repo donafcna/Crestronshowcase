@@ -81,3 +81,7 @@ Pour la V1/bêta Alexandre et la généralisation, lire docs/industrialisation/R
 ## 29/09/2026 — Showroom FTV Nyon : GUI Crestron Home recréée, contrat propre
 
 `projects/showroom-ftv-nyon/` (lire son `CONTEXTE-CLAUDE.md`) : GUI CH5 autonome (pas le Core Villa Crans) recréant la dalle d'entrée du showroom de Nyon, C# slot 1 et SIMPL slot 2 sur l'architecture FTV Home. Source unique `showroom_config.json` (contrat de joins compris ; `tools/gen_joins.js` génère `Joins.cs` et `docs/CONTRAT-JOINS.md`). Parité C# ↔ `js/local-feedback.js` contrôlée par `tools/parity/parity.js`. Vitrine : `apps/showcase/scripts/sync-showroom-ftv-nyon.py`.
+
+## 30/09/2026 — La Réserve Genève : refonte CH5 des panneaux VT Pro
+
+`projects/la-reserve-geneve/` (lire son `CONTEXTE-CLAUDE.md`) : GUI CH5 Bar / Fitness / Lodge branché sur les joins des programmes SIMPL existants, sans C# ; trois thèmes Lac / Nuit / Spa choisis par le client. Vitrine générée par `apps/showcase/scripts/sync-la-reserve-geneve.py`, secteur Hôtellerie.

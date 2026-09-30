@@ -14,6 +14,7 @@ import crestronHome from "./crestron-home";
 import homeCinemaCologny from "./home-cinema-cologny";
 import hotelGeneva from "./hotel-geneva";
 import huddleRoomNyon from "./huddle-room-nyon";
+import laReserveGeneve from "./la-reserve-geneve";
 import showroomFtvNyon from "./showroom-ftv-nyon";
 import siegeNyon from "./siege-nyon";
 import suitePalaceMontreux from "./suite-palace-montreux";
@@ -37,6 +38,7 @@ const docs = {
   "home-cinema-cologny": homeCinemaCologny,
   "hotel-geneva": hotelGeneva,
   "huddle-room-nyon": huddleRoomNyon,
+  "la-reserve-geneve": laReserveGeneve,
   "showroom-ftv-nyon": showroomFtvNyon,
   "siege-nyon": siegeNyon,
   "suite-palace-montreux": suitePalaceMontreux,
