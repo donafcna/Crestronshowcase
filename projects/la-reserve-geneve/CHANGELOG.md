@@ -3,6 +3,13 @@
 Livrables : un CH5 par panneau (`reserve-bar.ch5z`, `reserve-fitness.ch5z`, `reserve-lodge.ch5z`) + `reserve_config.json`.
 Programmes SIMPL existants conservés (une modification : sources du smart object → joins du panneau).
 
+## 1.0.1 — 30.09.2026
+
+- Source du Bar « iPod » renommée « Lecteur radio » (GUI, fiche du site). Joins inchangés (b82, `Ipad_1_Input_4`).
+  `sources[].aliasRetour` (nouveau) : si le processeur renvoie encore « iPod » sur le sériel de source, la source est
+  reconnue. Icône inchangée (baladeur).
+- Batteries : GUI 342/342 vitrine, 234/234 déploiement ; site 177/177. Site 2.3.4.
+
 ## 1.0.0 — 30.09.2026 (CH5 source 1.0.0 ; rien compilé ni installé sur matériel)
 
 - GUI refait depuis les 10 captures Vision Tools (Bar ×4, Fitness ×3, Lodge ×3) : accueil (nom de l'hôtel, groupes en

@@ -13,7 +13,7 @@ export default {
         image: IMG + "01-accueil.png",
         text: "Le nom de l'hôtel, l'espace piloté et la liste des groupes en diffusion avec leur source. En bas, le dock des sources, comme la barre d'icônes du panneau d'origine.",
         buttons: [
-          ["Sources", "Sélectionne la source (Airplay Bar, DJ, iPod, Music Bar Lounge…) et ouvre les zones pour la diffuser."],
+          ["Sources", "Sélectionne la source (Airplay Bar, DJ, Lecteur radio, Music Bar Lounge…) et ouvre les zones pour la diffuser."],
           ["Tout éteindre", "Demande l'extinction générale de l'espace, avec confirmation."],
           ["Réglages", "Thème Lac, Nuit ou Spa ; version du GUI, IP-ID et programme."],
         ],
@@ -76,7 +76,7 @@ export default {
         image: IMG + "01-accueil.png",
         text: "The hotel name, the space being controlled and the groups currently playing with their source. At the bottom, the source dock, like the icon bar of the original panel.",
         buttons: [
-          ["Sources", "Selects the source (Airplay Bar, DJ, iPod, Music Bar Lounge…) and opens the zones to distribute it."],
+          ["Sources", "Selects the source (Airplay Bar, DJ, Lecteur radio, Music Bar Lounge…) and opens the zones to distribute it."],
           ["Tout éteindre (All off)", "Requests a global shutdown of the space, with confirmation."],
           ["Settings", "Lac, Nuit or Spa theme; GUI version, IP-ID and program."],
         ],
@@ -139,7 +139,7 @@ export default {
         image: IMG + "01-accueil.png",
         text: "Hotelname, gesteuerter Bereich und die aktiven Gruppen mit ihrer Quelle. Unten das Quellen-Dock, wie die Symbolleiste des ursprünglichen Panels.",
         buttons: [
-          ["Quellen", "Wählt die Quelle (Airplay Bar, DJ, iPod, Music Bar Lounge…) und öffnet die Zonen zur Verteilung."],
+          ["Quellen", "Wählt die Quelle (Airplay Bar, DJ, Lecteur radio, Music Bar Lounge…) und öffnet die Zonen zur Verteilung."],
           ["Tout éteindre (Alles aus)", "Fordert die Gesamtabschaltung des Bereichs mit Bestätigung an."],
           ["Einstellungen", "Design Lac, Nuit oder Spa; GUI-Version, IP-ID und Programm."],
         ],

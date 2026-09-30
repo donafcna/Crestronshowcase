@@ -65,6 +65,8 @@
     var t = norm(s(G.sourceCourante));
     if (!t) return null;
     for (var i = 0; i < E.sources.length; i++) if (norm(E.sources[i].nom) === t) return E.sources[i];
+    // Texte envoyé par le processeur resté à l'ancien libellé (ex. « iPod ») : sources[].aliasRetour.
+    for (i = 0; i < E.sources.length; i++) if ((E.sources[i].aliasRetour || []).some(function (a) { return norm(a) === t; })) return E.sources[i];
     for (i = 0; i < E.sources.length; i++) if (t.indexOf(norm(E.sources[i].nom)) >= 0 || norm(E.sources[i].nom).indexOf(t) >= 0) return E.sources[i];
     return { nom: s(G.sourceCourante), icone: 'music', inconnue: true };
   }

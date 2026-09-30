@@ -594,3 +594,7 @@ Nouveau projet `la-reserve-geneve` (secteur Hôtellerie, réalisation 2026), pla
 Vitrine `public/showcases/la-reserve-geneve/` régénérée par `python3 scripts/sync-la-reserve-geneve.py ../../projects/la-reserve-geneve` (jamais éditée à la main ; `meta.mode = showcase`, sélecteur d'espace Bar / Fitness / Lodge visible, `webxpanel.js` et `ch5-components.js` retirés). Fiche FR / EN / DE `src/data/sheets/la-reserve-geneve.js`, 9 captures `public/sheets/la-reserve-geneve/`.
 
 Recette : `scripts/test-la-reserve-geneve-modes.cjs` 177/177 (3 thèmes × 4 modes × dalle / iPad / smartphone, Plein écran non applicable sur smartphone) ; batterie GUI `projects/la-reserve-geneve/ch5/tools/qa-reserve.cjs` 342/342 en vitrine et 234/234 en déploiement (3 espaces × 3 thèmes × 6 châssis, chaque écran et fenêtre). Build, lint et catalogue : aucun nouvel avertissement.
+
+## 30/09/2026 — La Réserve Genève 1.0.1 : « iPod » devient « Lecteur radio » 2.3.4
+
+Demande de Donatien : la source iPod du Bar s'appelle désormais « Lecteur radio » (GUI, fiche, captures). Mêmes joins ; alias de retour pour un processeur qui enverrait encore « iPod ». Batteries : GUI 342/342 vitrine et 234/234 déploiement, site 177/177.

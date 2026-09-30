@@ -65,7 +65,7 @@ Horizontal) ; ils sont déplacés sur des joins digitaux libres du panneau (colo
 | Digital | 79 | Distribute « Terrasse Tsé-Fong » |  |
 | Digital | 80 | Source « Airplay Bar » (appui) | Ipad_1_Input_2 — à déplacer depuis le smart object 1, élément 1 |
 | Digital | 81 | Source « DJ » (appui) | Ipad_1_Input_3 — à déplacer depuis le smart object 1, élément 2 |
-| Digital | 82 | Source « iPod » (appui) | Ipad_1_Input_4 — à déplacer depuis le smart object 1, élément 3 |
+| Digital | 82 | Source « Lecteur radio » (appui) | Ipad_1_Input_4 — à déplacer depuis le smart object 1, élément 3 |
 | Digital | 83 | Source « Music Bar Lounge » (appui) | Ipad_1_Input_1 — à déplacer depuis le smart object 1, élément 4 |
 | Digital | 84 | Tout éteindre (demande) | Ipad_1_Power_Off — à déplacer depuis le smart object, élément 5 |
 | Digital | 90 | Off « All Bar » |  |

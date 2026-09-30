@@ -8,7 +8,7 @@
 |---|---|---|---|
 | Source Airplay Bar : join libre | b80 | — | OK |
 | Source DJ : join libre | b81 | — | OK |
-| Source iPod : join libre | b82 | — | OK |
+| Source Lecteur radio : join libre | b82 | — | OK |
 | Source Music Bar Lounge : join libre | b83 | — | OK |
 | Tout éteindre : join libre | b84 | — | OK |
 | Confirmation (retour) | b56 | Ipad_1_Power_Off_INT | OK |

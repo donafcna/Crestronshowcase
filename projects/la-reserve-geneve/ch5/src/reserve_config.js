@@ -2,7 +2,7 @@
 window.reserveConfig = {
   "meta": {
     "projet": "La Réserve Genève — GUI CH5 Bar / Fitness / Lodge",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "mode": "deploiement",
     "espace": "bar",
     "theme": "lac",
@@ -99,11 +99,15 @@ window.reserveConfig = {
         },
         {
           "id": 3,
-          "nom": "iPod",
+          "nom": "Lecteur radio",
           "icone": "ipod",
           "so": 3,
           "signal": "Ipad_1_Input_4",
-          "join": 82
+          "join": 82,
+          "aliasRetour": [
+            "iPod",
+            "Ipod"
+          ]
         },
         {
           "id": 4,
