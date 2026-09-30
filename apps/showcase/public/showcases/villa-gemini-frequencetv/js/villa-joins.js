@@ -20,6 +20,15 @@
  *
  * En mode showcase, la couche est inerte (identité) : le site vitrine n'a qu'un
  * seul panneau virtuel et js/local-feedback.js travaille sur les joins logiques.
+ *
+ * v6.0 (30.09.2026) — MODE PONT SIMPL (meta.backend = "simpl", contrat.simplDirect) : plus de C#,
+ * un seul programme SIMPL. La traduction se fait AU PONT NATIF (Ch5SignalBridge.sendXToNative à
+ * l'émission, bridgeReceiveXFromNative à la réception) : c'est le seul endroit par lequel passent
+ * TOUS les joins, y compris ceux figés dans les <ch5-button sendEventOnClick> — l'échec du contrat v3
+ * venait de la réécriture d'attributs, que CH5 ignore après l'initialisation. Le HTML garde ses joins
+ * logiques ; chaque écran émet et reçoit sur le bloc de la pièce qu'il affiche :
+ *     joinPhysique = baseBloc + (pieceId - 1) * tailleBloc + offset     (1000 + (id-1)*150 + offset)
+ * Les retours des autres pièces sont mémorisés et rejoués au changement de pièce.
  * =========================================================================== */
 (function () {
     'use strict';
@@ -178,10 +187,13 @@
     function setRoom(id) {
         id = parseInt(id, 10);
         if (!id || id < 1 || id > pieceMax) { return; }
-        if (id === roomId && base === computeBase(id)) { return; }
+        if (id === roomId && base === computeBase(id) && !S.on) { return; }
+        if (id === roomId && S.on && S.replayed) { return; }
+        if (S.on) { S.replayed = true; }
         roomId = id;
         base = computeBase(id);
         try { localStorage.setItem('villa_joins_room', String(id)); } catch (e) {}
+        if (S.on) { replayRoom(); }
         if (!active) { return; }
         scan(document);
         resubscribeAll();
@@ -252,6 +264,10 @@
             });
         }
 
+        // v6.0 : pont SIMPL (émission au pont natif, réception traduite) — inerte hors meta.backend = simpl.
+        patchBridge(real);
+        Object.keys(RCV).forEach(function (name) { if (typeof real[name] === 'function') { def(name, rcvWrap(RCV[name], real[name])); } });
+
         lib = w;
         rawTarget = real;
         rawSub = _sub;
@@ -279,6 +295,113 @@
         }
     }
 
+    /* ---------- Mode pont SIMPL (v6.0) ---------- */
+    var S = { on: false, B: 1000, T: 150, max: 30, map: { b: {}, n: {}, s: {} }, rev: { b: {}, n: {}, s: {} }, remote: null, save: null };
+    var cache = { b: {}, n: {}, s: {} };
+    var rcvFn = { b: null, n: null, s: null };        // réception CH5 d'origine (join logique)
+    var sendFn = { b: null, n: null, s: null }, bridgeSelf = null;
+    function loadSimpl() {
+        var vc = window.villaConfig || window.villaConfigEmbedded || null;
+        var sd = vc && vc.contrat && vc.contrat.simplDirect;
+        var mode = (vc && vc.meta && vc.meta.mode) || 'deploiement';
+        S.on = !!(sd && vc.meta && vc.meta.backend === 'simpl' && mode === 'deploiement');
+        if (!S.on) { return; }
+        S.B = sd.baseBloc || 1000; S.T = sd.tailleBloc || 150; S.max = sd.pieceMax || 30;
+        var m = sd.mapping || {};
+        S.map = { b: m.digital || {}, n: m.analog || {}, s: m.serial || {} };
+        ['b', 'n', 's'].forEach(function (t) { S.rev[t] = {}; Object.keys(S.map[t]).forEach(function (j) { S.rev[t][S.map[t][j]] = j; }); });
+        S.remote = sd.telecommandes || null;
+        S.save = sd.scenesMemoriser || null;
+    }
+    function sPhys(t, j) {
+        var off = S.map[t][String(j)];
+        return off === undefined ? String(j) : String(S.B + (roomId - 1) * S.T + off);
+    }
+    // Join physique reçu -> join logique de la pièce affichée ; null = autre pièce (mémorisé, non livré).
+    function sLogical(t, name) {
+        var n = parseInt(name, 10);
+        if (isNaN(n) || n < S.B || n >= S.B + S.max * S.T) { return name; }
+        var r = Math.floor((n - S.B) / S.T) + 1, L = S.rev[t][(n - S.B) % S.T];
+        if (L === undefined) { return name; }
+        return r === roomId ? L : null;
+    }
+    function isRemote(n) {
+        var pl = (S.remote && S.remote.plages) || [];
+        for (var i = 0; i < pl.length; i++) { if (n >= pl[i][0] && n <= pl[i][1]) { return true; } }
+        return false;
+    }
+    function rawSend(t, sig, val) { if (sendFn[t] && bridgeSelf) { try { sendFn[t].call(bridgeSelf, String(sig), val); } catch (e) { } } }
+    function bridgeOut(t, sig, val, send) {
+        if (!S.on) { return send(sig, val); }
+        var n = parseInt(sig, 10);
+        if (t === 'b' && val === true && n >= 11 && n <= 10 + S.max) { setRoom(n - 10); }
+        if (t === 'n' && sig === '10' && val) { setRoom(val); }
+        // Scène mémorisée (appui long) : le JSON du C# devient une impulsion « Mémoriser scène N » de la pièce ;
+        // le SIMPL recopie lui-même les niveaux courants de ses circuits en mémoire non volatile.
+        if (t === 's' && S.save && sig === String(S.save.serial)) {
+            try {
+                var d = JSON.parse(val), idx = Number(d.s);
+                if (idx >= 1 && idx <= 4) {
+                    var p = sPhys('b', String(S.save.digital + idx - 1));
+                    rawSend('b', p, true); setTimeout(function () { rawSend('b', p, false); }, 150);
+                }
+            } catch (e) { }
+            return;
+        }
+        // Télécommandes : joins globaux ; la pièce qui les émet part d'abord sur l'analogique dédié.
+        if (t === 'b' && val === true && S.remote && isRemote(n)) { rawSend('n', S.remote.pieceAnalog, roomId); }
+        return send(sPhys(t, sig), val);
+    }
+    function patchBridge(obj) {
+        var C = obj && obj.Ch5SignalBridge;
+        if (!C || !C.prototype || C.prototype.__vjS) { return; }
+        var P = C.prototype;
+        try { Object.defineProperty(P, '__vjS', { value: true }); } catch (e) { P.__vjS = true; }
+        [['sendBooleanToNative', 'b'], ['sendIntegerToNative', 'n'], ['sendStringToNative', 's']].forEach(function (x) {
+            var orig = P[x[0]];
+            if (typeof orig !== 'function') { return; }
+            sendFn[x[1]] = orig;
+            P[x[0]] = function (sig, val) {
+                var self = this; bridgeSelf = self;
+                return bridgeOut(x[1], String(sig), val, function (s2, v2) { return orig.call(self, s2, v2); });
+            };
+        });
+    }
+    function rcvWrap(t, fn) {
+        if (typeof fn !== 'function' || fn.__vjS) { return fn; }
+        rcvFn[t] = fn;
+        var w = function (sig, val) {
+            if (!S.on) { return fn.apply(this, arguments); }
+            var s = String(sig), n = parseInt(s, 10);
+            if (!isNaN(n)) { cache[t][n] = val; }
+            var L = sLogical(t, s);
+            if (L === null) { return; }
+            return fn.call(this, L, val);
+        };
+        w.__vjS = true;
+        return w;
+    }
+    var RCV = { bridgeReceiveBooleanFromNative: 'b', bridgeReceiveIntegerFromNative: 'n', bridgeReceiveStringFromNative: 's' };
+    // Le natif (dalle, Crestron One) appelle window.bridgeReceive* ; WebXPanel appelle CrComLib.bridgeReceive*.
+    Object.keys(RCV).forEach(function (name) {
+        var cur = rcvWrap(RCV[name], window[name]);
+        try {
+            Object.defineProperty(window, name, { configurable: true, get: function () { return cur; }, set: function (v) { cur = rcvWrap(RCV[name], v); } });
+        } catch (e) { }
+    });
+    // Changement de pièce : les retours mémorisés de la nouvelle pièce sont rejoués sous leur join logique.
+    function replayRoom() {
+        if (!S.on) { return; }
+        var DEF = { b: false, n: 0, s: '' };
+        ['b', 'n', 's'].forEach(function (t) {
+            if (!rcvFn[t]) { return; }
+            Object.keys(S.map[t]).forEach(function (L) {
+                var p = parseInt(sPhys(t, L), 10), v = cache[t][p];
+                try { rcvFn[t](L, v === undefined ? DEF[t] : v); } catch (e) { }
+            });
+        });
+    }
+
     /* ---------- API publique ---------- */
     window.VillaJoins = {
         /** Appelle fn(CrComLib) dès que la bibliothèque CH5 est disponible. */
@@ -299,6 +422,10 @@
         get room() { return roomId; },
         get base() { return base; },
         get actif() { return active; },
+        /** v6.0 : vrai si la GUI parle directement au SIMPL (meta.backend = simpl). */
+        get pontSimpl() { return S.on; },
+        /** v6.0 : join physique SIMPL d'un join logique pour la pièce affichée. */
+        simplPhys: function (t, j) { return S.on ? sPhys(t, j) : String(j); },
         /** Diagnostic : table complète des joins physiques de la pièce courante. */
         table: function () {
             var out = {};
@@ -323,6 +450,7 @@
 
     /* ---------- Démarrage ---------- */
     loadMapping();
+    loadSimpl();
     try {
         var saved = localStorage.getItem('villa_joins_room') || localStorage.getItem('active_room_id');
         if (saved) { roomId = parseInt(saved, 10) || 1; }
@@ -336,7 +464,16 @@
         scan(document);
     }
     // La configuration peut arriver plus tard (transport sériel 105 depuis le CP4).
+    // v6.0 : la pièce affichée peut changer sans émission (dalle : changeRoomUI, iPhone : QR ?room=) — on la suit.
+    setInterval(function () {
+        if (!S.on) { return; }
+        var r = 0;
+        try { r = parseInt(window.currentActiveRoomId || localStorage.getItem('active_room_iphone') || localStorage.getItem('active_room_id') || 0, 10); } catch (e) {}
+        if (window.currentActiveRoomId) { r = parseInt(window.currentActiveRoomId, 10); }
+        if (r && r !== roomId) { setRoom(r); }
+    }, 300);
     window.addEventListener('villa-config-loaded', function () {
+        loadSimpl();
         loadMapping();
         base = computeBase(roomId);
         scan(document);

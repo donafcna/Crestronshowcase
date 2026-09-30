@@ -1,5 +1,32 @@
 # Villa Crans CH5 — journal des versions
 
+## v6.0 — 30/09/2026 — un seul programme SIMPL (slot 1), plus de C# ni d'EISC ; meme GUI, meme villa_config.json (a compiler : CH5 + SIMPL)
+
+| Artefact | Etat de ce lot |
+|---|---|
+| CH5 source | `src/js/villa-joins.js` (pont SIMPL au pont natif, inerte hors `meta.backend = simpl`) — **a recompiler** web + tsw + mobile ; HTML inchanges |
+| Programme | **nouveau** `simpl/direct/VillaCrans_Direct.smw` + 16 modules SIMPL+ generes (`generate_simpl.js`) — **F12 dans SIMPL Windows**, puis `deploy.ps1 -Target simpl` (slot 1, slot 2 arrete) |
+| C# / slot 2 | plus utilises par la Villa ; version C# figee sur la branche git `villa-crans-csharp-v5.5` (l'Appartement Crans-Montana reste en C#) |
+| Config | `meta.version` 1.0.215, `meta.backend = "simpl"`, `contrat.simplDirect` (bloc 625 + (id-1) x 125 + offset, 125 joins par piece) |
+| Vitrine | resynchronisee ; pont inerte en `meta.mode = showcase` |
+| Batterie | `tools/qa-simpl-v60.mjs` 6/6 VERT (dalle + iPhone x pieces 1, 7, 15 : 155 joins traduits a l'emission, retours livres / retenus, rejeu au changement de piece, globaux, telecommandes, memorisation, clics DOM) ; mode C# : `qa-moteurs-v53` 40/40, emission inchangee ; `smoke-v53` 0 erreur (deploiement et vitrine) ; `verifier_smw.py` 0 erreur ; `croiser_contrat.py` : chaque join du contrat a son signal |
+
+**Demande Donatien.** Garder la version C# de cote ; nouvelle version avec exactement le meme GUI CH5 et le meme JSON, un seul slot,
+plus de C#, tous les joins remontent directement dans le SIMPL. Choix : A (joins de la piece affichee, pas d'aiguillage SIMPL), scenes
+memorisees en memoire non volatile du SIMPL, TV Sony / routage audio en joins vides.
+
+**Pourquoi le pont natif.** Le contrat v3 (11.09.2026) reecrivait les attributs `sendEventOnClick` : CH5 les fige a l'initialisation,
+un bouton continuait d'emettre son join d'origine. v6.0 traduit dans `Ch5SignalBridge.sendBooleanToNative / Integer / String`, par ou
+passent tous les envois (dalle Android, Crestron One iOS, WebXPanel), et dans `bridgeReceive*FromNative` a la reception.
+
+**Programme SIMPL.** Formats repris d'un programme FTV compile (Hotel des Horlogers PRO4 v9) : toutes les dalles d'une zone partagent les
+memes signaux. 19 dalles (0x03 TSW, 0x04 XPanel, 0x05/0x06 Crestron One « villaftv », 0x11-0x1F XPanel QR), 5664 signaux, 3402 joins par dalle.
+
+**Decisions par defaut.** Dalle 0x03 declaree TSW-770 (aucun TSW-1070 dans les programmes de reference) : Replace Device dans SIMPL.
+Telecommandes laissees en joins globaux, piece sur l'analogique 241 plutot que 150 joins par piece. Presets globaux fixes (plus de s420),
+config embarquee dans le .ch5z (plus de transport s105), volume materiel de la dalle et console ipt non repris. 15 pieces maximum (capacite
+des symboles de dalle). Moteurs : appui maintenu (le pilote suit le doigt) ; commandes groupees et centralisation en impulsions de 0,5 s.
+
 ## v5.5 — 29/09/2026 — interface Connect : plus de flash du GUI d'origine au chargement (a compiler : CH5 seul)
 
 | Artefact | Etat de ce lot |

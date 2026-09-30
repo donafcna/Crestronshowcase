@@ -5,6 +5,8 @@
 #   .\deploy.ps1 -Target cp4     -> uniquement le CP4
 #   .\deploy.ps1 -Target web     -> Web XPanel sur le serveur web du CP4 (QR codes par piece) + regeneration des QR
 #   .\deploy.ps1 -Target mobile  -> projet pour l'application Crestron One (iPhone / iPad, IP-ID 05-06)
+#   .\deploy.ps1 -Target simpl   -> v6.0 (meta.backend = simpl) : programme SIMPL unique VillaCrans_Direct.lpz sur le slot 1,
+#                                   arret du slot 2 (compiler d'abord simpl\direct\VillaCrans_Direct.smw dans SIMPL Windows, F12)
 #   .\deploy.ps1 -SkipBuild      -> sans recompiler l'archive CH5
 #   .\deploy.ps1 -SkipContrast   -> sans la garde de contraste (a n'utiliser que sur faux positif avere)
 #   .\deploy.ps1 -Target web -CP4Host 192.168.3.109  -> vise un autre processeur (banc de test du bureau)
@@ -14,7 +16,7 @@
 # Cle optionnelle dans deploy.secrets.psd1 -> CP4.WebAuthToken : jeton d'authentification passe dans les QR (?authtoken=).
 
 param(
-    [ValidateSet('all', 'tsw', 'cp4', 'config', 'web', 'mobile')]
+    [ValidateSet('all', 'tsw', 'cp4', 'config', 'web', 'mobile', 'simpl')]
     [string]$Target = 'all',
     [switch]$SkipBuild,
     [switch]$SkipContrast,
@@ -135,7 +137,7 @@ function Test-InlineScripts {
 }
 
 # --- Build CH5 ---
-if (-not $SkipBuild -and $Target -notin @('cp4', 'config')) {
+if (-not $SkipBuild -and $Target -notin @('cp4', 'config', 'simpl')) {
     Write-Host "[1/3] Compilation de l'archive CH5 (villaftv.ch5z)..." -ForegroundColor Cyan
 
     # Verification de syntaxe avant tout (avant l'increment de version, pour ne pas consommer un numero)
@@ -365,6 +367,25 @@ if ($Target -eq 'config') {
     Write-Host "  Redemarrage du programme (progreset) pour recharger la configuration..."
     Send-ConsoleCommands -Device $S.CP4 -Commands @('progreset -p:01') | Out-Null
     Write-Host "  Configuration rechargee - les panels la recevront a la reconnexion." -ForegroundColor Green
+    Write-Host "Deploiement termine." -ForegroundColor Green
+    exit 0
+}
+
+# --- v6.0 : quel programme pour le CP4 ? meta.backend = simpl -> SIMPL unique (plus de C#) ---
+$backend = 'csharp'
+try { $b0 = (Get-Content (Join-Path $root 'villa_config.json') -Raw -Encoding UTF8 | ConvertFrom-Json).meta.backend; if ($b0) { $backend = $b0 } } catch {}
+if ($Target -eq 'cp4' -and $backend -eq 'simpl') { throw "villa_config.json : meta.backend = simpl. Le programme C# n'est plus utilise : lancez -Target simpl (version C# : branche git villa-crans-csharp-v5.5)." }
+if ($Target -eq 'simpl' -or ($Target -eq 'all' -and $backend -eq 'simpl')) {
+    Write-Host "[simpl] Chargement du programme SIMPL unique sur le CP4 $($S.CP4.Host)..." -ForegroundColor Cyan
+    $lpz = Join-Path $root '..\simpl\direct\VillaCrans_Direct.lpz'
+    if (-not (Test-Path $lpz)) { throw "Programme introuvable : $lpz (ouvrir simpl\direct\VillaCrans_Direct.smw dans SIMPL Windows et compiler avec F12)" }
+    Copy-ToDevice -Device $S.CP4 -LocalFile $lpz -RemotePath '/program01/VillaCrans_Direct.lpz'
+    Write-Host "  Arret du slot 2 (ancien programme SIMPL sous EISC) puis chargement du slot 1..."
+    try { Send-ConsoleCommands -Device $S.CP4 -Commands @('stopprog -p:02') | Out-Null } catch { Write-Host "  (slot 2 deja arrete)" -ForegroundColor Yellow }
+    # L'ancien Villaftv.cpz (C#) ne doit plus etre dans /program01, sinon progload peut le reprendre.
+    try { Send-ConsoleCommands -Device $S.CP4 -Commands @('stopprog -p:01', 'del /program01/Villaftv.cpz') | Out-Null } catch { Write-Host "  (pas d'ancien programme C# a retirer)" -ForegroundColor Yellow }
+    Send-ConsoleCommands -Device $S.CP4 -Commands @('progload -p:01') | Out-Null
+    Write-Host "  CP4 : programme SIMPL charge (slot 1), slot 2 arrete." -ForegroundColor Green
     Write-Host "Deploiement termine." -ForegroundColor Green
     exit 0
 }

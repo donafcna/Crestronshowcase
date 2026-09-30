@@ -1,0 +1,290 @@
+/* Villa Crans v6.0 - module de la piece 8 " Home_cinema " (GENERE par simpl/direct/generate_simpl.js,
+   ne pas modifier a la main : modifier villa_config.json puis relancer le generateur).
+   Entrees Btn_* / In_* : appuis et valeurs des ecrans (bloc de joins de la piece, tous ecrans confondus).
+   Sorties Fb_* / Txt_* : retours vers les ecrans. Pilote_* / Retour_* : a cabler aux pilotes reels (joins vides).
+   G[1..10] : commandes de centralisation venant de VillaGlobal.usp. */
+#SYMBOL_NAME "Villa Crans - Piece 08 Home_cinema"
+#DEFAULT_VOLATILE
+#ENABLE_STACK_CHECKING
+#DEFINE_CONSTANT NBC 20
+#DEFINE_CONSTANT NBM 12
+#DEFINE_CONSTANT NB_CIRCUITS 4
+#DEFINE_CONSTANT EMPREINTE 6962
+#DEFINE_CONSTANT CONS_MIN 160
+#DEFINE_CONSTANT CONS_MAX 280
+#DEFINE_CONSTANT CONS_PAS 5
+
+DIGITAL_INPUT Btn_Scene[4], Btn_Memoriser[4], Btn_Consigne_Plus, Btn_Consigne_Moins, Btn_CVC_Marche, Btn_CVC_Arret, 
+    Btn_Ventilation[4], Btn_Sauna_Marche, Btn_Sauna_Arret, Btn_Sauna_Plus, Btn_Sauna_Moins, Btn_Hammam_Marche, 
+    Btn_Hammam_Arret, Btn_Hammam_Plus, Btn_Hammam_Moins, Btn_Groupe[9], Btn_Monter[12], Btn_Stop[12], 
+    Btn_Descendre[12], Btn_Lam_Horaire[12], Btn_Lam_Stop[12], Btn_Lam_Antihoraire[12], Btn_Scene_Stores[4], 
+    Btn_Source[5], Btn_Musique, Btn_Suivre_Video, Btn_Mute, Btn_AV_Off, Btn_Media_Lecture, Btn_Media_Suivant, 
+    Btn_Media_Precedent, G[10];
+ANALOG_INPUT In_Consigne, In_Source, In_Volume, In_Volume_Media, In_Circuit[20], In_Ventilation, In_Sauna_Consigne, 
+    In_Hammam_Consigne, Retour_Circuit[20], Retour_Temperature, Retour_Sauna_Mesure, Retour_Hammam_Mesure;
+STRING_INPUT Retour_Mode$[40];
+DIGITAL_OUTPUT Fb_Scene[4], Fb_Memorisee[4], Fb_CVC_Marche, Fb_CVC_Arret, Fb_Ventilation[4], Fb_Sauna_Marche, 
+    Fb_Sauna_Arret, Fb_Hammam_Marche, Fb_Hammam_Arret, Fb_Scene_Stores[4], Fb_Source[5], Fb_Musique, 
+    Fb_Suivre_Video, Fb_Mute, Fb_AV_Off, Pilote_Scene[4], Pilote_Monter[12], Pilote_Stop[12], 
+    Pilote_Descendre[12], Pilote_Lam_Horaire[12], Pilote_Lam_Stop[12], Pilote_Lam_Antihoraire[12], 
+    Pilote_Groupe[9], Pilote_Scene_Stores[4], Pilote_CVC_Marche, Pilote_Sauna_Marche, Pilote_Hammam_Marche, 
+    Pilote_Mute, Pilote_Musique, Pilote_AV_Off, Pilote_Media_Lecture, Pilote_Media_Suivant, 
+    Pilote_Media_Precedent;
+ANALOG_OUTPUT Fb_Consigne, Fb_Source_Active, Fb_Volume, Fb_Source_Audio, Fb_Volume_Media, Fb_Circuit[20], Fb_Ventilation_A, 
+    Fb_Sauna_Consigne, Fb_Hammam_Consigne, Fb_Sauna_Mesure, Fb_Hammam_Mesure, Pilote_Circuit[20], 
+    Pilote_Consigne, Pilote_Ventilation, Pilote_Sauna_Consigne, Pilote_Hammam_Consigne, Pilote_Source, 
+    Pilote_Volume, Pilote_Volume_Media;
+STRING_OUTPUT Txt_Temperature$, Txt_Mode$, Txt_Consigne$, Txt_Sauna_Consigne$, Txt_Hammam_Consigne$, Txt_Sauna_Mesure$, 
+    Txt_Hammam_Mesure$;
+
+NONVOLATILE INTEGER Niveaux[4][NBC], Memorisee[4], Initialise;
+INTEGER Niveau[NBC], TypeMoteur[NBM], SceneActive, Consigne, Marche, Vent, Source, Musique, Mute, Volume, VolumeMedia;
+INTEGER SaunaOn, HammamOn, SaunaCons, HammamCons, SaunaMes, HammamMes, TempMes, TempRecue, SaunaRecue, HammamRecue, StoresScene;
+
+FUNCTION DefautsScenes()
+{
+    if (Memorisee[1] = 0) Niveaux[1][1] = 0;
+    if (Memorisee[1] = 0) Niveaux[1][2] = 0;
+    if (Memorisee[1] = 0) Niveaux[1][3] = 0;
+    if (Memorisee[1] = 0) Niveaux[1][4] = 0;
+    if (Memorisee[2] = 0) Niveaux[2][1] = 0;
+    if (Memorisee[2] = 0) Niveaux[2][2] = 16384;
+    if (Memorisee[2] = 0) Niveaux[2][3] = 19660;
+    if (Memorisee[2] = 0) Niveaux[2][4] = 13107;
+    if (Memorisee[3] = 0) Niveaux[3][1] = 32768;
+    if (Memorisee[3] = 0) Niveaux[3][2] = 39321;
+    if (Memorisee[3] = 0) Niveaux[3][3] = 45874;
+    if (Memorisee[3] = 0) Niveaux[3][4] = 32768;
+    if (Memorisee[4] = 0) Niveaux[4][1] = 65535;
+    if (Memorisee[4] = 0) Niveaux[4][2] = 65535;
+    if (Memorisee[4] = 0) Niveaux[4][3] = 65535;
+    if (Memorisee[4] = 0) Niveaux[4][4] = 65535;
+}
+
+STRING_FUNCTION Texte10(INTEGER x)
+{
+    STRING t[16];
+    MakeString(t, "%u.%u", x / 10, x MOD 10);
+    return (t);
+}
+
+FUNCTION MajCVC()
+{
+    STRING t[16];
+    Fb_Consigne = Consigne;
+    Pilote_Consigne = Consigne;
+    Txt_Consigne$ = Texte10(Consigne);
+    Fb_CVC_Marche = Marche;
+    Fb_CVC_Arret = !Marche;
+    Pilote_CVC_Marche = Marche;
+    Fb_Ventilation_A = Vent;
+    Pilote_Ventilation = Vent;
+    Fb_Ventilation[1] = (Vent = 0); Fb_Ventilation[2] = (Vent = 1); Fb_Ventilation[3] = (Vent = 2); Fb_Ventilation[4] = (Vent = 3);
+    if (TempRecue) { Txt_Temperature$ = Texte10(TempMes); } else { Txt_Temperature$ = "--"; }
+    if (Len(Retour_Mode$) > 0) { Txt_Mode$ = Retour_Mode$; }
+    else if (!Marche) { Txt_Mode$ = "ARRET"; }
+    else if (TempRecue && (Consigne > TempMes)) { Txt_Mode$ = "CHAUFFAGE"; }
+    else if (TempRecue) { Txt_Mode$ = "CLIMATISATION"; }
+    else { Txt_Mode$ = ""; }
+}
+
+FUNCTION MajWellness()
+{
+    STRING t[16];
+    Fb_Sauna_Marche = SaunaOn; Fb_Sauna_Arret = !SaunaOn; Pilote_Sauna_Marche = SaunaOn;
+    Fb_Hammam_Marche = HammamOn; Fb_Hammam_Arret = !HammamOn; Pilote_Hammam_Marche = HammamOn;
+    Fb_Sauna_Consigne = SaunaCons; Pilote_Sauna_Consigne = SaunaCons; Txt_Sauna_Consigne$ = Texte10(SaunaCons);
+    Fb_Hammam_Consigne = HammamCons; Pilote_Hammam_Consigne = HammamCons;
+    MakeString(t, "%u", HammamCons); Txt_Hammam_Consigne$ = t;
+    Fb_Sauna_Mesure = SaunaMes; Fb_Hammam_Mesure = HammamMes;
+    if (SaunaRecue) { Txt_Sauna_Mesure$ = Texte10(SaunaMes); } else { Txt_Sauna_Mesure$ = "--"; }
+    if (HammamRecue) { MakeString(t, "%u", HammamMes); Txt_Hammam_Mesure$ = t; } else { Txt_Hammam_Mesure$ = "--"; }
+}
+
+FUNCTION MajAV()
+{
+    INTEGER i;
+    for (i = 1 to 5) { Fb_Source[i] = (Source = (i - 1)); }
+    Fb_Source_Active = Source; Pilote_Source = Source;
+    Fb_Musique = Musique; Fb_Suivre_Video = !Musique; Pilote_Musique = Musique;
+    if (Musique) { Fb_Source_Audio = 5; } else { Fb_Source_Audio = Source; }
+    Fb_AV_Off = ((Source = 0) && (Musique = 0));
+    Fb_Mute = Mute; Pilote_Mute = Mute;
+    Fb_Volume = Volume; Pilote_Volume = Volume;
+    Fb_Volume_Media = VolumeMedia; Pilote_Volume_Media = VolumeMedia;
+}
+
+FUNCTION PoserCircuit(INTEGER c, INTEGER x)
+{
+    if ((c < 1) || (c > NBC)) return;
+    Niveau[c] = x; Fb_Circuit[c] = x; Pilote_Circuit[c] = x;
+}
+
+FUNCTION MajScenes()
+{
+    INTEGER s;
+    for (s = 1 to 4) { Fb_Scene[s] = (SceneActive = s); Fb_Memorisee[s] = Memorisee[s]; }
+}
+
+FUNCTION RappelScene(INTEGER s)
+{
+    INTEGER c;
+    for (c = 1 to NB_CIRCUITS) { PoserCircuit(c, Niveaux[s][c]); }
+    SceneActive = s; MajScenes();
+    Pulse(30, Pilote_Scene[s]);
+}
+
+FUNCTION TousMoteurs(INTEGER sens)
+{
+    INTEGER i;
+    for (i = 1 to NBM)
+    {
+        if (TypeMoteur[i] > 0)
+        {
+            if (sens = 1) { Pulse(50, Pilote_Monter[i]); } else { Pulse(50, Pilote_Descendre[i]); }
+        }
+    }
+}
+
+FUNCTION TousCircuits(INTEGER x)
+{
+    INTEGER c;
+    for (c = 1 to NB_CIRCUITS) { PoserCircuit(c, x); }
+    SceneActive = 0; MajScenes();
+}
+
+/* ---------- Eclairage ---------- */
+PUSH Btn_Scene { RappelScene(GetLastModifiedArrayIndex()); }
+PUSH Btn_Memoriser
+{
+    INTEGER s, c;
+    s = GetLastModifiedArrayIndex();
+    for (c = 1 to NBC) { Niveaux[s][c] = Niveau[c]; }
+    Memorisee[s] = 1; MajScenes();
+}
+CHANGE In_Circuit
+{
+    INTEGER c;
+    c = GetLastModifiedArrayIndex();
+    PoserCircuit(c, In_Circuit[c]);
+    SceneActive = 0; MajScenes();
+}
+CHANGE Retour_Circuit
+{
+    INTEGER c;
+    c = GetLastModifiedArrayIndex();
+    Niveau[c] = Retour_Circuit[c]; Fb_Circuit[c] = Retour_Circuit[c];
+}
+
+/* ---------- CVC ---------- */
+PUSH Btn_Consigne_Plus { if (Consigne + CONS_PAS <= CONS_MAX) Consigne = Consigne + CONS_PAS; MajCVC(); }
+PUSH Btn_Consigne_Moins { if (Consigne >= CONS_MIN + CONS_PAS) Consigne = Consigne - CONS_PAS; MajCVC(); }
+CHANGE In_Consigne { if ((In_Consigne >= CONS_MIN) && (In_Consigne <= CONS_MAX)) { Consigne = In_Consigne; MajCVC(); } }
+PUSH Btn_CVC_Marche { Marche = 1; MajCVC(); }
+PUSH Btn_CVC_Arret { Marche = 0; MajCVC(); }
+PUSH Btn_Ventilation { Vent = GetLastModifiedArrayIndex() - 1; MajCVC(); }
+CHANGE In_Ventilation { if (In_Ventilation <= 3) { Vent = In_Ventilation; MajCVC(); } }
+CHANGE Retour_Temperature { TempMes = Retour_Temperature; TempRecue = 1; MajCVC(); }
+CHANGE Retour_Mode$ { MajCVC(); }
+
+/* ---------- Sauna / hammam ---------- */
+PUSH Btn_Sauna_Marche { SaunaOn = 1; MajWellness(); }
+PUSH Btn_Sauna_Arret { SaunaOn = 0; MajWellness(); }
+PUSH Btn_Sauna_Plus { if (SaunaCons + 10 <= 1000) SaunaCons = SaunaCons + 10; MajWellness(); }
+PUSH Btn_Sauna_Moins { if (SaunaCons >= 610) SaunaCons = SaunaCons - 10; MajWellness(); }
+PUSH Btn_Hammam_Marche { HammamOn = 1; MajWellness(); }
+PUSH Btn_Hammam_Arret { HammamOn = 0; MajWellness(); }
+PUSH Btn_Hammam_Plus { if (HammamCons < 100) HammamCons = HammamCons + 1; MajWellness(); }
+PUSH Btn_Hammam_Moins { if (HammamCons > 90) HammamCons = HammamCons - 1; MajWellness(); }
+CHANGE In_Sauna_Consigne { if ((In_Sauna_Consigne >= 600) && (In_Sauna_Consigne <= 1000)) { SaunaCons = In_Sauna_Consigne; MajWellness(); } }
+CHANGE In_Hammam_Consigne { if ((In_Hammam_Consigne >= 90) && (In_Hammam_Consigne <= 100)) { HammamCons = In_Hammam_Consigne; MajWellness(); } }
+CHANGE Retour_Sauna_Mesure { SaunaMes = Retour_Sauna_Mesure; SaunaRecue = 1; MajWellness(); }
+CHANGE Retour_Hammam_Mesure { HammamMes = Retour_Hammam_Mesure; HammamRecue = 1; MajWellness(); }
+
+/* ---------- Moteurs et lamelles : les appuis suivent le doigt, les groupes pulsent ---------- */
+PUSH Btn_Monter { Pilote_Monter[GetLastModifiedArrayIndex()] = 1; }
+RELEASE Btn_Monter { Pilote_Monter[GetLastModifiedArrayIndex()] = 0; }
+PUSH Btn_Stop { Pilote_Stop[GetLastModifiedArrayIndex()] = 1; }
+RELEASE Btn_Stop { Pilote_Stop[GetLastModifiedArrayIndex()] = 0; }
+PUSH Btn_Descendre { Pilote_Descendre[GetLastModifiedArrayIndex()] = 1; }
+RELEASE Btn_Descendre { Pilote_Descendre[GetLastModifiedArrayIndex()] = 0; }
+PUSH Btn_Lam_Horaire { Pilote_Lam_Horaire[GetLastModifiedArrayIndex()] = 1; }
+RELEASE Btn_Lam_Horaire { Pilote_Lam_Horaire[GetLastModifiedArrayIndex()] = 0; }
+PUSH Btn_Lam_Stop { Pilote_Lam_Stop[GetLastModifiedArrayIndex()] = 1; }
+RELEASE Btn_Lam_Stop { Pilote_Lam_Stop[GetLastModifiedArrayIndex()] = 0; }
+PUSH Btn_Lam_Antihoraire { Pilote_Lam_Antihoraire[GetLastModifiedArrayIndex()] = 1; }
+RELEASE Btn_Lam_Antihoraire { Pilote_Lam_Antihoraire[GetLastModifiedArrayIndex()] = 0; }
+PUSH Btn_Groupe
+{
+    INTEGER g, famille, action, i;
+    g = GetLastModifiedArrayIndex();
+    famille = ((g - 1) / 3) + 1;      // 1 volets, 2 rideaux, 3 stores
+    action = ((g - 1) MOD 3) + 1;     // 1 ouvrir, 2 demi, 3 fermer
+    Pulse(50, Pilote_Groupe[g]);
+    for (i = 1 to NBM)
+    {
+        if (TypeMoteur[i] = famille)
+        {
+            if (action = 1) { Pulse(50, Pilote_Monter[i]); }
+            else if (action = 3) { Pulse(50, Pilote_Descendre[i]); }
+        }
+    }
+}
+PUSH Btn_Scene_Stores
+{
+    INTEGER i;
+    StoresScene = GetLastModifiedArrayIndex();
+    for (i = 1 to 4) { Fb_Scene_Stores[i] = (StoresScene = i); }
+    Pulse(50, Pilote_Scene_Stores[StoresScene]);
+}
+
+/* ---------- Audio / video (sorties vers les modules TV / audio de l'equipe) ---------- */
+PUSH Btn_Source { Source = GetLastModifiedArrayIndex() - 1; if (Source = 0) Musique = 0; MajAV(); }
+CHANGE In_Source { if (In_Source <= 4) { Source = In_Source; if (Source = 0) Musique = 0; MajAV(); } }
+PUSH Btn_Musique { Musique = 1; MajAV(); }
+PUSH Btn_Suivre_Video { Musique = 0; MajAV(); }
+PUSH Btn_Mute { Mute = !Mute; MajAV(); }
+PUSH Btn_AV_Off { Source = 0; Musique = 0; MajAV(); Pulse(50, Pilote_AV_Off); }
+CHANGE In_Volume { Volume = In_Volume; MajAV(); }
+CHANGE In_Volume_Media { VolumeMedia = In_Volume_Media; MajAV(); }
+PUSH Btn_Media_Lecture { Pulse(20, Pilote_Media_Lecture); }
+PUSH Btn_Media_Suivant { Pulse(20, Pilote_Media_Suivant); }
+PUSH Btn_Media_Precedent { Pulse(20, Pilote_Media_Precedent); }
+
+/* ---------- Centralisation (VillaGlobal.usp) ---------- */
+PUSH G
+{
+    INTEGER g;
+    g = GetLastModifiedArrayIndex();
+    if (g = 1) { TousCircuits(65535); }
+    else if (g = 2) { TousCircuits(0); }
+    else if (g = 3) { TousCircuits(32768); }
+    else if (g = 4) { TousMoteurs(1); }
+    else if (g = 5) { TousMoteurs(0); }
+    else if (g = 7) { Consigne = 210; Marche = 1; MajCVC(); }
+    else if (g = 8) { Consigne = 180; Marche = 1; MajCVC(); }
+    else if (g = 9) { Consigne = 120; Marche = 1; MajCVC(); }
+    else if (g = 10) { Consigne = 120; Marche = 1; MajCVC(); TousCircuits(0); TousMoteurs(0); }
+}
+
+FUNCTION Main()
+{
+    INTEGER s;
+    TypeMoteur[1] = 1;
+    TypeMoteur[2] = 1;
+    TypeMoteur[3] = 2;
+    TypeMoteur[4] = 2;
+    TypeMoteur[5] = 3;
+    TypeMoteur[6] = 3;
+    TypeMoteur[7] = 1;
+    TypeMoteur[8] = 2;
+    TypeMoteur[9] = 3;
+    TypeMoteur[10] = 1;
+    TypeMoteur[11] = 2;
+    TypeMoteur[12] = 3;
+    WaitForInitializationComplete();
+    if (Initialise <> EMPREINTE) { DefautsScenes(); Initialise = EMPREINTE; }
+    Consigne = 210; Marche = 1; Vent = 0;
+    SaunaCons = 800; HammamCons = 95;
+    MajScenes(); MajCVC(); MajWellness(); MajAV();
+}

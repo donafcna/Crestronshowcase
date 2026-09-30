@@ -1,3 +1,10 @@
+## Contrat S — v6.0 du 30/09/2026 (un seul programme SIMPL, plus de C#)
+
+- `meta.backend = "simpl"` : joins de piece = `contrat.simplDirect.baseBloc` (625) + (id - 1) x `tailleBloc` (125) + offset (`contrat.simplDirect.mapping`, 125 digitaux, 30 analogiques, 8 series). Pieces 1..15 → joins 626..2500 (plafond des symboles de dalle SIMPL : 2511).
+- Joins globaux inchanges : selection de piece 11-40 (locale au GUI), alarme 41-46 / 301-312, centralisation 401-411, telecommandes 211-220 / 500-600 (precedees de l'analogique 241 = piece emettrice).
+- Memorisation d'une scene : impulsion sur les joins logiques 431-434 (offsets du mapping), retour « memorisee » 421-424.
+- Traduction : `js/villa-joins.js` au pont natif CH5. Programme : `simpl/direct/` (lire `README.md` et `SIGNAUX.md`).
+
 ## Extension 12 moteurs — v5.3 du 29/09/2026
 
 - **Config** : `pieces[].pilotages.moteurs.nombre` = nombre de moteurs affichés (1 à 12, défaut 12), `liste` = 12 entrées (ordre : Volet ext. 1-2, Rideau ext. 1-2, Store 1-2, puis Volet ext. 3, Rideau ext. 3, Store 3, Volet ext. 4, Rideau ext. 4, Store 4). Le `type` de chaque entrée (volet / rideau / store) choisit l'icône et les pictogrammes des boutons ; `lamelles` reste par moteur (vrai par défaut sur volets et stores).
