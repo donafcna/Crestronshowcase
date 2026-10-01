@@ -1,5 +1,14 @@
 # Villa Crans CH5 — journal des versions
 
+## v6.0.3 — 01/10/2026 — nom affiché « Villa FTV » (au lieu de Villa Crans / Villa Crans-Montana)
+
+| Artefact | Etat de ce lot |
+|---|---|
+| Config | `meta.projet` = « Villa FTV », `meta.version` 1.0.217 |
+| GUI | titre de l'animation néon : « VILLA FTV » — **a recompiler** web + tsw + mobile |
+| Vitrine | carte et fiche « Villa FTV » (`projects.js`, `translations.js`), écrans du plan 3D ; GUI vitrine resynchronisé |
+| Inchangés | noms de dossiers / fichiers / URL (`villa-crans`, `villa-gemini-frequencetv`), programme SIMPL, Appartement Crans-Montana, historique de ce journal |
+
 ## v6.0 — 30/09/2026 — un seul programme SIMPL (slot 1), plus de C# ni d'EISC ; meme GUI, meme villa_config.json (a compiler : CH5 + SIMPL)
 
 | Artefact | Etat de ce lot |

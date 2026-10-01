@@ -203,7 +203,7 @@ export function createPlan3D(opts) {
                     g.fillStyle = APP_COLORS[st.open]; roundRect(g, 48, 40, 96, 96, 22); g.fill();
                     g.fillStyle = '#fff'; g.font = 'bold 34px Arial'; g.textAlign = 'center'; g.fillText(APP_GLYPH[st.open], 96, 100);
                     g.textAlign = 'left'; g.font = 'bold 52px Arial'; g.fillText(APPS[st.open], 170, 92);
-                    g.font = '24px Arial'; g.fillStyle = 'rgba(255,255,255,0.8)'; g.fillText('Lecture en cours — Villa Crans-Montana', 170, 128);
+                    g.font = '24px Arial'; g.fillStyle = 'rgba(255,255,255,0.8)'; g.fillText('Lecture en cours — Villa FTV', 170, 128);
                     var pr = ((st.tick * 3) % 1000) / 1000;
                     g.fillStyle = 'rgba(255,255,255,0.3)'; roundRect(g, 80, H - 70, W - 160, 8, 4); g.fill();
                     g.fillStyle = '#fff'; roundRect(g, 80, H - 70, (W - 160) * pr, 8, 4); g.fill();
@@ -213,7 +213,7 @@ export function createPlan3D(opts) {
                 } else {
                     poster(g, 40, 30, W - 80, 250, 205, null, null);
                     g.fillStyle = 'rgba(0,0,0,0.25)'; roundRect(g, 40, 30, W - 80, 250, 12); g.fill();
-                    g.fillStyle = '#fff'; g.font = 'bold 44px Arial'; g.textAlign = 'left'; g.fillText('Villa Crans-Montana', 72, 110);
+                    g.fillStyle = '#fff'; g.font = 'bold 44px Arial'; g.textAlign = 'left'; g.fillText('Villa FTV', 72, 110);
                     g.font = '22px Arial'; g.fillStyle = 'rgba(255,255,255,0.85)'; g.fillText('À la une — Apple TV+ · Nouvel épisode disponible', 72, 148);
                     g.fillStyle = '#fff'; roundRect(g, 72, 190, 190, 48, 10); g.fill(); g.fillStyle = '#111'; g.font = 'bold 22px Arial'; g.fillText('▶  Regarder', 96, 222);
                     var cols = 5, tw = 168, th = 96, gap = 18, x0 = (W - (cols * tw + (cols - 1) * gap)) / 2, y0 = 316;
@@ -254,7 +254,7 @@ export function createPlan3D(opts) {
                 }
             } else if (st.source === 4) {                // IPTV : liste des chaînes avec programme en cours et aperçu
                 g.fillStyle = '#0f1216'; g.fillRect(0, 0, W, H);
-                topBar(g, W, 'IPTV  ·  Chaînes', 'Villa Crans-Montana');
+                topBar(g, W, 'IPTV  ·  Chaînes', 'Villa FTV');
                 for (i = 0; i < IPTV_CH.length; i++) {
                     var hl = i === (st.row || 0) % IPTV_CH.length, ry = 86 + i * 78;
                     g.fillStyle = hl ? 'rgba(16,185,129,0.28)' : 'rgba(255,255,255,0.05)'; roundRect(g, 40, ry, 600, 66, 10); g.fill();

@@ -60,7 +60,7 @@ export const PROJECT_STATUS = {
 export const projects = [
   {
     id: `villa-gemini-frequencetv`,
-    name: `Villa Crans-Montana`,
+    name: `Villa FTV`,
     status: `realisation`,
     client: `Propriétaire privé`,
     sectors: [`residentiel`],
@@ -130,7 +130,7 @@ export const projects = [
           `Scènes JOUR · SOIR · NUIT · OFF par pièce, niveaux issus de la séquence d'opérations`,
           `Rideaux et voilages motorisés, climat par pièce`,
           `Interface épurée : tuiles d'éclairage à glisser, onglets en bas, trois thèmes`,
-          `Même Core CH5 que la Villa Crans : seul le JSON de configuration change`,
+          `Même Core CH5 que la Villa FTV : seul le JSON de configuration change`,
         ],
       },
       en: {
@@ -142,7 +142,7 @@ export const projects = [
           `DAY · EVENING · NIGHT · OFF scenes per room, levels from the sequence of operations`,
           `Motorised curtains and sheers, per-room climate`,
           `Clean interface: drag-to-dim lighting tiles, bottom tabs, three themes`,
-          `Same CH5 Core as the Villa Crans: only the configuration JSON changes`,
+          `Same CH5 Core as the Villa FTV: only the configuration JSON changes`,
         ],
       },
       de: {
@@ -154,7 +154,7 @@ export const projects = [
           `Szenen TAG · ABEND · NACHT · AUS je Raum, Stufen aus der Betriebssequenz`,
           `Motorisierte Vorhänge und Stores, Klima je Raum`,
           `Schlichte Oberfläche: Lichtkacheln zum Dimmen, Register unten, drei Designs`,
-          `Gleicher CH5-Core wie die Villa Crans: nur das Konfigurations-JSON ändert sich`,
+          `Gleicher CH5-Core wie die Villa FTV: nur das Konfigurations-JSON ändert sich`,
         ],
       },
     },

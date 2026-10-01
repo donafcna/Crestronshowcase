@@ -1,8 +1,8 @@
 {
   "meta": {
-    "projet": "Villa Crans",
+    "projet": "Villa FTV",
     "integrateur": "Fréquence TV",
-    "version": "1.0.215-showcase",
+    "version": "1.0.217-showcase",
     "mode": "showcase",
     "modeDescription": "'deploiement' = GUI livré chez le client : les feedbacks viennent du CP4 (C# slot 1 + SIMPL slot 2) via js/webxpanel.js / CrComLib, aucune simulation. 'showcase' = copie pour le site crestrongui.vercel.app : posé UNIQUEMENT par scripts/sync-villa-crans.py du dépôt Crestronshowcase, feedbacks simulés dans le navigateur (js/local-feedback.js), curseur de démo géré par le site (jamais par le GUI). Ne jamais mettre 'showcase' ici. Voir docs/08_WORKFLOW_SHOWCASE.md.",
     "backend": "simpl",
@@ -2916,7 +2916,7 @@
     },
     "notes": [
       "CONTRAT v2 (22.08.2026) : Piece.Select etendu a 30 pieces (digitaux 11-40). Decalages : Eclairage.Scene 21-24 -> 51-54, AV.Mute 53 -> 55, CVC.ConsignePlus 35 -> 49, CVC.ConsigneMoins 36 -> 50, Meteo.EasterEgg 37 -> 56.",
-      "Contrat de joins unifié Villa Crans, structuré en deux familles :",
+      "Contrat de joins unifié Villa FTV, structuré en deux familles :",
       "1) signauxGlobaux : joins système/globaux/interface (tous < 1000), miroir 1:1 vers l'EISC du slot 2.",
       "2) blocsPieces : chaque pièce expose un bloc de 100 joins sur l'EISC - base = 1000 + (id - 1) * 100.",
       "   Exemple : pièce 1 = 1000..1099, pièce 2 = 1100..1199, pièce 15 = 2400..2499.",
