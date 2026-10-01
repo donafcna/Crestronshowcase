@@ -21,7 +21,7 @@ python3 projects/villa-crans/simpl/direct/croiser_contrat.py # chaque join du GU
 
 1. Ouvrir `VillaCrans_Direct.smw` dans SIMPL Windows.
 2. **Dalle 0x03 :** elle est déclarée en TSW-770, faute de modèle TSW-1070 dans les programmes de référence. Dans Configure, faire un clic droit sur la dalle, puis Replace Device → TSW-1070 : les signaux sont conservés.
-3. Compiler avec F12. Les 16 modules SIMPL+ (`VillaPiece_Rnn.usp`, `VillaGlobal.usp`) sont compilés en même temps.
+3. Compiler avec F12. Deux fichiers SIMPL+ seulement : `VillaPiece.usp` (instancié 15 fois, paramètre **Piece** = 1 à 15) et `VillaGlobal.usp`.
 4. Charger avec `deploy.ps1 -Target simpl`. Le script copie le LPZ sur `/program01`, retire l'ancien `Villaftv.cpz`, arrête le slot 2 et lance `progload -p:01`.
 
 ## Contenu du programme
@@ -38,7 +38,8 @@ python3 projects/villa-crans/simpl/direct/croiser_contrat.py # chaque join du GU
 
 Un appui sur n'importe quel écran arrive sur `R07_Scene1`. Le retour `R07_Scene1_fb` s'affiche sur tous les écrans qui montrent la pièce 7.
 
-**Module de pièce `VillaPiece_Rnn.usp` :**
+**Module de pièce `VillaPiece.usp`** (un seul fichier, une instance par pièce) : le paramètre **Piece** de l'instance choisit la config de la pièce (nombre de circuits, niveaux de scènes, bornes de consigne, types de moteurs), embarquée dans le module sous forme de table. Ajouter une pièce : `villa_config.json`, relancer le générateur, puis poser une instance avec le nouveau numéro.
+
 
 - **Scènes 1-4 :** rappel des niveaux ; appui long = mémorisation en mémoire non volatile, avec les niveaux de la config par défaut. Si la config change, les scènes jamais mémorisées reprennent les nouveaux niveaux.
 - **Circuits 1-20 :** écho vers les écrans et sortie `PILOTE_Circuitnn`.

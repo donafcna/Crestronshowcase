@@ -5,7 +5,7 @@
  *
  * Produit dans simpl/direct/ :
  *   VillaCrans_Direct.smw        programme SIMPL Windows (CP4 + dalles + modules SIMPL+ + signaux)
- *   VillaPiece_Rnn.usp           un module SIMPL+ par pièce (logique + valeurs de la config, figées)
+ *   VillaPiece.usp               module SIMPL+ de pièce, une instance par pièce (paramètre Piece)
  *   VillaGlobal.usp              alarme, partitions, centralisation 401-411
  *   SIGNAUX.md                   table join -> signal pour l'équipe (Debugger, câblage des pilotes)
  *
@@ -212,42 +212,66 @@ function declSeq(list, kA, kS) {
   return out.map(g => decl(g.k, g.items)).join('\r\n');
 }
 
-function roomUsp(p) {
-  const v = pieceValues(p);
-  const id = pad2(p.id);
-  const sig = JSON.stringify(v.scenes) + '|' + v.nbC;
+// Un seul module pour toutes les pièces : le numéro de pièce est le paramètre « Piece » de chaque instance,
+// la config de chaque pièce (circuits, niveaux de scènes, consigne, types de moteurs) est une table dans le module.
+function roomUsp() {
   const lines = [];
   const L = s => lines.push(s);
-  L('/* Villa Crans v6.0 — module de la pièce ' + p.id + ' « ' + ascii(p.nom) + ' » (GÉNÉRÉ par simpl/direct/generate_simpl.js,');
+  L('/* Villa Crans v6.0 — module de pièce, une instance par pièce (GÉNÉRÉ par simpl/direct/generate_simpl.js,');
   L('   ne pas modifier à la main : modifier villa_config.json puis relancer le générateur).');
+  L('   Paramètre Piece : numéro de la pièce (1..' + SD.pieceMax + '), choisit la config embarquée de la pièce.');
   L('   Entrées Btn_* / In_* : appuis et valeurs des écrans (bloc de joins de la pièce, tous écrans confondus).');
   L('   Sorties Fb_* / Txt_* : retours vers les écrans. Pilote_* / Retour_* : à câbler aux pilotes réels (joins vides).');
   L('   G[1..10] : commandes de centralisation venant de VillaGlobal.usp. */');
-  L('#SYMBOL_NAME "Villa Crans - Piece ' + id + ' ' + ascii(p.nom) + '"');
+  L('#SYMBOL_NAME "Villa Crans - Piece"');
   L('#DEFAULT_VOLATILE');
   L('#ENABLE_STACK_CHECKING');
   L('#DEFINE_CONSTANT NBC ' + NC);
   L('#DEFINE_CONSTANT NBM ' + NM);
-  L('#DEFINE_CONSTANT NB_CIRCUITS ' + v.nbC);
-  L('#DEFINE_CONSTANT EMPREINTE ' + hash(sig));
-  L('#DEFINE_CONSTANT CONS_MIN ' + v.cmin);
-  L('#DEFINE_CONSTANT CONS_MAX ' + v.cmax);
-  L('#DEFINE_CONSTANT CONS_PAS ' + v.pas);
   L('');
   L(decl('DIGITAL_INPUT', P.din));
   L(declSeq(P.ain, 'ANALOG_INPUT', 'STRING_INPUT'));
   L(decl('DIGITAL_OUTPUT', P.dout));
   L(declSeq(P.aout, 'ANALOG_OUTPUT', 'STRING_OUTPUT'));
   L('');
+  L('INTEGER_PARAMETER Piece;');
+  L('#BEGIN_PARAMETER_PROPERTIES Piece');
+  L('    propValidUnits = unitDecimal;');
+  L('    propDefaultValue = 1d;');
+  PIECES.forEach((p, i) => L((i ? '               ' : '    propList = ') + '{ ' + p.id + 'd, "' + pad2(p.id) + ' ' + ascii(p.nom) + '" }' + (i < PIECES.length - 1 ? ',' : ';')));
+  L('#END_PARAMETER_PROPERTIES');
+  L('');
   L('NONVOLATILE INTEGER Initialise;');
   L('NONVOLATILE INTEGER Niveaux[4][NBC], Memorisee[4];');
   L('INTEGER SceneActive, Consigne, Marche, Vent, Source, Musique, Mute, Volume, VolumeMedia;');
   L('INTEGER SaunaOn, HammamOn, SaunaCons, HammamCons, SaunaMes, HammamMes, TempMes, TempRecue, SaunaRecue, HammamRecue, StoresScene;');
-  L('INTEGER Niveau[NBC], TypeMoteur[NBM];');
+  L('INTEGER NbCircuits, Empreinte, ConsMin, ConsMax, ConsPas, ConsInit, MarcheInit, VentInit;');
+  L('INTEGER Niveau[NBC], TypeMoteur[NBM], Defaut[4][NBC];');
+  L('');
+  // Table de config : une branche par pièce de villa_config.json (valeurs nulles omises, les variables partent à 0).
+  L('FUNCTION ConfigPiece()');
+  L('{');
+  L('    NbCircuits = 0; Empreinte = 1; ConsMin = 160; ConsMax = 280; ConsPas = 5; ConsInit = 210; MarcheInit = 0; VentInit = 0;');
+  PIECES.forEach((p, k) => {
+    const v = pieceValues(p);
+    const st = [];
+    st.push('NbCircuits = ' + v.nbC + '; Empreinte = ' + hash(JSON.stringify(v.scenes) + '|' + v.nbC) + ';');
+    st.push('ConsMin = ' + v.cmin + '; ConsMax = ' + v.cmax + '; ConsPas = ' + v.pas + '; ConsInit = ' + Math.max(v.cmin, Math.min(v.cmax, 210)) + ';');
+    st.push('MarcheInit = ' + (v.marche ? 1 : 0) + '; VentInit = ' + v.vent + ';');
+    const ty = v.types.map((t, i) => t ? 'TypeMoteur[' + (i + 1) + '] = ' + t + ';' : '').filter(Boolean);
+    for (let i = 0; i < ty.length; i += 6) st.push(ty.slice(i, i + 6).join(' '));
+    v.scenes.forEach((row, s) => { const a = row.map((x, c) => (c < v.nbC && x) ? 'Defaut[' + (s + 1) + '][' + (c + 1) + '] = ' + x + ';' : '').filter(Boolean); for (let i = 0; i < a.length; i += 5) st.push(a.slice(i, i + 5).join(' ')); });
+    L('    ' + (k ? 'else if' : 'if') + ' (Piece = ' + p.id + ') /* ' + ascii(p.nom) + ' */');
+    L('    {');
+    st.forEach(x => L('        ' + x));
+    L('    }');
+  });
+  L('}');
   L('');
   L('FUNCTION DefautsScenes()');
   L('{');
-  v.scenes.forEach((row, s) => row.forEach((x, c) => { if (c < v.nbC) L('    if (Memorisee[' + (s + 1) + '] = 0) Niveaux[' + (s + 1) + '][' + (c + 1) + '] = ' + x + ';'); }));
+  L('    INTEGER s, c;');
+  L('    for (s = 1 to 4) { if (Memorisee[s] = 0) { for (c = 1 to NBC) { Niveaux[s][c] = Defaut[s][c]; } } }');
   L('}');
   L('');
   L('STRING_FUNCTION Texte10(INTEGER x)');
@@ -318,7 +342,7 @@ function roomUsp(p) {
   L('FUNCTION RappelScene(INTEGER s)');
   L('{');
   L('    INTEGER c;');
-  L('    for (c = 1 to NB_CIRCUITS) { PoserCircuit(c, Niveaux[s][c]); }');
+  L('    for (c = 1 to NbCircuits) { PoserCircuit(c, Niveaux[s][c]); }');
   L('    SceneActive = s; MajScenes();');
   L('    Pulse(30, Pilote_Scene[s]);');
   L('}');
@@ -338,7 +362,7 @@ function roomUsp(p) {
   L('FUNCTION TousCircuits(INTEGER x)');
   L('{');
   L('    INTEGER c;');
-  L('    for (c = 1 to NB_CIRCUITS) { PoserCircuit(c, x); }');
+  L('    for (c = 1 to NbCircuits) { PoserCircuit(c, x); }');
   L('    SceneActive = 0; MajScenes();');
   L('}');
   L('');
@@ -366,9 +390,9 @@ function roomUsp(p) {
   L('}');
   L('');
   L('/* ---------- CVC ---------- */');
-  L('PUSH Btn_Consigne_Plus { if (Consigne + CONS_PAS <= CONS_MAX) Consigne = Consigne + CONS_PAS; MajCVC(); }');
-  L('PUSH Btn_Consigne_Moins { if (Consigne >= CONS_MIN + CONS_PAS) Consigne = Consigne - CONS_PAS; MajCVC(); }');
-  L('CHANGE In_Consigne { if ((In_Consigne >= CONS_MIN) && (In_Consigne <= CONS_MAX)) { Consigne = In_Consigne; MajCVC(); } }');
+  L('PUSH Btn_Consigne_Plus { if (Consigne + ConsPas <= ConsMax) Consigne = Consigne + ConsPas; MajCVC(); }');
+  L('PUSH Btn_Consigne_Moins { if (Consigne >= ConsMin + ConsPas) Consigne = Consigne - ConsPas; MajCVC(); }');
+  L('CHANGE In_Consigne { if ((In_Consigne >= ConsMin) && (In_Consigne <= ConsMax)) { Consigne = In_Consigne; MajCVC(); } }');
   L('PUSH Btn_CVC_Marche { Marche = 1; MajCVC(); }');
   L('PUSH Btn_CVC_Arret { Marche = 0; MajCVC(); }');
   L('PUSH Btn_Ventilation { Vent = GetLastModifiedArrayIndex() - 1; MajCVC(); }');
@@ -459,10 +483,10 @@ function roomUsp(p) {
   L('FUNCTION Main()');
   L('{');
   L('    INTEGER s;');
-  v.types.forEach((t, i) => L('    TypeMoteur[' + (i + 1) + '] = ' + t + ';'));
+  L('    ConfigPiece();');
   L('    WaitForInitializationComplete();');
-  L('    if (Initialise <> EMPREINTE) { DefautsScenes(); Initialise = EMPREINTE; }');
-  L('    Consigne = ' + Math.max(v.cmin, Math.min(v.cmax, 210)) + '; Marche = ' + (v.marche ? 1 : 0) + '; Vent = ' + v.vent + ';');
+  L('    if (Initialise <> Empreinte) { DefautsScenes(); Initialise = Empreinte; }');
+  L('    Consigne = ConsInit; Marche = MarcheInit; Vent = VentInit;');
   L('    SaunaCons = 800; HammamCons = 95;');
   L('    MajScenes(); MajCVC(); MajWellness(); MajAV();');
   L('}');
@@ -708,7 +732,7 @@ PANELS.forEach(pn => {
 }
 
 // 3e. Modules SIMPL+ sous « Logic »
-function uspSymbol(file, comment, IN_D, IN_A, OUT_D, OUT_A, sigName) {
+function uspSymbol(file, comment, IN_D, IN_A, OUT_D, OUT_A, sigName, params) {
   const h = nextSm++;
   const sm = ['ObjTp=Sm', 'H=' + h, 'SmC=103', 'Nm=' + file, 'ObjVer=1', 'PrH=4', 'CF=2',
     'n1I=' + IN_D.length, 'n2I=' + IN_A.length, 'n1O=' + OUT_D.length, 'Cmn1=' + comment + '\\\\',
@@ -718,6 +742,8 @@ function uspSymbol(file, comment, IN_D, IN_A, OUT_D, OUT_A, sigName) {
   sm.push('mO=' + (OUT_D.length + OUT_A.length), 'tO=' + (OUT_D.length + OUT_A.length));
   OUT_D.forEach((e, i) => sm.push('O' + (i + 1) + '=' + sg(sigName(e), 'd')));
   OUT_A.forEach((e, i) => sm.push('O' + (OUT_D.length + i + 1) + '=' + sg(sigName(e), e.t)));
+  // Paramètres SIMPL+ : P1 = [Reference Name] (vide), puis les paramètres dans l'ordre de déclaration (cf. .ush ParamCueN).
+  if (params && params.length) { sm.push('mP=' + (params.length + 1), 'P1='); params.forEach((v, i) => sm.push('P' + (i + 2) + '=' + v)); }
   newSm.push(sm);
   return h;
 }
@@ -727,7 +753,7 @@ logicKids.push(uspSymbol('VillaGlobal.usp', 'Villa Crans - Global', GIN_D, GIN_A
 PIECES.forEach(p => {
   const pre = prefix(p);
   const nm = e => e.d === 'global' ? e.sig : pre + e.sig;
-  logicKids.push(uspSymbol('VillaPiece_R' + pad2(p.id) + '.usp', 'Piece ' + pad2(p.id) + ' ' + ascii(p.nom), RIN_D, RIN_A, ROUT_D, ROUT_A, nm));
+  logicKids.push(uspSymbol('VillaPiece.usp', 'Piece ' + pad2(p.id) + ' ' + ascii(p.nom), RIN_D, RIN_A, ROUT_D, ROUT_A, nm, [p.id + 'd']));
 });
 {
   const logic = findH('Sm', 4);
@@ -754,7 +780,9 @@ fs.writeFileSync(path.join(OUT, 'VillaCrans_Direct.smw'), Buffer.from(smw, 'lati
 // SIMPL+ : fichiers en ASCII pur (éditeur et compilateur SIMPL+ en code page locale).
 const asciiText = t => t.replace(/—/g, '-').replace(/[«»]/g, '"').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^\x00-\x7f]/g, '?');
 fs.writeFileSync(path.join(OUT, 'VillaGlobal.usp'), asciiText(globalUsp()));
-PIECES.forEach(p => fs.writeFileSync(path.join(OUT, 'VillaPiece_R' + pad2(p.id) + '.usp'), asciiText(roomUsp(p))));
+fs.writeFileSync(path.join(OUT, 'VillaPiece.usp'), asciiText(roomUsp()));
+// anciens modules par pièce (v6.0) : remplacés par VillaPiece.usp
+fs.readdirSync(OUT).filter(f => /^VillaPiece_R\d\d\.(usp|ush)$/.test(f)).forEach(f => fs.unlinkSync(path.join(OUT, f)));
 
 /* =====================================================================================
  * 4. Table des signaux pour l'équipe
@@ -765,7 +793,7 @@ PIECES.forEach(p => fs.writeFileSync(path.join(OUT, 'VillaPiece_R' + pad2(p.id) 
   md.push('Contrat S : join de pièce = ' + B + ' + (id - 1) × ' + T + ' + offset. Généré par `simpl/direct/generate_simpl.js` depuis `villa_config.json` (version ' + cfg.meta.version + ').', '');
   md.push('Dalles déclarées : ' + PANELS.map(p => '0x' + p.ip.toString(16).toUpperCase().padStart(2, '0') + ' ' + p.nom + ' (' + KINDS[p.kind].Nm + ')').join(' ; ') + '.', '');
   md.push('## Pièces', '');
-  PIECES.forEach(p => { md.push('- ' + prefix(p).slice(0, -1) + ' = ' + p.nom + ' : joins ' + (B + (p.id - 1) * T + 1) + '..' + (B + p.id * T) + ', module `VillaPiece_R' + pad2(p.id) + '.usp`.'); });
+  PIECES.forEach(p => { md.push('- ' + prefix(p).slice(0, -1) + ' = ' + p.nom + ' : joins ' + (B + (p.id - 1) * T + 1) + '..' + (B + p.id * T) + ', module `VillaPiece.usp` (Piece = ' + p.id + ').'); });
   md.push('', '## Bloc d\'une pièce (offsets, identiques pour toutes les pièces)', '', '| Type | Join logique GUI | Offset | Signal (préfixe Rnn_) | Sens |', '|---|---|---|---|---|');
   const rows = [];
   [[RIN_D, 'appui'], [RIN_A, 'appui / valeur'], [ROUT_D, 'retour'], [ROUT_A, 'retour']].forEach(([list, sens]) => list.forEach(e => {

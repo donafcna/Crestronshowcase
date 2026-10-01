@@ -6,21 +6,21 @@ Dalles déclarées : 0x03 Dalle TSW-1070 (salon) (TSW-770) ; 0x04 XPanel (XPanel
 
 ## Pièces
 
-- R01 = Salle de jeux : joins 626..750, module `VillaPiece_R01.usp`.
-- R02 = Chambre maman : joins 751..875, module `VillaPiece_R02.usp`.
-- R03 = Chambre papa : joins 876..1000, module `VillaPiece_R03.usp`.
-- R04 = Suite amis : joins 1001..1125, module `VillaPiece_R04.usp`.
-- R05 = Chambre amis : joins 1126..1250, module `VillaPiece_R05.usp`.
-- R06 = Chambre 2 : joins 1251..1375, module `VillaPiece_R06.usp`.
-- R07 = Bureau : joins 1376..1500, module `VillaPiece_R07.usp`.
-- R08 = Home cinéma : joins 1501..1625, module `VillaPiece_R08.usp`.
-- R09 = Chambre 3 : joins 1626..1750, module `VillaPiece_R09.usp`.
-- R10 = Suite invités : joins 1751..1875, module `VillaPiece_R10.usp`.
-- R11 = Terrasse & jardin : joins 1876..2000, module `VillaPiece_R11.usp`.
-- R12 = Piscine & spa : joins 2001..2125, module `VillaPiece_R12.usp`.
-- R13 = Sauna & hammam : joins 2126..2250, module `VillaPiece_R13.usp`.
-- R14 = Pool house : joins 2251..2375, module `VillaPiece_R14.usp`.
-- R15 = Garage & ateliers : joins 2376..2500, module `VillaPiece_R15.usp`.
+- R01 = Salle de jeux : joins 626..750, module `VillaPiece.usp` (Piece = 1).
+- R02 = Chambre maman : joins 751..875, module `VillaPiece.usp` (Piece = 2).
+- R03 = Chambre papa : joins 876..1000, module `VillaPiece.usp` (Piece = 3).
+- R04 = Suite amis : joins 1001..1125, module `VillaPiece.usp` (Piece = 4).
+- R05 = Chambre amis : joins 1126..1250, module `VillaPiece.usp` (Piece = 5).
+- R06 = Chambre 2 : joins 1251..1375, module `VillaPiece.usp` (Piece = 6).
+- R07 = Bureau : joins 1376..1500, module `VillaPiece.usp` (Piece = 7).
+- R08 = Home cinéma : joins 1501..1625, module `VillaPiece.usp` (Piece = 8).
+- R09 = Chambre 3 : joins 1626..1750, module `VillaPiece.usp` (Piece = 9).
+- R10 = Suite invités : joins 1751..1875, module `VillaPiece.usp` (Piece = 10).
+- R11 = Terrasse & jardin : joins 1876..2000, module `VillaPiece.usp` (Piece = 11).
+- R12 = Piscine & spa : joins 2001..2125, module `VillaPiece.usp` (Piece = 12).
+- R13 = Sauna & hammam : joins 2126..2250, module `VillaPiece.usp` (Piece = 13).
+- R14 = Pool house : joins 2251..2375, module `VillaPiece.usp` (Piece = 14).
+- R15 = Garage & ateliers : joins 2376..2500, module `VillaPiece.usp` (Piece = 15).
 
 ## Bloc d'une pièce (offsets, identiques pour toutes les pièces)
 

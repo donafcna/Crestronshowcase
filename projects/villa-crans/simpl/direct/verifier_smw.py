@@ -86,5 +86,11 @@ for o in objs:
 print('Objets :', Counter(o.get('ObjTp') for o in objs))
 print('Signaux :', len(sg), '| dalles :', sum(1 for o in objs if o.get('ObjTp') == 'Sm' and o.get('SmC') in ('6838', '7140', '16459')),
       '| modules SIMPL+ :', sum(1 for o in objs if o.get('SmC') == '103'))
+# module de pièce unique : chaque instance porte son numéro de pièce (P2), sans doublon
+pc = [(o.get('Cmn1', ''), o.get('P2', '')) for o in objs if o.get('ObjTp') == 'Sm' and o.get('Nm') == 'VillaPiece.usp']
+for c, v in pc:
+    m = re.match(r'Piece (\d+)', c)
+    if not m or v != str(int(m.group(1))) + 'd': err.append(f'instance {c} : paramètre Piece = {v!r}')
+if len({v for _, v in pc}) != len(pc): err.append('paramètre Piece en double')
 print('ERREURS :' if err else 'Aucune erreur structurelle.'); [print(' -', e) for e in err[:30]]
 sys.exit(1 if err else 0)
