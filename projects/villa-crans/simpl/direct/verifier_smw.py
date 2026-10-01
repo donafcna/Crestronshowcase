@@ -55,6 +55,25 @@ def usp_counts(path):
             k = (ev(br[0]) if len(br) == 2 else 1) if kind == 'STRING_INPUT' else (ev(br[0]) if br else 1)
             n['DI' if kind == 'DIGITAL_INPUT' else 'AI' if kind.endswith('INPUT') else 'DO' if kind == 'DIGITAL_OUTPUT' else 'AO'] += k
     return n
+# Règle SIMPL+ 1307 : dans une famille d'E/S (digital in, analog+série in, digital out, analog+série out) et dans une
+# déclaration de variables, aucun signal simple après un tableau.
+def lint_1307(path):
+    t = open(path, encoding='latin-1').read()
+    t = re.sub(r'/\*.*?\*/', '', t, flags=re.S); t = re.sub(r'//[^\n]*', '', t)
+    fam = {'DIGITAL_INPUT': 'di', 'ANALOG_INPUT': 'ai', 'STRING_INPUT': 'ai', 'DIGITAL_OUTPUT': 'do', 'ANALOG_OUTPUT': 'ao', 'STRING_OUTPUT': 'ao'}
+    seen = set(); out = []
+    for kind, body in re.findall(r'\b(DIGITAL_INPUT|ANALOG_INPUT|STRING_INPUT|DIGITAL_OUTPUT|ANALOG_OUTPUT|STRING_OUTPUT)\b(.*?);', t, re.S):
+        for it in [x.strip() for x in body.split(',') if x.strip()]:
+            arr = len(re.findall(r'\[', it)) > (1 if kind == 'STRING_INPUT' else 0)
+            if arr: seen.add(fam[kind])
+            elif fam[kind] in seen: out.append(f'{os.path.basename(path)} : {it} apres un tableau ({kind})')
+    for body in re.findall(r'^\s*(?:NONVOLATILE\s+)?INTEGER\s+([^;(]*);', t, re.M):
+        items = [x.strip() for x in body.split(',')]
+        k = next((i for i, x in enumerate(items) if '[' in x), None)
+        if k is not None and any('[' not in x for x in items[k:]): out.append(f'{os.path.basename(path)} : INTEGER {body.strip()[:60]}')
+    return out
+for f in sorted(os.listdir(D)):
+    if f.endswith('.usp'): err.extend(lint_1307(os.path.join(D, f)))
 for o in objs:
     if o.get('ObjTp') == 'Sm' and o.get('SmC') == '103':
         n = usp_counts(os.path.join(D, o['Nm']))

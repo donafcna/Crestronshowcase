@@ -7,11 +7,11 @@
 #ENABLE_STACK_CHECKING
 #DEFINE_CONSTANT DELAI 120
 
-DIGITAL_INPUT Btn_Armer, Btn_Desarmer, Btn_Code_Efface, Btn_Partition[12], Btn_Central[11], Retour_Code_Accepte, 
-    Retour_Code_Refuse;
+DIGITAL_INPUT Btn_Armer, Btn_Desarmer, Btn_Code_Efface, Retour_Code_Accepte, Retour_Code_Refuse, Btn_Partition[12], 
+    Btn_Central[11];
 STRING_INPUT In_Code$[20];
-DIGITAL_OUTPUT Fb_Armer, Fb_Desarmer, Fb_Code_Valide, Fb_Code_Refuse, Fb_Partition[12], Fb_Central[11], G[10], Pilote_Armer, 
-    Pilote_Desarmer, Pilote_Partition[12];
+DIGITAL_OUTPUT Fb_Armer, Fb_Desarmer, Fb_Code_Valide, Fb_Code_Refuse, Pilote_Armer, Pilote_Desarmer, Fb_Partition[12], 
+    Fb_Central[11], G[10], Pilote_Partition[12];
 STRING_OUTPUT Pilote_Code$;
 
 STRING Saisie[20];

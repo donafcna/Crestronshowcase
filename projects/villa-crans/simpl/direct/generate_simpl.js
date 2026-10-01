@@ -168,6 +168,10 @@ const P = {
   ],
 };
 // Déploie une liste de ports en entrées individuelles (index SIMPL 1..n dans l'ordre)
+// SIMPL+ (erreur 1307) : dans une même famille d'E/S, tous les signaux simples avant les tableaux.
+// L'ordre ainsi obtenu fait aussi les index du symbole dans le .smw (même liste pour les deux).
+const scalarsFirst = list => list.filter(p => !p.c).concat(list.filter(p => p.c));
+['din', 'ain', 'dout', 'aout'].forEach(k => { P[k] = scalarsFirst(P[k]); });
 const flat = list => { const out = []; list.forEach(p => { const n = p.c || 1; for (let k = 1; k <= n; k++) out.push({ port: p, k, t: p.t || 'd', j: p.j ? p.j(k) : null, sig: p.sig(k), d: p.d || 'panel' }); }); return out; };
 const RIN_D = flat(P.din), RIN_A = flat(P.ain), ROUT_D = flat(P.dout), ROUT_A = flat(P.aout);
 
@@ -235,9 +239,11 @@ function roomUsp(p) {
   L(decl('DIGITAL_OUTPUT', P.dout));
   L(declSeq(P.aout, 'ANALOG_OUTPUT', 'STRING_OUTPUT'));
   L('');
-  L('NONVOLATILE INTEGER Niveaux[4][NBC], Memorisee[4], Initialise;');
-  L('INTEGER Niveau[NBC], TypeMoteur[NBM], SceneActive, Consigne, Marche, Vent, Source, Musique, Mute, Volume, VolumeMedia;');
+  L('NONVOLATILE INTEGER Initialise;');
+  L('NONVOLATILE INTEGER Niveaux[4][NBC], Memorisee[4];');
+  L('INTEGER SceneActive, Consigne, Marche, Vent, Source, Musique, Mute, Volume, VolumeMedia;');
   L('INTEGER SaunaOn, HammamOn, SaunaCons, HammamCons, SaunaMes, HammamMes, TempMes, TempRecue, SaunaRecue, HammamRecue, StoresScene;');
+  L('INTEGER Niveau[NBC], TypeMoteur[NBM];');
   L('');
   L('FUNCTION DefautsScenes()');
   L('{');
@@ -487,6 +493,7 @@ const G_OUT_D = [
   { n: 'Pilote_Partition', c: 12, d: 'pilote', sig: k => 'PILOTE_ALARME_Partition' + (Math.floor((k - 1) / 3) + 1) + '_' + ['Armer', 'Partiel', 'Desarmer'][(k - 1) % 3] },
 ];
 const G_OUT_A = [{ n: 'Pilote_Code$', t: 's', d: 'pilote', sig: () => 'PILOTE_ALARME_Code' }];
+[G_IN_D, G_IN_A, G_OUT_D, G_OUT_A].forEach(l => { const o = scalarsFirst(l); l.length = 0; o.forEach(x => l.push(x)); });
 const GIN_D = flat(G_IN_D), GIN_A = flat(G_IN_A), GOUT_D = flat(G_OUT_D), GOUT_A = flat(G_OUT_A);
 
 function globalUsp() {

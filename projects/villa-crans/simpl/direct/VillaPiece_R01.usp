@@ -14,32 +14,35 @@
 #DEFINE_CONSTANT CONS_MAX 280
 #DEFINE_CONSTANT CONS_PAS 5
 
-DIGITAL_INPUT Btn_Scene[4], Btn_Memoriser[4], Btn_Consigne_Plus, Btn_Consigne_Moins, Btn_CVC_Marche, Btn_CVC_Arret, 
-    Btn_Ventilation[4], Btn_Sauna_Marche, Btn_Sauna_Arret, Btn_Sauna_Plus, Btn_Sauna_Moins, Btn_Hammam_Marche, 
-    Btn_Hammam_Arret, Btn_Hammam_Plus, Btn_Hammam_Moins, Btn_Groupe[9], Btn_Monter[12], Btn_Stop[12], 
-    Btn_Descendre[12], Btn_Lam_Horaire[12], Btn_Lam_Stop[12], Btn_Lam_Antihoraire[12], Btn_Scene_Stores[4], 
-    Btn_Source[5], Btn_Musique, Btn_Suivre_Video, Btn_Mute, Btn_AV_Off, Btn_Media_Lecture, Btn_Media_Suivant, 
-    Btn_Media_Precedent, G[10];
-ANALOG_INPUT In_Consigne, In_Source, In_Volume, In_Volume_Media, In_Circuit[20], In_Ventilation, In_Sauna_Consigne, 
-    In_Hammam_Consigne, Retour_Circuit[20], Retour_Temperature, Retour_Sauna_Mesure, Retour_Hammam_Mesure;
+DIGITAL_INPUT Btn_Consigne_Plus, Btn_Consigne_Moins, Btn_CVC_Marche, Btn_CVC_Arret, Btn_Sauna_Marche, Btn_Sauna_Arret, 
+    Btn_Sauna_Plus, Btn_Sauna_Moins, Btn_Hammam_Marche, Btn_Hammam_Arret, Btn_Hammam_Plus, Btn_Hammam_Moins, 
+    Btn_Musique, Btn_Suivre_Video, Btn_Mute, Btn_AV_Off, Btn_Media_Lecture, Btn_Media_Suivant, 
+    Btn_Media_Precedent, Btn_Scene[4], Btn_Memoriser[4], Btn_Ventilation[4], Btn_Groupe[9], Btn_Monter[12], 
+    Btn_Stop[12], Btn_Descendre[12], Btn_Lam_Horaire[12], Btn_Lam_Stop[12], Btn_Lam_Antihoraire[12], 
+    Btn_Scene_Stores[4], Btn_Source[5], G[10];
+ANALOG_INPUT In_Consigne, In_Source, In_Volume, In_Volume_Media, In_Ventilation, In_Sauna_Consigne, In_Hammam_Consigne, 
+    Retour_Temperature, Retour_Sauna_Mesure, Retour_Hammam_Mesure;
 STRING_INPUT Retour_Mode$[40];
-DIGITAL_OUTPUT Fb_Scene[4], Fb_Memorisee[4], Fb_CVC_Marche, Fb_CVC_Arret, Fb_Ventilation[4], Fb_Sauna_Marche, 
-    Fb_Sauna_Arret, Fb_Hammam_Marche, Fb_Hammam_Arret, Fb_Scene_Stores[4], Fb_Source[5], Fb_Musique, 
-    Fb_Suivre_Video, Fb_Mute, Fb_AV_Off, Pilote_Scene[4], Pilote_Monter[12], Pilote_Stop[12], 
-    Pilote_Descendre[12], Pilote_Lam_Horaire[12], Pilote_Lam_Stop[12], Pilote_Lam_Antihoraire[12], 
-    Pilote_Groupe[9], Pilote_Scene_Stores[4], Pilote_CVC_Marche, Pilote_Sauna_Marche, Pilote_Hammam_Marche, 
+ANALOG_INPUT In_Circuit[20], Retour_Circuit[20];
+DIGITAL_OUTPUT Fb_CVC_Marche, Fb_CVC_Arret, Fb_Sauna_Marche, Fb_Sauna_Arret, Fb_Hammam_Marche, Fb_Hammam_Arret, Fb_Musique, 
+    Fb_Suivre_Video, Fb_Mute, Fb_AV_Off, Pilote_CVC_Marche, Pilote_Sauna_Marche, Pilote_Hammam_Marche, 
     Pilote_Mute, Pilote_Musique, Pilote_AV_Off, Pilote_Media_Lecture, Pilote_Media_Suivant, 
-    Pilote_Media_Precedent;
-ANALOG_OUTPUT Fb_Consigne, Fb_Source_Active, Fb_Volume, Fb_Source_Audio, Fb_Volume_Media, Fb_Circuit[20], Fb_Ventilation_A, 
-    Fb_Sauna_Consigne, Fb_Hammam_Consigne, Fb_Sauna_Mesure, Fb_Hammam_Mesure, Pilote_Circuit[20], 
-    Pilote_Consigne, Pilote_Ventilation, Pilote_Sauna_Consigne, Pilote_Hammam_Consigne, Pilote_Source, 
-    Pilote_Volume, Pilote_Volume_Media;
+    Pilote_Media_Precedent, Fb_Scene[4], Fb_Memorisee[4], Fb_Ventilation[4], Fb_Scene_Stores[4], Fb_Source[5], 
+    Pilote_Scene[4], Pilote_Monter[12], Pilote_Stop[12], Pilote_Descendre[12], Pilote_Lam_Horaire[12], 
+    Pilote_Lam_Stop[12], Pilote_Lam_Antihoraire[12], Pilote_Groupe[9], Pilote_Scene_Stores[4];
+ANALOG_OUTPUT Fb_Consigne, Fb_Source_Active, Fb_Volume, Fb_Source_Audio, Fb_Volume_Media, Fb_Ventilation_A, 
+    Fb_Sauna_Consigne, Fb_Hammam_Consigne, Fb_Sauna_Mesure, Fb_Hammam_Mesure, Pilote_Consigne, 
+    Pilote_Ventilation, Pilote_Sauna_Consigne, Pilote_Hammam_Consigne, Pilote_Source, Pilote_Volume, 
+    Pilote_Volume_Media;
 STRING_OUTPUT Txt_Temperature$, Txt_Mode$, Txt_Consigne$, Txt_Sauna_Consigne$, Txt_Hammam_Consigne$, Txt_Sauna_Mesure$, 
     Txt_Hammam_Mesure$;
+ANALOG_OUTPUT Fb_Circuit[20], Pilote_Circuit[20];
 
-NONVOLATILE INTEGER Niveaux[4][NBC], Memorisee[4], Initialise;
-INTEGER Niveau[NBC], TypeMoteur[NBM], SceneActive, Consigne, Marche, Vent, Source, Musique, Mute, Volume, VolumeMedia;
+NONVOLATILE INTEGER Initialise;
+NONVOLATILE INTEGER Niveaux[4][NBC], Memorisee[4];
+INTEGER SceneActive, Consigne, Marche, Vent, Source, Musique, Mute, Volume, VolumeMedia;
 INTEGER SaunaOn, HammamOn, SaunaCons, HammamCons, SaunaMes, HammamMes, TempMes, TempRecue, SaunaRecue, HammamRecue, StoresScene;
+INTEGER Niveau[NBC], TypeMoteur[NBM];
 
 FUNCTION DefautsScenes()
 {
