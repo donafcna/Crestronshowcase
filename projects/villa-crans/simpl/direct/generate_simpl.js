@@ -598,7 +598,7 @@ const maxH = t => Math.max(0, ...objs.filter(o => tp(o) === t).map(o => parseInt
 // 3b. En-tête
 {
   const hd = objs.find(o => tp(o) === 'Hd');
-  set(hd, 'PrNm', 'VillaCrans_Direct.smw'); set(hd, 'CltNm', 'VillaCrans'); set(hd, 'PIT', 'Villa_Crans_SIMPL_direct');
+  set(hd, 'PrNm', 'VillaCrans_Direct.smw'); set(hd, 'CltNm', 'VillaCrans'); set(hd, 'PIT', 'VillaCrans_Direct'); // Program ID Tag : 20 caractères max (SIMPL Windows)
 }
 
 // 3c. Signaux

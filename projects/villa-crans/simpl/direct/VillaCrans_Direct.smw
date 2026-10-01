@@ -36,7 +36,7 @@ FltTmp=1
 FpCS=0
 EnType=0
 ZeroOnIoOk=0
-PIT=Villa_Crans_SIMPL_direct
+PIT=VillaCrans_Direct
 SGMethod=1
 ]
 [

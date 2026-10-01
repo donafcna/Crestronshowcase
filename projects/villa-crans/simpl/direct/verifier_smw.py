@@ -10,6 +10,9 @@ assert raw.count('\r\n') == raw.count('\n'), 'fins de ligne non CRLF'
 blocks = re.findall(r'\[\r\n(.*?)\r\n\]', raw, re.S)
 objs = [dict(l.split('=', 1) for l in b.split('\r\n') if '=' in l) for b in blocks]
 err = []
+# en-tête : limites de SIMPL Windows à la compilation
+for o in objs:
+    if o.get('ObjTp') == 'Hd' and len(o.get('PIT', '')) > 20: err.append(f"Program ID Tag trop long ({len(o['PIT'])} > 20) : {o['PIT']}")
 H = defaultdict(set)
 for o in objs:
     t = o.get('ObjTp')
