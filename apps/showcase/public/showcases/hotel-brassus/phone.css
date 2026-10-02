@@ -7,3 +7,6 @@
 .player{font-size:10px;letter-spacing:.13em;text-transform:uppercase;font-weight:700;color:var(--ink);margin:10px 0 2px;padding-top:8px;border-top:1px solid var(--line)}.player:first-of-type{border-top:0;padding-top:0;margin-top:2px}
 .fader{padding:2px 0}.fader .row{gap:10px}.fader input[type=range]{flex:1}
 .mute{min-width:44px;min-height:44px;padding:0;display:grid;place-items:center}
+/* 2.3.6 : selecteur Wiim / Commun sous le fader Inspiration (Restaurant, Entree), comme le bandeau de la tablette */
+.group-sources{margin:4px 0 8px}
+.group-sources button{min-height:44px;padding:8px}

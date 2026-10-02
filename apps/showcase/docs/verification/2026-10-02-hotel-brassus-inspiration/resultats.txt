@@ -1,0 +1,49 @@
+OK dalle restaurant actuel : un seul bandeau Wiim / Commun ["WiimCommun"]
+OK dalle restaurant actuel : pas de fenêtre mot de passe
+OK dalle restaurant : Commun → 195 haut, 194 bas
+OK dalle restaurant : Wiim → 194 haut, 195 bas
+OK dalle restaurant clair : un seul bandeau Wiim / Commun ["WiimCommun"]
+OK dalle restaurant clair : pas de fenêtre mot de passe
+OK dalle restaurant sombre : un seul bandeau Wiim / Commun ["WiimCommun"]
+OK dalle restaurant sombre : pas de fenêtre mot de passe
+OK dalle entrance actuel : un seul bandeau Wiim / Commun ["WiimCommun"]
+OK dalle entrance actuel : pas de fenêtre mot de passe
+OK dalle entrance : Commun → 195 haut, 194 bas
+OK dalle entrance : Wiim → 194 haut, 195 bas
+OK dalle entrance clair : un seul bandeau Wiim / Commun ["WiimCommun"]
+OK dalle entrance clair : pas de fenêtre mot de passe
+OK dalle entrance sombre : un seul bandeau Wiim / Commun ["WiimCommun"]
+OK dalle entrance sombre : pas de fenêtre mot de passe
+OK dalle bar actuel : pas de fenêtre mot de passe
+OK dalle bar clair : pas de fenêtre mot de passe
+OK dalle bar sombre : pas de fenêtre mot de passe
+OK iPhone restaurant actuel : pas de défilement (863/863)
+OK iPhone restaurant actuel : pas de « Wiim Restaurant »
+OK iPhone restaurant : Commun sélectionné (Wiim:false,Commun:true)
+OK iPhone restaurant : cibles ≥ 44 px
+OK iPhone restaurant clair : pas de défilement (863/863)
+OK iPhone restaurant clair : pas de « Wiim Restaurant »
+OK iPhone restaurant sombre : pas de défilement (863/863)
+OK iPhone restaurant sombre : pas de « Wiim Restaurant »
+OK iPhone entrance actuel : pas de défilement (863/863)
+OK iPhone entrance actuel : pas de « Wiim Restaurant »
+OK iPhone entrance : Commun sélectionné (Wiim:false,Commun:true)
+OK iPhone entrance : cibles ≥ 44 px
+OK iPhone entrance clair : pas de défilement (863/863)
+OK iPhone entrance clair : pas de « Wiim Restaurant »
+OK iPhone entrance sombre : pas de défilement (863/863)
+OK iPhone entrance sombre : pas de « Wiim Restaurant »
+OK iPhone bar actuel : pas de défilement (863/863)
+OK iPhone bar actuel : pas de « Wiim Restaurant »
+OK iPhone bar clair : pas de défilement (863/863)
+OK iPhone bar clair : pas de « Wiim Restaurant »
+OK iPhone bar sombre : pas de défilement (863/863)
+OK iPhone bar sombre : pas de « Wiim Restaurant »
+OK iPhone wellness actuel : pas de défilement (863/863)
+OK iPhone wellness actuel : pas de « Wiim Restaurant »
+OK iPhone wellness clair : pas de défilement (863/863)
+OK iPhone wellness clair : pas de « Wiim Restaurant »
+OK iPhone wellness sombre : pas de défilement (863/863)
+OK iPhone wellness sombre : pas de « Wiim Restaurant »
+OK aucune erreur JavaScript ()
+48/48

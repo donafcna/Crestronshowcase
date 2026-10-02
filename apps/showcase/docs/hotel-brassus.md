@@ -83,3 +83,7 @@ Le décor alterne automatiquement trente secondes de jour et trente secondes de 
 ## 27/09/2026 — Interaction entre rideaux et lumière, vitrine 2.2.3
 
 Chaque zone pilotée possède un état lumineux naturel dépendant de l'ouverture de ses rideaux. Avec la scène Éteint et les deux rideaux fermés, un voile de pénombre couvre la pièce et conserve seulement les volumes du mobilier en silhouette. Pendant l'ouverture, ce voile disparaît progressivement tandis qu'une source chaude orientée depuis la façade et un faisceau diffus augmentent. Leur puissance suit également le cycle extérieur afin de rester faible la nuit. Les valeurs automatisées de référence sont : rideaux fermés 100 %, pénombre 0,965, lumière naturelle 0 ; rideaux ouverts 0 %, pénombre 0, lumière naturelle 5,8.
+
+## 02/10/2026 — GUI HDH 2.12.19, vitrine 2.3.6
+
+Copie CH5 régénérée par `scripts/sync-hotel-brassus.py` depuis l'archive testée au bench par Donatien (HDH 2.12.19). Restaurant : bandeau « Wiim Restaurant » retiré ; Inspiration (Restaurant et Entrée) : sélecteur Wiim / Commun, joins 194 / 195. `demo-feedback.js` : Entrée = Lobby / Inspiration / WC400. Adaptation iPhone alignée (sélecteur sous le fader Inspiration). Recette et planches : `docs/verification/2026-10-02-hotel-brassus-inspiration/`.

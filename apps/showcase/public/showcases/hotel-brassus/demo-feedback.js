@@ -2,7 +2,7 @@
 (() => {
   const lib = window.CrComLib, values = new Map();
   const zones = {
-    bar: ['Bar'], entrance: ['Lobby', 'Foyer', 'WC400'],
+    bar: ['Bar'], entrance: ['Lobby', 'Inspiration', 'WC400'],
     restaurant: ['Restaurant', 'WC300', 'Inspiration'],
     salon: ['Petit salon'], pdr: ['Salle privée'],
     wellness: ['WC', 'Couloir', 'Relax', 'Fitness'], seminar: ['Séminaire 1', 'Séminaire 2'],

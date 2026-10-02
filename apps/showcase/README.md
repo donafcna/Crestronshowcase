@@ -602,3 +602,13 @@ Demande de Donatien : la source iPod du Bar s'appelle désormais « Lecteur radi
 ## 30/09/2026 — La Réserve Genève 1.0.2 : icône « Lecteur radio » 2.3.5
 
 Le baladeur de la source « Lecteur radio » (Bar) est remplacé par une icône de lecteur audio (poste radio, SVG `radio`). Batteries : GUI 342/342 vitrine et 234/234 déploiement, site 177/177.
+
+## 02/10/2026 — Hotel Brassus : GUI HDH 2.12.19, Inspiration Wiim / Commun, vitrine 2.3.6
+
+Demande de Donatien : mettre la vitrine à jour avec les dernières modifications de l'interface de l'hôtel, sans toucher au code qu'il a testé sur son bench (CP4 + TS-1070 + iPad).
+- **Copie CH5** : `scripts/sync-hotel-brassus.py` lancé sur l'archive **testée au bench** (`hdh-maison-20261001-0604.ch5z`, HDH 2.12.19, décompressée telle quelle). Aucun fichier du GUI modifié à la main. Mêmes paquets compilés que le source (`component.89647f63.js`, `projectcomponents.15ddbc7826cfcd5c0abd.css`). Les fichiers qui ne différaient que par les fins de ligne gardent leurs octets git. Les anciens paquets compilés restent en place (non référencés). La config importée porte `hdhPanelLock: false` (archive de la TS) : sans effet dans la vitrine, qui n'affiche jamais la fenêtre mot de passe.
+- **Ce que la 2.12.19 change pour les visiteurs** : Restaurant sans bandeau « Wiim Restaurant » ; zone Inspiration du Restaurant **et** de l'Entrée avec un sélecteur Wiim / Commun (joins 194 / 195, retour sur le même numéro).
+- **Adaptateurs de vitrine** : `demo-feedback.js` — noms de l'Entrée Lobby / Inspiration / WC400 (noms du programme v7-v8 ; « Foyer » était le nom v6), nécessaires pour que le profil de l'Entrée s'applique. `phone.js` / `phone.css` — miroir iPhone : plus de « Wiim Restaurant » ni « Wiim Inspiration » ; sélecteur Wiim / Commun sous le fader Inspiration (Restaurant, Entrée), état gardé par espace ; `phone.html` en `?v=2.3.6`.
+- Textes du projet et fiche FR/EN/DE : « CH5 2.12.19 ». Captures de fiche inchangées (Bar, Éclairages : écrans non modifiés).
+- **Recette** (`docs/verification/2026-10-02-hotel-brassus-inspiration/`) : 48/48 contrôles — dalle 1920×1200 Restaurant / Entrée / Bar × Original / Clair / Sombre (un seul bandeau Wiim / Commun, Commun → 195, Wiim → 194, jamais de fenêtre mot de passe), iPhone 440×863 Restaurant / Entrée / Bar / Wellness × 3 thèmes (pas de défilement, plus de « Wiim Restaurant », sélection Commun, cibles ≥ 44 px), aucune erreur JavaScript. Planches avant / après, thèmes en colonnes : `planche-dalle.png`, `planche-iphone.png`. `npm run build` et `npm run lint` réussis (avertissements préexistants seulement).
+- Aucun matériel concerné par ce lot ; le SIMPL v9 de l'hôtel (sélecteur Bose `#selectfoyer`) reste à faire côté installation.

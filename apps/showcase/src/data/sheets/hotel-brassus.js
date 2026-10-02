@@ -1,6 +1,6 @@
 export default {
   "fr": {
-    "intro": "Interface originale CH5 2.12.16 : bar, lobby, restaurant, salons, wellness et séminaires. Démonstration locale des commandes AV, éclairages, stores et température. Maquette 3D des niveaux documentés ; implantation globale, hauteurs et finitions interprétées.",
+    "intro": "Interface originale CH5 2.12.19 : bar, lobby, restaurant, salons, wellness et séminaires. Démonstration locale des commandes AV, éclairages, stores et température. Maquette 3D des niveaux documentés ; implantation globale, hauteurs et finitions interprétées.",
     "sections": [
       {
         "title": "GUI iPhone et maquette 3D",
@@ -33,7 +33,7 @@ export default {
     ]
   },
   "en": {
-    "intro": "Original CH5 2.12.16 interface for the bar, lobby, restaurant, lounges, wellness and seminar rooms. Local simulation of AV, lighting, blinds and temperature. 3D reconstruction of documented levels; overall positioning, heights and finishes are interpretive.",
+    "intro": "Original CH5 2.12.19 interface for the bar, lobby, restaurant, lounges, wellness and seminar rooms. Local simulation of AV, lighting, blinds and temperature. 3D reconstruction of documented levels; overall positioning, heights and finishes are interpretive.",
     "sections": [
       {
         "title": "iPhone GUI and 3D model",
@@ -66,7 +66,7 @@ export default {
     ]
   },
   "de": {
-    "intro": "Originale CH5-Oberfläche 2.12.16 für Bar, Lobby, Restaurant, Salons, Wellness und Seminarräume. Lokale Simulation von AV, Licht, Beschattung und Temperatur. 3D-Rekonstruktion dokumentierter Ebenen; Gesamtanordnung, Höhen und Materialien sind interpretiert.",
+    "intro": "Originale CH5-Oberfläche 2.12.19 für Bar, Lobby, Restaurant, Salons, Wellness und Seminarräume. Lokale Simulation von AV, Licht, Beschattung und Temperatur. 3D-Rekonstruktion dokumentierter Ebenen; Gesamtanordnung, Höhen und Materialien sind interpretiert.",
     "sections": [
       {
         "title": "iPhone-GUI und 3D-Modell",

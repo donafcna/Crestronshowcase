@@ -1,55 +1,7 @@
 {
-  "ch5Version": "2.12.16",
-  "sourceFolder": "20260918 HDH CH5",
+  "ch5Version": "2.12.19",
+  "sourceFolder": "hdhsrc",
   "files": [
-    {
-      "path": "favicon.ico",
-      "sha256": "1da1ef4cc443f86ea1c91cd367c6228d26c114ec9d198ec9f911ca0955336579"
-    },
-    {
-      "path": "index.html",
-      "sha256": "3c1850c710fcf38c35b6a9515f7ef343a3e9f17673a8aaab862a96ad9f2f12fc"
-    },
-    {
-      "path": "appui/manifest",
-      "sha256": "a6b7f3a28849cb58d25cc505881bda3191dbf71a8458f2761ad939cd3b25fc38"
-    },
-    {
-      "path": "assets/dark-theme.css",
-      "sha256": "e2607a7f5686093b17c646b6d98ef3e49fdd0473976aa5517d892b2d9f8375ba"
-    },
-    {
-      "path": "assets/high-contrast-theme.css",
-      "sha256": "4bedb3be246c73a3f32d5efa4ec9c082d94789e0fe79a3cadc918580b628694a"
-    },
-    {
-      "path": "assets/light-theme.css",
-      "sha256": "f1577539dd67e1f4504e35b91cc9bf3cf36019b176840553e16510224f442097"
-    },
-    {
-      "path": "assets/zoom-dark-theme.css",
-      "sha256": "c07eccfdde7a0ad4403390803546015108e06fa54d4b757e5e4a9d7f60ef90d0"
-    },
-    {
-      "path": "assets/zoom-light-theme.css",
-      "sha256": "1c7426ee9a1b740a560ccdb4e2220df36565648e0d2334618adf3b83bf608edb"
-    },
-    {
-      "path": "config/contract.cse2j",
-      "sha256": "fedad347603dc6bc3fdaf7c31d42085bb05fcbb43305a5853e29edb3030a651b"
-    },
-    {
-      "path": "libraries/component.217789ce.js",
-      "sha256": "a59f526e02fa5c56c1aafb75d420706665a08c3509d3726b24feef22be330d92"
-    },
-    {
-      "path": "libraries/component.217789ce.js.LICENSE.txt",
-      "sha256": "8de9a82a0ccb8ba7d327121926d16584821776f6ebe2cc952c1887b28550542c"
-    },
-    {
-      "path": "libraries/cr-com-lib.4d074c68.js",
-      "sha256": "bc8a43309e33e1daf9b78dc370292383540c129512f5f5db9f7bef8d2f769710"
-    },
     {
       "path": "app/project/assets/data/translation/en.json",
       "sha256": "d51f56450bd4148160b0ab363e87e3b16ccaa2662deb82282d11b3537414e6d3"
@@ -123,8 +75,112 @@
       "sha256": "9ab0fa495fa3eddd69df19257861b1a80528c7838ac4030d92dde9e671282381"
     },
     {
+      "path": "app/project/assets/img/Photos/horloger.png",
+      "sha256": "738f6e672de8f4523b1fa05dbdd907abdfd664ef32c3180580a47a5af796192d"
+    },
+    {
+      "path": "app/project/assets/img/Project-Backgrounds/Background Horloger.png",
+      "sha256": "e4a00e1dc0e980978972958e6f78c7bf0d62138c4364d118808f39da9edb799f"
+    },
+    {
       "path": "app/project/assets/img/icons/1420410410.svg",
       "sha256": "e4b4e2c9bf32f14c54a5bbfe47b46d1b644d168b95944da253c148aef81b5337"
+    },
+    {
+      "path": "app/project/assets/img/icons/Audio/music.svg",
+      "sha256": "0ed471b8eec7a3e1861c06633b2361f9e9c0e07319d721bce3cf2a41d1de09ad"
+    },
+    {
+      "path": "app/project/assets/img/icons/Audio/speaker.png",
+      "sha256": "14bfd40ef35857b4204317f931fa9399720b287c7ff9e8f0512c4d9535c56a0a"
+    },
+    {
+      "path": "app/project/assets/img/icons/Audio/speaker.svg",
+      "sha256": "f396ac652e8272574cb566a06c6abfa4de5f500ead3a7fecdced3a682ac0e014"
+    },
+    {
+      "path": "app/project/assets/img/icons/Audio/speakermuted.png",
+      "sha256": "08ee149cee98b46fc4c08a0b2b63f39fea9b8e0caf9c8d38fbd4c861eaadb463"
+    },
+    {
+      "path": "app/project/assets/img/icons/Audio/speakermuted.svg",
+      "sha256": "daf075a1a293087d1e29c484d3217ba6645e6ef8512e81384b117590bc757865"
+    },
+    {
+      "path": "app/project/assets/img/icons/Audio/speakermutedwhite v0 v0.png",
+      "sha256": "08ee149cee98b46fc4c08a0b2b63f39fea9b8e0caf9c8d38fbd4c861eaadb463"
+    },
+    {
+      "path": "app/project/assets/img/icons/Audio/speakermutedwhite v0.png",
+      "sha256": "08ee149cee98b46fc4c08a0b2b63f39fea9b8e0caf9c8d38fbd4c861eaadb463"
+    },
+    {
+      "path": "app/project/assets/img/icons/Audio/speakermutedwhite.png",
+      "sha256": "08ee149cee98b46fc4c08a0b2b63f39fea9b8e0caf9c8d38fbd4c861eaadb463"
+    },
+    {
+      "path": "app/project/assets/img/icons/Audio/speakerwhite v0 v0.png",
+      "sha256": "14bfd40ef35857b4204317f931fa9399720b287c7ff9e8f0512c4d9535c56a0a"
+    },
+    {
+      "path": "app/project/assets/img/icons/Audio/speakerwhite v0.png",
+      "sha256": "14bfd40ef35857b4204317f931fa9399720b287c7ff9e8f0512c4d9535c56a0a"
+    },
+    {
+      "path": "app/project/assets/img/icons/Audio/speakerwhite.png",
+      "sha256": "14bfd40ef35857b4204317f931fa9399720b287c7ff9e8f0512c4d9535c56a0a"
+    },
+    {
+      "path": "app/project/assets/img/icons/BULB01.svg",
+      "sha256": "4c922942a930c7f1012ea6c098e10fc48e15ad91454c985894c1efd152835aa4"
+    },
+    {
+      "path": "app/project/assets/img/icons/BULB02 (1).svg",
+      "sha256": "9f61db69e25120718d5ec097b91981abca6cf600b1302a326e272a1fe56a22cd"
+    },
+    {
+      "path": "app/project/assets/img/icons/BULB02.svg",
+      "sha256": "9f61db69e25120718d5ec097b91981abca6cf600b1302a326e272a1fe56a22cd"
+    },
+    {
+      "path": "app/project/assets/img/icons/GraySquareButton.svg",
+      "sha256": "a7b9adbad1ea508c6fe5dfabbf4322547b58d0b67e5790ede8584a0b3a9e6ead"
+    },
+    {
+      "path": "app/project/assets/img/icons/GreenRoundedButton.svg",
+      "sha256": "61fd5ccaa32501fc1991ca51c0c4cde7d2d6558f47c04e469bcdc5dd6159224c"
+    },
+    {
+      "path": "app/project/assets/img/icons/OrangeRoundedButton.svg",
+      "sha256": "f3ed7832867505d67074aff44c1deb4edbbf77564c37f74ae63db2e3c870ae8b"
+    },
+    {
+      "path": "app/project/assets/img/icons/OrangeSquareButton.svg",
+      "sha256": "e730001019e659a2d7ffe26f809fdccc27e6e645f724b8bf9fe8495acfdcf253"
+    },
+    {
+      "path": "app/project/assets/img/icons/RedRoundedButton.svg",
+      "sha256": "d93edf9cc5d681195a69697708b40c5aa5d08f4f0af75a641922a48dd0cccaee"
+    },
+    {
+      "path": "app/project/assets/img/icons/RedSquareButton.svg",
+      "sha256": "2adf778af752f7c6342df32be9e55dba691d5d6b7a21c6913158362261105985"
+    },
+    {
+      "path": "app/project/assets/img/icons/Romanov_Light_bulb_.svg",
+      "sha256": "bf8ff295b85c7a6a596305775c18eaf931bf41eadc814a4b0ea494576dcd2c12"
+    },
+    {
+      "path": "app/project/assets/img/icons/Video/Icon AV Black.png",
+      "sha256": "745566d22045d7b09e18ff0d51e059b1e9e4f94b65c763f215b944a135fc6f43"
+    },
+    {
+      "path": "app/project/assets/img/icons/Video/Icon AV BlackTr.png",
+      "sha256": "840eb2f8f8fc36388e3a840cdee0f71f56e54a5d0a9c75c704dfa7f205c003e7"
+    },
+    {
+      "path": "app/project/assets/img/icons/Video/Icon-AV-BlackTr.svg",
+      "sha256": "c13b23b9ecac49a235ca112993d2356cc72046f045f25b0d11085620af77f9ae"
     },
     {
       "path": "app/project/assets/img/icons/afaulconbridge-Lightbulb-OnOff-1.svg",
@@ -141,18 +197,6 @@
     {
       "path": "app/project/assets/img/icons/blinds.png",
       "sha256": "11a2995df2429e1b97681a53773ef89e827d4d17521f62fa0e3de182aca4ad7e"
-    },
-    {
-      "path": "app/project/assets/img/icons/BULB01.svg",
-      "sha256": "4c922942a930c7f1012ea6c098e10fc48e15ad91454c985894c1efd152835aa4"
-    },
-    {
-      "path": "app/project/assets/img/icons/BULB02 (1).svg",
-      "sha256": "9f61db69e25120718d5ec097b91981abca6cf600b1302a326e272a1fe56a22cd"
-    },
-    {
-      "path": "app/project/assets/img/icons/BULB02.svg",
-      "sha256": "9f61db69e25120718d5ec097b91981abca6cf600b1302a326e272a1fe56a22cd"
     },
     {
       "path": "app/project/assets/img/icons/cloud-download-outline.svg",
@@ -187,14 +231,6 @@
       "sha256": "eb047e531f02bee75793601ef185ccd95b7ce699e3c34302a9396031bdba86ab"
     },
     {
-      "path": "app/project/assets/img/icons/GraySquareButton.svg",
-      "sha256": "a7b9adbad1ea508c6fe5dfabbf4322547b58d0b67e5790ede8584a0b3a9e6ead"
-    },
-    {
-      "path": "app/project/assets/img/icons/GreenRoundedButton.svg",
-      "sha256": "61fd5ccaa32501fc1991ca51c0c4cde7d2d6558f47c04e469bcdc5dd6159224c"
-    },
-    {
       "path": "app/project/assets/img/icons/icon-light-18.jpg",
       "sha256": "25642dc76424b962535444c0d7943caef140c07c0b60949ddc880d33e8e4db4a"
     },
@@ -205,10 +241,6 @@
     {
       "path": "app/project/assets/img/icons/light-bulb.svg",
       "sha256": "05d821fa53313f2d0e353122bf2940d9a6b6c540e960abdce2496c8a6e77288a"
-    },
-    {
-      "path": "app/project/assets/img/icons/lightbulb.svg",
-      "sha256": "2224c744d91c96a68a076d7ef30df6720bb358cb9c191b61eee9bd79ecd2f9d4"
     },
     {
       "path": "app/project/assets/img/icons/lightOff.png",
@@ -235,6 +267,10 @@
       "sha256": "25be263580ab67885000384c5fef493e018e25f20155026f2d33f5166535833b"
     },
     {
+      "path": "app/project/assets/img/icons/lightbulb.svg",
+      "sha256": "2224c744d91c96a68a076d7ef30df6720bb358cb9c191b61eee9bd79ecd2f9d4"
+    },
+    {
       "path": "app/project/assets/img/icons/loud-speaker.svg",
       "sha256": "202c6bb80e0f364f1c2bd63b666e9aa08fd993d4edd8a5ec1e03c1e76373d3dc"
     },
@@ -257,26 +293,6 @@
     {
       "path": "app/project/assets/img/icons/microphone-grey.svg",
       "sha256": "e0855bc9585f9d475d14501391e4f35b05cade76d83ee6a567a69d180164351f"
-    },
-    {
-      "path": "app/project/assets/img/icons/OrangeRoundedButton.svg",
-      "sha256": "f3ed7832867505d67074aff44c1deb4edbbf77564c37f74ae63db2e3c870ae8b"
-    },
-    {
-      "path": "app/project/assets/img/icons/OrangeSquareButton.svg",
-      "sha256": "e730001019e659a2d7ffe26f809fdccc27e6e645f724b8bf9fe8495acfdcf253"
-    },
-    {
-      "path": "app/project/assets/img/icons/RedRoundedButton.svg",
-      "sha256": "d93edf9cc5d681195a69697708b40c5aa5d08f4f0af75a641922a48dd0cccaee"
-    },
-    {
-      "path": "app/project/assets/img/icons/RedSquareButton.svg",
-      "sha256": "2adf778af752f7c6342df32be9e55dba691d5d6b7a21c6913158362261105985"
-    },
-    {
-      "path": "app/project/assets/img/icons/Romanov_Light_bulb_.svg",
-      "sha256": "bf8ff295b85c7a6a596305775c18eaf931bf41eadc814a4b0ea494576dcd2c12"
     },
     {
       "path": "app/project/assets/img/icons/shutter (1).png",
@@ -347,14 +363,6 @@
       "sha256": "af98e0f38d87fedb75efd9c2076345fb18e47c685d161dfcbe300cc724c1ef1f"
     },
     {
-      "path": "app/project/assets/img/navigation/crestron_swirl_blue.svg",
-      "sha256": "7cda94997813e2b3da48c12e68ac5001ec7ee268f790d2540a72db30cf9e5eb9"
-    },
-    {
-      "path": "app/project/assets/img/navigation/finger.svg",
-      "sha256": "5f3512e424c2bef2d6b8726b8c39f9c51e121f7712e385bf9ddf7ab53684771b"
-    },
-    {
       "path": "app/project/assets/img/navigation/Icon AV Black.png",
       "sha256": "745566d22045d7b09e18ff0d51e059b1e9e4f94b65c763f215b944a135fc6f43"
     },
@@ -385,6 +393,14 @@
     {
       "path": "app/project/assets/img/navigation/Icon Temperature White.png",
       "sha256": "3ec05d9b9f0f0caa56655e9b5aa4f151cbf44c00845ffdfc39319aa4ae7dd911"
+    },
+    {
+      "path": "app/project/assets/img/navigation/crestron_swirl_blue.svg",
+      "sha256": "7cda94997813e2b3da48c12e68ac5001ec7ee268f790d2540a72db30cf9e5eb9"
+    },
+    {
+      "path": "app/project/assets/img/navigation/finger.svg",
+      "sha256": "5f3512e424c2bef2d6b8726b8c39f9c51e121f7712e385bf9ddf7ab53684771b"
     },
     {
       "path": "app/project/assets/img/navigation/idea.svg",
@@ -439,70 +455,6 @@
       "sha256": "414f231f9a13ebf6fd5b51f6f0adfb2277040044ed4f6e6e90132f7ab3272cd3"
     },
     {
-      "path": "app/project/assets/img/Photos/horloger.png",
-      "sha256": "738f6e672de8f4523b1fa05dbdd907abdfd664ef32c3180580a47a5af796192d"
-    },
-    {
-      "path": "app/project/assets/img/Project-Backgrounds/Background Horloger.png",
-      "sha256": "e4a00e1dc0e980978972958e6f78c7bf0d62138c4364d118808f39da9edb799f"
-    },
-    {
-      "path": "app/project/assets/img/icons/Audio/music.svg",
-      "sha256": "0ed471b8eec7a3e1861c06633b2361f9e9c0e07319d721bce3cf2a41d1de09ad"
-    },
-    {
-      "path": "app/project/assets/img/icons/Audio/speaker.png",
-      "sha256": "14bfd40ef35857b4204317f931fa9399720b287c7ff9e8f0512c4d9535c56a0a"
-    },
-    {
-      "path": "app/project/assets/img/icons/Audio/speaker.svg",
-      "sha256": "f396ac652e8272574cb566a06c6abfa4de5f500ead3a7fecdced3a682ac0e014"
-    },
-    {
-      "path": "app/project/assets/img/icons/Audio/speakermuted.png",
-      "sha256": "08ee149cee98b46fc4c08a0b2b63f39fea9b8e0caf9c8d38fbd4c861eaadb463"
-    },
-    {
-      "path": "app/project/assets/img/icons/Audio/speakermuted.svg",
-      "sha256": "daf075a1a293087d1e29c484d3217ba6645e6ef8512e81384b117590bc757865"
-    },
-    {
-      "path": "app/project/assets/img/icons/Audio/speakermutedwhite v0 v0.png",
-      "sha256": "08ee149cee98b46fc4c08a0b2b63f39fea9b8e0caf9c8d38fbd4c861eaadb463"
-    },
-    {
-      "path": "app/project/assets/img/icons/Audio/speakermutedwhite v0.png",
-      "sha256": "08ee149cee98b46fc4c08a0b2b63f39fea9b8e0caf9c8d38fbd4c861eaadb463"
-    },
-    {
-      "path": "app/project/assets/img/icons/Audio/speakermutedwhite.png",
-      "sha256": "08ee149cee98b46fc4c08a0b2b63f39fea9b8e0caf9c8d38fbd4c861eaadb463"
-    },
-    {
-      "path": "app/project/assets/img/icons/Audio/speakerwhite v0 v0.png",
-      "sha256": "14bfd40ef35857b4204317f931fa9399720b287c7ff9e8f0512c4d9535c56a0a"
-    },
-    {
-      "path": "app/project/assets/img/icons/Audio/speakerwhite v0.png",
-      "sha256": "14bfd40ef35857b4204317f931fa9399720b287c7ff9e8f0512c4d9535c56a0a"
-    },
-    {
-      "path": "app/project/assets/img/icons/Audio/speakerwhite.png",
-      "sha256": "14bfd40ef35857b4204317f931fa9399720b287c7ff9e8f0512c4d9535c56a0a"
-    },
-    {
-      "path": "app/project/assets/img/icons/Video/Icon AV Black.png",
-      "sha256": "745566d22045d7b09e18ff0d51e059b1e9e4f94b65c763f215b944a135fc6f43"
-    },
-    {
-      "path": "app/project/assets/img/icons/Video/Icon AV BlackTr.png",
-      "sha256": "840eb2f8f8fc36388e3a840cdee0f71f56e54a5d0a9c75c704dfa7f205c003e7"
-    },
-    {
-      "path": "app/project/assets/img/icons/Video/Icon-AV-BlackTr.svg",
-      "sha256": "c13b23b9ecac49a235ca112993d2356cc72046f045f25b0d11085620af77f9ae"
-    },
-    {
       "path": "app/project/components/pages/av/av-emulator.json",
       "sha256": "f79b9408ee9a4419a3f3458ad079d64ea6508366369eab30db5db52ad9d7b333"
     },
@@ -541,6 +493,10 @@
     {
       "path": "app/project/components/pages/temperature/temperature.html",
       "sha256": "e68b34156732215d9d792c60f176bc90008e4848596511b2660ab7dfa3a372c5"
+    },
+    {
+      "path": "app/template/assets/data/translation/en.json",
+      "sha256": "6fa46d700dce8c1f269a89cead8f462436d3acf0bc977b6747ff6fdd8d073fff"
     },
     {
       "path": "app/template/assets/fonts/roboto-v27-latin-100.eot",
@@ -795,10 +751,6 @@
       "sha256": "74d8d38724eafe6ccc1716b55303045284d65b30be51eaa2799d4c554da68bae"
     },
     {
-      "path": "app/template/assets/data/translation/en.json",
-      "sha256": "6fa46d700dce8c1f269a89cead8f462436d3acf0bc977b6747ff6fdd8d073fff"
-    },
-    {
       "path": "app/template/components/pages/template-page/template-page.html",
       "sha256": "b00d8efac0fe531dafc169161d9bffbeedae5c782e155f17f3b60e258dad722c"
     },
@@ -819,6 +771,10 @@
       "sha256": "08633c9bca34a4dac0b01d1edab01eff9b67fd4604ef80bd0acf27fbd32b3b6f"
     },
     {
+      "path": "appui/manifest",
+      "sha256": "a6b7f3a28849cb58d25cc505881bda3191dbf71a8458f2761ad939cd3b25fc38"
+    },
+    {
       "path": "assets/css/ch5-theme.css",
       "sha256": "4c8ec10bca07c091f1a4101baa1531b8229b85b053a7bb83540365d9364a91d7"
     },
@@ -831,16 +787,20 @@
       "sha256": "5380cc8cf3df7e7f04398024d12cb685b7fcb4a6d29b20ff14aac2d4cd387b06"
     },
     {
-      "path": "assets/css/projectcomponents.fa4492d5211833356893.css",
-      "sha256": "961492fa2e0cb82dc7e5e8b09cac42f4c41fc032f0aea7221f214d4b09728584"
+      "path": "assets/css/projectcomponents.15ddbc7826cfcd5c0abd.css",
+      "sha256": "01b7eb1cd286a3c38ed440963738d9ec945d81bd250e55799393d2c83fa06275"
     },
     {
       "path": "assets/css/templatecomponents.41e32db31cd6e54f14b4.css",
       "sha256": "580c73f6c99002613a91d7bbc94226127e01840c14b6a1ab850552c7c3b6b7e8"
     },
     {
+      "path": "assets/dark-theme.css",
+      "sha256": "e2607a7f5686093b17c646b6d98ef3e49fdd0473976aa5517d892b2d9f8375ba"
+    },
+    {
       "path": "assets/data/app.manifest.json",
-      "sha256": "7baa7f25006bf1b3a788135aaca14ba262b9bf360068d19d541941744fc0d4a5"
+      "sha256": "8030fa6c8deff65554006fcd1c807e43976135a5ad209671c04c19a3eeb3be5a"
     },
     {
       "path": "assets/data/hard-buttons.json",
@@ -848,11 +808,11 @@
     },
     {
       "path": "assets/data/project-config.json",
-      "sha256": "689af5146044f03858b508a19d99fbd28b860b71dc0819c96c97e3bb9b8eca0b"
+      "sha256": "7aa3aa546fd6baef528b90fa6c28ebeb87dfd3b4ba5b85b0b0332e28b23e66e1"
     },
     {
       "path": "assets/data/version.json",
-      "sha256": "60e61e119611b9c8fb6992bd607e149bdfe1c4876566fbc46a5c7ac2d2611ed3"
+      "sha256": "2ce09b9ae820ff97513c06700e0d5addc118b8056de6b4f0d574bbd63107c9bb"
     },
     {
       "path": "assets/font/MaterialIcons-Outlined.ttf",
@@ -915,276 +875,12 @@
       "sha256": "71af1472b5dabfdf8b345ba03767fd7b78b03d723477f1373fe226043d16b7a1"
     },
     {
-      "path": "assets/webfonts/fa-brands-400.ttf",
-      "sha256": "e28096fa75a96ac77020155ea3a6dd7312983e84115366d4cf49a0c312ec6d51"
+      "path": "assets/high-contrast-theme.css",
+      "sha256": "4bedb3be246c73a3f32d5efa4ec9c082d94789e0fe79a3cadc918580b628694a"
     },
     {
-      "path": "assets/webfonts/fa-brands-400.woff2",
-      "sha256": "232c6f6a7678304f9efaa26f30b1610debc2ba9f4cd636b5e6751c8d73761b92"
-    },
-    {
-      "path": "assets/webfonts/fa-regular-400.ttf",
-      "sha256": "9174757efc83e072436e873c22be1663d3c103b0a16d7fb73569af4918d4d351"
-    },
-    {
-      "path": "assets/webfonts/fa-regular-400.woff2",
-      "sha256": "c27da6f833431da5aa295c44540bfac0fd8270ba6a3c4346427006d8a7b34b76"
-    },
-    {
-      "path": "assets/webfonts/fa-solid-900.ttf",
-      "sha256": "b4990d0d0c5f5d38d62e936eea120674e584c7eea8dcee38a975c0cf9a37539b"
-    },
-    {
-      "path": "assets/webfonts/fa-solid-900.woff2",
-      "sha256": "ae17c16afbea216707b2203ea1cf9bdb45b9bfe47d0f4ae3258ddbc6294dd02f"
-    },
-    {
-      "path": "assets/webfonts/fa-v4compatibility.ttf",
-      "sha256": "ff8f525fb050c5d24519ccc8f5723d85b2e51edd3f9bc6548af55aebadd4f269"
-    },
-    {
-      "path": "assets/webfonts/fa-v4compatibility.woff2",
-      "sha256": "c7a869faca299d15be10a01f19d0765a7c4d46d8922d9b9317235c1e4a6f0982"
-    },
-    {
-      "path": "assets/webfonts/roboto-v27-latin-100.eot",
-      "sha256": "5183d37e3038897096ca6345035e44e3a1e1a13c1c88aabf8a38231d73e15739"
-    },
-    {
-      "path": "assets/webfonts/roboto-v27-latin-100.svg",
-      "sha256": "26275512bbdd53156733b534b8a93f926663074bd15b32aebc92387ec877e30e"
-    },
-    {
-      "path": "assets/webfonts/roboto-v27-latin-100.ttf",
-      "sha256": "33e11a792cdd9d4aecd5b676d1a0dc9e7385975e35080e540b9639203a7e8052"
-    },
-    {
-      "path": "assets/webfonts/roboto-v27-latin-100.woff",
-      "sha256": "a38ad0b609e4d2039d18b0f9dc89e9060f2e2e05f2f42764a6a93354346a6c37"
-    },
-    {
-      "path": "assets/webfonts/roboto-v27-latin-100.woff2",
-      "sha256": "22482584aeaa7b1d74de072793246c65e38b402ac231f38bb0d9102802543230"
-    },
-    {
-      "path": "assets/webfonts/roboto-v27-latin-100italic.eot",
-      "sha256": "6161490d7463e7baaaedf5d76cf31e2a7c4252f60d46a29f4f2186cc1367f218"
-    },
-    {
-      "path": "assets/webfonts/roboto-v27-latin-100italic.svg",
-      "sha256": "2e44a7ee51c8ba442989e53c6869fc35083f59e58102cf211b403be1661a1e5b"
-    },
-    {
-      "path": "assets/webfonts/roboto-v27-latin-100italic.ttf",
-      "sha256": "426204b23967eb68831eba08ada7a22d4d74d75ed5122dd4c2fb825f8fcab033"
-    },
-    {
-      "path": "assets/webfonts/roboto-v27-latin-100italic.woff",
-      "sha256": "75d75439f2a7ea1851a3e5b621320b9dfa1399861d2ec6d443a3c2919b93afb7"
-    },
-    {
-      "path": "assets/webfonts/roboto-v27-latin-100italic.woff2",
-      "sha256": "5ec2c7c341db456f2c057a73bdcc82be478efc0834741036198d9589765af6a2"
-    },
-    {
-      "path": "assets/webfonts/roboto-v27-latin-300.eot",
-      "sha256": "6d4c20d455759c51daab60db3aec76284ac3696121c590a15ecd99a43bc366db"
-    },
-    {
-      "path": "assets/webfonts/roboto-v27-latin-300.svg",
-      "sha256": "70e6369f9bd8828aac01a685fa350fea382251550bfc0de5ebe7163342061c1c"
-    },
-    {
-      "path": "assets/webfonts/roboto-v27-latin-300.ttf",
-      "sha256": "cc5011972e352363bd8f41e1a3b59c16cbc5e283cc119af9ddd098ec905b7415"
-    },
-    {
-      "path": "assets/webfonts/roboto-v27-latin-300.woff",
-      "sha256": "855a06974032bb69157d469aba6f63440e8be47c421f45c3f396f4e0b87b6de8"
-    },
-    {
-      "path": "assets/webfonts/roboto-v27-latin-300.woff2",
-      "sha256": "33530b007071281a97e79baab13ddf7cc4b9de942ebd3e212224857335f7cb97"
-    },
-    {
-      "path": "assets/webfonts/roboto-v27-latin-300italic.eot",
-      "sha256": "5ee860c3fcf601e3d51770ffd3bb6682107334db3937daca8e5bf7381f49c9c8"
-    },
-    {
-      "path": "assets/webfonts/roboto-v27-latin-300italic.svg",
-      "sha256": "9cf2ffae89e668261e35af3fda7b51078f731cc7e1bf797b7d73dab7c3bbc5de"
-    },
-    {
-      "path": "assets/webfonts/roboto-v27-latin-300italic.ttf",
-      "sha256": "38a89f53518a7670fcf67aa104c8e2e8234790a0fcb6950efcee9c2fc885e5d3"
-    },
-    {
-      "path": "assets/webfonts/roboto-v27-latin-300italic.woff",
-      "sha256": "917a5159be44de9a82072f6a1c52ef645844d6bedf42f8fd1549cd99d6db2cc5"
-    },
-    {
-      "path": "assets/webfonts/roboto-v27-latin-300italic.woff2",
-      "sha256": "4c7856c0d39606a745670d4c03525f3644fe65304191be208516def923cc3762"
-    },
-    {
-      "path": "assets/webfonts/roboto-v27-latin-500.eot",
-      "sha256": "6044b9f4de2bfedb0e23cdcde85b950676ca15b6de18bfa98bb944a7be4ed187"
-    },
-    {
-      "path": "assets/webfonts/roboto-v27-latin-500.svg",
-      "sha256": "679eb020429b65c21deb42212a49fbdda9be5d985ef55803c2ad83f8c428fbf0"
-    },
-    {
-      "path": "assets/webfonts/roboto-v27-latin-500.ttf",
-      "sha256": "7796600b2ee4c84552cb08fd79603c19b95cd21089e802f222320feceba74c45"
-    },
-    {
-      "path": "assets/webfonts/roboto-v27-latin-500.woff",
-      "sha256": "bd811625271acca47f7dac48b460f13e08ee947b2a8e17e278c4d5ccb5d9323c"
-    },
-    {
-      "path": "assets/webfonts/roboto-v27-latin-500.woff2",
-      "sha256": "bb46ed079c3dd3c39af5051b4ada48f29f49151dad4fa218117bad2fdb5e616f"
-    },
-    {
-      "path": "assets/webfonts/roboto-v27-latin-500italic.eot",
-      "sha256": "7f350615f7e3b0a3feef95026ea988efe24b647e9a68a93f420799eee07b57bf"
-    },
-    {
-      "path": "assets/webfonts/roboto-v27-latin-500italic.svg",
-      "sha256": "61243fa2e143cf51f1535df33ae4c75d2548567a976d991f03fa87ac04761ea8"
-    },
-    {
-      "path": "assets/webfonts/roboto-v27-latin-500italic.ttf",
-      "sha256": "88f87cdf817311dfa951df2579f095f3e992ef882ba9a0711f4a8b32e06bdf85"
-    },
-    {
-      "path": "assets/webfonts/roboto-v27-latin-500italic.woff",
-      "sha256": "8411023a027610aeb3dc333438e12a17222163ae78817c5395da04548ed30150"
-    },
-    {
-      "path": "assets/webfonts/roboto-v27-latin-500italic.woff2",
-      "sha256": "0a938256d2de59b044f8ca7c7aa0c788ed2ffa9a48bf0e3930a5830c4298f509"
-    },
-    {
-      "path": "assets/webfonts/roboto-v27-latin-700.eot",
-      "sha256": "d994c112c4a7ff635c0922fe0cf428f0e176beec73a521b59498630782c25ee6"
-    },
-    {
-      "path": "assets/webfonts/roboto-v27-latin-700.svg",
-      "sha256": "90fd3ac31f8553c19f65018e385022cfae140a6341b0cc05d7701a90ad28dde2"
-    },
-    {
-      "path": "assets/webfonts/roboto-v27-latin-700.ttf",
-      "sha256": "52dc362cae7e441a98741305a38b045859ac60e99377d9d88922ec32cb944cfa"
-    },
-    {
-      "path": "assets/webfonts/roboto-v27-latin-700.woff",
-      "sha256": "a01a632e56731a854f35701aa8c3a6a19a113290d9032ff9048f8064c45383bd"
-    },
-    {
-      "path": "assets/webfonts/roboto-v27-latin-700.woff2",
-      "sha256": "0eaeadb58e6995ba85eccb6198aaef77eeb1d4b66699e4e1f3fc10eb6adfcdb9"
-    },
-    {
-      "path": "assets/webfonts/roboto-v27-latin-700italic.eot",
-      "sha256": "997b5d17e1b799f8b6e439f0124a2eb55f4e87679d2dfe8e0bbff4949fcff804"
-    },
-    {
-      "path": "assets/webfonts/roboto-v27-latin-700italic.svg",
-      "sha256": "f3fa251b00cf984bad8c0224de665a2b2c3b3d6d08b64dd601d0ecaed0b3572c"
-    },
-    {
-      "path": "assets/webfonts/roboto-v27-latin-700italic.ttf",
-      "sha256": "b48ef8ec3a31e379fd238f9878c63e35a077997f6a75fcaf7f2382b1460dbd55"
-    },
-    {
-      "path": "assets/webfonts/roboto-v27-latin-700italic.woff",
-      "sha256": "a22585cfd64238ef14b1b383b5b9a8bad7c89e354c09fc0886067e876687a38c"
-    },
-    {
-      "path": "assets/webfonts/roboto-v27-latin-700italic.woff2",
-      "sha256": "2a42cc82f30fbf25a268f6d5a10158e8312a838222da6847158ea4175fa289d4"
-    },
-    {
-      "path": "assets/webfonts/roboto-v27-latin-900.eot",
-      "sha256": "2fd57e4688ff39c31aef08fe926b6fd5b00a35c1e71440bb0b26fe91c455bb1c"
-    },
-    {
-      "path": "assets/webfonts/roboto-v27-latin-900.svg",
-      "sha256": "1f626680217362d9a26da9eca11d46a0318b95c5d084fccce55a08ee4971a34c"
-    },
-    {
-      "path": "assets/webfonts/roboto-v27-latin-900.ttf",
-      "sha256": "5abde466e653eda612285a42d7f23c6490961fe942d2ec3b86d731db531b57bd"
-    },
-    {
-      "path": "assets/webfonts/roboto-v27-latin-900.woff",
-      "sha256": "d33864e01e5103ebe439732bb606e694c73b6851f24da25d41901eb17cb5d98e"
-    },
-    {
-      "path": "assets/webfonts/roboto-v27-latin-900.woff2",
-      "sha256": "0e868ca932480407e63d27e8e868cb1514581142928b9be15ec9039bf5fe348f"
-    },
-    {
-      "path": "assets/webfonts/roboto-v27-latin-900italic.eot",
-      "sha256": "2fc971723c90add9b3f6cae7738625eceb3a3ddf2a553c5454d539aaada83247"
-    },
-    {
-      "path": "assets/webfonts/roboto-v27-latin-900italic.svg",
-      "sha256": "fea2db367482beff05c6651eccfce3f0b049da19a82e0bfeae88221549469057"
-    },
-    {
-      "path": "assets/webfonts/roboto-v27-latin-900italic.ttf",
-      "sha256": "d449bcfcd062266871baf83d35e57d7a90089a3e05a5f96f60c096c2ffeee56c"
-    },
-    {
-      "path": "assets/webfonts/roboto-v27-latin-900italic.woff",
-      "sha256": "b31b421bafe532f6b6bdbb6f680fb11bd3968f23c7fe09a29b1a22f4c8dd2a7e"
-    },
-    {
-      "path": "assets/webfonts/roboto-v27-latin-900italic.woff2",
-      "sha256": "5f2778667ce7da721e201618eac589ac1a32af6b43c246675826a8d728eb902b"
-    },
-    {
-      "path": "assets/webfonts/roboto-v27-latin-italic.eot",
-      "sha256": "b110149bdf2c9ecb6ae8aa8ad9a15ab1b999d5b9a5cfc7698883dff93340a392"
-    },
-    {
-      "path": "assets/webfonts/roboto-v27-latin-italic.svg",
-      "sha256": "75c12901ed264247e6625f4353cc62136a710fe147e1e76618df7d6fed78b902"
-    },
-    {
-      "path": "assets/webfonts/roboto-v27-latin-italic.ttf",
-      "sha256": "3d549f3e5837763b1dbb31a5cae5d4015c9e706e96906aec08b073831c432128"
-    },
-    {
-      "path": "assets/webfonts/roboto-v27-latin-italic.woff",
-      "sha256": "2b5fb1f0ee063320196a64157ae9a949bb4656bc48604914175f1eda636dce07"
-    },
-    {
-      "path": "assets/webfonts/roboto-v27-latin-italic.woff2",
-      "sha256": "46375ee9192c1e0f6eabe4d32b2a48b996b93037f7b4beb970df5b87359548fd"
-    },
-    {
-      "path": "assets/webfonts/roboto-v27-latin-regular.eot",
-      "sha256": "be869a73a160440e8bfc5c7d84a907febd61075d920d51c7d0097d7295c865cd"
-    },
-    {
-      "path": "assets/webfonts/roboto-v27-latin-regular.svg",
-      "sha256": "f23d5a8b97a1078d2c4c8ae90495010fc762986f3eb85e84476c641ee5a72a5b"
-    },
-    {
-      "path": "assets/webfonts/roboto-v27-latin-regular.ttf",
-      "sha256": "52e0349a641604d5204952039bfac8acde78242227defae8864d1caa48b8c5c1"
-    },
-    {
-      "path": "assets/webfonts/roboto-v27-latin-regular.woff",
-      "sha256": "ea50ac7fddb61a5ce248a7f8b3a31a98fe16285e076b16e6da6b4e10910724bb"
-    },
-    {
-      "path": "assets/webfonts/roboto-v27-latin-regular.woff2",
-      "sha256": "cc46322d5c4d41da447f26f7fa714827f2ec9a112968c12ef5736c7494985eca"
+      "path": "assets/light-theme.css",
+      "sha256": "f1577539dd67e1f4504e35b91cc9bf3cf36019b176840553e16510224f442097"
     },
     {
       "path": "assets/svgs/icons/airmedia.svg",
@@ -4237,6 +3933,310 @@
     {
       "path": "assets/svgs/media-transports/light/xm.svg",
       "sha256": "0692fc1884b3d7a988f18b8cf3dbd52d0110ce2cc599d911590641b4635cea99"
+    },
+    {
+      "path": "assets/webfonts/fa-brands-400.ttf",
+      "sha256": "e28096fa75a96ac77020155ea3a6dd7312983e84115366d4cf49a0c312ec6d51"
+    },
+    {
+      "path": "assets/webfonts/fa-brands-400.woff2",
+      "sha256": "232c6f6a7678304f9efaa26f30b1610debc2ba9f4cd636b5e6751c8d73761b92"
+    },
+    {
+      "path": "assets/webfonts/fa-regular-400.ttf",
+      "sha256": "9174757efc83e072436e873c22be1663d3c103b0a16d7fb73569af4918d4d351"
+    },
+    {
+      "path": "assets/webfonts/fa-regular-400.woff2",
+      "sha256": "c27da6f833431da5aa295c44540bfac0fd8270ba6a3c4346427006d8a7b34b76"
+    },
+    {
+      "path": "assets/webfonts/fa-solid-900.ttf",
+      "sha256": "b4990d0d0c5f5d38d62e936eea120674e584c7eea8dcee38a975c0cf9a37539b"
+    },
+    {
+      "path": "assets/webfonts/fa-solid-900.woff2",
+      "sha256": "ae17c16afbea216707b2203ea1cf9bdb45b9bfe47d0f4ae3258ddbc6294dd02f"
+    },
+    {
+      "path": "assets/webfonts/fa-v4compatibility.ttf",
+      "sha256": "ff8f525fb050c5d24519ccc8f5723d85b2e51edd3f9bc6548af55aebadd4f269"
+    },
+    {
+      "path": "assets/webfonts/fa-v4compatibility.woff2",
+      "sha256": "c7a869faca299d15be10a01f19d0765a7c4d46d8922d9b9317235c1e4a6f0982"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-100.eot",
+      "sha256": "5183d37e3038897096ca6345035e44e3a1e1a13c1c88aabf8a38231d73e15739"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-100.svg",
+      "sha256": "26275512bbdd53156733b534b8a93f926663074bd15b32aebc92387ec877e30e"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-100.ttf",
+      "sha256": "33e11a792cdd9d4aecd5b676d1a0dc9e7385975e35080e540b9639203a7e8052"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-100.woff",
+      "sha256": "a38ad0b609e4d2039d18b0f9dc89e9060f2e2e05f2f42764a6a93354346a6c37"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-100.woff2",
+      "sha256": "22482584aeaa7b1d74de072793246c65e38b402ac231f38bb0d9102802543230"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-100italic.eot",
+      "sha256": "6161490d7463e7baaaedf5d76cf31e2a7c4252f60d46a29f4f2186cc1367f218"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-100italic.svg",
+      "sha256": "2e44a7ee51c8ba442989e53c6869fc35083f59e58102cf211b403be1661a1e5b"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-100italic.ttf",
+      "sha256": "426204b23967eb68831eba08ada7a22d4d74d75ed5122dd4c2fb825f8fcab033"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-100italic.woff",
+      "sha256": "75d75439f2a7ea1851a3e5b621320b9dfa1399861d2ec6d443a3c2919b93afb7"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-100italic.woff2",
+      "sha256": "5ec2c7c341db456f2c057a73bdcc82be478efc0834741036198d9589765af6a2"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-300.eot",
+      "sha256": "6d4c20d455759c51daab60db3aec76284ac3696121c590a15ecd99a43bc366db"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-300.svg",
+      "sha256": "70e6369f9bd8828aac01a685fa350fea382251550bfc0de5ebe7163342061c1c"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-300.ttf",
+      "sha256": "cc5011972e352363bd8f41e1a3b59c16cbc5e283cc119af9ddd098ec905b7415"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-300.woff",
+      "sha256": "855a06974032bb69157d469aba6f63440e8be47c421f45c3f396f4e0b87b6de8"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-300.woff2",
+      "sha256": "33530b007071281a97e79baab13ddf7cc4b9de942ebd3e212224857335f7cb97"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-300italic.eot",
+      "sha256": "5ee860c3fcf601e3d51770ffd3bb6682107334db3937daca8e5bf7381f49c9c8"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-300italic.svg",
+      "sha256": "9cf2ffae89e668261e35af3fda7b51078f731cc7e1bf797b7d73dab7c3bbc5de"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-300italic.ttf",
+      "sha256": "38a89f53518a7670fcf67aa104c8e2e8234790a0fcb6950efcee9c2fc885e5d3"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-300italic.woff",
+      "sha256": "917a5159be44de9a82072f6a1c52ef645844d6bedf42f8fd1549cd99d6db2cc5"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-300italic.woff2",
+      "sha256": "4c7856c0d39606a745670d4c03525f3644fe65304191be208516def923cc3762"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-500.eot",
+      "sha256": "6044b9f4de2bfedb0e23cdcde85b950676ca15b6de18bfa98bb944a7be4ed187"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-500.svg",
+      "sha256": "679eb020429b65c21deb42212a49fbdda9be5d985ef55803c2ad83f8c428fbf0"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-500.ttf",
+      "sha256": "7796600b2ee4c84552cb08fd79603c19b95cd21089e802f222320feceba74c45"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-500.woff",
+      "sha256": "bd811625271acca47f7dac48b460f13e08ee947b2a8e17e278c4d5ccb5d9323c"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-500.woff2",
+      "sha256": "bb46ed079c3dd3c39af5051b4ada48f29f49151dad4fa218117bad2fdb5e616f"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-500italic.eot",
+      "sha256": "7f350615f7e3b0a3feef95026ea988efe24b647e9a68a93f420799eee07b57bf"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-500italic.svg",
+      "sha256": "61243fa2e143cf51f1535df33ae4c75d2548567a976d991f03fa87ac04761ea8"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-500italic.ttf",
+      "sha256": "88f87cdf817311dfa951df2579f095f3e992ef882ba9a0711f4a8b32e06bdf85"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-500italic.woff",
+      "sha256": "8411023a027610aeb3dc333438e12a17222163ae78817c5395da04548ed30150"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-500italic.woff2",
+      "sha256": "0a938256d2de59b044f8ca7c7aa0c788ed2ffa9a48bf0e3930a5830c4298f509"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-700.eot",
+      "sha256": "d994c112c4a7ff635c0922fe0cf428f0e176beec73a521b59498630782c25ee6"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-700.svg",
+      "sha256": "90fd3ac31f8553c19f65018e385022cfae140a6341b0cc05d7701a90ad28dde2"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-700.ttf",
+      "sha256": "52dc362cae7e441a98741305a38b045859ac60e99377d9d88922ec32cb944cfa"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-700.woff",
+      "sha256": "a01a632e56731a854f35701aa8c3a6a19a113290d9032ff9048f8064c45383bd"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-700.woff2",
+      "sha256": "0eaeadb58e6995ba85eccb6198aaef77eeb1d4b66699e4e1f3fc10eb6adfcdb9"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-700italic.eot",
+      "sha256": "997b5d17e1b799f8b6e439f0124a2eb55f4e87679d2dfe8e0bbff4949fcff804"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-700italic.svg",
+      "sha256": "f3fa251b00cf984bad8c0224de665a2b2c3b3d6d08b64dd601d0ecaed0b3572c"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-700italic.ttf",
+      "sha256": "b48ef8ec3a31e379fd238f9878c63e35a077997f6a75fcaf7f2382b1460dbd55"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-700italic.woff",
+      "sha256": "a22585cfd64238ef14b1b383b5b9a8bad7c89e354c09fc0886067e876687a38c"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-700italic.woff2",
+      "sha256": "2a42cc82f30fbf25a268f6d5a10158e8312a838222da6847158ea4175fa289d4"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-900.eot",
+      "sha256": "2fd57e4688ff39c31aef08fe926b6fd5b00a35c1e71440bb0b26fe91c455bb1c"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-900.svg",
+      "sha256": "1f626680217362d9a26da9eca11d46a0318b95c5d084fccce55a08ee4971a34c"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-900.ttf",
+      "sha256": "5abde466e653eda612285a42d7f23c6490961fe942d2ec3b86d731db531b57bd"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-900.woff",
+      "sha256": "d33864e01e5103ebe439732bb606e694c73b6851f24da25d41901eb17cb5d98e"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-900.woff2",
+      "sha256": "0e868ca932480407e63d27e8e868cb1514581142928b9be15ec9039bf5fe348f"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-900italic.eot",
+      "sha256": "2fc971723c90add9b3f6cae7738625eceb3a3ddf2a553c5454d539aaada83247"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-900italic.svg",
+      "sha256": "fea2db367482beff05c6651eccfce3f0b049da19a82e0bfeae88221549469057"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-900italic.ttf",
+      "sha256": "d449bcfcd062266871baf83d35e57d7a90089a3e05a5f96f60c096c2ffeee56c"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-900italic.woff",
+      "sha256": "b31b421bafe532f6b6bdbb6f680fb11bd3968f23c7fe09a29b1a22f4c8dd2a7e"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-900italic.woff2",
+      "sha256": "5f2778667ce7da721e201618eac589ac1a32af6b43c246675826a8d728eb902b"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-italic.eot",
+      "sha256": "b110149bdf2c9ecb6ae8aa8ad9a15ab1b999d5b9a5cfc7698883dff93340a392"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-italic.svg",
+      "sha256": "75c12901ed264247e6625f4353cc62136a710fe147e1e76618df7d6fed78b902"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-italic.ttf",
+      "sha256": "3d549f3e5837763b1dbb31a5cae5d4015c9e706e96906aec08b073831c432128"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-italic.woff",
+      "sha256": "2b5fb1f0ee063320196a64157ae9a949bb4656bc48604914175f1eda636dce07"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-italic.woff2",
+      "sha256": "46375ee9192c1e0f6eabe4d32b2a48b996b93037f7b4beb970df5b87359548fd"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-regular.eot",
+      "sha256": "be869a73a160440e8bfc5c7d84a907febd61075d920d51c7d0097d7295c865cd"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-regular.svg",
+      "sha256": "f23d5a8b97a1078d2c4c8ae90495010fc762986f3eb85e84476c641ee5a72a5b"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-regular.ttf",
+      "sha256": "52e0349a641604d5204952039bfac8acde78242227defae8864d1caa48b8c5c1"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-regular.woff",
+      "sha256": "ea50ac7fddb61a5ce248a7f8b3a31a98fe16285e076b16e6da6b4e10910724bb"
+    },
+    {
+      "path": "assets/webfonts/roboto-v27-latin-regular.woff2",
+      "sha256": "cc46322d5c4d41da447f26f7fa714827f2ec9a112968c12ef5736c7494985eca"
+    },
+    {
+      "path": "assets/zoom-dark-theme.css",
+      "sha256": "c07eccfdde7a0ad4403390803546015108e06fa54d4b757e5e4a9d7f60ef90d0"
+    },
+    {
+      "path": "assets/zoom-light-theme.css",
+      "sha256": "1c7426ee9a1b740a560ccdb4e2220df36565648e0d2334618adf3b83bf608edb"
+    },
+    {
+      "path": "config/contract.cse2j",
+      "sha256": "fedad347603dc6bc3fdaf7c31d42085bb05fcbb43305a5853e29edb3030a651b"
+    },
+    {
+      "path": "favicon.ico",
+      "sha256": "1da1ef4cc443f86ea1c91cd367c6228d26c114ec9d198ec9f911ca0955336579"
+    },
+    {
+      "path": "index.html",
+      "sha256": "9487d826c3c610fe20157ccaf33e3635eddc45a1caf572cfd639a0bb1d35429b"
+    },
+    {
+      "path": "libraries/component.89647f63.js",
+      "sha256": "7156927f25b60e19a91e85e85efb9fbbfd5cc49818cf344bc4d831316267bffe"
+    },
+    {
+      "path": "libraries/component.89647f63.js.LICENSE.txt",
+      "sha256": "8de9a82a0ccb8ba7d327121926d16584821776f6ebe2cc952c1887b28550542c"
+    },
+    {
+      "path": "libraries/cr-com-lib.4d074c68.js",
+      "sha256": "bc8a43309e33e1daf9b78dc370292383540c129512f5f5db9f7bef8d2f769710"
     }
   ],
   "plans": [

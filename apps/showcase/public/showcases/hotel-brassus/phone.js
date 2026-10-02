@@ -2,10 +2,11 @@
 (() => {
  const zones={bar:'Bar',entrance:'Entrée / Lobby',restaurant:'Restaurant',salon:'Petit salon',pdr:'Salle privée',wellness:'Wellness',seminar:'Séminaires'};
  // Miroir de la GUI tablette (source unique pour l'iPhone) : zones d'éclairage, faders audio groupés par lecteur Wiim, sources, stores.
+ // 2.3.6 (HDH 2.12.19) : Restaurant sans « Wiim Restaurant » ; zone Inspiration (Restaurant et Entrée) avec sélecteur Wiim / Commun (sources de groupe).
  const layout={
   bar:{areas:['Bar'],audio:[{faders:['Bar']}],sources:['Wiim','Commun'],blinds:2},
-  entrance:{areas:['Lobby','Foyer','WC400'],audio:[{faders:['Lobby','Foyer','WC400']}]},
-  restaurant:{areas:['Restaurant','WC300','Inspiration'],audio:[{player:'Wiim Restaurant',faders:['Restaurant','WC300']},{player:'Wiim Inspiration',faders:['Inspiration']}],blinds:2},
+  entrance:{areas:['Lobby','Inspiration','WC400'],audio:[{faders:['Lobby']},{faders:['Inspiration'],sources:['Wiim','Commun']},{faders:['WC400']}]},
+  restaurant:{areas:['Restaurant','WC300','Inspiration'],audio:[{faders:['Restaurant','WC300']},{faders:['Inspiration'],sources:['Wiim','Commun']}],blinds:2},
   salon:{areas:['Petit salon'],audio:[{faders:['Petit salon']}]},
   pdr:{areas:['Salle privée'],audio:[{faders:['Salle privée']}]},
   wellness:{areas:['WC','Couloir','Relax'],audio:[{player:'Wiim Spa',faders:['WC','Couloir','Relax']},{player:'Wiim Fitness',faders:['Fitness']}]},
@@ -14,7 +15,7 @@
  const paths={lighting:'M9 18h6m-5 3h4M8 14a6 6 0 1 1 8 0l-1 3H9z',audio:'M9 18V5l11-2v13M9 8l11-2M9 18c0 3-6 4-6 1s6-4 6-1m11-2c0 3-6 4-6 1s6-4 6-1',blinds:'M3 4h18M4 8h16M4 12h16M4 16h16M12 16v5m-3-3 3 3 3-3',temperature:'M10 14V5a2 2 0 0 1 4 0v9a4 4 0 1 1-4 0M12 10v7',speaker:'M4 9h4l5-4v14l-5-4H4zM16 9a4 4 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11',muted:'M4 9h4l5-4v14l-5-4H4zM16 9l5 6M21 9l-5 6'};
  const icon=k=>`<svg viewBox="0 0 24 24" aria-hidden="true"><path d="${paths[k]}"/></svg>`;
  const params=new URLSearchParams(location.search);let zone=zones[params.get('zone')]?params.get('zone'):'bar',tab='lighting',circuits=false;
- const state=Object.fromEntries(Object.entries(layout).map(([k,L])=>{const faders=L.audio.flatMap(g=>g.faders);return [k,{area:0,areas:L.areas.map(()=>({lights:[65,65,65,65],scene:null})),volumes:faders.map(()=>40),mutes:faders.map(()=>false),source:0,mode:0,temp:21,blinds:Array(L.blinds||0).fill(0),target:Array(L.blinds||0).fill(0)}]}));
+ const state=Object.fromEntries(Object.entries(layout).map(([k,L])=>{const faders=L.audio.flatMap(g=>g.faders);return [k,{area:0,areas:L.areas.map(()=>({lights:[65,65,65,65],scene:null})),volumes:faders.map(()=>40),mutes:faders.map(()=>false),source:0,gsources:L.audio.map(()=>0),mode:0,temp:21,blinds:Array(L.blinds||0).fill(0),target:Array(L.blinds||0).fill(0)}]}));
  const cur=s=>s.areas[s.area];
  const zoneEl=document.querySelector('#zone'),content=document.querySelector('#content'),nav=document.querySelector('nav'),theme=document.querySelector('#theme');
  zoneEl.innerHTML=Object.entries(zones).map(([k,v])=>`<option value="${k}">${v}</option>`).join('');zoneEl.value=zone;
@@ -35,7 +36,7 @@
  if(L.modes)html+='<div class="card stack"><span class="subtle">Mode de salle</span><div class="row">'+L.modes.map((n,i)=>`<button data-mode="${i}" aria-pressed="${s.mode===i}" style="flex:1">${n}</button>`).join('')+'</div></div>';
  if(L.sources)html+='<div class="sources">'+L.sources.map((n,i)=>`<button data-source="${i}" aria-pressed="${s.source===i}">${n}</button>`).join('')+'</div>';
  html+=`<div class="card"><div class="audio-status"><div class="audio-meter ${playing?'playing':''}" role="img" aria-label="${playing?'Audio en cours de lecture':'Audio à l’arrêt'}" ${playing?'':'hidden'}>${'<i></i>'.repeat(6)}</div><span id="audio-status-label">${playing?'Lecture en cours':'Audio coupé'}</span></div>`;
- html+=L.audio.map(g=>(g.player?`<div class="player">${g.player}</div>`:'')+g.faders.map(n=>{const i=k++;return `<div class="fader"><div class="row"><span>${n}</span><output data-volume-value="${i}">${s.volumes[i]} %</output></div><div class="row"><input data-volume="${i}" aria-label="Volume ${n}" type="range" min="0" max="100" value="${s.volumes[i]}"><button data-mute="${i}" class="mute" aria-pressed="${s.mutes[i]}" aria-label="${s.mutes[i]?'Rétablir le son':'Couper le son'} ${n}">${icon(s.mutes[i]?'muted':'speaker')}</button></div></div>`}).join('')).join('')+'</div>'}
+ html+=L.audio.map((g,gi)=>(g.player?`<div class="player">${g.player}</div>`:'')+g.faders.map(n=>{const i=k++;return `<div class="fader"><div class="row"><span>${n}</span><output data-volume-value="${i}">${s.volumes[i]} %</output></div><div class="row"><input data-volume="${i}" aria-label="Volume ${n}" type="range" min="0" max="100" value="${s.volumes[i]}"><button data-mute="${i}" class="mute" aria-pressed="${s.mutes[i]}" aria-label="${s.mutes[i]?'Rétablir le son':'Couper le son'} ${n}">${icon(s.mutes[i]?'muted':'speaker')}</button></div></div>`}).join('')+(g.sources?`<div class="sources group-sources" role="group" aria-label="Source ${g.faders.join(', ')}">`+g.sources.map((n,i)=>`<button data-gsource="${gi}:${i}" aria-pressed="${s.gsources[gi]===i}">${n}</button>`).join('')+'</div>':'')).join('')+'</div>'}
  if(tab==='temperature')html=`<div class="eyebrow">Confort de la pièce</div><h1>Température</h1><div class="card"><p style="text-align:center">Consigne</p><div class="value" aria-live="polite">${s.temp.toFixed(1)}<span style="font-size:22px"> °C</span></div><div class="adjust"><button id="minus" aria-label="Diminuer la température">−</button><button id="plus" aria-label="Augmenter la température">+</button></div></div><p>Température ambiante · 21.0 °C</p>`;
  if(tab==='blinds')html='<div class="eyebrow">Maîtriser la lumière naturelle</div><h1>Stores</h1>'+s.blinds.map((v,i)=>`<div class="card stack"><div class="row"><span>Store ${i+1}</span><output data-blind-value="${i}">${Math.round(v)} %</output></div><div class="row">${['Ouvrir','Stop','Fermer'].map((n,j)=>`<button data-blind="${i}" data-action="${j}">${n}</button>`).join('')}</div></div>`).join('');
  content.innerHTML=html;
@@ -44,6 +45,7 @@
  content.querySelectorAll('[data-light]').forEach(r=>r.oninput=()=>{a.lights[+r.dataset.light]=+r.value;a.scene=null;r.nextElementSibling.value=r.value+' %';emit(true)});
  content.querySelector('#circuits')?.addEventListener('click',()=>{circuits=!circuits;render()});
  content.querySelectorAll('[data-source]').forEach(b=>b.onclick=()=>{s.source=+b.dataset.source;render()});
+ content.querySelectorAll('[data-gsource]').forEach(b=>b.onclick=()=>{const [g,i]=b.dataset.gsource.split(':').map(Number);s.gsources[g]=i;render()});
  content.querySelectorAll('[data-mode]').forEach(b=>b.onclick=()=>{s.mode=+b.dataset.mode;render()});
  content.querySelectorAll('[data-volume]').forEach(r=>r.oninput=()=>{const i=+r.dataset.volume;s.volumes[i]=+r.value;content.querySelector(`[data-volume-value="${i}"]`).value=r.value+' %';const playing=s.volumes.some((v,n)=>!s.mutes[n]&&v>0),meter=content.querySelector('.audio-meter'),label=content.querySelector('#audio-status-label');meter?.classList.toggle('playing',playing);if(meter)meter.hidden=!playing;if(label)label.textContent=playing?'Lecture en cours':'Audio coupé'});
  content.querySelectorAll('[data-mute]').forEach(b=>b.onclick=()=>{const i=+b.dataset.mute;s.mutes[i]=!s.mutes[i];render()});
