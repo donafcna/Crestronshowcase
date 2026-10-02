@@ -1,5 +1,16 @@
 # Villa Crans CH5 — journal des versions
 
+## v6.0.4 — 02/10/2026 — plus de zoom tactile sur les écrans (pincement, double appui)
+
+| Artefact | Etat de ce lot |
+|---|---|
+| GUI | nouveau `src/js/gesture-controls.js` (chargé par index.html et iphone.html après villa-joins.js) : `touch-action: pan-x pan-y` sur html/body, blocage des événements gesture* (WebKit), du touchmove à deux doigts, du double appui et de Ctrl+molette ; `<meta viewport>` avec `maximum-scale=1, user-scalable=no` — **a recompiler** web + tsw + mobile |
+| Config | `meta.version` 1.0.218 |
+| Vitrine | resynchronisee (le script copie tous les `js/*-controls.js`) |
+| Batterie | smoke dalle + iPhone x 3 themes, 0 erreur console ; pincement simule au Playwright : echelle visuelle inchangee |
+
+**Retour Donatien.** Sur la TSW, un pincement a deux doigts zoomait la GUI.
+
 ## v6.0.3 — 01/10/2026 — nom affiché « Villa FTV » (au lieu de Villa Crans / Villa Crans-Montana)
 
 | Artefact | Etat de ce lot |
