@@ -1,5 +1,19 @@
 # Villa Crans CH5 — journal des versions
 
+## v6.0.6 — 02/10/2026 — changement de pièce 5x plus rapide ; Web XPanel muet (IP-ID mémorisé hors programme)
+
+| Artefact | Etat de ce lot |
+|---|---|
+| GUI | `js/motors-controls.js` : la fenêtre Moteurs n'est reconstruite que lorsqu'elle est visible (avant : 12 cartes `<ch5-button>` recréées à chaque changement de pièce, fenêtre fermée) ; `index.html` / `iphone.html` émettent `villa-room-changed`, le pont SIMPL suit la pièce sans attendre son sondage de 300 ms ; `VillaJoins.validIpId()` : un IP-ID mémorisé par le navigateur hors des écrans du programme (0x03-0x06, 0x11-0x1F) retombe sur la valeur par défaut — **a recompiler** web + tsw + mobile |
+| Config | `meta.version` 1.0.223 |
+| Vitrine | resynchronisee |
+| Mesure | `changeRoomUI` sur la dalle, CPU ralenti x6 (ordre de grandeur TSW) : 225 ms bloquants -> 35-50 ms ; retour « pièce sélectionnée » immédiat (avant : jusqu'à 300 ms) |
+| Batterie | pont SIMPL 6/6, moteurs 39/40 (le point rouge « chaîne moteur 9 (135, 163) » attend les joins v5, obsolète en mode simpl : les joins 1434/1459 émis sont les bons), zoom 6/6, smoke 0 erreur |
+
+**Retours Donatien (recette TSW / XPanel).** Lag persistant à la sélection d'une pièce ; Web XPanel « Online (54) » sans aucun signal au Debugger.
+**Analyse.** Profil CPU : 160 des 172 ms du changement de pièce partaient dans `VillaMotors.render()` (reconstruction de la fenêtre Moteurs fermée), identique en mode C#.
+XPanel : « (54) » est l'IP-ID utilisé, 0x36 en hexadécimal, lu dans le localStorage du navigateur (reste d'un autre projet) ; aucun écran 0x36 dans le programme, donc liaison acceptée mais muette.
+
 ## v6.0.5 — 02/10/2026 — retour « pièce sélectionnée » produit par l'écran (mode SIMPL)
 
 | Artefact | Etat de ce lot |

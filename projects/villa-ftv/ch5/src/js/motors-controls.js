@@ -294,8 +294,17 @@
   }
 
   // ---------- Rendu ----------
+  // v6.0.6 : la fenêtre Moteurs n'est reconstruite que lorsqu'elle est visible. Avant, chaque changement de
+  // pièce recréait les 12 cartes (<ch5-button>) fenêtre fermée : ~160 ms sur PC, près d'une seconde sur une TSW,
+  // c'était l'essentiel du délai ressenti à la sélection d'une pièce. Fenêtre fermée : on note seulement « à refaire ».
+  function overlayVisible() {
+    var o = document.getElementById('motors-overlay');
+    return !!(o && o.offsetWidth > 0 && o.offsetHeight > 0);
+  }
   function render(force) {
     var box = document.getElementById('motors-container'); if (!box) return;
+    if (!overlayVisible()) { state.dirty = true; state.dirtyForce = state.dirtyForce || !!force; return; }
+    if (state.dirty) { force = force || state.dirtyForce; state.dirty = false; state.dirtyForce = false; }
     var roomId = currentRoomId(), list = motorsOf(roomId);
     var sig = roomId + '|' + lang() + '|' + JSON.stringify(list);
     if (!force && sig === state.sig && cards().length === list.length) return;
@@ -326,7 +335,8 @@
     if (overlay) overlay.classList.add(MOBILE ? 'mc-phone' : 'mc-large');   // pas de :has() (navigateur des TSW)
     render(true);
     if (overlay && window.MutationObserver) new MutationObserver(function () {
-      if (overlay.style.display && overlay.style.display !== 'none') relayout();
+      if (!overlayVisible()) return;
+      if (state.dirty) render(false); else relayout();   // render() relance relayout()
     }).observe(overlay, { attributes: true, attributeFilter: ['style', 'class'] });
     window.addEventListener('resize', relayout);
     window.addEventListener('villa-config-loaded', function () { render(true); });

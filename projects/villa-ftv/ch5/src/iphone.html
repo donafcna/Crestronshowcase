@@ -57,7 +57,7 @@
             var urlIpId = urlParams.get('ipId') || urlParams.get('ipid');
             var ipId = '0x06';
             try {
-                ipId = urlIpId || localStorage.getItem('crestron_ipid_iphone') || '0x06'; // 0x06 par défaut pour l'iPhone
+                ipId = urlIpId || window.VillaJoins.validIpId(localStorage.getItem('crestron_ipid_iphone'), '0x06'); // 0x06 par défaut pour l'iPhone
                 if (urlIpId) {
                     localStorage.setItem('crestron_ipid_iphone', urlIpId);
                 }
@@ -3106,6 +3106,8 @@
                 try {
                     localStorage.setItem('active_room_iphone', roomId.toString());
                 } catch (e) {}
+                // v6.0.6 : le pont SIMPL (js/villa-joins.js) suit la pièce sans attendre son sondage de 300 ms.
+                try { document.dispatchEvent(new CustomEvent('villa-room-changed', { detail: { room: parseInt(roomId, 10) } })); } catch (e) {}
                 applyPilotageVisibility(roomId);
                 if(window.refreshWellnessControls)window.refreshWellnessControls(roomId);
                 // Noms des scènes d'éclairage de la pièce (villa_config, traduits) — même règle que index.html

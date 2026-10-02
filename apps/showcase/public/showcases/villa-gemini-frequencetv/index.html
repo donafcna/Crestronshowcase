@@ -82,7 +82,7 @@
             var urlIpId = urlParams.get('ipId') || urlParams.get('ipid');
             var ipId = '0x04';
             try {
-                ipId = urlIpId || localStorage.getItem('crestron_ipid') || '0x04';
+                ipId = urlIpId || window.VillaJoins.validIpId(localStorage.getItem('crestron_ipid'), '0x04');
                 if (urlIpId) {
                     localStorage.setItem('crestron_ipid', urlIpId);
                 }
@@ -7285,6 +7285,8 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
             applyPilotageVisibility(roomId);
                 if(window.refreshWellnessControls)window.refreshWellnessControls(roomId);
             window.currentActiveRoomId = roomId.toString();
+            // v6.0.6 : le pont SIMPL (js/villa-joins.js) suit la pièce sans attendre son sondage de 300 ms.
+            try { document.dispatchEvent(new CustomEvent('villa-room-changed', { detail: { room: parseInt(roomId, 10) } })); } catch (e) {}
             // Les widgets peuvent dépendre de la pièce affichée : ré-évaluation à chaque changement
             if (typeof window.applyWidgetsVisibility === 'function') window.applyWidgetsVisibility();
             const roomObj = config.rooms.find(r => r.id === roomId);

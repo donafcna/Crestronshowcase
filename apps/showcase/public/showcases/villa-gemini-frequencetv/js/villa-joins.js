@@ -412,8 +412,21 @@
         });
     }
 
+    /* ---------- IP-ID des écrans Web XPanel ---------- */
+    // v6.0.6 — Les IP-ID déclarés dans le programme SIMPL (simpl/direct/generate_simpl.js) : dalle 0x03, XPanel 0x04,
+    // iPad 0x05, iPhone 0x06, XPanel QR par pièce 0x11..0x1F. Un IP-ID mémorisé par le navigateur hors de cette
+    // liste (reste d'un autre projet, ex. 0x36) donnerait un écran « Online » mais muet : on retombe sur la valeur par défaut.
+    function validIpId(id, fallback) {
+        var n = parseInt(String(id || ''), 16);
+        var ok = !isNaN(n) && ((n >= 3 && n <= 6) || (n >= 0x11 && n <= 0x1F));
+        if (!ok && id && window.console && console.warn) { console.warn('[VillaJoins] IP-ID ' + id + ' inconnu du programme : ' + fallback + ' utilisé'); }
+        return ok ? id : fallback;
+    }
+
     /* ---------- API publique ---------- */
     window.VillaJoins = {
+        /** IP-ID accepté par le programme SIMPL, sinon la valeur par défaut de l'écran. */
+        validIpId: validIpId,
         /** Appelle fn(CrComLib) dès que la bibliothèque CH5 est disponible. */
         whenReady: function (fn) {
             if (typeof fn !== 'function') { return; }
@@ -475,6 +488,7 @@
     }
     // La configuration peut arriver plus tard (transport sériel 105 depuis le CP4).
     // v6.0 : la pièce affichée peut changer sans émission (dalle : changeRoomUI, iPhone : QR ?room=) — on la suit.
+    document.addEventListener('villa-room-changed', function (ev) { if (S.on && ev && ev.detail && ev.detail.room) { setRoom(ev.detail.room); } });
     setInterval(function () {
         if (!S.on) { return; }
         var r = 0;
