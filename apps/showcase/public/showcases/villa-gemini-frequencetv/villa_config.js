@@ -2,7 +2,7 @@ window.villaConfigEmbedded = {
   "meta": {
     "projet": "Villa FTV",
     "integrateur": "Fréquence TV",
-    "version": "1.0.223-showcase",
+    "version": "1.0.224-showcase",
     "mode": "showcase",
     "modeDescription": "'deploiement' = GUI livré chez le client : les feedbacks viennent du CP4 (C# slot 1 + SIMPL slot 2) via js/webxpanel.js / CrComLib, aucune simulation. 'showcase' = copie pour le site crestrongui.vercel.app : posé UNIQUEMENT par scripts/sync-villa-crans.py du dépôt Crestronshowcase, feedbacks simulés dans le navigateur (js/local-feedback.js), curseur de démo géré par le site (jamais par le GUI). Ne jamais mettre 'showcase' ici. Voir docs/08_WORKFLOW_SHOWCASE.md.",
     "backend": "simpl",
@@ -30,6 +30,14 @@ window.villaConfigEmbedded = {
       "Un pilotage avec \"actif\": false masque toute la section correspondante dans le GUI pour cette pièce.",
       "ICONES : chaque piece a un champ icone (emoji affiche dans le menu de gauche). Choisir dans valeursParDefaut.iconesDisponibles et copier-coller."
     ]
+  },
+  "interface": {
+    "description": "Navigation entre pieces (v6.1, js/nav-pieces.js). menuPieces.visible=false : pas de menu de gauche, contenu pleine largeur, nom de la piece en titre, appui sur le titre = choix de piece si plusieurs sont proposees. pieces : identifiants proposes dans l'ordre ([] = toutes). pieceParDefaut : piece au demarrage. Les parametres d'adresse ?menu=0|1 et ?room=N (QR codes, site vitrine) priment sur ce bloc.",
+    "menuPieces": {
+      "visible": true,
+      "pieces": [],
+      "pieceParDefaut": null
+    }
   },
   "valeursParDefaut": {
     "iconesDisponibles": {

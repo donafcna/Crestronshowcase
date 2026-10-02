@@ -1,5 +1,21 @@
 # VillaCrans — contexte pour Claude (lire en premier, économise les tokens)
 
+## 02/10/2026 — v6.0.3 → v6.1 : « Villa FTV », dossier `projects/villa-ftv`, correctifs de recette TSW, GUI sans menu
+- Nom affiché **Villa FTV** (v6.0.3) ; dossier renommé `projects/villa-ftv` (f95281a8). Zoom tactile supprimé (`js/gesture-controls.js`, v6.0.4).
+- Pont SIMPL : la pièce affichée est propre à l'écran, retour d11-40 / a10 produit localement (v6.0.5) ; `VillaMotors.render()` paresseux
+  (lag ×5, v6.0.6) ; `VillaJoins.validIpId` (XPanel « Online (54) » = IP-ID 0x36 mémorisé) ; **repeat digital** (`sendObjectToNative` des
+  `<ch5-button sendEventOnClick>`) et analogiques `{rcb}` (`bridgeReceiveObjectFromNative`) traduits (v6.0.7). Un seul `VillaPiece.usp`
+  (`INTEGER_PARAMETER Piece`, `mP=2 / P1= / P2=Nd`), PIT ≤ 20 car. (`VillaCrans_Direct`), règle SIMPL+ 1307 (scalaires avant tableaux).
+- **CrComLib : `Ch5SignalBridge.subscribe()` n'est jamais appelé** (`Ch5Signal._subscriptions` contient déjà `stateSubscription`) — la dalle
+  pousse tous les joins, ne pas « corriger » les abonnements. Recette TSW ouverte : joins émis OK, retours non affichés (consigne, faders → 0
+  après 1,5 s, sources) → lire le bloc « Pont SIMPL » de l'écran d'administration (appui long 3 s, `VillaJoins.diagText()`, v6.1).
+  « Sauvegarder » des presets globaux (s420) = sans objet en v6.0 (valeurs fixes). Température `--` tant que `RETOUR_Temperature` non câblé.
+- **v6.1 — `interface.menuPieces {visible, pieces, pieceParDefaut}`** (`js/nav-pieces.js` + `themes/nav-pieces.css`, doc § 3 bis) ; `?menu=0|1`,
+  `?room=N` prioritaires ; sans menu : titre = pièce, appui court = fenêtre « choisir une pièce ». QR (`gen_qr.js`) et vitrine passent `menu=0&room=N`.
+  **`applyTheme` ne retire plus que `theme-*`** (`body.className = ''` effaçait `vn-no-menu`, `modal-ouverte`). Site : `VillaFtvTools.jsx`
+  (sélecteur « Espace », Général + pièces, pas sur smartphone). Batterie `tools/batterie-v61.mjs` (186 contextes, 0 rouge).
+- PowerShell de Donatien : `git` absent du PATH → jamais de `git pull` dans les commandes ; commits/push via le PC (gitkraken). `deploy.ps1 -Target simpl` n'arrête plus le slot 2.
+
 ## 30/09/2026 — v6.0 : UN SEUL programme SIMPL (slot 1), plus de C# (CH5 1.0.215 + SIMPL à compiler, F12)
 - `meta.backend = "simpl"` (Villa Crans) : chaque écran émet/reçoit les joins de SA pièce, join = 625 + (id−1)×125 + offset (626..2500 ;
   plafond des symboles de dalle SIMPL = 2511 digitaux → 15 pièces max). Table `contrat.simplDirect.mapping` (offsets compacts 1..125).
@@ -10,7 +26,7 @@
 - `simpl/direct/generate_simpl.js` → `VillaCrans_Direct.smw` (socle CP4 sans EISC, 19 dalles sur les MÊMES signaux, 15 `VillaPiece_Rnn.usp` +
   `VillaGlobal.usp` générés avec les valeurs de la config) + `SIGNAUX.md`. Formats de symboles copiés d'HDH PRO4 v9 (TSW-770, XPanel 3.0,
   Crestron One, SIMPL+ SmC 103, index = ordre de déclaration). Contrôles `verifier_smw.py`, `croiser_contrat.py` ; GUI `tools/qa-simpl-v60.mjs`.
-- `deploy.ps1 -Target simpl` : LPZ → /program01, retire l'ancien cpz, `stopprog -p:02`, `progload -p:01`. Dalle 0x03 déclarée TSW-770 : Replace Device → TSW-1070.
+- `deploy.ps1 -Target simpl` : LPZ → /program01, retire l'ancien cpz, `progload -p:01`. Dalle 0x03 déclarée TSW-770 : Replace Device → TSW-1070.
 
 ## 29/09/2026 — v5.3 fenêtre Moteurs (joins 7-12 : 129-146, lamelles 111-128 / 157-174)
 - `js/motors-controls.js` + `themes/motors-controls.css` : `moteurs` = { nombre 1..12, liste { nom, type, lamelles } }, pagination sans défilement,
@@ -22,7 +38,7 @@
   d81-98, d201-204, a31/s32/d49/d50/d610-615/a61, d401-409). Sans ce drapeau (Villa Crans) : inerte. API `window.ConnectUI`.
 - C# : `LoadFeatureFlags` + `IsDisabledFeatureJoin` — `contrat.alarme.actif=false` ou aucune pièce `audioVideo.actif` → joins alarme / A/V
   ignorés à l'entrée (ni traitement ni miroir EISC). Villa Crans inchangée (alarme et A/V présents).
-- `applyTheme` vide `body.className` : ne jamais porter un état d'interface sur `body` (Connect l'a sur `<html>`).
+- `applyTheme` ne retire que `theme-*` depuis v6.1 ; Connect garde son état sur `<html>`.
 - v5.5 : `connect-boot` dans le `<head>` (après `villa_config.js`) pose `data-iface` avant tout rendu → aucun flash du Core ; contrôle `apps/showcase/scripts/test-connect-flash.cjs`.
 
 ## 28/09/2026 — v5.1 : le Core sert un 2e projet, `projects/appartement-crans/` (lire son `CONTEXTE-CLAUDE.md`)
@@ -45,26 +61,12 @@
   traduits, pastille `data-saved`, appui long (`SCENE_SEL`, `sceneIdxOf` lit `data-join`) couvrent les deux.
 - Batterie `tools/qa-v47.mjs <page> <dossier> [--w --h --base]` (pont natif factice) ; smartphone de référence : iPhone 18 Pro Max 440×956 (cf. `apps/showcase/CLAUDE.md`).
 
-## 17-18/09/2026 — contrat v4.1, P1, traductions (détail : CHANGELOG, docs projet Cowork 80/81)
-- **Jamais deux sessions en écriture en même temps** : `git status` avant toute livraison (deux sessions le 18/09 ; archive `backup/crestron-local-2026-09-18`).
-- Contrat v4.1 : scènes mémorisées par le C# (💾 → sériel 421 `{p,s,c[%]}`, marqueurs d421-424, plus de `localStorage`), 20 circuits (71-90).
-  **Le CP4 tronque à 119 caractères tout sériel émis par un écran.** Le C# ignore les entrées EISC globales `Source_Select_n`, `Audio_Mute`,
-  `Motor_n_*`, `Shades_Scene_n`, `Circuit_n#`, `Room_Select#` ; il lit 41/42, 44/45, 301-312, 410/411 et les `_Actual` par pièce.
-- Traductions : textes fixes = `data-i18n` + dictionnaires fr/en/es/de/ru (`window.villaI18n`) ; noms de `villa_config.json` = `traductions.<lang>[FR]`
-  via `villaTranslateName()`. Tout nouveau libellé passe par l'un des deux. Nom du projet : **Crans-Montana**, jamais « Grand Montana ».
-- **Un `<ch5-button sendEventOnClick>` émet seul l'impulsion** (jamais de `publishEvent` en plus dans son `onclick`). Un join sans nom dans le
-  slot 2 est invisible au debugger (`generate_slot2.js` d'abord). Réseau : CP4 192.168.1.200, TSW 192.168.1.16, banc bureau 192.168.3.109 ;
-  iPhone : IP-ID 0x06 non enregistré → QR `?ipId=0x1N&room=N`.
-- Feuille de route (17/09) : V1 stable → bêta Alexandre → « Core Fréquence TV » réutilisable (CH5 + C# génériques, le programmeur ne touche
-  que le JSON et SIMPL) → toutes les GUI du showcase au niveau Villa Crans. Chantiers Core ouverts : type de source non paramétrable,
-  offsets +41..57 / +81..92 sans nom EISC, générateur qui duplique les plages, bornes HVAC / presets / IP-ID en dur dans le C#.
-
 ## Les 4 artefacts à suivre (convention validée le 13.09.2026)
 Quatre versions à tenir alignées, ici et en tête de chaque entrée du CHANGELOG.
 | Artefact | Version | Compilation |
 |---|---|---|
-| CH5 `.ch5z` (TSW + XPanel + mobile) | source **1.0.215** (v6.0, 30/09) ; 1.0.211 compilé le 29/09 (TSW : échec SFTP port 22) ; **à compiler** en un build (`-Target web`, `tsw`, `mobile`) | `deploy.ps1` incrémente `version.json` à chaque build, puis aligner `meta.version` |
-| Showcase Vercel | prod = `74cd4a41` (17.09) ; copie locale régénérée le 27/09 (v4.4 → v4.7), **non poussée** | `sync-villa-crans.py` puis push `main` → Vercel |
+| CH5 `.ch5z` (TSW + XPanel + mobile) | **1.0.230** déployé le 02/10 (v6.0.7) sur TSW, XPanel, mobile ; v6.1 (config 1.0.224) **à compiler** (`-Target web`, `tsw`, `mobile`) | `deploy.ps1` incrémente `version.json` à chaque build, puis aligner `meta.version` |
+| Showcase Vercel | prod suit `main` ; copie Villa FTV régénérée avec v6.1 | `sync-villa-crans.py` puis push `main` → Vercel |
 ## Fichiers qui comptent
 - `src/index.html` (dalle TSW-1070, iPad, XPanel) et `src/iphone.html` : SOURCE DE VÉRITÉ. Blocs `<style id="tablet-sidebar">` (menu de gauche groupé), `<style id="global-modals-xl">` (modales agrandies), `<style id="theme-readability">` / `<style id="theme-overlays">` (thèmes Sombre / Clair / Verre dépoli).
 - `src/js/villa-joins.js` : pont SIMPL v6.0 (actif si `meta.backend = simpl`) ; couche v3 désactivée ; `villaPiecesActives(vc)` et miroirs `data-join`.
@@ -112,12 +114,6 @@ scènes, consigne, vacances, partitions ; le slot 2 pilote le matériel réel.
 ## GUI smartphone — agrandissement (14.09.2026)
 Styles `mobile-xl` (fin de `<body>`), `mobile-ux` (moteurs animés, MutationObserver), blocs `mobile-lot-0915/0916` ; cibles ≥ 44 px, repli `@media (max-height: 700px)`. Entête = pièces + engrenage.
 Pièges : un style en ligne `!important` ne se reprend pas en CSS (le retirer du HTML) ; `ch5-button` → `width/height:100%` sur `> div` et `.cb-btn` ; `min-width:0` en grille ; les `customStyle` de `#source-control-overlay` sont `!important` un par un, ne pas les « nettoyer ».
-## Lot smartphone 15-16.09.2026 — logique audio/vidéo et pièges CH5
-- **Un seul point d'entrée pour les sources : `window.avSelect(join)`** (IIFE `AV`, identique dalle / iPhone) : confirmation musique / audio vidéo,
-  `avOpenRemote` (tests en `page.click`), `avRender()` pose `selected` / `audio-active` / `audio-music` ; badge égaliseur `.tv-live-badge`.
-- **`customClass` n'est PAS recopié sur l'hôte** : sélecteur `ch5-button[customClass~="x"] .cb-btn`, jamais `ch5-button.x`. Menu : pièces `actif:false`
-  masquées par `villaPiecesActives(vc)`. Après toute reconstruction HTML par script : compter les `<div>`. Sections conditionnelles par
-  `applyPilotageVisibility`, jamais par heuristique sur le nom. `src/villa_config.json` = copie de build, la source est `villa_config.json` racine.
 ## Plan 3D (16.09.2026) — fond de page du SITE, le GUI des châssis ne change jamais
 Vidéo par défaut ; `apps/showcase/src/components/Plan3DBackground.jsx` ne la remplace que dans les cas de `PLAN3D_RULES` (aujourd'hui :
 châssis Smartphone). 3D active ⇒ châssis calé à gauche (`.plan3d-on`, `--chassis-scale`). `public/plan3d/plan3d.js` (Three.js) lit le GUI
@@ -140,9 +136,9 @@ La démo automatique démarre désormais sur **tous les supports** (elle était 
 5. Banc bureau : CP4 `192.168.3.109`, SFTP `FTV`, `-CP4Host <ip>` ; `-SkipContrast` / `-SkipBuild` ; `-ExecutionPolicy Bypass`.
 6. **Jamais deux clés d'un même objet JSON qui ne diffèrent que par la casse** (`MUSIQUE` / `Musique` dans `traductions`) : `ConvertFrom-Json` de PowerShell 5.1 refuse le fichier et `deploy.ps1` s'arrête avant le build, alors que `JSON.parse` et Python les acceptent en silence. Contrôlé désormais par `tools/quality/validate-config.mjs`.
 ## Reste à faire
-1. **v6.0** : SIMPL Windows → ouvrir `simpl/direct/VillaCrans_Direct.smw`, Replace Device 0x03 → TSW-1070, F12 (1re compilation : corriger sur retour) ;
-   `deploy.ps1 -Target web / tsw / mobile` puis `-Target simpl` ; recette Debugger (`simpl/direct/README.md`). Câbler `Rnn_PILOTE_*` / `TELECOMMANDE_*`.
-   Supprimer `src/js/slats-controls.js`, `src/themes/slats-controls.css` (+ copies vitrine). Recopier le Core dans l'Appartement (`assemble.py`).
+1. **v6 recette TSW** : retours processeur → écran (lire le bloc « Pont SIMPL » de l'écran d'administration sur la dalle) ; câbler `Rnn_PILOTE_*`,
+   `Rnn_RETOUR_Temperature`, `TELECOMMANDE_*` ; recette Debugger (`simpl/direct/README.md`). Demande ouverte : bouton « Search » (actions rapides) à
+   gauche d'Alarme — contrat à valider. Supprimer `src/js/slats-controls.*` (+ copies vitrine). Recopier le Core dans l'Appartement (`assemble.py`).
 4. Bêta Alexandre : `prepare-project` + binaires depuis `docs/verification/2026-09-18-beta-alexandre/README.md`, recette A01-A12.
 5. Core (P2) : `sourcesAudioVideo[].type` lu par HTML / C# / générateur ; nommer les offsets +41..57 / +81..92 dans `generate_slot2.js` ;
    générateur lisant `signauxGlobaux` ; supprimer les 2010 `R*_` v3 du SMW ; commentaires C# « 10 circuits » et v3 au prochain recompilé.

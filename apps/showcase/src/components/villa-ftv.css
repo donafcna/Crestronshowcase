@@ -1,0 +1,5 @@
+/* Villa FTV — sélecteur « Espace » du site (jetons du site, jamais ceux du GUI). */
+.villa-ftv-tools{display:grid;gap:8px;width:100%;padding:12px;border:1px solid var(--border-card,rgba(255,255,255,.12));border-radius:12px;background:var(--bg-card,rgba(18,24,37,.75));color:var(--text-main,#f8fafc)}
+.villa-ftv-tools label{display:grid;gap:4px;font-size:12px;font-weight:600}
+.villa-ftv-tools select{width:100%;min-height:40px;padding:8px;border:1px solid var(--border-card,rgba(255,255,255,.2));border-radius:6px;background:var(--bg-canvas,#0c1017);color:var(--text-main,#f8fafc);font:inherit}
+.villa-ftv-tools small{font-size:11px;color:var(--text-muted,#94a3b8);text-align:center}

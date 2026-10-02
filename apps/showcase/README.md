@@ -1,5 +1,9 @@
 # Premier commit 19/7/2026 13h00
 
+## 02/10/2026 — Villa FTV v6.1 : sélecteur « Espace », vitrine 2.3.7
+
+Sélecteur « Espace » à droite du châssis (`src/components/VillaFtvTools.jsx`, modèle Hotel Brassus) sur dalle, tablette et PC : « Général » (menu de gauche, toutes les pièces, défaut) puis une entrée par pièce active lue dans le `villa_config.json` de la vitrine ; une pièce = GUI sans menu (`?menu=0&room=N`), nom de la pièce en titre. Libellés FR/EN/DE. `sync-villa-crans.py` copie `js/nav-pieces.js` et `themes/nav-pieces.css` ; copie Villa FTV régénérée (config 1.0.224). Recette : `tools/batterie-v61.mjs` côté GUI (186 contextes, 0 rouge) ; build et lint OK (avertissements préexistants).
+
 ## 26/09/2026 — Yacht Asteria : cadrages et cycle
 
 La vue générale du yacht est recentrée dans l'espace libre à côté de l'iPhone. Les vues de zones adoptent un angle plus haut et montrent un bandeau de coque sous le pont afin de conserver un repère d'altitude au-dessus de l'eau. La molette alterne entre deux états : vers le bas, yacht entièrement dézoomé ; vers le haut, dernière zone sélectionnée, ou première zone par défaut. Les déplacements de caméra sont ralentis. Le cycle automatique dure désormais 30 secondes de jour et 30 secondes de nuit, fondu final compris dans chaque moitié.

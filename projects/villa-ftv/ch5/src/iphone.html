@@ -22,6 +22,7 @@
     <!-- Contrat de joins v3 : traduction des joins logiques en joins physiques par piece -->
     <script src="js/villa-joins.js"></script>
     <script src="js/gesture-controls.js"></script>
+    <script src="js/nav-pieces.js"></script>
     <script>
         /* Filet de sécurité : si js/villa-joins.js n'a pas pu être chargé (fichier absent
            d'un paquet de déploiement), la GUI continue de fonctionner sur les joins logiques
@@ -2340,7 +2341,8 @@
                 try {
                     localStorage.setItem('crestron_theme_iphone', theme);
                 } catch (e) {}
-                document.body.className = '';
+                // v6.1 : ne retirer que les classes de thème (vn-no-menu / vn-pickable de nav-pieces.js doivent survivre à un changement de thème)
+                Array.from(document.body.classList).filter(function (c) { return c.indexOf('theme-') === 0; }).forEach(function (c) { document.body.classList.remove(c); });
                 if (theme !== 'dark') {
                     document.body.classList.add('theme-' + theme);
                 }
@@ -3173,7 +3175,8 @@
                 const roomSelect = document.getElementById('room-select');
                 if (roomSelect) {
                     roomSelect.innerHTML = '';
-                    config.rooms.forEach(room => {
+                    // v6.1 : pièces proposées et ordre selon interface.menuPieces.pieces (js/nav-pieces.js)
+                    (window.VillaNav ? window.VillaNav.allowedRooms(config.rooms) : config.rooms).forEach(room => {
                         const opt = document.createElement('option');
                         opt.value = room.id.toString();
                         opt.innerText = room.name;
@@ -3235,6 +3238,8 @@
                 try {
                     curRoom = parseInt(localStorage.getItem('active_room_iphone') || '1', 10);
                 } catch (e) {}
+                // v6.1 : ?room= puis interface.menuPieces.pieceParDefaut, puis la mémoire du téléphone (js/nav-pieces.js)
+                if (window.VillaNav) curRoom = window.VillaNav.defaultRoom(config.rooms, curRoom);
                 if (roomSelect) roomSelect.value = curRoom.toString();
                 updateActiveRoomUI(curRoom);
 

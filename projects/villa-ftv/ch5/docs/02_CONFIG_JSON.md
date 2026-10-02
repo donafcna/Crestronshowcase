@@ -82,6 +82,25 @@ donc même copié par erreur sur un CP4 il reste inerte.
 
 ---
 
+## 3 bis. `interface` — navigation entre pièces (v6.1, 02.10.2026)
+
+Bloc facultatif, lu par `js/nav-pieces.js` (dalle, iPad, XPanel et iPhone). Absent = comportement historique (menu de gauche, toutes les pièces).
+
+```json
+"interface": {
+  "menuPieces": { "visible": true, "pieces": [], "pieceParDefaut": null }
+}
+```
+
+| Champ | Effet |
+|---|---|
+| `visible` | `false` : le menu de gauche disparaît, le contenu prend toute la largeur et le nom de la pièce sert de titre ; un appui court sur ce titre ouvre une fenêtre « choisir une pièce » si plusieurs pièces sont proposées. Sur l'iPhone, l'onglet Pièces est filtré, pas supprimé. |
+| `pieces` | identifiants des pièces proposées, dans l'ordre d'affichage (`[]` ou absent = toutes les pièces actives, ordre de la config). Une pièce absente de la liste reste pilotable par `?room=N`. |
+| `pieceParDefaut` | pièce affichée au démarrage (sinon `?room=`, puis la mémoire de l'écran, puis la première proposée). |
+
+Les paramètres d'adresse priment sur le JSON : `?menu=0` masque le menu, `?menu=1` le force, `?room=N` choisit la pièce. Les QR codes (`tools/gen_qr.js`) et le sélecteur « Espace » du site vitrine utilisent `?menu=0&room=N`.
+Exemple « écran de chambre » : `{ "visible": false, "pieces": [7], "pieceParDefaut": 7 }` → GUI plein cadre sur le Bureau, sans menu.
+
 ## 4. `valeursParDefaut`
 
 Sert de repli : **un nom laissé vide (`""`) reprend la valeur par défaut correspondante**.

@@ -6,7 +6,7 @@
 #   .\deploy.ps1 -Target web     -> Web XPanel sur le serveur web du CP4 (QR codes par piece) + regeneration des QR
 #   .\deploy.ps1 -Target mobile  -> projet pour l'application Crestron One (iPhone / iPad, IP-ID 05-06)
 #   .\deploy.ps1 -Target simpl   -> v6.0 (meta.backend = simpl) : programme SIMPL unique VillaCrans_Direct.lpz sur le slot 1,
-#                                   arret du slot 2 (compiler d'abord simpl\direct\VillaCrans_Direct.smw dans SIMPL Windows, F12)
+#                                   (compiler d'abord simpl\direct\VillaCrans_Direct.smw dans SIMPL Windows, F12)
 #   .\deploy.ps1 -SkipBuild      -> sans recompiler l'archive CH5
 #   .\deploy.ps1 -SkipContrast   -> sans la garde de contraste (a n'utiliser que sur faux positif avere)
 #   .\deploy.ps1 -Target web -CP4Host 192.168.3.109  -> vise un autre processeur (banc de test du bureau)
@@ -380,12 +380,11 @@ if ($Target -eq 'simpl' -or ($Target -eq 'all' -and $backend -eq 'simpl')) {
     $lpz = Join-Path $root '..\simpl\direct\VillaCrans_Direct.lpz'
     if (-not (Test-Path $lpz)) { throw "Programme introuvable : $lpz (ouvrir simpl\direct\VillaCrans_Direct.smw dans SIMPL Windows et compiler avec F12)" }
     Copy-ToDevice -Device $S.CP4 -LocalFile $lpz -RemotePath '/program01/VillaCrans_Direct.lpz'
-    Write-Host "  Arret du slot 2 (ancien programme SIMPL sous EISC) puis chargement du slot 1..."
-    try { Send-ConsoleCommands -Device $S.CP4 -Commands @('stopprog -p:02') | Out-Null } catch { Write-Host "  (slot 2 deja arrete)" -ForegroundColor Yellow }
+    Write-Host "  Chargement du slot 1 (seul programme du processeur depuis v6.0)..."
     # L'ancien Villaftv.cpz (C#) ne doit plus etre dans /program01, sinon progload peut le reprendre.
     try { Send-ConsoleCommands -Device $S.CP4 -Commands @('stopprog -p:01', 'del /program01/Villaftv.cpz') | Out-Null } catch { Write-Host "  (pas d'ancien programme C# a retirer)" -ForegroundColor Yellow }
     Send-ConsoleCommands -Device $S.CP4 -Commands @('progload -p:01') | Out-Null
-    Write-Host "  CP4 : programme SIMPL charge (slot 1), slot 2 arrete." -ForegroundColor Green
+    Write-Host "  CP4 : programme SIMPL charge (slot 1)." -ForegroundColor Green
     Write-Host "Deploiement termine." -ForegroundColor Green
     exit 0
 }

@@ -298,6 +298,10 @@
     /* ---------- Mode pont SIMPL (v6.0) ---------- */
     var S = { on: false, B: 1000, T: 150, max: 30, map: { b: {}, n: {}, s: {} }, rev: { b: {}, n: {}, s: {} }, remote: null, save: null };
     var cache = { b: {}, n: {}, s: {} };
+    // v6.0.8 — Diagnostic du pont (écran d'administration, appui long 3 s sur le titre) : ce que le natif livre
+    // réellement à l'écran et ce que l'écran émet, pour une recette sans outil de développement sur la dalle.
+    var diag = { rx: { b: 0, n: 0, s: 0, o: 0 }, livres: 0, retenus: 0, horsContrat: 0, tx: 0, inRx: [], inTx: [] };
+    function note(list, txt) { list.push(new Date().toTimeString().slice(0, 8) + ' ' + txt); if (list.length > 8) { list.shift(); } }
     var rcvFn = { b: null, n: null, s: null };        // réception CH5 d'origine (join logique)
     var sendFn = { b: null, n: null, s: null }, bridgeSelf = null;
     function loadSimpl() {
@@ -333,6 +337,7 @@
     function rawSend(t, sig, val) { if (sendFn[t] && bridgeSelf) { try { sendFn[t].call(bridgeSelf, String(sig), val); } catch (e) { } } }
     function bridgeOut(t, sig, val, send) {
         if (!S.on) { return send(sig, val); }
+        if (!isNaN(parseInt(sig, 10))) { diag.tx++; note(diag.inTx, t + ' ' + sig + '→' + sPhys(t === 'o' ? 'b' : t, sig) + ' ' + (t === 'o' ? (val && val.repeatdigital ? 'appui' : 'relâché') : JSON.stringify(val)).slice(0, 24)); }
         // v6.0.7 — Les <ch5-button sendEventOnClick> n'émettent pas un booléen mais un objet « repeat digital »
         // ({repeatdigital: true|false}) par sendObjectToNative : même join, même traduction qu'un digital.
         // Sans ce cas, scènes, CVC, consigne et commandes groupées partaient sur le join logique et se perdaient.
@@ -383,6 +388,10 @@
         var w = function (sig, val) {
             if (!S.on) { return fn.apply(this, arguments); }
             var s = String(sig), n = parseInt(s, 10);
+            diag.rx[t]++;
+            var Ld = sLogical('n', s); if (t !== 'o') { Ld = sLogical(t, s); }
+            if (Ld === null) { diag.retenus++; } else if (Ld === s && !isNaN(n) && n >= S.B) { diag.horsContrat++; } else { diag.livres++; }
+            note(diag.inRx, t + ' ' + s + '→' + (Ld === null ? 'autre pièce' : Ld) + ' ' + JSON.stringify(t === 'o' && val && val.rcb ? val.rcb.value : val).slice(0, 20));
             // v6.0.7 — bridgeReceiveObjectFromNative : analogique avec rampe ({rcb:{value,time}}) ; on mémorise la valeur
             // finale pour le rejeu au changement de pièce et on traduit comme un analogique.
             if (t === 'o') {
@@ -466,6 +475,16 @@
         get actif() { return active; },
         /** v6.0 : vrai si la GUI parle directement au SIMPL (meta.backend = simpl). */
         get pontSimpl() { return S.on; },
+        /** v6.0.8 : compteurs et derniers échanges du pont (diagnostic écran d'administration). */
+        get diag() { return diag; },
+        diagText: function () {
+            if (!S.on) { return 'Pont SIMPL inactif (meta.backend ≠ simpl ou mode showcase).'; }
+            var l = ['Pont SIMPL actif — pièce ' + roomId + ' (joins ' + (S.B + (roomId - 1) * S.T + 1) + '…' + (S.B + roomId * S.T) + ')',
+                'Reçus du processeur : digitaux ' + diag.rx.b + ', analogiques ' + diag.rx.n + ' (+' + diag.rx.o + ' avec rampe), séries ' + diag.rx.s,
+                '  → livrés à l\'écran ' + diag.livres + ' · retenus (autre pièce) ' + diag.retenus + ' · hors contrat ' + diag.horsContrat,
+                'Émis vers le processeur : ' + diag.tx, '', 'Derniers reçus :'].concat(diag.inRx.length ? diag.inRx : ['  (aucun)'], ['', 'Derniers émis :'], diag.inTx.length ? diag.inTx : ['  (aucun)']);
+            return l.join('\n');
+        },
         /** v6.0 : join physique SIMPL d'un join logique pour la pièce affichée. */
         simplPhys: function (t, j) { return S.on ? sPhys(t, j) : String(j); },
         /** Diagnostic : table complète des joins physiques de la pièce courante. */

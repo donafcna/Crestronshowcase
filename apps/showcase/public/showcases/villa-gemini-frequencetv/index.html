@@ -27,6 +27,7 @@
     <!-- Contrat de joins v3 : traduction des joins logiques en joins physiques par piece -->
     <script src="js/villa-joins.js"></script>
     <script src="js/gesture-controls.js"></script>
+    <script src="js/nav-pieces.js"></script>
     <script>
         /* Filet de sécurité : si js/villa-joins.js n'a pas pu être chargé (fichier absent
            d'un paquet de déploiement), la GUI continue de fonctionner sur les joins logiques
@@ -2152,6 +2153,9 @@
             margin: 0 !important;
             box-sizing: border-box !important;
         }
+        /* v6.1 : zone tactile >= 40 px sans changer le visuel (26 px) : la cible s'etend de 8 px tout autour. */
+        .shades-config-cog { position: relative; }
+        .shades-config-cog::before { content: ""; position: absolute; inset: -8px; }
 
 
         /* Musique Selected Button (v1.0.149): NO violet background, NO white border, KEEP sound animation & yellow note */
@@ -3604,6 +3608,7 @@ body#app-body.theme-light ch5-button[customClass~="scene-btn"]:not([selected="tr
 <link rel="stylesheet" href="themes/scene-controls.css">
 <link rel="stylesheet" href="themes/av-controls.css">
 <link rel="stylesheet" href="themes/motors-controls.css">
+<link rel="stylesheet" href="themes/nav-pieces.css">
 <link rel="stylesheet" href="themes/wellness-controls.css">
 <script defer src="js/room-controls.js"></script>
 <script defer src="js/motors-controls.js"></script>
@@ -4054,7 +4059,7 @@ body#app-body.theme-light ch5-button[customClass~="scene-btn"]:not([selected="tr
     <div class="sidebar">
         <div id="sidebar-header" style="margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between; gap: 8px;">
             <div style="display: flex; align-items: center; gap: 8px;">
-                <button onclick="openSettingsModal()" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: var(--text-primary); border-radius: 6px; cursor: pointer; font-size: 0.95rem; display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; padding: 0; outline: none; transition: all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'">
+                <button onclick="openSettingsModal()" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: var(--text-primary); border-radius: 6px; cursor: pointer; font-size: 0.95rem; display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; padding: 0; outline: none; transition: all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'">
                     <svg class="gear-icon" viewBox="0 0 512 512" aria-hidden="true"><path d="M495.9 166.6c3.2 8.7 .5 18.4-6.4 24.6l-43.3 39.4c1.1 8.3 1.7 16.8 1.7 25.4s-.6 17.1-1.7 25.4l43.3 39.4c6.9 6.2 9.6 15.9 6.4 24.6l-43.3 75c-3.2 8.7-12.2 13.9-21.4 11.7l-56.4-13.6c-15.6 12-33 21.6-51.7 28.5l-11.9 57.3c-2 9.7-10.5 16.7-20.5 16.7H220.4c-10 0-18.5-7-20.5-16.7l-11.9-57.3c-18.7-6.9-36.1-16.4-51.7-28.5l-56.4 13.6c-9.2 2.2-18.2-3-21.4-11.7l-43.3-75c-3.2-8.7-.5-18.4 6.4-24.6l43.3-39.4c-1.1-8.3-1.7-16.8-1.7-25.4s.6-17.1 1.7-25.4L21.6 191.2c-6.9-6.2-9.6-15.9-6.4-24.6l43.3-75c3.2-8.7 12.2-13.9 21.4-11.7l56.4 13.6c15.6-12 33-21.6 51.7-28.5l11.9-57.3c2-9.7 10.5-16.7 20.5-16.7h72.8c10 0 18.5 7 20.5 16.7l11.9 57.3c18.7 6.9 36.1 16.4 51.7 28.5l56.4-13.6c9.2-2.2 18.2 3 21.4 11.7l43.3 75zM256 336a80 80 0 1 0 0-160 80 80 0 1 0 0 160z"/></svg>
                 </button>
                 <div id="connection-status" style="font-size: 0.75rem; font-weight: 500; transition: color 0.3s; display: flex; align-items: center; gap: 5px; color: #ef4444; cursor: pointer; user-select: none; -webkit-user-select: none;">
@@ -4668,6 +4673,9 @@ body#app-body.theme-light ch5-button[customClass~="scene-btn"]:not([selected="tr
                 📍 Valeurs listées ci-dessous pour la pièce active : <span id="admin-active-room-name" style="color: #ffffff;">Salon (ID 1)</span>
             </h3>
             
+            <!-- v6.0.8 : diagnostic du pont SIMPL (VillaJoins.diagText), rafraîchi tant que la fenêtre est ouverte -->
+            <pre id="admin-simpl-diag" style="margin: 0 0 20px; padding: 12px; border-radius: 8px; background: rgba(0,0,0,0.35); border: 1px solid rgba(255,255,255,0.1); color: #e2e8f0; font-size: 0.85rem; line-height: 1.4; white-space: pre-wrap; max-height: 260px; overflow: auto;"></pre>
+
             <!-- Partie 1: Simulation globale -->
             <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.95rem;">
                 <thead>
@@ -5986,7 +5994,8 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
             try {
                 localStorage.setItem('crestron_theme', theme);
             } catch (e) {}
-            document.body.className = '';
+            // v6.1 : ne retirer que les classes de thème (vn-no-menu / vn-pickable de nav-pieces.js doivent survivre à un changement de thème)
+            Array.from(document.body.classList).filter(function (c) { return c.indexOf('theme-') === 0; }).forEach(function (c) { document.body.classList.remove(c); });
             if (theme !== 'dark') {
                 document.body.classList.add('theme-' + theme);
             }
@@ -6199,6 +6208,17 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
         };
         window.openAdminModal = function() {
             window.showModalOverlay('admin-overlay');
+            // v6.0.8 : diagnostic du pont SIMPL, mis à jour toutes les 500 ms tant que la fenêtre est affichée
+            const diagEl = document.getElementById('admin-simpl-diag');
+            if (diagEl && window.VillaJoins && VillaJoins.diagText) {
+                const tick = () => {
+                    const ov = document.getElementById('admin-overlay');
+                    if (!ov || getComputedStyle(ov).display === 'none') { diagEl.__t = null; return; }
+                    diagEl.textContent = VillaJoins.diagText();
+                    diagEl.__t = setTimeout(tick, 500);
+                };
+                if (!diagEl.__t) tick();
+            }
         };
 
         window.openAlarmModal = function() {
@@ -7446,11 +7466,17 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
             }
             
             // Initialisation de la pièce par défaut
+            // v6.1 : ?room= puis interface.menuPieces.pieceParDefaut, puis la mémoire de l'écran (js/nav-pieces.js)
             setTimeout(() => {
                 let curRoom = 1;
                 try {
                     curRoom = parseInt(localStorage.getItem('active_room_id') || '1', 10);
                 } catch (e) {}
+                if (window.VillaNav) {
+                    curRoom = window.VillaNav.defaultRoom(cfg.rooms, curRoom);
+                    document.body.classList.toggle('vn-pickable', window.VillaNav.allowedRooms(cfg.rooms).length > 1);
+                    window.VillaNav.onPick(function (id) { if (typeof window.selectRoomFromConfig === 'function') window.selectRoomFromConfig(id); });
+                }
                 changeRoomUI(curRoom);
             }, 500);
 
@@ -7609,6 +7635,11 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
                 headerTitleEl.addEventListener('touchstart', startPress, { passive: true });
                 headerTitleEl.addEventListener('touchend', endPress, { passive: true });
                 headerTitleEl.addEventListener('touchcancel', endPress, { passive: true });
+                // v6.1 : sans menu de gauche, un appui court sur le titre ouvre le choix de pièce (si plusieurs sont proposées)
+                headerTitleEl.addEventListener('click', () => {
+                    if (!window.VillaNav || !document.body.classList.contains('vn-no-menu')) return;
+                    window.VillaNav.openPicker(config.rooms, window.currentActiveRoomId);
+                });
             }
 
             // Forcer le rafraîchissement
@@ -7903,6 +7934,8 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
             window.villaRebuildRoomsMenu = function(rooms) {
                 const roomsContainer = document.getElementById('rooms-container');
                 if (!roomsContainer || !rooms || !rooms.length) return;
+                // v6.1 : interface.menuPieces.pieces (ou ?menu/?room) décide des pièces proposées et de leur ordre
+                if (window.VillaNav) rooms = window.VillaNav.allowedRooms(rooms);
                 const vc = window.villaConfig;
                 roomsContainer.innerHTML = '';
                 rooms.forEach(room => {

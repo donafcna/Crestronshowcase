@@ -162,7 +162,8 @@ def main() -> None:
     for js in sorted((src / "js").glob("*-controls.js")):
         shutil.copy(js, DEST / "js" / js.name)
     # Interface Connect du Core (v5.4) : chargée par les deux HTML, inerte sans meta.interface = "connect".
-    for rel in ("js/connect-ui.js", "themes/connect.css"):
+    # v6.1 : navigation entre pièces (menu de gauche optionnel, ?menu=0&room=N pour le site et les QR codes).
+    for rel in ("js/connect-ui.js", "themes/connect.css", "js/nav-pieces.js", "themes/nav-pieces.css"):
         if (src / rel).exists():
             shutil.copy(src / rel, DEST / rel)
     # v5.3 : slats-controls.* remplacés par motors-controls.* (fenêtre Moteurs paginée, 12 moteurs).

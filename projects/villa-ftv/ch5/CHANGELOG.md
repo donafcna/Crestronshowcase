@@ -1,5 +1,18 @@
 # Villa Crans CH5 — journal des versions
 
+## v6.1 — 02/10/2026 — GUI sans menu de gauche (config + URL), sélecteur « Espace » sur le site, diagnostic du pont SIMPL
+
+| Artefact | Etat de ce lot |
+|---|---|
+| GUI | `src/js/nav-pieces.js` + `src/themes/nav-pieces.css` (nouveaux, partagés dalle / iPad / XPanel / iPhone) : `interface.menuPieces {visible, pieces, pieceParDefaut}` dans `villa_config.json`, `?menu=0|1` et `?room=N` prioritaires ; sans menu, le nom de la pièce devient le titre et un appui court dessus ouvre la fenêtre « choisir une pièce ». `index.html` / `iphone.html` : `applyTheme` ne retire plus que les classes `theme-*` (avant, un changement de thème effaçait toute classe de `<body>` : menu réapparu, voile `modal-ouverte` perdu sur l'iPhone). Cibles tactiles : engrenage Réglages 40 px, engrenages Circuits / Moteurs avec zone tactile étendue à 40 px (visuel inchangé). Ecran d'administration (appui long 3 s sur le titre) : bloc « Pont SIMPL » = compteurs reçus / livrés / retenus / hors contrat, 8 derniers reçus et émis (`VillaJoins.diagText()`), pour une recette sans outil de développement sur la dalle — **a recompiler** web + tsw + mobile |
+| Config | `interface` (nouveau bloc, documenté dans `docs/02_CONFIG_JSON.md` § 3 bis) ; `meta.version` 1.0.224 |
+| Outils | `tools/gen_qr.js` : les QR par pièce passent `menu=0&room=N` ; `deploy.ps1 -Target simpl` n'arrête plus le slot 2 (vide depuis v6.0) |
+| Vitrine | `apps/showcase` : `VillaFtvTools.jsx` — sélecteur « Espace » à droite (modèle Hotel Brassus) : « Général » (menu + toutes les pièces, défaut) puis une entrée par pièce active (`?menu=0&room=N`, titre = pièce) ; dalle / tablette / PC, pas sur smartphone ; FR / EN / DE ; `sync-villa-crans.py` copie `nav-pieces.*` ; copie régénérée |
+| Batterie | `tools/batterie-v61.mjs` : 2 variantes (Général / Pièce) × 3 thèmes × 3 châssis (1920×1200, iPad 1194×834, iPhone 402×874) × page + 9 fenêtres + fenêtre « choisir une pièce » = 186 contextes, 0 rouge (contraste ≥ 4:1, aucun texte tronqué, aucun scroll horizontal, cibles ≥ 40 px, 0 erreur console, aucun son) ; pont SIMPL 6/6 ; smoke 0 erreur |
+
+**Décisions par défaut.** Variante sans menu = mise en page actuelle élargie (pas de redesign) ; bouton Scène et barre d'état inchangés ; iPhone : onglet Pièces filtré. Les écrans sans menu restent pilotables par QR / URL même pour une pièce hors liste.
+**Recette TSW en cours (hors périmètre de ce lot, cause en cours d'analyse).** Joins émis OK, retours processeur → écran non affichés (consigne, faders qui retombent à 0 après 1,5 s faute de retour reçu, sources) : le bloc « Pont SIMPL » de l'écran d'administration dit désormais si la dalle livre les joins physiques au GUI. « Température » reste `--` tant que `Rnn_RETOUR_Temperature` n'est pas câblé (×10). « Sauvegarder » des presets globaux (sériel 420) : sans objet en v6.0 (valeurs fixes, voir `simpl/direct/README.md`).
+
 ## v6.0.7 — 02/10/2026 — correctif TSW : scènes, CVC, consigne, commandes groupées muettes ; retours analogiques perdus
 
 | Artefact | Etat de ce lot |

@@ -1,0 +1,44 @@
+/* Villa FTV v6.1 — mise en page sans menu de gauche et fenêtre « choisir une pièce » (js/nav-pieces.js).
+   Jetons de thème uniquement : aucune couleur propre à un écran. */
+
+/* Dalle / iPad / XPanel : la colonne de gauche disparaît, le contenu prend toute la largeur. */
+body.vn-no-menu .sidebar { display: none !important; }
+body.vn-no-menu .main-content { width: 100%; }
+/* Sans menu, le titre de la pièce devient le point d'entrée du choix de pièce (si plusieurs sont proposées). */
+body.vn-no-menu.vn-pickable #admin-header-title { cursor: pointer; }
+body.vn-no-menu.vn-pickable #admin-header-title::after {
+    content: ""; display: inline-block; width: 0.55em; height: 0.55em; margin-left: 6px;
+    border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: translateY(-0.2em) rotate(45deg); opacity: 0.6;
+}
+
+/* Fenêtre de choix de pièce */
+.vn-rooms-overlay {
+    display: none; position: fixed; inset: 0; z-index: 999999; align-items: center; justify-content: center;
+    background: rgba(8, 10, 14, 0.7); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+}
+.vn-rooms-panel {
+    position: relative; max-width: 86%; max-height: 86%; overflow: auto; box-sizing: border-box;
+    padding: 28px; border-radius: 16px;
+    background: var(--container-bg, rgba(22, 25, 32, 0.98)); border: 1px solid var(--border-color, rgba(255, 255, 255, 0.1));
+    box-shadow: var(--card-shadow, 0 10px 40px rgba(0, 0, 0, 0.5)); color: var(--text-primary, #f1f5f9);
+}
+.vn-rooms-grid { display: grid; grid-template-columns: repeat(3, minmax(180px, 1fr)); gap: 14px; }
+.vn-room-btn {
+    min-height: 64px; padding: 12px 18px; border-radius: 12px; font: inherit; font-size: 1.15rem; font-weight: 600;
+    color: var(--text-primary, #f1f5f9); background: rgba(255, 255, 255, 0.06); border: 1px solid var(--border-color, rgba(255, 255, 255, 0.12));
+    cursor: pointer; text-align: center;
+}
+.vn-room-btn.vn-current { border-color: #10b981; color: #10b981; }
+.vn-room-close {
+    position: absolute; top: 8px; right: 8px; width: 44px; height: 44px; border-radius: 50%; border: 0; cursor: pointer;
+    background: rgba(255, 255, 255, 0.08); color: var(--text-primary, #f1f5f9); font-size: 1.1rem;
+}
+/* Smartphone : une colonne, boutons pleine largeur */
+@media (max-width: 700px) {
+    .vn-rooms-grid { grid-template-columns: 1fr; }
+    .vn-rooms-panel { max-width: 92%; padding: 20px; }
+}
+/* Thème Clair : fond de fenêtre opaque (le fond sombre par défaut n'est pas lisible). */
+body#app-body.theme-light .vn-rooms-overlay { background: rgba(255, 255, 255, 0.55); }
+body#app-body.theme-light .vn-room-btn { background: rgba(0, 0, 0, 0.05); }
+body#app-body.theme-light .vn-room-close { background: rgba(0, 0, 0, 0.08); }

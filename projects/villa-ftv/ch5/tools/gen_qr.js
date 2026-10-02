@@ -5,10 +5,10 @@
  * Chaque QR ouvre le GUI Web XPanel hébergé sur le CP4 dans le navigateur du téléphone,
  * directement sur la bonne pièce, sans application Crestron :
  *
- *     https://<CP4>/villaftv/index.html?ipId=0x1N&room=N[&authtoken=...]
+ *     https://<CP4>/villaftv/index.html?ipId=0x1N&room=N&menu=0[&authtoken=...]
  *
  *   - ipId  : IP-ID Web XPanel dédié à la pièce (0x10 + id de pièce, déclaré côté C#).
- *   - room  : id de la pièce (le GUI sélectionne la pièce à la connexion ; le C# la force aussi).
+ *   - room  : id de la pièce (le GUI la sélectionne au démarrage) ; menu=0 : GUI sans menu de gauche (v6.1).
  *   - authtoken : optionnel, évite la page de login du CP4 (authentication ON).
  *
  * Usage :
@@ -76,6 +76,7 @@ function buildUrl(piece) {
     const u = new URL(baseUrl);
     u.searchParams.set('ipId', ipId);
     u.searchParams.set('room', String(piece.id));
+    u.searchParams.set('menu', '0');   // v6.1 : un QR vise une pièce, le GUI s'ouvre sans menu de gauche (js/nav-pieces.js)
     if (token) u.searchParams.set('authtoken', token);
     return { ipId, url: u.toString() };
 }
