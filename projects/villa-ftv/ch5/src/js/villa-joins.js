@@ -333,6 +333,16 @@
     function rawSend(t, sig, val) { if (sendFn[t] && bridgeSelf) { try { sendFn[t].call(bridgeSelf, String(sig), val); } catch (e) { } } }
     function bridgeOut(t, sig, val, send) {
         if (!S.on) { return send(sig, val); }
+        // v6.0.7 — Les <ch5-button sendEventOnClick> n'émettent pas un booléen mais un objet « repeat digital »
+        // ({repeatdigital: true|false}) par sendObjectToNative : même join, même traduction qu'un digital.
+        // Sans ce cas, scènes, CVC, consigne et commandes groupées partaient sur le join logique et se perdaient.
+        if (t === 'o') {
+            var pressed = !!(val && typeof val === 'object' && val.repeatdigital === true);
+            var m = parseInt(sig, 10);
+            if (pressed && m >= 11 && m <= 10 + S.max) { setRoom(m - 10); }
+            if (pressed && S.remote && isRemote(m)) { rawSend('n', S.remote.pieceAnalog, roomId); }
+            return send(sPhys('b', sig), val);
+        }
         var n = parseInt(sig, 10);
         if (t === 'b' && val === true && n >= 11 && n <= 10 + S.max) { setRoom(n - 10); }
         if (t === 'n' && sig === '10' && val) { setRoom(val); }
@@ -357,7 +367,7 @@
         if (!C || !C.prototype || C.prototype.__vjS) { return; }
         var P = C.prototype;
         try { Object.defineProperty(P, '__vjS', { value: true }); } catch (e) { P.__vjS = true; }
-        [['sendBooleanToNative', 'b'], ['sendIntegerToNative', 'n'], ['sendStringToNative', 's']].forEach(function (x) {
+        [['sendBooleanToNative', 'b'], ['sendIntegerToNative', 'n'], ['sendStringToNative', 's'], ['sendObjectToNative', 'o']].forEach(function (x) {
             var orig = P[x[0]];
             if (typeof orig !== 'function') { return; }
             sendFn[x[1]] = orig;
@@ -373,6 +383,15 @@
         var w = function (sig, val) {
             if (!S.on) { return fn.apply(this, arguments); }
             var s = String(sig), n = parseInt(s, 10);
+            // v6.0.7 — bridgeReceiveObjectFromNative : analogique avec rampe ({rcb:{value,time}}) ; on mémorise la valeur
+            // finale pour le rejeu au changement de pièce et on traduit comme un analogique.
+            if (t === 'o') {
+                var v = (val && val.rcb && val.rcb.value !== undefined) ? val.rcb.value : undefined;
+                if (!isNaN(n) && v !== undefined) { cache.n[n] = v; }
+                var Lo = sLogical('n', s);
+                if (Lo === null) { return; }
+                return fn.call(this, Lo, val);
+            }
             if (!isNaN(n)) { cache[t][n] = val; }
             var L = sLogical(t, s);
             if (L === null) { return; }
@@ -381,7 +400,7 @@
         w.__vjS = true;
         return w;
     }
-    var RCV = { bridgeReceiveBooleanFromNative: 'b', bridgeReceiveIntegerFromNative: 'n', bridgeReceiveStringFromNative: 's' };
+    var RCV = { bridgeReceiveBooleanFromNative: 'b', bridgeReceiveIntegerFromNative: 'n', bridgeReceiveStringFromNative: 's', bridgeReceiveObjectFromNative: 'o' };
     // Le natif (dalle, Crestron One) appelle window.bridgeReceive* ; WebXPanel appelle CrComLib.bridgeReceive*.
     Object.keys(RCV).forEach(function (name) {
         var cur = rcvWrap(RCV[name], window[name]);

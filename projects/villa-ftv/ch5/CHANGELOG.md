@@ -1,5 +1,16 @@
 # Villa Crans CH5 — journal des versions
 
+## v6.0.7 — 02/10/2026 — correctif TSW : scènes, CVC, consigne, commandes groupées muettes ; retours analogiques perdus
+
+| Artefact | Etat de ce lot |
+|---|---|
+| GUI | `src/js/villa-joins.js` : le pont SIMPL traduit aussi `sendObjectToNative` (objets « repeat digital » émis par les `<ch5-button sendEventOnClick>`) et `bridgeReceiveObjectFromNative` (analogiques avec rampe `{rcb:{value,time}}`), avec mémoire pour le rejeu — **a recompiler** web + tsw + mobile |
+| Batterie | `tools/qa-simpl-v60.mjs` 6/6 avec deux nouveaux points (8 : repeat digital -> join physique ; 9 : analogique rcb -> join logique) ; smoke 0 erreur |
+
+**Retours Donatien (recette TSW).** Scènes d'éclairage, CVC, consigne : aucun join au Debugger, aucun retour sur le GUI ; faders qui remontent puis retombent à 0 ; sources : joins OK mais pas de retour sur les boutons.
+**Analyse.** Les boutons qui passent par `CrComLib.publishEvent` (sources, moteurs, faders) étaient traduits ; ceux qui se fient à l'attribut `sendEventOnClick` du `<ch5-button>` émettent un objet repeat digital par `sendObjectToNative`, non intercepté : le join partait non traduit et se perdait.
+Côté retours, la dalle livre les analogiques (et sur certains firmwares tout le flux) par `bridgeReceiveObjectFromNative`, non intercepté non plus : retour ignoré, mémoire vide, donc rejeu à 0 au changement de pièce (faders à 0).
+
 ## v6.0.6 — 02/10/2026 — changement de pièce 5x plus rapide ; Web XPanel muet (IP-ID mémorisé hors programme)
 
 | Artefact | Etat de ce lot |
