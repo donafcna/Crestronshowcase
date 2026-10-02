@@ -1,5 +1,20 @@
 # Villa Crans CH5 — journal des versions
 
+## v6.0.5 — 02/10/2026 — retour « pièce sélectionnée » produit par l'écran (mode SIMPL)
+
+| Artefact | Etat de ce lot |
+|---|---|
+| GUI | `src/js/villa-joins.js` : `echoRoomSelection()` à chaque changement de pièce — les boutons de pièce (receiveStateSelected d11-40) et l'analogique 10 reçoivent leur retour localement et sans délai ; inerte hors `meta.backend = simpl` — **a recompiler** web + tsw + mobile |
+| Config | `meta.version` 1.0.221 |
+| Vitrine | resynchronisee |
+| Batterie | `tools/qa-simpl-v60.mjs` 6/6 (nouveau point 7 : d10+piece / a10 après changement de pièce) ; smoke 0 erreur console |
+
+**Retour Donatien (recette TSW).** Délai entre l'appui sur une pièce et son affichage « sélectionnée » ; aucun signal de sélection de pièce au Debugger.
+**Analyse.** Par construction du contrat S (routage A, choix du 30/09), la pièce affichée est propre à chaque écran et n'existe pas côté processeur :
+le programme SIMPL ne porte pas les joins 10-40. En v5 c'était le C# qui renvoyait ce retour ; en v6.0 personne ne le faisait, les boutons de pièce
+attendaient un retour qui n'arrivait jamais. Les joins visibles au Debugger (R05_*, R07_*) sont le fonctionnement normal : chaque écran émet directement
+sur le bloc de la pièce qu'il affiche, il n'y a pas de tampons par pièce dans le SIMPL.
+
 ## v6.0.4 — 02/10/2026 — plus de zoom tactile sur les écrans (pincement, double appui)
 
 | Artefact | Etat de ce lot |

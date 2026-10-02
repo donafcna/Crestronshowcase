@@ -193,7 +193,7 @@
         roomId = id;
         base = computeBase(id);
         try { localStorage.setItem('villa_joins_room', String(id)); } catch (e) {}
-        if (S.on) { replayRoom(); }
+        if (S.on) { echoRoomSelection(); replayRoom(); }
         if (!active) { return; }
         scan(document);
         resubscribeAll();
@@ -389,6 +389,16 @@
             Object.defineProperty(window, name, { configurable: true, get: function () { return cur; }, set: function (v) { cur = rcvWrap(RCV[name], v); } });
         } catch (e) { }
     });
+    // v6.0.5 — La pièce affichée est propre à chaque écran : le processeur ne la connaît pas (joins 10-40 absents
+    // du programme SIMPL). Le retour « pièce sélectionnée » (receiveStateSelected des boutons de pièce, analogique 10)
+    // est donc produit ici, immédiatement, comme le faisait le C# en v5.
+    function echoRoomSelection() {
+        if (!S.on) { return; }
+        try {
+            if (rcvFn.b) { for (var i = 1; i <= S.max; i++) { rcvFn.b(String(10 + i), i === roomId); } }
+            if (rcvFn.n) { rcvFn.n('10', roomId); }
+        } catch (e) { }
+    }
     // Changement de pièce : les retours mémorisés de la nouvelle pièce sont rejoués sous leur join logique.
     function replayRoom() {
         if (!S.on) { return; }
