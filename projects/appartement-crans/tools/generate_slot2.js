@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Appartement Crans-Montana — génère le programme SIMPL Windows du slot 2 (AppartementCrans_Slot2.smw).
 //
-// Dérivé du générateur du Core Villa Crans (projects/villa-crans/simpl/contract/generate_slot2.js,
+// Dérivé du générateur du Core Villa Crans (projects/villa-ftv/simpl/contract/generate_slot2.js,
 // contrat v4.1), avec une différence : il sait partir du SOCLE NU (CP4 + EISC 2732 joins, aucun
 // signal) et écrit alors explicitement tous les signaux que le Core suppose « déjà câblés dans la
 // base » (Room_Select1..10, Lighting_Scene1..4, Room_Selected#, Room_Selected$, Lighting_Master,

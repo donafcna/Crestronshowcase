@@ -17,10 +17,10 @@ export function prepareProject({ configFile, simplInput, out, development = fals
   const issues = [...validateRuntimeCompatibility(config, profile), ...verifyRuntimeSources(repoRoot, profile)];
   if (issues.length) throw new Error(JSON.stringify(issues));
   const simplOriginal = fs.readFileSync(simplInput);
-  const generator = path.join(repoRoot, 'projects/villa-crans/simpl/contract/generate_slot2.js');
+  const generator = path.join(repoRoot, 'projects/villa-ftv/simpl/contract/generate_slot2.js');
   const generatorHash = sha256(fs.readFileSync(generator));
   const ch5 = path.join(out, 'ch5');
-  stageCh5({ source: path.join(repoRoot, 'projects/villa-crans/ch5/src'), configFile, out: ch5, development });
+  stageCh5({ source: path.join(repoRoot, 'projects/villa-ftv/ch5/src'), configFile, out: ch5, development });
   try {
     fs.mkdirSync(path.join(out, 'simpl'));
     const smw = path.join(out, 'simpl/Project_Slot2.smw');

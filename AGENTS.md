@@ -3,7 +3,7 @@
 ## Démarrage et sources
 
 - Lire `docs/CONTEXTE-CODEX.md`, puis le contexte et le journal du périmètre demandé.
-- GUI / C# / SIMPL : `projects/villa-crans/ch5/CONTEXTE-CLAUDE.md`, dernières entrées de `CHANGELOG.md`, puis `.agents/AGENTS.md` pour les règles CH5.
+- GUI / C# / SIMPL : `projects/villa-ftv/ch5/CONTEXTE-CLAUDE.md`, dernières entrées de `CHANGELOG.md`, puis `.agents/AGENTS.md` pour les règles CH5.
 - Site : `apps/showcase/CLAUDE.md` et dernières entrées de `apps/showcase/README.md` (journal chronologique, ne pas le remplacer).
 - Les huit exports Claude sont conservés sans modification dans `docs/reprise-codex/2026-09-16/`. Le fichier `claude_30-protocole-travail.md` conserve le protocole original.
 - Les exports sont surtout datés du 11 septembre 2026. Ils ne remplacent pas les décisions des 15–16 septembre présentes dans le dépôt. Ne pas considérer leur intitulé « état actuel » comme une garantie de fraîcheur.
@@ -14,12 +14,12 @@
 
 ## Source unique et périmètres
 
-- GUI de référence : `projects/villa-crans/ch5/src/index.html` et `src/iphone.html`. Configuration source : `projects/villa-crans/ch5/villa_config.json` à la racine, et non sa copie dans `src/`.
+- GUI de référence : `projects/villa-ftv/ch5/src/index.html` et `src/iphone.html`. Configuration source : `projects/villa-ftv/ch5/villa_config.json` à la racine, et non sa copie dans `src/`.
 - GUI chez le client : `meta.mode = deploiement`, feedback C# slot 1 + SIMPL slot 2, aucun curseur de démonstration.
 - Vitrine : `apps/showcase`, React/Vite, `meta.mode = showcase`, feedback local. Générer la copie Villa Crans par `apps/showcase/scripts/sync-villa-crans.py` ; aucune édition manuelle de `public/showcases/villa-gemini-frequencetv/`, sauf `js/local-feedback.js`.
 - Vérifier les deux modes après une modification commune ; ne pas publier les noms de test de la configuration de développement.
 - Joins : contrat v4, pilotages globaux avec routage de la pièce active. `contrat.blocsPiecesGui.actif=false`. Ne pas réactiver la traduction v3 par réécriture d'attributs.
-- SIMPL Windows : à la demande précisée par Donatien le 17/09/2026, conserver les générations et compilations directement dans `projects/villa-crans/simpl/simpl-windows`, pas dans `livraisons` ni `C:/dev/crestron/builds`. Préserver les fichiers existants ; candidat compilé actuel `Project_Slot2.smw`, projet historique `VillaCrans_Slot2.smw`.
+- SIMPL Windows : à la demande précisée par Donatien le 17/09/2026, conserver les générations et compilations directement dans `projects/villa-ftv/simpl/simpl-windows`, pas dans `livraisons` ni `C:/dev/crestron/builds`. Préserver les fichiers existants ; candidat compilé actuel `Project_Slot2.smw`, projet historique `VillaCrans_Slot2.smw`.
 - Les joins des boutons CH5 sont déclarés dans le HTML avant initialisation ; retours d'état via les attributs natifs CH5. Ne pas masquer un défaut de feedback matériel par une simulation DOM.
 - Complément explicite du 16/09 après les demandes 3D : Donatien a demandé de corriger le contrôle global GUI (retours absents sur téléphone, états simultanés contradictoires, couleurs incohérentes). Ce lot GUI est autorisé dans la source commune, puis synchronisé ; il est distinct du périmètre fond 3D. Utiliser `themes/global-controls.css`, ne pas réintroduire le sélecteur `[selected]` sans valeur (il matche aussi false). La livraison Vercel ne constitue pas un déploiement matériel.
 - Plans 3D : uniquement le fond du site showcase Vercel. La demande ne doit rien changer dans les GUI des châssis Dalle, Tablette et Smartphone, ni dans le CH5 de déploiement.
@@ -64,7 +64,7 @@
 
 ## Extension explicite du 16/09/2026
 
-Donatien a autorisé les flèches horizontales des rideaux et ON/OFF + ventilation HVAC dans la source GUI commune, puis explicitement dans le JSON, SIMPL# et SIMPL Windows (retours Debugger). Ce périmètre dépasse la 3D showcase ; voir `projects/villa-crans/ch5/docs/HVAC-2026-09-16.md`. Préserver les noms et activations de la configuration physique. La villa de 16 pièces et ses nouveaux étages restent une configuration de démonstration.
+Donatien a autorisé les flèches horizontales des rideaux et ON/OFF + ventilation HVAC dans la source GUI commune, puis explicitement dans le JSON, SIMPL# et SIMPL Windows (retours Debugger). Ce périmètre dépasse la 3D showcase ; voir `projects/villa-ftv/ch5/docs/HVAC-2026-09-16.md`. Préserver les noms et activations de la configuration physique. La villa de 16 pièces et ses nouveaux étages restent une configuration de démonstration.
 
 ## Industrialisation du 17/09/2026
 Pour la V1/bêta Alexandre et la généralisation, lire docs/industrialisation/README.md. Registre des simulateurs unique dans simulatorRegistry.js ; validation du catalogue au prébuild. tools/quality prépare des candidats dans des dossiers neufs sans déploiement. Les preuves de banc simulé ne remplacent jamais la recette EISC multi-écrans sur matériel.

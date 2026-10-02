@@ -1,5 +1,5 @@
 param(
-    [string]$Backend = (Join-Path $PSScriptRoot '../../projects/villa-crans/ch5/Backend/Backend/ControlSystem.cs'),
+    [string]$Backend = (Join-Path $PSScriptRoot '../../projects/villa-ftv/ch5/Backend/Backend/ControlSystem.cs'),
     [Parameter(Mandatory=$true)][string]$Output
 )
 $ErrorActionPreference = 'Stop'

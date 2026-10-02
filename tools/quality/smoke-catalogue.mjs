@@ -5,7 +5,7 @@ import { fileURLToPath } from 'node:url';
 import { projects, devices } from '../../apps/showcase/src/data/projects.js';
 
 const repo = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
-const require = createRequire(path.join(repo, 'projects/villa-crans/ch5/package.json'));
+const require = createRequire(path.join(repo, 'projects/villa-ftv/ch5/package.json'));
 const { chromium } = require('playwright');
 const arg = key => { const i = process.argv.indexOf(key); return i < 0 ? null : process.argv[i + 1]; };
 const base = arg('--base') || 'http://127.0.0.1:4292', out = arg('--out');

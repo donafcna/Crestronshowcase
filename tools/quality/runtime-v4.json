@@ -2479,55 +2479,55 @@
   },
   "files": [
     {
-      "path": "projects/villa-crans/ch5/Backend/Backend/ControlSystem.cs",
+      "path": "projects/villa-ftv/ch5/Backend/Backend/ControlSystem.cs",
       "sha256": "229f31429b2d95b16f2c23f3e0a5de648daf5b0a09b02fbe1788f59d14a3bfc9"
     },
     {
-      "path": "projects/villa-crans/ch5/Backend/Backend/HvacState.cs",
+      "path": "projects/villa-ftv/ch5/Backend/Backend/HvacState.cs",
       "sha256": "351877eaf9a064ce8bdde7adbf8cedf96e8e567a00a7bb6d76b7cc12aa8de66e"
     },
     {
-      "path": "projects/villa-crans/ch5/Backend/Backend/WellnessState.cs",
+      "path": "projects/villa-ftv/ch5/Backend/Backend/WellnessState.cs",
       "sha256": "af9ead94e744156f06a2c881d36cac53d0697298a8700ecb9f73da61a8a20c01"
     },
     {
-      "path": "projects/villa-crans/ch5/src/index.html",
+      "path": "projects/villa-ftv/ch5/src/index.html",
       "sha256": "90538ce2f8bbe3c45960ae6b6d3bb288cce317c92cbdc52051dc53d229873e72"
     },
     {
-      "path": "projects/villa-crans/ch5/src/iphone.html",
+      "path": "projects/villa-ftv/ch5/src/iphone.html",
       "sha256": "9f780972f2745e4a5fa5a62869535c7da937c59148c83fa30015309be59a6ce8"
     },
     {
-      "path": "projects/villa-crans/ch5/src/js/villa-joins.js",
+      "path": "projects/villa-ftv/ch5/src/js/villa-joins.js",
       "sha256": "603fa1b0ad5e1c16824d4d3271823854baa73a2b09368d2d6ac92112a6bfe684"
     },
     {
-      "path": "projects/villa-crans/ch5/src/js/room-controls.js",
+      "path": "projects/villa-ftv/ch5/src/js/room-controls.js",
       "sha256": "61842c3718bbdc426255abf1d1980071427debe78cc7e610b707ab8811dd8542"
     },
     {
-      "path": "projects/villa-crans/ch5/src/js/wellness-controls.js",
+      "path": "projects/villa-ftv/ch5/src/js/wellness-controls.js",
       "sha256": "1f7a0b0353d44fb818a7981e12293661f61a0b43ce12d6450906c3ca60575ee9"
     },
     {
-      "path": "projects/villa-crans/ch5/src/js/webxpanel.js",
+      "path": "projects/villa-ftv/ch5/src/js/webxpanel.js",
       "sha256": "d271545ff966d0f6252229344aed260d39f224143e0f2db1402bc8dae0719644"
     },
     {
-      "path": "projects/villa-crans/simpl/contract/generate_slot2.js",
+      "path": "projects/villa-ftv/simpl/contract/generate_slot2.js",
       "sha256": "bb97a0237705d8d1eb8ac54f180c5702f949b625c98896be9349887e743653f1"
     },
     {
-      "path": "projects/villa-crans/ch5/src/themes/room-controls.css",
+      "path": "projects/villa-ftv/ch5/src/themes/room-controls.css",
       "sha256": "798b5b33d9e334f18a12a635e86a4d69b2e6f5f6b7cb615b13acf29de9163ad1"
     },
     {
-      "path": "projects/villa-crans/ch5/src/themes/wellness-controls.css",
+      "path": "projects/villa-ftv/ch5/src/themes/wellness-controls.css",
       "sha256": "8d640c1d84d08f566575a24d1b4d9763dddb417aa1da41f59dabec4e859a0aeb"
     },
     {
-      "path": "projects/villa-crans/ch5/src/themes/global-controls.css",
+      "path": "projects/villa-ftv/ch5/src/themes/global-controls.css",
       "sha256": "57559a64087b50f6865756af4a917791d2f9a2f1dce0572d3309b456cb955c4f"
     }
   ],

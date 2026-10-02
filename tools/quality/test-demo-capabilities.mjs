@@ -5,7 +5,7 @@ import assert from 'node:assert/strict';
 import { repoRoot } from './runtime-compatibility.mjs';
 import { projects } from '../../apps/showcase/src/data/projects.js';
 import { supportsDemoDevice } from '../../apps/showcase/src/components/demoCapabilities.js';
-const require = createRequire(path.join(repoRoot,'projects/villa-crans/ch5/package.json'));
+const require = createRequire(path.join(repoRoot,'projects/villa-ftv/ch5/package.json'));
 const { chromium } = require('playwright');
 const arg = key => process.argv[process.argv.indexOf(key)+1];
 const base = arg('--base'), before = process.argv.includes('--before') ? arg('--before') : null, out = path.resolve(arg('--out'));

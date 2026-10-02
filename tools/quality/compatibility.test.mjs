@@ -9,7 +9,7 @@ import { prepareProject } from './prepare-project.mjs';
 import { supportsDemoDevice, nextDemoDevice } from '../../apps/showcase/src/components/demoCapabilities.js';
 import { projects } from '../../apps/showcase/src/data/projects.js';
 
-const fixture = () => { const c = JSON.parse(fs.readFileSync(path.join(repoRoot, 'projects/villa-crans/ch5/villa_config.json'))); c.contrat.alarme.codeParDefaut = ''; return c; };
+const fixture = () => { const c = JSON.parse(fs.readFileSync(path.join(repoRoot, 'projects/villa-ftv/ch5/villa_config.json'))); c.contrat.alarme.codeParDefaut = ''; return c; };
 function temp(t) {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'ftv-quality-'));
   t.after(() => {
@@ -69,7 +69,7 @@ test('SIMPL utilise le profil fourni et conserve le fichier de travail', t => {
   const input=path.join(dir,'symbol-fixture.smw');
   fs.writeFileSync(input,'[\nObjTp=Sm\nH=21\nSmC=1160\nn1I=2732\nn2I=2733\nn1O=2732\nmI=5465\nmO=5464\ntO=8016\n]\n[\nObjTp=Sg\nH=1\nNm=Preserved_Custom\n]\n');
   const before=fs.readFileSync(input);
-  const generator=path.join(repoRoot,'projects/villa-crans/simpl/contract/generate_slot2.js');
+  const generator=path.join(repoRoot,'projects/villa-ftv/simpl/contract/generate_slot2.js');
   execFileSync(process.execPath,[generator,'--config',configFile,'--input',input,'--output',output]);
   const first=fs.readFileSync(output);
   assert.match(first.toString('latin1'),/Nm=R16_HVAC_On_Actual/);

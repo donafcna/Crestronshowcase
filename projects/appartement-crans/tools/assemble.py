@@ -6,7 +6,7 @@ Assemble le projet « Appartement Crans-Montana » à partir du Core Villa Crans
   python3 tools/assemble.py --no-simpl (sans régénérer le .smw)
 
 Étapes :
-  a) GUI CH5   : projects/villa-crans/ch5/src → ch5/src (sans user_original_html.txt, funny.mp3, villa_config.*),
+  a) GUI CH5   : projects/villa-ftv/ch5/src → ch5/src (sans user_original_html.txt, funny.mp3, villa_config.*),
                  puis ch5/src/villa_config.json + villa_config.js (window.villaConfigEmbedded) écrits depuis
                  villa_config.json du projet ; ch5/version.json créé s'il manque ; src/version.js aligné.
                  deploy.ps1 (ASCII + BOM, noms de projet adaptés), tools/ et package.json du Core copiés dans ch5/.
@@ -29,7 +29,7 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 PROJ = HERE.parent
-CORE_CH5 = PROJ.parent / "villa-crans" / "ch5"
+CORE_CH5 = PROJ.parent / "villa-ftv" / "ch5"
 CORE_CS = CORE_CH5 / "Backend"
 CONFIG = PROJ / "villa_config.json"
 CH5 = PROJ / "ch5"

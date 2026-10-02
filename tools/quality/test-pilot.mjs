@@ -3,7 +3,7 @@ import path from 'node:path';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 import { repoRoot } from './runtime-compatibility.mjs';
-const require=createRequire(path.join(repoRoot,'projects/villa-crans/ch5/package.json'));
+const require=createRequire(path.join(repoRoot,'projects/villa-ftv/ch5/package.json'));
 const {chromium}=require('playwright');
 const arg=k=>process.argv[process.argv.indexOf(k)+1];
 const base=arg('--base'),out=path.resolve(arg('--out'));

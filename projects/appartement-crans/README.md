@@ -1,6 +1,6 @@
 # Appartement Crans-Montana — GUI CH5 + programmes Crestron (slot 1 SIMPL# Pro, slot 2 SIMPL Windows)
 
-Premier projet client assemblé à partir du **Core Villa Crans** (`projects/villa-crans`) : même GUI CH5, même C#,
+Premier projet client assemblé à partir du **Core Villa Crans** (`projects/villa-ftv`) : même GUI CH5, même C#,
 même contrat de joins v4.1 ; seul `villa_config.json` change (17 pièces, circuits et scènes tirés de la séquence
 d'opérations Lutron). Identifiant du projet : `appartement-crans` ; nom CH5 / CPZ : `appartementcrans` /
 `AppartementCrans`. Tout le projet vit dans ce dossier.

@@ -8,7 +8,7 @@ import { stageCh5 } from './stage-ch5.mjs';
 import { SIMULATORS, getSimulator, validateSimulatorRegistry } from '../../apps/showcase/src/components/simulatorRegistry.js';
 import { projects } from '../../apps/showcase/src/data/projects.js';
 import { fileURLToPath } from 'node:url';
-const deploymentFixture = () => { const c = JSON.parse(fs.readFileSync(fileURLToPath(new URL('../../projects/villa-crans/ch5/villa_config.json', import.meta.url)))); c.contrat.alarme.codeParDefaut = ''; return c; };
+const deploymentFixture = () => { const c = JSON.parse(fs.readFileSync(fileURLToPath(new URL('../../projects/villa-ftv/ch5/villa_config.json', import.meta.url)))); c.contrat.alarme.codeParDefaut = ''; return c; };
 
 function removeTestDirectory(dir) {
   const resolved = path.resolve(dir), parent = path.resolve(os.tmpdir());

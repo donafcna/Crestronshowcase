@@ -42,7 +42,7 @@ try{
  // Deployment HTML: feed native signals without the frontend simulator or CP4 connection.
  for(const file of ['index.html','iphone.html']){
   page=await browser.newPage({viewport:file==='iphone.html'?{width:390,height:844}:{width:1194,height:834}});page.on('pageerror',e=>errors.push('native '+e.message));
-  const src=path.resolve('../../projects/villa-crans/ch5/src',file);
+  const src=path.resolve('../../projects/villa-ftv/ch5/src',file);
   await page.route('**/'+file,r=>r.fulfill({contentType:'text/html',body:fs.readFileSync(src,'utf8')}));await page.route('**/js/webxpanel.js',r=>r.fulfill({contentType:'text/javascript',body:''}));
   await page.goto(base+'/showcases/villa-gemini-frequencetv/'+file);await page.waitForFunction(()=>typeof window.openGlobalControlModal==='function');await page.evaluate(()=>window.openGlobalControlModal());await page.waitForTimeout(800);
   check(file+' no frontend simulation',await page.evaluate(()=>!window.Villa));

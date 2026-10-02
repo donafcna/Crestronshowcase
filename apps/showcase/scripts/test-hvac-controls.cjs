@@ -37,9 +37,9 @@ try{
  // Deployment source, no simulation or CP4: actual CH5 native subscriptions and outgoing joins.
  for(const file of ['iphone.html','index.html']){
   p=await browser.newPage({viewport:file==='iphone.html'?{width:390,height:844}:{width:1194,height:834}});
-  await p.route('**/'+file,r=>r.fulfill({contentType:'text/html',body:fs.readFileSync(path.resolve('../../projects/villa-crans/ch5/src',file),'utf8')}));
+  await p.route('**/'+file,r=>r.fulfill({contentType:'text/html',body:fs.readFileSync(path.resolve('../../projects/villa-ftv/ch5/src',file),'utf8')}));
   await p.route('**/js/webxpanel.js',r=>r.fulfill({contentType:'text/javascript',body:''}));
-  await p.route('**/villa_config.js',r=>r.fulfill({contentType:'text/javascript',body:'window.villaConfigEmbedded='+fs.readFileSync(path.resolve('../../projects/villa-crans/ch5/villa_config.json'),'utf8')}));
+  await p.route('**/villa_config.js',r=>r.fulfill({contentType:'text/javascript',body:'window.villaConfigEmbedded='+fs.readFileSync(path.resolve('../../projects/villa-ftv/ch5/villa_config.json'),'utf8')}));
   await p.goto(base+'/showcases/villa-gemini-frequencetv/'+file);await p.waitForFunction(()=>window.CrComLib&&document.querySelector('[data-climate-panel=\"hvac\"] .hvac-controls .cb-btn'));
   await p.evaluate(()=>{if(window.changeRoomIphone)changeRoomIphone('3');else if(window.changeRoom)changeRoom('3');});await show(p,file==='iphone.html'?'phone':'tablet');await p.waitForTimeout(500);check(file+' deployment has no simulator',await p.evaluate(()=>!window.Villa));
   await p.evaluate(()=>{window.sentHvac=[];[610,611,612,613,614,615].forEach(j=>CrComLib.subscribeState('b',String(j),v=>{if(v)window.sentHvac.push(j);}));});

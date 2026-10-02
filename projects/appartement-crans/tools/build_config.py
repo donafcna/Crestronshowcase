@@ -17,7 +17,7 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 PROJ = HERE.parent
-CORE = PROJ.parent / "villa-crans" / "ch5" / "villa_config.json"
+CORE = PROJ.parent / "villa-ftv" / "ch5" / "villa_config.json"
 SEQ = json.loads((HERE / "lutron-seq-of-op.json").read_text(encoding="utf-8"))
 SEQ_BY_NAME = {r["circuit"].replace("  ", " ").strip(): r for r in SEQ}
 
@@ -247,7 +247,7 @@ def build():
         "interface": "connect",
         "interfaceDescription": "'connect' = interface Connect du Core (themes/connect.css + js/connect-ui.js, v5.4) ; absent ou 'villa' = interface Villa Crans d'origine.",
         "fonctionsRetirees": ["audioVideo", "alarme", "cameras"],
-        "coreOrigine": "projects/villa-crans/ch5 (GUI + C#) et projects/villa-crans/simpl/contract (générateur)",
+        "coreOrigine": "projects/villa-ftv/ch5 (GUI + C#) et projects/villa-ftv/simpl/contract (générateur)",
     })
     cfg["valeursParDefaut"] = copy.deepcopy(core["valeursParDefaut"])
     cfg["valeursParDefaut"]["scenesEclairage"] = list(SCENES)

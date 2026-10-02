@@ -67,7 +67,7 @@ if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) 
   const arg = key => { const i = process.argv.indexOf(key); return i < 0 ? null : process.argv[i + 1]; };
   try {
     if (!arg('--config') || !arg('--out')) throw new Error('Usage : node stage-ch5.mjs --config <villa_config.json> --out <nouveau dossier> [--development] [--source <src>]');
-    const source = arg('--source') || path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../projects/villa-crans/ch5/src');
+    const source = arg('--source') || path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../projects/villa-ftv/ch5/src');
     const r = stageCh5({ source, configFile: arg('--config'), out: arg('--out'), development: process.argv.includes('--development') });
     console.log(JSON.stringify({ status: r.status, version: r.version, files: r.files.length, hardwareReady: r.hardwareReady }));
   } catch (e) { console.error(e.message); process.exitCode = 1; }

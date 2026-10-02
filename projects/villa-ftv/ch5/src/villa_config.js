@@ -1,10 +1,12 @@
 window.villaConfigEmbedded = {
   "meta": {
-    "projet": "Appartement Crans-Montana",
+    "projet": "Villa FTV",
     "integrateur": "Fréquence TV",
-    "version": "1.0.0-showcase",
-    "mode": "showcase",
+    "version": "1.0.217",
+    "mode": "deploiement",
     "modeDescription": "'deploiement' = GUI livré chez le client : les feedbacks viennent du CP4 (C# slot 1 + SIMPL slot 2) via js/webxpanel.js / CrComLib, aucune simulation. 'showcase' = copie pour le site crestrongui.vercel.app : posé UNIQUEMENT par scripts/sync-villa-crans.py du dépôt Crestronshowcase, feedbacks simulés dans le navigateur (js/local-feedback.js), curseur de démo géré par le site (jamais par le GUI). Ne jamais mettre 'showcase' ici. Voir docs/08_WORKFLOW_SHOWCASE.md.",
+    "backend": "simpl",
+    "backendDescription": "'simpl' (v6.0) = un seul programme SIMPL sur le slot 1, aucun C# : les ecrans parlent directement aux joins de piece (contrat.simplDirect). 'csharp' = architecture v5 (C# slot 1 + SIMPL slot 2, conservee sur la branche git villa-crans-csharp-v5.5). Sans ce champ : 'csharp'.",
     "tracesConsole": false,
     "tracesConsoleDescription": "false = le programme du slot 1 n'affiche en console que ses messages de diagnostic (démarrage, configuration, EISC, arrivée d'un périphérique, erreurs) et la GUI ne recopie plus ses console.log sur le sériel 100. Passer à true pour retrouver la trace complète des actions utilisateur pendant une mise au point ; un progreset suffit, aucune recompilation.",
     "tracesLatence": false,
@@ -27,16 +29,7 @@ window.villaConfigEmbedded = {
       "Un nom laissé vide (\"\") reprend le nom par défaut indiqué dans 'valeursParDefaut'.",
       "Un pilotage avec \"actif\": false masque toute la section correspondante dans le GUI pour cette pièce.",
       "ICONES : chaque piece a un champ icone (emoji affiche dans le menu de gauche). Choisir dans valeursParDefaut.iconesDisponibles et copier-coller."
-    ],
-    "description": "Duplex de 350 m² (niveaux 9 et 10) dans une résidence hôtelière de Crans-Montana : 17 zones, éclairage Lutron HomeWorks QS (DALI + phase) avec niveaux par scène issus de la séquence d'opérations Lutron, rideaux motorisés Lutron, CVC par pièce. Interface Connect (liste des pièces, tuiles-curseurs, scènes, stores, climat) ; aucune fonction audio-vidéo, alarme ni caméra (29.09.2026). GUI CH5, C# et générateur SIMPL = Core Villa Crans (contrat v4.1) ; seul ce fichier change.",
-    "interface": "connect",
-    "interfaceDescription": "'connect' = interface Connect du Core (themes/connect.css + js/connect-ui.js, v5.4) ; absent ou 'villa' = interface Villa Crans d'origine.",
-    "fonctionsRetirees": [
-      "audioVideo",
-      "alarme",
-      "cameras"
-    ],
-    "coreOrigine": "projects/villa-ftv/ch5 (GUI + C#) et projects/villa-ftv/simpl/contract (générateur)"
+    ]
   },
   "valeursParDefaut": {
     "iconesDisponibles": {
@@ -63,15 +56,15 @@ window.villaConfigEmbedded = {
     },
     "scenesEclairage": [
       "OFF",
-      "JOUR",
-      "SOIR",
-      "NUIT"
+      "AMBIANCE",
+      "REPAS",
+      "TOTAL"
     ],
     "circuits": [
-      "Spots",
-      "Corniche LED",
-      "Appliques",
-      "Veilleuses"
+      "Spots plafond",
+      "Lustre central",
+      "Appliques murales",
+      "Ruban LED"
     ],
     "moteurs": [
       {
@@ -181,14 +174,11 @@ window.villaConfigEmbedded = {
   "widgets": {
     "description": "Affichage des widgets du GUI (true = affiche, false = masque). Reglage global villa.",
     "meteoActualites": {
-      "actif": true,
-      "description": "Widget meteo de la colonne de gauche ; ville/coordonnees lues par le Core (27.09.2026)",
-      "ville": "Crans-Montana",
-      "latitude": 46.3117,
-      "longitude": 7.4806
+      "actif": false,
+      "description": "Widget meteo Nyon de la colonne de gauche (le flux RSS a ete retire le 09.09.2026)"
     },
     "bandeauActualites": {
-      "actif": true,
+      "actif": false,
       "description": "Bandeau 'Etat de la villa' du bloc multimedia (alarme, multimedia, CVC, processeur) - ex bandeau actualites"
     },
     "parPeripherique": {
@@ -210,8 +200,8 @@ window.villaConfigEmbedded = {
   "pieces": [
     {
       "id": 1,
-      "nom": "Salon",
-      "icone": "🛋️",
+      "nom": "Salle de jeux",
+      "icone": "🎮",
       "intersystem": true,
       "pilotages": {
         "eclairages": {
@@ -220,9 +210,9 @@ window.villaConfigEmbedded = {
             "nombre": 4,
             "noms": [
               "OFF",
-              "JOUR",
-              "SOIR",
-              "NUIT"
+              "CINÉMA",
+              "REPAS",
+              "TOTAL"
             ],
             "niveaux": [
               [
@@ -230,82 +220,136 @@ window.villaConfigEmbedded = {
                 0,
                 0,
                 0,
+                0,
+                0,
+                0,
+                0,
+                0,
                 0
               ],
               [
-                52428,
-                52428,
-                52428,
-                52428,
-                65535
-              ],
-              [
-                49151,
-                49151,
+                0,
+                16384,
+                19660,
                 13107,
-                49151,
-                65535
+                16384,
+                19660,
+                13107,
+                16384,
+                19660,
+                13107
               ],
               [
-                3932,
-                3932,
-                5243,
-                3277,
-                0
+                32768,
+                39321,
+                45874,
+                32768,
+                39321,
+                45874,
+                32768,
+                39321,
+                45874,
+                32768
+              ],
+              [
+                65535,
+                65535,
+                65535,
+                65535,
+                65535,
+                65535,
+                65535,
+                65535,
+                65535,
+                65535
               ]
             ],
-            "niveauxDescription": "Niveau 0-65535 de chaque circuit pour chaque scène, dans l'ordre de circuits.noms. Valeur de repli : dès que le slot 2 remonte le niveau réel d'un circuit, c'est lui qui fait foi et la scène ne le repositionne plus.",
-            "origine": "Séquence d'opérations Lutron du projet : OFF = Scene Off, JOUR = CELS Day, SOIR = CELS Night, NUIT = Low Scene (veilleuses forcées)."
+            "niveauxDescription": "Niveau 0-65535 de chaque circuit pour chaque scène, dans l'ordre de circuits.noms. Valeur de repli : dès que le slot 2 remonte le niveau réel d'un circuit, c'est lui qui fait foi et la scène ne le repositionne plus."
           },
           "circuits": {
-            "nombre": 5,
+            "nombre": 10,
             "noms": [
-              "Spots côté vallée",
-              "Spots coin lecture",
-              "Corniche LED",
-              "Lampadaires",
-              "Cheminée"
-            ],
-            "lutron": [
-              "Living - Spots coté vallée",
-              "Living - Spots corner",
-              "Living - Cove",
-              "Living - Floor Lamps",
-              ""
-            ],
-            "type": [
-              "DALI",
-              "DALI",
-              "DALI",
-              "PHASE",
-              "contact"
+              "Spots plafond ouest",
+              "Lustre principal",
+              "Ruban LED corniche",
+              "Applique murale nord",
+              "Spots plafond Ouest2",
+              "Lustre Principal2",
+              "Ruban LED Corniche2",
+              "Applique murale Nord2",
+              "Ruban LED Corniche3",
+              "Applique murale Nord3"
             ]
           }
         },
         "moteurs": {
-          "actif": true,
-          "nombre": 4,
+          "actif": false,
+          "nombre": 12,
           "liste": [
             {
-              "nom": "Rideau baie sud",
-              "type": "rideau"
+              "nom": "Volet ext. 1",
+              "type": "volet",
+              "lamelles": true
             },
             {
-              "nom": "Rideau baie est",
-              "type": "rideau"
+              "nom": "Volet ext. 2",
+              "type": "volet",
+              "lamelles": true
             },
             {
-              "nom": "Voilage sud",
-              "type": "store"
+              "nom": "Rideau ext. 1",
+              "type": "rideau",
+              "lamelles": false
             },
             {
-              "nom": "Voilage est",
-              "type": "store"
+              "nom": "Rideau ext. 2",
+              "type": "rideau",
+              "lamelles": false
+            },
+            {
+              "nom": "Store 1",
+              "type": "store",
+              "lamelles": true
+            },
+            {
+              "nom": "Store 2",
+              "type": "store",
+              "lamelles": true
+            },
+            {
+              "nom": "Volet ext. 3",
+              "type": "volet",
+              "lamelles": true
+            },
+            {
+              "nom": "Rideau ext. 3",
+              "type": "rideau",
+              "lamelles": false
+            },
+            {
+              "nom": "Store 3",
+              "type": "store",
+              "lamelles": true
+            },
+            {
+              "nom": "Volet ext. 4",
+              "type": "volet",
+              "lamelles": true
+            },
+            {
+              "nom": "Rideau ext. 4",
+              "type": "rideau",
+              "lamelles": false
+            },
+            {
+              "nom": "Store 4",
+              "type": "store",
+              "lamelles": true
             }
           ]
         },
         "cvc": {
-          "actif": true,
+          "actif": false,
           "marcheArret": true,
           "ventilation": {
             "actif": true,
@@ -328,7 +372,7 @@ window.villaConfigEmbedded = {
         },
         "controlesGeneraux": {
           "actif": true,
-          "partitionsAlarme": 0
+          "partitionsAlarme": 4
         },
         "audioVideo": {
           "actif": false,
@@ -340,783 +384,11 @@ window.villaConfigEmbedded = {
             5
           ]
         }
-      },
-      "actif": true,
-      "niveau": 0,
-      "plan3d": {
-        "type": "salon",
-        "x": 12.3,
-        "z": 11.8,
-        "w": 8.2,
-        "d": 6.2,
-        "windowWall": "north"
       }
     },
     {
       "id": 2,
-      "nom": "Salle à manger",
-      "icone": "🍽️",
-      "intersystem": true,
-      "pilotages": {
-        "eclairages": {
-          "actif": true,
-          "scenes": {
-            "nombre": 4,
-            "noms": [
-              "OFF",
-              "JOUR",
-              "SOIR",
-              "NUIT"
-            ],
-            "niveaux": [
-              [
-                0,
-                0,
-                0
-              ],
-              [
-                52428,
-                52428,
-                39321
-              ],
-              [
-                49151,
-                49151,
-                13107
-              ],
-              [
-                3932,
-                0,
-                5243
-              ]
-            ],
-            "niveauxDescription": "Niveau 0-65535 de chaque circuit pour chaque scène, dans l'ordre de circuits.noms. Valeur de repli : dès que le slot 2 remonte le niveau réel d'un circuit, c'est lui qui fait foi et la scène ne le repositionne plus.",
-            "origine": "Séquence d'opérations Lutron du projet : OFF = Scene Off, JOUR = CELS Day, SOIR = CELS Night, NUIT = Low Scene (veilleuses forcées)."
-          },
-          "circuits": {
-            "nombre": 3,
-            "noms": [
-              "Spots",
-              "Suspensions",
-              "Corniche LED"
-            ],
-            "lutron": [
-              "Dining - Spots",
-              "Dining - Suspensions",
-              "Dining - Cove"
-            ],
-            "type": [
-              "DALI",
-              "PHASE",
-              "DALI"
-            ]
-          }
-        },
-        "moteurs": {
-          "actif": true,
-          "nombre": 2,
-          "liste": [
-            {
-              "nom": "Rideau terrasse",
-              "type": "rideau"
-            },
-            {
-              "nom": "Voilage",
-              "type": "store"
-            }
-          ]
-        },
-        "cvc": {
-          "actif": true,
-          "marcheArret": true,
-          "ventilation": {
-            "actif": true,
-            "vitesses": [
-              0,
-              1,
-              2,
-              3
-            ]
-          },
-          "etatInitial": {
-            "marche": true,
-            "ventilation": 0
-          },
-          "consigne": {
-            "min": 16,
-            "max": 28,
-            "pas": 0.5
-          }
-        },
-        "controlesGeneraux": {
-          "actif": true,
-          "partitionsAlarme": 0
-        },
-        "audioVideo": {
-          "actif": false,
-          "sources": [
-            1,
-            2,
-            3,
-            4,
-            5
-          ]
-        }
-      },
-      "actif": true,
-      "niveau": 0,
-      "plan3d": {
-        "type": "repas",
-        "x": 6.3,
-        "z": 11.8,
-        "w": 5.7,
-        "d": 6.2,
-        "windowWall": "north"
-      }
-    },
-    {
-      "id": 3,
-      "nom": "Cuisine",
-      "icone": "🍳",
-      "intersystem": true,
-      "pilotages": {
-        "eclairages": {
-          "actif": true,
-          "scenes": {
-            "nombre": 4,
-            "noms": [
-              "OFF",
-              "JOUR",
-              "SOIR",
-              "NUIT"
-            ],
-            "niveaux": [
-              [
-                0,
-                0,
-                0,
-                0,
-                0,
-                0
-              ],
-              [
-                52428,
-                52428,
-                52428,
-                52428,
-                52428,
-                52428
-              ],
-              [
-                49151,
-                49151,
-                49151,
-                49151,
-                13107,
-                13107
-              ],
-              [
-                3932,
-                3932,
-                0,
-                3277,
-                5243,
-                0
-              ]
-            ],
-            "niveauxDescription": "Niveau 0-65535 de chaque circuit pour chaque scène, dans l'ordre de circuits.noms. Valeur de repli : dès que le slot 2 remonte le niveau réel d'un circuit, c'est lui qui fait foi et la scène ne le repositionne plus.",
-            "origine": "Séquence d'opérations Lutron du projet : OFF = Scene Off, JOUR = CELS Day, SOIR = CELS Night, NUIT = Low Scene (veilleuses forcées)."
-          },
-          "circuits": {
-            "nombre": 6,
-            "noms": [
-              "Spots plafond",
-              "Spots passage",
-              "Lustre îlot",
-              "Spots îlot",
-              "Corniche LED",
-              "Plan de travail"
-            ],
-            "lutron": [
-              "Kitchen - Spots ceiling",
-              "Kitchen - Spots passage",
-              "Kitchen - Illot lustre",
-              "Kitchen - Illot spots",
-              "Kitchen - Cove",
-              "Kitchen - Comptoir"
-            ],
-            "type": [
-              "DALI",
-              "DALI",
-              "PHASE",
-              "PHASE",
-              "DALI",
-              "DALI"
-            ]
-          }
-        },
-        "moteurs": {
-          "actif": true,
-          "nombre": 1,
-          "liste": [
-            {
-              "nom": "Store fenêtre",
-              "type": "store"
-            }
-          ]
-        },
-        "cvc": {
-          "actif": true,
-          "marcheArret": true,
-          "ventilation": {
-            "actif": true,
-            "vitesses": [
-              0,
-              1,
-              2,
-              3
-            ]
-          },
-          "etatInitial": {
-            "marche": true,
-            "ventilation": 0
-          },
-          "consigne": {
-            "min": 16,
-            "max": 28,
-            "pas": 0.5
-          }
-        },
-        "controlesGeneraux": {
-          "actif": true,
-          "partitionsAlarme": 0
-        },
-        "audioVideo": {
-          "actif": false,
-          "sources": [
-            1,
-            2,
-            3,
-            4,
-            5
-          ]
-        }
-      },
-      "actif": true,
-      "niveau": 0,
-      "plan3d": {
-        "type": "cuisine",
-        "x": 0,
-        "z": 11.8,
-        "w": 6,
-        "d": 6.2,
-        "windowWall": "north"
-      }
-    },
-    {
-      "id": 4,
-      "nom": "Entrée",
-      "icone": "🚪",
-      "intersystem": true,
-      "pilotages": {
-        "eclairages": {
-          "actif": true,
-          "scenes": {
-            "nombre": 4,
-            "noms": [
-              "OFF",
-              "JOUR",
-              "SOIR",
-              "NUIT"
-            ],
-            "niveaux": [
-              [
-                0,
-                0,
-                0
-              ],
-              [
-                52428,
-                52428,
-                52428
-              ],
-              [
-                49151,
-                22937,
-                26214
-              ],
-              [
-                3932,
-                0,
-                20971
-              ]
-            ],
-            "niveauxDescription": "Niveau 0-65535 de chaque circuit pour chaque scène, dans l'ordre de circuits.noms. Valeur de repli : dès que le slot 2 remonte le niveau réel d'un circuit, c'est lui qui fait foi et la scène ne le repositionne plus.",
-            "origine": "Séquence d'opérations Lutron du projet : OFF = Scene Off, JOUR = CELS Day, SOIR = CELS Night, NUIT = Low Scene (veilleuses forcées)."
-          },
-          "circuits": {
-            "nombre": 3,
-            "noms": [
-              "Spots",
-              "Éclairage tableau",
-              "Appliques"
-            ],
-            "lutron": [
-              "Entrance - Spots",
-              "Entrance - Painting",
-              "Entrance - Wall Lights"
-            ],
-            "type": [
-              "DALI",
-              "PHASE",
-              "DALI"
-            ]
-          }
-        },
-        "moteurs": {
-          "actif": false,
-          "nombre": 6,
-          "liste": [
-            {
-              "nom": "Volet ext. 1",
-              "type": "volet",
-              "lamelles": true
-            },
-            {
-              "nom": "Volet ext. 2",
-              "type": "volet",
-              "lamelles": true
-            },
-            {
-              "nom": "Rideau ext. 1",
-              "type": "rideau",
-              "lamelles": false
-            },
-            {
-              "nom": "Rideau ext. 2",
-              "type": "rideau",
-              "lamelles": false
-            },
-            {
-              "nom": "Store 1",
-              "type": "store",
-              "lamelles": true
-            },
-            {
-              "nom": "Store 2",
-              "type": "store",
-              "lamelles": true
-            },
-            {
-              "nom": "Volet ext. 3",
-              "type": "volet",
-              "lamelles": true
-            },
-            {
-              "nom": "Rideau ext. 3",
-              "type": "rideau",
-              "lamelles": false
-            },
-            {
-              "nom": "Store 3",
-              "type": "store",
-              "lamelles": true
-            },
-            {
-              "nom": "Volet ext. 4",
-              "type": "volet",
-              "lamelles": true
-            },
-            {
-              "nom": "Rideau ext. 4",
-              "type": "rideau",
-              "lamelles": false
-            },
-            {
-              "nom": "Store 4",
-              "type": "store",
-              "lamelles": true
-            }
-          ]
-        },
-        "cvc": {
-          "actif": false,
-          "marcheArret": true,
-          "ventilation": {
-            "actif": true,
-            "vitesses": [
-              0,
-              1,
-              2,
-              3
-            ]
-          },
-          "etatInitial": {
-            "marche": true,
-            "ventilation": 0
-          },
-          "consigne": {
-            "min": 16,
-            "max": 28,
-            "pas": 0.5
-          }
-        },
-        "controlesGeneraux": {
-          "actif": true,
-          "partitionsAlarme": 0
-        },
-        "audioVideo": {
-          "actif": false,
-          "sources": [
-            1,
-            2,
-            3,
-            4,
-            5
-          ]
-        }
-      },
-      "actif": true,
-      "niveau": 0,
-      "plan3d": {
-        "type": "entree",
-        "x": 0,
-        "z": 6.4,
-        "w": 6,
-        "d": 5.1,
-        "windowWall": "none"
-      }
-    },
-    {
-      "id": 5,
-      "nom": "WC invités",
-      "icone": "🚻",
-      "intersystem": true,
-      "pilotages": {
-        "eclairages": {
-          "actif": true,
-          "scenes": {
-            "nombre": 4,
-            "noms": [
-              "OFF",
-              "JOUR",
-              "SOIR",
-              "NUIT"
-            ],
-            "niveaux": [
-              [
-                0
-              ],
-              [
-                52428
-              ],
-              [
-                49151
-              ],
-              [
-                3277
-              ]
-            ],
-            "niveauxDescription": "Niveau 0-65535 de chaque circuit pour chaque scène, dans l'ordre de circuits.noms. Valeur de repli : dès que le slot 2 remonte le niveau réel d'un circuit, c'est lui qui fait foi et la scène ne le repositionne plus.",
-            "origine": "Séquence d'opérations Lutron du projet : OFF = Scene Off, JOUR = CELS Day, SOIR = CELS Night, NUIT = Low Scene (veilleuses forcées)."
-          },
-          "circuits": {
-            "nombre": 1,
-            "noms": [
-              "Spots"
-            ],
-            "lutron": [
-              "Entrance - WC Spots"
-            ],
-            "type": [
-              "DALI"
-            ]
-          }
-        },
-        "moteurs": {
-          "actif": false,
-          "nombre": 6,
-          "liste": [
-            {
-              "nom": "Volet ext. 1",
-              "type": "volet",
-              "lamelles": true
-            },
-            {
-              "nom": "Volet ext. 2",
-              "type": "volet",
-              "lamelles": true
-            },
-            {
-              "nom": "Rideau ext. 1",
-              "type": "rideau",
-              "lamelles": false
-            },
-            {
-              "nom": "Rideau ext. 2",
-              "type": "rideau",
-              "lamelles": false
-            },
-            {
-              "nom": "Store 1",
-              "type": "store",
-              "lamelles": true
-            },
-            {
-              "nom": "Store 2",
-              "type": "store",
-              "lamelles": true
-            },
-            {
-              "nom": "Volet ext. 3",
-              "type": "volet",
-              "lamelles": true
-            },
-            {
-              "nom": "Rideau ext. 3",
-              "type": "rideau",
-              "lamelles": false
-            },
-            {
-              "nom": "Store 3",
-              "type": "store",
-              "lamelles": true
-            },
-            {
-              "nom": "Volet ext. 4",
-              "type": "volet",
-              "lamelles": true
-            },
-            {
-              "nom": "Rideau ext. 4",
-              "type": "rideau",
-              "lamelles": false
-            },
-            {
-              "nom": "Store 4",
-              "type": "store",
-              "lamelles": true
-            }
-          ]
-        },
-        "cvc": {
-          "actif": false,
-          "marcheArret": true,
-          "ventilation": {
-            "actif": true,
-            "vitesses": [
-              0,
-              1,
-              2,
-              3
-            ]
-          },
-          "etatInitial": {
-            "marche": true,
-            "ventilation": 0
-          },
-          "consigne": {
-            "min": 16,
-            "max": 28,
-            "pas": 0.5
-          }
-        },
-        "controlesGeneraux": {
-          "actif": true,
-          "partitionsAlarme": 0
-        },
-        "audioVideo": {
-          "actif": false,
-          "sources": [
-            1,
-            2,
-            3,
-            4,
-            5
-          ]
-        }
-      },
-      "actif": true,
-      "niveau": 0,
-      "plan3d": {
-        "type": "wc",
-        "x": 9.6,
-        "z": 6.4,
-        "w": 1.5,
-        "d": 2.4,
-        "windowWall": "none"
-      }
-    },
-    {
-      "id": 6,
-      "nom": "Buanderie",
-      "icone": "🧺",
-      "intersystem": true,
-      "pilotages": {
-        "eclairages": {
-          "actif": true,
-          "scenes": {
-            "nombre": 4,
-            "noms": [
-              "OFF",
-              "JOUR",
-              "SOIR",
-              "NUIT"
-            ],
-            "niveaux": [
-              [
-                0,
-                0
-              ],
-              [
-                52428,
-                52428
-              ],
-              [
-                49151,
-                13107
-              ],
-              [
-                3932,
-                5243
-              ]
-            ],
-            "niveauxDescription": "Niveau 0-65535 de chaque circuit pour chaque scène, dans l'ordre de circuits.noms. Valeur de repli : dès que le slot 2 remonte le niveau réel d'un circuit, c'est lui qui fait foi et la scène ne le repositionne plus.",
-            "origine": "Séquence d'opérations Lutron du projet : OFF = Scene Off, JOUR = CELS Day, SOIR = CELS Night, NUIT = Low Scene (veilleuses forcées)."
-          },
-          "circuits": {
-            "nombre": 2,
-            "noms": [
-              "Spots",
-              "Corniche LED"
-            ],
-            "lutron": [
-              "Laundry - Spots",
-              "Laundry - Cove"
-            ],
-            "type": [
-              "DALI",
-              "DALI"
-            ]
-          }
-        },
-        "moteurs": {
-          "actif": false,
-          "nombre": 6,
-          "liste": [
-            {
-              "nom": "Volet ext. 1",
-              "type": "volet",
-              "lamelles": true
-            },
-            {
-              "nom": "Volet ext. 2",
-              "type": "volet",
-              "lamelles": true
-            },
-            {
-              "nom": "Rideau ext. 1",
-              "type": "rideau",
-              "lamelles": false
-            },
-            {
-              "nom": "Rideau ext. 2",
-              "type": "rideau",
-              "lamelles": false
-            },
-            {
-              "nom": "Store 1",
-              "type": "store",
-              "lamelles": true
-            },
-            {
-              "nom": "Store 2",
-              "type": "store",
-              "lamelles": true
-            },
-            {
-              "nom": "Volet ext. 3",
-              "type": "volet",
-              "lamelles": true
-            },
-            {
-              "nom": "Rideau ext. 3",
-              "type": "rideau",
-              "lamelles": false
-            },
-            {
-              "nom": "Store 3",
-              "type": "store",
-              "lamelles": true
-            },
-            {
-              "nom": "Volet ext. 4",
-              "type": "volet",
-              "lamelles": true
-            },
-            {
-              "nom": "Rideau ext. 4",
-              "type": "rideau",
-              "lamelles": false
-            },
-            {
-              "nom": "Store 4",
-              "type": "store",
-              "lamelles": true
-            }
-          ]
-        },
-        "cvc": {
-          "actif": false,
-          "marcheArret": true,
-          "ventilation": {
-            "actif": true,
-            "vitesses": [
-              0,
-              1,
-              2,
-              3
-            ]
-          },
-          "etatInitial": {
-            "marche": true,
-            "ventilation": 0
-          },
-          "consigne": {
-            "min": 16,
-            "max": 28,
-            "pas": 0.5
-          }
-        },
-        "controlesGeneraux": {
-          "actif": true,
-          "partitionsAlarme": 0
-        },
-        "audioVideo": {
-          "actif": false,
-          "sources": [
-            1,
-            2,
-            3,
-            4,
-            5
-          ]
-        }
-      },
-      "actif": true,
-      "niveau": 0,
-      "plan3d": {
-        "type": "buanderie",
-        "x": 0,
-        "z": 0,
-        "w": 3.4,
-        "d": 6,
-        "windowWall": "none"
-      }
-    },
-    {
-      "id": 7,
-      "nom": "Suite parentale",
+      "nom": "Chambre maman",
       "icone": "🛏️",
       "intersystem": true,
       "pilotages": {
@@ -1126,123 +398,116 @@ window.villaConfigEmbedded = {
             "nombre": 4,
             "noms": [
               "OFF",
-              "JOUR",
-              "SOIR",
-              "NUIT"
+              "Jeux",
+              "AMBIANCE",
+              "TOTAL"
             ],
             "niveaux": [
               [
                 0,
                 0,
                 0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
                 0
               ],
               [
-                52428,
-                39321,
-                39321,
-                65535,
-                65535,
+                0,
                 16384,
-                0,
-                52428,
-                52428,
-                39321
+                19660,
+                13107
               ],
               [
-                49151,
-                13107,
-                22937,
-                65535,
-                65535,
-                6554,
-                0,
-                22937,
-                22937,
-                19660
+                32768,
+                39321,
+                45874,
+                32768
               ],
               [
-                3932,
-                5243,
-                9830,
-                0,
-                0,
-                1966,
                 65535,
-                0,
-                0,
-                19660
+                65535,
+                65535,
+                65535
               ]
             ],
-            "niveauxDescription": "Niveau 0-65535 de chaque circuit pour chaque scène, dans l'ordre de circuits.noms. Valeur de repli : dès que le slot 2 remonte le niveau réel d'un circuit, c'est lui qui fait foi et la scène ne le repositionne plus.",
-            "origine": "Séquence d'opérations Lutron du projet : OFF = Scene Off, JOUR = CELS Day, SOIR = CELS Night, NUIT = Low Scene (veilleuses forcées)."
+            "niveauxDescription": "Niveau 0-65535 de chaque circuit pour chaque scène, dans l'ordre de circuits.noms. Valeur de repli : dès que le slot 2 remonte le niveau réel d'un circuit, c'est lui qui fait foi et la scène ne le repositionne plus."
           },
           "circuits": {
-            "nombre": 10,
+            "nombre": 4,
             "noms": [
-              "Spots",
-              "Corniche LED",
-              "Tête de lit",
-              "Chevet gauche",
-              "Chevet droit",
-              "Niches",
-              "Veilleuses",
-              "Dressing Monsieur",
-              "Dressing Madame",
-              "Terrasse"
-            ],
-            "lutron": [
-              "Masterbed - Spots",
-              "Masterbed - Cove",
-              "Masterbed - Bedhead",
-              "Masterbed - Bedhead left",
-              "Masterbed - Bedhead right",
-              "Masterbed - Niches Besides",
-              "Masterbed - Nightlights",
-              "Masterbed - His Dressing",
-              "Masterbed - Her Dressing",
-              "Masterbed - Terrasse by Living"
-            ],
-            "type": [
-              "DALI",
-              "DALI",
-              "DALI",
-              "DALI",
-              "DALI",
-              "DALI",
-              "DALI",
-              "DALI",
-              "DALI",
-              "DALI"
+              "Spots zone cuisson",
+              "Suspension îlot",
+              "LED plan de travail",
+              "Plafonnier central"
             ]
           }
         },
         "moteurs": {
           "actif": true,
-          "nombre": 3,
+          "nombre": 12,
           "liste": [
             {
-              "nom": "Rideau terrasse",
-              "type": "rideau"
+              "nom": "Volet ext. 1",
+              "type": "volet",
+              "lamelles": true
             },
             {
-              "nom": "Voilage",
-              "type": "store"
+              "nom": "Volet ext. 2",
+              "type": "volet",
+              "lamelles": true
             },
             {
-              "nom": "Rideau dressing",
-              "type": "rideau"
+              "nom": "Rideau ext. 1",
+              "type": "rideau",
+              "lamelles": false
+            },
+            {
+              "nom": "Rideau ext. 2",
+              "type": "rideau",
+              "lamelles": false
+            },
+            {
+              "nom": "Store 1",
+              "type": "store",
+              "lamelles": true
+            },
+            {
+              "nom": "Store 2",
+              "type": "store",
+              "lamelles": true
+            },
+            {
+              "nom": "Volet ext. 3",
+              "type": "volet",
+              "lamelles": true
+            },
+            {
+              "nom": "Rideau ext. 3",
+              "type": "rideau",
+              "lamelles": false
+            },
+            {
+              "nom": "Store 3",
+              "type": "store",
+              "lamelles": true
+            },
+            {
+              "nom": "Volet ext. 4",
+              "type": "volet",
+              "lamelles": true
+            },
+            {
+              "nom": "Rideau ext. 4",
+              "type": "rideau",
+              "lamelles": false
+            },
+            {
+              "nom": "Store 4",
+              "type": "store",
+              "lamelles": true
             }
           ]
         },
         "cvc": {
-          "actif": true,
+          "actif": false,
           "marcheArret": true,
           "ventilation": {
             "actif": true,
@@ -1264,11 +529,11 @@ window.villaConfigEmbedded = {
           }
         },
         "controlesGeneraux": {
-          "actif": true,
-          "partitionsAlarme": 0
+          "actif": false,
+          "partitionsAlarme": 4
         },
         "audioVideo": {
-          "actif": false,
+          "actif": true,
           "sources": [
             1,
             2,
@@ -1277,116 +542,65 @@ window.villaConfigEmbedded = {
             5
           ]
         }
-      },
-      "actif": true,
-      "niveau": 0,
-      "plan3d": {
-        "type": "suite",
-        "x": 11.3,
-        "z": 6.4,
-        "w": 8,
-        "d": 5.1,
-        "windowWall": "north"
       }
     },
     {
-      "id": 8,
-      "nom": "Bain parental",
-      "icone": "🛁",
+      "id": 3,
+      "nom": "Chambre papa",
+      "icone": "🛏️",
       "intersystem": true,
       "pilotages": {
         "eclairages": {
-          "actif": true,
+          "actif": false,
           "scenes": {
             "nombre": 4,
             "noms": [
               "OFF",
-              "JOUR",
-              "SOIR",
-              "NUIT"
+              "CINÉMA",
+              "REPAS",
+              "TOTAL"
             ],
             "niveaux": [
               [
                 0,
                 0,
                 0,
-                0,
-                0,
-                0,
-                0,
                 0
               ],
               [
-                65535,
-                39321,
-                65535,
-                39321,
-                65535,
-                22937,
-                39321,
-                65535
+                0,
+                16384,
+                19660,
+                13107
               ],
               [
-                49151,
-                13107,
+                32768,
                 39321,
-                26214,
-                49151,
-                6554,
-                19660,
-                65535
+                45874,
+                32768
               ],
               [
-                3932,
-                5243,
-                2621,
-                20971,
-                3932,
-                1966,
-                19660,
-                0
+                65535,
+                65535,
+                65535,
+                65535
               ]
             ],
-            "niveauxDescription": "Niveau 0-65535 de chaque circuit pour chaque scène, dans l'ordre de circuits.noms. Valeur de repli : dès que le slot 2 remonte le niveau réel d'un circuit, c'est lui qui fait foi et la scène ne le repositionne plus.",
-            "origine": "Séquence d'opérations Lutron du projet : OFF = Scene Off, JOUR = CELS Day, SOIR = CELS Night, NUIT = Low Scene (veilleuses forcées)."
+            "niveauxDescription": "Niveau 0-65535 de chaque circuit pour chaque scène, dans l'ordre de circuits.noms. Valeur de repli : dès que le slot 2 remonte le niveau réel d'un circuit, c'est lui qui fait foi et la scène ne le repositionne plus."
           },
           "circuits": {
-            "nombre": 8,
+            "nombre": 4,
             "noms": [
-              "Spots",
-              "Corniche LED",
-              "Douche vapeur",
-              "Appliques miroir",
-              "Spots WC",
-              "Niche WC",
-              "Terrasse",
-              "Sèche-serviettes"
-            ],
-            "lutron": [
-              "Masterbath - Spots",
-              "Masterbath - Cove",
-              "Masterbath - Shower",
-              "Masterbath - Wall Lights",
-              "Masterbath - WC Spots",
-              "Masterbath - WC niche",
-              "Masterbath - Terrasse by Office",
-              ""
-            ],
-            "type": [
-              "DALI",
-              "DALI",
-              "DALI",
-              "DALI",
-              "DALI",
-              "DALI",
-              "DALI",
-              "contact"
+              "Lustre table repas",
+              "Spots plafond",
+              "Appliques buffet est",
+              "Ruban LED vaisselier"
             ]
           }
         },
         "moteurs": {
-          "actif": false,
-          "nombre": 6,
+          "actif": true,
+          "nombre": 12,
           "liste": [
             {
               "nom": "Volet ext. 1",
@@ -1474,7 +688,165 @@ window.villaConfigEmbedded = {
         },
         "controlesGeneraux": {
           "actif": true,
-          "partitionsAlarme": 0
+          "partitionsAlarme": 4
+        },
+        "audioVideo": {
+          "actif": true,
+          "sources": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      }
+    },
+    {
+      "id": 4,
+      "nom": "Suite amis",
+      "icone": "🚪",
+      "intersystem": true,
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "scenes": {
+            "nombre": 4,
+            "noms": [
+              "OFF",
+              "CINÉMA",
+              "REPAS",
+              "TOTAL"
+            ],
+            "niveaux": [
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                16384,
+                19660,
+                13107
+              ],
+              [
+                32768,
+                39321,
+                45874,
+                32768
+              ],
+              [
+                65535,
+                65535,
+                65535,
+                65535
+              ]
+            ],
+            "niveauxDescription": "Niveau 0-65535 de chaque circuit pour chaque scène, dans l'ordre de circuits.noms. Valeur de repli : dès que le slot 2 remonte le niveau réel d'un circuit, c'est lui qui fait foi et la scène ne le repositionne plus."
+          },
+          "circuits": {
+            "nombre": 4,
+            "noms": [
+              "Plafonnier suite",
+              "Liseuse lit gauche",
+              "Liseuse lit droite",
+              "Corniche LED tête de lit"
+            ]
+          }
+        },
+        "moteurs": {
+          "actif": false,
+          "nombre": 12,
+          "liste": [
+            {
+              "nom": "Volet ext. 1",
+              "type": "volet",
+              "lamelles": true
+            },
+            {
+              "nom": "Volet ext. 2",
+              "type": "volet",
+              "lamelles": true
+            },
+            {
+              "nom": "Rideau ext. 1",
+              "type": "rideau",
+              "lamelles": false
+            },
+            {
+              "nom": "Rideau ext. 2",
+              "type": "rideau",
+              "lamelles": false
+            },
+            {
+              "nom": "Store 1",
+              "type": "store",
+              "lamelles": true
+            },
+            {
+              "nom": "Store 2",
+              "type": "store",
+              "lamelles": true
+            },
+            {
+              "nom": "Volet ext. 3",
+              "type": "volet",
+              "lamelles": true
+            },
+            {
+              "nom": "Rideau ext. 3",
+              "type": "rideau",
+              "lamelles": false
+            },
+            {
+              "nom": "Store 3",
+              "type": "store",
+              "lamelles": true
+            },
+            {
+              "nom": "Volet ext. 4",
+              "type": "volet",
+              "lamelles": true
+            },
+            {
+              "nom": "Rideau ext. 4",
+              "type": "rideau",
+              "lamelles": false
+            },
+            {
+              "nom": "Store 4",
+              "type": "store",
+              "lamelles": true
+            }
+          ]
+        },
+        "cvc": {
+          "actif": true,
+          "marcheArret": true,
+          "ventilation": {
+            "actif": true,
+            "vitesses": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          "etatInitial": {
+            "marche": true,
+            "ventilation": 0
+          },
+          "consigne": {
+            "min": 16,
+            "max": 28,
+            "pas": 0.5
+          }
+        },
+        "controlesGeneraux": {
+          "actif": false,
+          "partitionsAlarme": 4
         },
         "audioVideo": {
           "actif": false,
@@ -1486,20 +858,326 @@ window.villaConfigEmbedded = {
             5
           ]
         }
-      },
-      "actif": true,
-      "niveau": 0,
-      "plan3d": {
-        "type": "sdb",
-        "x": 3.7,
-        "z": 0,
-        "w": 4.6,
-        "d": 6,
-        "windowWall": "north"
       }
     },
     {
-      "id": 9,
+      "id": 5,
+      "nom": "Chambre amis",
+      "icone": "🛏️",
+      "intersystem": true,
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "scenes": {
+            "nombre": 4,
+            "noms": [
+              "OFF",
+              "CINÉMA",
+              "REPAS",
+              "TOTAL"
+            ],
+            "niveaux": [
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                16384,
+                19660,
+                13107
+              ],
+              [
+                32768,
+                39321,
+                45874,
+                32768
+              ],
+              [
+                65535,
+                65535,
+                65535,
+                65535
+              ]
+            ],
+            "niveauxDescription": "Niveau 0-65535 de chaque circuit pour chaque scène, dans l'ordre de circuits.noms. Valeur de repli : dès que le slot 2 remonte le niveau réel d'un circuit, c'est lui qui fait foi et la scène ne le repositionne plus."
+          },
+          "circuits": {
+            "nombre": 4,
+            "noms": [
+              "Plafonnier chambre 1",
+              "Lampe bureau 1",
+              "Liseuse lit 1",
+              "Spots dressing 1"
+            ]
+          }
+        },
+        "moteurs": {
+          "actif": true,
+          "nombre": 12,
+          "liste": [
+            {
+              "nom": "Volet ext. 1",
+              "type": "volet",
+              "lamelles": true
+            },
+            {
+              "nom": "Volet ext. 2",
+              "type": "volet",
+              "lamelles": true
+            },
+            {
+              "nom": "Rideau ext. 1",
+              "type": "rideau",
+              "lamelles": false
+            },
+            {
+              "nom": "Rideau ext. 2",
+              "type": "rideau",
+              "lamelles": false
+            },
+            {
+              "nom": "Store 1",
+              "type": "store",
+              "lamelles": true
+            },
+            {
+              "nom": "Store 2",
+              "type": "store",
+              "lamelles": true
+            },
+            {
+              "nom": "Volet ext. 3",
+              "type": "volet",
+              "lamelles": true
+            },
+            {
+              "nom": "Rideau ext. 3",
+              "type": "rideau",
+              "lamelles": false
+            },
+            {
+              "nom": "Store 3",
+              "type": "store",
+              "lamelles": true
+            },
+            {
+              "nom": "Volet ext. 4",
+              "type": "volet",
+              "lamelles": true
+            },
+            {
+              "nom": "Rideau ext. 4",
+              "type": "rideau",
+              "lamelles": false
+            },
+            {
+              "nom": "Store 4",
+              "type": "store",
+              "lamelles": true
+            }
+          ]
+        },
+        "cvc": {
+          "actif": true,
+          "marcheArret": true,
+          "ventilation": {
+            "actif": true,
+            "vitesses": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          "etatInitial": {
+            "marche": true,
+            "ventilation": 0
+          },
+          "consigne": {
+            "min": 16,
+            "max": 28,
+            "pas": 0.5
+          }
+        },
+        "controlesGeneraux": {
+          "actif": true,
+          "partitionsAlarme": 4
+        },
+        "audioVideo": {
+          "actif": true,
+          "sources": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      }
+    },
+    {
+      "id": 6,
+      "nom": "Chambre 2",
+      "icone": "🛏️",
+      "intersystem": true,
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "scenes": {
+            "nombre": 4,
+            "noms": [
+              "OFF",
+              "CINÉMA",
+              "REPAS",
+              "TOTAL"
+            ],
+            "niveaux": [
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                16384,
+                19660,
+                13107
+              ],
+              [
+                32768,
+                39321,
+                45874,
+                32768
+              ],
+              [
+                65535,
+                65535,
+                65535,
+                65535
+              ]
+            ],
+            "niveauxDescription": "Niveau 0-65535 de chaque circuit pour chaque scène, dans l'ordre de circuits.noms. Valeur de repli : dès que le slot 2 remonte le niveau réel d'un circuit, c'est lui qui fait foi et la scène ne le repositionne plus."
+          },
+          "circuits": {
+            "nombre": 4,
+            "noms": [
+              "Plafonnier chambre 2",
+              "Lampe bureau 2",
+              "Liseuse lit 2",
+              "Spots dressing 2"
+            ]
+          }
+        },
+        "moteurs": {
+          "actif": true,
+          "nombre": 12,
+          "liste": [
+            {
+              "nom": "Volet ext. 1",
+              "type": "volet",
+              "lamelles": true
+            },
+            {
+              "nom": "Volet ext. 2",
+              "type": "volet",
+              "lamelles": true
+            },
+            {
+              "nom": "Rideau ext. 1",
+              "type": "rideau",
+              "lamelles": false
+            },
+            {
+              "nom": "Rideau ext. 2",
+              "type": "rideau",
+              "lamelles": false
+            },
+            {
+              "nom": "Store 1",
+              "type": "store",
+              "lamelles": true
+            },
+            {
+              "nom": "Store 2",
+              "type": "store",
+              "lamelles": true
+            },
+            {
+              "nom": "Volet ext. 3",
+              "type": "volet",
+              "lamelles": true
+            },
+            {
+              "nom": "Rideau ext. 3",
+              "type": "rideau",
+              "lamelles": false
+            },
+            {
+              "nom": "Store 3",
+              "type": "store",
+              "lamelles": true
+            },
+            {
+              "nom": "Volet ext. 4",
+              "type": "volet",
+              "lamelles": true
+            },
+            {
+              "nom": "Rideau ext. 4",
+              "type": "rideau",
+              "lamelles": false
+            },
+            {
+              "nom": "Store 4",
+              "type": "store",
+              "lamelles": true
+            }
+          ]
+        },
+        "cvc": {
+          "actif": true,
+          "marcheArret": true,
+          "ventilation": {
+            "actif": true,
+            "vitesses": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          "etatInitial": {
+            "marche": true,
+            "ventilation": 0
+          },
+          "consigne": {
+            "min": 16,
+            "max": 28,
+            "pas": 0.5
+          }
+        },
+        "controlesGeneraux": {
+          "actif": true,
+          "partitionsAlarme": 4
+        },
+        "audioVideo": {
+          "actif": true,
+          "sources": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      }
+    },
+    {
+      "id": 7,
       "nom": "Bureau",
       "icone": "💼",
       "intersystem": true,
@@ -1510,54 +1188,111 @@ window.villaConfigEmbedded = {
             "nombre": 4,
             "noms": [
               "OFF",
-              "JOUR",
-              "SOIR",
-              "NUIT"
+              "CINÉMA",
+              "REPAS",
+              "TOTAL"
             ],
             "niveaux": [
               [
                 0,
+                0,
+                0,
                 0
               ],
               [
-                52428,
-                52428
-              ],
-              [
-                49151,
+                0,
+                16384,
+                19660,
                 13107
               ],
               [
-                3932,
-                5243
+                32768,
+                39321,
+                45874,
+                32768
+              ],
+              [
+                65535,
+                65535,
+                65535,
+                65535
               ]
             ],
-            "niveauxDescription": "Niveau 0-65535 de chaque circuit pour chaque scène, dans l'ordre de circuits.noms. Valeur de repli : dès que le slot 2 remonte le niveau réel d'un circuit, c'est lui qui fait foi et la scène ne le repositionne plus.",
-            "origine": "Séquence d'opérations Lutron du projet : OFF = Scene Off, JOUR = CELS Day, SOIR = CELS Night, NUIT = Low Scene (veilleuses forcées)."
+            "niveauxDescription": "Niveau 0-65535 de chaque circuit pour chaque scène, dans l'ordre de circuits.noms. Valeur de repli : dès que le slot 2 remonte le niveau réel d'un circuit, c'est lui qui fait foi et la scène ne le repositionne plus."
           },
           "circuits": {
-            "nombre": 2,
+            "nombre": 4,
             "noms": [
-              "Spots",
-              "Corniche LED"
-            ],
-            "lutron": [
-              "Living - Spots corner",
-              "Living - Cove"
-            ],
-            "type": [
-              "DALI",
-              "DALI"
+              "Spots plafond bureau",
+              "Lampe bureau design",
+              "Ruban LED bibliothèque",
+              "Applique zone accueil"
             ]
           }
         },
         "moteurs": {
           "actif": true,
-          "nombre": 1,
+          "nombre": 12,
           "liste": [
             {
-              "nom": "Rideau",
-              "type": "rideau"
+              "nom": "Volet ext. 1",
+              "type": "volet",
+              "lamelles": true
+            },
+            {
+              "nom": "Volet ext. 2",
+              "type": "volet",
+              "lamelles": true
+            },
+            {
+              "nom": "Rideau ext. 1",
+              "type": "rideau",
+              "lamelles": false
+            },
+            {
+              "nom": "Rideau ext. 2",
+              "type": "rideau",
+              "lamelles": false
+            },
+            {
+              "nom": "Store 1",
+              "type": "store",
+              "lamelles": true
+            },
+            {
+              "nom": "Store 2",
+              "type": "store",
+              "lamelles": true
+            },
+            {
+              "nom": "Volet ext. 3",
+              "type": "volet",
+              "lamelles": true
+            },
+            {
+              "nom": "Rideau ext. 3",
+              "type": "rideau",
+              "lamelles": false
+            },
+            {
+              "nom": "Store 3",
+              "type": "store",
+              "lamelles": true
+            },
+            {
+              "nom": "Volet ext. 4",
+              "type": "volet",
+              "lamelles": true
+            },
+            {
+              "nom": "Rideau ext. 4",
+              "type": "rideau",
+              "lamelles": false
+            },
+            {
+              "nom": "Store 4",
+              "type": "store",
+              "lamelles": true
             }
           ]
         },
@@ -1585,10 +1320,10 @@ window.villaConfigEmbedded = {
         },
         "controlesGeneraux": {
           "actif": true,
-          "partitionsAlarme": 0
+          "partitionsAlarme": 4
         },
         "audioVideo": {
-          "actif": false,
+          "actif": true,
           "sources": [
             1,
             2,
@@ -1597,22 +1332,328 @@ window.villaConfigEmbedded = {
             5
           ]
         }
-      },
-      "actif": true,
-      "niveau": 0,
-      "plan3d": {
-        "type": "bureau",
-        "x": 19.6,
-        "z": 6.4,
-        "w": 3.4,
-        "d": 5.1,
-        "windowWall": "north"
+      }
+    },
+    {
+      "id": 8,
+      "nom": "Home cinéma",
+      "icone": "🎬",
+      "intersystem": true,
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "scenes": {
+            "nombre": 4,
+            "noms": [
+              "OFF",
+              "CINÉMA",
+              "REPAS",
+              "TOTAL"
+            ],
+            "niveaux": [
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                16384,
+                19660,
+                13107
+              ],
+              [
+                32768,
+                39321,
+                45874,
+                32768
+              ],
+              [
+                65535,
+                65535,
+                65535,
+                65535
+              ]
+            ],
+            "niveauxDescription": "Niveau 0-65535 de chaque circuit pour chaque scène, dans l'ordre de circuits.noms. Valeur de repli : dès que le slot 2 remonte le niveau réel d'un circuit, c'est lui qui fait foi et la scène ne le repositionne plus."
+          },
+          "circuits": {
+            "nombre": 4,
+            "noms": [
+              "Nez de marche gradué",
+              "Appliques murales gauche",
+              "Appliques murales droite",
+              "Ruban LED écran"
+            ]
+          }
+        },
+        "moteurs": {
+          "actif": true,
+          "nombre": 12,
+          "liste": [
+            {
+              "nom": "Volet ext. 1",
+              "type": "volet",
+              "lamelles": true
+            },
+            {
+              "nom": "Volet ext. 2",
+              "type": "volet",
+              "lamelles": true
+            },
+            {
+              "nom": "Rideau ext. 1",
+              "type": "rideau",
+              "lamelles": false
+            },
+            {
+              "nom": "Rideau ext. 2",
+              "type": "rideau",
+              "lamelles": false
+            },
+            {
+              "nom": "Store 1",
+              "type": "store",
+              "lamelles": true
+            },
+            {
+              "nom": "Store 2",
+              "type": "store",
+              "lamelles": true
+            },
+            {
+              "nom": "Volet ext. 3",
+              "type": "volet",
+              "lamelles": true
+            },
+            {
+              "nom": "Rideau ext. 3",
+              "type": "rideau",
+              "lamelles": false
+            },
+            {
+              "nom": "Store 3",
+              "type": "store",
+              "lamelles": true
+            },
+            {
+              "nom": "Volet ext. 4",
+              "type": "volet",
+              "lamelles": true
+            },
+            {
+              "nom": "Rideau ext. 4",
+              "type": "rideau",
+              "lamelles": false
+            },
+            {
+              "nom": "Store 4",
+              "type": "store",
+              "lamelles": true
+            }
+          ]
+        },
+        "cvc": {
+          "actif": true,
+          "marcheArret": true,
+          "ventilation": {
+            "actif": true,
+            "vitesses": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          "etatInitial": {
+            "marche": true,
+            "ventilation": 0
+          },
+          "consigne": {
+            "min": 16,
+            "max": 28,
+            "pas": 0.5
+          }
+        },
+        "controlesGeneraux": {
+          "actif": true,
+          "partitionsAlarme": 4
+        },
+        "audioVideo": {
+          "actif": true,
+          "sources": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      }
+    },
+    {
+      "id": 9,
+      "nom": "Chambre 3",
+      "icone": "🛏️",
+      "intersystem": true,
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "scenes": {
+            "nombre": 4,
+            "noms": [
+              "OFF",
+              "CINÉMA",
+              "REPAS",
+              "TOTAL"
+            ],
+            "niveaux": [
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                16384,
+                19660,
+                13107
+              ],
+              [
+                32768,
+                39321,
+                45874,
+                32768
+              ],
+              [
+                65535,
+                65535,
+                65535,
+                65535
+              ]
+            ],
+            "niveauxDescription": "Niveau 0-65535 de chaque circuit pour chaque scène, dans l'ordre de circuits.noms. Valeur de repli : dès que le slot 2 remonte le niveau réel d'un circuit, c'est lui qui fait foi et la scène ne le repositionne plus."
+          },
+          "circuits": {
+            "nombre": 4,
+            "noms": [
+              "Plafonnier chambre 3",
+              "Lampe bureau 3",
+              "Liseuse lit 3",
+              "Spots dressing 3"
+            ]
+          }
+        },
+        "moteurs": {
+          "actif": true,
+          "nombre": 12,
+          "liste": [
+            {
+              "nom": "Volet ext. 1",
+              "type": "volet",
+              "lamelles": true
+            },
+            {
+              "nom": "Volet ext. 2",
+              "type": "volet",
+              "lamelles": true
+            },
+            {
+              "nom": "Rideau ext. 1",
+              "type": "rideau",
+              "lamelles": false
+            },
+            {
+              "nom": "Rideau ext. 2",
+              "type": "rideau",
+              "lamelles": false
+            },
+            {
+              "nom": "Store 1",
+              "type": "store",
+              "lamelles": true
+            },
+            {
+              "nom": "Store 2",
+              "type": "store",
+              "lamelles": true
+            },
+            {
+              "nom": "Volet ext. 3",
+              "type": "volet",
+              "lamelles": true
+            },
+            {
+              "nom": "Rideau ext. 3",
+              "type": "rideau",
+              "lamelles": false
+            },
+            {
+              "nom": "Store 3",
+              "type": "store",
+              "lamelles": true
+            },
+            {
+              "nom": "Volet ext. 4",
+              "type": "volet",
+              "lamelles": true
+            },
+            {
+              "nom": "Rideau ext. 4",
+              "type": "rideau",
+              "lamelles": false
+            },
+            {
+              "nom": "Store 4",
+              "type": "store",
+              "lamelles": true
+            }
+          ]
+        },
+        "cvc": {
+          "actif": true,
+          "marcheArret": true,
+          "ventilation": {
+            "actif": true,
+            "vitesses": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          "etatInitial": {
+            "marche": true,
+            "ventilation": 0
+          },
+          "consigne": {
+            "min": 16,
+            "max": 28,
+            "pas": 0.5
+          }
+        },
+        "controlesGeneraux": {
+          "actif": true,
+          "partitionsAlarme": 4
+        },
+        "audioVideo": {
+          "actif": true,
+          "sources": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
       }
     },
     {
       "id": 10,
-      "nom": "Salle TV",
-      "icone": "📺",
+      "nom": "Suite invités",
+      "icone": "🚪",
       "intersystem": true,
       "pilotages": {
         "eclairages": {
@@ -1621,100 +1662,111 @@ window.villaConfigEmbedded = {
             "nombre": 4,
             "noms": [
               "OFF",
-              "JOUR",
-              "SOIR",
-              "NUIT"
+              "CINÉMA",
+              "REPAS",
+              "TOTAL"
             ],
             "niveaux": [
               [
                 0,
                 0,
                 0,
-                0,
-                0,
-                0,
-                0,
                 0
               ],
               [
-                65535,
-                65535,
-                52428,
+                0,
+                16384,
+                19660,
+                13107
+              ],
+              [
+                32768,
                 39321,
-                65535,
-                65535,
-                0,
-                0
+                45874,
+                32768
               ],
               [
-                49151,
-                49151,
-                22937,
-                13107,
                 65535,
                 65535,
-                0,
-                19660
-              ],
-              [
-                3932,
-                3932,
-                0,
-                5243,
-                0,
-                0,
                 65535,
-                19660
+                65535
               ]
             ],
-            "niveauxDescription": "Niveau 0-65535 de chaque circuit pour chaque scène, dans l'ordre de circuits.noms. Valeur de repli : dès que le slot 2 remonte le niveau réel d'un circuit, c'est lui qui fait foi et la scène ne le repositionne plus.",
-            "origine": "Séquence d'opérations Lutron du projet : OFF = Scene Off, JOUR = CELS Day, SOIR = CELS Night, NUIT = Low Scene (veilleuses forcées)."
+            "niveauxDescription": "Niveau 0-65535 de chaque circuit pour chaque scène, dans l'ordre de circuits.noms. Valeur de repli : dès que le slot 2 remonte le niveau réel d'un circuit, c'est lui qui fait foi et la scène ne le repositionne plus."
           },
           "circuits": {
-            "nombre": 8,
+            "nombre": 4,
             "noms": [
-              "Spots entrée",
-              "Spots",
-              "Éclairage tableau",
-              "Corniche LED",
-              "Chevet gauche",
-              "Chevet droit",
-              "Veilleuses",
-              "Terrasse"
-            ],
-            "lutron": [
-              "TV Room - Spots entrée",
-              "TV Room - Spots",
-              "TV Room - Painting",
-              "TV Room - Cove",
-              "TV Room - Bedhead left",
-              "TV Room - Bedhead right",
-              "TV Room - Nightlights",
-              "TV Room - Terrace"
-            ],
-            "type": [
-              "DALI",
-              "DALI",
-              "PHASE",
-              "DALI",
-              "DALI",
-              "DALI",
-              "DALI",
-              "DALI"
+              "Lustre suite invités",
+              "Liseuse invités",
+              "LED tête de lit",
+              "Spots dressing invités"
             ]
           }
         },
         "moteurs": {
           "actif": true,
-          "nombre": 2,
+          "nombre": 12,
           "liste": [
             {
-              "nom": "Rideau",
-              "type": "rideau"
+              "nom": "Volet ext. 1",
+              "type": "volet",
+              "lamelles": true
             },
             {
-              "nom": "Voilage",
-              "type": "store"
+              "nom": "Volet ext. 2",
+              "type": "volet",
+              "lamelles": true
+            },
+            {
+              "nom": "Rideau ext. 1",
+              "type": "rideau",
+              "lamelles": false
+            },
+            {
+              "nom": "Rideau ext. 2",
+              "type": "rideau",
+              "lamelles": false
+            },
+            {
+              "nom": "Store 1",
+              "type": "store",
+              "lamelles": true
+            },
+            {
+              "nom": "Store 2",
+              "type": "store",
+              "lamelles": true
+            },
+            {
+              "nom": "Volet ext. 3",
+              "type": "volet",
+              "lamelles": true
+            },
+            {
+              "nom": "Rideau ext. 3",
+              "type": "rideau",
+              "lamelles": false
+            },
+            {
+              "nom": "Store 3",
+              "type": "store",
+              "lamelles": true
+            },
+            {
+              "nom": "Volet ext. 4",
+              "type": "volet",
+              "lamelles": true
+            },
+            {
+              "nom": "Rideau ext. 4",
+              "type": "rideau",
+              "lamelles": false
+            },
+            {
+              "nom": "Store 4",
+              "type": "store",
+              "lamelles": true
             }
           ]
         },
@@ -1742,10 +1794,10 @@ window.villaConfigEmbedded = {
         },
         "controlesGeneraux": {
           "actif": true,
-          "partitionsAlarme": 0
+          "partitionsAlarme": 4
         },
         "audioVideo": {
-          "actif": false,
+          "actif": true,
           "sources": [
             1,
             2,
@@ -1754,1185 +1806,11 @@ window.villaConfigEmbedded = {
             5
           ]
         }
-      },
-      "actif": true,
-      "niveau": 0,
-      "plan3d": {
-        "type": "chambre",
-        "x": 8.6,
-        "z": 0,
-        "w": 7.4,
-        "d": 6,
-        "windowWall": "north"
       }
     },
     {
       "id": 11,
-      "nom": "Bain salle TV",
-      "icone": "🛁",
-      "intersystem": true,
-      "pilotages": {
-        "eclairages": {
-          "actif": true,
-          "scenes": {
-            "nombre": 4,
-            "noms": [
-              "OFF",
-              "JOUR",
-              "SOIR",
-              "NUIT"
-            ],
-            "niveaux": [
-              [
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0
-              ],
-              [
-                36044,
-                65535,
-                65535,
-                39321,
-                58982,
-                42598,
-                32768,
-                22937,
-                39321,
-                22937,
-                65535
-              ],
-              [
-                26214,
-                49151,
-                49151,
-                13107,
-                49151,
-                13107,
-                6554,
-                49151,
-                26214,
-                6554,
-                65535
-              ],
-              [
-                20971,
-                13107,
-                3932,
-                5243,
-                2621,
-                5243,
-                1966,
-                3277,
-                20971,
-                1966,
-                0
-              ]
-            ],
-            "niveauxDescription": "Niveau 0-65535 de chaque circuit pour chaque scène, dans l'ordre de circuits.noms. Valeur de repli : dès que le slot 2 remonte le niveau réel d'un circuit, c'est lui qui fait foi et la scène ne le repositionne plus.",
-            "origine": "Séquence d'opérations Lutron du projet : OFF = Scene Off, JOUR = CELS Day, SOIR = CELS Night, NUIT = Low Scene (veilleuses forcées)."
-          },
-          "circuits": {
-            "nombre": 11,
-            "noms": [
-              "Appliques miroir",
-              "Spots vasque",
-              "Spots",
-              "Corniche LED",
-              "Spots douche",
-              "Corniche douche",
-              "Niche douche",
-              "Spot WC",
-              "Appliques WC",
-              "Niche WC",
-              "Sèche-serviettes"
-            ],
-            "lutron": [
-              "TV Room Bath - Mirror wall lights",
-              "TV Room Bath - Sink spots",
-              "TV Room Bath - Spots",
-              "TV Room Bath - Cove",
-              "TV Room Bath - Shower Spots",
-              "TV Room Bath - Shower Cove",
-              "TV Room Bath - Shower niche",
-              "TV Room Bath - WC spot",
-              "TV Room Bath - WC Wall Lights",
-              "TV Room Bath - WC niche",
-              ""
-            ],
-            "type": [
-              "PHASE",
-              "DALI",
-              "DALI",
-              "DALI",
-              "DALI",
-              "DALI",
-              "DALI",
-              "DALI",
-              "DALI",
-              "DALI",
-              "contact"
-            ]
-          }
-        },
-        "moteurs": {
-          "actif": false,
-          "nombre": 6,
-          "liste": [
-            {
-              "nom": "Volet ext. 1",
-              "type": "volet",
-              "lamelles": true
-            },
-            {
-              "nom": "Volet ext. 2",
-              "type": "volet",
-              "lamelles": true
-            },
-            {
-              "nom": "Rideau ext. 1",
-              "type": "rideau",
-              "lamelles": false
-            },
-            {
-              "nom": "Rideau ext. 2",
-              "type": "rideau",
-              "lamelles": false
-            },
-            {
-              "nom": "Store 1",
-              "type": "store",
-              "lamelles": true
-            },
-            {
-              "nom": "Store 2",
-              "type": "store",
-              "lamelles": true
-            },
-            {
-              "nom": "Volet ext. 3",
-              "type": "volet",
-              "lamelles": true
-            },
-            {
-              "nom": "Rideau ext. 3",
-              "type": "rideau",
-              "lamelles": false
-            },
-            {
-              "nom": "Store 3",
-              "type": "store",
-              "lamelles": true
-            },
-            {
-              "nom": "Volet ext. 4",
-              "type": "volet",
-              "lamelles": true
-            },
-            {
-              "nom": "Rideau ext. 4",
-              "type": "rideau",
-              "lamelles": false
-            },
-            {
-              "nom": "Store 4",
-              "type": "store",
-              "lamelles": true
-            }
-          ]
-        },
-        "cvc": {
-          "actif": true,
-          "marcheArret": true,
-          "ventilation": {
-            "actif": true,
-            "vitesses": [
-              0,
-              1,
-              2,
-              3
-            ]
-          },
-          "etatInitial": {
-            "marche": true,
-            "ventilation": 0
-          },
-          "consigne": {
-            "min": 16,
-            "max": 28,
-            "pas": 0.5
-          }
-        },
-        "controlesGeneraux": {
-          "actif": true,
-          "partitionsAlarme": 0
-        },
-        "audioVideo": {
-          "actif": false,
-          "sources": [
-            1,
-            2,
-            3,
-            4,
-            5
-          ]
-        }
-      },
-      "actif": true,
-      "niveau": 0,
-      "plan3d": {
-        "type": "sdb",
-        "x": 6.3,
-        "z": 6.4,
-        "w": 3,
-        "d": 5.1,
-        "windowWall": "none"
-      }
-    },
-    {
-      "id": 12,
-      "nom": "Hall étage",
-      "icone": "🪜",
-      "intersystem": true,
-      "pilotages": {
-        "eclairages": {
-          "actif": true,
-          "scenes": {
-            "nombre": 4,
-            "noms": [
-              "OFF",
-              "JOUR",
-              "SOIR",
-              "NUIT"
-            ],
-            "niveaux": [
-              [
-                0,
-                0,
-                0
-              ],
-              [
-                52428,
-                52428,
-                52428
-              ],
-              [
-                49151,
-                26214,
-                22937
-              ],
-              [
-                3932,
-                20971,
-                0
-              ]
-            ],
-            "niveauxDescription": "Niveau 0-65535 de chaque circuit pour chaque scène, dans l'ordre de circuits.noms. Valeur de repli : dès que le slot 2 remonte le niveau réel d'un circuit, c'est lui qui fait foi et la scène ne le repositionne plus.",
-            "origine": "Séquence d'opérations Lutron du projet : OFF = Scene Off, JOUR = CELS Day, SOIR = CELS Night, NUIT = Low Scene (veilleuses forcées)."
-          },
-          "circuits": {
-            "nombre": 3,
-            "noms": [
-              "Spots escalier",
-              "Appliques hall",
-              "Corniche LED"
-            ],
-            "lutron": [
-              "Entrance - Spots",
-              "Entrance - Wall Lights",
-              "Entrance - Painting"
-            ],
-            "type": [
-              "DALI",
-              "DALI",
-              "PHASE"
-            ]
-          }
-        },
-        "moteurs": {
-          "actif": false,
-          "nombre": 6,
-          "liste": [
-            {
-              "nom": "Volet ext. 1",
-              "type": "volet",
-              "lamelles": true
-            },
-            {
-              "nom": "Volet ext. 2",
-              "type": "volet",
-              "lamelles": true
-            },
-            {
-              "nom": "Rideau ext. 1",
-              "type": "rideau",
-              "lamelles": false
-            },
-            {
-              "nom": "Rideau ext. 2",
-              "type": "rideau",
-              "lamelles": false
-            },
-            {
-              "nom": "Store 1",
-              "type": "store",
-              "lamelles": true
-            },
-            {
-              "nom": "Store 2",
-              "type": "store",
-              "lamelles": true
-            },
-            {
-              "nom": "Volet ext. 3",
-              "type": "volet",
-              "lamelles": true
-            },
-            {
-              "nom": "Rideau ext. 3",
-              "type": "rideau",
-              "lamelles": false
-            },
-            {
-              "nom": "Store 3",
-              "type": "store",
-              "lamelles": true
-            },
-            {
-              "nom": "Volet ext. 4",
-              "type": "volet",
-              "lamelles": true
-            },
-            {
-              "nom": "Rideau ext. 4",
-              "type": "rideau",
-              "lamelles": false
-            },
-            {
-              "nom": "Store 4",
-              "type": "store",
-              "lamelles": true
-            }
-          ]
-        },
-        "cvc": {
-          "actif": false,
-          "marcheArret": true,
-          "ventilation": {
-            "actif": true,
-            "vitesses": [
-              0,
-              1,
-              2,
-              3
-            ]
-          },
-          "etatInitial": {
-            "marche": true,
-            "ventilation": 0
-          },
-          "consigne": {
-            "min": 16,
-            "max": 28,
-            "pas": 0.5
-          }
-        },
-        "controlesGeneraux": {
-          "actif": true,
-          "partitionsAlarme": 0
-        },
-        "audioVideo": {
-          "actif": false,
-          "sources": [
-            1,
-            2,
-            3,
-            4,
-            5
-          ]
-        }
-      },
-      "actif": true,
-      "niveau": 1,
-      "plan3d": {
-        "type": "escalier",
-        "x": 0,
-        "z": 6.4,
-        "w": 6,
-        "d": 5.1,
-        "windowWall": "none"
-      }
-    },
-    {
-      "id": 13,
-      "nom": "Chambre Twin",
-      "icone": "🛏️",
-      "intersystem": true,
-      "pilotages": {
-        "eclairages": {
-          "actif": true,
-          "scenes": {
-            "nombre": 4,
-            "noms": [
-              "OFF",
-              "JOUR",
-              "SOIR",
-              "NUIT"
-            ],
-            "niveaux": [
-              [
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0
-              ],
-              [
-                32768,
-                39321,
-                39321,
-                65535,
-                65535,
-                52428,
-                0,
-                0
-              ],
-              [
-                49151,
-                13107,
-                22937,
-                65535,
-                65535,
-                22937,
-                0,
-                19660
-              ],
-              [
-                3932,
-                5243,
-                9830,
-                0,
-                0,
-                2621,
-                65535,
-                19660
-              ]
-            ],
-            "niveauxDescription": "Niveau 0-65535 de chaque circuit pour chaque scène, dans l'ordre de circuits.noms. Valeur de repli : dès que le slot 2 remonte le niveau réel d'un circuit, c'est lui qui fait foi et la scène ne le repositionne plus.",
-            "origine": "Séquence d'opérations Lutron du projet : OFF = Scene Off, JOUR = CELS Day, SOIR = CELS Night, NUIT = Low Scene (veilleuses forcées)."
-          },
-          "circuits": {
-            "nombre": 8,
-            "noms": [
-              "Spots",
-              "Corniche LED",
-              "Tête de lit",
-              "Chevet gauche",
-              "Chevet droit",
-              "Dressing",
-              "Veilleuses",
-              "Terrasse"
-            ],
-            "lutron": [
-              "Twin Room - Spots",
-              "Twin Room - Cove",
-              "Twin Room - Bedhead",
-              "Twin Room - Bedhead left",
-              "Twin Room - Bedhead right",
-              "Twin Room - Dressing",
-              "Twin Room - Nightlights",
-              "Twin Room - Terrace"
-            ],
-            "type": [
-              "DALI",
-              "DALI",
-              "DALI",
-              "DALI",
-              "DALI",
-              "DALI",
-              "DALI",
-              "DALI"
-            ]
-          }
-        },
-        "moteurs": {
-          "actif": true,
-          "nombre": 2,
-          "liste": [
-            {
-              "nom": "Rideau",
-              "type": "rideau"
-            },
-            {
-              "nom": "Voilage",
-              "type": "store"
-            }
-          ]
-        },
-        "cvc": {
-          "actif": true,
-          "marcheArret": true,
-          "ventilation": {
-            "actif": true,
-            "vitesses": [
-              0,
-              1,
-              2,
-              3
-            ]
-          },
-          "etatInitial": {
-            "marche": true,
-            "ventilation": 0
-          },
-          "consigne": {
-            "min": 16,
-            "max": 28,
-            "pas": 0.5
-          }
-        },
-        "controlesGeneraux": {
-          "actif": true,
-          "partitionsAlarme": 0
-        },
-        "audioVideo": {
-          "actif": false,
-          "sources": [
-            1,
-            2,
-            3,
-            4,
-            5
-          ]
-        }
-      },
-      "actif": true,
-      "niveau": 1,
-      "plan3d": {
-        "type": "chambre",
-        "x": 0,
-        "z": 0,
-        "w": 7,
-        "d": 6,
-        "windowWall": "north"
-      }
-    },
-    {
-      "id": 14,
-      "nom": "Bain Twin",
-      "icone": "🛁",
-      "intersystem": true,
-      "pilotages": {
-        "eclairages": {
-          "actif": true,
-          "scenes": {
-            "nombre": 4,
-            "noms": [
-              "OFF",
-              "JOUR",
-              "SOIR",
-              "NUIT"
-            ],
-            "niveaux": [
-              [
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0
-              ],
-              [
-                36044,
-                65535,
-                42598,
-                65535,
-                39321,
-                32768,
-                22937,
-                45874,
-                22937,
-                65535
-              ],
-              [
-                26214,
-                49151,
-                13107,
-                49151,
-                13107,
-                6554,
-                49151,
-                19660,
-                6554,
-                65535
-              ],
-              [
-                20971,
-                2621,
-                5243,
-                2621,
-                5243,
-                1966,
-                2621,
-                5243,
-                1966,
-                0
-              ]
-            ],
-            "niveauxDescription": "Niveau 0-65535 de chaque circuit pour chaque scène, dans l'ordre de circuits.noms. Valeur de repli : dès que le slot 2 remonte le niveau réel d'un circuit, c'est lui qui fait foi et la scène ne le repositionne plus.",
-            "origine": "Séquence d'opérations Lutron du projet : OFF = Scene Off, JOUR = CELS Day, SOIR = CELS Night, NUIT = Low Scene (veilleuses forcées)."
-          },
-          "circuits": {
-            "nombre": 10,
-            "noms": [
-              "Appliques",
-              "Spots",
-              "Corniche LED",
-              "Spots douche",
-              "Corniche douche",
-              "Niche douche",
-              "Spot WC",
-              "Corniche WC",
-              "Niche WC",
-              "Sèche-serviettes"
-            ],
-            "lutron": [
-              "Twin Room Bath - Wall lights",
-              "Twin Room Bath - Spots",
-              "Twin Room Bath - Cove",
-              "Twin Room Bath - Shower Spots",
-              "Twin Room Bath - Shower cove",
-              "Twin Room Bath - Shower niche",
-              "Twin Room Bath - WC spot",
-              "Twin Room Bath - WC cove",
-              "Twin Room Bath - WC niche",
-              ""
-            ],
-            "type": [
-              "PHASE",
-              "DALI",
-              "DALI",
-              "DALI",
-              "DALI",
-              "DALI",
-              "DALI",
-              "DALI",
-              "DALI",
-              "contact"
-            ]
-          }
-        },
-        "moteurs": {
-          "actif": false,
-          "nombre": 6,
-          "liste": [
-            {
-              "nom": "Volet ext. 1",
-              "type": "volet",
-              "lamelles": true
-            },
-            {
-              "nom": "Volet ext. 2",
-              "type": "volet",
-              "lamelles": true
-            },
-            {
-              "nom": "Rideau ext. 1",
-              "type": "rideau",
-              "lamelles": false
-            },
-            {
-              "nom": "Rideau ext. 2",
-              "type": "rideau",
-              "lamelles": false
-            },
-            {
-              "nom": "Store 1",
-              "type": "store",
-              "lamelles": true
-            },
-            {
-              "nom": "Store 2",
-              "type": "store",
-              "lamelles": true
-            },
-            {
-              "nom": "Volet ext. 3",
-              "type": "volet",
-              "lamelles": true
-            },
-            {
-              "nom": "Rideau ext. 3",
-              "type": "rideau",
-              "lamelles": false
-            },
-            {
-              "nom": "Store 3",
-              "type": "store",
-              "lamelles": true
-            },
-            {
-              "nom": "Volet ext. 4",
-              "type": "volet",
-              "lamelles": true
-            },
-            {
-              "nom": "Rideau ext. 4",
-              "type": "rideau",
-              "lamelles": false
-            },
-            {
-              "nom": "Store 4",
-              "type": "store",
-              "lamelles": true
-            }
-          ]
-        },
-        "cvc": {
-          "actif": true,
-          "marcheArret": true,
-          "ventilation": {
-            "actif": true,
-            "vitesses": [
-              0,
-              1,
-              2,
-              3
-            ]
-          },
-          "etatInitial": {
-            "marche": true,
-            "ventilation": 0
-          },
-          "consigne": {
-            "min": 16,
-            "max": 28,
-            "pas": 0.5
-          }
-        },
-        "controlesGeneraux": {
-          "actif": true,
-          "partitionsAlarme": 0
-        },
-        "audioVideo": {
-          "actif": false,
-          "sources": [
-            1,
-            2,
-            3,
-            4,
-            5
-          ]
-        }
-      },
-      "actif": true,
-      "niveau": 1,
-      "plan3d": {
-        "type": "sdb",
-        "x": 7.3,
-        "z": 0,
-        "w": 4.4,
-        "d": 6,
-        "windowWall": "north"
-      }
-    },
-    {
-      "id": 15,
-      "nom": "Chambre VIP",
-      "icone": "🛏️",
-      "intersystem": true,
-      "pilotages": {
-        "eclairages": {
-          "actif": true,
-          "scenes": {
-            "nombre": 4,
-            "noms": [
-              "OFF",
-              "JOUR",
-              "SOIR",
-              "NUIT"
-            ],
-            "niveaux": [
-              [
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0
-              ],
-              [
-                58982,
-                32768,
-                52428,
-                39321,
-                65535,
-                65535,
-                0,
-                0
-              ],
-              [
-                49151,
-                19660,
-                49151,
-                22937,
-                65535,
-                65535,
-                0,
-                19660
-              ],
-              [
-                3932,
-                3932,
-                3932,
-                9830,
-                0,
-                0,
-                65535,
-                19660
-              ]
-            ],
-            "niveauxDescription": "Niveau 0-65535 de chaque circuit pour chaque scène, dans l'ordre de circuits.noms. Valeur de repli : dès que le slot 2 remonte le niveau réel d'un circuit, c'est lui qui fait foi et la scène ne le repositionne plus.",
-            "origine": "Séquence d'opérations Lutron du projet : OFF = Scene Off, JOUR = CELS Day, SOIR = CELS Night, NUIT = Low Scene (veilleuses forcées)."
-          },
-          "circuits": {
-            "nombre": 8,
-            "noms": [
-              "Spots entrée",
-              "Spots dressing",
-              "Spots lit",
-              "Tête de lit",
-              "Chevet gauche",
-              "Chevet droit",
-              "Veilleuses",
-              "Terrasse"
-            ],
-            "lutron": [
-              "VIP Room - Entrance",
-              "VIP Room - Spot by Entrance",
-              "VIP Room - Spot by Bed",
-              "VIP Room - Bedhead",
-              "VIP Room - Bedhead Left",
-              "VIP room - Bedhead Right",
-              "VIP Room - Nightlights",
-              "VIP Room - Terrace"
-            ],
-            "type": [
-              "DALI",
-              "DALI",
-              "DALI",
-              "DALI",
-              "DALI",
-              "DALI",
-              "DALI",
-              "DALI"
-            ]
-          }
-        },
-        "moteurs": {
-          "actif": true,
-          "nombre": 2,
-          "liste": [
-            {
-              "nom": "Rideau",
-              "type": "rideau"
-            },
-            {
-              "nom": "Voilage",
-              "type": "store"
-            }
-          ]
-        },
-        "cvc": {
-          "actif": true,
-          "marcheArret": true,
-          "ventilation": {
-            "actif": true,
-            "vitesses": [
-              0,
-              1,
-              2,
-              3
-            ]
-          },
-          "etatInitial": {
-            "marche": true,
-            "ventilation": 0
-          },
-          "consigne": {
-            "min": 16,
-            "max": 28,
-            "pas": 0.5
-          }
-        },
-        "controlesGeneraux": {
-          "actif": true,
-          "partitionsAlarme": 0
-        },
-        "audioVideo": {
-          "actif": false,
-          "sources": [
-            1,
-            2,
-            3,
-            4,
-            5
-          ]
-        }
-      },
-      "actif": true,
-      "niveau": 1,
-      "plan3d": {
-        "type": "suite",
-        "x": 12,
-        "z": 0,
-        "w": 7,
-        "d": 6,
-        "windowWall": "north"
-      }
-    },
-    {
-      "id": 16,
-      "nom": "Bain VIP",
-      "icone": "🛁",
-      "intersystem": true,
-      "pilotages": {
-        "eclairages": {
-          "actif": true,
-          "scenes": {
-            "nombre": 4,
-            "noms": [
-              "OFF",
-              "JOUR",
-              "SOIR",
-              "NUIT"
-            ],
-            "niveaux": [
-              [
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0,
-                0
-              ],
-              [
-                36044,
-                65535,
-                65535,
-                45874,
-                42598,
-                32768,
-                22937,
-                22937,
-                39321,
-                65535
-              ],
-              [
-                26214,
-                39321,
-                49151,
-                49151,
-                13107,
-                6554,
-                49151,
-                6554,
-                26214,
-                65535
-              ],
-              [
-                20971,
-                13107,
-                3932,
-                3277,
-                5243,
-                1966,
-                2621,
-                1966,
-                20971,
-                0
-              ]
-            ],
-            "niveauxDescription": "Niveau 0-65535 de chaque circuit pour chaque scène, dans l'ordre de circuits.noms. Valeur de repli : dès que le slot 2 remonte le niveau réel d'un circuit, c'est lui qui fait foi et la scène ne le repositionne plus.",
-            "origine": "Séquence d'opérations Lutron du projet : OFF = Scene Off, JOUR = CELS Day, SOIR = CELS Night, NUIT = Low Scene (veilleuses forcées)."
-          },
-          "circuits": {
-            "nombre": 10,
-            "noms": [
-              "Appliques miroir",
-              "Spots vasque",
-              "Spots",
-              "Spots dressing",
-              "Corniches",
-              "Niche douche",
-              "Spot WC",
-              "Niche WC",
-              "Appliques",
-              "Sèche-serviettes"
-            ],
-            "lutron": [
-              "VIP Room Bath - Mirror wall lights",
-              "VIP Room Bath - Sink spots",
-              "VIP Room Bath - spots",
-              "VIP Room Bath - Dressing spots",
-              "VIP Room Bath - WC+ Shower Coves",
-              "VIP Room Bath - Shower niche",
-              "VIP Room Bath - WC spot",
-              "VIP Room Bath - WC niche",
-              "VIP Room Bath - Wall Lights",
-              ""
-            ],
-            "type": [
-              "PHASE",
-              "DALI",
-              "DALI",
-              "DALI",
-              "DALI",
-              "DALI",
-              "DALI",
-              "DALI",
-              "DALI",
-              "contact"
-            ]
-          }
-        },
-        "moteurs": {
-          "actif": false,
-          "nombre": 6,
-          "liste": [
-            {
-              "nom": "Volet ext. 1",
-              "type": "volet",
-              "lamelles": true
-            },
-            {
-              "nom": "Volet ext. 2",
-              "type": "volet",
-              "lamelles": true
-            },
-            {
-              "nom": "Rideau ext. 1",
-              "type": "rideau",
-              "lamelles": false
-            },
-            {
-              "nom": "Rideau ext. 2",
-              "type": "rideau",
-              "lamelles": false
-            },
-            {
-              "nom": "Store 1",
-              "type": "store",
-              "lamelles": true
-            },
-            {
-              "nom": "Store 2",
-              "type": "store",
-              "lamelles": true
-            },
-            {
-              "nom": "Volet ext. 3",
-              "type": "volet",
-              "lamelles": true
-            },
-            {
-              "nom": "Rideau ext. 3",
-              "type": "rideau",
-              "lamelles": false
-            },
-            {
-              "nom": "Store 3",
-              "type": "store",
-              "lamelles": true
-            },
-            {
-              "nom": "Volet ext. 4",
-              "type": "volet",
-              "lamelles": true
-            },
-            {
-              "nom": "Rideau ext. 4",
-              "type": "rideau",
-              "lamelles": false
-            },
-            {
-              "nom": "Store 4",
-              "type": "store",
-              "lamelles": true
-            }
-          ]
-        },
-        "cvc": {
-          "actif": true,
-          "marcheArret": true,
-          "ventilation": {
-            "actif": true,
-            "vitesses": [
-              0,
-              1,
-              2,
-              3
-            ]
-          },
-          "etatInitial": {
-            "marche": true,
-            "ventilation": 0
-          },
-          "consigne": {
-            "min": 16,
-            "max": 28,
-            "pas": 0.5
-          }
-        },
-        "controlesGeneraux": {
-          "actif": true,
-          "partitionsAlarme": 0
-        },
-        "audioVideo": {
-          "actif": false,
-          "sources": [
-            1,
-            2,
-            3,
-            4,
-            5
-          ]
-        }
-      },
-      "actif": true,
-      "niveau": 1,
-      "plan3d": {
-        "type": "sdb",
-        "x": 6.3,
-        "z": 6.4,
-        "w": 4,
-        "d": 5.1,
-        "windowWall": "none"
-      }
-    },
-    {
-      "id": 17,
-      "nom": "Balcons",
+      "nom": "Terrasse & jardin",
       "icone": "🌿",
       "intersystem": true,
       "pilotages": {
@@ -2942,66 +1820,116 @@ window.villaConfigEmbedded = {
             "nombre": 4,
             "noms": [
               "OFF",
-              "JOUR",
-              "SOIR",
-              "NUIT"
+              "CINÉMA",
+              "REPAS",
+              "TOTAL"
             ],
             "niveaux": [
               [
                 0,
                 0,
-                0
-              ],
-              [
-                39321,
                 0,
                 0
               ],
               [
+                0,
+                16384,
                 19660,
-                19660,
-                19660
+                13107
               ],
               [
-                19660,
-                19660,
-                19660
+                32768,
+                39321,
+                45874,
+                32768
+              ],
+              [
+                65535,
+                65535,
+                65535,
+                65535
               ]
             ],
-            "niveauxDescription": "Niveau 0-65535 de chaque circuit pour chaque scène, dans l'ordre de circuits.noms. Valeur de repli : dès que le slot 2 remonte le niveau réel d'un circuit, c'est lui qui fait foi et la scène ne le repositionne plus.",
-            "origine": "Séquence d'opérations Lutron du projet : OFF = Scene Off, JOUR = CELS Day, SOIR = CELS Night, NUIT = Low Scene (veilleuses forcées)."
+            "niveauxDescription": "Niveau 0-65535 de chaque circuit pour chaque scène, dans l'ordre de circuits.noms. Valeur de repli : dès que le slot 2 remonte le niveau réel d'un circuit, c'est lui qui fait foi et la scène ne le repositionne plus."
           },
           "circuits": {
-            "nombre": 3,
+            "nombre": 4,
             "noms": [
-              "Balcon sud",
-              "Balcon est",
-              "Balcon nord"
-            ],
-            "lutron": [
-              "Masterbed - Terrasse by Living",
-              "TV Room - Terrace",
-              "Twin Room - Terrace"
-            ],
-            "type": [
-              "DALI",
-              "DALI",
-              "DALI"
+              "Projecteurs avant-toit",
+              "Appliques façade sud",
+              "Spots encastrés sol",
+              "Ruban LED Sous-Banc"
             ]
           }
         },
         "moteurs": {
           "actif": true,
-          "nombre": 1,
+          "nombre": 12,
           "liste": [
             {
-              "nom": "Store banne",
-              "type": "store"
+              "nom": "Volet ext. 1",
+              "type": "volet",
+              "lamelles": true
+            },
+            {
+              "nom": "Volet ext. 2",
+              "type": "volet",
+              "lamelles": true
+            },
+            {
+              "nom": "Rideau ext. 1",
+              "type": "rideau",
+              "lamelles": false
+            },
+            {
+              "nom": "Rideau ext. 2",
+              "type": "rideau",
+              "lamelles": false
+            },
+            {
+              "nom": "Store 1",
+              "type": "store",
+              "lamelles": true
+            },
+            {
+              "nom": "Store 2",
+              "type": "store",
+              "lamelles": true
+            },
+            {
+              "nom": "Volet ext. 3",
+              "type": "volet",
+              "lamelles": true
+            },
+            {
+              "nom": "Rideau ext. 3",
+              "type": "rideau",
+              "lamelles": false
+            },
+            {
+              "nom": "Store 3",
+              "type": "store",
+              "lamelles": true
+            },
+            {
+              "nom": "Volet ext. 4",
+              "type": "volet",
+              "lamelles": true
+            },
+            {
+              "nom": "Rideau ext. 4",
+              "type": "rideau",
+              "lamelles": false
+            },
+            {
+              "nom": "Store 4",
+              "type": "store",
+              "lamelles": true
             }
           ]
         },
         "cvc": {
-          "actif": false,
+          "actif": true,
           "marcheArret": true,
           "ventilation": {
             "actif": true,
@@ -3024,10 +1952,658 @@ window.villaConfigEmbedded = {
         },
         "controlesGeneraux": {
           "actif": true,
-          "partitionsAlarme": 0
+          "partitionsAlarme": 4
         },
         "audioVideo": {
-          "actif": false,
+          "actif": true,
+          "sources": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      }
+    },
+    {
+      "id": 12,
+      "nom": "Piscine & spa",
+      "icone": "🏊",
+      "intersystem": true,
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "scenes": {
+            "nombre": 4,
+            "noms": [
+              "OFF",
+              "CINÉMA",
+              "REPAS",
+              "TOTAL"
+            ],
+            "niveaux": [
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                16384,
+                19660,
+                13107
+              ],
+              [
+                32768,
+                39321,
+                45874,
+                32768
+              ],
+              [
+                65535,
+                65535,
+                65535,
+                65535
+              ]
+            ],
+            "niveauxDescription": "Niveau 0-65535 de chaque circuit pour chaque scène, dans l'ordre de circuits.noms. Valeur de repli : dès que le slot 2 remonte le niveau réel d'un circuit, c'est lui qui fait foi et la scène ne le repositionne plus."
+          },
+          "circuits": {
+            "nombre": 4,
+            "noms": [
+              "Projecteurs subaquatiques",
+              "Spots plafond spa",
+              "Ruban LED margelle",
+              "Appliques ambiance plage"
+            ]
+          }
+        },
+        "moteurs": {
+          "actif": true,
+          "nombre": 12,
+          "liste": [
+            {
+              "nom": "Volet ext. 1",
+              "type": "volet",
+              "lamelles": true
+            },
+            {
+              "nom": "Volet ext. 2",
+              "type": "volet",
+              "lamelles": true
+            },
+            {
+              "nom": "Rideau ext. 1",
+              "type": "rideau",
+              "lamelles": false
+            },
+            {
+              "nom": "Rideau ext. 2",
+              "type": "rideau",
+              "lamelles": false
+            },
+            {
+              "nom": "Store 1",
+              "type": "store",
+              "lamelles": true
+            },
+            {
+              "nom": "Store 2",
+              "type": "store",
+              "lamelles": true
+            },
+            {
+              "nom": "Volet ext. 3",
+              "type": "volet",
+              "lamelles": true
+            },
+            {
+              "nom": "Rideau ext. 3",
+              "type": "rideau",
+              "lamelles": false
+            },
+            {
+              "nom": "Store 3",
+              "type": "store",
+              "lamelles": true
+            },
+            {
+              "nom": "Volet ext. 4",
+              "type": "volet",
+              "lamelles": true
+            },
+            {
+              "nom": "Rideau ext. 4",
+              "type": "rideau",
+              "lamelles": false
+            },
+            {
+              "nom": "Store 4",
+              "type": "store",
+              "lamelles": true
+            }
+          ]
+        },
+        "cvc": {
+          "actif": true,
+          "marcheArret": true,
+          "ventilation": {
+            "actif": true,
+            "vitesses": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          "etatInitial": {
+            "marche": true,
+            "ventilation": 0
+          },
+          "consigne": {
+            "min": 16,
+            "max": 28,
+            "pas": 0.5
+          }
+        },
+        "controlesGeneraux": {
+          "actif": true,
+          "partitionsAlarme": 4
+        },
+        "audioVideo": {
+          "actif": true,
+          "sources": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      }
+    },
+    {
+      "id": 13,
+      "nom": "Sauna & hammam",
+      "icone": "🧖",
+      "intersystem": true,
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "scenes": {
+            "nombre": 4,
+            "noms": [
+              "OFF",
+              "CINÉMA",
+              "REPAS",
+              "TOTAL"
+            ],
+            "niveaux": [
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                16384,
+                19660,
+                13107
+              ],
+              [
+                32768,
+                39321,
+                45874,
+                32768
+              ],
+              [
+                65535,
+                65535,
+                65535,
+                65535
+              ]
+            ],
+            "niveauxDescription": "Niveau 0-65535 de chaque circuit pour chaque scène, dans l'ordre de circuits.noms. Valeur de repli : dès que le slot 2 remonte le niveau réel d'un circuit, c'est lui qui fait foi et la scène ne le repositionne plus."
+          },
+          "circuits": {
+            "nombre": 4,
+            "noms": [
+              "Plafonnier vapeur sauna",
+              "Ruban LED Sous-Banc sauna",
+              "Projecteurs hammam",
+              "Spots douche pluie"
+            ]
+          }
+        },
+        "moteurs": {
+          "actif": true,
+          "nombre": 12,
+          "liste": [
+            {
+              "nom": "Volet ext. 1",
+              "type": "volet",
+              "lamelles": true
+            },
+            {
+              "nom": "Volet ext. 2",
+              "type": "volet",
+              "lamelles": true
+            },
+            {
+              "nom": "Rideau ext. 1",
+              "type": "rideau",
+              "lamelles": false
+            },
+            {
+              "nom": "Rideau ext. 2",
+              "type": "rideau",
+              "lamelles": false
+            },
+            {
+              "nom": "Store 1",
+              "type": "store",
+              "lamelles": true
+            },
+            {
+              "nom": "Store 2",
+              "type": "store",
+              "lamelles": true
+            },
+            {
+              "nom": "Volet ext. 3",
+              "type": "volet",
+              "lamelles": true
+            },
+            {
+              "nom": "Rideau ext. 3",
+              "type": "rideau",
+              "lamelles": false
+            },
+            {
+              "nom": "Store 3",
+              "type": "store",
+              "lamelles": true
+            },
+            {
+              "nom": "Volet ext. 4",
+              "type": "volet",
+              "lamelles": true
+            },
+            {
+              "nom": "Rideau ext. 4",
+              "type": "rideau",
+              "lamelles": false
+            },
+            {
+              "nom": "Store 4",
+              "type": "store",
+              "lamelles": true
+            }
+          ]
+        },
+        "cvc": {
+          "actif": true,
+          "marcheArret": true,
+          "ventilation": {
+            "actif": true,
+            "vitesses": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          "etatInitial": {
+            "marche": true,
+            "ventilation": 0
+          },
+          "consigne": {
+            "min": 16,
+            "max": 28,
+            "pas": 0.5
+          }
+        },
+        "controlesGeneraux": {
+          "actif": true,
+          "partitionsAlarme": 4
+        },
+        "audioVideo": {
+          "actif": true,
+          "sources": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        },
+        "wellness": {
+          "sauna": {
+            "actif": true,
+            "min": 60,
+            "max": 100,
+            "pas": 1,
+            "consigne": 80
+          },
+          "hammam": {
+            "actif": true,
+            "min": 90,
+            "max": 100,
+            "pas": 1,
+            "consigne": 95
+          }
+        }
+      }
+    },
+    {
+      "id": 14,
+      "nom": "Pool house",
+      "icone": "🏖️",
+      "intersystem": true,
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "scenes": {
+            "nombre": 4,
+            "noms": [
+              "OFF",
+              "CINÉMA",
+              "REPAS",
+              "TOTAL"
+            ],
+            "niveaux": [
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                16384,
+                19660,
+                13107
+              ],
+              [
+                32768,
+                39321,
+                45874,
+                32768
+              ],
+              [
+                65535,
+                65535,
+                65535,
+                65535
+              ]
+            ],
+            "niveauxDescription": "Niveau 0-65535 de chaque circuit pour chaque scène, dans l'ordre de circuits.noms. Valeur de repli : dès que le slot 2 remonte le niveau réel d'un circuit, c'est lui qui fait foi et la scène ne le repositionne plus."
+          },
+          "circuits": {
+            "nombre": 4,
+            "noms": [
+              "Suspensions bar pool house",
+              "Spots plafond salon d'Été",
+              "Ruban LED comptoir",
+              "Appliques terrasse pool house"
+            ]
+          }
+        },
+        "moteurs": {
+          "actif": true,
+          "nombre": 12,
+          "liste": [
+            {
+              "nom": "Volet ext. 1",
+              "type": "volet",
+              "lamelles": true
+            },
+            {
+              "nom": "Volet ext. 2",
+              "type": "volet",
+              "lamelles": true
+            },
+            {
+              "nom": "Rideau ext. 1",
+              "type": "rideau",
+              "lamelles": false
+            },
+            {
+              "nom": "Rideau ext. 2",
+              "type": "rideau",
+              "lamelles": false
+            },
+            {
+              "nom": "Store 1",
+              "type": "store",
+              "lamelles": true
+            },
+            {
+              "nom": "Store 2",
+              "type": "store",
+              "lamelles": true
+            },
+            {
+              "nom": "Volet ext. 3",
+              "type": "volet",
+              "lamelles": true
+            },
+            {
+              "nom": "Rideau ext. 3",
+              "type": "rideau",
+              "lamelles": false
+            },
+            {
+              "nom": "Store 3",
+              "type": "store",
+              "lamelles": true
+            },
+            {
+              "nom": "Volet ext. 4",
+              "type": "volet",
+              "lamelles": true
+            },
+            {
+              "nom": "Rideau ext. 4",
+              "type": "rideau",
+              "lamelles": false
+            },
+            {
+              "nom": "Store 4",
+              "type": "store",
+              "lamelles": true
+            }
+          ]
+        },
+        "cvc": {
+          "actif": true,
+          "marcheArret": true,
+          "ventilation": {
+            "actif": true,
+            "vitesses": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          "etatInitial": {
+            "marche": true,
+            "ventilation": 0
+          },
+          "consigne": {
+            "min": 16,
+            "max": 28,
+            "pas": 0.5
+          }
+        },
+        "controlesGeneraux": {
+          "actif": true,
+          "partitionsAlarme": 4
+        },
+        "audioVideo": {
+          "actif": true,
+          "sources": [
+            1,
+            2,
+            3,
+            4,
+            5
+          ]
+        }
+      }
+    },
+    {
+      "id": 15,
+      "nom": "Garage & ateliers",
+      "icone": "🚗",
+      "intersystem": true,
+      "pilotages": {
+        "eclairages": {
+          "actif": true,
+          "scenes": {
+            "nombre": 4,
+            "noms": [
+              "OFF",
+              "CINÉMA",
+              "REPAS",
+              "TOTAL"
+            ],
+            "niveaux": [
+              [
+                0,
+                0,
+                0,
+                0
+              ],
+              [
+                0,
+                16384,
+                19660,
+                13107
+              ],
+              [
+                32768,
+                39321,
+                45874,
+                32768
+              ],
+              [
+                65535,
+                65535,
+                65535,
+                65535
+              ]
+            ],
+            "niveauxDescription": "Niveau 0-65535 de chaque circuit pour chaque scène, dans l'ordre de circuits.noms. Valeur de repli : dès que le slot 2 remonte le niveau réel d'un circuit, c'est lui qui fait foi et la scène ne le repositionne plus."
+          },
+          "circuits": {
+            "nombre": 4,
+            "noms": [
+              "Réglettes LED garage",
+              "Spots zone établi",
+              "Éclairage porte sectionnelle",
+              "Appliques entrée garage"
+            ]
+          }
+        },
+        "moteurs": {
+          "actif": true,
+          "nombre": 12,
+          "liste": [
+            {
+              "nom": "Volet ext. 1",
+              "type": "volet",
+              "lamelles": true
+            },
+            {
+              "nom": "Volet ext. 2",
+              "type": "volet",
+              "lamelles": true
+            },
+            {
+              "nom": "Rideau ext. 1",
+              "type": "rideau",
+              "lamelles": false
+            },
+            {
+              "nom": "Rideau ext. 2",
+              "type": "rideau",
+              "lamelles": false
+            },
+            {
+              "nom": "Store 1",
+              "type": "store",
+              "lamelles": true
+            },
+            {
+              "nom": "Store 2",
+              "type": "store",
+              "lamelles": true
+            },
+            {
+              "nom": "Volet ext. 3",
+              "type": "volet",
+              "lamelles": true
+            },
+            {
+              "nom": "Rideau ext. 3",
+              "type": "rideau",
+              "lamelles": false
+            },
+            {
+              "nom": "Store 3",
+              "type": "store",
+              "lamelles": true
+            },
+            {
+              "nom": "Volet ext. 4",
+              "type": "volet",
+              "lamelles": true
+            },
+            {
+              "nom": "Rideau ext. 4",
+              "type": "rideau",
+              "lamelles": false
+            },
+            {
+              "nom": "Store 4",
+              "type": "store",
+              "lamelles": true
+            }
+          ]
+        },
+        "cvc": {
+          "actif": true,
+          "marcheArret": true,
+          "ventilation": {
+            "actif": true,
+            "vitesses": [
+              0,
+              1,
+              2,
+              3
+            ]
+          },
+          "etatInitial": {
+            "marche": true,
+            "ventilation": 0
+          },
+          "consigne": {
+            "min": 16,
+            "max": 28,
+            "pas": 0.5
+          }
+        },
+        "controlesGeneraux": {
+          "actif": true,
+          "partitionsAlarme": 4
+        },
+        "audioVideo": {
+          "actif": true,
           "sources": [
             1,
             2,
@@ -3037,358 +2613,449 @@ window.villaConfigEmbedded = {
           ]
         }
       },
-      "actif": true,
-      "niveau": 0,
-      "plan3d": {
-        "type": "terrasse",
-        "x": 20.8,
-        "z": 11.8,
-        "w": 4.2,
-        "d": 6.2,
-        "windowWall": "north"
-      }
+      "actif": false
     }
   ],
   "traductions": {
     "en": {
+      "Salon": "Living room",
+      "AMBIANCE": "AMBIANCE",
+      "Cuisine": "Kitchen",
+      "Salle à manger": "Dining room",
+      "Suite parentale": "Master suite",
+      "Chambre 1": "Bedroom 1",
+      "Chambre 2": "Bedroom 2",
+      "Chambre 3": "Bedroom 3",
+      "Bureau": "Office",
+      "Home cinéma": "Home cinema",
+      "Suite invités": "Guest suite",
+      "Terrasse & jardin": "Terrace & garden",
+      "Piscine & spa": "Pool & spa",
+      "Sauna & hammam": "Sauna & hammam",
+      "Pool house": "Pool house",
+      "Garage & ateliers": "Garage & workshops",
+      "OFF": "OFF",
+      "CINÉMA": "CINEMA",
+      "REPAS": "DINNER",
+      "TOTAL": "FULL",
       "Tout ouvrir": "Open all",
       "Position été": "Summer position",
       "Position hiver": "Winter position",
       "Tout fermer": "Close all",
+      "Volet ext. 1": "Ext. shutter 1",
+      "Volet ext. 2": "Ext. shutter 2",
+      "Rideau ext. 1": "Ext. curtain 1",
+      "Rideau ext. 2": "Ext. curtain 2",
+      "Store 1": "Shade 1",
+      "Store 2": "Shade 2",
       "MUSIQUE": "MUSIC",
       "CHAUFFAGE": "HEATING",
       "CLIMATISATION": "COOLING",
-      "Salon": "Living room",
-      "Salle à manger": "Dining room",
-      "Cuisine": "Kitchen",
-      "Entrée": "Entrance",
-      "WC invités": "Guest WC",
-      "Buanderie": "Laundry",
-      "Suite parentale": "Master suite",
-      "Bain parental": "Master bathroom",
-      "Bureau": "Office",
-      "Salle TV": "TV room",
-      "Bain salle TV": "TV room bathroom",
-      "Hall étage": "Upper hall",
-      "Chambre Twin": "Twin room",
-      "Bain Twin": "Twin bathroom",
-      "Chambre VIP": "VIP room",
-      "Bain VIP": "VIP bathroom",
-      "Balcons": "Balconies",
-      "OFF": "OFF",
-      "JOUR": "DAY",
-      "SOIR": "EVENING",
-      "NUIT": "NIGHT",
-      "Spots côté vallée": "Valley-side spots",
-      "Spots coin lecture": "Reading corner spots",
-      "Corniche LED": "LED cove",
-      "Lampadaires": "Floor lamps",
-      "Cheminée": "Fireplace",
-      "Spots": "Spots",
-      "Suspensions": "Pendants",
       "Spots plafond": "Ceiling spots",
-      "Spots passage": "Passage spots",
-      "Lustre îlot": "Island chandelier",
-      "Spots îlot": "Island spots",
-      "Plan de travail": "Worktop",
-      "Éclairage tableau": "Painting light",
-      "Appliques": "Wall lights",
-      "Tête de lit": "Bedhead",
-      "Chevet gauche": "Left bedside",
-      "Chevet droit": "Right bedside",
-      "Niches": "Niches",
-      "Veilleuses": "Nightlights",
-      "Dressing Monsieur": "His dressing",
-      "Dressing Madame": "Her dressing",
-      "Terrasse": "Terrace",
-      "Douche vapeur": "Steam shower",
-      "Appliques miroir": "Mirror lights",
-      "Spots WC": "WC spots",
-      "Niche WC": "WC niche",
-      "Sèche-serviettes": "Towel heater",
-      "Spots entrée": "Entrance spots",
-      "Spots vasque": "Basin spots",
-      "Spots douche": "Shower spots",
-      "Corniche douche": "Shower cove",
-      "Niche douche": "Shower niche",
-      "Spot WC": "WC spot",
-      "Appliques WC": "WC wall lights",
-      "Spots escalier": "Staircase spots",
-      "Appliques hall": "Hall wall lights",
-      "Dressing": "Dressing",
-      "Spots dressing": "Dressing spots",
-      "Spots lit": "Bed spots",
-      "Corniches": "Coves",
-      "Corniche WC": "WC cove",
-      "Balcon sud": "South balcony",
-      "Balcon est": "East balcony",
-      "Balcon nord": "North balcony",
-      "Rideau baie sud": "South bay curtain",
-      "Rideau baie est": "East bay curtain",
-      "Voilage sud": "South sheer",
-      "Voilage est": "East sheer",
-      "Rideau terrasse": "Terrace curtain",
-      "Voilage": "Sheer",
-      "Store fenêtre": "Window blind",
-      "Rideau dressing": "Dressing curtain",
-      "Rideau": "Curtain",
-      "Store banne": "Awning",
-      "Appartement Crans-Montana": "Crans-Montana apartment"
+      "Lustre central": "Central chandelier",
+      "Appliques murales": "Wall sconces",
+      "Ruban LED": "LED strip",
+      "Spots plafond ouest": "West ceiling spots",
+      "Lustre principal": "Main chandelier",
+      "Ruban LED corniche": "Cornice LED strip",
+      "Applique murale nord": "North wall sconce",
+      "Spots zone cuisson": "Cooking area spots",
+      "Suspension îlot": "Island pendant",
+      "LED plan de travail": "Worktop LED",
+      "Plafonnier central": "Central ceiling light",
+      "Lustre table repas": "Dining table chandelier",
+      "Appliques buffet est": "East buffet sconces",
+      "Ruban LED vaisselier": "Cabinet LED strip",
+      "Plafonnier suite": "Suite ceiling light",
+      "Liseuse lit gauche": "Left reading light",
+      "Liseuse lit droite": "Right reading light",
+      "Corniche LED tête de lit": "Headboard LED cove",
+      "Plafonnier chambre 1": "Bedroom 1 ceiling light",
+      "Lampe bureau 1": "Desk lamp 1",
+      "Liseuse lit 1": "Reading light 1",
+      "Spots dressing 1": "Dressing spots 1",
+      "Plafonnier chambre 2": "Bedroom 2 ceiling light",
+      "Lampe bureau 2": "Desk lamp 2",
+      "Liseuse lit 2": "Reading light 2",
+      "Spots dressing 2": "Dressing spots 2",
+      "Plafonnier chambre 3": "Bedroom 3 ceiling light",
+      "Lampe bureau 3": "Desk lamp 3",
+      "Liseuse lit 3": "Reading light 3",
+      "Spots dressing 3": "Dressing spots 3",
+      "Spots plafond bureau": "Office ceiling spots",
+      "Lampe bureau design": "Design desk lamp",
+      "Ruban LED bibliothèque": "Bookshelf LED strip",
+      "Applique zone accueil": "Entry area sconce",
+      "Nez de marche gradué": "Dimmed step lights",
+      "Appliques murales gauche": "Left wall sconces",
+      "Appliques murales droite": "Right wall sconces",
+      "Ruban LED écran": "Screen LED strip",
+      "Lustre suite invités": "Guest suite chandelier",
+      "Liseuse invités": "Guest reading light",
+      "LED tête de lit": "Headboard LED",
+      "Spots dressing invités": "Guest dressing spots",
+      "Projecteurs avant-toit": "Eaves floodlights",
+      "Appliques façade sud": "South facade sconces",
+      "Spots encastrés sol": "Ground recessed spots",
+      "Ruban LED Sous-Banc": "Under-Bench LED strip",
+      "Projecteurs subaquatiques": "Underwater lights",
+      "Spots plafond spa": "Spa ceiling spots",
+      "Ruban LED margelle": "Pool edge LED strip",
+      "Appliques ambiance plage": "Deck ambience sconces",
+      "Plafonnier vapeur sauna": "Sauna ceiling light",
+      "Ruban LED Sous-Banc sauna": "Sauna Under-Bench LED",
+      "Projecteurs hammam": "Hammam lights",
+      "Spots douche pluie": "Rain shower spots",
+      "Suspensions bar pool house": "Pool house bar pendants",
+      "Spots plafond salon d'Été": "Summer lounge spots",
+      "Ruban LED comptoir": "Counter LED strip",
+      "Appliques terrasse pool house": "Pool house terrace sconces",
+      "Réglettes LED garage": "Garage LED battens",
+      "Spots zone établi": "Workbench spots",
+      "Éclairage porte sectionnelle": "Sectional door light",
+      "Appliques entrée garage": "Garage entry sconces",
+      "IPTV": "IPTV",
+      "Suite bébé": "Baby suite",
+      "Salle de jeux": "Games room",
+      "Chambre maman": "Mum's bedroom",
+      "Chambre papa": "Dad's bedroom",
+      "Suite amis": "Friends' suite",
+      "Chambre amis": "Friends' bedroom",
+      "Volets Ext.": "Ext. shutters",
+      "Rideaux": "Curtains",
+      "Sauna": "Sauna",
+      "Hammam": "Hammam",
+      "Jeux": "Games"
     },
     "es": {
+      "Salon": "Salón",
+      "AMBIANCE": "AMBIENTE",
+      "Cuisine": "Cocina",
+      "Salle à manger": "Comedor",
+      "Suite parentale": "Suite principal",
+      "Chambre 1": "Dormitorio 1",
+      "Chambre 2": "Dormitorio 2",
+      "Chambre 3": "Dormitorio 3",
+      "Bureau": "Despacho",
+      "Home cinéma": "Cine en casa",
+      "Suite invités": "Suite de invitados",
+      "Terrasse & jardin": "Terraza y jardín",
+      "Piscine & spa": "Piscina y spa",
+      "Sauna & hammam": "Sauna y hammam",
+      "Pool house": "Pool house",
+      "Garage & ateliers": "Garaje y talleres",
+      "OFF": "OFF",
+      "CINÉMA": "CINE",
+      "REPAS": "COMIDA",
+      "TOTAL": "TOTAL",
       "Tout ouvrir": "Abrir todo",
       "Position été": "Posición verano",
       "Position hiver": "Posición invierno",
       "Tout fermer": "Cerrar todo",
+      "Volet ext. 1": "Persiana ext. 1",
+      "Volet ext. 2": "Persiana ext. 2",
+      "Rideau ext. 1": "Cortina ext. 1",
+      "Rideau ext. 2": "Cortina ext. 2",
+      "Store 1": "Estor 1",
+      "Store 2": "Estor 2",
       "MUSIQUE": "MÚSICA",
       "CHAUFFAGE": "CALEFACCIÓN",
       "CLIMATISATION": "REFRIGERACIÓN",
-      "Salon": "Salón",
-      "Salle à manger": "Comedor",
-      "Cuisine": "Cocina",
-      "Entrée": "Entrada",
-      "WC invités": "Aseo",
-      "Buanderie": "Lavandería",
-      "Suite parentale": "Suite principal",
-      "Bain parental": "Baño principal",
-      "Bureau": "Despacho",
-      "Salle TV": "Sala de TV",
-      "Bain salle TV": "Baño sala de TV",
-      "Hall étage": "Hall superior",
-      "Chambre Twin": "Habitación Twin",
-      "Bain Twin": "Baño Twin",
-      "Chambre VIP": "Habitación VIP",
-      "Bain VIP": "Baño VIP",
-      "Balcons": "Balcones",
-      "OFF": "OFF",
-      "JOUR": "DÍA",
-      "SOIR": "TARDE",
-      "NUIT": "NOCHE",
-      "Spots côté vallée": "Focos lado valle",
-      "Spots coin lecture": "Focos rincón lectura",
-      "Corniche LED": "Cornisa LED",
-      "Lampadaires": "Lámparas de pie",
-      "Cheminée": "Chimenea",
-      "Spots": "Focos",
-      "Suspensions": "Colgantes",
-      "Spots plafond": "Focos techo",
-      "Spots passage": "Focos paso",
-      "Lustre îlot": "Lámpara isla",
-      "Spots îlot": "Focos isla",
-      "Plan de travail": "Encimera",
-      "Éclairage tableau": "Luz cuadro",
-      "Appliques": "Apliques",
-      "Tête de lit": "Cabecero",
-      "Chevet gauche": "Mesita izquierda",
-      "Chevet droit": "Mesita derecha",
-      "Niches": "Nichos",
-      "Veilleuses": "Luces nocturnas",
-      "Dressing Monsieur": "Vestidor él",
-      "Dressing Madame": "Vestidor ella",
-      "Terrasse": "Terraza",
-      "Douche vapeur": "Ducha de vapor",
-      "Appliques miroir": "Apliques espejo",
-      "Spots WC": "Focos WC",
-      "Niche WC": "Nicho WC",
-      "Sèche-serviettes": "Toallero",
-      "Spots entrée": "Focos entrada",
-      "Spots vasque": "Focos lavabo",
-      "Spots douche": "Focos ducha",
-      "Corniche douche": "Cornisa ducha",
-      "Niche douche": "Nicho ducha",
-      "Spot WC": "Foco WC",
-      "Appliques WC": "Apliques WC",
-      "Spots escalier": "Focos escalera",
-      "Appliques hall": "Apliques hall",
-      "Dressing": "Vestidor",
-      "Spots dressing": "Focos vestidor",
-      "Spots lit": "Focos cama",
-      "Corniches": "Cornisas",
-      "Corniche WC": "Cornisa WC",
-      "Balcon sud": "Balcón sur",
-      "Balcon est": "Balcón este",
-      "Balcon nord": "Balcón norte",
-      "Rideau baie sud": "Cortina ventanal sur",
-      "Rideau baie est": "Cortina ventanal este",
-      "Voilage sud": "Visillo sur",
-      "Voilage est": "Visillo este",
-      "Rideau terrasse": "Cortina terraza",
-      "Voilage": "Visillo",
-      "Store fenêtre": "Estor ventana",
-      "Rideau dressing": "Cortina vestidor",
-      "Rideau": "Cortina",
-      "Store banne": "Toldo",
-      "Appartement Crans-Montana": "Apartamento Crans-Montana"
+      "Spots plafond": "Focos de techo",
+      "Lustre central": "Lámpara central",
+      "Appliques murales": "Apliques de pared",
+      "Ruban LED": "Tira LED",
+      "Spots plafond ouest": "Focos techo oeste",
+      "Lustre principal": "Lámpara principal",
+      "Ruban LED corniche": "Tira LED cornisa",
+      "Applique murale nord": "Aplique norte",
+      "Spots zone cuisson": "Focos zona cocción",
+      "Suspension îlot": "Colgante isla",
+      "LED plan de travail": "LED encimera",
+      "Plafonnier central": "Plafón central",
+      "Lustre table repas": "Lámpara mesa comedor",
+      "Appliques buffet est": "Apliques aparador este",
+      "Ruban LED vaisselier": "Tira LED vitrina",
+      "Plafonnier suite": "Plafón suite",
+      "Liseuse lit gauche": "Lector izquierdo",
+      "Liseuse lit droite": "Lector derecho",
+      "Corniche LED tête de lit": "LED cabecero",
+      "Plafonnier chambre 1": "Plafón dormitorio 1",
+      "Lampe bureau 1": "Lámpara escritorio 1",
+      "Liseuse lit 1": "Lector cama 1",
+      "Spots dressing 1": "Focos vestidor 1",
+      "Plafonnier chambre 2": "Plafón dormitorio 2",
+      "Lampe bureau 2": "Lámpara escritorio 2",
+      "Liseuse lit 2": "Lector cama 2",
+      "Spots dressing 2": "Focos vestidor 2",
+      "Plafonnier chambre 3": "Plafón dormitorio 3",
+      "Lampe bureau 3": "Lámpara escritorio 3",
+      "Liseuse lit 3": "Lector cama 3",
+      "Spots dressing 3": "Focos vestidor 3",
+      "Spots plafond bureau": "Focos techo despacho",
+      "Lampe bureau design": "Lámpara de diseño",
+      "Ruban LED bibliothèque": "Tira LED librería",
+      "Applique zone accueil": "Aplique recepción",
+      "Nez de marche gradué": "Luz de escalones",
+      "Appliques murales gauche": "Apliques izquierda",
+      "Appliques murales droite": "Apliques derecha",
+      "Ruban LED écran": "Tira LED pantalla",
+      "Lustre suite invités": "Lámpara suite invitados",
+      "Liseuse invités": "Lector invitados",
+      "LED tête de lit": "LED cabecero cama",
+      "Spots dressing invités": "Focos vestidor invitados",
+      "Projecteurs avant-toit": "Proyectores alero",
+      "Appliques façade sud": "Apliques fachada sur",
+      "Spots encastrés sol": "Focos empotrados suelo",
+      "Ruban LED Sous-Banc": "Tira LED bajo banco",
+      "Projecteurs subaquatiques": "Focos subacuáticos",
+      "Spots plafond spa": "Focos techo spa",
+      "Ruban LED margelle": "Tira LED borde piscina",
+      "Appliques ambiance plage": "Apliques zona playa",
+      "Plafonnier vapeur sauna": "Plafón sauna",
+      "Ruban LED Sous-Banc sauna": "Tira LED banco sauna",
+      "Projecteurs hammam": "Focos hammam",
+      "Spots douche pluie": "Focos ducha lluvia",
+      "Suspensions bar pool house": "Colgantes bar pool house",
+      "Spots plafond salon d'Été": "Focos salón de verano",
+      "Ruban LED comptoir": "Tira LED barra",
+      "Appliques terrasse pool house": "Apliques terraza pool house",
+      "Réglettes LED garage": "Regletas LED garaje",
+      "Spots zone établi": "Focos banco de trabajo",
+      "Éclairage porte sectionnelle": "Luz puerta seccional",
+      "Appliques entrée garage": "Apliques entrada garaje",
+      "IPTV": "IPTV",
+      "Suite bébé": "Suite del bebé",
+      "Salle de jeux": "Sala de juegos",
+      "Chambre maman": "Dormitorio de mamá",
+      "Chambre papa": "Dormitorio de papá",
+      "Suite amis": "Suite de amigos",
+      "Chambre amis": "Dormitorio de amigos",
+      "Volets Ext.": "Persianas ext.",
+      "Rideaux": "Cortinas",
+      "Sauna": "Sauna",
+      "Hammam": "Hammam",
+      "Jeux": "Juegos"
     },
     "de": {
+      "Salon": "Wohnzimmer",
+      "AMBIANCE": "AMBIENTE",
+      "Cuisine": "Küche",
+      "Salle à manger": "Esszimmer",
+      "Suite parentale": "Elternsuite",
+      "Chambre 1": "Schlafzimmer 1",
+      "Chambre 2": "Schlafzimmer 2",
+      "Chambre 3": "Schlafzimmer 3",
+      "Bureau": "Büro",
+      "Home cinéma": "Heimkino",
+      "Suite invités": "Gästesuite",
+      "Terrasse & jardin": "Terrasse & Garten",
+      "Piscine & spa": "Pool & Spa",
+      "Sauna & hammam": "Sauna & Hamam",
+      "Pool house": "Poolhaus",
+      "Garage & ateliers": "Garage & Werkstätten",
+      "OFF": "AUS",
+      "CINÉMA": "KINO",
+      "REPAS": "ESSEN",
+      "TOTAL": "VOLL",
       "Tout ouvrir": "Alles Öffnen",
       "Position été": "Sommerposition",
       "Position hiver": "Winterposition",
       "Tout fermer": "Alles Schließen",
+      "Volet ext. 1": "Rollladen 1",
+      "Volet ext. 2": "Rollladen 2",
+      "Rideau ext. 1": "Vorhang 1",
+      "Rideau ext. 2": "Vorhang 2",
+      "Store 1": "Markise 1",
+      "Store 2": "Markise 2",
       "MUSIQUE": "MUSIK",
       "CHAUFFAGE": "HEIZUNG",
       "CLIMATISATION": "KÜHLUNG",
-      "Salon": "Wohnzimmer",
-      "Salle à manger": "Esszimmer",
-      "Cuisine": "Küche",
-      "Entrée": "Eingang",
-      "WC invités": "Gäste-WC",
-      "Buanderie": "Waschküche",
-      "Suite parentale": "Elternsuite",
-      "Bain parental": "Elternbad",
-      "Bureau": "Büro",
-      "Salle TV": "TV-Zimmer",
-      "Bain salle TV": "Bad TV-Zimmer",
-      "Hall étage": "Halle Obergeschoss",
-      "Chambre Twin": "Twin-Zimmer",
-      "Bain Twin": "Bad Twin",
-      "Chambre VIP": "VIP-Zimmer",
-      "Bain VIP": "Bad VIP",
-      "Balcons": "Balkone",
-      "OFF": "AUS",
-      "JOUR": "TAG",
-      "SOIR": "ABEND",
-      "NUIT": "NACHT",
-      "Spots côté vallée": "Spots Talseite",
-      "Spots coin lecture": "Spots Leseecke",
-      "Corniche LED": "LED-Voute",
-      "Lampadaires": "Stehleuchten",
-      "Cheminée": "Kamin",
-      "Spots": "Spots",
-      "Suspensions": "Pendelleuchten",
       "Spots plafond": "Deckenspots",
-      "Spots passage": "Spots Durchgang",
-      "Lustre îlot": "Insel-Leuchter",
-      "Spots îlot": "Insel-Spots",
-      "Plan de travail": "Arbeitsfläche",
-      "Éclairage tableau": "Bildbeleuchtung",
-      "Appliques": "Wandleuchten",
-      "Tête de lit": "Kopfteil",
-      "Chevet gauche": "Nachttisch links",
-      "Chevet droit": "Nachttisch rechts",
-      "Niches": "Nischen",
-      "Veilleuses": "Nachtlichter",
-      "Dressing Monsieur": "Ankleide Herr",
-      "Dressing Madame": "Ankleide Dame",
-      "Terrasse": "Terrasse",
-      "Douche vapeur": "Dampfdusche",
-      "Appliques miroir": "Spiegelleuchten",
-      "Spots WC": "WC-Spots",
-      "Niche WC": "WC-Nische",
-      "Sèche-serviettes": "Handtuchwärmer",
-      "Spots entrée": "Spots Eingang",
-      "Spots vasque": "Spots Waschtisch",
-      "Spots douche": "Duschspots",
-      "Corniche douche": "Voute Dusche",
-      "Niche douche": "Duschnische",
-      "Spot WC": "WC-Spot",
-      "Appliques WC": "WC-Wandleuchten",
-      "Spots escalier": "Treppenspots",
-      "Appliques hall": "Wandleuchten Halle",
-      "Dressing": "Ankleide",
-      "Spots dressing": "Spots Ankleide",
-      "Spots lit": "Spots Bett",
-      "Corniches": "Vouten",
-      "Corniche WC": "Voute WC",
-      "Balcon sud": "Balkon Süd",
-      "Balcon est": "Balkon Ost",
-      "Balcon nord": "Balkon Nord",
-      "Rideau baie sud": "Vorhang Südfenster",
-      "Rideau baie est": "Vorhang Ostfenster",
-      "Voilage sud": "Store Süd",
-      "Voilage est": "Store Ost",
-      "Rideau terrasse": "Vorhang Terrasse",
-      "Voilage": "Store",
-      "Store fenêtre": "Fensterrollo",
-      "Rideau dressing": "Vorhang Ankleide",
-      "Rideau": "Vorhang",
-      "Store banne": "Markise",
-      "Appartement Crans-Montana": "Wohnung Crans-Montana"
+      "Lustre central": "Zentraler Lüster",
+      "Appliques murales": "Wandleuchten",
+      "Ruban LED": "LED-Band",
+      "Spots plafond ouest": "Deckenspots West",
+      "Lustre principal": "Hauptlüster",
+      "Ruban LED corniche": "LED-Band Gesims",
+      "Applique murale nord": "Wandleuchte Nord",
+      "Spots zone cuisson": "Spots Kochbereich",
+      "Suspension îlot": "Pendelleuchte Insel",
+      "LED plan de travail": "LED Arbeitsplatte",
+      "Plafonnier central": "Deckenleuchte Mitte",
+      "Lustre table repas": "Lüster Esstisch",
+      "Appliques buffet est": "Wandleuchten Buffet Ost",
+      "Ruban LED vaisselier": "LED-Band Vitrine",
+      "Plafonnier suite": "Deckenleuchte Suite",
+      "Liseuse lit gauche": "Leselampe links",
+      "Liseuse lit droite": "Leselampe rechts",
+      "Corniche LED tête de lit": "LED-Voute Kopfteil",
+      "Plafonnier chambre 1": "Deckenleuchte SZ 1",
+      "Lampe bureau 1": "Schreibtischlampe 1",
+      "Liseuse lit 1": "Leselampe 1",
+      "Spots dressing 1": "Spots Ankleide 1",
+      "Plafonnier chambre 2": "Deckenleuchte SZ 2",
+      "Lampe bureau 2": "Schreibtischlampe 2",
+      "Liseuse lit 2": "Leselampe 2",
+      "Spots dressing 2": "Spots Ankleide 2",
+      "Plafonnier chambre 3": "Deckenleuchte SZ 3",
+      "Lampe bureau 3": "Schreibtischlampe 3",
+      "Liseuse lit 3": "Leselampe 3",
+      "Spots dressing 3": "Spots Ankleide 3",
+      "Spots plafond bureau": "Deckenspots Büro",
+      "Lampe bureau design": "Design-Schreibtischlampe",
+      "Ruban LED bibliothèque": "LED-Band Bibliothek",
+      "Applique zone accueil": "Wandleuchte Empfang",
+      "Nez de marche gradué": "Gedimmtes Stufenlicht",
+      "Appliques murales gauche": "Wandleuchten links",
+      "Appliques murales droite": "Wandleuchten rechts",
+      "Ruban LED écran": "LED-Band Leinwand",
+      "Lustre suite invités": "Lüster Gästesuite",
+      "Liseuse invités": "Leselampe Gäste",
+      "LED tête de lit": "LED Kopfteil",
+      "Spots dressing invités": "Spots Ankleide Gäste",
+      "Projecteurs avant-toit": "Strahler Dachvorsprung",
+      "Appliques façade sud": "Wandleuchten Südfassade",
+      "Spots encastrés sol": "Bodeneinbauspots",
+      "Ruban LED Sous-Banc": "LED-Band Sitzbank",
+      "Projecteurs subaquatiques": "Unterwasserscheinwerfer",
+      "Spots plafond spa": "Deckenspots Spa",
+      "Ruban LED margelle": "LED-Band Beckenrand",
+      "Appliques ambiance plage": "Wandleuchten Poolbereich",
+      "Plafonnier vapeur sauna": "Deckenleuchte Sauna",
+      "Ruban LED Sous-Banc sauna": "LED-Band Saunabank",
+      "Projecteurs hammam": "Strahler Hamam",
+      "Spots douche pluie": "Spots Regendusche",
+      "Suspensions bar pool house": "Pendelleuchten Bar",
+      "Spots plafond salon d'Été": "Spots Sommerlounge",
+      "Ruban LED comptoir": "LED-Band Theke",
+      "Appliques terrasse pool house": "Wandleuchten Poolhaus-Terrasse",
+      "Réglettes LED garage": "LED-Leisten Garage",
+      "Spots zone établi": "Spots Werkbank",
+      "Éclairage porte sectionnelle": "Licht Sektionaltor",
+      "Appliques entrée garage": "Wandleuchten Garageneinfahrt",
+      "IPTV": "IPTV",
+      "Suite bébé": "Babysuite",
+      "Salle de jeux": "Spielzimmer",
+      "Chambre maman": "Schlafzimmer Mama",
+      "Chambre papa": "Schlafzimmer Papa",
+      "Suite amis": "Freunde-Suite",
+      "Chambre amis": "Freundezimmer",
+      "Volets Ext.": "Rollläden außen",
+      "Rideaux": "Vorhänge",
+      "Sauna": "Sauna",
+      "Hammam": "Hamam",
+      "Jeux": "Spiele"
     },
     "ru": {
+      "Salon": "Гостиная",
+      "AMBIANCE": "АТМОСФЕРА",
+      "Cuisine": "Кухня",
+      "Salle à manger": "Столовая",
+      "Suite parentale": "Хозяйская спальня",
+      "Chambre 1": "Спальня 1",
+      "Chambre 2": "Спальня 2",
+      "Chambre 3": "Спальня 3",
+      "Bureau": "Кабинет",
+      "Home cinéma": "Домашний кинотеатр",
+      "Suite invités": "Гостевая спальня",
+      "Terrasse & jardin": "Терраса и сад",
+      "Piscine & spa": "Бассейн и спа",
+      "Sauna & hammam": "Сауна и хаммам",
+      "Pool house": "Пул-хаус",
+      "Garage & ateliers": "Гараж и мастерские",
+      "OFF": "ВЫКЛ",
+      "CINÉMA": "КИНО",
+      "REPAS": "УЖИН",
+      "TOTAL": "ПОЛНЫЙ",
       "Tout ouvrir": "Открыть все",
       "Position été": "Летнее положение",
       "Position hiver": "Зимнее положение",
       "Tout fermer": "Закрыть все",
+      "Volet ext. 1": "Рольставни 1",
+      "Volet ext. 2": "Рольставни 2",
+      "Rideau ext. 1": "Штора 1",
+      "Rideau ext. 2": "Штора 2",
+      "Store 1": "Маркиза 1",
+      "Store 2": "Маркиза 2",
       "MUSIQUE": "МУЗЫКА",
       "CHAUFFAGE": "ОТОПЛЕНИЕ",
       "CLIMATISATION": "ОХЛАЖДЕНИЕ",
-      "Salon": "Гостиная",
-      "Salle à manger": "Столовая",
-      "Cuisine": "Кухня",
-      "Entrée": "Прихожая",
-      "WC invités": "Гостевой туалет",
-      "Buanderie": "Прачечная",
-      "Suite parentale": "Главная спальня",
-      "Bain parental": "Главная ванная",
-      "Bureau": "Кабинет",
-      "Salle TV": "ТВ-комната",
-      "Bain salle TV": "Ванная ТВ-комнаты",
-      "Hall étage": "Верхний холл",
-      "Chambre Twin": "Спальня Twin",
-      "Bain Twin": "Ванная Twin",
-      "Chambre VIP": "Спальня VIP",
-      "Bain VIP": "Ванная VIP",
-      "Balcons": "Балконы",
-      "OFF": "ВЫКЛ",
-      "JOUR": "ДЕНЬ",
-      "SOIR": "ВЕЧЕР",
-      "NUIT": "НОЧЬ",
-      "Spots côté vallée": "Споты у долины",
-      "Spots coin lecture": "Споты уголка чтения",
-      "Corniche LED": "LED-карниз",
-      "Lampadaires": "Торшеры",
-      "Cheminée": "Камин",
-      "Spots": "Споты",
-      "Suspensions": "Подвесы",
       "Spots plafond": "Потолочные споты",
-      "Spots passage": "Споты прохода",
-      "Lustre îlot": "Люстра острова",
-      "Spots îlot": "Споты острова",
-      "Plan de travail": "Столешница",
-      "Éclairage tableau": "Подсветка картины",
-      "Appliques": "Бра",
-      "Tête de lit": "Изголовье",
-      "Chevet gauche": "Левая тумба",
-      "Chevet droit": "Правая тумба",
-      "Niches": "Ниши",
-      "Veilleuses": "Ночники",
-      "Dressing Monsieur": "Гардероб (он)",
-      "Dressing Madame": "Гардероб (она)",
-      "Terrasse": "Терраса",
-      "Douche vapeur": "Паровой душ",
-      "Appliques miroir": "Подсветка зеркала",
-      "Spots WC": "Споты WC",
-      "Niche WC": "Ниша WC",
-      "Sèche-serviettes": "Полотенцесушитель",
-      "Spots entrée": "Споты входа",
-      "Spots vasque": "Споты раковины",
-      "Spots douche": "Споты душа",
-      "Corniche douche": "Карниз душа",
-      "Niche douche": "Ниша душа",
-      "Spot WC": "Спот WC",
-      "Appliques WC": "Бра WC",
-      "Spots escalier": "Споты лестницы",
-      "Appliques hall": "Бра холла",
-      "Dressing": "Гардероб",
-      "Spots dressing": "Споты гардероба",
-      "Spots lit": "Споты кровати",
-      "Corniches": "Карнизы",
-      "Corniche WC": "Карниз WC",
-      "Balcon sud": "Южный балкон",
-      "Balcon est": "Восточный балкон",
-      "Balcon nord": "Северный балкон",
-      "Rideau baie sud": "Штора южного окна",
-      "Rideau baie est": "Штора восточного окна",
-      "Voilage sud": "Тюль юг",
-      "Voilage est": "Тюль восток",
-      "Rideau terrasse": "Штора террасы",
-      "Voilage": "Тюль",
-      "Store fenêtre": "Рулонная штора",
-      "Rideau dressing": "Штора гардероба",
-      "Rideau": "Штора",
-      "Store banne": "Маркиза",
-      "Appartement Crans-Montana": "Апартаменты Кран-Монтана"
+      "Lustre central": "Центральная люстра",
+      "Appliques murales": "Настенные бра",
+      "Ruban LED": "LED-лента",
+      "Spots plafond ouest": "Споты потолка (запад)",
+      "Lustre principal": "Главная люстра",
+      "Ruban LED corniche": "LED-лента карниза",
+      "Applique murale nord": "Бра северное",
+      "Spots zone cuisson": "Споты зоны плиты",
+      "Suspension îlot": "Подвес над островом",
+      "LED plan de travail": "LED столешницы",
+      "Plafonnier central": "Центральный светильник",
+      "Lustre table repas": "Люстра над столом",
+      "Appliques buffet est": "Бра у буфета (восток)",
+      "Ruban LED vaisselier": "LED-лента серванта",
+      "Plafonnier suite": "Светильник спальни",
+      "Liseuse lit gauche": "Бра для чтения (лев.)",
+      "Liseuse lit droite": "Бра для чтения (прав.)",
+      "Corniche LED tête de lit": "LED изголовья",
+      "Plafonnier chambre 1": "Светильник спальни 1",
+      "Lampe bureau 1": "Настольная лампа 1",
+      "Liseuse lit 1": "Бра для чтения 1",
+      "Spots dressing 1": "Споты гардероба 1",
+      "Plafonnier chambre 2": "Светильник спальни 2",
+      "Lampe bureau 2": "Настольная лампа 2",
+      "Liseuse lit 2": "Бра для чтения 2",
+      "Spots dressing 2": "Споты гардероба 2",
+      "Plafonnier chambre 3": "Светильник спальни 3",
+      "Lampe bureau 3": "Настольная лампа 3",
+      "Liseuse lit 3": "Бра для чтения 3",
+      "Spots dressing 3": "Споты гардероба 3",
+      "Spots plafond bureau": "Споты кабинета",
+      "Lampe bureau design": "Дизайнерская лампа",
+      "Ruban LED bibliothèque": "LED-лента библиотеки",
+      "Applique zone accueil": "Бра у входа",
+      "Nez de marche gradué": "Подсветка ступеней",
+      "Appliques murales gauche": "Бра левые",
+      "Appliques murales droite": "Бра правые",
+      "Ruban LED écran": "LED-лента экрана",
+      "Lustre suite invités": "Люстра гостевой",
+      "Liseuse invités": "Бра для чтения (гости)",
+      "LED tête de lit": "LED изголовья кровати",
+      "Spots dressing invités": "Споты гардероба (гости)",
+      "Projecteurs avant-toit": "Прожекторы карниза",
+      "Appliques façade sud": "Бра южного фасада",
+      "Spots encastrés sol": "Встроенные споты в полу",
+      "Ruban LED Sous-Banc": "LED-лента под скамьёй",
+      "Projecteurs subaquatiques": "Подводные прожекторы",
+      "Spots plafond spa": "Споты потолка спа",
+      "Ruban LED margelle": "LED-лента борта",
+      "Appliques ambiance plage": "Бра зоны отдыха",
+      "Plafonnier vapeur sauna": "Светильник сауны",
+      "Ruban LED Sous-Banc sauna": "LED-лента под полкой",
+      "Projecteurs hammam": "Прожекторы хаммама",
+      "Spots douche pluie": "Споты тропического душа",
+      "Suspensions bar pool house": "Подвесы бара",
+      "Spots plafond salon d'Été": "Споты летней гостиной",
+      "Ruban LED comptoir": "LED-лента стойки",
+      "Appliques terrasse pool house": "Бра террасы пул-хауса",
+      "Réglettes LED garage": "LED-светильники гаража",
+      "Spots zone établi": "Споты верстака",
+      "Éclairage porte sectionnelle": "Свет секционных ворот",
+      "Appliques entrée garage": "Бра въезда в гараж",
+      "IPTV": "IPTV",
+      "Suite bébé": "Детская спальня",
+      "Salle de jeux": "Игровая",
+      "Chambre maman": "Спальня мамы",
+      "Chambre papa": "Спальня папы",
+      "Suite amis": "Сьют для друзей",
+      "Chambre amis": "Спальня для друзей",
+      "Volets Ext.": "Наружные ставни",
+      "Rideaux": "Шторы",
+      "Sauna": "Сауна",
+      "Hammam": "Хаммам",
+      "Jeux": "Игры"
     }
   },
   "contrat": {
@@ -3397,12 +3064,11 @@ window.villaConfigEmbedded = {
       "description": "Centrale d'alarme de la villa. Le code de reference n'est plus code en dur ni dans le JavaScript du panel ni dans le C# : le GUI envoie la saisie sur le serial 43, le C# la relaie telle quelle a l'EISC du slot 2 (serial 43) et attend le verdict de la vraie centrale (digital 44 = accepte, 45 = refuse). Si le slot 2 ne repond pas dans le delai ci-dessous, le C# tranche localement avec codeParDefaut.",
       "codeParDefaut": "1234",
       "delaiReponseCentraleMs": 1200,
-      "note": "codeParDefaut n'est qu'un repli de mise en service : a changer sur site, ou a vider (\"\") pour refuser toute validation locale et n'accepter que le verdict de la centrale du slot 2.",
-      "actif": false
+      "note": "codeParDefaut n'est qu'un repli de mise en service : a changer sur site, ou a vider (\"\") pour refuser toute validation locale et n'accepter que le verdict de la centrale du slot 2."
     },
     "notes": [
       "CONTRAT v2 (22.08.2026) : Piece.Select etendu a 30 pieces (digitaux 11-40). Decalages : Eclairage.Scene 21-24 -> 51-54, AV.Mute 53 -> 55, CVC.ConsignePlus 35 -> 49, CVC.ConsigneMoins 36 -> 50, Meteo.EasterEgg 37 -> 56.",
-      "Contrat de joins unifié Villa Crans, structuré en deux familles :",
+      "Contrat de joins unifié Villa FTV, structuré en deux familles :",
       "1) signauxGlobaux : joins système/globaux/interface (tous < 1000), miroir 1:1 vers l'EISC du slot 2.",
       "2) blocsPieces : chaque pièce expose un bloc de 100 joins sur l'EISC - base = 1000 + (id - 1) * 100.",
       "   Exemple : pièce 1 = 1000..1099, pièce 2 = 1100..1199, pièce 15 = 2400..2499.",
@@ -4597,7 +4263,7 @@ window.villaConfigEmbedded = {
       "note": "Commandes GUI globales 610-615, routage par a10 avant impulsion. Retours materiels par bloc CVC de piece : d(base+93) niveau marche vrai/faux, a(base+33) vitesse 0..3. Aucun retour global ambigu du slot 2."
     },
     "wellness": {
-      "actif": false,
+      "actif": true,
       "sauna": {
         "marche": 620,
         "arret": 621,
@@ -4615,6 +4281,210 @@ window.villaConfigEmbedded = {
         "mesure": 65
       },
       "note": "Commandes globales, piece a10 avant impulsion; retours EISC par piece d+11/+15, a+34..37. Etat OFF initial; aucune ventilation des cabines. Reglages definitifs selon le fabricant du generateur."
+    },
+    "simplDirect": {
+      "description": "v6.0 (30.09.2026) — contrat S : un seul programme SIMPL (slot 1), plus de C#. Actif si meta.backend = \"simpl\" (et meta.mode = deploiement). Chaque ecran emet et recoit les joins de la piece qu'il affiche sur le bloc de cette piece : join = baseBloc + (pieceId - 1) * tailleBloc + offset (626..2500 pour 15 pieces : les symboles de dalle SIMPL s'arretent a 2511 joins digitaux). Offsets compacts 1..125, tries par join logique. La traduction est faite par js/villa-joins.js au pont natif ; le HTML garde ses joins logiques. Joins hors mapping = globaux (selection de piece 11-40, alarme, centralisation 401-411, telecommandes...). Programme SIMPL genere par simpl/direct/generate_simpl.js a partir de ce fichier.",
+      "baseBloc": 625,
+      "tailleBloc": 125,
+      "pieceMax": 15,
+      "telecommandes": {
+        "description": "Touches de telecommande (joins globaux 211-220, 500-527, 530-557, 560-600) : juste avant chaque appui, l'ecran pose l'analogique 241 = piece qui emet. Joins laisses libres pour les modules TV / audio de l'equipe.",
+        "pieceAnalog": 241,
+        "plages": [
+          [
+            211,
+            220
+          ],
+          [
+            500,
+            527
+          ],
+          [
+            530,
+            557
+          ],
+          [
+            560,
+            600
+          ]
+        ]
+      },
+      "scenesMemoriser": {
+        "description": "Appui long / disquette sur une scene : le GUI (serie 421 JSON en mode C#) emet en mode SIMPL une impulsion sur le join logique 431..434 de la piece ; le SIMPL copie les niveaux courants de ses circuits dans la memoire non volatile de la scene et pose 421..424 (scene memorisee).",
+        "serial": 421,
+        "digital": 431
+      },
+      "mapping": {
+        "digital": {
+          "49": 1,
+          "50": 2,
+          "51": 3,
+          "52": 4,
+          "53": 5,
+          "54": 6,
+          "55": 7,
+          "61": 8,
+          "62": 9,
+          "63": 10,
+          "64": 11,
+          "65": 12,
+          "66": 13,
+          "67": 14,
+          "68": 15,
+          "69": 16,
+          "81": 17,
+          "82": 18,
+          "83": 19,
+          "84": 20,
+          "85": 21,
+          "86": 22,
+          "87": 23,
+          "88": 24,
+          "89": 25,
+          "90": 26,
+          "91": 27,
+          "92": 28,
+          "93": 29,
+          "94": 30,
+          "95": 31,
+          "96": 32,
+          "97": 33,
+          "98": 34,
+          "111": 35,
+          "112": 36,
+          "113": 37,
+          "114": 38,
+          "115": 39,
+          "116": 40,
+          "117": 41,
+          "118": 42,
+          "119": 43,
+          "120": 44,
+          "121": 45,
+          "122": 46,
+          "123": 47,
+          "124": 48,
+          "125": 49,
+          "126": 50,
+          "127": 51,
+          "128": 52,
+          "129": 53,
+          "130": 54,
+          "131": 55,
+          "132": 56,
+          "133": 57,
+          "134": 58,
+          "135": 59,
+          "136": 60,
+          "137": 61,
+          "138": 62,
+          "139": 63,
+          "140": 64,
+          "141": 65,
+          "142": 66,
+          "143": 67,
+          "144": 68,
+          "145": 69,
+          "146": 70,
+          "150": 71,
+          "151": 72,
+          "152": 73,
+          "153": 74,
+          "154": 75,
+          "155": 76,
+          "156": 77,
+          "157": 78,
+          "158": 79,
+          "159": 80,
+          "160": 81,
+          "161": 82,
+          "162": 83,
+          "163": 84,
+          "164": 85,
+          "165": 86,
+          "166": 87,
+          "167": 88,
+          "168": 89,
+          "169": 90,
+          "170": 91,
+          "171": 92,
+          "172": 93,
+          "173": 94,
+          "174": 95,
+          "200": 96,
+          "201": 97,
+          "202": 98,
+          "203": 99,
+          "204": 100,
+          "251": 101,
+          "252": 102,
+          "253": 103,
+          "421": 104,
+          "422": 105,
+          "423": 106,
+          "424": 107,
+          "431": 108,
+          "432": 109,
+          "433": 110,
+          "434": 111,
+          "610": 112,
+          "611": 113,
+          "612": 114,
+          "613": 115,
+          "614": 116,
+          "615": 117,
+          "620": 118,
+          "621": 119,
+          "622": 120,
+          "623": 121,
+          "624": 122,
+          "625": 123,
+          "626": 124,
+          "627": 125
+        },
+        "analog": {
+          "31": 1,
+          "51": 2,
+          "52": 3,
+          "53": 4,
+          "61": 5,
+          "62": 6,
+          "63": 7,
+          "64": 8,
+          "65": 9,
+          "71": 10,
+          "72": 11,
+          "73": 12,
+          "74": 13,
+          "75": 14,
+          "76": 15,
+          "77": 16,
+          "78": 17,
+          "79": 18,
+          "80": 19,
+          "81": 20,
+          "82": 21,
+          "83": 22,
+          "84": 23,
+          "85": 24,
+          "86": 25,
+          "87": 26,
+          "88": 27,
+          "89": 28,
+          "90": 29,
+          "254": 30
+        },
+        "serial": {
+          "10": 1,
+          "32": 2,
+          "33": 3,
+          "34": 4,
+          "62": 5,
+          "63": 6,
+          "64": 7,
+          "65": 8
+        }
+      }
     }
   },
   "pagesSpeciales": {

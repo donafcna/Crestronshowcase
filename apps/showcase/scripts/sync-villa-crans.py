@@ -4,7 +4,7 @@ Synchronise la vitrine « Villa Crans-Montana » (public/showcases/villa-gemini-
 avec le GUI CH5 réel du projet VillaCrans (dossier src/ du dépôt VillaCrans).
 
 Usage :
-    python3 scripts/sync-villa-crans.py "C:/dev/crestron/repo/projects/villa-crans/ch5/src"
+    python3 scripts/sync-villa-crans.py "C:/dev/crestron/repo/projects/villa-ftv/ch5/src"
 
 Ce que fait le script :
   1. copie index.html, iphone.html, version.js, build_date.json, config.js / config.json ;

@@ -23,7 +23,7 @@ const check = (id, status, detail, evidence) => report.checks.push({ id, status,
 const git = (...args) => execFileSync('git', args, { cwd: repo, encoding: 'utf8' }).trim();
 report.commit = git('rev-parse', 'HEAD');
 report.workingTree = git('status', '--porcelain').split(/\r?\n/).filter(Boolean);
-const ch5 = 'projects/villa-crans/ch5', showcase = 'apps/showcase/public/showcases/villa-gemini-frequencetv';
+const ch5 = 'projects/villa-ftv/ch5', showcase = 'apps/showcase/public/showcases/villa-gemini-frequencetv';
 const config = JSON.parse(read(ch5 + '/villa_config.json'));
 const demo = JSON.parse(read(showcase + '/villa_config.json'));
 for (const [name, c, mode] of [['deployment', config, 'deploiement'], ['showcase', demo, 'showcase']]) {
@@ -73,12 +73,12 @@ const demoIds = demo.pieces.filter(p => p.actif !== false).map(p => p.id), planI
 check('architecture.roomCoverage', new Set(planIds).size === planIds.length && demoIds.every(id => planIds.includes(id)) && planIds.every(id => demoIds.includes(id)) ? 'passed' : 'failed', { demoRooms: demoIds.length, planRooms: planIds.length, missing3d: demoIds.filter(id => !planIds.includes(id)), missingGui: planIds.filter(id => !demoIds.includes(id)) });
 const basement = model.pieces.filter(p => p.niveau < 0 && p.windowWall && p.windowWall !== 'none');
 check('architecture.basementWindows', basement.length ? 'unverified' : 'passed', basement.length ? { roomsToReview: basement.map(p => p.id), reason: 'Une ouverture de sous-sol doit avoir une justification explicite de terrain/cour anglaise ; revue visuelle requise.' } : 'Aucune fenêtre de sous-sol déclarée');
-const smwPath = 'projects/villa-crans/simpl/simpl-windows/Project_Slot2.smw';
+const smwPath = 'projects/villa-ftv/simpl/simpl-windows/Project_Slot2.smw';
 const smw = read(smwPath), symbol = [...smw.matchAll(/\[\r?\nObjTp=Sm\r?\n[\s\S]*?\r?\n\]/g)].find(m => /\bSmC=1160\b/.test(m[0]))?.[0];
 const dims = Object.fromEntries(['n1I', 'n1O', 'n2I', 'n2O', 'mI', 'mO', 'tO'].map(k => [k, +(symbol?.match(new RegExp('(?:^|\\n)' + k + '=(\\d+)'))?.[1] || 0)]));
 report.eisc = { dimensions: dims, note: 'Inventaire du symbole seulement : les dimensions ne prouvent pas la logique SIMPL câblée ni compilée.' };
 check('simpl.eiscSymbol', symbol ? 'passed' : 'failed', report.eisc);
-for (const [name, rel] of [['CH5Z', ch5 + '/dist/villaftv.ch5z'], ['CPZ', ch5 + '/Backend/Backend/bin/Release/Villaftv.cpz'], ['LPZ', 'projects/villa-crans/simpl/simpl-windows/VillaCrans_Slot2.lpz']]) {
+for (const [name, rel] of [['CH5Z', ch5 + '/dist/villaftv.ch5z'], ['CPZ', ch5 + '/Backend/Backend/bin/Release/Villaftv.cpz'], ['LPZ', 'projects/villa-ftv/simpl/simpl-windows/VillaCrans_Slot2.lpz']]) {
   const full = path.join(repo, rel);
   report.artifacts.push({ name, path: rel, exists: fs.existsSync(full), ...(fs.existsSync(full) ? { sha256: sha(fs.readFileSync(full)), bytes: fs.statSync(full).size, modifiedAt: fs.statSync(full).mtime.toISOString() } : {}), sourceCorrespondence: 'unverified', hardwareInstallation: 'unverified' });
 }

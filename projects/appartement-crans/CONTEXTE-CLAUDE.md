@@ -4,7 +4,7 @@ Mis à jour le 29.09.2026 (v1.1.0 : interface Connect, A/V et alarme retirés ; 
 « Appartement Crans-Montana » (`appartement-crans`), jamais de nom de client, d'opérateur ni d'adresse.
 
 ## Ce que c'est
-Premier projet client dérivé du **Core Villa Crans** (`projects/villa-crans`) : GUI CH5 (dalle / iPad / XPanel /
+Premier projet client dérivé du **Core Villa Crans** (`projects/villa-ftv`) : GUI CH5 (dalle / iPad / XPanel /
 iPhone), C# SIMPL# Pro slot 1 et SIMPL Windows slot 2 reliés par EISC F0 / 127.0.0.2, contrat de joins v4.1.
 **Rien n'est réécrit** : `villa_config.json` dimensionne tout (17 pièces, 101 circuits Lutron, 18 moteurs,
 13 pièces CVC, **aucun A/V, aucune alarme, aucune caméra** depuis le 29.09), `tools/assemble.py` copie le Core et

@@ -46,8 +46,8 @@ const ratio=(a,b)=>(Math.max(lum(a),lum(b))+.05)/(Math.min(lum(a),lum(b))+.05);
   // Inject real native feedback into the physical source without the demo engine.
   for(const file of ['iphone.html','index.html']){
    p=await b.newPage({viewport:file==='iphone.html'?{width:390,height:844}:{width:1194,height:834}});
-   await p.route('**/'+file,r=>r.fulfill({contentType:'text/html',body:fs.readFileSync(path.resolve('../../projects/villa-crans/ch5/src',file),'utf8')}));await p.route('**/js/webxpanel.js',r=>r.fulfill({contentType:'text/javascript',body:''}));
-   await p.route('**/villa_config.js',r=>r.fulfill({contentType:'text/javascript',body:'window.villaConfigEmbedded='+fs.readFileSync(path.resolve('../../projects/villa-crans/ch5/villa_config.json'),'utf8')}));
+   await p.route('**/'+file,r=>r.fulfill({contentType:'text/html',body:fs.readFileSync(path.resolve('../../projects/villa-ftv/ch5/src',file),'utf8')}));await p.route('**/js/webxpanel.js',r=>r.fulfill({contentType:'text/javascript',body:''}));
+   await p.route('**/villa_config.js',r=>r.fulfill({contentType:'text/javascript',body:'window.villaConfigEmbedded='+fs.readFileSync(path.resolve('../../projects/villa-ftv/ch5/villa_config.json'),'utf8')}));
    await p.goto(base+'/showcases/villa-gemini-frequencetv/'+file);await p.waitForFunction(()=>window.CrComLib&&window.refreshWellnessControls);await select(p,13);if(file==='iphone.html')await p.locator('#nav-hvac').click();
    check(file+' no local simulation',await p.evaluate(()=>!window.Villa));
    for(const [name,on,off,serial,value] of [['sauna',620,621,64,'78.5'],['hammam',624,625,65,'98']]){

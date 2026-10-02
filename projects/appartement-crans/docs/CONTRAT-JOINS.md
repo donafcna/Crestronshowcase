@@ -1,7 +1,7 @@
 # Appartement Crans-Montana — contrat de joins (v4.1 du Core, appliqué au projet)
 
-Le contrat est celui du Core Villa Crans (`projects/villa-crans/ch5/docs/03_CONTRAT_JOINS.md`,
-`projects/villa-crans/simpl/contract/README_SLOT2.md`) : rien n'est redéfini ici, seul le dimensionnement
+Le contrat est celui du Core Villa Crans (`projects/villa-ftv/ch5/docs/03_CONTRAT_JOINS.md`,
+`projects/villa-ftv/simpl/contract/README_SLOT2.md`) : rien n'est redéfini ici, seul le dimensionnement
 vient de `villa_config.json`. GUI CH5 et C# du slot 1 sont des copies du Core ; le SMW du slot 2 est généré.
 
 ## Principe v4
