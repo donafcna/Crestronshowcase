@@ -101,6 +101,14 @@ Bloc facultatif, lu par `js/nav-pieces.js` (dalle, iPad, XPanel et iPhone). Abse
 Les paramètres d'adresse priment sur le JSON : `?menu=0` masque le menu, `?menu=1` le force, `?room=N` choisit la pièce. Les QR codes (`tools/gen_qr.js`) et le sélecteur « Espace » du site vitrine utilisent `?menu=0&room=N`.
 Exemple « écran de chambre » : `{ "visible": false, "pieces": [7], "pieceParDefaut": 7 }` → GUI plein cadre sur le Bureau, sans menu.
 
+### `interface.recherche` — bouton « Recherche », actions rapides (v6.2, 02.10.2026)
+
+```json
+"interface": { "recherche": { "actif": true, "suggestions": true } }
+```
+
+Bouton loupe à gauche d'« Alarme » (dalle, iPad, XPanel, iPhone) → fenêtre « Actions rapides » (`js/quick-actions.js`) : champ de recherche avec propositions au fil de la frappe, les 3 dernières actions lancées depuis cette fenêtre (mémoire de l'écran, `localStorage`), 3 suggestions (heure de la journée, pièce affichée, actions les plus utilisées). Le catalogue vient de ce fichier : scènes (pièce affichée puis autres pièces, qui changent de pièce avant d'appliquer), sources (`sourcesAudioVideo`), commandes groupées volets / rideaux / stores, CVC (marche, arrêt, consigne ±), centralisation 401-409, fenêtres, changement de pièce ; une section `actif: false` dans la pièce retire ses actions. Aucun nouveau join : chaque action emprunte le chemin du bouton d'origine. L'alarme reste hors recherche. `actif: false` retire le bouton ; `suggestions: false` masque le bloc Suggestions. Bloc absent = actif.
+
 ## 4. `valeursParDefaut`
 
 Sert de repli : **un nom laissé vide (`""`) reprend la valeur par défaut correspondante**.

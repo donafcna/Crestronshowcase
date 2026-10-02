@@ -1,5 +1,9 @@
 # Premier commit 19/7/2026 13h00
 
+## 02/10/2026 — Villa FTV v6.2 : bouton « Recherche » (actions rapides), vitrine 2.3.8
+
+Copie Villa FTV régénérée (config 1.0.225) : bouton loupe à gauche d'« Alarme » et fenêtre « Actions rapides » (recherche, dernières actions, suggestions) ; en mode showcase les actions passent par le feedback local comme les boutons d'origine. `sync-villa-crans.py` copie `js/quick-actions.js` et `themes/quick-actions.css`. Recette GUI : `tools/qa-quick-actions.mjs` 12/12 (dalle, iPhone) et `tools/batterie-v62.mjs` 240 contextes verts.
+
 ## 02/10/2026 — Villa FTV v6.1 : sélecteur « Espace », vitrine 2.3.7
 
 Sélecteur « Espace » à droite du châssis (`src/components/VillaFtvTools.jsx`, modèle Hotel Brassus) sur dalle, tablette et PC : « Général » (menu de gauche, toutes les pièces, défaut) puis une entrée par pièce active lue dans le `villa_config.json` de la vitrine ; une pièce = GUI sans menu (`?menu=0&room=N`), nom de la pièce en titre. Libellés FR/EN/DE. `sync-villa-crans.py` copie `js/nav-pieces.js` et `themes/nav-pieces.css` ; copie Villa FTV régénérée (config 1.0.224). Recette : `tools/batterie-v61.mjs` côté GUI (186 contextes, 0 rouge) ; build et lint OK (avertissements préexistants).

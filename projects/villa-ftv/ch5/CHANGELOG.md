@@ -1,5 +1,16 @@
 # Villa Crans CH5 — journal des versions
 
+## v6.2 — 02/10/2026 — bouton « Recherche » : actions rapides (recherche, dernières actions, suggestions)
+
+| Artefact | Etat de ce lot |
+|---|---|
+| GUI | `src/js/quick-actions.js` + `src/themes/quick-actions.css` (nouveaux, partagés) ; `index.html` / `iphone.html` : `<script>`/`<link>`, `window.villaCurrentLang()`, événement `villa-language-changed` ; bouton loupe SVG à gauche d'« Alarme » (38 px dalle, 44 px iPhone) ; fenêtre 880 px (dalle) / pleine largeur (iPhone) : champ de recherche (clavier natif de l'écran, accents et casse ignorés, tous les mots saisis requis, 6 résultats max), « Dernières actions » (3, `localStorage`), « Suggestions » (3 : matin = ouvrir volets / stores + scène jour ; soir = scène cinéma / soir + fermer volets + source 1 ; nuit = scène OFF + Tout éteindre ; complété par les plus utilisées) ; FR / EN / ES / DE / RU — **a recompiler** web + tsw + mobile |
+| Config | `interface.recherche {actif, suggestions}` (doc § 3 bis) ; `meta.version` 1.0.225 |
+| Vitrine | `sync-villa-crans.py` copie `quick-actions.*` ; copie régénérée |
+| Batterie | `tools/qa-quick-actions.mjs` 12/12 sur dalle et iPhone (bouton et cible, ouverture + focus, catalogue complet sans alarme, recherche, **joins identiques au bouton d'origine** (scène 52 → 1379 en pièce 7, volets 61 → 1383), clic + fermeture + historique, aucun résultat + Échap, 3 suggestions sans doublon, 5 langues, désactivation par config, historique conservé après rechargement) ; `tools/batterie-v62.mjs` : 2 variantes × 3 thèmes × 3 châssis × (page + 9 fenêtres + choix de pièce + fenêtre vide / saisie / sans résultat) = 240 contextes, 0 rouge |
+
+**Décisions par défaut.** Actions = mêmes impulsions CrComLib que les boutons (traduites par le pont SIMPL), jamais de nouveau join ; une scène d'une autre pièce change d'abord la pièce affichée ; alarme et code hors recherche ; historique propre à l'écran, jamais sur le processeur ; les sections `actif:false` de la pièce retirent leurs actions.
+
 ## v6.1 — 02/10/2026 — GUI sans menu de gauche (config + URL), sélecteur « Espace » sur le site, diagnostic du pont SIMPL
 
 | Artefact | Etat de ce lot |

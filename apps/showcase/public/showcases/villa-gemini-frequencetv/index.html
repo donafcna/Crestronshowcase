@@ -28,6 +28,7 @@
     <script src="js/villa-joins.js"></script>
     <script src="js/gesture-controls.js"></script>
     <script src="js/nav-pieces.js"></script>
+    <script src="js/quick-actions.js"></script>
     <script>
         /* Filet de sécurité : si js/villa-joins.js n'a pas pu être chargé (fichier absent
            d'un paquet de déploiement), la GUI continue de fonctionner sur les joins logiques
@@ -3609,6 +3610,7 @@ body#app-body.theme-light ch5-button[customClass~="scene-btn"]:not([selected="tr
 <link rel="stylesheet" href="themes/av-controls.css">
 <link rel="stylesheet" href="themes/motors-controls.css">
 <link rel="stylesheet" href="themes/nav-pieces.css">
+<link rel="stylesheet" href="themes/quick-actions.css">
 <link rel="stylesheet" href="themes/wellness-controls.css">
 <script defer src="js/room-controls.js"></script>
 <script defer src="js/motors-controls.js"></script>
@@ -5883,6 +5885,7 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
 
         let config = fallbackConfig;
         let currentLang = 'fr';
+        window.villaCurrentLang = function () { return currentLang; };
         let currentTheme = 'dark';
         try {
             currentLang = localStorage.getItem('crestron_lang') || 'fr';
@@ -5908,6 +5911,8 @@ Exemples: ver, ipt, err, uptime, reboot</pre>
             try {
                 localStorage.setItem('crestron_lang', lang);
             } catch (e) {}
+            // v6.2 : langue courante exposée aux modules partagés (js/quick-actions.js) ; événement pour re-libeller
+            document.dispatchEvent(new CustomEvent('villa-language-changed', { detail: { lang: lang } }));
             const dict = Object.assign({}, translations[lang] || translations['fr']);
             // Ville du widget météo lue dans villa_config.json (widgets.meteoActualites.ville) : « Nyon »
             // n'est que la valeur historique de la Villa Crans (27.09.2026, projet Appartement Crans-Montana).

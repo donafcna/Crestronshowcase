@@ -14,6 +14,10 @@
   `?room=N` prioritaires ; sans menu : titre = pièce, appui court = fenêtre « choisir une pièce ». QR (`gen_qr.js`) et vitrine passent `menu=0&room=N`.
   **`applyTheme` ne retire plus que `theme-*`** (`body.className = ''` effaçait `vn-no-menu`, `modal-ouverte`). Site : `VillaFtvTools.jsx`
   (sélecteur « Espace », Général + pièces, pas sur smartphone). Batterie `tools/batterie-v61.mjs` (186 contextes, 0 rouge).
+- **v6.2 — bouton « Recherche »** (`js/quick-actions.js` + `themes/quick-actions.css`, `interface.recherche {actif, suggestions}`) : catalogue depuis la
+  config, mêmes impulsions que les boutons (`pulse(join)` = publishEvent true/false, `avSelect`, `animateGroupBlinds`, `openXxxModal`,
+  `selectRoomFromConfig` / `changeRoomIphone`), historique `localStorage` (`villa_qa_recent`, `villa_qa_counts`), `window.villaCurrentLang()`,
+  événement `villa-language-changed`. Tests `tools/qa-quick-actions.mjs`, `tools/batterie-v62.mjs`.
 - PowerShell de Donatien : `git` absent du PATH → jamais de `git pull` dans les commandes ; commits/push via le PC (gitkraken). `deploy.ps1 -Target simpl` n'arrête plus le slot 2.
 
 ## 30/09/2026 — v6.0 : UN SEUL programme SIMPL (slot 1), plus de C# (CH5 1.0.215 + SIMPL à compiler, F12)
@@ -137,8 +141,7 @@ La démo automatique démarre désormais sur **tous les supports** (elle était 
 6. **Jamais deux clés d'un même objet JSON qui ne diffèrent que par la casse** (`MUSIQUE` / `Musique` dans `traductions`) : `ConvertFrom-Json` de PowerShell 5.1 refuse le fichier et `deploy.ps1` s'arrête avant le build, alors que `JSON.parse` et Python les acceptent en silence. Contrôlé désormais par `tools/quality/validate-config.mjs`.
 ## Reste à faire
 1. **v6 recette TSW** : retours processeur → écran (lire le bloc « Pont SIMPL » de l'écran d'administration sur la dalle) ; câbler `Rnn_PILOTE_*`,
-   `Rnn_RETOUR_Temperature`, `TELECOMMANDE_*` ; recette Debugger (`simpl/direct/README.md`). Demande ouverte : bouton « Search » (actions rapides) à
-   gauche d'Alarme — contrat à valider. Supprimer `src/js/slats-controls.*` (+ copies vitrine). Recopier le Core dans l'Appartement (`assemble.py`).
+   `Rnn_RETOUR_Temperature`, `TELECOMMANDE_*` ; recette Debugger (`simpl/direct/README.md`). Supprimer `src/js/slats-controls.*` (+ copies vitrine). Recopier le Core dans l'Appartement (`assemble.py`).
 4. Bêta Alexandre : `prepare-project` + binaires depuis `docs/verification/2026-09-18-beta-alexandre/README.md`, recette A01-A12.
 5. Core (P2) : `sourcesAudioVideo[].type` lu par HTML / C# / générateur ; nommer les offsets +41..57 / +81..92 dans `generate_slot2.js` ;
    générateur lisant `signauxGlobaux` ; supprimer les 2010 `R*_` v3 du SMW ; commentaires C# « 10 circuits » et v3 au prochain recompilé.

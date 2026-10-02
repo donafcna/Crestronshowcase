@@ -1,0 +1,59 @@
+/* Villa FTV v6.2 — « Recherche » / actions rapides (js/quick-actions.js). Partagé dalle, iPad, XPanel, iPhone.
+   Jetons par thème posés sur la fenêtre et sur le bouton d'en-tête ; aucune couleur en dur dans le JS. */
+body#app-body { --qa-accent: #38bdf8; --qa-accent-text: #082f49; --qa-idle-bg: rgba(255, 255, 255, 0.06); --qa-idle-border: rgba(255, 255, 255, 0.14); --qa-text: #f1f5f9; --qa-muted: #cbd5e1; --qa-panel: rgba(22, 25, 32, 0.98); --qa-field: rgba(255, 255, 255, 0.08); }
+body#app-body.theme-light { --qa-accent: #0369a1; --qa-accent-text: #ffffff; --qa-idle-bg: rgba(15, 23, 42, 0.06); --qa-idle-border: rgba(15, 23, 42, 0.22); --qa-text: #0f172a; --qa-muted: #475569; --qa-panel: #f8fafc; --qa-field: rgba(15, 23, 42, 0.07); }
+body#app-body.theme-glass { --qa-idle-bg: rgba(255, 255, 255, 0.10); --qa-idle-border: rgba(255, 255, 255, 0.22); }
+
+/* Bouton d'en-tête, gabarit des boutons voisins (Alarme / Caméras / Contrôle global) */
+body#app-body .qa-open-btn {
+    height: 38px; padding: 0 12px; display: flex; align-items: center; justify-content: center; gap: 6px; flex: 0 0 auto;
+    background: rgba(56, 189, 248, 0.15) !important; border: 1px solid var(--qa-accent) !important; color: #bae6fd !important;
+    border-radius: 8px; font: inherit; font-weight: bold; font-size: 0.85rem; cursor: pointer; outline: none; position: relative; z-index: 100;
+}
+body#app-body .qa-open-btn svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+body#app-body.theme-light .qa-open-btn { background: rgba(3, 105, 161, 0.10) !important; color: #075985 !important; }
+/* iPhone : la rangée Alarme / Caméras / Global partage la largeur ; la loupe prend une case compacte (≥ 44 px) */
+body#app-body .alarm-row .qa-open-btn { height: 44px; min-width: 48px; flex: 0 0 auto; padding: 0 12px; }
+body#app-body .alarm-row .qa-open-btn .qa-open-label { display: none; }
+body#app-body .alarm-row button { height: 44px !important; }
+
+/* Fenêtre */
+body#app-body #qa-overlay {
+    width: 880px !important; max-width: 94% !important; height: auto !important; max-height: 92% !important;
+    display: none; flex-direction: column; gap: 14px; padding: 22px; box-sizing: border-box; border-radius: 16px;
+    background: var(--qa-panel) !important; border: 1px solid var(--qa-idle-border) !important; color: var(--qa-text) !important;
+    overflow: hidden;
+}
+body#app-body #qa-overlay[style*="display: block"] { display: flex !important; }
+body#app-body #qa-overlay .qa-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; border-bottom: 1px solid var(--qa-idle-border); padding-bottom: 12px; }
+body#app-body #qa-overlay .qa-title { margin: 0; border: 0; padding: 0; display: flex; align-items: center; gap: 8px; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--qa-accent); }
+body#app-body #qa-overlay .qa-title svg, body#app-body #qa-overlay .qa-search svg, body#app-body #qa-overlay .qa-close svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+body#app-body #qa-overlay .qa-close { width: 44px; height: 44px; border-radius: 10px; border: 1px solid var(--qa-idle-border) !important; background: var(--qa-idle-bg) !important; color: var(--qa-text) !important; cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 0; }
+body#app-body #qa-overlay .qa-search { position: relative; display: flex; align-items: center; }
+body#app-body #qa-overlay .qa-search svg { position: absolute; left: 14px; color: var(--qa-muted); pointer-events: none; }
+body#app-body #qa-overlay #qa-input {
+    width: 100%; height: 56px; box-sizing: border-box; padding: 0 14px 0 46px; border-radius: 12px; font: inherit; font-size: 1.1rem;
+    background: var(--qa-field) !important; border: 1px solid var(--qa-idle-border) !important; color: var(--qa-text) !important; outline: none; -webkit-appearance: none; appearance: none;
+}
+body#app-body #qa-overlay #qa-input:focus { border-color: var(--qa-accent) !important; box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.25); }
+body#app-body #qa-overlay #qa-input::placeholder { color: var(--qa-muted); opacity: 1; }
+body#app-body #qa-overlay .qa-blocks { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; min-height: 0; overflow: auto; }
+body#app-body #qa-overlay .qa-blocks h3 { margin: 0 0 8px; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--qa-muted); border: 0; padding: 0; }
+body#app-body #qa-overlay .qa-list { display: flex; flex-direction: column; gap: 8px; min-height: 0; overflow: auto; }
+body#app-body #qa-overlay #qa-results { max-height: 60vh; }
+body#app-body #qa-overlay .qa-item {
+    min-height: 56px; padding: 8px 16px; border-radius: 10px; text-align: left; cursor: pointer; display: flex; flex-direction: column; justify-content: center; gap: 2px; font: inherit;
+    background: var(--qa-idle-bg) !important; border: 1px solid var(--qa-idle-border) !important; color: var(--qa-text) !important;
+}
+body#app-body #qa-overlay .qa-item:active { background: var(--qa-accent) !important; color: var(--qa-accent-text) !important; }
+body#app-body #qa-overlay .qa-item:active .qa-sub { color: inherit; }
+body#app-body #qa-overlay .qa-label { font-weight: 600; font-size: 1.1rem; line-height: 1.25; }
+body#app-body #qa-overlay .qa-sub { font-size: 0.85rem; color: var(--qa-muted); }
+body#app-body #qa-overlay .qa-empty { margin: 4px 0; font-size: 0.9rem; color: var(--qa-muted); }
+
+/* Smartphone : fenêtre pleine largeur, blocs empilés, cibles ≥ 44 px */
+@media (max-width: 700px) {
+    body#app-body #qa-overlay { width: 95% !important; max-height: 90% !important; padding: 16px; gap: 12px; }
+    body#app-body #qa-overlay .qa-blocks { grid-template-columns: 1fr; }
+    body#app-body #qa-overlay .qa-item { min-height: 52px; }
+}

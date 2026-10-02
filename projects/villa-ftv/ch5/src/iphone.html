@@ -23,6 +23,7 @@
     <script src="js/villa-joins.js"></script>
     <script src="js/gesture-controls.js"></script>
     <script src="js/nav-pieces.js"></script>
+    <script src="js/quick-actions.js"></script>
     <script>
         /* Filet de sécurité : si js/villa-joins.js n'a pas pu être chargé (fichier absent
            d'un paquet de déploiement), la GUI continue de fonctionner sur les joins logiques
@@ -816,6 +817,7 @@
     <link rel="stylesheet" href="themes/alarm-controls.css">
     <link rel="stylesheet" href="themes/scene-controls.css">
     <link rel="stylesheet" href="themes/av-controls.css">
+    <link rel="stylesheet" href="themes/quick-actions.css">
     <link rel="stylesheet" href="themes/motors-controls.css">
 <link rel="stylesheet" href="themes/room-controls.css">
 <link rel="stylesheet" href="themes/wellness-controls.css">
@@ -2234,6 +2236,7 @@
 
             let config = fallbackConfig;
             let currentLang = 'fr';
+            window.villaCurrentLang = function () { return currentLang; };
             let currentTheme = 'dark';
             try {
                 currentLang = localStorage.getItem('crestron_lang_iphone') || 'fr';
@@ -2277,6 +2280,7 @@
                 try {
                     localStorage.setItem('crestron_lang_iphone', lang);
                 } catch (e) {}
+                document.dispatchEvent(new CustomEvent('villa-language-changed', { detail: { lang: lang } }));
                 const dict = translations[lang] || translations['fr'];
 
                 document.querySelectorAll('[data-i18n]').forEach(el => {
