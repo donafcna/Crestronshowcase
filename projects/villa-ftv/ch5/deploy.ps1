@@ -363,6 +363,11 @@ if ($Target -eq 'config') {
     # Validation JSON avant envoi (evite de charger une config corrompue)
     try { Get-Content $villaCfg -Raw -Encoding UTF8 | ConvertFrom-Json | Out-Null }
     catch { throw "villa_config.json invalide : $($_.Exception.Message)" }
+    $cfgSchema = Join-Path $root 'tools\check-config.mjs'
+    if (Test-Path $cfgSchema) {
+        & node $cfgSchema $villaCfg
+        if ($LASTEXITCODE -ne 0) { throw "villa_config.json non conforme a villa_config.schema.json, envoi annule (voir les ERREUR ci-dessus)" }
+    }
 
     # Resynchroniser les copies embarquees du GUI (prises en compte au prochain build TSW)
     Copy-Item $villaCfg (Join-Path $root 'src\villa_config.json') -Force

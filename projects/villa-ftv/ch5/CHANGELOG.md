@@ -9,7 +9,7 @@ Feuille de route du 03.10 (point avec Alexandre), priorité « possibilités et 
 - `"$schema": "./villa_config.schema.json"` en tête de `villa_config.json` : autocomplétion et contrôle dans VS Code.
 - `tools/check-config.mjs` (sans dépendance) : erreurs bloquantes (types, bornes, ids en double, pièces du menu
   inexistantes, niveaux ≠ circuits, consignes hors plage, sources inconnues, clés de traduction à la casse près, 15 pièces
-  actives max en backend simpl) et avertissements (clé inconnue, clé prévue). Appelé par `deploy.ps1` après « JSON OK ».
+  actives max en backend simpl) et avertissements (clé inconnue, clé prévue). Appelé par `deploy.ps1` après « JSON OK » (build) et avant l'envoi `-Target config`.
 - `docs/10_CONFIG_JSON_V2.md` : qui lit quelle clé, clés mortes (`meta.languesDisponibles`, `cvc.vitesses`,
   `cvc.marcheArret`, `partitionsAlarme`, `valeursParDefaut.cvc`…), forme des clés v2 (thèmes, langues, contrôles globaux,
   types de circuits, position / angle des stores, modes CVC, monitoring) et joins à prévoir : **plus aucun offset
