@@ -7,6 +7,9 @@
   `moteurs.liste[].position|angleLamelles`, `cvc.modes|deriveC`, `monitoring`. Implémenter = lire la clé + passer `x-etat` à actif.
 - **Plus aucun offset digital libre par pièce** (simplDirect 125/125) : nouvelles fonctions en analogique (95 libres) ou série.
 - Prochaines phases : 2 stores % + types de circuits, 3 thèmes/langues filtrés, 4 contrôles globaux, 5 états des zones + CVC, 6 monitoring.
+- **Console Web, onglet Configuration** (http://localhost:8090/#config) : `tools/config-editor.js` (formulaire depuis le schéma),
+  `tools/config_api.js` (API, impact SIMPL, appareils, envoi), `tools/json-patch-texte.js` (réécriture minimale). `appareils.json` (sans mot
+  de passe) ; `deploy.ps1 -Appareils a,b -Simulation`. Tests : simulation via `pwsh` (PWSH=… sur Linux), jamais d'envoi réel depuis une session.
 
 ## 02/10/2026 — v6.0.3 → v6.1 : « Villa FTV », dossier `projects/villa-ftv`, correctifs de recette TSW, GUI sans menu
 - Nom affiché **Villa FTV** (v6.0.3) ; dossier renommé `projects/villa-ftv` (f95281a8). Zoom tactile supprimé (`js/gesture-controls.js`, v6.0.4).
@@ -123,9 +126,8 @@ scènes, consigne, vacances, partitions ; le slot 2 pilote le matériel réel.
 - **Aucun son** : `playFunnySound` neutralisée, `playSynthSound` supprimée (11.09.2026).
 - **Le debugger ne montre que des signaux (13.09).** Émission sur changement uniquement (`SetBool` / `SetUShort` / `SetString` ; exceptions : impulsions, code d'alarme, `_forcePush`). Traces C# et `console.log` (s100) sous `meta.tracesConsole` (`progreset` pour relire).
 - **Scènes d'éclairage → circuits (13.09).** `pieces[].pilotages.eclairages.scenes.niveaux` (0-65535 par circuit) ; **le slot 2 fait foi** dès qu'un niveau remonte sur +71..+90 (`_circuitFromSlot2`) — sauf rappel explicite ou scène mémorisée (v4.1). Démarrage scène 1.
-## GUI smartphone — agrandissement (14.09.2026)
-Styles `mobile-xl` (fin de `<body>`), `mobile-ux` (moteurs animés, MutationObserver), blocs `mobile-lot-0915/0916` ; cibles ≥ 44 px, repli `@media (max-height: 700px)`. Entête = pièces + engrenage.
-Pièges : un style en ligne `!important` ne se reprend pas en CSS (le retirer du HTML) ; `ch5-button` → `width/height:100%` sur `> div` et `.cb-btn` ; `min-width:0` en grille ; les `customStyle` de `#source-control-overlay` sont `!important` un par un, ne pas les « nettoyer ».
+## GUI smartphone (14.09.2026)
+Styles `mobile-xl`, `mobile-ux`, blocs `mobile-lot-0915/0916` ; cibles ≥ 44 px. Pièges : `!important` en ligne à retirer du HTML ; `ch5-button` → `width/height:100%` sur `> div` ; `customStyle` de `#source-control-overlay` à ne pas « nettoyer ».
 ## Plan 3D (16.09.2026) — fond de page du SITE, jamais le GUI
 `Plan3DBackground.jsx` (cas `PLAN3D_RULES`, aujourd'hui smartphone) ; `public/plan3d/plan3d.js` lit le GUI via l'iframe. Détail : `apps/showcase/CLAUDE.md`.
 ## Vitrine (apps/showcase, crestrongui.vercel.app)

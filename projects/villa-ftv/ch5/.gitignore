@@ -11,3 +11,5 @@ dist/
 olddist/
 console_web_log.txt
 *.log
+villa_config.json.bak
+*.json.tmp

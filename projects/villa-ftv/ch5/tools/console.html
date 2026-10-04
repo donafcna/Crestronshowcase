@@ -5,6 +5,7 @@
 <title>Console Villa Crans — Fréquence TV</title>
 <script src="js/webxpanel.js"></script>
 <script defer src="/journal.js"></script>
+<script defer src="/config-editor.js"></script>
 <style>
   :root { --bg:#0f1218; --panel:#161920; --border:rgba(255,255,255,.09); --txt:#e2e8f0; --muted:#94a3b8; --accent:#10b981; --blue:#38bdf8; --gold:#c49a45; --red:#ef4444; }
   * { box-sizing: border-box; }
@@ -74,6 +75,7 @@
   <nav>
     <button id="tab-dbg" class="active" onclick="showTab('dbg')">🔍 Debugger</button>
     <button id="tab-term" onclick="showTab('term')">💻 Terminal</button>
+    <button id="tab-config" onclick="showTab('config')"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true" style="vertical-align:-2px;margin-right:4px"><path fill="currentColor" d="M3 5h11v2H3zm0 6h7v2H3zm0 6h11v2H3zm14-13h2v4h2v2h-6V6h2zm-4 7h8v2h-8zm4 4h2v4h-2z"/></svg>Configuration</button>
     <button id="tab-deploy" onclick="showTab('deploy')">🚀 Déploiement</button>
     <button id="tab-todo" onclick="showTab('todo')">📋 À faire / À tester</button>
     <button id="tab-tests" onclick="showTab('tests')">🧪 Rapport de test</button>
@@ -125,6 +127,9 @@
     <div id="jr-liste-specs" class="jr-liste"></div>
     <span class="hint" id="jr-msg-specs">Chaque entrée est horodatée et signée ; une révision conserve l'horodatage d'origine.</span>
   </section>
+
+  <!-- ONGLET CONFIGURATION (tools/config-editor.js) : villa_config.json, appareils, envoi -->
+  <section id="sec-config"></section>
 
   <!-- ONGLET DÉPLOIEMENT -->
   <section id="sec-deploy">
@@ -218,11 +223,12 @@
 
 <script>
 function showTab(name) {
-  ['deploy','term','dbg','todo','tests','specs'].forEach(t => {
+  ['config','deploy','term','dbg','todo','tests','specs'].forEach(t => {
     document.getElementById('tab-' + t).classList.toggle('active', t === name);
     document.getElementById('sec-' + t).classList.toggle('active', t === name);
   });
   if (name === 'term') document.getElementById('term-input').focus();
+  if (name === 'config' && window.ConfigEditor) ConfigEditor.ouvrir();
   // Relecture du fichier à chaque ouverture : un collègue a pu écrire entre-temps.
   if (['todo','tests','specs'].indexOf(name) >= 0 && window.Journal) Journal.ouvrir(name);
 }

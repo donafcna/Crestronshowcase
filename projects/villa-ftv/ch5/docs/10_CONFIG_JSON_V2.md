@@ -144,3 +144,20 @@ Un niveau de scène reste un entier 0-65535, ou un objet `{niveau, kelvin}` / `{
 - E-mails d'alerte : lus par le processeur ; à retirer de la copie GUI au déploiement quand le monitoring sera implémenté.
 - Clés inconnues : **avertissement**, pas d'erreur — on n'empêche jamais un technicien de déployer pour une clé en plus.
 - Doc numérotée **10** (les numéros 09 sont déjà pris deux fois).
+
+## 7. Console Web — onglet « Configuration » (04.10.2026)
+
+Le technicien ne touche plus au JSON : `Console Web.cmd`, puis l'onglet **Configuration** (ou http://localhost:8090/#config).
+
+| Zone | Ce qu'elle fait |
+|---|---|
+| Sections (gauche) | Projet, Interface, Pièces (une entrée par pièce), Sources, Stores, Widgets, Valeurs par défaut, Pages spéciales, Traductions, Monitoring (si options prévues affichées), Contrat (avancé), **Appareils et envoi**. |
+| Formulaire | Construit depuis le schéma : une nouvelle clé du schéma apparaît sans code. Bouton × = retirer la clé (retour au défaut). |
+| Messages (droite) | Erreurs et avertissements de `check-config`, cliquables ; impact sur le programme SIMPL. |
+| Enregistrer | Refusé s'il reste une erreur ; ne réécrit que les lignes modifiées ; copie `villa_config.json.bak`. |
+| Appareils | `appareils.json` : nom, type, modèle, IP, IP-ID, empreinte SSH. Identifiants : `deploy.secrets.psd1` (CP4 pour les processeurs, TSW pour les dalles). |
+| Envoyer | Processeur : config + `progreset` (option : `.lpz` + `progload`). Dalles : un build CH5 puis transfert + `PROJECTLOAD` sur chacune. Simulation cochée par défaut. |
+
+**Ce que « envoyer » ne fait pas.** En backend `simpl`, les réglages des pièces sont compilés dans le programme SIMPL :
+la page le détecte, régénère `simpl/direct` sur demande, mais la compilation (F12 dans SIMPL Windows) reste manuelle.
+XPanel et Crestron One : onglet Déploiement (le mot de passe SFTP y est demandé à la main).

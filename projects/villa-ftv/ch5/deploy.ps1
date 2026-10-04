@@ -5,6 +5,8 @@
 #   .\deploy.ps1 -Target cp4     -> uniquement le CP4
 #   .\deploy.ps1 -Target web     -> Web XPanel sur le serveur web du CP4 (QR codes par piece) + regeneration des QR
 #   .\deploy.ps1 -Target mobile  -> projet pour l'application Crestron One (iPhone / iPad, IP-ID 05-06)
+#   .\deploy.ps1 -Target tsw -Appareils ts-salon,ts-cuisine   -> dalles choisies dans appareils.json (Console Web)
+#   .\deploy.ps1 -Target config -Simulation   -> affiche transferts et commandes sans rien envoyer
 #   .\deploy.ps1 -Target simpl   -> v6.0 (meta.backend = simpl) : programme SIMPL unique VillaCrans_Direct.lpz sur le slot 1,
 #                                   (compiler d'abord simpl\direct\VillaCrans_Direct.smw dans SIMPL Windows, F12)
 #   .\deploy.ps1 -SkipBuild      -> sans recompiler l'archive CH5
@@ -21,7 +23,11 @@ param(
     [switch]$SkipBuild,
     [switch]$SkipContrast,
     [string]$CP4Host,
-    [string]$TswHost
+    [string]$TswHost,
+    # Console Web (onglet Configuration) : identifiants d'appareils de appareils.json, separes par des virgules
+    [string]$Appareils,
+    # Affiche transferts et commandes console sans rien envoyer ni compiler
+    [switch]$Simulation
 )
 
 $ErrorActionPreference = 'Stop'
@@ -46,11 +52,15 @@ if (Test-Path 'C:\Program Files\nodejs\node.exe') {
 
 # --- Identifiants ---
 $secretsFile = Join-Path $root 'deploy.secrets.psd1'
-if (-not (Test-Path $secretsFile)) {
-    throw "Fichier d'identifiants introuvable : $secretsFile"
+if (Test-Path $secretsFile) { $S = Import-PowerShellDataFile $secretsFile }
+elseif ($Simulation) {
+    $S = @{ TSW = @{ Host = '0.0.0.0'; User = 'simulation'; Password = 'simulation'; HostKeys = @() }
+            CP4 = @{ Host = '0.0.0.0'; User = 'simulation'; Password = 'simulation'; HostKeys = @(); Slot = '01' } }
 }
-$S = Import-PowerShellDataFile $secretsFile
+else { throw "Fichier d'identifiants introuvable : $secretsFile" }
+if ($Simulation) { Write-Host "*** SIMULATION : aucun transfert, aucune commande console, aucune compilation ***" -ForegroundColor Magenta }
 foreach ($k in @('TSW', 'CP4')) {
+    if ($Simulation) { break }
     if ($S[$k].User -eq 'REMPLACEZ_MOI' -or $S[$k].Password -eq 'REMPLACEZ_MOI') {
         throw "Renseignez User/Password pour $k dans deploy.secrets.psd1"
     }
@@ -66,6 +76,10 @@ function Get-HostKeyArgs {
 
 function Send-ConsoleCommands {
     param($Device, [string[]]$Commands)
+    if ($Simulation) {
+        Write-Host "  [SIMULATION] console $($Device.User)@$($Device.Host) : $($Commands -join ' ; ')" -ForegroundColor Magenta
+        return @('Disconnecting Bye')
+    }
     # Envoie des commandes console Crestron via plink (la session se ferme sur 'bye')
     # Ligne vide en tete : la console Crestron corrompt la 1re ligne recue pendant son init
     $stdin = "`r`n" + (($Commands + 'bye') -join "`r`n") + "`r`n"
@@ -90,6 +104,10 @@ function Send-ConsoleCommands {
 
 function Copy-ToDevice {
     param($Device, [string]$LocalFile, [string]$RemotePath)
+    if ($Simulation) {
+        Write-Host "  [SIMULATION] pscp $(Split-Path -Leaf $LocalFile) -> $($Device.User)@$($Device.Host):$RemotePath" -ForegroundColor Magenta
+        return
+    }
     $hk = Get-HostKeyArgs $Device
     $prevEap = $ErrorActionPreference; $ErrorActionPreference = 'Continue'
     $out = & pscp -batch @hk -pw $Device.Password $LocalFile "$($Device.User)@$($Device.Host):$RemotePath" 2>&1 | ForEach-Object { "$_" }
@@ -98,6 +116,27 @@ function Copy-ToDevice {
         throw "Echec transfert vers $($Device.Host) : $($out -join ' | ')"
     }
     Write-Host "  Transfert OK -> $($Device.Host):$RemotePath"
+}
+
+# --- Appareils choisis dans la Console Web (appareils.json : IP, IP-ID, empreinte SSH ; aucun mot de passe) ---
+# Identifiants repris de deploy.secrets.psd1 : CP4 pour un processeur, TSW pour un ecran tactile.
+function Get-Appareils {
+    param([string]$Type)
+    $ids = @("$Appareils" -split ',' | ForEach-Object { $_.Trim() } | Where-Object { $_ })
+    if ($ids.Count -eq 0) { return }
+    $fichier = Join-Path $root 'appareils.json'
+    if (-not (Test-Path $fichier)) { throw "appareils.json introuvable : $fichier" }
+    $liste = @((Get-Content $fichier -Raw -Encoding UTF8 | ConvertFrom-Json).appareils)
+    $base = if ($Type -eq 'processeur') { $S.CP4 } else { $S.TSW }
+    foreach ($id in $ids) {
+        $a = $liste | Where-Object { $_.id -eq $id } | Select-Object -First 1
+        if (-not $a) { throw "Appareil inconnu dans appareils.json : $id" }
+        if ($a.type -ne $Type) { continue }
+        $d = @{}; foreach ($k in $base.Keys) { $d[$k] = $base[$k] }
+        $d.Host = $a.ip
+        if ($a.cleHote) { $d.HostKeys = @($a.cleHote) }
+        $d
+    }
 }
 
 function Test-InlineScripts {
@@ -149,7 +188,7 @@ if (-not $SkipBuild -and $Target -notin @('cp4', 'config', 'simpl')) {
     # Lisibilite : contraste de chaque texte dans chaque theme (tools/check_contrast.mjs, Playwright).
     # Sert la source src/ en local et ouvre chaque GUI dans un navigateur sans fenetre. Si Playwright
     # n'est pas installe (npm i -D playwright pngjs ; npx playwright install chromium), on avertit seulement.
-    if ($SkipContrast) {
+    if ($SkipContrast -or $Simulation) {
         Write-Host "  Contraste : garde desactivee (-SkipContrast)" -ForegroundColor Yellow
     } elseif (Test-Path (Join-Path $root 'node_modules\playwright')) {
         Write-Host "  Verification du contraste des textes (3 themes)..."
@@ -196,6 +235,9 @@ if (-not $SkipBuild -and $Target -notin @('cp4', 'config', 'simpl')) {
         }
     }
 
+    if ($Simulation) {
+        Write-Host "  [SIMULATION] increment de version, villa_config.js embarque, ch5-cli archive -> dist\villaftv.ch5z" -ForegroundColor Magenta
+    } else {
     # Increment automatique de la version (version.json -> src/version.js, affichee par le GUI)
     $verFile = Join-Path $root 'version.json'
     $ver = '1.0.149'
@@ -223,20 +265,28 @@ if (-not $SkipBuild -and $Target -notin @('cp4', 'config', 'simpl')) {
         if ($LASTEXITCODE -ne 0) { throw "Echec de ch5-cli archive" }
     } finally { Pop-Location }
     Write-Host "  Archive OK : dist\villaftv.ch5z"
+    }
 }
 
 # --- TSW ---
 if ($Target -in @('all', 'tsw')) {
     # -TswHost permet de viser la tablette a une autre adresse (identifiants et cle d'hote inchanges)
-    $tsw = $S.TSW
-    if ($TswHost) { $tsw = @{}; foreach ($k in $S.TSW.Keys) { $tsw[$k] = $S.TSW[$k] }; $tsw.Host = $TswHost }
-    Write-Host "[2/3] Deploiement CH5 sur la TSW $($tsw.Host)..." -ForegroundColor Cyan
+    # -Appareils (Console Web) : une ou plusieurs dalles de appareils.json ; sinon la TSW de deploy.secrets.psd1
+    $cibles = @(Get-Appareils 'ts')
+    if ($cibles.Count -eq 0) {
+        $tsw = $S.TSW
+        if ($TswHost) { $tsw = @{}; foreach ($k in $S.TSW.Keys) { $tsw[$k] = $S.TSW[$k] }; $tsw.Host = $TswHost }
+        $cibles = @($tsw)
+    }
     $ch5z = Join-Path $root 'dist\villaftv.ch5z'
-    if (-not (Test-Path $ch5z)) { throw "Archive introuvable : $ch5z" }
-    Copy-ToDevice -Device $tsw -LocalFile $ch5z -RemotePath '/display/villaftv.ch5z'
-    Write-Host "  Chargement du projet (PROJECTLOAD)..."
-    Send-ConsoleCommands -Device $tsw -Commands @('PROJECTLOAD') | Out-Null
-    Write-Host "  TSW : projet charge." -ForegroundColor Green
+    if (-not (Test-Path $ch5z) -and -not $Simulation) { throw "Archive introuvable : $ch5z" }
+    foreach ($tsw in $cibles) {
+        Write-Host "[2/3] Deploiement CH5 sur la TSW $($tsw.Host)..." -ForegroundColor Cyan
+        Copy-ToDevice -Device $tsw -LocalFile $ch5z -RemotePath '/display/villaftv.ch5z'
+        Write-Host "  Chargement du projet (PROJECTLOAD)..."
+        Send-ConsoleCommands -Device $tsw -Commands @('PROJECTLOAD') | Out-Null
+        Write-Host "  TSW $($tsw.Host) : projet charge." -ForegroundColor Green
+    }
 }
 
 # --- WEB XPANEL : le meme .ch5z sur le serveur web du CP4 -> https://<CP4>/villaftv/index.html (QR codes) ---
@@ -356,7 +406,6 @@ if ($Target -in @('all', 'mobile')) {
 
 # --- CONFIG SEULE : envoi de villa_config.json au CP4 + redemarrage du programme (sans recharger le cpz) ---
 if ($Target -eq 'config') {
-    Write-Host "[config] Envoi de villa_config.json sur le CP4 $($S.CP4.Host)..." -ForegroundColor Cyan
     $villaCfg = Join-Path $root 'villa_config.json'
     if (-not (Test-Path $villaCfg)) { throw "villa_config.json introuvable a la racine du projet" }
 
@@ -370,14 +419,25 @@ if ($Target -eq 'config') {
     }
 
     # Resynchroniser les copies embarquees du GUI (prises en compte au prochain build TSW)
-    Copy-Item $villaCfg (Join-Path $root 'src\villa_config.json') -Force
-    $cfgJson = Get-Content $villaCfg -Raw -Encoding UTF8
-    [System.IO.File]::WriteAllText((Join-Path $root 'src\villa_config.js'), "window.villaConfigEmbedded = $cfgJson;", (New-Object System.Text.UTF8Encoding $false))
+    if (-not $Simulation) {
+        Copy-Item $villaCfg (Join-Path $root 'src\villa_config.json') -Force
+        $cfgJson = Get-Content $villaCfg -Raw -Encoding UTF8
+        [System.IO.File]::WriteAllText((Join-Path $root 'src\villa_config.js'), "window.villaConfigEmbedded = $cfgJson;", (New-Object System.Text.UTF8Encoding $false))
+    }
 
-    Copy-ToDevice -Device $S.CP4 -LocalFile $villaCfg -RemotePath '/user/villa_config.json'
-    Write-Host "  Redemarrage du programme (progreset) pour recharger la configuration..."
-    Send-ConsoleCommands -Device $S.CP4 -Commands @('progreset -p:01') | Out-Null
-    Write-Host "  Configuration rechargee - les panels la recevront a la reconnexion." -ForegroundColor Green
+    $procs = @(Get-Appareils 'processeur')
+    if ($procs.Count -eq 0) {
+        $cp4 = $S.CP4
+        if ($CP4Host) { $cp4 = @{}; foreach ($k in $S.CP4.Keys) { $cp4[$k] = $S.CP4[$k] }; $cp4.Host = $CP4Host }
+        $procs = @($cp4)
+    }
+    foreach ($cp4 in $procs) {
+        Write-Host "[config] Envoi de villa_config.json sur le processeur $($cp4.Host)..." -ForegroundColor Cyan
+        Copy-ToDevice -Device $cp4 -LocalFile $villaCfg -RemotePath '/user/villa_config.json'
+        Write-Host "  Redemarrage du programme (progreset) pour recharger la configuration..."
+        Send-ConsoleCommands -Device $cp4 -Commands @('progreset -p:01') | Out-Null
+        Write-Host "  $($cp4.Host) : programme redemarre." -ForegroundColor Green
+    }
     Write-Host "Deploiement termine." -ForegroundColor Green
     exit 0
 }
@@ -387,15 +447,23 @@ $backend = 'csharp'
 try { $b0 = (Get-Content (Join-Path $root 'villa_config.json') -Raw -Encoding UTF8 | ConvertFrom-Json).meta.backend; if ($b0) { $backend = $b0 } } catch {}
 if ($Target -eq 'cp4' -and $backend -eq 'simpl') { throw "villa_config.json : meta.backend = simpl. Le programme C# n'est plus utilise : lancez -Target simpl (version C# : branche git villa-crans-csharp-v5.5)." }
 if ($Target -eq 'simpl' -or ($Target -eq 'all' -and $backend -eq 'simpl')) {
-    Write-Host "[simpl] Chargement du programme SIMPL unique sur le CP4 $($S.CP4.Host)..." -ForegroundColor Cyan
     $lpz = Join-Path $root '..\simpl\direct\VillaCrans_Direct.lpz'
-    if (-not (Test-Path $lpz)) { throw "Programme introuvable : $lpz (ouvrir simpl\direct\VillaCrans_Direct.smw dans SIMPL Windows et compiler avec F12)" }
-    Copy-ToDevice -Device $S.CP4 -LocalFile $lpz -RemotePath '/program01/VillaCrans_Direct.lpz'
-    Write-Host "  Chargement du slot 1 (seul programme du processeur depuis v6.0)..."
-    # L'ancien Villaftv.cpz (C#) ne doit plus etre dans /program01, sinon progload peut le reprendre.
-    try { Send-ConsoleCommands -Device $S.CP4 -Commands @('stopprog -p:01', 'del /program01/Villaftv.cpz') | Out-Null } catch { Write-Host "  (pas d'ancien programme C# a retirer)" -ForegroundColor Yellow }
-    Send-ConsoleCommands -Device $S.CP4 -Commands @('progload -p:01') | Out-Null
-    Write-Host "  CP4 : programme SIMPL charge (slot 1)." -ForegroundColor Green
+    if (-not (Test-Path $lpz) -and -not $Simulation) { throw "Programme introuvable : $lpz (ouvrir simpl\direct\VillaCrans_Direct.smw dans SIMPL Windows et compiler avec F12)" }
+    $procs = @(Get-Appareils 'processeur')
+    if ($procs.Count -eq 0) {
+        $cp4 = $S.CP4
+        if ($CP4Host) { $cp4 = @{}; foreach ($k in $S.CP4.Keys) { $cp4[$k] = $S.CP4[$k] }; $cp4.Host = $CP4Host }
+        $procs = @($cp4)
+    }
+    foreach ($cp4 in $procs) {
+        Write-Host "[simpl] Chargement du programme SIMPL unique sur le processeur $($cp4.Host)..." -ForegroundColor Cyan
+        Copy-ToDevice -Device $cp4 -LocalFile $lpz -RemotePath '/program01/VillaCrans_Direct.lpz'
+        Write-Host "  Chargement du slot 1 (seul programme du processeur depuis v6.0)..."
+        # L'ancien Villaftv.cpz (C#) ne doit plus etre dans /program01, sinon progload peut le reprendre.
+        try { Send-ConsoleCommands -Device $cp4 -Commands @('stopprog -p:01', 'del /program01/Villaftv.cpz') | Out-Null } catch { Write-Host "  (pas d'ancien programme C# a retirer)" -ForegroundColor Yellow }
+        Send-ConsoleCommands -Device $cp4 -Commands @('progload -p:01') | Out-Null
+        Write-Host "  $($cp4.Host) : programme SIMPL charge (slot 1)." -ForegroundColor Green
+    }
     Write-Host "Deploiement termine." -ForegroundColor Green
     exit 0
 }

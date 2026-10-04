@@ -56,7 +56,7 @@ DEFS = {
         'consigne': d('Consigne au démarrage.', type='number'),
     }),
     'idPiece': {'type': 'integer', 'minimum': 1, 'maximum': 30},
-    'actif': d('false = module retiré de la pièce (onglet/bouton masqué).', type='boolean'),
+    'actif': d('false = module retiré de la pièce (onglet/bouton masqué).', type='boolean', default=True),
 }
 REF = lambda n: {'$ref': '#/definitions/' + n}
 
@@ -206,7 +206,7 @@ PIECE = obj('Une pièce.', {
     'nom': d('Nom affiché ("" = nom par défaut). ~16 caractères max sur la dalle.', type='string', maxLength=40),
     'icone': d('Emoji aujourd\'hui (affiché dans le menu). v2 : clé du catalogue SVG (salon, cuisine, chambre…), '
                'conformément à la règle « pas d\'emoji dans les GUI ».', type='string'),
-    'actif': d('false = pièce absente du GUI et du programme.', type='boolean'),
+    'actif': d('false = pièce absente du GUI et du programme.', type='boolean', default=True),
     'intersystem': d('Bloc EISC vers le slot 2 (backend csharp seulement).', 'processeur', type='boolean'),
     'niveau': d('Étage (Appartement, plan 3D).', 'inutilise', type='integer'),
     'plan3d': d('Position dans le plan 3D du site vitrine.', 'inutilise', type='object'),

@@ -1,5 +1,34 @@
 # Villa Crans CH5 — journal des versions
 
+## Console Web — onglet « Configuration » — 04/10/2026 — éditer villa_config.json, gérer les appareils, envoyer (aucun build CH5)
+
+Le produit remis aux programmeurs devient une page locale (`Console Web.cmd` → http://localhost:8090/#config) au lieu du
+JSON à éditer à la main.
+
+- **Formulaire construit depuis `villa_config.schema.json`** (`tools/config-editor.js`) : toute option du schéma y figure,
+  les options « prévu v2 » s'affichent sur demande (badge, sans effet). Éditeurs dédiés : pièces (tableau circuits × scènes
+  en %, converti en 0-65535 ; nombre de scènes / circuits / moteurs qui redimensionne noms et niveaux), traductions (manques
+  surlignés), widgets par IP-ID. Contrôle `check-config` en direct, erreurs cliquables, enregistrement bloqué tant qu'il en reste.
+- **Enregistrement à différence minimale** (`tools/json-patch-texte.js`) : seules les lignes modifiées sont réécrites (ordre
+  des clés numériques et objets sur une ligne conservés) ; copie unique `villa_config.json.bak`. 800 modifications aléatoires
+  relues à l'identique.
+- **Impact processeur** (`tools/config_api.js`) : le programme SIMPL est généré depuis l'ancienne et la nouvelle config ; s'ils
+  diffèrent (niveaux, circuits, moteurs…), la page l'annonce, propose « Régénérer le programme SIMPL » et rappelle F12.
+- **Appareils** : `appareils.json` (processeurs, TS, XPanel, mobiles : IP, IP-ID, empreinte SSH ; aucun mot de passe), amorcé
+  depuis `deploy.secrets.psd1` au premier lancement ; « Tester » (ports 22 / 443 / 41794), « Empreinte » (ssh-keyscan).
+- **Envoi** aux processeurs et dalles cochés : `deploy.ps1 -Target config` (`/user/villa_config.json` + `progreset -p:01`),
+  option `-Target simpl` (.lpz + `progload`), `-Target tsw` (un build, puis transfert + `PROJECTLOAD` sur chaque dalle). Journal
+  en direct, **mode simulation** par défaut. XPanel et Crestron One restent dans l'onglet Déploiement (mot de passe SFTP interactif).
+- `deploy.ps1` : `-Appareils id1,id2` (identifiants de `appareils.json`, empreinte SSH par appareil) et `-Simulation` (aucun
+  transfert, aucune commande, aucun build ; marche sans `deploy.secrets.psd1`).
+- Écritures et envois refusés si l'origine n'est pas la Console (403). Schéma : `actif` documenté « par défaut : oui ».
+
+Vérifié (Chromium, serveur réel, `pwsh` 7 pour deploy.ps1) : 16/16 contrôles fonctionnels (aller-retour sans écriture, 1 ligne
+modifiée pour 1 niveau, impact SIMPL juste, id en double bloquant, 10 → 11 circuits cohérent, envoi simulé 1 processeur + 3 TS,
+`version.json` intact) ; audit 184 vues (Villa FTV et Appartement × 1920×1080 / 1366×768 × dispositions A / B × options prévues
+masquées / affichées) : contraste ≥ 4:1, aucun texte tronqué, aucun défilement horizontal, cibles ≥ 40 px, 0 erreur JS
+(seul un 404 `config/contract.cse2j` préexistant du Debugger). Envoi réel non testé : aucun appareil joignable depuis la session.
+
 ## Config v2, phase 1 — 04/10/2026 — schéma de `villa_config.json`, contrôle `check-config`, inventaire (aucun build, GUI inchangé)
 
 Feuille de route du 03.10 (point avec Alexandre), priorité « possibilités et utilisation du JSON ».

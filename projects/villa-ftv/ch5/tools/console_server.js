@@ -207,7 +207,7 @@ function streamDeploy(res, target, skipBuild) {
 
 function readBody(req, cb) {
   let body = '';
-  req.on('data', d => { body += d; if (body.length > 1e6) req.destroy(); });
+  req.on('data', d => { body += d; if (body.length > 4e6) req.destroy(); });
   req.on('end', () => {
     try { cb(JSON.parse(body || '{}')); } catch (e) { cb({}); }
   });
@@ -223,8 +223,32 @@ function serveFile(res, filePath) {
   });
 }
 
+// --- Onglet Configuration : villa_config.json, appareils.json, envoi (tools/config_api.js) ---
+const apiConfig = require('./config_api')(ROOT, { lireSecrets: () => { try { return parseSecrets(); } catch (e) { return {}; } } });
+const ROUTES_CONFIG = /^\/(config-editor\.js|api\/config(\/.*)?|api\/appareils(\/.*)?|api\/simpl\/regenerer|api\/envoi)$/;
+// Le serveur n'écoute que 127.0.0.1, mais une page web quelconque pourrait poster vers localhost :
+// les écritures et envois n'acceptent que la Console elle-même comme origine.
+function origineLocale(req) {
+  const o = req.headers.origin;
+  return !o || /^http:\/\/(localhost|127\.0\.0\.1):\d+$/.test(o);
+}
+function erreur500(res, e) { if (!res.headersSent) res.writeHead(500, { 'Content-Type': 'text/plain; charset=utf-8' }); res.end('Erreur : ' + e.message); }
+
 const server = http.createServer((req, res) => {
   const url = decodeURIComponent(req.url.split('?')[0]);
+
+  if (ROUTES_CONFIG.test(url)) {
+    if (req.method === 'GET') {
+      apiConfig.get(url, res).then(ok => { if (!ok) { res.writeHead(404); res.end('Not found'); } }).catch(e => erreur500(res, e));
+      return;
+    }
+    if (req.method === 'POST') {
+      if (!origineLocale(req)) { res.writeHead(403); return res.end('Origine refusée'); }
+      return readBody(req, body => {
+        apiConfig.post(url, body, res).then(ok => { if (!ok) { res.writeHead(404); res.end('Not found'); } }).catch(e => erreur500(res, e));
+      });
+    }
+  }
 
   if (req.method === 'GET') {
     if (url === '/' || url === '/console.html') return serveFile(res, path.join(__dirname, 'console.html'));
