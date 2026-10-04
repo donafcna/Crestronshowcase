@@ -11,6 +11,7 @@ Dernière mise à jour de ce dossier : **09.09.2026**
 |---|---|
 | [01 — Spécification de l'interface](01_SPECIFICATION.md) | Ce que fait le GUI : périphériques, écrans, modules, thèmes, langues, limites |
 | [02 — Guide `villa_config.json`](02_CONFIG_JSON.md) | Comment dimensionner le projet : chaque champ, les règles, le process d'équipe |
+| [10 — `villa_config.json` v2](10_CONFIG_JSON_V2.md) | Inventaire (qui lit quelle clé), schéma, contrôle `check-config`, clés prévues par la feuille de route |
 | [03 — Contrat de joins v2](03_CONTRAT_JOINS.md) | Référence unique GUI / C# / SIMPL : signaux globaux + blocs pièces EISC |
 | [04 — Programme SIMPL slot 2](04_SIMPL_SLOT2.md) | Ce qui est câblé, ce qui ne l'est pas, les écarts au contrat, la mise en service |
 | [05 — Recette et tests](05_RECETTE.md) | Ce que le code prouve, ce qui reste à valider sur site, matrice par périphérique |

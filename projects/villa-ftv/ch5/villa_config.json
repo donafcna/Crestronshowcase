@@ -1,4 +1,5 @@
 {
+  "$schema": "./villa_config.schema.json",
   "meta": {
     "projet": "Villa FTV",
     "integrateur": "Fréquence TV",

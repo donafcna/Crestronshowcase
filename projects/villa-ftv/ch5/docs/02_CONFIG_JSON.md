@@ -7,6 +7,9 @@ pages spéciales et contrat de joins.
 Ni le GUI ni le C# ne contiennent la liste des pièces en dur — enfin, presque : voir
 § « Ce que le fichier ne pilote pas » à la fin.
 
+> **Schéma et contrôle (04.10.2026)** : `villa_config.schema.json` (autocomplétion VS Code), `node tools/check-config.mjs`
+> (appelé par `deploy.ps1`). Inventaire des clés lues / mortes / prévues : [10 — schéma cible v2](10_CONFIG_JSON_V2.md).
+
 ---
 
 ## 1. Process d'équipe Fréquence TV

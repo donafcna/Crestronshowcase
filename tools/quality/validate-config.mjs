@@ -66,7 +66,7 @@ export function validateConfig(c, { mode = 'deploiement', release = false } = {}
       }
     }
     if (controls.moteurs) {
-      countList(controls.moteurs, 6, 'liste', p + '.pilotages.moteurs');
+      countList(controls.moteurs, 12, 'liste', p + '.pilotages.moteurs'); // v5.3 : 12 moteurs
       for (const [j, motor] of (Array.isArray(controls.moteurs.liste) ? controls.moteurs.liste : []).entries()) if (!['volet', 'rideau', 'store'].includes(motor?.type)) add(p + `.pilotages.moteurs.liste[${j}].type`, 'Type moteur inconnu');
     }
     if (controls.audioVideo?.sources !== undefined && (!Array.isArray(controls.audioVideo.sources) || controls.audioVideo.sources.some(id => !sourceIds.has(id)) || new Set(controls.audioVideo.sources).size !== controls.audioVideo.sources.length)) add(p + '.pilotages.audioVideo.sources', 'Références de sources invalides ou dupliquées');

@@ -1,0 +1,1253 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://crestrongui.vercel.app/schemas/villa_config.schema.json",
+  "title": "villa_config.json — configuration d'un projet Fréquence TV (Core Villa FTV)",
+  "description": "Généré par tools/build-config-schema.py. Les clés [PRÉVU v2] décrivent la feuille de route : elles sont acceptées mais sans effet tant qu'elles ne sont pas implémentées. Guide : docs/02_CONFIG_JSON.md ; inventaire et cible : docs/10_CONFIG_JSON_V2.md.",
+  "type": "object",
+  "required": [
+    "meta",
+    "pieces"
+  ],
+  "definitions": {
+    "langue": {
+      "description": "Code langue ISO 639-1. Langues du GUI aujourd'hui : fr, en, es, de, ru.",
+      "x-etat": "actif",
+      "type": "string",
+      "pattern": "^[a-z]{2}$"
+    },
+    "theme": {
+      "description": "Thème du GUI : dark = Sombre, light = Clair, glass = Verre dépoli.",
+      "x-etat": "actif",
+      "type": "string",
+      "enum": [
+        "dark",
+        "light",
+        "glass"
+      ]
+    },
+    "controleGlobal": {
+      "description": "[PRÉVU v2 — sans effet aujourd'hui] Bouton de l'entête : alarme, cameras, controleGlobal, recherche, reglages.",
+      "x-etat": "prevu",
+      "type": "string",
+      "enum": [
+        "alarme",
+        "cameras",
+        "controleGlobal",
+        "recherche",
+        "reglages"
+      ]
+    },
+    "plage": {
+      "description": "Plage réglable.",
+      "x-etat": "actif",
+      "type": "object",
+      "required": [
+        "min",
+        "max",
+        "pas"
+      ],
+      "properties": {
+        "min": {
+          "type": "number"
+        },
+        "max": {
+          "type": "number"
+        },
+        "pas": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "consigne": {
+          "description": "Consigne au démarrage.",
+          "x-etat": "actif",
+          "type": "number"
+        }
+      }
+    },
+    "idPiece": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 30
+    },
+    "actif": {
+      "description": "false = module retiré de la pièce (onglet/bouton masqué).",
+      "x-etat": "actif",
+      "type": "boolean"
+    }
+  },
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "meta": {
+      "description": "Identité du projet et réglages techniques.",
+      "x-etat": "actif",
+      "type": "object",
+      "properties": {
+        "projet": {
+          "description": "Nom affiché du projet (titre, XPanel, programme SIMPL).",
+          "x-etat": "actif",
+          "type": "string",
+          "minLength": 1
+        },
+        "integrateur": {
+          "description": "[INUTILISÉ] Société intégratrice (information).",
+          "x-etat": "inutilise",
+          "type": "string"
+        },
+        "description": {
+          "description": "[INUTILISÉ] Description libre (information).",
+          "x-etat": "inutilise",
+          "type": "string"
+        },
+        "coreOrigine": {
+          "description": "[INUTILISÉ] Version du Core dont ce projet est issu (information).",
+          "x-etat": "inutilise",
+          "type": "string"
+        },
+        "version": {
+          "description": "Version de la configuration, alignée par deploy.ps1.",
+          "x-etat": "actif",
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+(?:-[\\w.-]+)?$"
+        },
+        "mode": {
+          "description": "deploiement = chez le client (retours du processeur) ; showcase = site vitrine (retours simulés). Jamais « showcase » dans un dépôt projet.",
+          "x-etat": "actif",
+          "type": "string",
+          "enum": [
+            "deploiement",
+            "showcase"
+          ]
+        },
+        "backend": {
+          "description": "simpl = un seul programme SIMPL (v6.0, pont direct) ; csharp ou absent = C# slot 1 + SIMPL slot 2 (v5).",
+          "x-etat": "actif",
+          "type": "string",
+          "enum": [
+            "simpl",
+            "csharp"
+          ]
+        },
+        "interface": {
+          "description": "Variante de disposition. connect = interface épurée « Connect » (v5.4). Absent = GUI standard.",
+          "x-etat": "actif",
+          "type": "string",
+          "enum": [
+            "connect"
+          ]
+        },
+        "fonctionsRetirees": {
+          "description": "[INUTILISÉ] Fonctions retirées du projet (information pour le générateur et la doc).",
+          "x-etat": "inutilise",
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "audioVideo",
+              "alarme",
+              "cameras"
+            ]
+          }
+        },
+        "tracesConsole": {
+          "description": "false = debugger propre (aucune trace console ni s100).",
+          "x-etat": "actif",
+          "type": "boolean"
+        },
+        "tracesLatence": {
+          "description": "Traces [LAT] de mesure de latence (iPhone).",
+          "x-etat": "actif",
+          "type": "boolean"
+        },
+        "dateModification": {
+          "description": "[INUTILISÉ] Date de dernière modification (information).",
+          "x-etat": "inutilise",
+          "type": "string"
+        },
+        "langueReference": {
+          "description": "Langue dans laquelle sont écrits les noms du fichier (pièces, scènes, circuits). Les tables « traductions » partent de cette langue.",
+          "x-etat": "actif",
+          "type": "string",
+          "pattern": "^[a-z]{2}$"
+        },
+        "languesDisponibles": {
+          "description": "[INUTILISÉ] Remplacé par interface.langues.disponibles (v2). Lu en repli quand ce bloc est absent.",
+          "x-etat": "inutilise",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/langue"
+          },
+          "uniqueItems": true
+        },
+        "aide": {
+          "description": "[INUTILISÉ] Aide au remplissage (information).",
+          "x-etat": "inutilise",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "projet",
+        "version",
+        "mode"
+      ]
+    },
+    "interface": {
+      "description": "Ce que l'utilisateur voit : navigation, recherche, thèmes, langues, contrôles globaux.",
+      "x-etat": "actif",
+      "type": "object",
+      "properties": {
+        "menuPieces": {
+          "description": "Menu de gauche (v6.1, js/nav-pieces.js). ?menu=0|1 et ?room=N dans l'adresse priment.",
+          "x-etat": "actif",
+          "type": "object",
+          "properties": {
+            "visible": {
+              "description": "false = pas de menu de gauche ; titre = pièce, appui = choix de pièce.",
+              "x-etat": "actif",
+              "type": "boolean"
+            },
+            "pieces": {
+              "description": "Pièces proposées, dans l'ordre ([] = toutes les pièces actives).",
+              "x-etat": "actif",
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/idPiece"
+              },
+              "uniqueItems": true
+            },
+            "pieceParDefaut": {
+              "description": "Pièce au démarrage (null = première proposée).",
+              "x-etat": "actif",
+              "type": [
+                "integer",
+                "null"
+              ],
+              "minimum": 1,
+              "maximum": 30
+            },
+            "etats": {
+              "description": "[PRÉVU v2 — sans effet aujourd'hui] Pastilles d'état dans le menu de gauche (iPad général) : source A/V allumée, lumière allumée. Le pont v6 garde déjà en cache les retours des autres pièces.",
+              "x-etat": "prevu",
+              "type": "object",
+              "properties": {
+                "audioVideo": {
+                  "description": "[PRÉVU v2 — sans effet aujourd'hui] Pastille « source allumée ».",
+                  "x-etat": "prevu",
+                  "type": "boolean"
+                },
+                "eclairage": {
+                  "description": "[PRÉVU v2 — sans effet aujourd'hui] Pastille « lumière allumée ».",
+                  "x-etat": "prevu",
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        },
+        "recherche": {
+          "description": "Bouton « Recherche » / actions rapides (v6.2).",
+          "x-etat": "actif",
+          "type": "object",
+          "properties": {
+            "actif": {
+              "type": "boolean"
+            },
+            "suggestions": {
+              "description": "Suggestions selon l'usage.",
+              "x-etat": "actif",
+              "type": "boolean"
+            }
+          }
+        },
+        "themes": {
+          "description": "[PRÉVU v2 — sans effet aujourd'hui] Thèmes proposés dans Réglages. Absent = les trois thèmes, Sombre par défaut.",
+          "x-etat": "prevu",
+          "type": "object",
+          "properties": {
+            "disponibles": {
+              "description": "[PRÉVU v2 — sans effet aujourd'hui] Thèmes proposés (au moins un).",
+              "x-etat": "prevu",
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/theme"
+              },
+              "minItems": 1,
+              "uniqueItems": true
+            },
+            "parDefaut": {
+              "description": "[PRÉVU v2 — sans effet aujourd'hui] Thème au premier démarrage d'un appareil (le choix de l'utilisateur est ensuite mémorisé).",
+              "x-etat": "prevu",
+              "allOf": [
+                {
+                  "$ref": "#/definitions/theme"
+                }
+              ]
+            }
+          }
+        },
+        "langues": {
+          "description": "[PRÉVU v2 — sans effet aujourd'hui] Langues proposées dans Réglages. Absent = meta.languesDisponibles, sinon toutes.",
+          "x-etat": "prevu",
+          "type": "object",
+          "properties": {
+            "disponibles": {
+              "description": "[PRÉVU v2 — sans effet aujourd'hui] Langues proposées (au moins une).",
+              "x-etat": "prevu",
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/langue"
+              },
+              "minItems": 1,
+              "uniqueItems": true
+            },
+            "parDefaut": {
+              "description": "[PRÉVU v2 — sans effet aujourd'hui] Langue au premier démarrage d'un appareil.",
+              "x-etat": "prevu",
+              "allOf": [
+                {
+                  "$ref": "#/definitions/langue"
+                }
+              ]
+            }
+          }
+        },
+        "controlesGlobaux": {
+          "description": "[PRÉVU v2 — sans effet aujourd'hui] Boutons de l'entête (alarme, caméras, contrôle global, recherche, réglages). Surcharge possible par pièce : pieces[].interface.controlesGlobaux.",
+          "x-etat": "prevu",
+          "type": "object",
+          "properties": {
+            "parDefaut": {
+              "description": "[PRÉVU v2 — sans effet aujourd'hui] Boutons affichés sur toutes les pages, dans l'ordre.",
+              "x-etat": "prevu",
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/controleGlobal"
+              },
+              "uniqueItems": true
+            },
+            "general": {
+              "description": "[PRÉVU v2 — sans effet aujourd'hui] Boutons de la page « Général » de l'iPad général (vue d'ensemble).",
+              "x-etat": "prevu",
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/controleGlobal"
+              },
+              "uniqueItems": true
+            }
+          }
+        },
+        "description": {
+          "type": "string"
+        },
+        "rechercheDescription": {
+          "type": "string"
+        }
+      }
+    },
+    "valeursParDefaut": {
+      "description": "Valeurs de repli quand un nom ou une liste manque dans une pièce.",
+      "x-etat": "actif",
+      "type": "object",
+      "properties": {
+        "iconesDisponibles": {
+          "description": "[INUTILISÉ] Aide-mémoire emoji → libellé.",
+          "x-etat": "inutilise",
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "scenesEclairage": {
+          "description": "Noms de scènes par défaut.",
+          "x-etat": "actif",
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 4
+        },
+        "circuits": {
+          "description": "Noms de circuits par défaut.",
+          "x-etat": "actif",
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 20
+        },
+        "moteurs": {
+          "description": "Moteurs par défaut (aussi lu par le générateur SIMPL).",
+          "x-etat": "actif",
+          "type": "array",
+          "items": {
+            "description": "Un moteur.",
+            "x-etat": "actif",
+            "type": "object",
+            "properties": {
+              "nom": {
+                "type": "string"
+              },
+              "type": {
+                "description": "Icône et libellés : volet, rideau (Ouvrir/Fermer), store.",
+                "x-etat": "actif",
+                "type": "string",
+                "enum": [
+                  "volet",
+                  "rideau",
+                  "store"
+                ]
+              },
+              "lamelles": {
+                "description": "Rangée Horaire / Stop / Antihoraire sous le moteur.",
+                "x-etat": "actif",
+                "type": "boolean"
+              },
+              "position": {
+                "description": "[PRÉVU v2 — sans effet aujourd'hui] Réglage de la position en % en plus de Monter / Stop / Descendre.",
+                "x-etat": "prevu",
+                "type": "boolean"
+              },
+              "angleLamelles": {
+                "description": "[PRÉVU v2 — sans effet aujourd'hui] Réglage de l'angle des lamelles en %, indépendant de la position.",
+                "x-etat": "prevu",
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "nom",
+              "type"
+            ]
+          },
+          "maxItems": 12
+        },
+        "scenesStores": {
+          "description": "[INUTILISÉ] Noms des commandes groupées par défaut.",
+          "x-etat": "inutilise",
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 4
+        },
+        "cvc": {
+          "description": "[INUTILISÉ] Bornes de consigne par défaut.",
+          "x-etat": "inutilise",
+          "type": "object",
+          "properties": {
+            "consigneMinC": {
+              "type": "number"
+            },
+            "consigneMaxC": {
+              "type": "number"
+            },
+            "pasC": {
+              "type": "number"
+            }
+          }
+        },
+        "stores": {
+          "description": "[PRÉVU v2 — sans effet aujourd'hui] Conventions des stores (à fixer avant d'implémenter position et angle).",
+          "x-etat": "prevu",
+          "type": "object",
+          "properties": {
+            "position": {
+              "description": "[PRÉVU v2 — sans effet aujourd'hui] Sens du pourcentage de position (convention Crestron : 100 = ouvert).",
+              "x-etat": "prevu",
+              "type": "string",
+              "enum": [
+                "100=ouvert",
+                "0=ouvert"
+              ]
+            },
+            "angleLamelles": {
+              "description": "[PRÉVU v2 — sans effet aujourd'hui] Sens du pourcentage d'angle.",
+              "x-etat": "prevu",
+              "type": "string",
+              "enum": [
+                "0=fermees",
+                "0=ouvertes"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "sourcesAudioVideo": {
+      "description": "Sources audio / vidéo du projet (5 max, joins 151-155).",
+      "x-etat": "actif",
+      "type": "array",
+      "items": {
+        "description": "Une source.",
+        "x-etat": "actif",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 5
+          },
+          "nom": {
+            "type": "string"
+          },
+          "type": {
+            "description": "[PRÉVU v2 — sans effet aujourd'hui] Famille de source (appletv, skyq, swisscom, iptv, musique) — à lire par le GUI et le générateur.",
+            "x-etat": "prevu",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "nom"
+        ]
+      },
+      "maxItems": 5
+    },
+    "scenesStores": {
+      "description": "Commandes groupées des stores. Lu par l'interface Connect ; le GUI standard a ses libellés en dur.",
+      "x-etat": "actif",
+      "type": "object",
+      "properties": {
+        "nombre": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4
+        },
+        "noms": {
+          "description": "Noms.",
+          "x-etat": "actif",
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 4
+        }
+      }
+    },
+    "widgets": {
+      "description": "Widgets du GUI. Surcharge par appareil dans parPeripherique.",
+      "x-etat": "actif",
+      "type": "object",
+      "properties": {
+        "meteoActualites": {
+          "description": "Météo de la colonne de gauche.",
+          "x-etat": "actif",
+          "type": "object",
+          "properties": {
+            "actif": {
+              "type": "boolean"
+            },
+            "ville": {
+              "type": "string"
+            },
+            "latitude": {
+              "type": "number"
+            },
+            "longitude": {
+              "type": "number"
+            },
+            "description": {
+              "type": "string"
+            }
+          }
+        },
+        "bandeauActualites": {
+          "description": "Bandeau « État de la villa ».",
+          "x-etat": "actif",
+          "type": "object",
+          "properties": {
+            "actif": {
+              "type": "boolean"
+            },
+            "description": {
+              "type": "string"
+            }
+          }
+        },
+        "parPeripherique": {
+          "description": "Surcharges par appareil, clé = IP-ID hexadécimal sur 2 caractères (03, 1A…).",
+          "x-etat": "actif",
+          "type": "object",
+          "properties": {
+            "description": {
+              "type": "string"
+            }
+          },
+          "patternProperties": {
+            "^[0-9A-Fa-f]{2}$": {
+              "type": "object",
+              "properties": {
+                "nom": {
+                  "type": "string"
+                },
+                "meteoActualites": {
+                  "type": "boolean"
+                },
+                "bandeauActualites": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        },
+        "description": {
+          "type": "string"
+        }
+      }
+    },
+    "pieces": {
+      "description": "Pièces du projet.",
+      "x-etat": "actif",
+      "type": "array",
+      "items": {
+        "description": "Une pièce.",
+        "x-etat": "actif",
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Identifiant unique (1-30 ; 15 max en backend simpl).",
+            "x-etat": "actif",
+            "allOf": [
+              {
+                "$ref": "#/definitions/idPiece"
+              }
+            ]
+          },
+          "nom": {
+            "description": "Nom affiché (\"\" = nom par défaut). ~16 caractères max sur la dalle.",
+            "x-etat": "actif",
+            "type": "string",
+            "maxLength": 40
+          },
+          "icone": {
+            "description": "Emoji aujourd'hui (affiché dans le menu). v2 : clé du catalogue SVG (salon, cuisine, chambre…), conformément à la règle « pas d'emoji dans les GUI ».",
+            "x-etat": "actif",
+            "type": "string"
+          },
+          "actif": {
+            "description": "false = pièce absente du GUI et du programme.",
+            "x-etat": "actif",
+            "type": "boolean"
+          },
+          "intersystem": {
+            "description": "[PROCESSEUR] Bloc EISC vers le slot 2 (backend csharp seulement).",
+            "x-etat": "processeur",
+            "type": "boolean"
+          },
+          "niveau": {
+            "description": "[INUTILISÉ] Étage (Appartement, plan 3D).",
+            "x-etat": "inutilise",
+            "type": "integer"
+          },
+          "plan3d": {
+            "description": "[INUTILISÉ] Position dans le plan 3D du site vitrine.",
+            "x-etat": "inutilise",
+            "type": "object"
+          },
+          "interface": {
+            "description": "[PRÉVU v2 — sans effet aujourd'hui] Surcharges d'affichage propres à la pièce.",
+            "x-etat": "prevu",
+            "type": "object",
+            "properties": {
+              "controlesGlobaux": {
+                "description": "[PRÉVU v2 — sans effet aujourd'hui] Boutons de l'entête sur cette pièce (remplace interface.controlesGlobaux.parDefaut).",
+                "x-etat": "prevu",
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/controleGlobal"
+                },
+                "uniqueItems": true
+              }
+            }
+          },
+          "pilotages": {
+            "description": "Modules de la pièce. Module absent ou actif=false = retiré.",
+            "x-etat": "actif",
+            "type": "object",
+            "properties": {
+              "eclairages": {
+                "description": "Scènes et circuits d'éclairage.",
+                "x-etat": "actif",
+                "type": "object",
+                "properties": {
+                  "actif": {
+                    "$ref": "#/definitions/actif"
+                  },
+                  "scenes": {
+                    "description": "Scènes de la pièce (4 max, joins 51-54).",
+                    "x-etat": "actif",
+                    "type": "object",
+                    "properties": {
+                      "nombre": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 4
+                      },
+                      "noms": {
+                        "description": "Noms affichés (\"\" = nom par défaut).",
+                        "x-etat": "actif",
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        },
+                        "maxItems": 4
+                      },
+                      "niveaux": {
+                        "description": "Une ligne par scène, une valeur 0-65535 par circuit (le slot 2 fait foi dès qu'un niveau remonte).",
+                        "x-etat": "actif",
+                        "type": "array",
+                        "items": {
+                          "type": "array",
+                          "items": {
+                            "anyOf": [
+                              {
+                                "type": "integer",
+                                "minimum": 0,
+                                "maximum": 65535
+                              },
+                              {
+                                "description": "[PRÉVU v2 — sans effet aujourd'hui] Circuit couleur (prévu) : niveau + kelvin, ou r/g/b/w en 0-65535.",
+                                "x-etat": "prevu",
+                                "type": "object",
+                                "properties": {
+                                  "niveau": {
+                                    "type": "integer",
+                                    "minimum": 0,
+                                    "maximum": 65535
+                                  },
+                                  "kelvin": {
+                                    "type": "integer",
+                                    "minimum": 1000,
+                                    "maximum": 10000
+                                  },
+                                  "r": {
+                                    "type": "integer",
+                                    "minimum": 0,
+                                    "maximum": 65535
+                                  },
+                                  "g": {
+                                    "type": "integer",
+                                    "minimum": 0,
+                                    "maximum": 65535
+                                  },
+                                  "b": {
+                                    "type": "integer",
+                                    "minimum": 0,
+                                    "maximum": 65535
+                                  },
+                                  "w": {
+                                    "type": "integer",
+                                    "minimum": 0,
+                                    "maximum": 65535
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        "maxItems": 4
+                      },
+                      "origine": {
+                        "description": "[INUTILISÉ] Provenance des niveaux (information).",
+                        "x-etat": "inutilise",
+                        "type": "string"
+                      },
+                      "niveauxDescription": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "circuits": {
+                    "description": "Circuits de la pièce (20 max, analogiques 71-90).",
+                    "x-etat": "actif",
+                    "type": "object",
+                    "properties": {
+                      "nombre": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 20
+                      },
+                      "noms": {
+                        "description": "Noms affichés (\"\" = nom par défaut). Remplacé par « liste » quand elle est présente.",
+                        "x-etat": "actif",
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        },
+                        "maxItems": 20
+                      },
+                      "type": {
+                        "description": "[INUTILISÉ] Technologie électrique par circuit (Appartement : DALI / PHASE / contact). Ne choisit PAS la commande du GUI : voir liste[].commande.",
+                        "x-etat": "inutilise",
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        },
+                        "maxItems": 20
+                      },
+                      "lutron": {
+                        "description": "[INUTILISÉ] Nom Lutron par circuit (information).",
+                        "x-etat": "inutilise",
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        },
+                        "maxItems": 20
+                      },
+                      "liste": {
+                        "description": "[PRÉVU v2 — sans effet aujourd'hui] Description complète de chaque circuit (v2). Prioritaire sur noms / type / lutron.",
+                        "x-etat": "prevu",
+                        "type": "array",
+                        "items": {
+                          "description": "[PRÉVU v2 — sans effet aujourd'hui] Un circuit d'éclairage.",
+                          "x-etat": "prevu",
+                          "type": "object",
+                          "properties": {
+                            "nom": {
+                              "description": "[PRÉVU v2 — sans effet aujourd'hui] Nom affiché.",
+                              "x-etat": "prevu",
+                              "type": "string"
+                            },
+                            "commande": {
+                              "description": "[PRÉVU v2 — sans effet aujourd'hui] Commande proposée dans le GUI : onoff = interrupteur ; variation = fader ; rgbw = fader + couleur ; tunableWhite = fader + température de couleur. Absent : déduit de « technologie » (contact → onoff, sinon variation).",
+                              "x-etat": "prevu",
+                              "type": "string",
+                              "enum": [
+                                "onoff",
+                                "variation",
+                                "rgbw",
+                                "tunableWhite"
+                              ]
+                            },
+                            "technologie": {
+                              "description": "[PRÉVU v2 — sans effet aujourd'hui] Pilotage électrique (DALI, PHASE, contact, KNX, 0-10V…). N'influence pas le GUI.",
+                              "x-etat": "prevu",
+                              "type": "string"
+                            },
+                            "lutron": {
+                              "description": "[PRÉVU v2 — sans effet aujourd'hui] Nom du circuit dans Lutron Designer.",
+                              "x-etat": "prevu",
+                              "type": "string"
+                            },
+                            "kelvinMin": {
+                              "description": "[PRÉVU v2 — sans effet aujourd'hui] Tunable white : température la plus chaude.",
+                              "x-etat": "prevu",
+                              "type": "integer",
+                              "minimum": 1000,
+                              "maximum": 10000
+                            },
+                            "kelvinMax": {
+                              "description": "[PRÉVU v2 — sans effet aujourd'hui] Tunable white : température la plus froide.",
+                              "x-etat": "prevu",
+                              "type": "integer",
+                              "minimum": 1000,
+                              "maximum": 10000
+                            }
+                          },
+                          "required": [
+                            "nom"
+                          ]
+                        },
+                        "maxItems": 20
+                      }
+                    }
+                  }
+                }
+              },
+              "moteurs": {
+                "description": "Volets, rideaux et stores (12 max, v5.3).",
+                "x-etat": "actif",
+                "type": "object",
+                "properties": {
+                  "actif": {
+                    "$ref": "#/definitions/actif"
+                  },
+                  "nombre": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 12
+                  },
+                  "liste": {
+                    "description": "Un objet par moteur. Moins d'entrées que « nombre » : complété par valeursParDefaut.moteurs.",
+                    "x-etat": "actif",
+                    "type": "array",
+                    "items": {
+                      "description": "Un moteur.",
+                      "x-etat": "actif",
+                      "type": "object",
+                      "properties": {
+                        "nom": {
+                          "type": "string"
+                        },
+                        "type": {
+                          "description": "Icône et libellés : volet, rideau (Ouvrir/Fermer), store.",
+                          "x-etat": "actif",
+                          "type": "string",
+                          "enum": [
+                            "volet",
+                            "rideau",
+                            "store"
+                          ]
+                        },
+                        "lamelles": {
+                          "description": "Rangée Horaire / Stop / Antihoraire sous le moteur.",
+                          "x-etat": "actif",
+                          "type": "boolean"
+                        },
+                        "position": {
+                          "description": "[PRÉVU v2 — sans effet aujourd'hui] Réglage de la position en % en plus de Monter / Stop / Descendre.",
+                          "x-etat": "prevu",
+                          "type": "boolean"
+                        },
+                        "angleLamelles": {
+                          "description": "[PRÉVU v2 — sans effet aujourd'hui] Réglage de l'angle des lamelles en %, indépendant de la position.",
+                          "x-etat": "prevu",
+                          "type": "boolean"
+                        }
+                      },
+                      "required": [
+                        "nom",
+                        "type"
+                      ]
+                    },
+                    "maxItems": 12
+                  }
+                }
+              },
+              "cvc": {
+                "description": "Chauffage / climatisation de la pièce.",
+                "x-etat": "actif",
+                "type": "object",
+                "properties": {
+                  "actif": {
+                    "$ref": "#/definitions/actif"
+                  },
+                  "marcheArret": {
+                    "description": "[INUTILISÉ] Boutons Marche / Arrêt.",
+                    "x-etat": "inutilise",
+                    "type": "boolean"
+                  },
+                  "ventilation": {
+                    "description": "Vitesses de ventilation.",
+                    "x-etat": "actif",
+                    "type": "object",
+                    "properties": {
+                      "actif": {
+                        "type": "boolean"
+                      },
+                      "vitesses": {
+                        "description": "[INUTILISÉ] Vitesses proposées (0 auto, 1 faible, 2 moyen, 3 fort). Le GUI affiche aujourd'hui les 4.",
+                        "x-etat": "inutilise",
+                        "type": "array",
+                        "items": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 3
+                        },
+                        "uniqueItems": true
+                      }
+                    }
+                  },
+                  "etatInitial": {
+                    "description": "[PROCESSEUR] État au démarrage du processeur.",
+                    "x-etat": "processeur",
+                    "type": "object",
+                    "properties": {
+                      "marche": {
+                        "type": "boolean"
+                      },
+                      "ventilation": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 3
+                      }
+                    }
+                  },
+                  "consigne": {
+                    "$ref": "#/definitions/plage"
+                  },
+                  "modes": {
+                    "description": "[PRÉVU v2 — sans effet aujourd'hui] Modes proposés. Aujourd'hui le mode n'est qu'affiché (texte envoyé par le processeur).",
+                    "x-etat": "prevu",
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "enum": [
+                        "auto",
+                        "chauffage",
+                        "climatisation",
+                        "ventilation",
+                        "deshumidification",
+                        "eco",
+                        "arret"
+                      ]
+                    },
+                    "uniqueItems": true
+                  },
+                  "deriveC": {
+                    "description": "[PRÉVU v2 — sans effet aujourd'hui] « Drift » : écart toléré autour de la consigne en °C avant relance (hypothèse à confirmer avec Alexandre).",
+                    "x-etat": "prevu",
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 5
+                  }
+                }
+              },
+              "controlesGeneraux": {
+                "description": "Accès aux commandes globales depuis la pièce.",
+                "x-etat": "actif",
+                "type": "object",
+                "properties": {
+                  "actif": {
+                    "$ref": "#/definitions/actif"
+                  },
+                  "partitionsAlarme": {
+                    "description": "[INUTILISÉ] Nombre de partitions affichées.",
+                    "x-etat": "inutilise",
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 4
+                  }
+                }
+              },
+              "audioVideo": {
+                "description": "Sources audio / vidéo.",
+                "x-etat": "actif",
+                "type": "object",
+                "properties": {
+                  "actif": {
+                    "$ref": "#/definitions/actif"
+                  },
+                  "sources": {
+                    "description": "Identifiants de sourcesAudioVideo proposés dans la pièce.",
+                    "x-etat": "actif",
+                    "type": "array",
+                    "items": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 5
+                    },
+                    "uniqueItems": true
+                  }
+                }
+              },
+              "wellness": {
+                "description": "Sauna / hammam.",
+                "x-etat": "actif",
+                "type": "object",
+                "properties": {
+                  "sauna": {
+                    "description": "Sauna (consigne en °C).",
+                    "x-etat": "actif",
+                    "type": "object",
+                    "properties": {
+                      "actif": {
+                        "type": "boolean"
+                      },
+                      "min": {
+                        "type": "number"
+                      },
+                      "max": {
+                        "type": "number"
+                      },
+                      "pas": {
+                        "type": "number",
+                        "exclusiveMinimum": 0
+                      },
+                      "consigne": {
+                        "type": "number"
+                      }
+                    }
+                  },
+                  "hammam": {
+                    "description": "Hammam (consigne en °C).",
+                    "x-etat": "actif",
+                    "type": "object",
+                    "properties": {
+                      "actif": {
+                        "type": "boolean"
+                      },
+                      "min": {
+                        "type": "number"
+                      },
+                      "max": {
+                        "type": "number"
+                      },
+                      "pas": {
+                        "type": "number",
+                        "exclusiveMinimum": 0
+                      },
+                      "consigne": {
+                        "type": "number"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "required": [
+          "id",
+          "nom",
+          "pilotages"
+        ]
+      },
+      "minItems": 1,
+      "maxItems": 30
+    },
+    "pagesSpeciales": {
+      "description": "Pages Jeux / Animation / Vidéo du menu.",
+      "x-etat": "actif",
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "jeux": {
+          "type": "object",
+          "properties": {
+            "actif": {
+              "type": "boolean"
+            },
+            "nom": {
+              "type": "string"
+            },
+            "icone": {
+              "type": "string"
+            }
+          }
+        },
+        "animation": {
+          "type": "object",
+          "properties": {
+            "actif": {
+              "type": "boolean"
+            },
+            "nom": {
+              "type": "string"
+            },
+            "icone": {
+              "type": "string"
+            }
+          }
+        },
+        "video": {
+          "type": "object",
+          "properties": {
+            "actif": {
+              "type": "boolean"
+            },
+            "nom": {
+              "type": "string"
+            },
+            "icone": {
+              "type": "string"
+            },
+            "youtubeRecherche": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "traductions": {
+      "description": "Une table par langue (en, es, de, ru…) : nom écrit dans langueReference → traduction. Jamais deux clés qui ne diffèrent que par la casse (PowerShell 5.1 refuse le fichier).",
+      "x-etat": "actif",
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": {
+          "type": "string"
+        }
+      }
+    },
+    "monitoring": {
+      "description": "[PRÉVU v2 — sans effet aujourd'hui] Supervision du projet résidentiel (XPanel de monitoring, vue d'ensemble de l'iPad général, alertes). Les e-mails et tout identifiant d'envoi sont lus par le PROCESSEUR et doivent être retirés de la copie embarquée dans le GUI (villa_config.json est lisible depuis tout XPanel).",
+      "x-etat": "prevu",
+      "type": "object",
+      "properties": {
+        "actif": {
+          "description": "[PRÉVU v2 — sans effet aujourd'hui] Active la supervision.",
+          "x-etat": "prevu",
+          "type": "boolean"
+        },
+        "vueEnsemble": {
+          "description": "[PRÉVU v2 — sans effet aujourd'hui] Page d'accueil type Crestron Home : état de toutes les zones, sans commandes.",
+          "x-etat": "prevu",
+          "type": "object",
+          "properties": {
+            "actif": {
+              "description": "[PRÉVU v2 — sans effet aujourd'hui] Affiche la vue d'ensemble.",
+              "x-etat": "prevu",
+              "type": "boolean"
+            },
+            "pageAccueil": {
+              "description": "[PRÉVU v2 — sans effet aujourd'hui] Démarrer sur la vue d'ensemble plutôt que sur une pièce.",
+              "x-etat": "prevu",
+              "type": "boolean"
+            }
+          }
+        },
+        "elements": {
+          "description": "[PRÉVU v2 — sans effet aujourd'hui] Ce qui est supervisé.",
+          "x-etat": "prevu",
+          "type": "array",
+          "items": {
+            "description": "[PRÉVU v2 — sans effet aujourd'hui] Élément supervisé.",
+            "x-etat": "prevu",
+            "type": "string",
+            "enum": [
+              "eclairage",
+              "audioVideo",
+              "cvc",
+              "moteurs",
+              "alarme",
+              "processeur",
+              "ecrans",
+              "wellness"
+            ]
+          },
+          "uniqueItems": true
+        },
+        "alertes": {
+          "description": "[PRÉVU v2 — sans effet aujourd'hui] Alertes par e-mail.",
+          "x-etat": "prevu",
+          "type": "object",
+          "properties": {
+            "emails": {
+              "description": "[PRÉVU v2 — sans effet aujourd'hui] Destinataires.",
+              "x-etat": "prevu",
+              "type": "array",
+              "items": {
+                "description": "[PRÉVU v2 — sans effet aujourd'hui] Adresse e-mail.",
+                "x-etat": "prevu",
+                "type": "string",
+                "format": "email",
+                "pattern": "^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$"
+              },
+              "uniqueItems": true
+            },
+            "evenements": {
+              "description": "[PRÉVU v2 — sans effet aujourd'hui] Événements déclencheurs (liste à définir à la conception).",
+              "x-etat": "prevu",
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "uniqueItems": true
+            }
+          }
+        }
+      }
+    },
+    "contrat": {
+      "description": "[PROCESSEUR] Contrat de joins entre GUI et processeur. Réservé au programmeur : ne pas modifier à la légère (voir docs/03_CONTRAT_JOINS.md).",
+      "x-etat": "processeur",
+      "type": "object"
+    }
+  }
+}

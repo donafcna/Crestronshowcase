@@ -1,5 +1,13 @@
 # VillaCrans — contexte pour Claude (lire en premier, économise les tokens)
 
+## 04/10/2026 — Config v2, phase 1 : schéma + `tools/check-config.mjs` (aucun build) — feuille de route : `docs/10_CONFIG_JSON_V2.md`
+- `villa_config.schema.json` **généré** par `tools/build-config-schema.py` (jamais à la main) ; `x-etat` actif / processeur / inutilisé / prévu.
+  `"$schema"` en tête de `villa_config.json` (VS Code). `check-config.mjs` appelé par `deploy.ps1` (erreur = arrêt).
+- Clés « prévu v2 » validées mais SANS effet : `interface.themes|langues|controlesGlobaux|menuPieces.etats`, `circuits.liste[].commande`,
+  `moteurs.liste[].position|angleLamelles`, `cvc.modes|deriveC`, `monitoring`. Implémenter = lire la clé + passer `x-etat` à actif.
+- **Plus aucun offset digital libre par pièce** (simplDirect 125/125) : nouvelles fonctions en analogique (95 libres) ou série.
+- Prochaines phases : 2 stores % + types de circuits, 3 thèmes/langues filtrés, 4 contrôles globaux, 5 états des zones + CVC, 6 monitoring.
+
 ## 02/10/2026 — v6.0.3 → v6.1 : « Villa FTV », dossier `projects/villa-ftv`, correctifs de recette TSW, GUI sans menu
 - Nom affiché **Villa FTV** (v6.0.3) ; dossier renommé `projects/villa-ftv` (f95281a8). Zoom tactile supprimé (`js/gesture-controls.js`, v6.0.4).
 - Pont SIMPL : la pièce affichée est propre à l'écran, retour d11-40 / a10 produit localement (v6.0.5) ; `VillaMotors.render()` paresseux
@@ -118,20 +126,11 @@ scènes, consigne, vacances, partitions ; le slot 2 pilote le matériel réel.
 ## GUI smartphone — agrandissement (14.09.2026)
 Styles `mobile-xl` (fin de `<body>`), `mobile-ux` (moteurs animés, MutationObserver), blocs `mobile-lot-0915/0916` ; cibles ≥ 44 px, repli `@media (max-height: 700px)`. Entête = pièces + engrenage.
 Pièges : un style en ligne `!important` ne se reprend pas en CSS (le retirer du HTML) ; `ch5-button` → `width/height:100%` sur `> div` et `.cb-btn` ; `min-width:0` en grille ; les `customStyle` de `#source-control-overlay` sont `!important` un par un, ne pas les « nettoyer ».
-## Plan 3D (16.09.2026) — fond de page du SITE, le GUI des châssis ne change jamais
-Vidéo par défaut ; `apps/showcase/src/components/Plan3DBackground.jsx` ne la remplace que dans les cas de `PLAN3D_RULES` (aujourd'hui :
-châssis Smartphone). 3D active ⇒ châssis calé à gauche (`.plan3d-on`, `--chassis-scale`). `public/plan3d/plan3d.js` (Three.js) lit le GUI
-à travers l'iframe (CrComLib a10, a71-80, d150-156, clics `ch5-button[data-join]`), API `window.__plan3d`. Détail : `apps/showcase/CLAUDE.md`.
-**Malentendu du 16.09 à ne pas répéter** : une demande « plan 3D / fond d'écran » vise le site Vercel, jamais le GUI.
+## Plan 3D (16.09.2026) — fond de page du SITE, jamais le GUI
+`Plan3DBackground.jsx` (cas `PLAN3D_RULES`, aujourd'hui smartphone) ; `public/plan3d/plan3d.js` lit le GUI via l'iframe. Détail : `apps/showcase/CLAUDE.md`.
 ## Vitrine (apps/showcase, crestrongui.vercel.app)
 Copie régénérée par `python apps/showcase/scripts/sync-villa-crans.py <chemin>/projects/villa-ftv/ch5/src` (jamais éditée à la main) ; `meta.mode = "showcase"`, feedback simulé par `js/local-feedback.js`, curseur de démo. Le script copie aussi `js/villa-joins.js` ; `js/local-feedback.js` est propre à la vitrine.
-**Barre d'outils (14.09.2026) : QR code · Fiche PDF.** « Présentation » retiré (la bulle « Reprise
-de la démo dans N secondes », désormais en bas à gauche dans tous les modes, est la seule commande
-de la démo) et « Plein écran » caché derrière `showEmbedTool` : doublon avec le bouton Scène. Le
-plein écran se demande par l'adresse — **`/3` GUI seule plein écran, `/4` retour au Mode normal**,
-sur le modèle de `/1` et `/0` du Mode Dev (`hooks/useGuiFullscreen.js`, Échap en échappatoire).
-La démo automatique démarre désormais sur **tous les supports** (elle était réservée au PC via
-`isDesktopPointer`) : sans bouton, elle n'était plus démarrable à la main sur mobile et tablette.
+**Barre d'outils** : QR code · Fiche PDF ; plein écran par l'adresse `/3` (GUI seule) et `/4` (retour), comme `/1` `/0` du Mode Dev ; démo automatique sur tous les supports.
 ## Pièges de la chaîne de déploiement (rencontrés en conditions réelles)
 1. `deploy.ps1` en **ASCII pur + BOM** (sans BOM, PowerShell 5.1 lit cp1252 et casse la parité des chaînes).
 2. Jamais de `node -e "..."` dans `Start-Process` : serveur dans `tools/serve_src.mjs` (port 4179).

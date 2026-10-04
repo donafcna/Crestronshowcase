@@ -1,5 +1,25 @@
 # Villa Crans CH5 — journal des versions
 
+## Config v2, phase 1 — 04/10/2026 — schéma de `villa_config.json`, contrôle `check-config`, inventaire (aucun build, GUI inchangé)
+
+Feuille de route du 03.10 (point avec Alexandre), priorité « possibilités et utilisation du JSON ».
+
+- `villa_config.schema.json` (généré par `tools/build-config-schema.py`) : chaque clé décrite en français, bornes et
+  valeurs permises, état `x-etat` = actif / processeur / inutilisé / **prévu v2** (accepté mais sans effet).
+- `"$schema": "./villa_config.schema.json"` en tête de `villa_config.json` : autocomplétion et contrôle dans VS Code.
+- `tools/check-config.mjs` (sans dépendance) : erreurs bloquantes (types, bornes, ids en double, pièces du menu
+  inexistantes, niveaux ≠ circuits, consignes hors plage, sources inconnues, clés de traduction à la casse près, 15 pièces
+  actives max en backend simpl) et avertissements (clé inconnue, clé prévue). Appelé par `deploy.ps1` après « JSON OK ».
+- `docs/10_CONFIG_JSON_V2.md` : qui lit quelle clé, clés mortes (`meta.languesDisponibles`, `cvc.vitesses`,
+  `cvc.marcheArret`, `partitionsAlarme`, `valeursParDefaut.cvc`…), forme des clés v2 (thèmes, langues, contrôles globaux,
+  types de circuits, position / angle des stores, modes CVC, monitoring) et joins à prévoir : **plus aucun offset
+  digital libre par pièce** en backend simpl, 95 analogiques libres.
+- `tools/quality/validate-config.mjs` : 12 moteurs par pièce acceptés (règle restée à 6 depuis v5.3).
+
+Vérifié : Villa FTV (racine, `src/`), Appartement Crans-Montana et les 2 copies vitrine → 0 erreur avec `check-config`
+et avec ajv 8 (draft-07, contrôle croisé) ; fichier volontairement fautif → 12 erreurs détectées par les deux.
+Appartement : 8 avertissements (12 moteurs décrits pour `nombre = 6`).
+
 ## v6.2 — 02/10/2026 — bouton « Recherche » : actions rapides (recherche, dernières actions, suggestions)
 
 | Artefact | Etat de ce lot |

@@ -188,6 +188,12 @@ if (-not $SkipBuild -and $Target -notin @('cp4', 'config', 'simpl')) {
     if (Test-Path $cfgCheck) {
         try { Get-Content $cfgCheck -Raw -Encoding UTF8 | ConvertFrom-Json | Out-Null; Write-Host "  villa_config.json : JSON OK" -ForegroundColor Green }
         catch { throw "villa_config.json invalide, deploiement annule : $($_.Exception.Message)" }
+        # Structure, bornes et coherences contre villa_config.schema.json (tools/check-config.mjs, sans dependance npm)
+        $cfgSchema = Join-Path $root 'tools\check-config.mjs'
+        if (Test-Path $cfgSchema) {
+            & node $cfgSchema $cfgCheck
+            if ($LASTEXITCODE -ne 0) { throw "villa_config.json non conforme a villa_config.schema.json, deploiement annule (voir les ERREUR ci-dessus)" }
+        }
     }
 
     # Increment automatique de la version (version.json -> src/version.js, affichee par le GUI)
