@@ -1,0 +1,61 @@
+{
+  "kind": "Inspection statique, pas une compilation C#",
+  "checks": [
+    {
+      "name": "HTML avant/apres le bloc de diagnostic conserve a l identique",
+      "status": "passed"
+    },
+    {
+      "name": "Attributs natifs CH5 et joins des boutons inchanges",
+      "status": "passed"
+    },
+    {
+      "name": "Aucune manipulation de selection ajoutee par la sonde",
+      "status": "passed"
+    },
+    {
+      "name": "Pas d ecriture de commande par la sonde",
+      "status": "passed"
+    },
+    {
+      "name": "Syntaxe valide des 8 scripts inline",
+      "status": "passed"
+    },
+    {
+      "name": "Impulsions moteurs: deux ecritures explicites, EISC seulement",
+      "status": "passed"
+    },
+    {
+      "name": "Impulsions moteurs: controles piece, intersystem et EISC enregistre preserves",
+      "status": "passed"
+    },
+    {
+      "name": "Comptage des deux fronts EISC",
+      "status": "passed"
+    },
+    {
+      "name": "Tables du contrat v4 inchangees",
+      "status": "passed"
+    },
+    {
+      "name": "Commandes applicatives globales inchangees",
+      "status": "passed"
+    },
+    {
+      "name": "Ancien compteur partage et LatMark supprimes",
+      "status": "passed"
+    },
+    {
+      "name": "Contexte de mesure restaure par finally",
+      "status": "passed"
+    },
+    {
+      "name": "Empreinte candidat projects/villa-crans/ch5/src/iphone.html",
+      "status": "passed"
+    },
+    {
+      "name": "Empreinte candidat projects/villa-crans/ch5/Backend/Backend/ControlSystem.cs",
+      "status": "passed"
+    }
+  ]
+}

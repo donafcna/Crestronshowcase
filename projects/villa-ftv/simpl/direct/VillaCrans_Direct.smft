@@ -1,0 +1,24 @@
+<Device Model="CP4">
+   <Network Type="Cresnet" Id="01"/>
+   <Network Type="Ethernet" Id="02">
+      <Device Model="TSW-770" DeviceId="03" Name="Dalle TSW-1070 (salon)"/>
+      <Device Model="XPanel 3.0 Crestron HTML5" DeviceId="04" Name="XPanel"/>
+      <Device Model="Crestron One" DeviceId="05" Name="iPad Crestron One"/>
+      <Device Model="Crestron One" DeviceId="06" Name="iPhone Crestron One"/>
+      <Device Model="XPanel 3.0 Crestron HTML5" DeviceId="11" Name="QR Salle_de_jeux"/>
+      <Device Model="XPanel 3.0 Crestron HTML5" DeviceId="12" Name="QR Chambre_maman"/>
+      <Device Model="XPanel 3.0 Crestron HTML5" DeviceId="13" Name="QR Chambre_papa"/>
+      <Device Model="XPanel 3.0 Crestron HTML5" DeviceId="14" Name="QR Suite_amis"/>
+      <Device Model="XPanel 3.0 Crestron HTML5" DeviceId="15" Name="QR Chambre_amis"/>
+      <Device Model="XPanel 3.0 Crestron HTML5" DeviceId="16" Name="QR Chambre_2"/>
+      <Device Model="XPanel 3.0 Crestron HTML5" DeviceId="17" Name="QR Bureau"/>
+      <Device Model="XPanel 3.0 Crestron HTML5" DeviceId="18" Name="QR Home_cinema"/>
+      <Device Model="XPanel 3.0 Crestron HTML5" DeviceId="19" Name="QR Chambre_3"/>
+      <Device Model="XPanel 3.0 Crestron HTML5" DeviceId="1A" Name="QR Suite_invites"/>
+      <Device Model="XPanel 3.0 Crestron HTML5" DeviceId="1B" Name="QR Terrasse_et_jardin"/>
+      <Device Model="XPanel 3.0 Crestron HTML5" DeviceId="1C" Name="QR Piscine_et_spa"/>
+      <Device Model="XPanel 3.0 Crestron HTML5" DeviceId="1D" Name="QR Sauna_et_hammam"/>
+      <Device Model="XPanel 3.0 Crestron HTML5" DeviceId="1E" Name="QR Pool_house"/>
+      <Device Model="XPanel 3.0 Crestron HTML5" DeviceId="1F" Name="QR Garage_et_ateliers"/>
+   </Network>
+</Device>

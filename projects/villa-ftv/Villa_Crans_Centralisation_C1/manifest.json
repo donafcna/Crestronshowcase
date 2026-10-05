@@ -1,0 +1,16 @@
+{
+  "candidate": "CENT-20260921-1",
+  "files": [
+    {
+      "path": "ch5/src/iphone.html",
+      "original_sha256": "bc9ac1b66ecb376dcabf81adb141f3697b955166b286c05bbec70ea6af67b91a",
+      "candidate_sha256": "a2c5d8aac2957a2a3638e09e045613cdf4fa5f860cfe0d4799742a5db48899bc"
+    },
+    {
+      "path": "ch5/Backend/Backend/ControlSystem.cs",
+      "original_sha256": "4496bb6d61d326b4d9562c42cc9f78b1aebd1e8c0d5816a611cd951d05774425",
+      "candidate_sha256": "6e9e467276488dfe102ef4d2210d321c5645bbef0145f5981e1c98d2df0a51ff"
+    }
+  ],
+  "package_layout": 2
+}
