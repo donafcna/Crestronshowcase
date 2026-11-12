@@ -323,9 +323,8 @@ const ShowcaseInner = ({ sectorId, projectId, device }) => {
   const sheetUrl = `/fiche/${activeProject.id}${clientName ? `?client=${encodeURIComponent(clientName)}` : ""}`;
   const embedSrc =
     !activeProject.isInteractive && activeProject.embedUrl
-      ? viewportDevice === "phone" && activeProject.embedPhoneUrl
-        ? activeProject.embedPhoneUrl
-        : activeProject.embedUrl
+      ? activeProject.embedByViewport?.[viewportDevice] ||
+        (viewportDevice === "phone" && activeProject.embedPhoneUrl ? activeProject.embedPhoneUrl : activeProject.embedUrl)
       : null;
   const displayTitle = clientName || getProjectName(activeProject, lang);
   const Simulator = getSimulator(activeProject);

@@ -624,3 +624,7 @@ Demande de Donatien : mettre la vitrine à jour avec les dernières modification
 ## 12/11/2026 — Six Senses A10, vitrine 2.3.9
 
 Le titre public du projet `appartement-crans` est Six Senses A10. La dalle, la tablette et le téléphone sont complétés par les routes `desktop` (PC / XPanel) et `web-xpanel` (Web XPanel), deux présentations du même GUI Connect et du même moteur local. Le moteur simule la course des stores, leur arrêt et les positions de scènes (100/65/35/0 %) et commandes globales (100/50/0 %). Chaque page dispose de son propre état. La synchronisation de la vitrine retire le démarrage WebXPanel et les identifiants de circuits Lutron de la configuration publique.
+
+## 12/11/2026 — XPanel A10 principal et XPanel Climat, vitrine 2.3.10
+
+La route `desktop` utilise l'archive A10 `a10-bench-xpanel.ch5z` (interface principale). La route `web-xpanel` utilise `a10-bench-climate.ch5z` (interface limitée aux pièces à thermostat). Les deux archives partagent leur interface graphique et leur moteur local. `scripts/sync-a10-xpanels.py` extrait les ressources de présentation, filtre la configuration et retire le démarrage du transport matériel. Les pages utilisent une politique `connect-src 'none'`. Pour régénérer, passer le répertoire `A10/releases/bench` au script Python. La recette `scripts/test-a10-xpanels.cjs` vérifie les deux parcours et l'absence de requêtes de commande.

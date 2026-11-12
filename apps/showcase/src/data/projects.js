@@ -38,8 +38,8 @@ export const sectors = [
 export const devices = [
   { id: `xpanel`, name: `Xpanel`, viewport: `desktop`, simulatorType: `desktop`, iconName: `Monitor`,
     label: { fr: `PC / Xpanel`, en: `PC / Xpanel`, de: `PC / Xpanel` } },
-  { id: `web_xpanel`, name: `Web XPanel`, viewport: `web-xpanel`, simulatorType: `desktop`, iconName: `Monitor`,
-    label: { fr: `Web XPanel`, en: `Web XPanel`, de: `Web XPanel` } },
+  { id: `web_xpanel`, name: `XPanel Climate`, viewport: `web-xpanel`, simulatorType: `desktop`, iconName: `Monitor`,
+    label: { fr: `XPanel Climat`, en: `XPanel Climate`, de: `XPanel Klima` } },
   { id: `crestron`, name: `TSW-1070`, viewport: `wallpanel`, simulatorType: `wallpanel`, iconName: `LayoutGrid`,
     label: { fr: `Dalle TSW`, en: `TSW panel`, de: `TSW Panel` } },
   { id: `crestron_1080`, name: `TSW-1080`, viewport: `wallpanel_hd`, simulatorType: `wallpanel`, iconName: `LayoutGrid`,
@@ -120,6 +120,10 @@ export const projects = [
     isInteractive: false,
     embedUrl: `/showcases/appartement-crans/index.html`,
     embedPhoneUrl: `/showcases/appartement-crans/iphone.html`,
+    embedByViewport: {
+      desktop: `/showcases/appartement-crans/xpanels/main.html`,
+      "web-xpanel": `/showcases/appartement-crans/xpanels/climate.html`,
+    },
     thumbnailUrl: `/sheets/appartement-crans/01-pieces-salon.png`,
     year: `2026`,
     text: {

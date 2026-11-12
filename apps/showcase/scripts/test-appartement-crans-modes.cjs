@@ -23,8 +23,6 @@ const DEVICES = [
   { id: 'wallpanel', route: 'wallpanel' },
   { id: 'tablet', route: 'tablet' },
   { id: 'phone', route: 'phone' },
-  { id: 'desktop', route: 'desktop' },
-  { id: 'web-xpanel', route: 'web-xpanel' },
 ];
 const THEMES = ['dark', 'light', 'glass'];
 const MODES = ['normal', 'scene-reel', 'scene-responsive', 'plein-ecran'];

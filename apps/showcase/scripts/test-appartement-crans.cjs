@@ -28,7 +28,7 @@ const OUT = path.resolve(arg('--out', 'test-results/appartement-crans'));
 const NO_DEMO = process.argv.includes('--no-demo');
 fs.mkdirSync(OUT, { recursive: true });
 const PROJECT = 'appartement-crans';
-const DEVICES = ['wallpanel', 'tablet', 'phone', 'desktop', 'web-xpanel'];
+const DEVICES = ['wallpanel', 'tablet', 'phone'];
 
 const report = { base: BASE, checks: [], failures: [], errors: [], external: [], legacy: [], demo: {} };
 const check = (name, ok, detail) => {
