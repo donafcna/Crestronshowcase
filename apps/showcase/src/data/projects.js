@@ -113,13 +113,14 @@ export const projects = [
     // Vitrine régénérée par scripts/sync-appartement-crans.py (jamais éditée à la main).
     id: `appartement-crans`,
     name: `Six Senses A10`,
+    defaultViewport: `tablet`,
     autoDemo: false,
     status: `realisation`,
     client: `Propriétaire privé`,
     sectors: [`residentiel`],
-    devices: [`crestron`, `ios_tablet`, `ios_phone`, `xpanel`, `web_xpanel`],
+    devices: [`ios_tablet`, `ios_phone`, `xpanel`, `web_xpanel`],
     isInteractive: false,
-    embedUrl: `/showcases/appartement-crans/xpanels/wallpanel.html`,
+    embedUrl: `/showcases/appartement-crans/xpanels/mobile.html`,
     embedPhoneUrl: `/showcases/appartement-crans/xpanels/mobile.html`,
     embedByViewport: {
       tablet: `/showcases/appartement-crans/xpanels/mobile.html`,

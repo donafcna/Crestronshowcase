@@ -636,3 +636,7 @@ Les routes `phone` et `tablet` et le lecteur tactile utilisent le GUI de l’arc
 ## 12/11/2026 — Hotel des Horlogers, vitrine 2.3.12
 
 Titre public harmonisé sur la vitrine, la fiche et les pages intégrées. Dalle, iPad et XPanel partagent la copie CH5 2.13.5 avec WebXPanel désactivé, sans adresse d’automate. L’iPhone conserve sa présentation portrait et son simulateur local. Sur la copie CH5, les commandes de stores renvoient une impulsion simulée de 250 ms au GUI. Les quatre routes ont été vérifiées sous Chromium avec une scène d’éclairage, un mouvement et un arrêt de store, puis une modification de consigne.
+
+## 12/11/2026 — Retrait du support TSW A10
+
+Aucun GUI TSW A10 dédié. La variante de vitrine a été retirée du sélecteur et des ressources générées. L’ancienne route `wallpanel` ouvre l’iPad. Les quatre supports A10 sont Crestron ONE sur iPhone et iPad, XPanel principal et XPanel Climat.

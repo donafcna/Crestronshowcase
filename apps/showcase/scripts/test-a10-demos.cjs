@@ -9,7 +9,7 @@ const prefix = '/interfaces/residentiel/appartement-crans/';
   try {
     const cases = [
       ['desktop', 'main'], ['web-xpanel', 'climate'],
-      ['wallpanel', 'wallpanel'], ['phone', 'mobile'], ['tablet', 'mobile'],
+      ['phone', 'mobile'], ['tablet', 'mobile'],
       ['phone', 'mobile', 'iPhone 15'], ['tablet', 'mobile', 'iPad Mini landscape'],
     ];
     for (const [route, variant, device] of cases) {

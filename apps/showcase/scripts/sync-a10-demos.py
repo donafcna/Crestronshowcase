@@ -82,7 +82,6 @@ def main():
         ("main", main_panel, "xpanel", "", "XPanel"),
         ("climate", climate_panel, "xpanel", "climate", "Climate"),
         ("mobile", mobile, "mobile", "", "Crestron ONE"),
-        ("wallpanel", main_panel, "xpanel", "", "TSW"),
     ):
         runtime = read_assignment(panel["runtime.js"])
         if runtime.get("target") != target or runtime.get("mode", "") != mode:
