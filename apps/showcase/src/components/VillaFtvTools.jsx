@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from '../context/LanguageContext';
 import './villa-ftv.css';
 
-// Villa FTV (v6.1) : sélecteur « Espace » du site, sur le modèle de l'Hôtel Brassus.
+// Villa FTV (v6.1) : sélecteur « Espace » du site, sur le modèle de l'Hôtel des Horlogers.
 // « Général » (défaut) = GUI complète avec le menu de gauche ; une pièce = GUI sans menu (?menu=0&room=N),
 // nom de la pièce en titre. Les pièces viennent du villa_config.json de la vitrine (pieces actives).
 const CONFIG_URL = '/showcases/villa-gemini-frequencetv/villa_config.json';

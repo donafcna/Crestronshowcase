@@ -15,11 +15,21 @@
     lib[method](String(join),value);
   };
   const exclusive = (joins, active) => joins.forEach(j => feedback('b', j, j === active));
+  const blindPulses = new Map();
   function command(type, key, value) {
     const j = Number(key);
     if (!Number.isFinite(j)) return;
     if (type === 'n') { feedback('n', j, value); return; }
     if (type !== 'b' || !value) return;
+    if ([21, 22, 23].includes(Math.floor(j / 100)) && j % 100 >= 1 && j % 100 <= 50) {
+      clearTimeout(blindPulses.get(j));
+      feedback('b', j, true);
+      blindPulses.set(j, setTimeout(() => {
+        feedback('b', j, false);
+        blindPulses.delete(j);
+      }, 250));
+      return;
+    }
     if ([111,121,125,129,133,137].includes(j)) feedback('b',j,!values.get('b'+j));
     if (j >= 194 && j <= 196) exclusive([194,195,196],j);
     if (j >= 301 && j <= 303) exclusive([301,302,303],j);
@@ -67,6 +77,7 @@
     const blinds=['bar','restaurant','seminar'].includes(zone);
     // Sans stores dans l'espace : l'onglet Stores du menu du bas disparait (demo.css).
     document.documentElement.classList.toggle('hdh-no-blinds',!blinds);
+    feedback('b',250,blinds);
     if(blinds)for(let i=1;i<=2;i++){feedback('s',1300+i,'Store '+i);feedback('b',2000+i,true);feedback('b',540+i,true);}
     feedback('b',2,true);
     window.HDH_DEMO={zone,values,feedback,command};

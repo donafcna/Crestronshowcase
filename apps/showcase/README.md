@@ -632,3 +632,7 @@ La route `desktop` utilise l'archive A10 `a10-bench-xpanel.ch5z` (interface prin
 ## 12/11/2026 — GUI A10 d’origine sur iPhone, iPad et TSW, vitrine 2.3.11
 
 Les routes `phone` et `tablet` et le lecteur tactile utilisent le GUI de l’archive `a10-bench-mobile.ch5z` (Crestron ONE), qui sélectionne son agencement selon la largeur. Aucune archive TSW A10 distincte n’a été retrouvée dans les livraisons ni dans l’historique du dépôt A10. La route `wallpanel` utilise le GUI grand format de `a10-bench-xpanel.ch5z` dans le châssis TSW existant. Le générateur `scripts/sync-a10-demos.py` et la recette `scripts/test-a10-demos.cjs` couvrent désormais les cinq routes. Les anciennes recettes Connect décrivent la vitrine antérieure.
+
+## 12/11/2026 — Hotel des Horlogers, vitrine 2.3.12
+
+Titre public harmonisé sur la vitrine, la fiche et les pages intégrées. Dalle, iPad et XPanel partagent la copie CH5 2.13.5 avec WebXPanel désactivé, sans adresse d’automate. L’iPhone conserve sa présentation portrait et son simulateur local. Sur la copie CH5, les commandes de stores renvoient une impulsion simulée de 250 ms au GUI. Les quatre routes ont été vérifiées sous Chromium avec une scène d’éclairage, un mouvement et un arrêt de store, puis une modification de consigne.

@@ -1,12 +1,12 @@
 export default {
   "fr": {
-    "intro": "Interface originale CH5 2.12.19 : bar, lobby, restaurant, salons, wellness et séminaires. Démonstration locale des commandes AV, éclairages, stores et température. Maquette 3D des niveaux documentés ; implantation globale, hauteurs et finitions interprétées.",
+    "intro": "Interface originale CH5 2.13.5 : bar, lobby, restaurant, salons, wellness et séminaires. Démonstration locale des commandes AV, éclairages, stores et température. Maquette 3D des niveaux documentés ; implantation globale, hauteurs et finitions interprétées.",
     "sections": [
       {
         "title": "GUI iPhone et maquette 3D",
         "image": "/sheets/hotel-brassus/03-phone.png",
         "portrait": true,
-        "text": "La section Hôtellerie ouvre Hotel Brassus sur iPhone, avec la maquette 3D en fond. Sept espaces, éclairages et circuits, audio, stores disponibles et température. Les châssis Dalle TSW, PC/XPanel et Tablette conservent le GUI original et le fond vidéo.",
+        "text": "La section Hôtellerie ouvre Hotel des Horlogers sur iPhone, avec la maquette 3D en fond. Sept espaces, éclairages et circuits, audio, stores disponibles et température. Les châssis Dalle TSW, PC/XPanel et Tablette conservent le GUI original et le fond vidéo.",
         "buttons": []
       },
       {
@@ -33,13 +33,13 @@ export default {
     ]
   },
   "en": {
-    "intro": "Original CH5 2.12.19 interface for the bar, lobby, restaurant, lounges, wellness and seminar rooms. Local simulation of AV, lighting, blinds and temperature. 3D reconstruction of documented levels; overall positioning, heights and finishes are interpretive.",
+    "intro": "Original CH5 2.13.5 interface for the bar, lobby, restaurant, lounges, wellness and seminar rooms. Local simulation of AV, lighting, blinds and temperature. 3D reconstruction of documented levels; overall positioning, heights and finishes are interpretive.",
     "sections": [
       {
         "title": "iPhone GUI and 3D model",
         "image": "/sheets/hotel-brassus/03-phone.png",
         "portrait": true,
-        "text": "Hospitality opens Hotel Brassus on iPhone with the 3D model in the background. Seven spaces, lighting and circuits, audio, available blinds and temperature. TSW, PC/XPanel and tablet retain the original GUI and video background.",
+        "text": "Hospitality opens Hotel des Horlogers on iPhone with the 3D model in the background. Seven spaces, lighting and circuits, audio, available blinds and temperature. TSW, PC/XPanel and tablet retain the original GUI and video background.",
         "buttons": []
       },
       {
@@ -66,13 +66,13 @@ export default {
     ]
   },
   "de": {
-    "intro": "Originale CH5-Oberfläche 2.12.19 für Bar, Lobby, Restaurant, Salons, Wellness und Seminarräume. Lokale Simulation von AV, Licht, Beschattung und Temperatur. 3D-Rekonstruktion dokumentierter Ebenen; Gesamtanordnung, Höhen und Materialien sind interpretiert.",
+    "intro": "Originale CH5-Oberfläche 2.13.5 für Bar, Lobby, Restaurant, Salons, Wellness und Seminarräume. Lokale Simulation von AV, Licht, Beschattung und Temperatur. 3D-Rekonstruktion dokumentierter Ebenen; Gesamtanordnung, Höhen und Materialien sind interpretiert.",
     "sections": [
       {
         "title": "iPhone-GUI und 3D-Modell",
         "image": "/sheets/hotel-brassus/03-phone.png",
         "portrait": true,
-        "text": "Hotellerie öffnet Hotel Brassus auf dem iPhone mit dem 3D-Modell im Hintergrund. Sieben Bereiche, Beleuchtung und Lichtkreise, Audio, verfügbare Storen und Temperatur. TSW, PC/XPanel und Tablet behalten das Original-GUI und den Videohintergrund.",
+        "text": "Hotellerie öffnet Hotel des Horlogers auf dem iPhone mit dem 3D-Modell im Hintergrund. Sieben Bereiche, Beleuchtung und Lichtkreise, Audio, verfügbare Storen und Temperatur. TSW, PC/XPanel und Tablet behalten das Original-GUI und den Videohintergrund.",
         "buttons": []
       },
       {

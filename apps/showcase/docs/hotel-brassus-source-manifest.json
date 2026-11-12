@@ -1,6 +1,6 @@
 {
-  "ch5Version": "2.12.19",
-  "sourceFolder": "hdhsrc",
+  "ch5Version": "2.13.5",
+  "sourceFolder": "20260918 HDH CH5",
   "files": [
     {
       "path": "app/project/assets/data/translation/en.json",
@@ -75,16 +75,16 @@
       "sha256": "9ab0fa495fa3eddd69df19257861b1a80528c7838ac4030d92dde9e671282381"
     },
     {
-      "path": "app/project/assets/img/Photos/horloger.png",
-      "sha256": "738f6e672de8f4523b1fa05dbdd907abdfd664ef32c3180580a47a5af796192d"
-    },
-    {
-      "path": "app/project/assets/img/Project-Backgrounds/Background Horloger.png",
-      "sha256": "e4a00e1dc0e980978972958e6f78c7bf0d62138c4364d118808f39da9edb799f"
-    },
-    {
       "path": "app/project/assets/img/icons/1420410410.svg",
       "sha256": "e4b4e2c9bf32f14c54a5bbfe47b46d1b644d168b95944da253c148aef81b5337"
+    },
+    {
+      "path": "app/project/assets/img/icons/afaulconbridge-Lightbulb-OnOff-1.svg",
+      "sha256": "ddf898d01f6e78d175fc26029adaa75848c17d3c038bdcd53d8d8f665ebe7629"
+    },
+    {
+      "path": "app/project/assets/img/icons/afaulconbridge-Lightbulb-OnOff-2.svg",
+      "sha256": "0d3119383c1fece6314d626d991fa3d9c2bf34ed4563a48c091a0878c6001e61"
     },
     {
       "path": "app/project/assets/img/icons/Audio/music.svg",
@@ -131,6 +131,14 @@
       "sha256": "14bfd40ef35857b4204317f931fa9399720b287c7ff9e8f0512c4d9535c56a0a"
     },
     {
+      "path": "app/project/assets/img/icons/blinds (1).png",
+      "sha256": "11a2995df2429e1b97681a53773ef89e827d4d17521f62fa0e3de182aca4ad7e"
+    },
+    {
+      "path": "app/project/assets/img/icons/blinds.png",
+      "sha256": "11a2995df2429e1b97681a53773ef89e827d4d17521f62fa0e3de182aca4ad7e"
+    },
+    {
       "path": "app/project/assets/img/icons/BULB01.svg",
       "sha256": "4c922942a930c7f1012ea6c098e10fc48e15ad91454c985894c1efd152835aa4"
     },
@@ -141,62 +149,6 @@
     {
       "path": "app/project/assets/img/icons/BULB02.svg",
       "sha256": "9f61db69e25120718d5ec097b91981abca6cf600b1302a326e272a1fe56a22cd"
-    },
-    {
-      "path": "app/project/assets/img/icons/GraySquareButton.svg",
-      "sha256": "a7b9adbad1ea508c6fe5dfabbf4322547b58d0b67e5790ede8584a0b3a9e6ead"
-    },
-    {
-      "path": "app/project/assets/img/icons/GreenRoundedButton.svg",
-      "sha256": "61fd5ccaa32501fc1991ca51c0c4cde7d2d6558f47c04e469bcdc5dd6159224c"
-    },
-    {
-      "path": "app/project/assets/img/icons/OrangeRoundedButton.svg",
-      "sha256": "f3ed7832867505d67074aff44c1deb4edbbf77564c37f74ae63db2e3c870ae8b"
-    },
-    {
-      "path": "app/project/assets/img/icons/OrangeSquareButton.svg",
-      "sha256": "e730001019e659a2d7ffe26f809fdccc27e6e645f724b8bf9fe8495acfdcf253"
-    },
-    {
-      "path": "app/project/assets/img/icons/RedRoundedButton.svg",
-      "sha256": "d93edf9cc5d681195a69697708b40c5aa5d08f4f0af75a641922a48dd0cccaee"
-    },
-    {
-      "path": "app/project/assets/img/icons/RedSquareButton.svg",
-      "sha256": "2adf778af752f7c6342df32be9e55dba691d5d6b7a21c6913158362261105985"
-    },
-    {
-      "path": "app/project/assets/img/icons/Romanov_Light_bulb_.svg",
-      "sha256": "bf8ff295b85c7a6a596305775c18eaf931bf41eadc814a4b0ea494576dcd2c12"
-    },
-    {
-      "path": "app/project/assets/img/icons/Video/Icon AV Black.png",
-      "sha256": "745566d22045d7b09e18ff0d51e059b1e9e4f94b65c763f215b944a135fc6f43"
-    },
-    {
-      "path": "app/project/assets/img/icons/Video/Icon AV BlackTr.png",
-      "sha256": "840eb2f8f8fc36388e3a840cdee0f71f56e54a5d0a9c75c704dfa7f205c003e7"
-    },
-    {
-      "path": "app/project/assets/img/icons/Video/Icon-AV-BlackTr.svg",
-      "sha256": "c13b23b9ecac49a235ca112993d2356cc72046f045f25b0d11085620af77f9ae"
-    },
-    {
-      "path": "app/project/assets/img/icons/afaulconbridge-Lightbulb-OnOff-1.svg",
-      "sha256": "ddf898d01f6e78d175fc26029adaa75848c17d3c038bdcd53d8d8f665ebe7629"
-    },
-    {
-      "path": "app/project/assets/img/icons/afaulconbridge-Lightbulb-OnOff-2.svg",
-      "sha256": "0d3119383c1fece6314d626d991fa3d9c2bf34ed4563a48c091a0878c6001e61"
-    },
-    {
-      "path": "app/project/assets/img/icons/blinds (1).png",
-      "sha256": "11a2995df2429e1b97681a53773ef89e827d4d17521f62fa0e3de182aca4ad7e"
-    },
-    {
-      "path": "app/project/assets/img/icons/blinds.png",
-      "sha256": "11a2995df2429e1b97681a53773ef89e827d4d17521f62fa0e3de182aca4ad7e"
     },
     {
       "path": "app/project/assets/img/icons/cloud-download-outline.svg",
@@ -231,6 +183,14 @@
       "sha256": "eb047e531f02bee75793601ef185ccd95b7ce699e3c34302a9396031bdba86ab"
     },
     {
+      "path": "app/project/assets/img/icons/GraySquareButton.svg",
+      "sha256": "a7b9adbad1ea508c6fe5dfabbf4322547b58d0b67e5790ede8584a0b3a9e6ead"
+    },
+    {
+      "path": "app/project/assets/img/icons/GreenRoundedButton.svg",
+      "sha256": "61fd5ccaa32501fc1991ca51c0c4cde7d2d6558f47c04e469bcdc5dd6159224c"
+    },
+    {
       "path": "app/project/assets/img/icons/icon-light-18.jpg",
       "sha256": "25642dc76424b962535444c0d7943caef140c07c0b60949ddc880d33e8e4db4a"
     },
@@ -241,6 +201,10 @@
     {
       "path": "app/project/assets/img/icons/light-bulb.svg",
       "sha256": "05d821fa53313f2d0e353122bf2940d9a6b6c540e960abdce2496c8a6e77288a"
+    },
+    {
+      "path": "app/project/assets/img/icons/lightbulb.svg",
+      "sha256": "2224c744d91c96a68a076d7ef30df6720bb358cb9c191b61eee9bd79ecd2f9d4"
     },
     {
       "path": "app/project/assets/img/icons/lightOff.png",
@@ -267,10 +231,6 @@
       "sha256": "25be263580ab67885000384c5fef493e018e25f20155026f2d33f5166535833b"
     },
     {
-      "path": "app/project/assets/img/icons/lightbulb.svg",
-      "sha256": "2224c744d91c96a68a076d7ef30df6720bb358cb9c191b61eee9bd79ecd2f9d4"
-    },
-    {
       "path": "app/project/assets/img/icons/loud-speaker.svg",
       "sha256": "202c6bb80e0f364f1c2bd63b666e9aa08fd993d4edd8a5ec1e03c1e76373d3dc"
     },
@@ -293,6 +253,26 @@
     {
       "path": "app/project/assets/img/icons/microphone-grey.svg",
       "sha256": "e0855bc9585f9d475d14501391e4f35b05cade76d83ee6a567a69d180164351f"
+    },
+    {
+      "path": "app/project/assets/img/icons/OrangeRoundedButton.svg",
+      "sha256": "f3ed7832867505d67074aff44c1deb4edbbf77564c37f74ae63db2e3c870ae8b"
+    },
+    {
+      "path": "app/project/assets/img/icons/OrangeSquareButton.svg",
+      "sha256": "e730001019e659a2d7ffe26f809fdccc27e6e645f724b8bf9fe8495acfdcf253"
+    },
+    {
+      "path": "app/project/assets/img/icons/RedRoundedButton.svg",
+      "sha256": "d93edf9cc5d681195a69697708b40c5aa5d08f4f0af75a641922a48dd0cccaee"
+    },
+    {
+      "path": "app/project/assets/img/icons/RedSquareButton.svg",
+      "sha256": "2adf778af752f7c6342df32be9e55dba691d5d6b7a21c6913158362261105985"
+    },
+    {
+      "path": "app/project/assets/img/icons/Romanov_Light_bulb_.svg",
+      "sha256": "bf8ff295b85c7a6a596305775c18eaf931bf41eadc814a4b0ea494576dcd2c12"
     },
     {
       "path": "app/project/assets/img/icons/shutter (1).png",
@@ -363,6 +343,26 @@
       "sha256": "af98e0f38d87fedb75efd9c2076345fb18e47c685d161dfcbe300cc724c1ef1f"
     },
     {
+      "path": "app/project/assets/img/icons/Video/Icon AV Black.png",
+      "sha256": "745566d22045d7b09e18ff0d51e059b1e9e4f94b65c763f215b944a135fc6f43"
+    },
+    {
+      "path": "app/project/assets/img/icons/Video/Icon AV BlackTr.png",
+      "sha256": "840eb2f8f8fc36388e3a840cdee0f71f56e54a5d0a9c75c704dfa7f205c003e7"
+    },
+    {
+      "path": "app/project/assets/img/icons/Video/Icon-AV-BlackTr.svg",
+      "sha256": "c13b23b9ecac49a235ca112993d2356cc72046f045f25b0d11085620af77f9ae"
+    },
+    {
+      "path": "app/project/assets/img/navigation/crestron_swirl_blue.svg",
+      "sha256": "7cda94997813e2b3da48c12e68ac5001ec7ee268f790d2540a72db30cf9e5eb9"
+    },
+    {
+      "path": "app/project/assets/img/navigation/finger.svg",
+      "sha256": "5f3512e424c2bef2d6b8726b8c39f9c51e121f7712e385bf9ddf7ab53684771b"
+    },
+    {
       "path": "app/project/assets/img/navigation/Icon AV Black.png",
       "sha256": "745566d22045d7b09e18ff0d51e059b1e9e4f94b65c763f215b944a135fc6f43"
     },
@@ -393,14 +393,6 @@
     {
       "path": "app/project/assets/img/navigation/Icon Temperature White.png",
       "sha256": "3ec05d9b9f0f0caa56655e9b5aa4f151cbf44c00845ffdfc39319aa4ae7dd911"
-    },
-    {
-      "path": "app/project/assets/img/navigation/crestron_swirl_blue.svg",
-      "sha256": "7cda94997813e2b3da48c12e68ac5001ec7ee268f790d2540a72db30cf9e5eb9"
-    },
-    {
-      "path": "app/project/assets/img/navigation/finger.svg",
-      "sha256": "5f3512e424c2bef2d6b8726b8c39f9c51e121f7712e385bf9ddf7ab53684771b"
     },
     {
       "path": "app/project/assets/img/navigation/idea.svg",
@@ -455,6 +447,14 @@
       "sha256": "414f231f9a13ebf6fd5b51f6f0adfb2277040044ed4f6e6e90132f7ab3272cd3"
     },
     {
+      "path": "app/project/assets/img/Photos/horloger.png",
+      "sha256": "738f6e672de8f4523b1fa05dbdd907abdfd664ef32c3180580a47a5af796192d"
+    },
+    {
+      "path": "app/project/assets/img/Project-Backgrounds/Background Horloger.png",
+      "sha256": "e4a00e1dc0e980978972958e6f78c7bf0d62138c4364d118808f39da9edb799f"
+    },
+    {
       "path": "app/project/components/pages/av/av-emulator.json",
       "sha256": "f79b9408ee9a4419a3f3458ad079d64ea6508366369eab30db5db52ad9d7b333"
     },
@@ -468,7 +468,7 @@
     },
     {
       "path": "app/project/components/pages/blinds/blinds.html",
-      "sha256": "af8d35f02a41e4d1c3e3282b094c90d1018a43e8400528873f4dda491bf58448"
+      "sha256": "b1944186035ecc31dc4c75f61ffaeea1973b55cf5d013aa19fc2862d59a6a189"
     },
     {
       "path": "app/project/components/pages/lighting/lighting-emulator.json",
@@ -476,7 +476,7 @@
     },
     {
       "path": "app/project/components/pages/lighting/lighting.html",
-      "sha256": "ef663c1e5d632a3bd81c368282a418ceff7ab10b72b7716a036c3718060cfd73"
+      "sha256": "53b4853ad32ab8bade6c3ef91d5678d817547ca09ffeeaf2bae3a68536613611"
     },
     {
       "path": "app/project/components/pages/poweroff/poweroff-emulator.json",
@@ -492,7 +492,7 @@
     },
     {
       "path": "app/project/components/pages/temperature/temperature.html",
-      "sha256": "e68b34156732215d9d792c60f176bc90008e4848596511b2660ab7dfa3a372c5"
+      "sha256": "ad4305ccf58094a533b7c2640f9ed7c6d25ec9e4854c4848e54b7807d63963e7"
     },
     {
       "path": "app/template/assets/data/translation/en.json",
@@ -783,12 +783,12 @@
       "sha256": "afe5e7afaaa254ed453573c64adcfcdc5a8435c0481d7aecc17ae4432fd88355"
     },
     {
-      "path": "assets/css/main.5c4e3b4752e6c865484b.css",
-      "sha256": "5380cc8cf3df7e7f04398024d12cb685b7fcb4a6d29b20ff14aac2d4cd387b06"
+      "path": "assets/css/main.c1ae45fabe7c6436dade.css",
+      "sha256": "2538375f4fde4634e244394aef6985568ef15d2bf1f19f8373af6883a41e1153"
     },
     {
-      "path": "assets/css/projectcomponents.15ddbc7826cfcd5c0abd.css",
-      "sha256": "01b7eb1cd286a3c38ed440963738d9ec945d81bd250e55799393d2c83fa06275"
+      "path": "assets/css/projectcomponents.917c30507a1ca34c96da.css",
+      "sha256": "23f682b5aab3920581f645dba20c3b3c6f3671f7fb35ff93c0ecb5355814607b"
     },
     {
       "path": "assets/css/templatecomponents.41e32db31cd6e54f14b4.css",
@@ -800,7 +800,7 @@
     },
     {
       "path": "assets/data/app.manifest.json",
-      "sha256": "8030fa6c8deff65554006fcd1c807e43976135a5ad209671c04c19a3eeb3be5a"
+      "sha256": "69c774a6581872b655a82dd3dc2241b3b306498af71190034fad915ea9dedb71"
     },
     {
       "path": "assets/data/hard-buttons.json",
@@ -808,11 +808,11 @@
     },
     {
       "path": "assets/data/project-config.json",
-      "sha256": "7aa3aa546fd6baef528b90fa6c28ebeb87dfd3b4ba5b85b0b0332e28b23e66e1"
+      "sha256": "689af5146044f03858b508a19d99fbd28b860b71dc0819c96c97e3bb9b8eca0b"
     },
     {
       "path": "assets/data/version.json",
-      "sha256": "2ce09b9ae820ff97513c06700e0d5addc118b8056de6b4f0d574bbd63107c9bb"
+      "sha256": "08c1ba66051e8dc518161d929ba06d3afdb549499d3972bf08ca113a4c69b389"
     },
     {
       "path": "assets/font/MaterialIcons-Outlined.ttf",
@@ -4224,14 +4224,14 @@
     },
     {
       "path": "index.html",
-      "sha256": "9487d826c3c610fe20157ccaf33e3635eddc45a1caf572cfd639a0bb1d35429b"
+      "sha256": "322574f33f213d52eae8bfb1f78bafc3239a0b17f7665993752efa073e538391"
     },
     {
-      "path": "libraries/component.89647f63.js",
-      "sha256": "7156927f25b60e19a91e85e85efb9fbbfd5cc49818cf344bc4d831316267bffe"
+      "path": "libraries/component.018f302a.js",
+      "sha256": "6c9bba746f4778b4579c338208e58c50c56f860ec6fefce4bf2c8af603da000e"
     },
     {
-      "path": "libraries/component.89647f63.js.LICENSE.txt",
+      "path": "libraries/component.018f302a.js.LICENSE.txt",
       "sha256": "8de9a82a0ccb8ba7d327121926d16584821776f6ebe2cc952c1887b28550542c"
     },
     {

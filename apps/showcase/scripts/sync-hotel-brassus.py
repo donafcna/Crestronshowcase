@@ -4,6 +4,7 @@ Adapters live alongside ch5/ and are intentionally not generated here.
 """
 import hashlib
 import json
+import re
 from pathlib import Path
 import shutil
 import sys
@@ -21,13 +22,15 @@ config_path = destination / 'assets/data/project-config.json'
 config = json.loads(config_path.read_text(encoding='utf-8-sig'))
 config['useWebXPanel'] = False
 config['forceDeviceXPanel'] = False
+config['hdhPanelLock'] = False
 config.get('config', {}).pop('controlSystem', None)
 config_path.write_text(json.dumps(config, ensure_ascii=False, indent=2), encoding='utf-8')
 html_path = destination / 'index.html'
 html = html_path.read_text(encoding='utf-8')
+html = re.sub(r'<title>.*?</title>', '<title>Hotel des Horlogers</title>', html, count=1)
 html = html.replace('<head>', '<head><meta http-equiv="Content-Security-Policy" content="connect-src \'self\'; media-src \'none\'; object-src \'none\'">')
-html = html.replace('</head>', '<link rel="stylesheet" href="../demo.css"></head>')
-html = html.replace('<script src="./libraries/component.', '<script src="../demo-feedback.js"></script><script src="./libraries/component.')
+html = html.replace('</head>', '<link rel="stylesheet" href="../demo.css?v=2.13.5"></head>')
+html = html.replace('<script src="./libraries/component.', '<script src="../demo-feedback.js?v=2.13.5"></script><script src="./libraries/component.')
 html_path.write_text(html, encoding='utf-8')
 manifest_path = root / 'docs/hotel-brassus-source-manifest.json'
 manifest = json.loads(manifest_path.read_text(encoding='utf-8')) if manifest_path.exists() else {}
