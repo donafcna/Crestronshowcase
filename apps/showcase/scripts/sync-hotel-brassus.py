@@ -30,7 +30,7 @@ html = html_path.read_text(encoding='utf-8')
 html = re.sub(r'<title>.*?</title>', '<title>Hotel des Horlogers</title>', html, count=1)
 html = html.replace('<head>', '<head><meta http-equiv="Content-Security-Policy" content="connect-src \'self\'; media-src \'none\'; object-src \'none\'">')
 html = html.replace('</head>', '<link rel="stylesheet" href="../demo.css?v=2.13.5"></head>')
-html = html.replace('<script src="./libraries/component.', '<script src="../demo-feedback.js?v=2.13.5"></script><script src="./libraries/component.')
+html = html.replace('<script src="./libraries/component.', '<script src="../demo-feedback.js?v=2.13.5-main"></script><script src="./libraries/component.')
 html_path.write_text(html, encoding='utf-8')
 manifest_path = root / 'docs/hotel-brassus-source-manifest.json'
 manifest = json.loads(manifest_path.read_text(encoding='utf-8')) if manifest_path.exists() else {}

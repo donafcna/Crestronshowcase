@@ -7,8 +7,13 @@
     salon: ['Petit salon'], pdr: ['Salle privée'],
     wellness: ['WC', 'Couloir', 'Relax', 'Fitness'], seminar: ['Séminaire 1', 'Séminaire 2'],
   };
-  const zone = new URLSearchParams(location.search).get('zone') || 'bar';
-  const names = zones[zone] || zones.bar;
+  const params = new URLSearchParams(location.search);
+  const main = params.get('main') === '1';
+  const places = ['pdr', 'wellness', 'salon', 'restaurant', 'seminar', 'bar', 'entrance'];
+  const placeJoins = places.map((_, index) => 31 + index);
+  const requested = params.get('zone');
+  let zone = places.includes(requested) ? requested : 'bar';
+  const saved = new Map();
   const feedback = (type, join, value) => {
     values.set(type + join, value);
     const method={b:'bridgeReceiveBooleanFromNative',n:'bridgeReceiveIntegerFromNative',s:'bridgeReceiveStringFromNative'}[type];
@@ -21,6 +26,10 @@
     if (!Number.isFinite(j)) return;
     if (type === 'n') { feedback('n', j, value); return; }
     if (type !== 'b' || !value) return;
+    if (main && placeJoins.includes(j)) {
+      selectPlace(places[j - 31]);
+      return;
+    }
     if ([21, 22, 23].includes(Math.floor(j / 100)) && j % 100 >= 1 && j % 100 <= 50) {
       clearTimeout(blindPulses.get(j));
       feedback('b', j, true);
@@ -60,9 +69,13 @@
   bridge.sendStringToNative=()=>{};
   bridge.sendObjectToNative=(j,v)=>{if(v?.repeatdigital)command('b',j,true);};
   function init() {
+    const names = zones[zone];
     [201,202,203,204,205,210,211].forEach(j=>feedback('b',j,false));
     feedback('b',zone==='seminar'?210:200+names.length,true);
-    names.forEach((n,i)=>{feedback('s',i+1,n);feedback('s',i+11,n);});
+    for (let i = 0; i < 5; i++) {
+      feedback('s', i + 1, names[i] || '');
+      feedback('s', i + 11, names[i] || '');
+    }
     feedback('b',230,names.length>1);feedback('b',222,names.length===2);feedback('b',223,names.length>=3);
     exclusive([301,302,303],301);feedback('b',261,true);feedback('b',2491,true);
     for(let i=1;i<=6;i++){feedback('s',2500+i,'21.0 °C');feedback('s',2510+i,'21.0 °C');}
@@ -78,10 +91,41 @@
     // Sans stores dans l'espace : l'onglet Stores du menu du bas disparait (demo.css).
     document.documentElement.classList.toggle('hdh-no-blinds',!blinds);
     feedback('b',250,blinds);
-    if(blinds)for(let i=1;i<=2;i++){feedback('s',1300+i,'Store '+i);feedback('b',2000+i,true);feedback('b',540+i,true);}
+    for (let i = 1; i <= 2; i++) {
+      feedback('s', 1300 + i, blinds ? 'Store ' + i : '');
+      feedback('b', 2000 + i, blinds);
+      feedback('b', 540 + i, blinds);
+    }
     feedback('b',2,true);
-    window.HDH_DEMO={zone,values,feedback,command};
   }
+  function selectPlace(next) {
+    if (zone === next) return;
+    const snapshot = new Map(values);
+    for (const [join, timeout] of blindPulses) {
+      clearTimeout(timeout);
+      snapshot.delete('b' + join);
+      feedback('b', join, false);
+    }
+    blindPulses.clear();
+    for (const join of [30, ...placeJoins]) snapshot.delete('b' + join);
+    saved.set(zone, snapshot);
+    for (const key of snapshot.keys()) {
+      const type = key[0];
+      feedback(type, Number(key.slice(1)), { b: false, n: 0, s: '' }[type]);
+    }
+    zone = next;
+    init();
+    for (const [key, value] of saved.get(zone) || []) {
+      feedback(key[0], Number(key.slice(1)), value);
+    }
+    exclusive(placeJoins, 31 + places.indexOf(zone));
+    parent.postMessage({channel:'hdh-demo-place',zone},location.origin);
+  }
+  window.HDH_DEMO={get zone(){return zone;},values,feedback,command};
   document.addEventListener('click',e=>{if(e.target.closest('#circuitsbtn_clear_lighting')){document.querySelector('.container-lightingcircuits').style.display='none';document.querySelector('.container-lightingscenes').style.display='';}});
   init();
+  if (main) {
+    feedback('b', 30, true);
+    exclusive(placeJoins, 31 + places.indexOf(zone));
+  }
 })();
