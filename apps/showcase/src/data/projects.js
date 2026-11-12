@@ -109,8 +109,7 @@ export const projects = [
     },
   },
   {
-    // Deuxième GUI CH5 réelle issue du Core Villa Crans : seul villa_config.json change.
-    // Vitrine régénérée par scripts/sync-appartement-crans.py (jamais éditée à la main).
+    // Démo générée depuis les archives A10 par scripts/sync-a10-demos.py.
     id: `appartement-crans`,
     name: `Six Senses A10`,
     defaultViewport: `tablet`,
@@ -127,44 +126,23 @@ export const projects = [
       desktop: `/showcases/appartement-crans/xpanels/main.html`,
       "web-xpanel": `/showcases/appartement-crans/xpanels/climate.html`,
     },
-    thumbnailUrl: `/sheets/appartement-crans/01-pieces-salon.png`,
+    thumbnailUrl: `/sheets/appartement-crans/a10-xpanel-lighting.png`,
     year: `2026`,
     text: {
       fr: {
-        description: `Duplex de 350 m² à Crans-Montana : 17 zones, éclairage Lutron, rideaux motorisés et climat dans une interface épurée à tuiles, sur le même Core CH5 que la Villa Crans.`,
-        details: `Appartement en duplex de 350 m² sur deux niveaux, piloté par une interface Crestron CH5 configurée en 17 zones. L'éclairage Lutron HomeWorks QS (DALI et phase) propose dans chaque pièce les scènes JOUR, SOIR, NUIT et OFF, dont les niveaux de chaque circuit reprennent la séquence d'opérations de l'éclairagiste. Rideaux et voilages motorisés et climatisation pièce par pièce complètent le pilotage, dans une interface épurée : liste des pièces, tuiles d'éclairage à glisser, ambiances en pastilles, onglets Pièces, Scènes, Stores, Climat et Réglages. Cette GUI partage le même Core CH5 (page, contrat de signaux, programmes) que la Villa Crans-Montana : seul le fichier de configuration JSON change.`,
-        features: [
-          `Duplex de 350 m² sur deux niveaux, 17 zones`,
-          `Éclairage Lutron HomeWorks QS (DALI / phase), 101 circuits`,
-          `Scènes JOUR · SOIR · NUIT · OFF par pièce, niveaux issus de la séquence d'opérations`,
-          `Rideaux et voilages motorisés, climat par pièce`,
-          `Interface épurée : tuiles d'éclairage à glisser, onglets en bas, trois thèmes`,
-          `Même Core CH5 que la Villa FTV : seul le JSON de configuration change`,
-        ],
+        description: `Duplex de 350 m² à Crans-Montana avec éclairage Lutron, rideaux motorisés et climat par pièce.`,
+        details: `L’interface Crestron CH5 permet de rappeler les scènes, de régler les circuits d’éclairage, de commander les stores et de modifier les consignes de climat. Le portail présente Crestron ONE sur iPhone et iPad, le XPanel principal et le XPanel Climat. Les retours sont simulés dans le navigateur.`,
+        features: [`Crestron ONE sur iPhone et iPad`, `XPanel principal et XPanel Climat`, `Éclairages, scènes, stores et climat par pièce`],
       },
       en: {
-        description: `350 m² duplex in Crans-Montana: 17 zones, Lutron lighting, motorised curtains and climate in a clean tile-based interface, on the same CH5 Core as the Villa Crans.`,
-        details: `A 350 m² duplex apartment on two levels, controlled by a Crestron CH5 interface configured for 17 zones. Lutron HomeWorks QS lighting (DALI and phase) offers DAY, EVENING, NIGHT and OFF scenes in every room, with each circuit level taken from the lighting designer's sequence of operations. Motorised curtains and sheers and room-by-room air conditioning complete the system, in a clean interface: room list, lighting tiles you drag, scene pills, and Rooms, Scenes, Shades, Climate and Settings tabs. This GUI shares the same CH5 Core (page, signal contract, programs) as the Villa Crans-Montana: only the JSON configuration file changes.`,
-        features: [
-          `350 m² duplex on two levels, 17 zones`,
-          `Lutron HomeWorks QS lighting (DALI / phase), 101 circuits`,
-          `DAY · EVENING · NIGHT · OFF scenes per room, levels from the sequence of operations`,
-          `Motorised curtains and sheers, per-room climate`,
-          `Clean interface: drag-to-dim lighting tiles, bottom tabs, three themes`,
-          `Same CH5 Core as the Villa FTV: only the configuration JSON changes`,
-        ],
+        description: `A 350 m² duplex in Crans-Montana with Lutron lighting, motorised curtains and room-by-room climate control.`,
+        details: `The Crestron CH5 interface recalls scenes, dims lighting circuits, operates shades and adjusts climate setpoints. The portal shows Crestron ONE on iPhone and iPad, the main XPanel and the Climate XPanel. Feedback is simulated in the browser.`,
+        features: [`Crestron ONE on iPhone and iPad`, `Main XPanel and Climate XPanel`, `Room-by-room lighting, scenes, shades and climate`],
       },
       de: {
-        description: `350 m² Duplex in Crans-Montana: 17 Zonen, Lutron-Beleuchtung, Motorvorhänge und Klima in einer schlichten Kacheloberfläche, auf demselben CH5-Core wie die Villa Crans.`,
-        details: `Duplex-Wohnung mit 350 m² auf zwei Ebenen, gesteuert über eine Crestron-CH5-Oberfläche mit 17 Zonen. Die Lutron-HomeWorks-QS-Beleuchtung (DALI und Phasenanschnitt) bietet in jedem Raum die Szenen TAG, ABEND, NACHT und AUS; die Stufen jedes Stromkreises stammen aus der Betriebssequenz des Lichtplaners. Motorisierte Vorhänge und Stores sowie Klimatisierung je Raum vervollständigen die Steuerung, in einer schlichten Oberfläche: Raumliste, Lichtkacheln zum Ziehen, Stimmungen als Schaltflächen, Register Räume, Szenen, Storen, Klima und Einstellungen. Diese GUI teilt denselben CH5-Core (Seite, Signalvertrag, Programme) wie die Villa Crans-Montana: nur die JSON-Konfigurationsdatei ändert sich.`,
-        features: [
-          `350 m² Duplex auf zwei Ebenen, 17 Zonen`,
-          `Lutron-HomeWorks-QS-Beleuchtung (DALI / Phase), 101 Stromkreise`,
-          `Szenen TAG · ABEND · NACHT · AUS je Raum, Stufen aus der Betriebssequenz`,
-          `Motorisierte Vorhänge und Stores, Klima je Raum`,
-          `Schlichte Oberfläche: Lichtkacheln zum Dimmen, Register unten, drei Designs`,
-          `Gleicher CH5-Core wie die Villa FTV: nur das Konfigurations-JSON ändert sich`,
-        ],
+        description: `350 m² grosse Maisonette in Crans-Montana mit Lutron-Beleuchtung, motorisierten Vorhängen und Einzelraumregelung.`,
+        details: `Über die Crestron-CH5-Oberfläche lassen sich Szenen aufrufen, Lichtkreise dimmen, Storen bedienen und Klima-Sollwerte einstellen. Das Portal zeigt Crestron ONE auf iPhone und iPad, das Haupt-XPanel und das Klima-XPanel. Die Rückmeldungen werden im Browser simuliert.`,
+        features: [`Crestron ONE auf iPhone und iPad`, `Haupt-XPanel und Klima-XPanel`, `Licht, Szenen, Storen und Klima pro Raum`],
       },
     },
   },
@@ -433,6 +411,10 @@ export const projects = [
   "defaultViewport": "phone",
   "embedPhoneUrl": "/showcases/hotel-brassus/phone.html",
   "embedUrl": "/showcases/hotel-brassus/ch5/index.html?zone=bar&theme=actuel&nolock=1",
+  "embedByViewport": {
+    "tablet": "/showcases/hotel-brassus/ch5/index.html?main=1&zone=bar&theme=actuel&nolock=1",
+    "desktop": "/showcases/hotel-brassus/ch5/index.html?main=1&zone=bar&theme=actuel&nolock=1"
+  },
   "thumbnailUrl": "/sheets/hotel-brassus/01-gui.png",
   "year": "2026",
   "text": {
