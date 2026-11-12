@@ -98,7 +98,10 @@ def patch_demo_html(html: str) -> str:
 
 
 def public_config(c: dict) -> dict:
+    old_title = c["meta"]["projet"]
     c["meta"]["projet"] = "Six Senses A10"
+    for translations in c.get("traductions", {}).values():
+        translations.pop(old_title, None)
     c["meta"].pop("aide", None)
     version = c["meta"]["version"].removesuffix("-showcase")
     c["meta"]["version"] = f"{version}-a10-demo.1-showcase"

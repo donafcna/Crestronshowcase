@@ -2987,8 +2987,7 @@
       "Store fenêtre": "Window blind",
       "Rideau dressing": "Dressing curtain",
       "Rideau": "Curtain",
-      "Store banne": "Awning",
-      "Appartement Crans-Montana": "Crans-Montana apartment"
+      "Store banne": "Awning"
     },
     "es": {
       "Tout ouvrir": "Abrir todo",
@@ -3072,8 +3071,7 @@
       "Store fenêtre": "Estor ventana",
       "Rideau dressing": "Cortina vestidor",
       "Rideau": "Cortina",
-      "Store banne": "Toldo",
-      "Appartement Crans-Montana": "Apartamento Crans-Montana"
+      "Store banne": "Toldo"
     },
     "de": {
       "Tout ouvrir": "Alles Öffnen",
@@ -3157,8 +3155,7 @@
       "Store fenêtre": "Fensterrollo",
       "Rideau dressing": "Vorhang Ankleide",
       "Rideau": "Vorhang",
-      "Store banne": "Markise",
-      "Appartement Crans-Montana": "Wohnung Crans-Montana"
+      "Store banne": "Markise"
     },
     "ru": {
       "Tout ouvrir": "Открыть все",
@@ -3242,8 +3239,7 @@
       "Store fenêtre": "Рулонная штора",
       "Rideau dressing": "Штора гардероба",
       "Rideau": "Штора",
-      "Store banne": "Маркиза",
-      "Appartement Crans-Montana": "Апартаменты Кран-Монтана"
+      "Store banne": "Маркиза"
     }
   },
   "contrat": {
