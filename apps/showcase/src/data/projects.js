@@ -409,7 +409,7 @@ export const projects = [
   ],
   "isInteractive": false,
   "defaultViewport": "phone",
-  "embedPhoneUrl": "/showcases/hotel-brassus/phone.html",
+  "embedPhoneUrl": "/showcases/hotel-brassus/phone.html?v=lieux",
   "embedUrl": "/showcases/hotel-brassus/ch5/index.html?zone=bar&theme=actuel&nolock=1",
   "embedByViewport": {
     "tablet": "/showcases/hotel-brassus/ch5/index.html?main=1&zone=bar&theme=actuel&nolock=1",

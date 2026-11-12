@@ -17,11 +17,37 @@
  const params=new URLSearchParams(location.search);let zone=zones[params.get('zone')]?params.get('zone'):'bar',tab='lighting',circuits=false;
  const state=Object.fromEntries(Object.entries(layout).map(([k,L])=>{const faders=L.audio.flatMap(g=>g.faders);return [k,{area:0,areas:L.areas.map(()=>({lights:[65,65,65,65],scene:null})),volumes:faders.map(()=>40),mutes:faders.map(()=>false),source:0,gsources:L.audio.map(()=>0),mode:0,temp:21,blinds:Array(L.blinds||0).fill(0),target:Array(L.blinds||0).fill(0)}]}));
  const cur=s=>s.areas[s.area];
- const zoneEl=document.querySelector('#zone'),content=document.querySelector('#content'),nav=document.querySelector('nav'),theme=document.querySelector('#theme');
- zoneEl.innerHTML=Object.entries(zones).map(([k,v])=>`<option value="${k}">${v}</option>`).join('');zoneEl.value=zone;
+ const content=document.querySelector('#content'),nav=document.querySelector('nav'),theme=document.querySelector('#theme');
+
  theme.value=['clair','sombre'].includes(params.get('theme'))?params.get('theme'):'actuel';document.body.dataset.theme=theme.value;theme.onchange=()=>{document.body.dataset.theme=theme.value};
  const emit=(focus=false)=>{const s=state[zone],all=s.areas.flatMap(a=>a.lights);parent.postMessage({focus,channel:'hdh-demo',zone,level:all.reduce((a,b)=>a+b)/all.length,scene:cur(s).scene,blinds:s.blinds.length?s.blinds.reduce((a,b)=>a+b)/s.blinds.length:0},location.origin)};
- zoneEl.onchange=()=>{zone=zoneEl.value;circuits=false;render();emit(true)};
+ const dialog = document.querySelector('#places');
+ const currentPlace = document.querySelector('#current-place');
+ const placeOptions = document.querySelector('#place-options');
+ const openPlaces = document.querySelector('#open-places');
+ placeOptions.innerHTML = Object.entries(zones).map(([key, label]) =>
+   `<button type="button" data-place="${key}">${label}</button>`
+ ).join('');
+ const announcePlace = () => parent.postMessage({channel:'hdh-demo-place',zone},location.origin);
+ function showPlace() {
+   currentPlace.textContent = zones[zone];
+   for (const button of placeOptions.children) {
+     button.setAttribute('aria-pressed', String(button.dataset.place === zone));
+   }
+ }
+ openPlaces.onclick = () => dialog.showModal();
+ placeOptions.addEventListener('click', event => {
+   const button = event.target.closest('[data-place]');
+   if (!button) return;
+   zone = button.dataset.place;
+   circuits = false;
+   showPlace();
+   dialog.close();
+   render();
+   emit(true);
+   announcePlace();
+ });
+ showPlace();
  function render(){const s=state[zone],L=layout[zone],a=cur(s),hasBlinds=s.blinds.length>0;if(tab==='blinds'&&!hasBlinds)tab='lighting';
  nav.innerHTML=Object.entries({lighting:'Éclairages',audio:'Audio',blinds:'Stores',temperature:'Température'}).filter(([k])=>k!=='blinds'||hasBlinds).map(([k,v])=>`<button data-tab="${k}" aria-pressed="${tab===k}" ${k==='blinds'&&!hasBlinds?'disabled':''}>${icon(k)}${v}</button>`).join('');
  nav.querySelectorAll('button').forEach(b=>b.onclick=()=>{tab=b.dataset.tab;circuits=false;render()});
@@ -54,5 +80,5 @@
  }
  setInterval(()=>{let moved=false;for(const [key,s] of Object.entries(state))s.blinds.forEach((v,i)=>{const next=v+Math.sign(s.target[i]-v)*Math.min(2,Math.abs(s.target[i]-v));if(key===zone&&next!==v)moved=true;s.blinds[i]=next});if(moved)emit();if(tab==='blinds')document.querySelectorAll('[data-blind-value]').forEach(o=>o.value=Math.round(state[zone].blinds[+o.dataset.blindValue])+' %')},100);
  window.addEventListener('message',e=>{if(e.source===parent&&e.origin===location.origin&&e.data?.channel==='hdh-request')emit()});
- window.HDH_PHONE={state,get zone(){return zone}};render();emit();
+ window.HDH_PHONE={state,get zone(){return zone}};render();emit();announcePlace();
 })();
