@@ -41,10 +41,13 @@ function App() {
   // and the legacy #site escape. Choose this before rendering any desktop shell.
   const mobileVisitor = isMobileDevice();
   const isDemoRoute = hashRoute === "demo" || hashRoute.startsWith("demo/");
+  const mobileProjectRoute = mobileVisitor && route.page === "showcase" && route.projectId === "appartement-crans"
+    ? "demo/appartement-crans"
+    : "demo";
   if (mobileVisitor || isDemoRoute) {
     return (
       <DemoMode
-        route={isDemoRoute ? hashRoute : "demo"}
+        route={isDemoRoute ? hashRoute : mobileProjectRoute}
         onNavigate={(r) => {
           window.location.hash = `#${r || "demo"}`;
         }}
