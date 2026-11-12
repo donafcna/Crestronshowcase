@@ -620,3 +620,7 @@ Demande de Donatien : mettre la vitrine à jour avec les dernières modification
 - Textes du projet et fiche FR/EN/DE : « CH5 2.12.19 ». Captures de fiche inchangées (Bar, Éclairages : écrans non modifiés).
 - **Recette** (`docs/verification/2026-10-02-hotel-brassus-inspiration/`) : 48/48 contrôles — dalle 1920×1200 Restaurant / Entrée / Bar × Original / Clair / Sombre (un seul bandeau Wiim / Commun, Commun → 195, Wiim → 194, jamais de fenêtre mot de passe), iPhone 440×863 Restaurant / Entrée / Bar / Wellness × 3 thèmes (pas de défilement, plus de « Wiim Restaurant », sélection Commun, cibles ≥ 44 px), aucune erreur JavaScript. Planches avant / après, thèmes en colonnes : `planche-dalle.png`, `planche-iphone.png`. `npm run build` et `npm run lint` réussis (avertissements préexistants seulement).
 - Aucun matériel concerné par ce lot ; le SIMPL v9 de l'hôtel (sélecteur Bose `#selectfoyer`) reste à faire côté installation.
+
+## 12/11/2026 — Six Senses A10, vitrine 2.3.9
+
+Le titre public du projet `appartement-crans` est Six Senses A10. La dalle, la tablette et le téléphone sont complétés par les routes `desktop` (PC / XPanel) et `web-xpanel` (Web XPanel), deux présentations du même GUI Connect et du même moteur local. Le moteur simule la course des stores, leur arrêt et les positions de scènes (100/65/35/0 %) et commandes globales (100/50/0 %). Chaque page dispose de son propre état. La synchronisation de la vitrine retire le démarrage WebXPanel et les identifiants de circuits Lutron de la configuration publique.

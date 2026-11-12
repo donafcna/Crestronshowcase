@@ -65,7 +65,7 @@ export async function runOrderedDemo({ gui, token, sleep, moveTo, act, setCursor
     const heading = shown('h2,h3,h4,.card-title,.ap-ctrl-head,.vl-label').find(el => categories[name].test(text(el)));
     return perform(heading, 1400, false);
   };
-  // Interface Connect du Core (meta.interface = "connect", Appartement Crans-Montana) : trois pièces,
+  // Interface Connect du Core (meta.interface = "connect", Six Senses A10) : trois pièces,
   // chacune : pièce → ambiance non active → tuile d'éclairage → store (descendre puis monter) →
   // onglet Climat (+0,5 °C) → retour Pièces. Jamais un bouton déjà actif, aucun A/V.
   if (gui.doc.getElementById('cx-root') && gui.win.ConnectUI?.active()) {

@@ -10,7 +10,7 @@ import React, { createContext, useCallback, useContext, useEffect, useMemo, useS
 //   /interfaces/:secteur/:projet             projet sélectionné
 //   /interfaces/:secteur/:projet/:support    + support affiché
 //                                            (phone | tablet | wallpanel |
-//                                             wallpanel_hd | desktop)
+//                                             wallpanel_hd | desktop | web-xpanel)
 //   /contact                                 coordonnées + demande de démo
 //   /fiche/:projet                           fiche projet imprimable (PDF)
 //

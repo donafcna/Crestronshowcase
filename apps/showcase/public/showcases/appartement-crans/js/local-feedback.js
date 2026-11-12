@@ -1,5 +1,5 @@
 /**
- * Appartement Crans-Montana — moteur d'état local (100 % front-end).
+ * Six Senses A10 — moteur d'état local (100 % front-end).
  * Copie du moteur de la vitrine Villa Crans (v1.0.166, contrat v4.1) adaptée le 27.09.2026 :
  *   - les pièces et les niveaux de scène par pièce (pilotages.eclairages.scenes.niveaux) sont lus
  *     dans villaConfigEmbedded (17 pièces, jusqu'à 11 circuits, scènes OFF / JOUR / SOIR / NUIT
@@ -334,9 +334,41 @@
     return snapshot;
   }
 
+  function publishShades() {
+    document.dispatchEvent(new Event("demo-shades-change"));
+  }
+
+  function moveShades(shades, target) {
+    shades.forEach(function (shade) { shade.target = target; });
+  }
+
+  function pressShade(index, command) {
+    var r = rooms[activeRoom];
+    var shade = r.shades && r.shades[index];
+    if (!shade) return;
+    shade.target = command === 0 ? 100 : command === 2 ? 0 : shade.position;
+    r.storesScene = null;
+    SIG.STORES_SCENES.forEach(function (s) { set("b", s, false); });
+    exclusive(["404", "405", "406"], null);
+  }
+
+  setInterval(function () {
+    var changed = false;
+    Object.values(rooms).forEach(function (room) {
+      (room.shades || []).forEach(function (shade) {
+        var delta = shade.target - shade.position;
+        if (!delta) return;
+        shade.position += Math.sign(delta) * Math.min(Math.abs(delta), 2);
+        changed = true;
+      });
+    });
+    if (changed) publishShades();
+  }, 100);
+
   function applyStoresScene(sceneId) {
     var r = rooms[activeRoom];
     r.storesScene = sceneId;
+    moveShades(r.shades || [], [100, 65, 35, 0][Number(sceneId) - 201]);
     SIG.STORES_SCENES.forEach(function (s) { set("b", s, s === sceneId); });
     exclusive(["404", "405", "406"], null);
   }
@@ -398,8 +430,10 @@
 
   function setAllBlinds(id) {
     exclusive(["404", "405", "406"], id);
-    // It is an acknowledged group command, not a measured end-stop position.
-    Object.keys(rooms).forEach(function (k) { rooms[k].storesScene = null; });
+    Object.values(rooms).forEach(function (room) {
+      room.storesScene = null;
+      moveShades(room.shades || [], {404: 100, 405: 0, 406: 50}[id]);
+    });
     SIG.STORES_SCENES.forEach(function (j) { set("b", j, false); });
   }
 
@@ -482,7 +516,7 @@
       return adjustSetpoint(-0.5);
     }
     if (SIG.STORES_SCENES.indexOf(id) !== -1) {
-      if (id === LEGACY_MUTE_JOIN) {
+      if (id === LEGACY_MUTE_JOIN && rooms[activeRoom].source) {
         // Le GUI émet encore 201 (mute v1) avec 55 : on laisse passer 55 puis on décide
         setTimeout(function () {
           if (lastPress[SIG.MUTE] && Math.abs(lastPress[SIG.MUTE] - now) < 200) return;
@@ -508,7 +542,10 @@
       if (id === part.disarmed) return setPartition(p, "disarmed");
     }
     if (id === SIG.DALLE_MUTE) return set("b", id, !get("b", id));
-    if ((n >= 61 && n <= 69) || (n >= 81 && n <= 98)) exclusive(["404", "405", "406"], null);
+    if ((n >= 81 && n <= 98) || (n >= 129 && n <= 146)) {
+      var offset = n < 129 ? n - 81 : n - 129 + 18;
+      pressShade(Math.floor(offset / 3), offset % 3);
+    }
     // Tout le reste (moteurs 61..69 / 81..98, lecteur
     // média 211..220 / 251..253, widget météo 56, resync 250…) est momentané.
     pulse(id, 120);
@@ -567,7 +604,7 @@
     Object.keys(rooms).forEach(function (k) {
       var r = rooms[k];
       var diff = r.setpoint - r.temp;
-      if (Math.abs(diff) < 0.05) return;
+      if (!r.hvacOn || Math.abs(diff) < 0.05) return;
       r.temp = Math.round((r.temp + Math.sign(diff) * 0.1) * 10) / 10;
       if (Number(k) === activeRoom) set("s", SIG.TEMP_ACTUAL, fmtTemp(r.temp));
     });
@@ -636,6 +673,11 @@
         roomNames[p.id] = p.nom;
         if (!rooms[p.id]) rooms[p.id] = makeRoom(21.0, 21.0, "CHAUFFAGE", 0, 20000, "51");
         var r = rooms[p.id], pl = p.pilotages || {};
+        var motors = pl.moteurs;
+        r.shades = motors && motors.actif !== false
+          ? (motors.liste || []).slice(0, Math.min(motors.nombre || (motors.liste || []).length, 12))
+            .map(function () { return {position: 50, target: 50}; })
+          : [];
         // Niveaux de la scène de départ selon la configuration de la pièce
         r.circuits = scenePreset(p.id, r.scene || "51");
         // Pièce sans audio-vidéo : aucune source, pas de musique
@@ -679,6 +721,7 @@
     get activeRoom() { return activeRoom; },
     get ready() { return initialized; },
     applyDemoAmbience: applyDemoAmbience, demoRooms: demoRooms,
+    shadePosition: function (roomId, index) { return rooms[roomId]?.shades?.[index]?.position; },
   };
 
   // Démarrage automatique : une fois la page chargée (toutes les fonctions du

@@ -28,7 +28,7 @@ const OUT = path.resolve(arg('--out', 'test-results/appartement-crans'));
 const NO_DEMO = process.argv.includes('--no-demo');
 fs.mkdirSync(OUT, { recursive: true });
 const PROJECT = 'appartement-crans';
-const DEVICES = ['wallpanel', 'tablet', 'phone'];
+const DEVICES = ['wallpanel', 'tablet', 'phone', 'desktop', 'web-xpanel'];
 
 const report = { base: BASE, checks: [], failures: [], errors: [], external: [], legacy: [], demo: {} };
 const check = (name, ok, detail) => {
@@ -101,7 +101,15 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
   for (const device of (ONLY ? [] : DEVICES)) {
     const page = await browser.newPage({ viewport: { width: 1600, height: 1000 }, deviceScaleFactor: 1 });
     wireConsole(page);
+    const hardware = [];
+    page.on('websocket', ws => hardware.push(new URL(ws.url()).pathname));
+    page.on('request', request => {
+      const url = new URL(request.url());
+      if (/^\/(cws|user)\//.test(url.pathname) || url.hostname.endsWith('.local')) hardware.push(url.pathname);
+    });
     const frame = await openDevice(page, device);
+    check(`${device} : route et titre Six Senses A10`,
+      new URL(page.url()).pathname.endsWith('/' + device) && await frame.title() === 'Six Senses A10');
     const errorsBefore = report.errors.length;
     const keep = setInterval(() => { holdDemo(page).catch(() => {}); }, 8000);
     const click = sel => frame.evaluate(s => { const el = document.querySelector('#cx-root ' + s); if (!el) return false; el.click(); return true; }, sel);
@@ -154,12 +162,20 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
     // Store du salon : moteur 1 descendre → join 83
     const motor = await frame.evaluate(async () => {
       const seen = []; const id = CrComLib.subscribeState('b', '83', v => seen.push(v));
+      const label = document.querySelector('[data-cx-shade-position="1:0"]');
+      const start = Number.parseInt(label.textContent, 10);
       document.querySelector('#cx-root [data-cx-motor="1:0:2"]').click();
       await new Promise(r => setTimeout(r, 400));
       CrComLib.unsubscribeState('b', '83', id);
-      return seen;
+      document.querySelector('#cx-root [data-cx-motor="1:0:1"]').click();
+      const stopped = Number.parseInt(label.textContent, 10);
+      await new Promise(r => setTimeout(r, 350));
+      const stable = Number.parseInt(label.textContent, 10) === stopped;
+      return { seen, start, stopped, stable };
     });
-    check(`${device} : store « Rideau baie sud » descendre → impulsion sur le join 83`, motor.includes(true) && motor[motor.length - 1] === false, JSON.stringify(motor));
+    check(`${device} : store « Rideau baie sud » descendre → impulsion sur le join 83`, motor.seen.includes(true) && motor.seen.at(-1) === false, JSON.stringify(motor));
+
+    check(`${device} : position du store visible et stable après Stop`, motor.stopped < motor.start && motor.stable, JSON.stringify(motor));
 
     // Climat
     await frame.evaluate(() => window.ConnectUI.setTab('climate')); await sleep(300);
@@ -187,6 +203,7 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
     await click('[data-cx-lang="fr"]'); await sleep(200);
     await frame.evaluate(() => window.ConnectUI.openRoom(1)); await sleep(300);
     await page.screenshot({ path: path.join(OUT, `fonctionnel-${device}.png`) });
+    check(`${device} : aucune connexion Crestron`, hardware.length === 0, JSON.stringify(hardware));
     check(`${device} : 0 erreur console / page`, report.errors.length === errorsBefore, report.errors.slice(errorsBefore, errorsBefore + 3).join(' | ') || '0');
     clearInterval(keep);
     await page.close();

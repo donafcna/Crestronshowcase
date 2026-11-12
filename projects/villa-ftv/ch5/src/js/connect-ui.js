@@ -230,7 +230,8 @@
     }
 
     function shadeRow(roomId, m, i) {
-        return '<div class="cx-shade">' + icon('shade') + '<span class="cx-shade-name">' + esc(tn(m.nom)) + '</span>' +
+        return '<div class="cx-shade">' + icon('shade') + '<span class="cx-shade-name">' + esc(tn(m.nom)) +
+            (window.Villa?.shadePosition ? ' <span data-cx-shade-position="' + roomId + ':' + i + '"></span>' : '') + '</span>' +
             '<span class="cx-rbtns">' +
             '<button class="cx-rb" aria-label="' + esc(T('up')) + '" data-cx-motor="' + roomId + ':' + i + ':0">' + icon('up') + '</button>' +
             '<button class="cx-rb" aria-label="' + esc(T('stop')) + '" data-cx-motor="' + roomId + ':' + i + ':1">' + icon('stop') + '</button>' +
@@ -321,7 +322,7 @@
             '<nav class="cx-tabs" aria-label="Navigation">' + tabsHtml() + '</nav>';
         if (sameView === state.tab + ':' + state.room + ':' + state.phoneDetail) root.querySelector('.cx-main').scrollTop = scrollTop;
         sameView = state.tab + ':' + state.room + ':' + state.phoneDetail;
-        paintAllTiles(); paintSummary(); paintChips(); paintClimate(); paintGlobals();
+        paintAllTiles(); paintSummary(); paintChips(); paintClimate(); paintGlobals(); paintShades();
     }
     var sameView = '';
 
@@ -344,6 +345,18 @@
         if (m && p) m.textContent = onCount() ? onCount() + '/' + circuitsOf(p).length : T('off');
     }
     function mark(b, on) { b.classList.toggle('is-on', on); b.setAttribute('aria-pressed', on ? 'true' : 'false'); }
+    function paintShades() {
+        if (!root || !window.Villa?.shadePosition) return;
+        root.querySelectorAll('[data-cx-shade-position]').forEach(function (label) {
+            var parts = label.dataset.cxShadePosition.split(':').map(Number);
+            var position = window.Villa.shadePosition(parts[0], parts[1]);
+            var text = position == null ? '' : position + ' %';
+            if (label.textContent !== text) label.textContent = text;
+        });
+    }
+
+    document.addEventListener('demo-shades-change', paintShades);
+
     function paintChips() {
         if (!root) return;
         root.querySelectorAll('[data-cx-scene]').forEach(function (b) { mark(b, Number(b.getAttribute('data-cx-scene')) === state.scene); });
@@ -408,7 +421,9 @@
             var parts = a.split(':').map(Number);
             // Moteurs 1-6 : d81-98 ; 7-12 : d129-146 (Core v5.3), triplets Monter / Stop / Descendre.
             var join = (parts[1] < 6 ? 81 + parts[1] * 3 : 129 + (parts[1] - 6) * 3) + parts[2];
-            if (parts[0] !== state.room) { selectRoom(parts[0], true); setTimeout(function () { pulse(join); }, 250); }
+            var switchedRoom = parts[0] !== state.room;
+            if (switchedRoom) selectRoom(parts[0], true);
+            if (switchedRoom && !window.Villa?.shadePosition) setTimeout(function () { pulse(join); }, 250);
             else pulse(join);
             return;
         }

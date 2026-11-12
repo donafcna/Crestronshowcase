@@ -1,4 +1,4 @@
-// Fiche détaillée « Appartement Crans-Montana » — interface Connect du Core (v5.4, 29.09.2026) :
+// Fiche détaillée « Six Senses A10 » — interface Connect du Core (v5.4, 29.09.2026) :
 // chaque écran avec capture et explication de chaque commande. Captures : public/sheets/appartement-crans/
 // (scripts/shoot-appartement-crans.cjs sur .device-screen des routes dalle / tablette / smartphone,
 // puis scripts/helpers/png-1400-256.py : 1400 px, 256 couleurs).
@@ -32,10 +32,10 @@ export default {
       {
         title: "Rideaux, voilages et climat de la pièce",
         image: IMG + "04-stores-climat-salon.png",
-        text: "Sous l'éclairage, la pièce regroupe ses motorisations et sa régulation : positions préenregistrées, commandes de chaque rideau ou voilage, température mesurée et consigne.",
+        text: "Sous l'éclairage, la pièce regroupe ses motorisations et sa régulation : positions préenregistrées, commandes de chaque rideau ou voilage, température simulée et consigne.",
         buttons: [
           ["Tout ouvrir · Position été · Position hiver · Tout fermer", "Positions de l'ensemble des motorisations de la pièce."],
-          ["Monter · Arrêt · Descendre", "Commande d'une motorisation ; le processeur gère la course."],
+          ["Monter · Arrêt · Descendre", "Commande d'une motorisation ; la démo affiche son ouverture de 0 à 100 %."],
           ["− / +", "Consigne de 16 à 28 °C par pas de 0,5 °C."],
         ],
       },
@@ -116,7 +116,7 @@ export default {
       {
         title: "Room curtains, sheers and climate",
         image: IMG + "04-stores-climat-salon.png",
-        text: "Below the lighting, the room groups its motorised treatments and its climate control: preset positions, individual curtain and sheer commands, measured temperature and setpoint.",
+        text: "Below the lighting, the room groups its motorised treatments and its climate control: preset positions, individual curtain and sheer commands, simulated temperature and setpoint. The demo shows each shade's opening from 0 to 100%.",
         buttons: [
           ["Open all · Summer position · Winter position · Close all", "Positions for all of the room's motors."],
           ["Raise · Stop · Lower", "Controls one motor; the processor handles the travel."],
@@ -200,7 +200,7 @@ export default {
       {
         title: "Vorhänge, Stores und Klima des Raums",
         image: IMG + "04-stores-climat-salon.png",
-        text: "Unter der Beleuchtung fasst der Raum seine Motorisierungen und seine Regelung zusammen: gespeicherte Positionen, Befehle für jeden Vorhang und jede Store, gemessene Temperatur und Sollwert.",
+        text: "Unter der Beleuchtung fasst der Raum seine Motorisierungen und seine Regelung zusammen: gespeicherte Positionen, Befehle für jeden Vorhang und jede Store, simulierte Temperatur und Sollwert. Die Demo zeigt die Öffnung jedes Storens von 0 bis 100 %.",
         buttons: [
           ["Alles öffnen · Sommerposition · Winterposition · Alles schliessen", "Positionen aller Motoren des Raums."],
           ["Auf · Stopp · Ab", "Steuert einen Motor; der Prozessor verwaltet den Lauf."],

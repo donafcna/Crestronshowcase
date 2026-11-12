@@ -114,4 +114,4 @@ export const DEVICES = {
   },
 };
 
-export const getDeviceConfig = (deviceType) => DEVICES[deviceType] || DEVICES.wallpanel;
+export const getDeviceConfig = (deviceType) => DEVICES[deviceType === "web-xpanel" ? "desktop" : deviceType] || DEVICES.wallpanel;

@@ -1,8 +1,8 @@
 {
   "meta": {
-    "projet": "Appartement Crans-Montana",
+    "projet": "Six Senses A10",
     "integrateur": "Fréquence TV",
-    "version": "1.0.0-showcase",
+    "version": "1.0.0-a10-demo.1-showcase",
     "mode": "showcase",
     "modeDescription": "'deploiement' = GUI livré chez le client : les feedbacks viennent du CP4 (C# slot 1 + SIMPL slot 2) via js/webxpanel.js / CrComLib, aucune simulation. 'showcase' = copie pour le site crestrongui.vercel.app : posé UNIQUEMENT par scripts/sync-villa-crans.py du dépôt Crestronshowcase, feedbacks simulés dans le navigateur (js/local-feedback.js), curseur de démo géré par le site (jamais par le GUI). Ne jamais mettre 'showcase' ici. Voir docs/08_WORKFLOW_SHOWCASE.md.",
     "tracesConsole": false,
@@ -17,16 +17,6 @@
       "es",
       "de",
       "ru"
-    ],
-    "aide": [
-      "PROCESS ÉQUIPE FTV : 1) Remplir ce fichier (sections 'pieces', 'sourcesAudioVideo', 'scenesStores').",
-      "2) L'envoyer dans la conversation Claude qui complète la section 'traductions' pour toutes les langues du GUI.",
-      "3) Le déployer sur le CP4 (deploy.ps1 le copie dans /user/villa_config.json).",
-      "4) Au démarrage, le CP4 lit ce fichier et le transmet au CH5 qui modèle le GUI en conséquence.",
-      "RÈGLES : maximum 4 scènes d'éclairage par pièce. Maximum 20 circuits par pièce. Maximum 6 moteurs par pièce.",
-      "Un nom laissé vide (\"\") reprend le nom par défaut indiqué dans 'valeursParDefaut'.",
-      "Un pilotage avec \"actif\": false masque toute la section correspondante dans le GUI pour cette pièce.",
-      "ICONES : chaque piece a un champ icone (emoji affiche dans le menu de gauche). Choisir dans valeursParDefaut.iconesDisponibles et copier-coller."
     ],
     "description": "Duplex de 350 m² (niveaux 9 et 10) dans une résidence hôtelière de Crans-Montana : 17 zones, éclairage Lutron HomeWorks QS (DALI + phase) avec niveaux par scène issus de la séquence d'opérations Lutron, rideaux motorisés Lutron, CVC par pièce. Interface Connect (liste des pièces, tuiles-curseurs, scènes, stores, climat) ; aucune fonction audio-vidéo, alarme ni caméra (29.09.2026). GUI CH5, C# et générateur SIMPL = Core Villa Crans (contrat v4.1) ; seul ce fichier change.",
     "interface": "connect",
@@ -266,13 +256,6 @@
               "Lampadaires",
               "Cheminée"
             ],
-            "lutron": [
-              "Living - Spots coté vallée",
-              "Living - Spots corner",
-              "Living - Cove",
-              "Living - Floor Lamps",
-              ""
-            ],
             "type": [
               "DALI",
               "DALI",
@@ -399,11 +382,6 @@
               "Spots",
               "Suspensions",
               "Corniche LED"
-            ],
-            "lutron": [
-              "Dining - Spots",
-              "Dining - Suspensions",
-              "Dining - Cove"
             ],
             "type": [
               "DALI",
@@ -537,14 +515,6 @@
               "Corniche LED",
               "Plan de travail"
             ],
-            "lutron": [
-              "Kitchen - Spots ceiling",
-              "Kitchen - Spots passage",
-              "Kitchen - Illot lustre",
-              "Kitchen - Illot spots",
-              "Kitchen - Cove",
-              "Kitchen - Comptoir"
-            ],
             "type": [
               "DALI",
               "DALI",
@@ -660,11 +630,6 @@
               "Spots",
               "Éclairage tableau",
               "Appliques"
-            ],
-            "lutron": [
-              "Entrance - Spots",
-              "Entrance - Painting",
-              "Entrance - Wall Lights"
             ],
             "type": [
               "DALI",
@@ -824,9 +789,6 @@
             "nombre": 1,
             "noms": [
               "Spots"
-            ],
-            "lutron": [
-              "Entrance - WC Spots"
             ],
             "type": [
               "DALI"
@@ -989,10 +951,6 @@
             "noms": [
               "Spots",
               "Corniche LED"
-            ],
-            "lutron": [
-              "Laundry - Spots",
-              "Laundry - Cove"
             ],
             "type": [
               "DALI",
@@ -1197,18 +1155,6 @@
               "Dressing Madame",
               "Terrasse"
             ],
-            "lutron": [
-              "Masterbed - Spots",
-              "Masterbed - Cove",
-              "Masterbed - Bedhead",
-              "Masterbed - Bedhead left",
-              "Masterbed - Bedhead right",
-              "Masterbed - Niches Besides",
-              "Masterbed - Nightlights",
-              "Masterbed - His Dressing",
-              "Masterbed - Her Dressing",
-              "Masterbed - Terrasse by Living"
-            ],
             "type": [
               "DALI",
               "DALI",
@@ -1361,16 +1307,6 @@
               "Niche WC",
               "Terrasse",
               "Sèche-serviettes"
-            ],
-            "lutron": [
-              "Masterbath - Spots",
-              "Masterbath - Cove",
-              "Masterbath - Shower",
-              "Masterbath - Wall Lights",
-              "Masterbath - WC Spots",
-              "Masterbath - WC niche",
-              "Masterbath - Terrasse by Office",
-              ""
             ],
             "type": [
               "DALI",
@@ -1541,10 +1477,6 @@
               "Spots",
               "Corniche LED"
             ],
-            "lutron": [
-              "Living - Spots corner",
-              "Living - Cove"
-            ],
             "type": [
               "DALI",
               "DALI"
@@ -1681,16 +1613,6 @@
               "Chevet droit",
               "Veilleuses",
               "Terrasse"
-            ],
-            "lutron": [
-              "TV Room - Spots entrée",
-              "TV Room - Spots",
-              "TV Room - Painting",
-              "TV Room - Cove",
-              "TV Room - Bedhead left",
-              "TV Room - Bedhead right",
-              "TV Room - Nightlights",
-              "TV Room - Terrace"
             ],
             "type": [
               "DALI",
@@ -1853,19 +1775,6 @@
               "Appliques WC",
               "Niche WC",
               "Sèche-serviettes"
-            ],
-            "lutron": [
-              "TV Room Bath - Mirror wall lights",
-              "TV Room Bath - Sink spots",
-              "TV Room Bath - Spots",
-              "TV Room Bath - Cove",
-              "TV Room Bath - Shower Spots",
-              "TV Room Bath - Shower Cove",
-              "TV Room Bath - Shower niche",
-              "TV Room Bath - WC spot",
-              "TV Room Bath - WC Wall Lights",
-              "TV Room Bath - WC niche",
-              ""
             ],
             "type": [
               "PHASE",
@@ -2043,11 +1952,6 @@
               "Spots escalier",
               "Appliques hall",
               "Corniche LED"
-            ],
-            "lutron": [
-              "Entrance - Spots",
-              "Entrance - Wall Lights",
-              "Entrance - Painting"
             ],
             "type": [
               "DALI",
@@ -2243,16 +2147,6 @@
               "Veilleuses",
               "Terrasse"
             ],
-            "lutron": [
-              "Twin Room - Spots",
-              "Twin Room - Cove",
-              "Twin Room - Bedhead",
-              "Twin Room - Bedhead left",
-              "Twin Room - Bedhead right",
-              "Twin Room - Dressing",
-              "Twin Room - Nightlights",
-              "Twin Room - Terrace"
-            ],
             "type": [
               "DALI",
               "DALI",
@@ -2409,18 +2303,6 @@
               "Corniche WC",
               "Niche WC",
               "Sèche-serviettes"
-            ],
-            "lutron": [
-              "Twin Room Bath - Wall lights",
-              "Twin Room Bath - Spots",
-              "Twin Room Bath - Cove",
-              "Twin Room Bath - Shower Spots",
-              "Twin Room Bath - Shower cove",
-              "Twin Room Bath - Shower niche",
-              "Twin Room Bath - WC spot",
-              "Twin Room Bath - WC cove",
-              "Twin Room Bath - WC niche",
-              ""
             ],
             "type": [
               "PHASE",
@@ -2623,16 +2505,6 @@
               "Veilleuses",
               "Terrasse"
             ],
-            "lutron": [
-              "VIP Room - Entrance",
-              "VIP Room - Spot by Entrance",
-              "VIP Room - Spot by Bed",
-              "VIP Room - Bedhead",
-              "VIP Room - Bedhead Left",
-              "VIP room - Bedhead Right",
-              "VIP Room - Nightlights",
-              "VIP Room - Terrace"
-            ],
             "type": [
               "DALI",
               "DALI",
@@ -2789,18 +2661,6 @@
               "Niche WC",
               "Appliques",
               "Sèche-serviettes"
-            ],
-            "lutron": [
-              "VIP Room Bath - Mirror wall lights",
-              "VIP Room Bath - Sink spots",
-              "VIP Room Bath - spots",
-              "VIP Room Bath - Dressing spots",
-              "VIP Room Bath - WC+ Shower Coves",
-              "VIP Room Bath - Shower niche",
-              "VIP Room Bath - WC spot",
-              "VIP Room Bath - WC niche",
-              "VIP Room Bath - Wall Lights",
-              ""
             ],
             "type": [
               "PHASE",
@@ -2977,11 +2837,6 @@
               "Balcon sud",
               "Balcon est",
               "Balcon nord"
-            ],
-            "lutron": [
-              "Masterbed - Terrasse by Living",
-              "TV Room - Terrace",
-              "Twin Room - Terrace"
             ],
             "type": [
               "DALI",

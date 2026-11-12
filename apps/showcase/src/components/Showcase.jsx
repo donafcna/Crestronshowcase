@@ -25,10 +25,10 @@ import { useGuiFullscreen } from "../hooks/useGuiFullscreen";
 
 import { getSimulator } from "./simulatorRegistry";
 
-const VIEWPORT_IDS = ["phone", "tablet", "wallpanel", "wallpanel_hd", "desktop"];
+const VIEWPORT_IDS = ["phone", "tablet", "wallpanel", "wallpanel_hd", "desktop", "web-xpanel"];
 // Ordre d'affichage des supports, identique pour tous les projets :
 // Dalle TSW (1070 puis 1080), PC / Xpanel, Tablette, Smartphone.
-const VIEWPORT_ORDER = ["wallpanel", "wallpanel_hd", "desktop", "tablet", "phone"];
+const VIEWPORT_ORDER = ["wallpanel", "wallpanel_hd", "desktop", "web-xpanel", "tablet", "phone"];
 // Premier support d'un projet dans cet ordre (à l'ouverture d'un projet).
 const firstViewportOf = (proj) => {
   if (proj.defaultViewport) return proj.defaultViewport;
@@ -453,6 +453,7 @@ const ShowcaseInner = ({ sectorId, projectId, device }) => {
               <DeviceFrame
                 deviceType={viewportDevice}
                 title={displayTitle}
+                browserAddress={activeProject.id === "appartement-crans" ? window.location.origin + shareUrl.split("?")[0] : undefined}
                 isFullscreen={isFullscreen}
                 onExitFullscreen={() => setIsFullscreen(false)}
                 onEnterFullscreen={() => setIsFullscreen(true)}

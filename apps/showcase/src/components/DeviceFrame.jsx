@@ -54,6 +54,7 @@ export const DeviceFrame = ({
   deviceType,
   children,
   title = "Crestron GUI Showcase",
+  browserAddress,
   isFullscreen = false,
   onExitFullscreen = () => {},
   onEnterFullscreen = () => {},
@@ -188,7 +189,7 @@ export const DeviceFrame = ({
       )}
       <div className="device-stage" ref={stageRef} style={{ "--visible-chassis-width": `${cfg.chassisW * chassisScale}px` }}>
         {!isFullscreen && cornerButton}
-        {deviceType === "desktop" && (
+        {(deviceType === "desktop" || deviceType === "web-xpanel") && (
           <div className="desktop-browser-frame glass-panel" style={chassisStyle}>
             {isFullscreen && cornerButton}
             <div className="browser-header">
@@ -199,7 +200,7 @@ export const DeviceFrame = ({
               </div>
               <div className="browser-address-bar">
                 <span className="secure-lock">🔒</span>
-                <span className="address-text">https://xpanel.frequence-tv.local/{normalizedTitle}</span>
+                <span className="address-text">{browserAddress || `https://xpanel.frequence-tv.local/${normalizedTitle}`}</span>
               </div>
               <div className="browser-actions">
                 <span className="action-dot" />

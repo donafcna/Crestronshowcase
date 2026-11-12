@@ -23,6 +23,7 @@ TEST_TERMS) avec ces différences :
 """
 import importlib.util
 import json
+import re
 import shutil
 import sys
 from pathlib import Path
@@ -79,6 +80,30 @@ def clean_config(src: Path) -> dict:
         for k in list(d):
             if find_terms(k + " " + str(d[k]), TEST_TERMS):
                 del d[k]
+    return public_config(c)
+
+
+def patch_demo_html(html: str) -> str:
+    html, removed = re.subn(
+        r'(?ms)^        console\.log\("CH5: Tentative de chargement de WebXPanel.*?^        }\n',
+        "", html, count=1,
+    )
+    if removed != 1 or "panelInstance.initialize(" in html or "panelInstance.WebXPanel.initialize(" in html:
+        sys.exit("Le bloc de connexion WebXPanel a changé : revoir le patch de la vitrine A10")
+    title = """<title>Six Senses A10</title>
+    <meta http-equiv="Content-Security-Policy" content="connect-src 'self' https://api.open-meteo.com; form-action 'none'">"""
+    return re.sub(r"<title>[^<]+</title>", title, html, count=1).replace(
+        "Appartement Crans-Montana", "Six Senses A10"
+    )
+
+
+def public_config(c: dict) -> dict:
+    c["meta"]["projet"] = "Six Senses A10"
+    c["meta"].pop("aide", None)
+    version = c["meta"]["version"].removesuffix("-showcase")
+    c["meta"]["version"] = f"{version}-a10-demo.1-showcase"
+    for piece in c["pieces"]:
+        piece["pilotages"]["eclairages"]["circuits"].pop("lutron", None)
     return c
 
 
@@ -116,7 +141,10 @@ def main() -> None:
     villa.patch_html(src / "index.html", DEST / "index.html")
     villa.patch_html(src / "iphone.html", DEST / "iphone.html")
     for name in ("index.html", "iphone.html"):
-        assert_clean(name, (DEST / name).read_text(encoding="utf-8"))
+        path = DEST / name
+        html = path.read_text(encoding="utf-8")
+        assert_clean(name, html)
+        path.write_text(patch_demo_html(html), encoding="utf-8")
 
     n_js = copy_tree(src / "js", DEST / "js", skip=JS_EXCLUDED)
     # themes/svgs (777 icônes du gabarit Crestron) n'est référencé ni par les HTML ni par les CSS : non copié.
@@ -139,7 +167,7 @@ def main() -> None:
 
     c = clean_config(canonical)
     dump = json.dumps(c, ensure_ascii=False, indent=2)
-    assert_clean("villa_config.json", dump)
+    assert_clean("villa_config.json", dump.replace(c["meta"]["projet"], "", 1))
     (DEST / "villa_config.json").write_text(dump, encoding="utf-8")
     (DEST / "villa_config.js").write_text("window.villaConfigEmbedded = " + dump + "\n;\n", encoding="utf-8")
     print(f"Vitrine Appartement Crans-Montana synchronisée depuis {src}")

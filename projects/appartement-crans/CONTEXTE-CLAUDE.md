@@ -88,3 +88,7 @@ Règle : tout le projet reste dans `projects/appartement-crans/` ; le Core et `a
    de zones de `circuits.lutron`.
 4. Recette visuelle : faite le 27.09 sur la vitrine (Core 1.0.209) ; à refaire sur matériel (dalle, iPad, iPhone).
 5. Quand le Core évolue : `python3 tools/assemble.py`, puis recompiler les trois artefacts.
+
+## 12/11/2026 — Six Senses A10 sur le portail
+
+Le nom public Six Senses A10 est défini dans le catalogue et dans le générateur de vitrine. Le chemin `appartement-crans` reste stable. Les routes PC / XPanel et Web XPanel utilisent la page Connect grand format, la même que la dalle et la tablette. Le téléphone utilise `iphone.html`. Les positions simulées sont calculées par pièce dans `js/local-feedback.js` et exposées à Connect sous forme de pourcentages d'ouverture. Le générateur écarte l'initialisation WebXPanel, les identifiants Lutron et les instructions internes du JSON public. Les positions été/hiver de démonstration sont 65 % et 35 %.

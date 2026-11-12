@@ -38,6 +38,8 @@ export const sectors = [
 export const devices = [
   { id: `xpanel`, name: `Xpanel`, viewport: `desktop`, simulatorType: `desktop`, iconName: `Monitor`,
     label: { fr: `PC / Xpanel`, en: `PC / Xpanel`, de: `PC / Xpanel` } },
+  { id: `web_xpanel`, name: `Web XPanel`, viewport: `web-xpanel`, simulatorType: `desktop`, iconName: `Monitor`,
+    label: { fr: `Web XPanel`, en: `Web XPanel`, de: `Web XPanel` } },
   { id: `crestron`, name: `TSW-1070`, viewport: `wallpanel`, simulatorType: `wallpanel`, iconName: `LayoutGrid`,
     label: { fr: `Dalle TSW`, en: `TSW panel`, de: `TSW Panel` } },
   { id: `crestron_1080`, name: `TSW-1080`, viewport: `wallpanel_hd`, simulatorType: `wallpanel`, iconName: `LayoutGrid`,
@@ -110,11 +112,11 @@ export const projects = [
     // Deuxième GUI CH5 réelle issue du Core Villa Crans : seul villa_config.json change.
     // Vitrine régénérée par scripts/sync-appartement-crans.py (jamais éditée à la main).
     id: `appartement-crans`,
-    name: `Appartement Crans-Montana`,
+    name: `Six Senses A10`,
     status: `realisation`,
     client: `Propriétaire privé`,
     sectors: [`residentiel`],
-    devices: [`crestron`, `ios_tablet`, `ios_phone`],
+    devices: [`crestron`, `ios_tablet`, `ios_phone`, `xpanel`, `web_xpanel`],
     isInteractive: false,
     embedUrl: `/showcases/appartement-crans/index.html`,
     embedPhoneUrl: `/showcases/appartement-crans/iphone.html`,
