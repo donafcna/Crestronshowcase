@@ -628,3 +628,7 @@ Le titre public du projet `appartement-crans` est Six Senses A10. La dalle, la t
 ## 12/11/2026 — XPanel A10 principal et XPanel Climat, vitrine 2.3.10
 
 La route `desktop` utilise l'archive A10 `a10-bench-xpanel.ch5z` (interface principale). La route `web-xpanel` utilise `a10-bench-climate.ch5z` (interface limitée aux pièces à thermostat). Les deux archives partagent leur interface graphique et leur moteur local. `scripts/sync-a10-xpanels.py` extrait les ressources de présentation, filtre la configuration et retire le démarrage du transport matériel. Les pages utilisent une politique `connect-src 'none'`. Pour régénérer, passer le répertoire `A10/releases/bench` au script Python. La recette `scripts/test-a10-xpanels.cjs` vérifie les deux parcours et l'absence de requêtes de commande.
+
+## 12/11/2026 — GUI A10 d’origine sur iPhone, iPad et TSW, vitrine 2.3.11
+
+Les routes `phone` et `tablet` et le lecteur tactile utilisent le GUI de l’archive `a10-bench-mobile.ch5z` (Crestron ONE), qui sélectionne son agencement selon la largeur. Aucune archive TSW A10 distincte n’a été retrouvée dans les livraisons ni dans l’historique du dépôt A10. La route `wallpanel` utilise le GUI grand format de `a10-bench-xpanel.ch5z` dans le châssis TSW existant. Le générateur `scripts/sync-a10-demos.py` et la recette `scripts/test-a10-demos.cjs` couvrent désormais les cinq routes. Les anciennes recettes Connect décrivent la vitrine antérieure.

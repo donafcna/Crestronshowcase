@@ -118,9 +118,10 @@ export const projects = [
     sectors: [`residentiel`],
     devices: [`crestron`, `ios_tablet`, `ios_phone`, `xpanel`, `web_xpanel`],
     isInteractive: false,
-    embedUrl: `/showcases/appartement-crans/index.html`,
-    embedPhoneUrl: `/showcases/appartement-crans/iphone.html`,
+    embedUrl: `/showcases/appartement-crans/xpanels/wallpanel.html`,
+    embedPhoneUrl: `/showcases/appartement-crans/xpanels/mobile.html`,
     embedByViewport: {
+      tablet: `/showcases/appartement-crans/xpanels/mobile.html`,
       desktop: `/showcases/appartement-crans/xpanels/main.html`,
       "web-xpanel": `/showcases/appartement-crans/xpanels/climate.html`,
     },

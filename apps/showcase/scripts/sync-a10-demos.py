@@ -1,4 +1,4 @@
-"""Generate the two public A10 XPanel demos from their CH5Z archives."""
+"""Generate the public A10 demos from their CH5Z archives."""
 import argparse
 import io
 import json
@@ -48,8 +48,9 @@ def main():
     args = parser.parse_args()
     main_panel = read_archive(args.archive_directory / "a10-bench-xpanel.ch5z")
     climate_panel = read_archive(args.archive_directory / "a10-bench-climate.ch5z")
-    if any(main_panel[name] != climate_panel[name] for name in SHARED_FILES):
-        raise ValueError("The XPanel archives no longer share the same GUI build")
+    mobile = read_archive(args.archive_directory / "a10-bench-mobile.ch5z")
+    if any(main_panel[name] != panel[name] for panel in (climate_panel, mobile) for name in SHARED_FILES):
+        raise ValueError("The A10 archives no longer share the same GUI build")
 
     source = read_assignment(main_panel["config.js"])
     config = {
@@ -77,12 +78,14 @@ def main():
         (DEST / name).write_bytes(main_panel[name])
     (DEST / "app.js").write_text(app, encoding="utf-8")
     write_assignment("config.js", "A10BenchConfig", config)
-    for name, panel, mode, label in (
-        ("main", main_panel, "", "XPanel"),
-        ("climate", climate_panel, "climate", "Climate"),
+    for name, panel, target, mode, label in (
+        ("main", main_panel, "xpanel", "", "XPanel"),
+        ("climate", climate_panel, "xpanel", "climate", "Climate"),
+        ("mobile", mobile, "mobile", "", "Crestron ONE"),
+        ("wallpanel", main_panel, "xpanel", "", "TSW"),
     ):
         runtime = read_assignment(panel["runtime.js"])
-        if runtime.get("target") != "xpanel" or runtime.get("mode", "") != mode:
+        if runtime.get("target") != target or runtime.get("mode", "") != mode:
             raise ValueError(f"Unexpected archive mode for {name}")
         write_assignment(f"runtime-{name}.js", "A10BenchRuntime", {
             "target": "demo", "mode": mode, "version": version,

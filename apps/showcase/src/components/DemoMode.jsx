@@ -62,9 +62,8 @@ const DemoPlayer = ({ project, deviceType, onBack }) => {
   const Simulator = getSimulator(project);
 
   const embedSrc =
-    deviceType === "phone" && project.embedPhoneUrl
-      ? project.embedPhoneUrl
-      : project.embedUrl;
+    project.embedByViewport?.[deviceType] ||
+    (deviceType === "phone" && project.embedPhoneUrl ? project.embedPhoneUrl : project.embedUrl);
 
   return (
     <div className="demo-player">

@@ -1,14 +1,19 @@
 const assert = require('node:assert/strict');
-const { chromium } = require('playwright');
+const { chromium, devices } = require('playwright');
 
-const base = process.argv[2] || 'http://localhost:4175';
+const base = process.argv[2] || 'http://localhost:4177';
 const prefix = '/interfaces/residentiel/appartement-crans/';
 
 (async () => {
   const browser = await chromium.launch();
   try {
-    for (const [route, variant] of [['desktop', 'main'], ['web-xpanel', 'climate']]) {
-      const page = await browser.newPage({ viewport: { width: 1600, height: 1000 } });
+    const cases = [
+      ['desktop', 'main'], ['web-xpanel', 'climate'],
+      ['wallpanel', 'wallpanel'], ['phone', 'mobile'], ['tablet', 'mobile'],
+      ['phone', 'mobile', 'iPhone 15'], ['tablet', 'mobile', 'iPad Mini landscape'],
+    ];
+    for (const [route, variant, device] of cases) {
+      const page = await browser.newPage(device ? devices[device] : { viewport: { width: 1600, height: 1000 } });
       const errors = [];
       const requests = [];
       page.on('pageerror', error => errors.push(error.message));
@@ -31,8 +36,9 @@ const prefix = '/interfaces/residentiel/appartement-crans/';
       assert.equal(await frame.locator('#connection').textContent(), 'Demo');
       assert.equal(await frame.evaluate(() => typeof window.WebXPanel), 'undefined');
 
-      if (variant === 'main') {
-        assert.ok(await frame.locator('[data-room="monitoring"]').count());
+      if (variant !== 'climate') {
+        if (route === 'phone') assert.ok(await frame.locator('.room-select').count());
+        else assert.ok(await frame.locator('[data-room="monitoring"]').count());
         await frame.getByRole('button', { name: 'Bright', exact: true }).click();
         assert.ok(await frame.evaluate(() => window.A10Bench.getState().lights.some(level => level === 100)));
         const light = frame.locator('input[data-light]').first();
@@ -60,7 +66,7 @@ const prefix = '/interfaces/residentiel/appartement-crans/';
           A10Bench.config.climate.some(zone => zone.roomId === room.id && zone.thermostat && !zone.hidden))));
       }
 
-      if (variant === 'main') await frame.locator('[data-tab="climate"]').first().click();
+      if (variant !== 'climate') await frame.locator('[data-tab="climate"]').first().click();
       const increase = frame.locator('[data-op="8"]').filter({ hasText: '+' }).first();
       const zone = Number(await increase.getAttribute('data-id'));
       const before = await frame.evaluate(id => window.A10Bench.getState().climate[id - 1], zone);
@@ -70,7 +76,7 @@ const prefix = '/interfaces/residentiel/appartement-crans/';
       assert.equal(await frame.evaluate(id => window.A10Bench.getState().power[id - 1], zone), 0);
       assert.deepEqual(requests, []);
       assert.deepEqual(errors, []);
-      console.log(`${route} → ${variant} | commandes, retours et isolation réseau OK`);
+      console.log(`${device || route} → ${variant} | commandes, retours et isolation réseau OK`);
       await page.close();
     }
   } finally {
