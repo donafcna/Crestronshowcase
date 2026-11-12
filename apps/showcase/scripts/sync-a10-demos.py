@@ -65,6 +65,7 @@ def main():
     app = main_panel["app.js"].decode("utf-8-sig")
     app = replace_once(app, "z.knx?.setpoint", "z.thermostat")
     app = replace_once(app, "A10 Climate · Fréquence TV", "Six Senses A10 · Climate")
+    app = replace_once(app, "window.A10Bench={send,", "window.A10Bench={getRoom:()=>room,send,")
     app = replace_once(app, "demo=r.target==='demo'", "demo=true")
     app = replace_once(app, "connectionStatus.textContent='RMC4'", "connectionStatus.textContent='Demo'")
     start = app.index(" function script(src)")

@@ -245,5 +245,5 @@ function openScenePicker(mode){scenePicker=mode;picker.innerHTML='<h2>'+ (mode==
  document.addEventListener('dblclick',e=>e.preventDefault(),{passive:false});
  const viewportMeta=document.querySelector('meta[name=viewport]');
  window.visualViewport?.addEventListener('resize',()=>{if(viewportMeta&&visualViewport.scale>1.01){const v=viewportMeta.content;viewportMeta.content=v+',width=device-width';setTimeout(()=>viewportMeta.content=v,50);}});
- window.A10Bench={send,getState:()=>state,getQueue:()=>queue,config:c};
+ window.A10Bench={getRoom:()=>room,send,getState:()=>state,getQueue:()=>queue,config:c};
 })();

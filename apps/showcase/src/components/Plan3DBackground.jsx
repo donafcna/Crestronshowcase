@@ -23,6 +23,14 @@ export const PLAN3D_PROJECTS = {
 // Quand la 3D remplace la vidéo : une règle par cas (support affiché + largeur de fenêtre).
 // Ailleurs, la vidéo de fond reste. Cas validés par Donatien au fil des tests (16/9/2026) :
 // portable 14" -> smartphone seulement. Ajouter une ligne par cas ; bornes en px, optionnelles.
+// A10 uses stable room slugs; the existing architectural model uses numeric IDs.
+const A10_PLAN_ROOMS = {
+  salon: 1, dining: 2, kitchen: 3, entrance: 4, "guest-wc": 5, laundry: 6,
+  "master-bedroom": 7, "master-bath": 8, "tv-room": 10, "tv-bath": 11,
+  landing: 12, "twin-bedroom": 13, "twin-bath": 14, "vip-bedroom": 15, "vip-bath": 16,
+  terraces: 17,
+};
+
 export const PLAN3D_RULES = [
   { device: "phone" },                       // smartphone : toujours
 ];
@@ -127,13 +135,24 @@ const VillaPlan3DBackground = ({ projectId, stageRef, guiFrameRef, tourSessionRe
 
   // 2. Liaison au GUI + cadrage. Only the initial presentation is instantaneous.
   useEffect(() => {
+    let previousA10Room;
     const tick = () => {
       const api = apiRef.current;
       if (!api) return;
       if (!tourSessionRef?.current.overview) api.holdOverview(false);
       const frame = guiFrameRef?.current;
       const win = frame && frame.contentWindow;
-      if (win) api.attach(win);
+      if (projectId === "appartement-crans") {
+        const room = A10_PLAN_ROOMS[win?.A10Bench?.getRoom?.()];
+        if (room && room !== previousA10Room) {
+          if (previousA10Room !== undefined || room !== A10_PLAN_ROOMS.salon) {
+            if (tourSessionRef?.current) tourSessionRef.current.overview = false;
+            api.holdOverview(false);
+          }
+          api.setRoom(room);
+          previousA10Room = room;
+        }
+      } else if (win) api.attach(win);
       if (entryRef.current && !entryRef.current.ready) { entryRef.current.update(); return; }
       const layout = villaViewport(canvasRef.current, frame, stageRef?.current);
       api.setWindow(layout?.rect || null);
