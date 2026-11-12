@@ -113,6 +113,7 @@ export const projects = [
     // Vitrine régénérée par scripts/sync-appartement-crans.py (jamais éditée à la main).
     id: `appartement-crans`,
     name: `Six Senses A10`,
+    autoDemo: false,
     status: `realisation`,
     client: `Propriétaire privé`,
     sectors: [`residentiel`],
