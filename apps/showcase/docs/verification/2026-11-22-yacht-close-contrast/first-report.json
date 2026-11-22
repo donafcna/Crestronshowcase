@@ -1,0 +1,324 @@
+{
+  "fits": [
+    {
+      "profile": {
+        "x": 620,
+        "y": 100,
+        "w": 420,
+        "h": 600
+      },
+      "inside": true,
+      "newRadius": 92.04771174687386,
+      "oldRadius": 157.37378985554508,
+      "closerPercent": 41.510138485344136,
+      "bounds": {
+        "minX": 625.2500000000001,
+        "maxX": 1034.75,
+        "minY": 178.30343813655594,
+        "maxY": 577.5085056613374
+      },
+      "vertices": 156212
+    },
+    {
+      "profile": {
+        "x": 350,
+        "y": 80,
+        "w": 700,
+        "h": 620
+      },
+      "inside": true,
+      "newRadius": 69.95970977649705,
+      "oldRadius": 98.0427580691743,
+      "closerPercent": 28.643674296538236,
+      "bounds": {
+        "minX": 382.5585217532935,
+        "maxX": 1031.4245077612097,
+        "minY": 87.7499999999999,
+        "maxY": 692.25
+      },
+      "vertices": 156212
+    },
+    {
+      "profile": {
+        "x": 80,
+        "y": 60,
+        "w": 1100,
+        "h": 680
+      },
+      "inside": true,
+      "newRadius": 67.96176041802477,
+      "oldRadius": 68.80306297828344,
+      "closerPercent": 1.2227690510293265,
+      "bounds": {
+        "minX": 285.1207399542219,
+        "maxX": 1079.7295051615865,
+        "minY": 68.49999999999987,
+        "maxY": 731.5
+      },
+      "vertices": 156212
+    },
+    {
+      "profile": {
+        "x": 0,
+        "y": 80,
+        "w": 440,
+        "h": 600
+      },
+      "inside": true,
+      "newRadius": 89.1502739575963,
+      "oldRadius": 150.27677648396963,
+      "closerPercent": 40.6759473795965,
+      "bounds": {
+        "minX": 5.500000000000114,
+        "maxX": 434.5,
+        "minY": 150.86144887044256,
+        "maxY": 567.5380413293132
+      },
+      "vertices": 156212
+    }
+  ],
+  "rooms": [
+    {
+      "id": "0",
+      "selected": "0"
+    },
+    {
+      "id": "1",
+      "selected": "1"
+    },
+    {
+      "id": "2",
+      "selected": "2"
+    },
+    {
+      "id": "3",
+      "selected": "3"
+    },
+    {
+      "id": "4",
+      "selected": "4"
+    },
+    {
+      "id": "5",
+      "selected": "5"
+    },
+    {
+      "id": "6",
+      "selected": "6"
+    },
+    {
+      "id": "7",
+      "selected": "7"
+    },
+    {
+      "id": "8",
+      "selected": "8"
+    },
+    {
+      "id": "9",
+      "selected": "9"
+    },
+    {
+      "id": "10",
+      "selected": "10"
+    },
+    {
+      "id": "11",
+      "selected": "11"
+    },
+    {
+      "id": "12",
+      "selected": "12"
+    },
+    {
+      "id": "13",
+      "selected": "13"
+    },
+    {
+      "id": "14",
+      "selected": "14"
+    },
+    {
+      "id": "15",
+      "selected": "15"
+    },
+    {
+      "id": "16",
+      "selected": "16"
+    },
+    {
+      "id": "17",
+      "selected": "17"
+    },
+    {
+      "id": "18",
+      "selected": "18"
+    },
+    {
+      "id": "19",
+      "selected": "19"
+    },
+    {
+      "id": "20",
+      "selected": "20"
+    },
+    {
+      "id": "21",
+      "selected": "21"
+    },
+    {
+      "id": "22",
+      "selected": "22"
+    },
+    {
+      "id": "23",
+      "selected": "23"
+    },
+    {
+      "id": "24",
+      "selected": "24"
+    },
+    {
+      "id": "25",
+      "selected": "25"
+    },
+    {
+      "id": "26",
+      "selected": "26"
+    },
+    {
+      "id": "27",
+      "selected": "27"
+    },
+    {
+      "id": "28",
+      "selected": "28"
+    },
+    {
+      "id": "29",
+      "selected": "29"
+    },
+    {
+      "id": "30",
+      "selected": "30"
+    },
+    {
+      "id": "31",
+      "selected": "31"
+    },
+    {
+      "id": "32",
+      "selected": "32"
+    },
+    {
+      "id": "33",
+      "selected": "33"
+    },
+    {
+      "id": "34",
+      "selected": "34"
+    },
+    {
+      "id": "35",
+      "selected": "35"
+    },
+    {
+      "id": "36",
+      "selected": "36"
+    }
+  ],
+  "runs": [
+    {
+      "subject": "captain",
+      "after": false,
+      "fps": 59.84082340958783,
+      "calls": 603,
+      "triangles": 138554,
+      "textures": 7,
+      "failed": 0
+    },
+    {
+      "subject": "captain",
+      "after": true,
+      "fps": 59.92329817861711,
+      "calls": 603,
+      "triangles": 138554,
+      "textures": 7,
+      "failed": 0
+    },
+    {
+      "subject": "captain",
+      "after": true,
+      "fps": 59.79760809581874,
+      "calls": 603,
+      "triangles": 138554,
+      "textures": 7,
+      "failed": 0
+    },
+    {
+      "subject": "captain",
+      "after": false,
+      "fps": 56.383085074477655,
+      "calls": 603,
+      "triangles": 138554,
+      "textures": 7,
+      "failed": 0
+    },
+    {
+      "subject": "exterior",
+      "after": false,
+      "fps": 41.81529924692826,
+      "calls": 1738,
+      "triangles": 307054,
+      "textures": 8,
+      "failed": 0
+    },
+    {
+      "subject": "exterior",
+      "after": true,
+      "fps": 57.585027892610626,
+      "calls": 1738,
+      "triangles": 307054,
+      "textures": 8,
+      "failed": 0
+    },
+    {
+      "subject": "exterior",
+      "after": true,
+      "fps": 59.71099876611437,
+      "calls": 1738,
+      "triangles": 307054,
+      "textures": 8,
+      "failed": 0
+    },
+    {
+      "subject": "exterior",
+      "after": false,
+      "fps": 59.119597347466495,
+      "calls": 1738,
+      "triangles": 307054,
+      "textures": 8,
+      "failed": 0
+    }
+  ],
+  "errors": [],
+  "colors": {
+    "wall": "#a8aaa2",
+    "mattress": "#dedfd6",
+    "bedlinen": "#345b68",
+    "headboard": "#695349"
+  },
+  "performance": {
+    "captain": {
+      "before": 58.11195424203274,
+      "after": 59.860453137217924,
+      "percent": 3.008845456999776
+    },
+    "exterior": {
+      "before": 50.46744829719738,
+      "after": 58.6480133293625,
+      "percent": 16.209587185765084
+    }
+  },
+  "status": "failed"
+}

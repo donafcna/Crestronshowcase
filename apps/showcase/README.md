@@ -669,3 +669,8 @@ Version approuvée par Donatien après comparaison avant/après. Mobilier aux ar
 ## 22/11/2026 — Livraison des améliorations du yacht
 
 Visite des 37 pièces rapprochée et latérale, noms et sélection renforcée, matériaux détaillés, section Extérieur et 40 circuits ; yacht entier agrandi en perspective. Budget de rendu conservé, banc extérieur contrôlé 58,68 → 57,52 images/s (-1,97 %). Livraison isolée des autres travaux locaux. Preuves et limites : apps/showcase/docs/verification/2026-11-22-yacht-release/ depuis la racine.
+
+
+## 22/11/2026 — Yacht : matières mieux séparées et extérieur plus proche
+
+Murs grège, literie ivoire et bleu pétrole, tête de lit brune ; remplissage lumineux adouci pour éviter le blanchiment. Palette commune aux espaces, lits partagés. Extérieur ajusté sur les sommets et vue de trois quarts adaptée à la largeur libre : caméra 8 à 39 % plus proche, coque et mât entiers sur quatre formats. Navigation 37 espaces et jour/nuit vérifiés ; bancs cabine et extérieur sans baisse significative de cadence, budgets de rendu identiques. Build/lint et dix tests noyau réussis. Preuves et limites : apps/showcase/docs/verification/2026-11-22-yacht-close-contrast/ depuis la racine.

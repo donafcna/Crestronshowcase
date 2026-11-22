@@ -1,0 +1,12 @@
+✔ model-ready alone never acknowledges a rendered entry (1.9041ms)
+✔ first presentation snaps all orbit components and acknowledges only after render (1.7164ms)
+✔ new layout supersedes stale pending presentation (0.9052ms)
+✔ invalid viewport, request and cross-origin messages cannot reveal a frame (0.9751ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 107.1688

@@ -1,0 +1,18 @@
+✔ 40 unique independently switchable circuits (1.4073ms)
+✔ yacht 60-second cycle: two 30-second halves with included one-second fades (1.0783ms)
+✔ all exterior circuits on at night, off by day (0.3767ms)
+✔ manual edits survive render ticks until explicit Auto (0.303ms)
+✔ invalid numbers and unknown IDs cannot corrupt controller (0.3056ms)
+✔ lighting presets cannot change the environmental clock (0.1991ms)
+✔ real source hull is closed with consistent outward seams (111.0201ms)
+✔ closed source hull has finite nondegenerate triangles and positive signed volume (52.5642ms)
+✔ water exclusion follows the raked bow across the wave-height range (34.9758ms)
+✔ unexpected upstream hull topology is rejected explicitly (0.891ms)
+ℹ tests 10
+ℹ suites 0
+ℹ pass 10
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 373.3128
