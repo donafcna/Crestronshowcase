@@ -664,3 +664,8 @@ Faisceaux RGBW à ouverture constante et atténuation progressive, facettes des 
 ## 22/11/2026 — Villa FTV : relief et matériaux validés pour publication (2.3.14)
 
 Version approuvée par Donatien après comparaison avant/après. Mobilier aux arêtes adoucies, bois et tissus différenciés, ombres de contact précalculées. Environ 60 images/s avant/après sur le banc local ; 19 textures et appels de dessin conservés, +1,42 % de triangles dans le salon. Contrôles et limites : apps/showcase/docs/verification/2026-11-22-villa-relief/. Publication autorisée sur main vers Vercel ; aucun déploiement matériel.
+
+
+## 22/11/2026 — Livraison des améliorations du yacht
+
+Visite des 37 pièces rapprochée et latérale, noms et sélection renforcée, matériaux détaillés, section Extérieur et 40 circuits ; yacht entier agrandi en perspective. Budget de rendu conservé, banc extérieur contrôlé 58,68 → 57,52 images/s (-1,97 %). Livraison isolée des autres travaux locaux. Preuves et limites : apps/showcase/docs/verification/2026-11-22-yacht-release/ depuis la racine.

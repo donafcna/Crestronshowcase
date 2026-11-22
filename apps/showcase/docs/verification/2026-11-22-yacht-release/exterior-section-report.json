@@ -1,0 +1,39 @@
+{
+  "checks": [
+    {
+      "id": "underwater_port",
+      "value": 23,
+      "automatic": false
+    },
+    {
+      "id": "mast_uplight",
+      "value": 61,
+      "automatic": false
+    },
+    {
+      "id": "led_main",
+      "value": 47,
+      "automatic": false
+    }
+  ],
+  "errors": [],
+  "open": {
+    "value": "exterior",
+    "view": "exterior"
+  },
+  "circuits": {
+    "count": 40,
+    "unique": 40,
+    "missing": []
+  },
+  "independent": true,
+  "off": true,
+  "on": true,
+  "interior": true,
+  "auto": true,
+  "zoom": {
+    "rooms": 37,
+    "max": 0.9749993614311739
+  },
+  "status": "passed"
+}

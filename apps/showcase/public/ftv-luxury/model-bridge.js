@@ -38,7 +38,7 @@
       radius = desiredRadius; yaw = desiredYaw; pitch = desiredPitch; target.copy(desiredTarget);
       camera.position.set(target.x + Math.sin(yaw) * Math.cos(pitch) * radius, target.y + Math.sin(pitch) * radius, target.z + Math.cos(yaw) * Math.cos(pitch) * radius);
       camera.lookAt(target);
-      camera.setViewOffset(viewport.w, viewport.h, -viewport.x - viewport.w * .075, -viewport.y, innerWidth, innerHeight);
+      camera.setViewOffset(viewport.w, viewport.h, -viewport.x, -viewport.y, innerWidth, innerHeight);
       camera.updateProjectionMatrix(); camera.updateMatrixWorld(true);
       pending = { requestId, viewport: { ...viewport } };
     };

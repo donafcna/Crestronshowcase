@@ -1,0 +1,58 @@
+{
+  "signature": [
+    "name_port",
+    "name_starboard",
+    "name_stern"
+  ],
+  "underwater": [
+    "underwater_port",
+    "underwater_starboard",
+    "underwater_stern",
+    "underwater_bow"
+  ],
+  "decks": [
+    "led_swim",
+    "led_main",
+    "led_owner",
+    "led_bridge",
+    "led_sundeck",
+    "led_roof",
+    "foredeck_perimeter",
+    "upper_rail"
+  ],
+  "paths": [
+    "walk_main_port",
+    "walk_main_starboard",
+    "walk_owner_port",
+    "walk_owner_starboard",
+    "walk_bridge_port",
+    "walk_bridge_starboard",
+    "walk_sundeck_port",
+    "walk_sundeck_starboard",
+    "stairs_stern_port",
+    "stairs_stern_starboard",
+    "stairs_upper_port",
+    "stairs_upper_starboard",
+    "foredeck_spots"
+  ],
+  "pools": [
+    "jacuzzi_water",
+    "jacuzzi_rim",
+    "pool_sundeck"
+  ],
+  "mast": [
+    "mast_uplight",
+    "mast_crown"
+  ],
+  "hospitality": [
+    "lounge_main",
+    "lounge_owner",
+    "lounge_bridge",
+    "bar_sundeck"
+  ],
+  "party": [
+    "party_beams",
+    "party_wash",
+    "party_pinspots"
+  ]
+}

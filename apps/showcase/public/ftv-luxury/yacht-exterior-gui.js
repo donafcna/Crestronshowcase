@@ -7,7 +7,11 @@
   const origin=location.origin==='null'?'*':location.origin, channel='ftv-luxury/v1';
   const simulation=core.createController();
   const sceneCycle=window.FTV_YACHT_SCENE_CYCLE.create(preset=>gui.applyPreset(preset));
-  let current=simulation.state(), opened=false, group='signature', page=0, pageSize=3, ready=gui.panel2D;
+  const zoneSelector=document.getElementById('zone');
+  const exteriorOption=document.createElement('option');exteriorOption.value='exterior';exteriorOption.textContent='Extérieur · éclairages';zoneSelector.options[0].after(exteriorOption);
+  const families={underwater:'Éclairages sous-marins',decks:'LED · pourtour des ponts',mast:'Mâts & projecteurs',paths:'Passages & escaliers',pools:'Piscines & jacuzzi',hospitality:'Terrasses & bar',signature:'Nom du yacht',party:'Soirée & lyres'};
+  const familyOf=c=>c.id.startsWith('underwater_')?'underwater':c.id.startsWith('led_')||c.id==='upper_rail'||c.id==='foredeck_perimeter'?'decks':c.id.startsWith('mast_')?'mast':c.group==='water'?'pools':c.group;
+  let current=simulation.state(), opened=false, group='underwater', page=0, pageSize=3, ready=gui.panel2D;
   const panel=document.createElement('section');
   panel.className='yacht-exterior-panel';panel.hidden=true;panel.setAttribute('aria-label','Circuits extérieurs du yacht');controls.after(panel);
   function command(payload){
@@ -23,25 +27,29 @@
     else document.getElementById('model').contentWindow?.postMessage(msg,origin);
   }
   function launcher(){
+    if(opened)zoneSelector.value='exterior';
     if(gui.state.tab!=='light'||controls.querySelector('[data-exterior-open]'))return;
     const b=document.createElement('button');b.type='button';b.dataset.exteriorOpen='';b.className='exterior-launcher';
-    b.textContent='Extérieur · 40 circuits';b.setAttribute('aria-expanded',String(opened));
+    b.textContent='Éclairage extérieur · 40 circuits';b.setAttribute('aria-expanded',String(opened));
     (controls.querySelector('.section-header')||controls).appendChild(b);
   }
   const observer=new MutationObserver(launcher);observer.observe(controls,{childList:true,subtree:true});
   function show(on){
+    if(on){opened=false;gui.chooseTab('light');gui.selectRoom('all');zoneSelector.value='exterior';}
+    else zoneSelector.value=gui.state.zone;
     opened=on;panel.hidden=!on;app.classList.toggle('yacht-exterior-active',on);
     controls.querySelector('[data-exterior-open]')?.setAttribute('aria-expanded',String(on));
     if(on){render();panel.querySelector('[data-exterior-close]').focus();}
     else controls.querySelector('[data-exterior-open]')?.focus();
   }
+  zoneSelector.addEventListener('change',e=>{if(e.target.value==='exterior'){e.stopImmediatePropagation();show(true);}},{capture:true});
   const circuitName=c=>c.id==='party_beams'?'Lyres · optiques de pont':c.name;
   function render(){
-    const list=core.circuits.filter(c=>c.group===group), count=Math.ceil(list.length/pageSize);page=Math.max(0,Math.min(count-1,page));
+    const list=core.circuits.filter(c=>familyOf(c)===group), count=Math.ceil(list.length/pageSize);page=Math.max(0,Math.min(count-1,page));
     panel.innerHTML=`<div class="exterior-heading"><h2>Éclairage extérieur</h2><button type="button" data-exterior-close>Retour</button></div>
       <div class="exterior-mode"><label><input type="checkbox" data-exterior-auto ${current.automatic?'checked':''}> Auto jour / nuit</label><span data-exterior-phase></span></div>
       <div class="exterior-actions"><button type="button" data-exterior-preset="night">Tout allumer</button><button type="button" data-exterior-preset="off">Tout éteindre</button></div>
-      <label class="exterior-group">Famille de circuits<select data-exterior-group>${Object.entries(core.groups).map(([id,name])=>`<option value="${id}" ${group===id?'selected':''}>${name}</option>`).join('')}</select></label>
+      <label class="exterior-group">Famille de circuits<select data-exterior-group>${Object.entries(families).map(([id,name])=>`<option value="${id}" ${group===id?'selected':''}>${name}</option>`).join('')}</select></label>
       <div class="exterior-sliders">${list.slice(page*pageSize,page*pageSize+pageSize).map(c=>`<div class="exterior-slider"><label for="exterior-${c.id}">${circuitName(c)}<output data-exterior-value="${c.id}">${current.levels[c.id]} %</output></label><input id="exterior-${c.id}" type="range" min="0" max="100" step="1" value="${current.levels[c.id]}" data-exterior-id="${c.id}" aria-label="${circuitName(c)}"></div>`).join('')}</div>
       <div class="exterior-pages"><button type="button" data-exterior-page="-1" ${page===0?'disabled':''}>Précédent</button><span>${page+1} / ${count}</span><button type="button" data-exterior-page="1" ${page+1===count?'disabled':''}>Suivant</button></div>
       <p class="exterior-hint" data-exterior-status role="status"></p>`;
@@ -93,7 +101,7 @@
   window.addEventListener('ftv:control',e=>{
     if(e.detail?.project!==gui.config.project)return;
     if(e.detail.name==='scene'&&userPreset===e.detail.value)command({action:'preset',key:e.detail.value});
-    if(gui.state.tab!=='light'&&opened)show(false);
+    if((gui.state.tab!=='light'||e.detail.name==='selectRoom')&&opened)show(false);
   });
   window.addEventListener('message',e=>{
     const source=gui.externalModel?parent:document.getElementById('model').contentWindow;

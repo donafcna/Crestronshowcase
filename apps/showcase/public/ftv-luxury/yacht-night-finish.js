@@ -104,7 +104,7 @@
       `;
       shader.fragmentShader=shader.fragmentShader.replace('#include <emissivemap_fragment>','#include <emissivemap_fragment>\n'+effect);
     };
-    m.customProgramCacheKey=()=> 'asteria-night-surfaces-v1-'+kind;
+    m.customProgramCacheKey=()=> 'asteria-night-surfaces-v2-'+kind+'-'+original.customProgramCacheKey();
     clones.set(key,m);surfaces.push(m);return m;
   }
   const reflectors=new Set([M.white,M.teak,M.wood,M.gold,M.cream,M.taupe,M.marble,M.wall,pearlPaint]);
@@ -122,6 +122,10 @@
   const beforeSea=sea.material.onBeforeCompile;
   sea.material.onBeforeCompile = shader => {
     beforeSea(shader);Object.assign(shader.uniforms,U);
+    // Pixel footprint replaces distance-only fading for the finest ripples.
+    // No new wave evaluations, textures, render passes or animation callbacks.
+    shader.fragmentShader=shader.fragmentShader.replace('vec2 q=p+', 'distanceFade*=1.-smoothstep(.18,.75,max(length(dFdx(p)),length(dFdy(p))));\n   vec2 q=p+');
+
     shader.fragmentShader='uniform vec4 nightDecks[6],nightLevels[6]; uniform vec3 nightWarm;\n'+shader.fragmentShader;
     shader.fragmentShader=shader.fragmentShader.replace('vec2(2.1,3.1)','vec2(1.55,3.65)');
     shader.fragmentShader=shader.fragmentShader.replace('min(1.6,glow)*caustic*1.7','min(2.2,glow)*caustic*2.4');

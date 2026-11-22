@@ -3,6 +3,10 @@
 @media(max-width:550px){.panel{display:none;width:220px;top:123px;max-height:calc(100vh - 218px)}.panel.open{display:block;z-index:4}#paneltoggle{display:block}.toolbar{top:80px;left:12px;right:12px}.toolbar button{flex:1;font-size:10px;padding:9px 5px}#info{left:12px;right:12px;bottom:79px;width:auto;padding:11px}#info h2{margin:4px 0 0;font-size:18px}#info p,#info .facts{display:none}footer{align-items:end;gap:8px}footer .row{gap:3px}footer .foot{width:140px;font-size:8px;max-width:140px}footer button{font-size:8px;padding:7px}header small{font-size:8px}header p{display:none}}
 @media(min-width:551px){#info.overview{width:278px;padding:16px}#info.overview h2{font-size:21px;margin:7px 0}#info.overview p{display:none}#info.overview .facts{margin-top:10px;gap:17px}#info.overview .facts b{font-size:17px}}
 header,.badge,.toolbar,.panel,#info,#help,footer,#sources{display:none!important}html,body{height:100%;overflow:hidden}
+
+.marker{font-size:11px;font-weight:500;padding:5px 9px;max-width:210px;white-space:normal;text-align:center;line-height:1.25;box-shadow:0 2px 8px #00182240}
+.marker.selected{background:#c5f5e5;color:#092e35;border:2px solid #65dbc2;font-size:13px;font-weight:700;z-index:2;padding:7px 12px}
+.marker small{display:block;font-size:9px;font-weight:500;opacity:.8;margin-top:3px}
 </style></head><body><canvas id="canvas" role="img" aria-label="Maquette 3D interactive de cinq ponts du yacht concept Asteria"></canvas><div id="markers"></div><header><small>THE AV CHANNEL · FRÉQUENCE TV</small><h1>ASTERIA</h1><p>Une résidence sur la mer · exploration 3D</p></header><div class="badge">CIRCULATIONS LATÉRALES · VERSION 03</div><div class="toolbar"><button id="paneltoggle">Explorer</button><button id="top">Vue de dessus</button><button id="reset">Recentrer</button><button id="rotate">Rotation auto</button></div><aside class="panel"><div class="label">01 / Explorer le yacht</div><div class="row"><button id="exterior" class="active">Extérieur</button><button id="explode">Éclaté</button></div><div id="decks"></div><div class="label">02 / Entrer dans un espace</div><select id="rooms" aria-label="Choisir une pièce"><option value="">Choisir une pièce…</option></select><label class="toggle"><input id="labels" type="checkbox">Afficher les noms des espaces</label><div class="rule"></div><div class="label">03 / Scènes lumineuses</div><div class="scene-row"><button data-scene="day" class="active">Croisière · jour</button><button data-scene="sunset">Golden hour</button><button data-scene="evening">Réception</button><button data-scene="night">Veille · nuit</button></div><label class="slide"><span>Corniches</span><input id="cove" type="range" min="0" max="100" value="65"><output>65%</output></label><label class="slide"><span>Spots</span><input id="spot" type="range" min="0" max="100" value="70"><output>70%</output></label><label class="slide"><span>Appliques</span><input id="accent" type="range" min="0" max="100" value="55"><output>55%</output></label><label class="slide"><span>Balisage</span><input id="night" type="range" min="0" max="100" value="20"><output>20%</output></label><label class="slide"><span>Piscines</span><input id="pool" type="range" min="0" max="100" value="50"><output>50%</output></label></aside><section id="info" aria-live="polite"><small id="decklabel">VUE D'ENSEMBLE</small><h2 id="roomtitle">L'horizon comme adresse</h2><p id="roomdesc">Étrave affinée, coque galbée et superstructure sculptée. Les terrasses arrondies et les vitrages obliques reprennent les lignes du Asteria. Cinq niveaux aménagés restent accessibles en coupe.</p><div class="facts"><div><b>85,5 m</b><span>RÉFÉRENCE LONGUEUR</span></div><div><b>5</b><span>NIVEAUX PROPOSÉS</span></div><div><b id="count">38</b><span>ESPACES</span></div></div></section><div id="help">Glisser : tourner · Molette bas : vue complète · Molette haut : dernière zone</div><footer><div class="foot">Interprétation 3D inspirée de M/Y Asteria.<br>Aménagement conceptuel, sans plans d'exécution.</div><div class="row"><button id="download">Exporter la 3D</button><button id="shot">Capture PNG</button><button id="sourcebtn">Références</button></div></footer><section id="sources"><button class="close" id="close">Fermer</button><h2>M/Y Asteria · concept fictif</h2><p>Une résidence sur la mer : cinq ponts, salons, suites, espaces de détente et terrasses. Nom et aménagements inventés pour cette démonstration audiovisuelle.</p><p>La maquette illustre des scénarios de lumière et de confort. Elle ne constitue pas un plan naval ou un projet de construction.</p><p>Glisser pour tourner. La molette alterne entre la vue complète et la dernière zone sélectionnée. Explorer les ponts et les espaces avec les commandes. L’export glTF permet de réutiliser le modèle.</p></section><div id="loader">PRÉPARATION DES CINQ PONTS…</div><script src="../vendor/three-r160.min.js"></script><script src="../sea.js"></script><script src="../sky.js"></script><script>
 'use strict';
 const $=id=>document.getElementById(id),canvas=$('canvas');
@@ -16,6 +20,84 @@ const fill=new THREE.DirectionalLight(0x91d1e6,1.1);fill.position.set(30,20,-45)
 const model=new THREE.Group();model.name='Asteria_inspired_concept';scene.add(model);const exterior=new THREE.Group();exterior.name='Hull_and_superstructure';model.add(exterior);
 const mats={};function mat(name,color,rough=.55,metal=0){const m=new THREE.MeshStandardMaterial({color,roughness:rough,metalness:metal});m.name=name;mats[name]=m;return m}
 const M={white:mat('Pearl white',0xe7e9e4,.32,.12),hull:mat('Turquoise hull',0x047e94,.29,.42),teak:mat('Warm teak',0xb48c60,.75),wood:mat('Dark walnut',0x443027,.36),gold:mat('Brushed brass',0xc3aa70,.24,.7),cream:mat('Cream upholstery',0xe9dfc7,.93),taupe:mat('Warm taupe',0xbaa58e,.91),navy:mat('Deep teal textile',0x265a61,.88),black:mat('Dark metal',0x101c24,.3,.6),chrome:mat('Polished steel',0x9facb1,.17,.95),marble:mat('Ivory marble',0xe4dfd2,.24),rug:mat('Soft wool carpet',0xc6b8a1,.99),wall:mat('Warm pale panels',0xd4c9b3,.7),sea:mat('Water',0x0b5064,.43,.28),glass:new THREE.MeshStandardMaterial({name:'Tinted glazing',color:0x163b45,roughness:.14,metalness:.25,transparent:true,opacity:.76,side:THREE.DoubleSide}),clear:new THREE.MeshStandardMaterial({name:'Clear glass',color:0xbedadb,roughness:.12,metalness:.2,transparent:true,opacity:.27,side:THREE.DoubleSide})};
+
+// YACHT_FINISH_BEGIN — static, world-scaled teak; no texture, mesh or frame work.
+M.teak.onBeforeCompile=shader=>{
+ shader.vertexShader='varying vec3 teakPosition;\n'+shader.vertexShader;
+ shader.vertexShader=shader.vertexShader.replace('#include <begin_vertex>', '#include <begin_vertex>\nteakPosition=(modelMatrix*vec4(transformed,1.)).xyz;');
+ shader.fragmentShader='varying vec3 teakPosition;\n'+shader.fragmentShader;
+ shader.fragmentShader=shader.fragmentShader.replace('#include <color_fragment>', `#include <color_fragment>
+  // Grain runs along the yacht. Fade below a pixel to avoid crawling at distance.
+  float grainPhase=teakPosition.z*185.+sin(teakPosition.x*1.3+teakPosition.z*9.)*1.8;
+  float grainFilter=1.-smoothstep(.5,2.5,fwidth(grainPhase));
+  float plank=floor(teakPosition.z*4.);
+  float tone=sin(plank*2.39996)*.035;
+  diffuseColor.rgb*=1.+tone+.045*sin(grainPhase)*grainFilter;
+ `);
+};
+M.teak.customProgramCacheKey=()=> 'asteria-teak-grain-v1';
+// YACHT_FINISH_END
+
+// YACHT_INTERIOR_BEGIN — metric, filtered surface detail; existing meshes only.
+function finishInterior(material,kind){
+ material.onBeforeCompile=shader=>{
+  shader.vertexShader='varying vec3 finishPosition;\n'+shader.vertexShader;
+  shader.vertexShader=shader.vertexShader.replace('#include <begin_vertex>', `#include <begin_vertex>
+   vec4 finishVertex=vec4(transformed,1.);
+   #ifdef USE_INSTANCING
+    finishVertex=instanceMatrix*finishVertex;
+   #endif
+   finishPosition=(modelMatrix*finishVertex).xyz;
+  `);
+  shader.fragmentShader='varying vec3 finishPosition;\n'+shader.fragmentShader;
+  const detail={
+   wood:`
+    vec2 fp=finishPosition.xz;float row=floor(fp.y/.24);
+    float phase=fp.y*220.+sin(fp.x*2.2+row)*2.3;
+    float filtered=1.-smoothstep(.7,3.,fwidth(phase));
+    float grain=sin(phase)*filtered;
+    float edge=abs(fract(fp.y/.24)-.5)*.24;
+    float aa=max(fwidth(fp.y),.001);
+    float joint=smoothstep(.12-.009-aa,.12-.009+aa,edge);
+    float end=abs(fract(fp.x/2.4+fract(row*.618))-.5)*2.4;
+    joint=max(joint,smoothstep(1.2-.007-max(fwidth(fp.x),.001),1.2-.007+max(fwidth(fp.x),.001),end)*.65);
+    float finishTexture=.12*grain+.055*sin(row*2.39996)-joint*.22;
+    diffuseColor.rgb*=1.+finishTexture;
+   `,
+   fabric:`
+    vec2 thread=vec2(finishPosition.x+finishPosition.z,finishPosition.y+finishPosition.z)*260.;
+    vec2 filterWidth=fwidth(thread);
+    vec2 weave=sin(thread)*(1.-smoothstep(vec2(.8),vec2(3.),filterWidth));
+    float finishTexture=.045*(weave.x+weave.y)+.022*sin((finishPosition.x+finishPosition.y+finishPosition.z)*27.);
+    diffuseColor.rgb*=1.+finishTexture;
+   `,
+   wall:`
+    float seamPosition=(finishPosition.x+finishPosition.z)/1.15;
+    float distanceToSeam=min(fract(seamPosition),1.-fract(seamPosition));
+    float aa=max(fwidth(seamPosition),.0005);
+    float seam=1.-smoothstep(.003-aa,.003+aa,distanceToSeam);
+    float finishTexture=-seam*.17+.017*sin(finishPosition.y*21.);
+    diffuseColor.rgb*=1.+finishTexture;
+   `,
+   stone:`
+    vec2 fp=finishPosition.xz+finishPosition.y*.35;
+    float vein=sin(fp.x*2.8+fp.y*1.6+sin(fp.y*3.4)*.65);
+    float line=1.-smoothstep(.025,.11+fwidth(vein),abs(vein));
+    float finishTexture=-line*.13+.018*sin(fp.x*19.+fp.y*7.);
+    diffuseColor.rgb*=1.+finishTexture;
+   `
+  }[kind];
+  shader.fragmentShader=shader.fragmentShader.replace('#include <color_fragment>','#include <color_fragment>\n'+detail);
+  shader.fragmentShader=shader.fragmentShader.replace('#include <roughnessmap_fragment>','#include <roughnessmap_fragment>\nroughnessFactor=clamp(roughnessFactor-finishTexture*.16,.12,1.);');
+ };
+ material.customProgramCacheKey=()=> 'asteria-interior-v1-'+kind;
+}
+finishInterior(M.wood,'wood');
+for(const material of [M.cream,M.taupe,M.navy,M.rug])finishInterior(material,'fabric');
+finishInterior(M.wall,'wall');finishInterior(M.marble,'stone');
+// YACHT_INTERIOR_END
+
+
 const boxGeo=new THREE.BoxGeometry(1,1,1),cylGeo=new THREE.CylinderGeometry(1,1,1,18),sphereGeo=new THREE.SphereGeometry(1,18,12),lightMaterials={cove:[],spot:[],accent:[],night:[],pool:[]};
 function mesh(g,geo,m,x,y,z,sx=1,sy=1,sz=1){const o=new THREE.Mesh(geo,m);o.position.set(x,y,z);o.scale.set(sx,sy,sz);o.castShadow=true;o.receiveShadow=true;g.add(o);return o}function box(g,x,y,z,w,h,d,m=M.white){return mesh(g,boxGeo,m,x,y,z,w,h,d)}function cyl(g,x,y,z,r,h,m=M.gold){const o=mesh(g,cylGeo,m,x,y,z,r,h,r);if(r<.16)o.castShadow=false;return o}function ball(g,x,y,z,r,m=M.cream){return mesh(g,sphereGeo,m,x,y,z,r,r,r)}
 function line(g,pts,m=M.chrome,r=.025){const curve=new THREE.CatmullRomCurve3(pts.map(p=>new THREE.Vector3(...p)));return mesh(g,new THREE.TubeGeometry(curve,Math.max(8,pts.length*3),r,5,false),m,0,0,0)}
@@ -190,18 +272,83 @@ for(const [x,y,z,w,h] of [[-18,30,12,25,15],[24,16,-22,32,12]]){const pl=new THR
 // Animated water is a showcase backdrop; pools retain their own materials.
 const sea=window.createFtvSea(THREE,scene),water=sea.mesh;
 const roomLights=Array.from({length:4},()=>{const l=new THREE.PointLight(0xffcc88,0,18,1.3);scene.add(l);return l});function updateRoomLights(){roomLights.forEach((l,i)=>{l.visible=!!selectedRoom;if(selectedRoom){const r=selectedRoom;l.position.set(r.x+(i%2?1:-1)*r.l*.28,deckData[r.deck].y+2.15,r.z+(i<2?1:-1)*r.w*.28);l.intensity=(+$('cove').value*.13 + +$('spot').value*.16 + +$('accent').value*.07)}})}
-const FTV_CHASSIS=new URLSearchParams(location.search).get('chassis')==='1';
-const fitYacht=()=>{const aspect=(window.__ftvViewport?.w||innerWidth)/(window.__ftvViewport?.h||innerHeight),c=new THREE.PerspectiveCamera(39,aspect,.12,900),center=new THREE.Vector3(-1,10,0),dir=new THREE.Vector3(Math.sin(-.68)*Math.cos(.16),Math.sin(.16),Math.cos(-.68)*Math.cos(.16));let lo=30,hi=300;for(let i=0;i<20;i++){const r=(lo+hi)/2;c.position.copy(center).addScaledVector(dir,r);c.lookAt(center);c.updateMatrixWorld();let extent=0;for(const x of [-46,44])for(const y of [-2,25])for(const z of [-8,8]){const p=new THREE.Vector3(x,y,z).project(c);extent=Math.max(extent,Math.abs(p.x),Math.abs(p.y));}if(extent>.98)lo=r;else hi=r;}return hi*.86};let mode='exterior',deckIndex=-1,selectedRoom=null,lastSelectedRoom=null,auto=false,sceneName='day';const target=new THREE.Vector3(-1,10,0),desiredTarget=target.clone();let yaw=-.68,pitch=.16,radius=fitYacht(),desiredYaw=yaw,desiredPitch=pitch,desiredRadius=radius;
+// Cache structural bounds once; framing never scans the yacht in the animation loop.
+const exteriorFraming={points:null,target:new THREE.Vector3(-1,10,0)};
+const fitYacht=()=>{
+ if(!exteriorFraming.points){
+  const points=[];exterior.updateWorldMatrix(true,true);
+  exterior.traverse(o=>{
+   if(!o.isMesh||o.isInstancedMesh||!o.geometry||o.material?.transparent||o.material?.isShaderMaterial)return;
+   // Optical emitters are not part of the naval silhouette.
+   for(let parent=o;parent&&parent!==exterior;parent=parent.parent)if(parent===window.__ftvYachtExterior?.root)return;
+   if(!o.geometry.boundingBox)o.geometry.computeBoundingBox();const b=o.geometry.boundingBox;
+   for(const x of [b.min.x,b.max.x])for(const y of [b.min.y,b.max.y])for(const z of [b.min.z,b.max.z]){const p=new THREE.Vector3(x,y,z).applyMatrix4(o.matrixWorld);p.y=Math.max(-1.5,p.y);points.push(p);}
+  });
+  exteriorFraming.points=points;
+ }
+ const aspect=(window.__ftvViewport?.w||innerWidth)/(window.__ftvViewport?.h||innerHeight);
+ const dir=new THREE.Vector3(Math.sin(-.68)*Math.cos(.16),Math.sin(.16),Math.cos(-.68)*Math.cos(.16));
+ const right=new THREE.Vector3(Math.cos(-.68),0,-Math.sin(-.68)),up=new THREE.Vector3().crossVectors(dir,right);
+ // Solve the four perspective-frustum inequalities, including each point's depth.
+ // A world-space box centre alone wastes space because bow and stern differ in depth.
+ const tangent=Math.tan(THREE.MathUtils.degToRad(39/2)),padding=.975;
+ const tx=tangent*aspect*padding,ty=tangent*padding;
+ let left=-Infinity,rightEdge=-Infinity,bottom=-Infinity,top=-Infinity;
+ for(const p of exteriorFraming.points){const x=p.dot(right),y=p.dot(up),depth=p.dot(dir);left=Math.max(left,depth-x/tx);rightEdge=Math.max(rightEdge,depth+x/tx);bottom=Math.max(bottom,depth-y/ty);top=Math.max(top,depth+y/ty);}
+ exteriorFraming.target.copy(right).multiplyScalar((rightEdge-left)*tx/2).addScaledVector(up,(top-bottom)*ty/2);
+ const distance=Math.max(20,(left+rightEdge)/2,(bottom+top)/2);
+ return distance;
+};let mode='exterior',deckIndex=-1,selectedRoom=null,lastSelectedRoom=null,auto=false,sceneName='day';const initialExteriorRadius=fitYacht();const target=exteriorFraming.target.clone(),desiredTarget=target.clone();let yaw=-.68,pitch=.16,radius=initialExteriorRadius,desiredYaw=yaw,desiredPitch=pitch,desiredRadius=radius;
 function setInfo(r){if(r){$('decklabel').textContent=deckData[r.deck].name.toUpperCase();$('roomtitle').textContent=r.name;$('roomdesc').textContent=r.desc}else if(deckIndex>=0){$('decklabel').textContent='EXPLORATION EN COUPE';$('roomtitle').textContent=deckData[deckIndex].name;$('roomdesc').textContent=deckData[deckIndex].desc}else{$('decklabel').textContent=mode==='explode'?'LES CINQ NIVEAUX':'VUE D’ENSEMBLE';$('roomtitle').textContent=mode==='explode'?'Une maison verticale':'L’horizon comme adresse';$('roomdesc').textContent=mode==='explode'?'Les ponts se séparent pour révéler les espaces, les circulations et les quatre bassins proposés. Choisissez une pièce pour vous en approcher.':'Étrave affinée, coque galbée et superstructure sculptée. Les terrasses arrondies et les vitrages obliques reprennent les lignes du Asteria. Cinq niveaux aménagés restent accessibles en coupe.'}}
-function setMode(m,d=-1){if(innerWidth<551)document.querySelector('.panel').classList.remove('open');mode=m;$('info').classList.toggle('overview',m!=='deck');deckIndex=d;selectedRoom=null;updateRoomLights();exterior.visible=m==='exterior';decks.forEach((g,i)=>{g.visible=m!=='exterior'&&(m!=='deck'||i===d);g.position.y=m==='deck'&&i===d?Math.max(deckData[i].y,5.5):deckData[i].y+(m==='explode'?i*9:0);roofs[i].visible=m==='exterior';});mast.visible=m==='exterior'||(m==='deck'&&d===4);water.visible=true;$('exterior').classList.toggle('active',m==='exterior');$('explode').classList.toggle('active',m==='explode');document.querySelectorAll('[data-deck]').forEach(b=>b.classList.toggle('active',+b.dataset.deck===d));$('rooms').value='';setInfo(null);if(m==='deck'){desiredTarget.set(-2,decks[d].position.y-1,0);desiredRadius=(d===4?58:95)*(innerWidth<551?1.45:1);desiredPitch=.72;desiredYaw=-.85}else{desiredTarget.set(-1,m==='explode'?25:10,0);desiredRadius=m==='explode'?172*(innerWidth<551?2:1):fitYacht();desiredPitch=m==='explode'?.48:.16;desiredYaw=m==='explode'?-.86:-.68}updateRoomOptions();updateLabels();}
-function focusRoom(id){if(id==='')return;const r=rooms[+id];if(!r)return;setMode('deck',r.deck);selectedRoom=r;lastSelectedRoom=r;updateRoomLights();setInfo(r);$('rooms').value=String(r.id);desiredTarget.set(r.x,decks[r.deck].position.y-1.15,r.z);desiredRadius=Math.max(r.l,r.w)*(FTV_CHASSIS?2.0:2.75)*(innerWidth<551?(FTV_CHASSIS?1.02:1.35):1);desiredPitch=1.12;desiredYaw=-1.04;auto=false;$('rotate').classList.remove('active');}
+function setMode(m,d=-1){if(innerWidth<551)document.querySelector('.panel').classList.remove('open');mode=m;emphasizeRoom(null);$('info').classList.toggle('overview',m!=='deck');deckIndex=d;selectedRoom=null;updateRoomLights();exterior.visible=m==='exterior';decks.forEach((g,i)=>{g.visible=m!=='exterior'&&(m!=='deck'||i===d);g.position.y=m==='deck'&&i===d?Math.max(deckData[i].y,5.5):deckData[i].y+(m==='explode'?i*9:0);roofs[i].visible=m==='exterior';});mast.visible=m==='exterior'||(m==='deck'&&d===4);water.visible=true;$('exterior').classList.toggle('active',m==='exterior');$('explode').classList.toggle('active',m==='explode');document.querySelectorAll('[data-deck]').forEach(b=>b.classList.toggle('active',+b.dataset.deck===d));$('rooms').value='';setInfo(null);if(m==='deck'){desiredTarget.set(-2,decks[d].position.y-1,0);desiredRadius=(d===4?58:95)*(innerWidth<551?1.45:1);desiredPitch=.72;desiredYaw=-.85}else{desiredTarget.set(-1,m==='explode'?25:10,0);desiredRadius=m==='explode'?172*(innerWidth<551?2:1):fitYacht();if(m==='exterior')desiredTarget.copy(exteriorFraming.target);desiredPitch=m==='explode'?.48:.16;desiredYaw=m==='explode'?-.86:-.68}updateRoomOptions();updateLabels();}
+// Selection changes materials once; the animation loop never traverses the rooms.
+const roomContextMaterial=new THREE.MeshStandardMaterial({name:'Neighbouring rooms · neutral context',color:0x6b8288,roughness:.95,metalness:0});
+const roomOriginalMaterials=new WeakMap();
+let contextualDeck=-1;
+const roomOutline=new THREE.LineLoop(new THREE.BufferGeometry(),new THREE.LineBasicMaterial({color:0x65dbc2,toneMapped:false,depthTest:true}));
+roomOutline.name='Selected room · floor perimeter';roomOutline.visible=false;roomOutline.frustumCulled=false;
+function emphasizeRoom(active){
+ for(const r of rooms){if(r.deck!==contextualDeck&&r.deck!==active?.deck)continue;r.g.traverse(o=>{if(!o.isMesh)return;if(!roomOriginalMaterials.has(o))roomOriginalMaterials.set(o,o.material);o.material=active&&r!==active?roomContextMaterial:roomOriginalMaterials.get(o);});}
+ contextualDeck=active?.deck??-1;
+ roomOutline.visible=!!active;
+ if(active){const {l,w}=active;roomOutline.geometry.dispose();roomOutline.geometry=new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(-l/2+.1,.16,-w/2+.1),new THREE.Vector3(l/2-.1,.16,-w/2+.1),new THREE.Vector3(l/2-.1,.16,w/2-.1),new THREE.Vector3(-l/2+.1,.16,w/2-.1)]);active.g.add(roomOutline);}
+}
+function fitRoom(r){
+ const v=window.__ftvViewport,aspect=v?v.w/v.h:innerWidth/innerHeight;
+ const c=new THREE.PerspectiveCamera(camera.fov,aspect,.12,900),dir=new THREE.Vector3(Math.sin(desiredYaw)*Math.cos(desiredPitch),Math.sin(desiredPitch),Math.cos(desiredYaw)*Math.cos(desiredPitch));
+ const p=new THREE.Vector3();let lo=5,hi=100;
+ // Fit the floor AND furniture, rather than a distance based only on room length.
+ for(let i=0;i<17;i++){const distance=(lo+hi)/2;c.position.copy(desiredTarget).addScaledVector(dir,distance);c.lookAt(desiredTarget);c.updateMatrixWorld();let extent=0;for(const x of [-r.l/2,r.l/2])for(const y of [0,2.8])for(const z of [-r.w/2,r.w/2]){p.set(r.x+x,decks[r.deck].position.y+y,r.z+z).project(c);extent=Math.max(extent,Math.abs(p.x),Math.abs(p.y));}if(extent>.975)lo=distance;else hi=distance;}
+ return hi;
+}
+function focusRoom(id){if(id==='')return;const r=rooms[+id];if(!r)return;setMode('deck',r.deck);selectedRoom=r;lastSelectedRoom=r;updateRoomLights();setInfo(r);$('rooms').value=String(r.id);desiredTarget.set(r.x,decks[r.deck].position.y+.85,r.z);desiredPitch=.60;const forward=r.type==='bed';desiredYaw=(forward?1:-1)*.65;if(r.z<-.5)desiredYaw=Math.PI-desiredYaw;desiredRadius=fitRoom(r);emphasizeRoom(r);mast.visible=false;updateLabels();auto=false;$('rotate').classList.remove('active');}
 function updateRoomOptions(){const select=$('rooms');select.innerHTML='<option value="">Choisir une pièce…</option>';deckData.forEach(d=>{const list=rooms.filter(r=>r.deck===d.id);if(deckIndex<0||deckIndex===d.id){const opt=document.createElement('optgroup');opt.label=d.name;list.forEach(r=>{const o=document.createElement('option');o.value=r.id;o.textContent=r.name;opt.appendChild(o)});select.appendChild(opt)}})}
-function updateLabels(){labels.forEach(x=>x.el.remove());labels.length=0;if(!$('labels').checked||mode==='exterior')return;rooms.filter(r=>deckIndex<0||r.deck===deckIndex).forEach(r=>{const el=document.createElement('div');el.className='marker';el.textContent=r.name;el.onclick=()=>focusRoom(r.id);$('markers').appendChild(el);labels.push({el,r})})}
+let labelsUpdatedAt=0;
+function updateLabels(){
+ labels.forEach(x=>x.el.remove());labels.length=0;labelsUpdatedAt=0;
+ if(mode==='exterior')return;
+ const visible=rooms.filter(r=>deckIndex<0||r.deck===deckIndex);if(selectedRoom)visible.sort((a,b)=>Number(b===selectedRoom)-Number(a===selectedRoom));
+ for(const r of visible){const el=document.createElement('div');el.className='marker'+(r===selectedRoom?' selected':'');el.textContent=r.name;el.dataset.room=String(r.id);if(r===selectedRoom){const small=document.createElement('small');small.textContent=deckData[r.deck].name;el.append(small);}el.onclick=()=>focusRoom(r.id);$('markers').appendChild(el);labels.push({el,r,p:new THREE.Vector3(),width:el.offsetWidth,height:el.offsetHeight,left:0,top:0,shown:false});}
+}
+function positionRoomLabels(now){
+ if(now-labelsUpdatedAt<12)return;labelsUpdatedAt=now;
+ const v=window.__ftvViewport,area=v||{x:0,y:0,w:innerWidth,h:innerHeight};
+ for(const label of labels){const {el,r,p,width,height}=label,active=r===selectedRoom;label.shown=false;
+  // Active title sits at the far edge, leaving the furniture readable.
+  p.set(r.x,decks[r.deck].position.y+(active?.6:1.4),r.z-(active?Math.sign(Math.cos(yaw))*r.w*.43:0)).project(camera);
+  let x=(p.x*.5+.5)*innerWidth,y=(-p.y*.5+.5)*innerHeight-height/2-8;
+  if(p.z>1||p.z< -1||x<area.x||x>area.x+area.w||y<area.y||y>area.y+area.h){el.style.display='none';continue;}
+  x=Math.max(area.x+width/2+6,Math.min(area.x+area.w-width/2-6,x));y=Math.max(area.y+height/2+6,Math.min(area.y+area.h-height/2-6,y));
+  const left=x-width/2,top=y-height/2;
+  if(!active&&labels.some(other=>other.shown&&left<other.left+other.width+8&&left+width+8>other.left&&top<other.top+other.height+6&&top+height+6>other.top)){el.style.display='none';continue;}
+  label.left=left;label.top=top;label.shown=true;el.style.left='0';el.style.top='0';el.style.transform='translate3d('+x+'px,'+y+'px,0) translate(-50%,-50%)';el.style.display='block';
+ }
+}
 deckData.slice().reverse().forEach(d=>{const b=document.createElement('button');b.dataset.deck=d.id;b.innerHTML=`${d.name}<span>${d.short}</span>`;b.onclick=()=>setMode('deck',d.id);$('decks').appendChild(b)});$('count').textContent=rooms.length;updateRoomOptions();
 $('paneltoggle').onclick=()=>document.querySelector('.panel').classList.toggle('open');$('exterior').onclick=()=>setMode('exterior');$('explode').onclick=()=>setMode('explode');$('rooms').onchange=e=>focusRoom(e.target.value);$('labels').onchange=updateLabels;$('top').onclick=()=>{desiredPitch=1.53;desiredYaw=-Math.PI/2};$('reset').onclick=()=>{if(selectedRoom)focusRoom(selectedRoom.id);else setMode(mode,deckIndex)};$('rotate').onclick=()=>{auto=!auto;$('rotate').classList.toggle('active',auto)};$('sourcebtn').onclick=()=>$('sources').style.display='block';$('close').onclick=()=>$('sources').style.display='none';
 const sceneValues={day:[2.35,3.2,0x234957,65,70,55,20,50],sunset:[1.35,2.25,0x453d43,85,55,75,55,80],evening:[.8,.58,0x102434,100,55,85,70,100],night:[.31,.1,0x06121f,18,5,10,75,50]};function applyChannel(k,v){lightMaterials[k].forEach(m=>{m.emissiveIntensity=v/100*3.8;m.color.setScalar(.16+v/100*.84)});$(k).value=v;$(k).nextElementSibling.textContent=v+'%';updateRoomLights()}function setScene(key,updateEnvironment=true){sceneName=key;skinGlass.emissiveIntensity=key==='evening'?.025:key==='night'?.015:key==='sunset'?.005:0;const v=sceneValues[key];if(updateEnvironment){hemisphere.intensity=v[0];sun.intensity=v[1];scene.background.setHex(v[2]);scene.fog.color.setHex(v[2]);sky.setScene(key);fill.intensity=key==='day'?1.1:key==='sunset'?.7:.25;sun.color.setHex(key==='sunset'?0xffba70:0xffeddb);}['cove','spot','accent','night','pool'].forEach((k,i)=>applyChannel(k,v[i+3]));document.querySelectorAll('[data-scene]').forEach(b=>b.classList.toggle('active',b.dataset.scene===key))}document.querySelectorAll('[data-scene]').forEach(b=>b.onclick=()=>setScene(b.dataset.scene));['cove','spot','accent','night','pool'].forEach(k=>$(k).oninput=e=>applyChannel(k,+e.target.value));setScene('day');
 // Orbital inspection with touch pinch and room picking.
-const pointers=new Map();let drag=null,moved=0,pinch=0;canvas.addEventListener('pointerdown',e=>{canvas.setPointerCapture(e.pointerId);pointers.set(e.pointerId,{x:e.clientX,y:e.clientY});drag={x:e.clientX,y:e.clientY};moved=0;if(pointers.size===2){const a=[...pointers.values()];pinch=Math.hypot(a[0].x-a[1].x,a[0].y-a[1].y)}});canvas.addEventListener('pointermove',e=>{if(!pointers.has(e.pointerId))return;pointers.set(e.pointerId,{x:e.clientX,y:e.clientY});if(pointers.size===2){const a=[...pointers.values()],n=Math.hypot(a[0].x-a[1].x,a[0].y-a[1].y);desiredRadius=Math.max(4,Math.min(320,desiredRadius*pinch/n));pinch=n;moved=20;return}if(!drag)return;const dx=e.clientX-drag.x,dy=e.clientY-drag.y;moved+=Math.abs(dx)+Math.abs(dy);if(e.shiftKey||e.buttons===2){const f=desiredRadius*.0015;desiredTarget.x-=Math.cos(yaw)*dx*f;desiredTarget.z+=Math.sin(yaw)*dx*f;desiredTarget.y+=dy*f}else{desiredYaw-=dx*.006;desiredPitch=Math.max(.07,Math.min(1.54,desiredPitch+dy*.005))}drag={x:e.clientX,y:e.clientY}});canvas.addEventListener('pointerup',e=>{pointers.delete(e.pointerId);drag=null;if(moved<4&&mode!=='exterior'){const ray=new THREE.Raycaster();ray.setFromCamera(new THREE.Vector2(e.clientX/innerWidth*2-1,-e.clientY/innerHeight*2+1),camera);const hits=ray.intersectObjects(clickables.filter(o=>decks[rooms[o.userData.room].deck].visible));if(hits.length)focusRoom(hits[0].object.userData.room)}});canvas.addEventListener('pointercancel',e=>{pointers.delete(e.pointerId);drag=null});canvas.addEventListener('contextmenu',e=>e.preventDefault());canvas.addEventListener('wheel',e=>{e.preventDefault();if(e.deltaY>0)setMode('exterior');else if(e.deltaY<0)focusRoom(lastSelectedRoom?.id??0);window.__ftvEmit?.()},{passive:false});addEventListener('resize',()=>{if(innerWidth<=0||innerHeight<=0)return;camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);if(mode==='exterior')desiredRadius=fitYacht()});
+const pointers=new Map();let drag=null,moved=0,pinch=0;canvas.addEventListener('pointerdown',e=>{canvas.setPointerCapture(e.pointerId);pointers.set(e.pointerId,{x:e.clientX,y:e.clientY});drag={x:e.clientX,y:e.clientY};moved=0;if(pointers.size===2){const a=[...pointers.values()];pinch=Math.hypot(a[0].x-a[1].x,a[0].y-a[1].y)}});canvas.addEventListener('pointermove',e=>{if(!pointers.has(e.pointerId))return;pointers.set(e.pointerId,{x:e.clientX,y:e.clientY});if(pointers.size===2){const a=[...pointers.values()],n=Math.hypot(a[0].x-a[1].x,a[0].y-a[1].y);desiredRadius=Math.max(4,Math.min(320,desiredRadius*pinch/n));pinch=n;moved=20;return}if(!drag)return;const dx=e.clientX-drag.x,dy=e.clientY-drag.y;moved+=Math.abs(dx)+Math.abs(dy);if(e.shiftKey||e.buttons===2){const f=desiredRadius*.0015;desiredTarget.x-=Math.cos(yaw)*dx*f;desiredTarget.z+=Math.sin(yaw)*dx*f;desiredTarget.y+=dy*f}else{desiredYaw-=dx*.006;desiredPitch=Math.max(.07,Math.min(1.54,desiredPitch+dy*.005))}drag={x:e.clientX,y:e.clientY}});canvas.addEventListener('pointerup',e=>{pointers.delete(e.pointerId);drag=null;if(moved<4&&mode!=='exterior'){const ray=new THREE.Raycaster();ray.setFromCamera(new THREE.Vector2(e.clientX/innerWidth*2-1,-e.clientY/innerHeight*2+1),camera);const hits=ray.intersectObjects(clickables.filter(o=>decks[rooms[o.userData.room].deck].visible));if(hits.length)focusRoom(hits[0].object.userData.room)}});canvas.addEventListener('pointercancel',e=>{pointers.delete(e.pointerId);drag=null});canvas.addEventListener('contextmenu',e=>e.preventDefault());canvas.addEventListener('wheel',e=>{e.preventDefault();if(e.deltaY>0)setMode('exterior');else if(e.deltaY<0)focusRoom(lastSelectedRoom?.id??0);window.__ftvEmit?.()},{passive:false});addEventListener('resize',()=>{if(innerWidth<=0||innerHeight<=0)return;camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);if(mode==='exterior'){desiredRadius=fitYacht();desiredTarget.copy(exteriorFraming.target);}else if(selectedRoom)desiredRadius=fitRoom(selectedRoom)});
 function saveBlob(blob,name){const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),2000)}$('shot').onclick=()=>{renderer.render(scene,camera);canvas.toBlob(b=>saveBlob(b,'Asteria_Concept_3D.png'))};
 // Portable glTF export: geometry, materials and hierarchy, with the five decks at their original elevations.
 window.exportYacht=function(){const old=decks.map(g=>g.position.y);decks.forEach((g,i)=>g.position.y=deckData[i].y);model.updateMatrixWorld(true);let byteOffset=0;const chunks=[],views=[],accessors=[],glMeshes=[],nodes=[],materials=[],matMap=new Map(),geoMap=new Map();const addAttr=(arr,itemSize,target)=>{let typed=arr instanceof Float32Array||arr instanceof Uint16Array||arr instanceof Uint32Array?arr:new Float32Array(arr);let bytes=new Uint8Array(typed.buffer,typed.byteOffset,typed.byteLength);const padded=new Uint8Array(Math.ceil(bytes.length/4)*4);padded.set(bytes);chunks.push(padded);const bv=views.push({buffer:0,byteOffset,byteLength:bytes.length,target})-1;byteOffset+=padded.length;const a={bufferView:bv,componentType:typed instanceof Uint32Array?5125:typed instanceof Uint16Array?5123:5126,count:typed.length/itemSize,type:itemSize===1?'SCALAR':itemSize===2?'VEC2':'VEC3'};if(itemSize===3&&target===34962){a.min=[Infinity,Infinity,Infinity];a.max=[-Infinity,-Infinity,-Infinity];for(let i=0;i<typed.length;i++){a.min[i%3]=Math.min(a.min[i%3],typed[i]);a.max[i%3]=Math.max(a.max[i%3],typed[i])}}return accessors.push(a)-1};function material(m){if(matMap.has(m.uuid))return matMap.get(m.uuid);const c=m.color||new THREE.Color(1,1,1);const v={name:m.name||'Material',pbrMetallicRoughness:{baseColorFactor:[c.r,c.g,c.b,m.opacity??1],metallicFactor:m.metalness??0,roughnessFactor:m.roughness??.7},doubleSided:m.side===THREE.DoubleSide};if(m.transparent){v.alphaMode='BLEND'}if(m.emissive)v.emissiveFactor=m.emissive.toArray().map(x=>Math.min(1,x*(m.emissiveIntensity||0)));const n=materials.push(v)-1;matMap.set(m.uuid,n);return n}function walk(obj){if(obj.userData?.exportIgnore)return null;if(obj.isMesh&&obj.material.visible===false)return null;const n={name:obj.name||obj.type,matrix:obj.matrix.toArray()};const id=nodes.push(n)-1;if(obj.isMesh){const key=obj.geometry.uuid+obj.material.uuid;let gi=geoMap.get(key);if(gi===undefined){const g=obj.geometry,attrs={POSITION:addAttr(g.attributes.position.array,3,34962)};if(g.attributes.normal)attrs.NORMAL=addAttr(g.attributes.normal.array,3,34962);const p={attributes:attrs,material:material(obj.material)};if(g.index)p.indices=addAttr(g.index.array,1,34963);gi=glMeshes.push({primitives:[p]})-1;geoMap.set(key,gi)}n.mesh=gi}const cs=obj.children.map(walk).filter(x=>x!==null);if(cs.length)n.children=cs;return id}const root=walk(model);const all=new Uint8Array(byteOffset);let off=0;chunks.forEach(c=>{all.set(c,off);off+=c.length});let bin='';for(let i=0;i<all.length;i+=8192)bin+=String.fromCharCode(...all.subarray(i,i+8192));const out={asset:{version:'2.0',generator:'The AV Channel • conceptual Asteria study',copyright:'Independent conceptual model; not an as-built naval plan.'},scene:0,scenes:[{nodes:[root]}],nodes,meshes:glMeshes,materials,accessors,bufferViews:views,buffers:[{byteLength:byteOffset,uri:'data:application/octet-stream;base64,'+btoa(bin)}]};decks.forEach((g,i)=>g.position.y=old[i]);model.updateMatrixWorld(true);return JSON.stringify(out)};
@@ -221,11 +368,11 @@ window.__ftvModel={project:'yacht-monaco',catalog:rooms.map(r=>({id:String(r.id)
  select:id=>{if(id==='all')setMode('exterior');else focusRoom(id);},level:id=>id==='all'?setMode('explode'):setMode('deck',Number(id)),overview:()=>setMode('exterior'),
  scene:key=>{setScene(({cruise:'day',sunset:'sunset',dinner:'evening',night:'night',off:'night'})[key]||'day',false);if(key==='off')for(const k in lightMaterials)applyChannel(k,0);const values=Object.fromEntries(Object.keys(lightMaterials).map(k=>[k,+$(k).value]));ftvYachtLighting(values);},lighting:ftvYachtLighting,
  color:hex=>{if(!/^#[0-9a-f]{6}$/i.test(hex))return;for(const k of ['cove','pool','accent']){lightMaterials[k].forEach(m=>m.emissive.set(hex));for(const group of ftvRoomLights.values())for(const m of group[k]||[])m.emissive.set(hex);}},
- viewport:v=>{window.__ftvViewport=v;if(mode==='exterior')desiredRadius=fitYacht();},
- pick:(x,y)=>{if(mode==='exterior')return;const ray=new THREE.Raycaster();ray.setFromCamera(new THREE.Vector2(x/innerWidth*2-1,-y/innerHeight*2+1),camera);const hits=ray.intersectObjects(clickables.filter(o=>decks[rooms[o.userData.room].deck].visible));if(hits.length)focusRoom(hits[0].object.userData.room);},
+ viewport:v=>{window.__ftvViewport=v;if(mode==='exterior'){desiredRadius=fitYacht();desiredTarget.copy(exteriorFraming.target);}else if(selectedRoom)desiredRadius=fitRoom(selectedRoom);},
+ pick:(x,y)=>{if(mode==='exterior')return;const label=labels.find(item=>item.shown&&x>=item.left&&x<=item.left+item.width&&y>=item.top&&y<=item.top+item.height);if(label){focusRoom(label.r.id);return;}const ray=new THREE.Raycaster();ray.setFromCamera(new THREE.Vector2(x/innerWidth*2-1,-y/innerHeight*2+1),camera);const hits=ray.intersectObjects(clickables.filter(o=>decks[rooms[o.userData.room].deck].visible));if(hits.length)focusRoom(hits[0].object.userData.room);},
  state:()=>({room:selectedRoom?String(selectedRoom.id):'all',floor:deckIndex,view:mode}),lastRoom:()=>String(lastSelectedRoom?.id??0),capture:()=>$('shot').click()};
 canvas.addEventListener('pointerup',()=>setTimeout(()=>window.__ftvEmit?.(),0));
 
-let last=performance.now();function animate(now){requestAnimationFrame(animate);if(document.hidden||window.__ftvPaused)return;const dt=Math.min(.5,(now-last)/1000);last=now;sea.update(dt);if(auto)desiredYaw+=dt*.11;const a=matchMedia('(prefers-reduced-motion: reduce)').matches?1:1-Math.exp(-dt*2.5);yaw+=(desiredYaw-yaw)*a;pitch+=(desiredPitch-pitch)*a;radius+=(desiredRadius-radius)*a;target.lerp(desiredTarget,a);camera.position.set(target.x+Math.sin(yaw)*Math.cos(pitch)*radius,target.y+Math.sin(pitch)*radius,target.z+Math.cos(yaw)*Math.cos(pitch)*radius);camera.lookAt(target);sky.update(dt,camera);const viewport=window.__ftvViewport;if(viewport){const shift=mode==='exterior'?viewport.w*.075:0;camera.setViewOffset(viewport.w,viewport.h,-viewport.x-shift,-viewport.y,innerWidth,innerHeight)}else camera.setViewOffset(innerWidth,innerHeight,-innerWidth*.035,0,innerWidth,innerHeight);labels.forEach(({el,r})=>{const v=new THREE.Vector3(r.x,decks[r.deck].position.y+1.35,r.z).project(camera);el.style.left=(v.x*.5+.5)*innerWidth+'px';el.style.top=(-v.y*.5+.5)*innerHeight+'px';el.style.display=v.z>1?'none':'block'});renderer.render(scene,camera)}requestAnimationFrame(animate);$('loader').style.display='none';
+let last=performance.now();function animate(now){requestAnimationFrame(animate);if(document.hidden||window.__ftvPaused)return;const dt=Math.min(.5,(now-last)/1000);last=now;sea.update(dt);if(auto)desiredYaw+=dt*.11;const a=matchMedia('(prefers-reduced-motion: reduce)').matches?1:1-Math.exp(-dt*2.5);yaw+=(desiredYaw-yaw)*a;pitch+=(desiredPitch-pitch)*a;radius+=(desiredRadius-radius)*a;target.lerp(desiredTarget,a);camera.position.set(target.x+Math.sin(yaw)*Math.cos(pitch)*radius,target.y+Math.sin(pitch)*radius,target.z+Math.cos(yaw)*Math.cos(pitch)*radius);camera.lookAt(target);sky.update(dt,camera);const viewport=window.__ftvViewport;if(viewport){const shift=0;camera.setViewOffset(viewport.w,viewport.h,-viewport.x-shift,-viewport.y,innerWidth,innerHeight)}else camera.setViewOffset(innerWidth,innerHeight,-innerWidth*.035,0,innerWidth,innerHeight);positionRoomLabels(now);renderer.render(scene,camera)}requestAnimationFrame(animate);$('loader').style.display='none';
 </script><script src="../model-bridge.js"></script></body></html>
 

@@ -1,0 +1,31 @@
+<!doctype html><meta charset="utf-8"><title>Yacht — visite des pièces</title><style>body{background:#102733;color:white;font:14px system-ui;margin:0}button{padding:12px}iframe{width:960px;height:640px;border:0}pre{white-space:pre-wrap}img{width:48%}</style><button id="run">Vérifier les pièces et la fluidité</button><pre id="report">Prêt</pre><div id="view"></div><div id="captures"></div>
+<script type="module">
+const report={checks:[],runs:[],errors:[]},out=document.querySelector('#report'),view=document.querySelector('#view');let frame;
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+async function mount(after){frame?.remove();frame=document.createElement('iframe');frame.src=after?'/ftv-luxury/models/yacht.html':'/yacht-room-before.html';view.append(frame);for(let i=0;i<200;i++){await sleep(100);if(frame.contentWindow.__ftvYachtExterior?.nightFinish)break;}const w=frame.contentWindow;if(!w.__ftvYachtExterior?.nightFinish)throw Error('initialisation');w.addEventListener('error',e=>report.errors.push(e.message));w.__ftvYachtExterior.setTestTime(2);w.__ftvModel.select('11');return w;}
+function capture(w,id){const image=document.createElement('img');image.id=id;image.src=w.__yacht.renderer.domElement.toDataURL('image/png');document.querySelector('#captures').append(image);}
+document.querySelector('#run').onclick=async()=>{
+try{
+ for(const after of [false,true,true,false]){
+ out.textContent='Mesure '+(report.runs.length+1)+'/4';const w=await mount(after);await sleep(4500);
+ w.eval(`window.framesMeasured=0;window.frameTimes=[];window.lastFrameTime=performance.now();window.priorSceneRender=scene.onBeforeRender;scene.onBeforeRender=function(...args){window.priorSceneRender?.apply(this,args);let now=performance.now();window.frameTimes.push(now-window.lastFrameTime);window.lastFrameTime=now;window.framesMeasured++;}`);
+ const start=performance.now();await sleep(6000);
+ const stats=w.eval(`({frames:framesMeasured,calls:renderer.info.render.calls,triangles:renderer.info.render.triangles,...renderer.info.memory,programs:renderer.info.programs.length,p95:frameTimes.sort((a,b)=>a-b)[Math.floor(frameTimes.length*.95)],failed:renderer.info.programs.filter(p=>p.diagnostics?.runnable===false).length})`);
+ report.runs.push({after,fps:stats.frames*1000/(performance.now()-start),...stats});
+ if(report.runs.length<=2){w.__ftvPaused=true;capture(w,after?'room-after':'room-before');}
+ }
+ const w=await mount(true);w.__ftvPaused=true;
+ for(const room of w.__ftvModel.catalog){
+  w.__ftvModel.select(room.id);
+  const check=w.eval(`(()=>{yaw=desiredYaw;pitch=desiredPitch;radius=desiredRadius;target.copy(desiredTarget);camera.clearViewOffset();camera.aspect=960/640;camera.updateProjectionMatrix();camera.position.set(target.x+Math.sin(yaw)*Math.cos(pitch)*radius,target.y+Math.sin(pitch)*radius,target.z+Math.cos(yaw)*Math.cos(pitch)*radius);camera.lookAt(target);camera.updateMatrixWorld();renderer.render(scene,camera);labelsUpdatedAt=0;positionRoomLabels(performance.now());const r=selectedRoom,p=new THREE.Vector3();let extent=0;for(const x of [-r.l/2,r.l/2])for(const y of [0,2.8])for(const z of [-r.w/2,r.w/2]){p.set(r.x+x,decks[r.deck].position.y+y,r.z+z).project(camera);extent=Math.max(extent,Math.abs(p.x),Math.abs(p.y));}return {id:r.id,name:r.name,extent,labels:labels.length,selectedLabels:document.querySelectorAll('.marker.selected').length,titleVisible:document.querySelector('.marker.selected').style.display!=='none',context:rooms.filter(n=>n.deck===r.deck&&n!==r).every(n=>{let ok=true;n.g.traverse(o=>{if(o.isMesh&&o.material!==roomContextMaterial)ok=false;});return ok;}),outline:roomOutline.visible,failed:renderer.info.programs.filter(p=>p.diagnostics?.runnable===false).length};})()`);
+  report.checks.push(check);
+  if(['0','15','22','37'].includes(room.id))capture(w,'room-'+room.id);
+  await sleep(20);
+ }
+ w.__ftvModel.overview();report.restored=w.eval(`!roomOutline.visible&&labels.length===0&&rooms.every(r=>{let ok=true;r.g.traverse(o=>{if(o.isMesh&&o.material===roomContextMaterial)ok=false;});return ok;})`);
+ const avg=after=>report.runs.filter(r=>r.after===after).reduce((s,r)=>s+r.fps,0)/2;report.changePercent=(avg(true)/avg(false)-1)*100;
+ report.status=report.checks.length===w.__ftvModel.catalog.length&&report.checks.every(c=>c.extent<.8&&c.selectedLabels===1&&c.titleVisible&&c.context&&c.outline&&!c.failed)&&report.restored&&report.changePercent>-3&&!report.errors.length?'passed':'failed';
+}catch(e){report.errors.push(String(e));report.status='failed';}
+out.textContent=JSON.stringify(report,null,2);
+};
+</script>

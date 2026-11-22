@@ -1,0 +1,40 @@
+<!doctype html><meta charset="utf-8"><title>Yacht — réalisme et fluidité</title>
+<style>body{font:14px system-ui;margin:0;background:#102733;color:white}iframe{width:1280px;height:720px;border:0}button{padding:12px}pre{white-space:pre-wrap}img{width:48%}</style>
+<button id="run">Comparer avant/après</button><pre id="report">Prêt</pre><div id="view"></div><div id="captures"></div>
+<script type="module">
+const report={runs:[],errors:[],states:[]},view=document.querySelector('#view'),out=document.querySelector('#report');
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));let frame;
+async function mount(after){
+ frame?.remove();frame=document.createElement('iframe');frame.src=after?'/ftv-luxury/models/yacht.html':'/yacht-baseline.html';view.append(frame);
+ for(let i=0;i<200;i++){await sleep(100);if(frame.contentWindow.__ftvYachtExterior?.nightFinish)break;}
+ const w=frame.contentWindow;if(!w.__ftvYachtExterior?.nightFinish)throw Error('initialisation');
+ w.addEventListener('error',e=>report.errors.push(e.message));
+ w.eval(`auto=false;desiredYaw=yaw=-.7;desiredPitch=pitch=.36;desiredRadius=radius=125;window.__ftvYachtExterior.setTestTime(2);`);
+ return w;
+}
+document.querySelector('#run').onclick=async()=>{
+ try{
+ for(const after of [false,true,true,false]){
+ out.textContent='Mesure '+(report.runs.length+1)+'/4';const w=await mount(after);await sleep(4500);
+ w.eval(`window.benchFrames=0;window.benchTimes=[];window.benchLast=performance.now();window.benchPrior=scene.onBeforeRender;scene.onBeforeRender=function(...args){window.benchPrior?.apply(this,args);let n=performance.now();window.benchTimes.push(n-window.benchLast);window.benchLast=n;window.benchFrames++;}`);
+ const start=performance.now();await sleep(6000);
+ const data=w.eval(`({frames:benchFrames,times:benchTimes,calls:renderer.info.render.calls,triangles:renderer.info.render.triangles,...renderer.info.memory,programs:renderer.info.programs.length,failed:renderer.info.programs.filter(p=>p.diagnostics?.runnable===false).length})`);
+ report.runs.push({after,fps:data.frames*1000/(performance.now()-start),...data,times:undefined,p95:data.times.sort((a,b)=>a-b)[Math.floor(data.times.length*.95)]});
+ if(report.runs.length<=2){
+ w.__ftvPaused=true;
+ for(const [label,t]of [['day',2],['night',45]]){
+ w.eval(`window.__ftvYachtExterior.setTestTime(${t});renderer.render(scene,camera);`);
+ const img=document.createElement('img');img.id=(after?'after-':'before-')+label;img.src=w.eval(`renderer.domElement.toDataURL('image/png')`);document.querySelector('#captures').append(img);
+ }
+ }
+ }
+ const w=await mount(true);w.__ftvPaused=true;
+ for(const room of ['0','10','20','35','all']){w.__ftvModel.select(room);w.eval('renderer.render(scene,camera)');report.states.push(w.__ftvModel.state());}
+ const avg=flag=>report.runs.filter(r=>r.after===flag).reduce((s,r)=>s+r.fps,0)/2;
+ report.changePercent=(avg(true)/avg(false)-1)*100;
+ report.sameBudget=['calls','triangles','textures','geometries'].every(k=>report.runs.every(r=>r[k]===report.runs[0][k]));
+ report.status=report.changePercent>-3&&report.sameBudget&&report.runs.every(r=>!r.failed)&&!report.errors.length?'passed':'failed';
+ }catch(e){report.status='failed';report.errors.push(String(e));}
+ out.textContent=JSON.stringify(report,null,2);
+};
+</script>

@@ -1,0 +1,48 @@
+{
+  "method": "single-context A/B/B/A, frozen environment and water",
+  "runs": [
+    {
+      "after": false,
+      "fps": 57.62758747910007,
+      "calls": 1738,
+      "triangles": 307054,
+      "geometries": 529,
+      "textures": 8,
+      "cpuMedian": 15.400000035762787,
+      "cpuP95": 19.599999964237213
+    },
+    {
+      "after": true,
+      "fps": 57.152488355197754,
+      "calls": 1738,
+      "triangles": 307054,
+      "geometries": 529,
+      "textures": 8,
+      "cpuMedian": 10.100000023841858,
+      "cpuP95": 21.69999998807907
+    },
+    {
+      "after": true,
+      "fps": 57.894656231122156,
+      "calls": 1738,
+      "triangles": 307054,
+      "geometries": 529,
+      "textures": 8,
+      "cpuMedian": 16,
+      "cpuP95": 19.600000023841858
+    },
+    {
+      "after": false,
+      "fps": 59.73678957008312,
+      "calls": 1738,
+      "triangles": 307054,
+      "geometries": 529,
+      "textures": 8,
+      "cpuMedian": 13.699999988079071,
+      "cpuP95": 17.5
+    }
+  ],
+  "errors": [],
+  "fpsChangePercent": -1.9743916519849969,
+  "status": "passed"
+}
