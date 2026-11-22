@@ -15,9 +15,9 @@
 import { configureA10Room, syncA10Room } from './a10-room.js?v=2026-11-22';
 import * as THREE from './vendor/three.module.min.js';
 import { createInteriors } from './interiors.js?v=2026-09-27-residence-1';
-import { buildLandscape } from './landscape.js?v=2026-11-22-snow';
+import { buildLandscape } from './landscape.js?v=2026-11-22-detail-1';
 import { createEstate } from './estate.js?v=2026-09-17-lighting-1';
-import { createResidence } from './residence.js?v=2026-09-27-residence-1';
+import { createResidence } from './residence.js?v=2026-11-22-detail-1';
 import { enrichRoom } from './room-features.js?v=2026-09-27-residence-1';
 import { furnishSpecialRoom } from './special-rooms.js?v=2026-09-17-rooms-1';
 import { createTVStage } from './tv-stage.js?v=2026-09-17-stadiums-1';
@@ -95,7 +95,7 @@ export function createPlan3D(opts) {
         var day=phase<dayDuration?1:phase<nightStart?1-ease((phase-dayDuration)/transitionDuration):phase<dawnStart?0:ease((phase-dawnStart)/transitionDuration);
         environmentDay=fixedDay===null?day:fixedDay;
         hemiE.intensity=.1+environmentDay;sunE.intensity=.035+1.765*environmentDay;fillE.intensity=.035+.465*environmentDay;
-        envelope.setNight(1-environmentDay);landscape?.setDay(environmentDay);
+        envelope.setNight(1-environmentDay);landscape?.setDay(environmentDay);landscape?.update(idle,environmentDay);
     }
 
     /* ---------- Matériaux partagés (deux palettes : 'chaleureux' bois / tissus, 'maquette' blanc et gris) ---------- */
@@ -932,7 +932,7 @@ export function createPlan3D(opts) {
     /* ---------- Construction ---------- */
     var noms = opts.names || {};
     PIECES.forEach(function (p) { if (!p.nom) p.nom = noms[p.id] || ('Pièce ' + p.id); buildRoom(p); });
-    envelope = RESIDENCE ? createResidence(scene, ROOMS, interiors, renderer, { base: BASE_Y }) : createEstate(scene, ROOMS, interiors, renderer);
+    envelope = RESIDENCE ? createResidence(scene, ROOMS, interiors, renderer, { base: BASE_Y, winter: !!cfg.winter }) : createEstate(scene, ROOMS, interiors, renderer);
     if (envelope.shadow) {   // bâtiment haut : cadre d'ombre extérieur élargi
         var sh = envelope.shadow; sunE.position.fromArray(sh.position); sunE.target.position.fromArray(sh.target);
         Object.assign(sunE.shadow.camera, { left: -sh.size, right: sh.size, top: sh.size, bottom: -sh.size, near: 1, far: sh.far }); sunE.shadow.camera.updateProjectionMatrix();

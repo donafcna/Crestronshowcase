@@ -1,0 +1,105 @@
+{
+  "status": "passed",
+  "readyMs": 3623,
+  "waterAnimated": true,
+  "riverRenderedMotion": true,
+  "dayNight": true,
+  "nonWinterUnchanged": true,
+  "landscape": {
+    "winter": true,
+    "snowDetail": "wind-sculpted",
+    "terrainVertices": 76171,
+    "volumetricTreeBranches": 26040,
+    "water": {
+      "animated": true,
+      "riverRocks": 212,
+      "iceFragments": 94,
+      "snowBanks": 4,
+      "bankVertices": 7220
+    },
+    "skiPistes": 2,
+    "lakes": [
+      {
+        "name": "Lac des Mélèzes",
+        "x": -34,
+        "z": -26,
+        "rx": 10,
+        "rz": 7,
+        "level": 4.4
+      },
+      {
+        "name": "Lac des Roches",
+        "x": 54,
+        "z": -23,
+        "rx": 10,
+        "rz": 6.5,
+        "level": 4.6
+      }
+    ],
+    "streams": [
+      {
+        "source": "Lac des Mélèzes",
+        "start": {
+          "x": -34,
+          "z": -24,
+          "level": 4.385000000000001,
+          "normal": {
+            "x": -0.9487094128598789,
+            "y": 0.3161494108029683
+          }
+        },
+        "end": {
+          "x": -36.00000000000001,
+          "z": 150,
+          "level": -1.246,
+          "normal": {
+            "x": -0.9945076196170731,
+            "y": -0.10466419886275831
+          }
+        },
+        "downhill": true
+      },
+      {
+        "source": "Lac des Roches",
+        "start": {
+          "x": 54,
+          "z": -21,
+          "level": 4.585,
+          "normal": {
+            "x": -0.9487278175610443,
+            "y": -0.316094176134041
+          }
+        },
+        "end": {
+          "x": 60.00000000000001,
+          "z": 150,
+          "level": -1.246,
+          "normal": {
+            "x": -0.9963511380601308,
+            "y": 0.08534875327901732
+          }
+        },
+        "downhill": true
+      }
+    ],
+    "fields": 11,
+    "trees": 620,
+    "grassTufts": 0
+  },
+  "performance": {
+    "frames": 180,
+    "renderedFrames": 289,
+    "medianMs": 24.099999999997635,
+    "p95Ms": 32.29999999999927,
+    "pixelRatio": 1,
+    "drawCalls": 150,
+    "triangles": 964444,
+    "zone": {
+      "x": 382.792236328125,
+      "y": 239.30242919921875,
+      "w": 1021.207763671875,
+      "h": 601.3951416015625
+    }
+  },
+  "errors": []
+}

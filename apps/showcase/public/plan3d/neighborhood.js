@@ -1,9 +1,10 @@
 import * as T from './vendor/three.module.min.js';
 
 // Landscape context stays outside the villa boundary; no changes to camera fitting.
-export function buildNeighborhood(scene,height,kit,valley){
+export function buildNeighborhood(scene,height,kit,valley,options={}){
+ const winter=!!options.winter;
  const g=new T.Group();g.name='Alpine neighborhood';scene.add(g);
- const mat=c=>new T.MeshStandardMaterial({color:c,roughness:.95}),road=mat(0x626565),gravel=mat(0x8d8876),meadow=mat(0x73834d),hay=mat(0xb3a168),timber=mat(0x68503d),stone=mat(0xb3ad97),roof=mat(0x555b60),glass=mat(0x41616c),leaf=mat(0x3e5d3d);
+ const mat=c=>new T.MeshStandardMaterial({color:c,roughness:.95}),road=mat(0x626565),gravel=mat(0x8d8876),meadow=mat(0x73834d),hay=mat(0xb3a168),timber=mat(0x68503d),stone=mat(0xb3ad97),roof=mat(winter?0xe4edf6:0x555b60),glass=mat(0x41616c),leaf=mat(0x3e5d3d);
  const box=(p,m,x,y,z,w,h,d)=>{const o=new T.Mesh(new T.BoxGeometry(w,h,d),m);o.position.set(x,y,z);p.add(o);o.receiveShadow=true;return o;};
  const paths=[],sites=[],fields=[];
  function ribbon(points,width,material,lift=.045){
@@ -60,6 +61,7 @@ export function buildNeighborhood(scene,height,kit,valley){
  chalet(-24,-46,.75);chalet(48,-48,.7);chalet(4,-53,.58);
  function deciduous(x,z,s){
   const y=height(x,z);box(g,timber,x,y+s*1.2,z,.22,s*2.4,.22);
+  if(winter){for(let j=0;j<9;j++){const angle=j*2.399,branch=box(g,timber,x+Math.cos(angle)*s*.36,y+s*(1.5+j*.12),z+Math.sin(angle)*s*.36,.055,s*.95,.055);branch.rotation.z=Math.cos(angle)*.62;branch.rotation.x=Math.sin(angle)*.62;}return;}
   for(let k=0;k<3;k++){const crown=new T.Mesh(new T.IcosahedronGeometry(s*(.95-k*.15),1),leaf);crown.position.set(x+Math.sin(k*3)*s*.25,y+s*(2+k*.35),z);crown.scale.y=.78;g.add(crown);}
  }
  for(let i=0;i<13;i++){deciduous(-13,37-i*3.8,.9+(i%3)*.14);deciduous(38,37-i*3.8,.8+(i%4)*.12);}

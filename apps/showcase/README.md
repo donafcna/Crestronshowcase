@@ -645,3 +645,8 @@ Aucun GUI TSW A10 dédié. La variante de vitrine a été retirée du sélecteur
 ## 22/11/2026 — A10 : synchronisation 3D et neige
 
 100 circuits et 34 moteurs individuels synchronisés depuis A10Bench. Représentation dédiée des luminaires et occultations, commandes groupées de démonstration corrigées. Montagnes enneigées, sapins et deux pistes balisées, cycle jour/nuit conservé. Générateur de plan actualisé depuis le catalogue public A10. Recette et limites : apps/showcase/docs/verification/2026-11-22-a10/README.md (depuis la racine). Aucun programme matériel modifié.
+
+
+## 22/11/2026 — A10 : neige et rivière détaillées
+
+Neige sculptée, grain et traces de piste, sapins en rameaux, toitures enneigées et glaçons. Eau animée, reflets, écume, galets et berges enneigées ; option hivernale propre à A10. Recette jour/nuit, trois thèmes, normal/Scène et synchronisation 100 circuits/34 moteurs réussie. Planche avant/après, mesures et limites : `apps/showcase/docs/verification/2026-11-22-alpine-detail/` depuis la racine. Aucun changement matériel.

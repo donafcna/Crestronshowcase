@@ -1,4 +1,5 @@
 import * as T from './vendor/three.module.min.js';
+import { createSnowMaterial, snowAttributes, alpineNoise } from './alpine-snow.js?v=2026-11-22-detail-1';
 
 /* Enveloppe « résidence de montagne » : socle hôtelier de cinq niveaux (rez-de-chaussée vitré avec auvent,
  * quatre étages béton + bois avec balcons côté vallée), puis le duplex des deux derniers niveaux : baies vitrées
@@ -48,6 +49,10 @@ export function createResidence(scene, rooms, kit, renderer, options) {
   const railBase=material(0xc1d7da,.15,{transparent:true,opacity:.32,depthWrite:false,metalness:.15,envMap:environment.texture,envMapIntensity:.55,side:T.DoubleSide});
   function facade(m){const clone=m.clone();clone.userData.baseOpacity=m.opacity;clone.userData.baseTransparent=m.transparent;facadeMaterials.add(clone);return clone;}
   const F={concrete:facade(concrete),concreteDark:facade(concreteDark),wood:facade(oak),woodLight:facade(oakLight),timber:facade(timber),metal:facade(black),bronze:facade(bronze),white:facade(white),roof:facade(stoneRoof),glass:facade(glassBase),glow:facade(glow),rail:facade(railBase)};
+  if(options.winter){
+    const snow=createSnowMaterial(new T.Vector3(CX,0,CZ));F.snow=facade(snow);F.snow.onBeforeCompile=snow.onBeforeCompile;F.snow.customProgramCacheKey=snow.customProgramCacheKey;
+    F.ice=facade(material(0xaac9db,.22,{metalness:.12}));grass.color.setHex(0xe0e9f0);
+  }
   /* ---------- Primitives ---------- */
   function boxGeo(w,h,d){const key=[w,h,d].join('/');if(geometries.has(key))return geometries.get(key);const g=new T.BoxGeometry(w,h,d),p=g.attributes.position,n=g.attributes.normal,uv=g.attributes.uv;for(let i=0;i<p.count;i++){const x=p.getX(i),y=p.getY(i),z=p.getZ(i);uv.setXY(i,(Math.abs(n.getX(i))>.5?z:x)/3,(Math.abs(n.getY(i))>.5?z:y)/3);}geometries.set(key,g);return g;}
   const sphere=new T.IcosahedronGeometry(1,2),cylinder=new T.CylinderGeometry(1,1,1,12);
@@ -186,6 +191,14 @@ export function createResidence(scene, rooms, kit, renderer, options) {
   for(const sign of [1,-1]){   // pan sud (+z) puis pan nord
     const zc=CZ+sign*(D/2+overhang)/2,yc=(eave+ridgeY)/2;
     const pan=box(group,F.roof,CX,yc+.17,zc,W+1.8,.32,panLen);pan.rotation.x=sign*angle;
+    if(options.winter){
+      const snowGeo=snowAttributes(new T.BoxGeometry(W+1.95,.22,panLen+.12,48,1,32));
+      const pos=snowGeo.attributes.position;
+      for(let j=0;j<pos.count;j++){if(pos.getY(j)>0)pos.setY(j,pos.getY(j)+alpineNoise(pos.getX(j)*.42,pos.getZ(j)*.35)*.11);}
+      snowGeo.computeVertexNormals();geometries.set('roof-snow-'+sign,snowGeo);
+      const cap=new T.Mesh(snowGeo,F.snow);cap.position.set(CX,yc+.43,zc);cap.rotation.x=sign*angle;cap.receiveShadow=true;cap.castShadow=true;cap.userData.animated=true;cap.name='Toiture — couche de neige accumulée';group.add(cap);
+      for(let x=X0-.6;x<X1+.6;x+=.85){const length=.09+.29*alpineNoise(x*3,sign*17),geo=new T.ConeGeometry(.018,length,5);geo.rotateZ(Math.PI);geometries.set('icicle-'+sign+'-'+x,geo);mesh(group,F.ice,geo,x,eave+.21-length/2,CZ+sign*(D/2+overhang));}
+    }
     const boards=box(group,F.woodLight,CX,yc-.02,zc,W+1.7,.05,panLen-.1);boards.rotation.x=sign*angle;
     for(let x=X0-.7;x<=X1+.7;x+=1.15){const r=box(group,F.timber,x,yc-.12,zc,.12,.2,panLen-.3);r.rotation.x=sign*angle;}   // chevrons
     for(const f of [.25,.62]){const purlin=box(group,F.timber,CX,eave+(D/2+overhang)*slope*f-.28,CZ+sign*(D/2+overhang)*(1-f),W+1.6,.24,.24);purlin.rotation.x=sign*angle;}   // pannes
@@ -239,7 +252,7 @@ export function createResidence(scene, rooms, kit, renderer, options) {
   const bounds=new T.Box3(new T.Vector3(-6.5,-1,-4.5),new T.Vector3(31.5,ridgeY+1,30));
   return {group,garden,bounds,focusY:BASE*.62,shadow:{position:[-22,66,44],target:[CX,BASE*.6,CZ],size:44,far:160},get opacity(){return opacity;},
     setOpacity(v){opacity=Math.max(0,Math.min(1,v));group.visible=opacity>.001;duplexWash.opacity=nightLevel*opacity;for(const m of facadeMaterials){const transparent=m.userData.baseTransparent||opacity<.999;if(m.transparent!==transparent){m.transparent=transparent;m.needsUpdate=true;}m.opacity=opacity*m.userData.baseOpacity;m.depthWrite=!transparent;}},
-    setNight(night){nightLevel=night;glow.emissiveIntensity=night*3;F.glow.emissiveIntensity=night*3;F.glass.emissiveIntensity=night*.5;hotelGlassLit.emissiveIntensity=night*.9;lobbyGlass.emissiveIntensity=night*.7;poolGlow.opacity=night;duplexWash.opacity=night*opacity;baseWash.opacity=night;},
+    setNight(night){if(F.snow)F.snow.emissiveIntensity=night*.09;nightLevel=night;glow.emissiveIntensity=night*3;F.glow.emissiveIntensity=night*3;F.glass.emissiveIntensity=night*.5;hotelGlassLit.emissiveIntensity=night*.9;lobbyGlass.emissiveIntensity=night*.7;poolGlow.opacity=night;duplexWash.opacity=night*opacity;baseWash.opacity=night;},
     lighting(){return {sconces:wallLights.length+baseLights.length,washDrawCalls:2,intensity:duplexWash.opacity};},
     dispose(){disposed=true;environment.dispose();textures.forEach(t=>t.dispose());geometries.forEach(g=>g.dispose());sphere.dispose();cylinder.dispose();duplexWash.dispose();baseWash.dispose();}
   };
