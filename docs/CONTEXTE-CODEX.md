@@ -457,3 +457,7 @@ Bardage, veinage et patine du bois, cadres ajourés, vitrages à surfaces unique
 ## 22/11/2026 — Nightclub : fond 3D affiné sans baisse de cadence
 
 Faisceaux RGBW à ouverture constante et atténuation progressive, facettes des miroirs nuancées et matériaux différenciés. Géométrie des faisceaux mutualisée, une seule face rendue ; étages masqués non recalculés. Cadence locale médiane avant/après : 29,94 i/s sur les quatre vues. Appels globaux 1048 → 976, géométries GPU 907 → 836, textures conservées à 14. Build, lint et syntaxe du lot isolé réussis. Rapport et limites : apps/showcase/docs/verification/2026-11-22-club-refinement/. Publication autorisée par Donatien via main → Vercel crestrongui ; aucune modification GUI ni matérielle.
+
+## 22/11/2026 — Villa FTV : relief et matériaux validés pour publication (2.3.14)
+
+Version approuvée par Donatien après comparaison avant/après. Mobilier aux arêtes adoucies, bois et tissus différenciés, ombres de contact précalculées. Environ 60 images/s avant/après sur le banc local ; 19 textures et appels de dessin conservés, +1,42 % de triangles dans le salon. Contrôles et limites : apps/showcase/docs/verification/2026-11-22-villa-relief/. Publication autorisée sur main vers Vercel ; aucun déploiement matériel.

@@ -2,8 +2,10 @@
  * Static meshes are batched by material; only the selected room needs detailed light.
  */
 import * as T from './vendor/three.module.min.js';
+import { refineFabric, refineStone } from './material-finish.js?v=2026-11-22-villa-1';
+import { finishFurniture } from './furniture-finish.js?v=2026-11-22-villa-2';
 
-export function createInteriors(renderer, palette) {
+export function createInteriors(renderer, palette, refined = false) {
   let disposed = false;
   const textures = new Set();
   const anisotropy = Math.min(4, renderer.capabilities.getMaxAnisotropy());
@@ -27,6 +29,11 @@ export function createInteriors(renderer, palette) {
     for (let i = 0; i < 8000; i++) { const v = 140 + rand() * 85; g.fillStyle = `rgba(${v},${v-8},${v-20},.16)`; g.fillRect(rand()*s, rand()*s, rand()*7+1, 1); }
     for (let i = 0; i < 14; i++) { g.beginPath(); g.strokeStyle = 'rgba(103,87,69,.09)'; g.lineWidth = 0.8 + rand()*2; const y=rand()*s;g.moveTo(0,y);g.bezierCurveTo(s*.3,y-24,s*.6,y+20,s,y-12);g.stroke(); }
   });
+  if (refined) {
+    // Repaint before the first upload. Keep the legacy RNG sequence for the decor.
+    refineFabric(linen.image.getContext('2d'), linen.image.width);
+    refineStone(stone.image.getContext('2d'), stone.image.width);
+  }
   const grille = canvasTexture(128, (g,s) => {
     g.fillStyle='#292c2e';g.fillRect(0,0,s,s);g.fillStyle='#0f1113';
     for(let y=0;y<s;y+=5)for(let x=0;x<s;x+=5){g.beginPath();g.arc(x+(y%2)*2, y, 1.2, 0, Math.PI*2);g.fill();}
@@ -57,6 +64,24 @@ export function createInteriors(renderer, palette) {
   for (const k of ['sol','solChambre','bois','boisClair']) { palette[k].map=A.oak.map;palette[k].normalMap=A.oak.normalMap;palette[k].normalScale=new T.Vector2(.13,.13);palette[k].roughnessMap=A.oak.roughnessMap;palette[k].color.setHex(k==='bois'?0xb1a08d:0xf3e5cd); }
   for(const k of ['tissu','tissuFonce','lit','coussin','tapis']){palette[k].map=linen;palette[k].roughness=1;}
   palette.mur.color.setHex(0xe8e3d9);palette.solExt.map=stone;palette.metal.roughness=.4;
+  if(refined){
+    // These materials are shared across rooms. Enable colors before the first batch,
+    // so a later room cannot change the shader contract of an earlier room.
+    [palette.sol,palette.solChambre,palette.bois,palette.boisClair,palette.tissu,
+      palette.tissuFonce,palette.lit,palette.coussin,A.oak,A.cream,A.moss,A.clay]
+      .forEach(m=>{m.vertexColors=true;});
+    palette.bois.color.setHex(0x76513b);palette.bois.roughness=.48;
+    palette.boisClair.color.setHex(0xc6aa83);palette.boisClair.roughness=.58;
+    A.oak.color.setHex(0xcdb590);A.oak.roughness=.52;
+    palette.tissu.color.setHex(0xc0b6a5);palette.lit.color.setHex(0xe6ded0);
+    A.moss.color.setHex(0x435b50);A.clay.color.setHex(0xa25a3e);
+    A.stone.roughness=.42;A.brass.color.setHex(0xc9a366);A.brass.roughness=.26;
+    // Denser contact core, same 128² canvas and existing planes.
+    const c=shadow.image,g=c.getContext('2d'),s=c.width;
+    g.clearRect(0,0,s,s);const q=g.createRadialGradient(s/2,s/2,0,s/2,s/2,s/2);
+    q.addColorStop(0,'rgba(24,18,12,.62)');q.addColorStop(.48,'rgba(24,18,12,.34)');q.addColorStop(1,'rgba(24,18,12,0)');
+    g.fillStyle=q;g.fillRect(0,0,s,s);
+  }
 
   const unitBox=new T.BoxGeometry(1,1,1), sphere=new T.SphereGeometry(1,16,10), softGeometry=new Map();
   function rounded(w,h,d){
@@ -73,7 +98,7 @@ export function createInteriors(renderer, palette) {
   function cushion(g,m,x,y,z,w,h,d,angle=0){
     const o=ball(g,m,x,y,z,w/2,h/2,d/2);o.rotation.z=angle;return o;
   }
-  function contact(g,x,z,w,d){const o=new T.Mesh(new T.PlaneGeometry(w,d),new T.MeshBasicMaterial({map:shadow,transparent:true,depthWrite:false,opacity:.8}));o.rotation.x=-Math.PI/2;o.position.set(x,.037,z);g.add(o);}
+  function contact(g,x,z,w,d){const o=new T.Mesh(new T.PlaneGeometry(w,d),new T.MeshBasicMaterial({map:shadow,transparent:true,depthWrite:false,opacity:.8}));o.rotation.x=-Math.PI/2;o.position.set(x,refined?.047:.037,z);g.add(o);}
   function plant(g,x,z,size=1){
     cylinder(g,A.ceramic,x,.23*size,z,.23*size,.46*size,.29*size);cylinder(g,A.earth,x,.465*size,z,.245*size,.015);
     for(let i=0;i<8;i++){const a=i*2.399,r=.2+rand()*.18;const o=ball(g,A.leaf,x+Math.cos(a)*r*size,(.8+rand()*.45)*size,z+Math.sin(a)*r*size,.09*size,.34*size,.05*size);o.rotation.set(Math.cos(a)*.5,a,Math.sin(a)*.65);}
@@ -424,17 +449,24 @@ export function createInteriors(renderer, palette) {
     });
   }
   function batch(group,protectedMeshes=new Set()){
+    // Also cover outdoor/special rooms and meshes that stay outside batching.
+    group.traverse(o=>{
+      if(!o.isMesh||!o.material.vertexColors||o.geometry.getAttribute('color'))return;
+      o.geometry.setAttribute('color',new T.BufferAttribute(new Float32Array(o.geometry.attributes.position.count*3).fill(1),3));
+    });
     const buckets=new Map();
     group.traverse(o=>{if(!o.isMesh||o.isInstancedMesh||o.material.transparent||Array.isArray(o.material)||protectedMeshes.has(o)||o.userData.animated)return;const list=buckets.get(o.material)||[];list.push(o);buckets.set(o.material,list);});
     group.updateMatrixWorld(true);const inv=new T.Matrix4().copy(group.matrixWorld).invert();
     for(const [material,objects] of buckets){
       if(objects.length<2)continue;
       const attributes={position:[],normal:[],uv:[]},lengths={position:0,normal:0,uv:0};
-      for(const o of objects){const q=o.geometry.index?o.geometry.toNonIndexed():o.geometry.clone();q.applyMatrix4(new T.Matrix4().multiplyMatrices(inv,o.matrixWorld));for(const key of Object.keys(attributes)){const a=q.getAttribute(key);const arr=a?a.array:new Float32Array(q.attributes.position.count*(key==='uv'?2:3));attributes[key].push(arr);lengths[key]+=arr.length;}q.dispose();}
+      if(material.vertexColors){attributes.color=[];lengths.color=0;}
+      for(const o of objects){const q=o.geometry.index?o.geometry.toNonIndexed():o.geometry.clone();q.applyMatrix4(new T.Matrix4().multiplyMatrices(inv,o.matrixWorld));for(const key of Object.keys(attributes)){const a=q.getAttribute(key);const arr=a?a.array:new Float32Array(q.attributes.position.count*(key==='uv'?2:3));if(!a&&key==='color')arr.fill(1);attributes[key].push(arr);lengths[key]+=arr.length;}q.dispose();}
       const geo=new T.BufferGeometry();for(const key of Object.keys(attributes)){const arr=new Float32Array(lengths[key]);let n=0;for(const a of attributes[key]){arr.set(a,n);n+=a.length;}geo.setAttribute(key,new T.BufferAttribute(arr,key==='uv'?2:3));}
       const m=new T.Mesh(geo,material);m.castShadow=!material.emissive?.getHex();m.receiveShadow=true;group.add(m);for(const o of objects)o.removeFromParent();
     }
   }
   function dispose(){disposed=true;textures.forEach(t=>t.dispose());Object.values(A).forEach(m=>m.dispose());unitBox.dispose();sphere.dispose();softGeometry.forEach(g=>g.dispose());}
-  return {decorate,curtains,batch,dispose,materials:A,random:rand};
+  return {decorate,curtains,batch,dispose,materials:A,random:rand,
+    finish:(R,moving)=>{if(refined)finishFurniture(R,palette,A,moving);}};
 }

@@ -1,0 +1,143 @@
+{
+  "runs": [
+    {
+      "refined": false,
+      "fps": 59.662430412471714,
+      "geometries": 100,
+      "textures": 19,
+      "programs": 22,
+      "frames": 180,
+      "renderedFrames": 466,
+      "medianMs": 23.866666666672245,
+      "p95Ms": 31.83333333333394,
+      "pixelRatio": 1.5,
+      "drawCalls": 104,
+      "triangles": 205396,
+      "zone": null
+    },
+    {
+      "refined": true,
+      "fps": 59.710106323627976,
+      "geometries": 100,
+      "textures": 19,
+      "programs": 22,
+      "frames": 180,
+      "renderedFrames": 466,
+      "medianMs": 23.59999999999127,
+      "p95Ms": 32.1333333333132,
+      "pixelRatio": 1.5,
+      "drawCalls": 104,
+      "triangles": 205396,
+      "zone": null
+    },
+    {
+      "refined": true,
+      "fps": 59.6915566404083,
+      "geometries": 100,
+      "textures": 19,
+      "programs": 22,
+      "frames": 180,
+      "renderedFrames": 466,
+      "medianMs": 23.899999999986903,
+      "p95Ms": 32,
+      "pixelRatio": 1.5,
+      "drawCalls": 104,
+      "triangles": 205396,
+      "zone": null
+    },
+    {
+      "refined": false,
+      "fps": 59.894851261436145,
+      "geometries": 100,
+      "textures": 19,
+      "programs": 22,
+      "frames": 180,
+      "renderedFrames": 467,
+      "medianMs": 23.600000000020373,
+      "p95Ms": 32.099999999998545,
+      "pixelRatio": 1.5,
+      "drawCalls": 104,
+      "triangles": 205396,
+      "zone": null
+    }
+  ],
+  "errors": [],
+  "viewport": [
+    1280,
+    720
+  ],
+  "dpr": 1.5,
+  "sameBudget": true,
+  "rooms": [
+    {
+      "id": "1",
+      "phase": "room"
+    },
+    {
+      "id": "2",
+      "phase": "room"
+    },
+    {
+      "id": "3",
+      "phase": "room"
+    },
+    {
+      "id": "4",
+      "phase": "room"
+    },
+    {
+      "id": "5",
+      "phase": "room"
+    },
+    {
+      "id": "6",
+      "phase": "room"
+    },
+    {
+      "id": "7",
+      "phase": "room"
+    },
+    {
+      "id": "8",
+      "phase": "room"
+    },
+    {
+      "id": "9",
+      "phase": "room"
+    },
+    {
+      "id": "10",
+      "phase": "room"
+    },
+    {
+      "id": "11",
+      "phase": "room"
+    },
+    {
+      "id": "12",
+      "phase": "room"
+    },
+    {
+      "id": "13",
+      "phase": "room"
+    },
+    {
+      "id": "14",
+      "phase": "room"
+    },
+    {
+      "id": "15",
+      "phase": "room"
+    },
+    {
+      "id": "16",
+      "phase": "room"
+    },
+    {
+      "id": "17",
+      "phase": "room"
+    }
+  ],
+  "finiteUVs": true,
+  "status": "passed"
+}

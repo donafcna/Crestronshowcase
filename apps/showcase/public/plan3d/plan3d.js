@@ -14,7 +14,8 @@
  * =========================================================================== */
 import { configureA10Room, syncA10Room, animateA10Motors } from './a10-room.js?v=2026-11-22-motion-2';
 import * as THREE from './vendor/three.module.min.js';
-import { createInteriors } from './interiors.js?v=2026-09-27-residence-1';
+import { createInteriors } from './interiors.js?v=2026-11-22-villa-2';
+import { scaleFloorUV } from './material-finish.js?v=2026-11-22-villa-1';
 import { buildLandscape } from './landscape.js?v=2026-11-22-detail-1';
 import { createEstate } from './estate.js?v=2026-09-17-lighting-1';
 import { createResidence } from './residence.js?v=2026-11-22-chalet-1';
@@ -130,7 +131,8 @@ export function createPlan3D(opts) {
         moteur: new THREE.MeshStandardMaterial({ color: 0x2f3440, roughness: 0.45, metalness: 0.65 }),
         ecranOff: new THREE.MeshStandardMaterial({ color: 0x05060a, roughness: 0.12, metalness: 0.8 })
     };
-    var interiors = createInteriors(renderer, M);
+    var refinedMaterials = cfg.materialFinish === 'villa-2026';
+    var interiors = createInteriors(renderer, M, refinedMaterials);
     var tvStage = null;
     // Textures dessinées des motorisations : lames du volet, toile du store, plis des rideaux
     function mkTex(w, h, fn) { var c = document.createElement('canvas'); c.width = w; c.height = h; fn(c.getContext('2d'), w, h); var t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.wrapS = t.wrapT = THREE.RepeatWrapping; return t; }
@@ -318,7 +320,8 @@ export function createPlan3D(opts) {
             });
         } else {
             box(w, 0.25, d, M.dalle, w / 2, -0.125, d / 2, g);
-            box(w - 0.1, 0.02, d - 0.1, floorMat, w / 2, 0.01, d / 2, g);
+            var floor = box(w - 0.1, 0.02, d - 0.1, floorMat, w / 2, 0.01, d / 2, g);
+            if (refinedMaterials && !ext) scaleFloorUV(floor);
         }
         if (!ext && p.windowWall === 'none') {
             box(w, NIVEAU_H, .15, p.type==='cinema'?M.murSombre:M.mur, w/2, NIVEAU_H/2, .075, g);
@@ -550,6 +553,7 @@ export function createPlan3D(opts) {
         R.speakers.forEach(function (s) { moving.add(s.body); moving.add(s.ring); });
         Object.values(R.shades || {}).forEach(function (s) { (s.meshes || [s.mesh]).forEach(function (m) { moving.add(m); }); });
         R.a10Motors?.forEach(function (m) { m.meshes.forEach(function (mesh) { moving.add(mesh); }); });
+        interiors.finish(R, moving);
         interiors.batch(g, moving);
         applyLevels(R);
         ROOMS[p.id] = R;

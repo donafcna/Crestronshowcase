@@ -1,0 +1,207 @@
+{
+  "runs": [
+    {
+      "refined": false,
+      "fps": 60.224928462579314,
+      "geometries": 95,
+      "textures": 19,
+      "programs": 22,
+      "frames": 180,
+      "renderedFrames": 312,
+      "medianMs": 22.533333333338305,
+      "p95Ms": 31.533333333334667,
+      "pixelRatio": 1.0000000298023224,
+      "drawCalls": 97,
+      "triangles": 205042,
+      "zone": null
+    },
+    {
+      "refined": true,
+      "fps": 59.531728082775814,
+      "geometries": 95,
+      "textures": 19,
+      "programs": 24,
+      "frames": 180,
+      "renderedFrames": 319,
+      "medianMs": 23.033333333338305,
+      "p95Ms": 32.29999999999927,
+      "pixelRatio": 1.0000000298023224,
+      "drawCalls": 97,
+      "triangles": 207958,
+      "zone": null
+    },
+    {
+      "refined": true,
+      "fps": 59.8583352727122,
+      "geometries": 95,
+      "textures": 19,
+      "programs": 24,
+      "frames": 180,
+      "renderedFrames": 331,
+      "medianMs": 23.59999999999127,
+      "p95Ms": 32.20000000000073,
+      "pixelRatio": 1.0000000298023224,
+      "drawCalls": 97,
+      "triangles": 207958,
+      "zone": null
+    },
+    {
+      "refined": false,
+      "fps": 59.5337080522532,
+      "geometries": 95,
+      "textures": 19,
+      "programs": 22,
+      "frames": 180,
+      "renderedFrames": 324,
+      "medianMs": 23.666666666656965,
+      "p95Ms": 31.900000000001455,
+      "pixelRatio": 1.0000000298023224,
+      "drawCalls": 97,
+      "triangles": 205042,
+      "zone": null
+    },
+    {
+      "refined": false,
+      "fps": 54.67015672068406,
+      "geometries": 95,
+      "textures": 19,
+      "programs": 22,
+      "frames": 180,
+      "renderedFrames": 288,
+      "medianMs": 23.700000000018917,
+      "p95Ms": 36.46666666668898,
+      "pixelRatio": 1.0000000298023224,
+      "drawCalls": 97,
+      "triangles": 205042,
+      "zone": null
+    },
+    {
+      "refined": true,
+      "fps": 59.910134797803295,
+      "geometries": 95,
+      "textures": 19,
+      "programs": 24,
+      "frames": 180,
+      "renderedFrames": 324,
+      "medianMs": 23.600000000020373,
+      "p95Ms": 31.83333333333576,
+      "pixelRatio": 1.0000000298023224,
+      "drawCalls": 97,
+      "triangles": 207958,
+      "zone": null
+    },
+    {
+      "refined": true,
+      "fps": 59.962024051910326,
+      "geometries": 95,
+      "textures": 19,
+      "programs": 24,
+      "frames": 180,
+      "renderedFrames": 343,
+      "medianMs": 24.066666666687524,
+      "p95Ms": 31.900000000001455,
+      "pixelRatio": 1.0000000298023224,
+      "drawCalls": 96,
+      "triangles": 207846,
+      "zone": null
+    },
+    {
+      "refined": false,
+      "fps": 60.114915806381234,
+      "geometries": 95,
+      "textures": 19,
+      "programs": 22,
+      "frames": 180,
+      "renderedFrames": 348,
+      "medianMs": 23.233333333351766,
+      "p95Ms": 32.10000000000582,
+      "pixelRatio": 1.0000000298023224,
+      "drawCalls": 96,
+      "triangles": 204930,
+      "zone": null
+    }
+  ],
+  "errors": [],
+  "viewport": [
+    1280,
+    720
+  ],
+  "dpr": 1.0000000298023224,
+  "sameBudget": false,
+  "rooms": [
+    {
+      "id": "1",
+      "phase": "room"
+    },
+    {
+      "id": "2",
+      "phase": "room"
+    },
+    {
+      "id": "3",
+      "phase": "room"
+    },
+    {
+      "id": "4",
+      "phase": "room"
+    },
+    {
+      "id": "5",
+      "phase": "room"
+    },
+    {
+      "id": "6",
+      "phase": "room"
+    },
+    {
+      "id": "7",
+      "phase": "room"
+    },
+    {
+      "id": "8",
+      "phase": "room"
+    },
+    {
+      "id": "9",
+      "phase": "room"
+    },
+    {
+      "id": "10",
+      "phase": "room"
+    },
+    {
+      "id": "11",
+      "phase": "room"
+    },
+    {
+      "id": "12",
+      "phase": "room"
+    },
+    {
+      "id": "13",
+      "phase": "room"
+    },
+    {
+      "id": "14",
+      "phase": "room"
+    },
+    {
+      "id": "15",
+      "phase": "room"
+    },
+    {
+      "id": "16",
+      "phase": "room"
+    },
+    {
+      "id": "17",
+      "phase": "room"
+    }
+  ],
+  "colorAttributesComplete": true,
+  "finiteUVs": true,
+  "fpsChangePercent": 2.0117841499901035,
+  "sameDrawCalls": true,
+  "sameTextures": true,
+  "status": "passed"
+}
