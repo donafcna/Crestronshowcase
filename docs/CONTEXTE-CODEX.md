@@ -452,3 +452,8 @@ Neige sculptée, grain et traces de piste, sapins en rameaux, toitures enneigée
 ## 22/11/2026 — Chalet A10 : matériaux, vitrages et moteurs linéaires
 
 Bardage, veinage et patine du bois, cadres ajourés, vitrages à surfaces uniques, balcons et toiture détaillés. Conflit de profondeur verre/cadre (.21/.21) supprimé ; passe du vitrage stable au zoom. Motorisations de démonstration au temps écoulé, animation 3D par image et visuels GUI conservés entre les retours ; arrêt/inversion sans palier. Génération reproductible via sync-a10-demos.py. Recette, planche et limites : `apps/showcase/docs/verification/2026-11-22-chalet-motion/` depuis la racine. Aucun programme matériel ni vidéo modifié.
+
+
+## 22/11/2026 — Nightclub : fond 3D affiné sans baisse de cadence
+
+Faisceaux RGBW à ouverture constante et atténuation progressive, facettes des miroirs nuancées et matériaux différenciés. Géométrie des faisceaux mutualisée, une seule face rendue ; étages masqués non recalculés. Cadence locale médiane avant/après : 29,94 i/s sur les quatre vues. Appels globaux 1048 → 976, géométries GPU 907 → 836, textures conservées à 14. Build, lint et syntaxe du lot isolé réussis. Rapport et limites : apps/showcase/docs/verification/2026-11-22-club-refinement/. Publication autorisée par Donatien via main → Vercel crestrongui ; aucune modification GUI ni matérielle.

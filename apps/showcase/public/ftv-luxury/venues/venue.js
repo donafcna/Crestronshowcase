@@ -86,6 +86,12 @@ if(club){
  }
  beams.length=0;
  const definitions=[{"id": "original", "floor": 0, "name": "Studio 77 · Disco", "color": "#ffb54a", "mood": "Or & velours · Piste rétro · DJ"}, {"id": "neon", "floor": 1, "name": "Neon Foundry · Electro", "color": "#2ee7f2", "mood": "Béton & acier · Portiques néon · DJ"}, {"id": "sky", "floor": 2, "name": "Sky Garden · Panoramique", "color": "#7fe0bb", "mood": "Ivoire & jade · Piste ronde · DJ"}];
+ // One shared beam mesh: same 12 sides, with a baked longitudinal falloff.
+ // Additive black fades out instead of looking like a solid translucent cone.
+ const beamGeometry=new T.ConeGeometry(.95,4.9,12,1,true);
+ const beamPositions=beamGeometry.attributes.position,beamColors=[];
+ for(let i=0;i<beamPositions.count;i++){const height=(beamPositions.getY(i)+2.45)/4.9;const energy=.12+.88*height;beamColors.push(energy,energy,energy);}
+ beamGeometry.setAttribute('color',new T.Float32BufferAttribute(beamColors,3));
  const rgbw=['#ff426b','#46ed92','#559dff','#fff5df'];
  for(const r of definitions){
  const f=r.floor,floor=new T.Group(),g=original.clone(true);floor.name='Club level '+f;floor.position.y=f*9;model.add(floor);clubFloors.push(floor);g.name=r.name;floor.add(g);
@@ -110,7 +116,7 @@ if(club){
  const head=new T.Group();head.name='DMX RGBW moving head';head.position.set(x,5.5,z);head.userData.floor=f;head.userData.aim=new T.Vector3(0,.16,1);head.userData.from=new T.Vector3(0,.16,1);head.userData.to=new T.Vector3(0,.16,1);head.userData.next=0;g.add(head);roomHeads.push(head);movingHeads.push(head);
  const body=new T.Mesh(new T.BoxGeometry(.48,.6,.48),M.black);body.position.y=-.12;head.add(body);
  const optic=new T.Mesh(new T.CylinderGeometry(.18,.18,.06,12),lens);optic.position.y=-.45;head.add(optic);
- const beam=new T.Mesh(new T.ConeGeometry(.95,4.9,12,1,true),new T.MeshBasicMaterial({color,transparent:true,opacity:.065,depthWrite:false,side:T.DoubleSide}));beam.name='RGBW light beam';beam.position.y=-2.9;head.add(beam);beams.push(beam);roomBeams.push(beam);
+ const beam=new T.Mesh(beamGeometry,new T.MeshBasicMaterial({color,vertexColors:true,blending:T.AdditiveBlending,transparent:true,opacity:.065,depthWrite:false,side:T.FrontSide,toneMapped:false}));beam.name='RGBW light beam';beam.position.y=-2.9;head.add(beam);beams.push(beam);roomBeams.push(beam);
  }
  }
  for(const x of [-5,0,5]){
@@ -118,7 +124,7 @@ if(club){
  const ball=new T.Mesh(new T.SphereGeometry(.66,24,12).toNonIndexed(),new T.MeshStandardMaterial({color:'#d6e4f2',metalness:.9,roughness:.15,flatShading:true,emissive:r.color,emissiveIntensity:.13}));ball.name='Mirror ball';ball.position.set(x,4.75,2);model.add(ball);balls.push(ball);mirrorBalls.push(ball);
  // Individual mirror tiles pick up alternating white and coloured highlights.
  const tiles=new T.InstancedMesh(new T.BoxGeometry(.105,.105,.018),new T.MeshStandardMaterial({color:'#edf4ff',metalness:.75,roughness:.18,emissive:'#b8cbdf',emissiveIntensity:.18}),192);tiles.name='Mirror mosaic';const dummy=new T.Object3D();let n=0;
- for(let row=1;row<=8;row++)for(let col=0;col<24;col++){const phi=row*Math.PI/9,theta=col*Math.PI/12;dummy.position.set(.67*Math.sin(phi)*Math.cos(theta),.67*Math.cos(phi),.67*Math.sin(phi)*Math.sin(theta));dummy.lookAt(dummy.position.clone().multiplyScalar(2));dummy.updateMatrix();tiles.setMatrixAt(n++,dummy.matrix);}ball.add(tiles);mats.push(ball.material,tiles.material);
+ for(let row=1;row<=8;row++)for(let col=0;col<24;col++){const phi=row*Math.PI/9,theta=col*Math.PI/12;dummy.position.set(.67*Math.sin(phi)*Math.cos(theta),.67*Math.cos(phi),.67*Math.sin(phi)*Math.sin(theta));dummy.lookAt(dummy.position.clone().multiplyScalar(2));dummy.updateMatrix();tiles.setMatrixAt(n,dummy.matrix);tiles.setColorAt(n++,new T.Color().setScalar(.55+.45*((row*7+col*11)%13)/12));}ball.add(tiles);mats.push(ball.material,tiles.material);
  }
  for(const x of [-10.6,10.6])for(let i=0;i<12;i++){const led=luminous(rgbw[(i+f)%4],.7);mats.push(led);box('RGBW wall LED bar',x,1.3,-9+i*1.7,.07,1.8,.12,led);}
  const dots=new T.InstancedMesh(new T.CircleGeometry(.09,6),new T.MeshBasicMaterial({color:r.color,transparent:true,opacity:.65,depthWrite:false}),64);dots.count=64;dots.name='Mirror ball light dots';const dummy=new T.Object3D();for(let i=0;i<64;i++){dummy.position.set(Math.sin(i*2.4)*4.7,.13,-3+((i*1.73)%12));dummy.rotation.x=-Math.PI/2;dummy.updateMatrix();dots.setMatrixAt(i,dummy.matrix);}model.add(dots);
@@ -126,7 +132,7 @@ if(club){
  });
  // Distinct architecture, furniture and dance-floor geometry for each level.
  const palette=f===0?{floor:'#3e2431',wall:'#582937',seat:'#9d2746',bar:'#9a672d'}:f===1?{floor:'#252a30',wall:'#5f6469',seat:'#202830',bar:'#454e57'}:{floor:'#b9c3bd',wall:'#c9dcd4',seat:'#4f9c8a',bar:'#c4a673'};
- g.traverse(o=>{if(!o.isMesh)return;const name=o.name;if(['Floor','Foundation'].includes(name))o.material=material(palette.floor);if(['Rear wall','Side wall'].includes(name))o.material=material(palette.wall);if(/Lounge|Stool cushion/.test(name))o.material=material(palette.seat);if(['Bar counter','DJ booth'].includes(name))o.material=material(palette.bar,.4,.2);});
+ g.traverse(o=>{if(!o.isMesh)return;const name=o.name;if(['Floor','Foundation'].includes(name))o.material=material(palette.floor,f===1?.86:.48);if(['Rear wall','Side wall'].includes(name))o.material=material(palette.wall,f===1?.95:.82);if(/Lounge|Stool cushion/.test(name))o.material=material(palette.seat,.92,0);if(['Bar counter','DJ booth'].includes(name))o.material=material(palette.bar,f===1?.48:.3,f===1?.65:.28);});
  if(f>0){for(const child of [...g.children])if(['Dance floor','Dance floor tile','Bar counter','Bar top','Bar light','Bar stool','Stool cushion','Bottle','Lounge banquette','Lounge back','Cocktail table','Table top'].includes(child.name))g.remove(child);}
  capture(g,()=>{
  const glow=luminous(r.color,.9);mats.push(glow);
@@ -202,12 +208,12 @@ window.__venue={scene,renderer,camera,model,apply,state:{},beams,smoke,clubFloor
 window.addEventListener('message',e=>{if(e.origin!==location.origin||e.source!==parent||e.data?.channel!==channel||e.data.project!==project)return;const d=e.data;if(d.type==='hello')send('ready');if(d.type==='state'&&d.state)apply(d.state);if(d.type==='viewport'&&d.viewport&&Object.values(d.viewport).every(Number.isFinite)){viewport=d.viewport;frame()}if(d.type==='visibility')visible=!!d.visible;if(d.type==='zoom'){zoom=T.MathUtils.clamp(zoom+d.delta*.06,.75,1.3);frame()}});
 window.addEventListener('resize',frame);frame();
 const down=new T.Vector3(0,-1,0),aimDirection=new T.Vector3();
-function aimHead(head){const direction=aimDirection.copy(head.userData.aim).sub(head.position),distance=direction.length();head.quaternion.setFromUnitVectors(down,direction.normalize());const beam=head.getObjectByName('RGBW light beam');beam.scale.y=(distance-.45)/4.9;beam.position.y=-(distance+.45)/2;}
+function aimHead(head){const direction=aimDirection.copy(head.userData.aim).sub(head.position),distance=direction.length();head.quaternion.setFromUnitVectors(down,direction.normalize());const beam=head.getObjectByName('RGBW light beam');const spread=(distance-.45)/4.9;beam.scale.set(spread,spread,spread);beam.position.y=-(distance+.45)/2;}
 for(const head of movingHeads)aimHead(head);
 let previous=0;function animate(t){requestAnimationFrame(animate);if(!visible||document.hidden||t-previous<33)return;previous=t;
  if(cameraMotion){const q=Math.min(1,(t-cameraMotion.start)/cameraMotion.duration),ease=q*q*(3-2*q);camera.position.lerpVectors(cameraMotion.fromPos,cameraMotion.toPos,ease);target.lerpVectors(cameraMotion.fromTarget,cameraMotion.toTarget,ease);camera.lookAt(target);if(q>=1)cameraMotion=null}
  if(!matchMedia('(prefers-reduced-motion: reduce)').matches){
- if(club){clubRooms.forEach(r=>{if(!r.level)return;if(window.__venue.state.lyresActive!==false)r.heads.forEach(h=>{
+ if(club){clubRooms.forEach(r=>{if(!r.level||!r.group.visible||!clubFloors[r.floor].visible)return;if(window.__venue.state.lyresActive!==false)r.heads.forEach(h=>{
  const u=h.userData;if(t>=u.next){u.from.copy(u.aim);const angle=Math.random()*Math.PI*2,radius=Math.sqrt(Math.random())*3.8;u.to.set(Math.cos(angle)*radius,.16,1+Math.sin(angle)*radius);u.start=t;u.duration=260+Math.random()*390;u.next=t+u.duration;}
  const progress=Math.min(1,(t-u.start)/u.duration),smooth=progress*progress*(3-2*progress);u.aim.lerpVectors(u.from,u.to,smooth);aimHead(h);
  });r.balls.forEach(ball=>ball.rotation.y=t*.00035);});
