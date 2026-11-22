@@ -12,9 +12,10 @@
  * Usage (site) : const api = createPlan3D({ canvas, config, names }) ; api.attach(iframe.contentWindow) ;
  * api.setWindow(rect) cadre la pièce dans la zone libre de la page ; api.dispose() à la fin.
  * =========================================================================== */
+import { configureA10Room, syncA10Room } from './a10-room.js?v=2026-11-22';
 import * as THREE from './vendor/three.module.min.js';
 import { createInteriors } from './interiors.js?v=2026-09-27-residence-1';
-import { buildLandscape } from './landscape.js?v=2026-09-27-residence-1';
+import { buildLandscape } from './landscape.js?v=2026-11-22-snow';
 import { createEstate } from './estate.js?v=2026-09-17-lighting-1';
 import { createResidence } from './residence.js?v=2026-09-27-residence-1';
 import { enrichRoom } from './room-features.js?v=2026-09-27-residence-1';
@@ -539,6 +540,7 @@ export function createPlan3D(opts) {
         interiors.curtains(R);
         enrichRoom(R, M);
         interiors.decorate(R);
+        if (p.circuits) configureA10Room(R);
         if(p.type==='sauna'||p.type==='garage'){
             for(const lamp of R.lamps.slice(0,2)){lamp.mesh?.removeFromParent();lamp.extra?.removeFromParent();}
             furnishSpecialRoom(R,M);
@@ -547,6 +549,7 @@ export function createPlan3D(opts) {
         var moving = new Set([R.label, R.eau, R.shaft, R.tv && R.tv.mesh, R.hvac && R.hvac.flap, R.hvac && R.hvac.breeze]);
         R.speakers.forEach(function (s) { moving.add(s.body); moving.add(s.ring); });
         Object.values(R.shades || {}).forEach(function (s) { (s.meshes || [s.mesh]).forEach(function (m) { moving.add(m); }); });
+        R.a10Motors?.forEach(function (m) { m.meshes.forEach(function (mesh) { moving.add(mesh); }); });
         interiors.batch(g, moving);
         applyLevels(R);
         ROOMS[p.id] = R;
@@ -582,6 +585,11 @@ export function createPlan3D(opts) {
     // Lumière du jour qui entre dans la pièce : 0 (volet fermé) .. 1 (tout ouvert) ; store et rideaux tamisent
     function daylight(R) {
         if (R && R.cfg.windowWall === 'none') return 0;
+        if (R && R.a10Motors?.length) {
+            var openings = {};
+            R.a10Motors.forEach(function (m) { openings[m.orientation] = (openings[m.orientation] ?? 1) * (1 - m.pos * (m.sheer ? .65 : .96)); });
+            return Object.values(openings).reduce(function (a, v) { return a + v; }, 0) / Object.keys(openings).length;
+        }
         var sh = R && R.shades; if (!sh || R.ext) return 1;
         var v = sh.volet ? sh.volet.pos : 0, s = sh.store ? sh.store.pos : 0, r = sh.rideau ? sh.rideau.pos : 0;
         return (R.cfg.niveau < 0 ? .6 : 1) * (1 - v) * (1 - 0.85 * s) * (1 - 0.7 * r);
@@ -613,12 +621,12 @@ export function createPlan3D(opts) {
     function animateLights(R, now) {
         var f = R.lightFade; if (!f) return;
         var t = Math.min(1, Math.max(0, (now - f.started) / LIGHT_FADE_MS));
-        for (var i = 0; i < 5; i++) R.renderLevels[i] = THREE.MathUtils.lerp(f.from[i], f.to[i], t);
+        for (var i = 0; i < f.to.length; i++) R.renderLevels[i] = THREE.MathUtils.lerp(f.from[i] || 0, f.to[i], t);
         if (t === 1) R.lightFade = null;
         applyLevels(R);
     }
     function targetLights(R) {
-        var to = [0, 1, 2, 3, 4].map(function (i) { return R.sceneOff ? 0 : R.levels[i]; });
+        var to = R.levels.map(function (v) { return R.sceneOff ? 0 : v; });
         if (to.every(function (v,i) { return v === R.fadeTargets[i]; })) return;
         var now = performance.now();
         // Retarget from the displayed level, even halfway through a previous fade.
@@ -858,6 +866,7 @@ export function createPlan3D(opts) {
                 // Keep overhead and local ambience distinct while pooling five circuits
                 // into the existing two lights (no extra shadows or GPU light count).
                 var level = lightLevel(activeRoom,i) + lightLevel(activeRoom,2)*(i===0?.3:.12) + lightLevel(activeRoom,3)*(i===0?.10:.4) + lightLevel(activeRoom,4)*(i===0?.05:.25);
+                if (activeRoom.cfg.circuits) level = activeRoom.renderLevels.reduce(function (a, v) { return a + v; }, 0) / Math.max(1, activeRoom.renderLevels.length) * 1.8;
                 roomLights[i].intensity = level * (i === 0 ? 55 : 30) * (l.sousMarin ? .3 : 1);
             });
             if (activeRoom.tv) activeRoom.tv.light.intensity = activeRoom.tv.source > 0 ? .28 : 0;
@@ -929,7 +938,7 @@ export function createPlan3D(opts) {
         Object.assign(sunE.shadow.camera, { left: -sh.size, right: sh.size, top: sh.size, bottom: -sh.size, near: 1, far: sh.far }); sunE.shadow.camera.updateProjectionMatrix();
     }
     applyLayout(0);showOnly(null);
-    landscape = buildLandscape(scene, envelope.bounds, interiors, { driveway: !RESIDENCE }); sceneR.fog = scene.fog;
+    landscape = buildLandscape(scene, envelope.bounds, interiors, { driveway: !RESIDENCE, winter: !!cfg.winter }); sceneR.fog = scene.fog;
     var naturalMotion=addNaturalMotion(Object.values(ROOMS).filter(function (R) { return R.eau; })[0],landscape);
     goOverview(true);
     resize();
@@ -938,6 +947,7 @@ export function createPlan3D(opts) {
     /* ---------- API publique ---------- */
     var API = {
         setRoom: setRoom,
+        syncA10: function (state) { Object.values(ROOMS).forEach(function (R) { if (R.cfg.circuits) { syncA10Room(R, state); targetLights(R); } }); },
         version: '2026-09-27-residence-1',
         holdOverview: function (held) { overviewHeld = !!held; },
         applyDemoAmbience: function (snapshot) {

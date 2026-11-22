@@ -437,3 +437,8 @@ Restaurant suit le même parcours : vue globale en Fermeture, cinq secondes d’
 L’onglet Audio de l’iPhone Hotel Brassus affiche désormais six barres animées pendant la lecture. L’animation s’arrête et l’état « Audio coupé » apparaît lorsque le son est coupé ou que le volume atteint zéro.
 
 En version 2.2.13, les barres sont entièrement masquées lorsque le son est coupé ou que le volume atteint zéro, au lieu de rester visibles à l’arrêt.
+
+
+## 22/11/2026 — A10 : synchronisation 3D et neige
+
+100 circuits et 34 moteurs individuels synchronisés depuis A10Bench. Représentation dédiée des luminaires et occultations, commandes groupées de démonstration corrigées. Montagnes enneigées, sapins et deux pistes balisées, cycle jour/nuit conservé. Générateur de plan actualisé depuis le catalogue public A10. Recette et limites : apps/showcase/docs/verification/2026-11-22-a10/README.md (depuis la racine). Aucun programme matériel modifié.

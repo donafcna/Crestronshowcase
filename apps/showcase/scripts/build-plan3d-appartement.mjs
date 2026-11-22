@@ -20,7 +20,8 @@ const pieces = config.pieces
   .map((p) => {
     const plan = { ...p.plan3d, ...(LAYOUT[p.id] || {}) };
     const piece = { id: p.id, nom: p.nom, type: plan.type, niveau: p.niveau || 0, x: plan.x, z: plan.z, w: plan.w, d: plan.d, windowWall: plan.windowWall || 'none' };
-    if (p.pilotages?.audioVideo?.actif === false) piece.av = false;
+    // Preserve the showcase AV furnishing independently of the physical installation flags.
+    if (![1,2,3,7,10,13,15].includes(p.id)) piece.av = false;
     else if (SPEAKERS_ONLY.has(p.id)) piece.tv = false;
     if (p.pilotages?.cvc?.actif === false) piece.cvc = false;
     if (p.pilotages?.moteurs?.actif === false) piece.moteurs = false;
@@ -38,6 +39,17 @@ for (const a of pieces) for (const b of pieces) {
   if (overlap) throw new Error(`Chevauchement niveau ${a.niveau} : pièces ${a.id} et ${b.id}`);
 }
 
-const out = { style: 'chaleureux', enveloppe: 'residence', baseElevation: 18, fpsMax: 60, pieces };
+// Public A10 catalogue is the showcase circuit/motor contract; physical CH5 stays untouched.
+const catalogue = JSON.parse(fs.readFileSync(path.join(here, '../public/showcases/appartement-crans/xpanels/config.js'), 'utf8').split('=').slice(1).join('=').trim().replace(/;$/, ''));
+const roomIds = [1,2,3,4,5,6,7,8,10,11,12,13,14,15,16,17];
+for (const [i, room] of catalogue.rooms.entries()) {
+  const p = pieces.find(p => p.id === roomIds[i]);
+  if (!p) throw new Error('Missing A10 room: ' + room.id);
+  p.a10Room = room.id;
+  p.circuits = catalogue.lights.filter(l => l.roomId === room.id && !l.retired);
+  p.a10Shades = catalogue.shades.filter(m => m.roomId === room.id);
+  if (p.a10Shades.length) { p.windowWall = 'north'; delete p.moteurs; }
+}
+const out = { winter: true, style: 'chaleureux', enveloppe: 'residence', baseElevation: 18, fpsMax: 60, pieces };
 fs.writeFileSync(target, JSON.stringify(out, null, 2) + '\n');
 console.log(`${path.relative(process.cwd(), target)} : ${pieces.length} pièces, niveaux ${[...new Set(pieces.map((p) => p.niveau))].join('/')}`);

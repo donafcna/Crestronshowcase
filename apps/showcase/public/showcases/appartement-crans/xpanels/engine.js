@@ -23,7 +23,7 @@
    else if(op===4){if(state.owner!==client)return fail();members(state.scene).forEach(i=>saved[state.scene-1][i]=state.lights[i]);names[state.scene-1]=draftName;state.active=state.scene;state.owner=0;state.scene=0;before=null;}
    else if(op===5){if(state.owner!==client)return fail();cancel(true);}
    else if(op===6){if(state.owner!==client)return fail();draftName=config.scenes[state.scene-1].name;const d={Bright:100,Evening:65,Night:25,Off:0}[config.scenes[state.scene-1].name]||0;members(state.scene).forEach(i=>state.lights[i]=d);lease=30;}
-   else if(op===7){if(id<1||id>sh||v<0||v>2)return fail();motion[id-1]=v===1?1:v===2?-1:0;}
+   else if(op===7){if(id<1||id>sh||v<0||v>2)return fail();motion[id-1]=v===1?1:v===2?-1:0;if(id>config.shades.length){const g=config.shadeGroups[id-config.shades.length-1],family=n=>/sheer/i.test(n)?'sheer':/blackout/i.test(n)?'blackout':/exterior/i.test(n)?'exterior':'roller',direction=n=>n.match(/east|south 1|south 2|north|south/)?.[0];config.shades.forEach(s=>{if(s.roomId===g.roomId&&family(s.name)===family(g.name)&&(!direction(g.name)||direction(s.name)===direction(g.name)))motion[s.index-1]=motion[id-1];});}}
    else if(op===8){if(id<1||id>state.climate.length||v<160||v>300)return fail();state.climate[id-1]=v;}
    else if(op===9){if(id<1||id>state.power.length||v<0||v>1)return fail();state.power[id-1]=v;}
    else if(op===10){let name;try{name=decodeURIComponent(v);}catch{return fail();}if(state.owner!==client||id!==state.scene||!name.trim()||new TextEncoder().encode(name).length>32)return fail();draftName=name;lease=30;}

@@ -10,7 +10,7 @@ import { VenueBackground } from '../venues/VenueBackground';
 import { VENUE_PROJECTS } from '../venues/state';
 
 // A deployment changes the module URL, including its dependent assets.
-const PLAN3D_VERSION = "2026-09-27-residence-1";
+const PLAN3D_VERSION = "2026-11-22-a10-sync-snow";
 
 // Fond de page 3D (Three.js) à la place de la vidéo, pour les projets qui ont un plan 3D
 // (public/plan3d/<id>.json). Le GUI tourne dans son iframe et n'est pas modifié : le module
@@ -143,7 +143,9 @@ const VillaPlan3DBackground = ({ projectId, stageRef, guiFrameRef, tourSessionRe
       const frame = guiFrameRef?.current;
       const win = frame && frame.contentWindow;
       if (projectId === "appartement-crans") {
-        const room = A10_PLAN_ROOMS[win?.A10Bench?.getRoom?.()];
+        const bench = win?.A10Bench;
+        const room = A10_PLAN_ROOMS[bench?.getRoom?.()];
+        if (bench?.getState?.()) api.syncA10(bench.getState());
         if (room && room !== previousA10Room) {
           if (previousA10Room !== undefined || room !== A10_PLAN_ROOMS.salon) {
             if (tourSessionRef?.current) tourSessionRef.current.overview = false;
@@ -158,7 +160,7 @@ const VillaPlan3DBackground = ({ projectId, stageRef, guiFrameRef, tourSessionRe
       api.setWindow(layout?.rect || null);
     };
     tick();
-    const id = setInterval(tick, 500);
+    const id = setInterval(tick, 100);
     let lastWheel = 0, accumulated = 0, direction = 0;
     const wheel = (e) => {
       if (e.ctrlKey || e.metaKey || !apiRef.current || e.target.closest("iframe,button,a,input,select,textarea,.workspace-device-sidebar,.phone-device-frame,.projects-strip")) return;

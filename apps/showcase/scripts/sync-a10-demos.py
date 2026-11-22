@@ -75,8 +75,11 @@ def main():
     app = app[:start] + app[render:live] + app[end:]
 
     (DEST / "assets").mkdir(parents=True, exist_ok=True)
-    for name in ("app.css", "engine.js", "assets/frequence-tv-white.png"):
+    for name in ("app.css", "assets/frequence-tv-white.png"):
         (DEST / name).write_bytes(main_panel[name])
+    engine = main_panel["engine.js"].decode("utf-8-sig")
+    engine = replace_once(engine, 'motion[id-1]=v===1?1:v===2?-1:0;', "motion[id-1]=v===1?1:v===2?-1:0;if(id>config.shades.length){const g=config.shadeGroups[id-config.shades.length-1],family=n=>/sheer/i.test(n)?'sheer':/blackout/i.test(n)?'blackout':/exterior/i.test(n)?'exterior':'roller',direction=n=>n.match(/east|south 1|south 2|north|south/)?.[0];config.shades.forEach(s=>{if(s.roomId===g.roomId&&family(s.name)===family(g.name)&&(!direction(g.name)||direction(s.name)===direction(g.name)))motion[s.index-1]=motion[id-1];});}")
+    (DEST / "engine.js").write_text(engine, encoding="utf-8")
     (DEST / "app.js").write_text(app, encoding="utf-8")
     write_assignment("config.js", "A10BenchConfig", config)
     for name, panel, target, mode, label in (

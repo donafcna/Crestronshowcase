@@ -1,4 +1,5 @@
 {
+  "winter": true,
   "style": "chaleureux",
   "enveloppe": "residence",
   "baseElevation": 18,
@@ -14,7 +15,66 @@
       "w": 8.2,
       "d": 6.2,
       "windowWall": "north",
-      "banne": false
+      "banne": false,
+      "a10Room": "salon",
+      "circuits": [
+        {
+          "roomId": "salon",
+          "name": "Valley spotlights",
+          "index": 1
+        },
+        {
+          "roomId": "salon",
+          "name": "Corner spotlights",
+          "index": 2
+        },
+        {
+          "roomId": "salon",
+          "name": "Cove lighting",
+          "index": 3
+        },
+        {
+          "roomId": "salon",
+          "name": "Floor lamp",
+          "index": 4
+        },
+        {
+          "roomId": "salon",
+          "name": "Bar spotlights",
+          "index": 5
+        },
+        {
+          "roomId": "salon",
+          "name": "Bar LED strips",
+          "index": 6
+        }
+      ],
+      "a10Shades": [
+        {
+          "roomId": "salon",
+          "name": "Sheer curtain east",
+          "index": 6,
+          "kind": "shade"
+        },
+        {
+          "roomId": "salon",
+          "name": "Sheer curtain south",
+          "index": 18,
+          "kind": "shade"
+        },
+        {
+          "roomId": "salon",
+          "name": "Exterior shade east",
+          "index": 25,
+          "kind": "exterior"
+        },
+        {
+          "roomId": "salon",
+          "name": "Exterior shade south",
+          "index": 30,
+          "kind": "exterior"
+        }
+      ]
     },
     {
       "id": 2,
@@ -27,7 +87,39 @@
       "d": 6.2,
       "windowWall": "north",
       "tv": false,
-      "banne": false
+      "banne": false,
+      "a10Room": "dining",
+      "circuits": [
+        {
+          "roomId": "dining",
+          "name": "Spot",
+          "index": 7
+        },
+        {
+          "roomId": "dining",
+          "name": "Cove lighting",
+          "index": 8
+        },
+        {
+          "roomId": "dining",
+          "name": "Pendant",
+          "index": 9
+        }
+      ],
+      "a10Shades": [
+        {
+          "roomId": "dining",
+          "name": "Sheer curtain",
+          "index": 7,
+          "kind": "shade"
+        },
+        {
+          "roomId": "dining",
+          "name": "Exterior shade",
+          "index": 31,
+          "kind": "exterior"
+        }
+      ]
     },
     {
       "id": 3,
@@ -40,7 +132,59 @@
       "d": 6.2,
       "windowWall": "north",
       "tv": false,
-      "banne": false
+      "banne": false,
+      "a10Room": "kitchen",
+      "circuits": [
+        {
+          "roomId": "kitchen",
+          "name": "Spotlights",
+          "index": 10
+        },
+        {
+          "roomId": "kitchen",
+          "name": "Passage spotlights",
+          "index": 11
+        },
+        {
+          "roomId": "kitchen",
+          "name": "Cove lighting",
+          "index": 12
+        },
+        {
+          "roomId": "kitchen",
+          "name": "Island LED strips",
+          "index": 13
+        },
+        {
+          "roomId": "kitchen",
+          "name": "Worktop",
+          "index": 14
+        },
+        {
+          "roomId": "kitchen",
+          "name": "Island spotlights",
+          "index": 15
+        },
+        {
+          "roomId": "kitchen",
+          "name": "Cupboard spotlights",
+          "index": 102
+        }
+      ],
+      "a10Shades": [
+        {
+          "roomId": "kitchen",
+          "name": "Sheer curtain",
+          "index": 8,
+          "kind": "shade"
+        },
+        {
+          "roomId": "kitchen",
+          "name": "Exterior shade",
+          "index": 32,
+          "kind": "exterior"
+        }
+      ]
     },
     {
       "id": 4,
@@ -55,7 +199,31 @@
       "av": false,
       "cvc": false,
       "moteurs": false,
-      "banne": false
+      "banne": false,
+      "a10Room": "entrance",
+      "circuits": [
+        {
+          "roomId": "entrance",
+          "name": "Spotlights",
+          "index": 16
+        },
+        {
+          "roomId": "entrance",
+          "name": "Artwork",
+          "index": 18
+        },
+        {
+          "roomId": "entrance",
+          "name": "Cupboard",
+          "index": 19
+        },
+        {
+          "roomId": "entrance",
+          "name": "Wall lights",
+          "index": 20
+        }
+      ],
+      "a10Shades": []
     },
     {
       "id": 5,
@@ -70,7 +238,21 @@
       "av": false,
       "cvc": false,
       "moteurs": false,
-      "banne": false
+      "banne": false,
+      "a10Room": "guest-wc",
+      "circuits": [
+        {
+          "roomId": "guest-wc",
+          "name": "LED strips",
+          "index": 21
+        },
+        {
+          "roomId": "guest-wc",
+          "name": "Wall lights",
+          "index": 22
+        }
+      ],
+      "a10Shades": []
     },
     {
       "id": 6,
@@ -85,7 +267,21 @@
       "av": false,
       "cvc": false,
       "moteurs": false,
-      "banne": false
+      "banne": false,
+      "a10Room": "laundry",
+      "circuits": [
+        {
+          "roomId": "laundry",
+          "name": "Spotlights",
+          "index": 23
+        },
+        {
+          "roomId": "laundry",
+          "name": "Worktop",
+          "index": 24
+        }
+      ],
+      "a10Shades": []
     },
     {
       "id": 7,
@@ -97,7 +293,90 @@
       "w": 8,
       "d": 5.1,
       "windowWall": "north",
-      "banne": false
+      "banne": false,
+      "a10Room": "master-bedroom",
+      "circuits": [
+        {
+          "roomId": "master-bedroom",
+          "name": "Spotlights",
+          "index": 26
+        },
+        {
+          "roomId": "master-bedroom",
+          "name": "Entrance",
+          "index": 27
+        },
+        {
+          "roomId": "master-bedroom",
+          "name": "Cove lighting",
+          "index": 28
+        },
+        {
+          "roomId": "master-bedroom",
+          "name": "Night light",
+          "index": 29
+        },
+        {
+          "roomId": "master-bedroom",
+          "name": "Headboard",
+          "index": 30
+        },
+        {
+          "roomId": "master-bedroom",
+          "name": "Right bedside",
+          "index": 31
+        },
+        {
+          "roomId": "master-bedroom",
+          "name": "Left bedside",
+          "index": 32
+        },
+        {
+          "roomId": "master-bedroom",
+          "name": "Bedside niches",
+          "index": 33
+        },
+        {
+          "roomId": "master-bedroom",
+          "name": "Left wardrobe spotlight",
+          "index": 34
+        },
+        {
+          "roomId": "master-bedroom",
+          "name": "Left wardrobe LED strips",
+          "index": 35
+        },
+        {
+          "roomId": "master-bedroom",
+          "name": "Right wardrobe LED strips",
+          "index": 36
+        },
+        {
+          "roomId": "master-bedroom",
+          "name": "Right wardrobe spotlights",
+          "index": 37
+        }
+      ],
+      "a10Shades": [
+        {
+          "roomId": "master-bedroom",
+          "name": "Sheer curtain",
+          "index": 4,
+          "kind": "shade"
+        },
+        {
+          "roomId": "master-bedroom",
+          "name": "Blackout curtain",
+          "index": 5,
+          "kind": "shade"
+        },
+        {
+          "roomId": "master-bedroom",
+          "name": "Exterior shade",
+          "index": 23,
+          "kind": "exterior"
+        }
+      ]
     },
     {
       "id": 8,
@@ -110,8 +389,54 @@
       "d": 6,
       "windowWall": "north",
       "av": false,
-      "moteurs": false,
-      "banne": false
+      "banne": false,
+      "a10Room": "master-bath",
+      "circuits": [
+        {
+          "roomId": "master-bath",
+          "name": "Spot WC",
+          "index": 38
+        },
+        {
+          "roomId": "master-bath",
+          "name": "Niche WC",
+          "index": 39
+        },
+        {
+          "roomId": "master-bath",
+          "name": "Ceiling",
+          "index": 40
+        },
+        {
+          "roomId": "master-bath",
+          "name": "Cove lighting",
+          "index": 41
+        },
+        {
+          "roomId": "master-bath",
+          "name": "Shower",
+          "index": 42
+        },
+        {
+          "roomId": "master-bath",
+          "name": "Wall lights",
+          "index": 43
+        }
+      ],
+      "a10Shades": [
+        {
+          "roomId": "master-bath",
+          "name": "Sheer curtain",
+          "index": 3,
+          "kind": "shade"
+        },
+        {
+          "roomId": "master-bath",
+          "name": "Exterior shade",
+          "index": 24,
+          "kind": "exterior"
+        }
+      ]
     },
     {
       "id": 9,
@@ -136,7 +461,60 @@
       "w": 7.4,
       "d": 6,
       "windowWall": "north",
-      "banne": false
+      "banne": false,
+      "a10Room": "tv-room",
+      "circuits": [
+        {
+          "roomId": "tv-room",
+          "name": "Right bedside",
+          "index": 44
+        },
+        {
+          "roomId": "tv-room",
+          "name": "Left bedside",
+          "index": 45
+        },
+        {
+          "roomId": "tv-room",
+          "name": "Ceiling",
+          "index": 46
+        },
+        {
+          "roomId": "tv-room",
+          "name": "Cove lighting",
+          "index": 47
+        },
+        {
+          "roomId": "tv-room",
+          "name": "Entrance spotlights",
+          "index": 48
+        },
+        {
+          "roomId": "tv-room",
+          "name": "Artwork",
+          "index": 49
+        }
+      ],
+      "a10Shades": [
+        {
+          "roomId": "tv-room",
+          "name": "Sheer curtain",
+          "index": 1,
+          "kind": "shade"
+        },
+        {
+          "roomId": "tv-room",
+          "name": "Blackout curtain",
+          "index": 2,
+          "kind": "shade"
+        },
+        {
+          "roomId": "tv-room",
+          "name": "Exterior shade",
+          "index": 29,
+          "kind": "exterior"
+        }
+      ]
     },
     {
       "id": 11,
@@ -147,10 +525,66 @@
       "z": 6.4,
       "w": 3,
       "d": 5.1,
-      "windowWall": "none",
+      "windowWall": "north",
       "av": false,
-      "moteurs": false,
-      "banne": false
+      "banne": false,
+      "a10Room": "tv-bath",
+      "circuits": [
+        {
+          "roomId": "tv-bath",
+          "name": "Basins",
+          "index": 50
+        },
+        {
+          "roomId": "tv-bath",
+          "name": "Spotlights",
+          "index": 51
+        },
+        {
+          "roomId": "tv-bath",
+          "name": "Spotlights shower",
+          "index": 52
+        },
+        {
+          "roomId": "tv-bath",
+          "name": "Cove lighting shower",
+          "index": 53
+        },
+        {
+          "roomId": "tv-bath",
+          "name": "Niche shower",
+          "index": 54
+        },
+        {
+          "roomId": "tv-bath",
+          "name": "Spotlights WC",
+          "index": 55
+        },
+        {
+          "roomId": "tv-bath",
+          "name": "Niche WC",
+          "index": 56
+        },
+        {
+          "roomId": "tv-bath",
+          "name": "Wall lights",
+          "index": 57
+        }
+      ],
+      "a10Shades": [
+        {
+          "roomId": "tv-bath",
+          "name": "Roller shade",
+          "index": 17,
+          "kind": "shade"
+        },
+        {
+          "roomId": "tv-bath",
+          "name": "Exterior shade",
+          "index": 21,
+          "kind": "exterior"
+        }
+      ]
     },
     {
       "id": 12,
@@ -161,17 +595,48 @@
       "z": 6.4,
       "w": 6,
       "d": 5.1,
-      "windowWall": "none",
+      "windowWall": "north",
       "av": false,
       "cvc": false,
-      "moteurs": false,
       "banne": false,
       "stairVoid": {
         "x": 0.45,
         "z": 1.6,
         "w": 1.15,
         "d": 3.3
-      }
+      },
+      "a10Room": "landing",
+      "circuits": [
+        {
+          "roomId": "landing",
+          "name": "Socket lamp",
+          "index": 58,
+          "switched": true
+        },
+        {
+          "roomId": "landing",
+          "name": "Step spotlights",
+          "index": 59
+        },
+        {
+          "roomId": "landing",
+          "name": "Window-side spotlights",
+          "index": 60
+        },
+        {
+          "roomId": "landing",
+          "name": "Stairwell",
+          "index": 61
+        }
+      ],
+      "a10Shades": [
+        {
+          "roomId": "landing",
+          "name": "Landing exterior shade",
+          "index": 26,
+          "kind": "exterior"
+        }
+      ]
     },
     {
       "id": 13,
@@ -183,7 +648,78 @@
       "w": 7,
       "d": 6,
       "windowWall": "north",
-      "banne": false
+      "banne": false,
+      "a10Room": "twin-bedroom",
+      "circuits": [
+        {
+          "roomId": "twin-bedroom",
+          "name": "Right bedside",
+          "index": 62
+        },
+        {
+          "roomId": "twin-bedroom",
+          "name": "Left bedside",
+          "index": 63
+        },
+        {
+          "roomId": "twin-bedroom",
+          "name": "Spotlights",
+          "index": 64
+        },
+        {
+          "roomId": "twin-bedroom",
+          "name": "Headboard",
+          "index": 65
+        },
+        {
+          "roomId": "twin-bedroom",
+          "name": "Night light",
+          "index": 66
+        },
+        {
+          "roomId": "twin-bedroom",
+          "name": "Wardrobe",
+          "index": 67
+        }
+      ],
+      "a10Shades": [
+        {
+          "roomId": "twin-bedroom",
+          "name": "Sheer curtain east",
+          "index": 13,
+          "kind": "shade"
+        },
+        {
+          "roomId": "twin-bedroom",
+          "name": "Blackout curtain east",
+          "index": 14,
+          "kind": "shade"
+        },
+        {
+          "roomId": "twin-bedroom",
+          "name": "Sheer curtain north",
+          "index": 15,
+          "kind": "shade"
+        },
+        {
+          "roomId": "twin-bedroom",
+          "name": "Blackout curtain north",
+          "index": 20,
+          "kind": "shade"
+        },
+        {
+          "roomId": "twin-bedroom",
+          "name": "Exterior shade east",
+          "index": 33,
+          "kind": "exterior"
+        },
+        {
+          "roomId": "twin-bedroom",
+          "name": "Exterior shade north",
+          "index": 34,
+          "kind": "exterior"
+        }
+      ]
     },
     {
       "id": 14,
@@ -197,7 +733,56 @@
       "windowWall": "north",
       "av": false,
       "moteurs": false,
-      "banne": false
+      "banne": false,
+      "a10Room": "twin-bath",
+      "circuits": [
+        {
+          "roomId": "twin-bath",
+          "name": "Spotlights WC",
+          "index": 68
+        },
+        {
+          "roomId": "twin-bath",
+          "name": "Cove lighting WC",
+          "index": 69
+        },
+        {
+          "roomId": "twin-bath",
+          "name": "Niche WC",
+          "index": 70
+        },
+        {
+          "roomId": "twin-bath",
+          "name": "Spot shower",
+          "index": 71
+        },
+        {
+          "roomId": "twin-bath",
+          "name": "Cove lighting shower",
+          "index": 72
+        },
+        {
+          "roomId": "twin-bath",
+          "name": "Niche shower",
+          "index": 73
+        },
+        {
+          "roomId": "twin-bath",
+          "name": "Spotlights",
+          "index": 74
+        },
+        {
+          "roomId": "twin-bath",
+          "name": "Cove lighting",
+          "index": 75
+        },
+        {
+          "roomId": "twin-bath",
+          "name": "Wall lights",
+          "index": 76
+        }
+      ],
+      "a10Shades": []
     },
     {
       "id": 15,
@@ -209,7 +794,101 @@
       "w": 7,
       "d": 6,
       "windowWall": "north",
-      "banne": false
+      "banne": false,
+      "a10Room": "vip-bedroom",
+      "circuits": [
+        {
+          "roomId": "vip-bedroom",
+          "name": "Right bedside",
+          "index": 77
+        },
+        {
+          "roomId": "vip-bedroom",
+          "name": "Left bedside",
+          "index": 78
+        },
+        {
+          "roomId": "vip-bedroom",
+          "name": "Wardrobe entrance",
+          "index": 79
+        },
+        {
+          "roomId": "vip-bedroom",
+          "name": "Entrance spotlights",
+          "index": 80
+        },
+        {
+          "roomId": "vip-bedroom",
+          "name": "Headboard",
+          "index": 81
+        },
+        {
+          "roomId": "vip-bedroom",
+          "name": "Night light",
+          "index": 82
+        },
+        {
+          "roomId": "vip-bedroom",
+          "name": "Bed spotlights",
+          "index": 83
+        }
+      ],
+      "a10Shades": [
+        {
+          "roomId": "vip-bedroom",
+          "name": "Sheer curtain south 1",
+          "index": 9,
+          "kind": "shade"
+        },
+        {
+          "roomId": "vip-bedroom",
+          "name": "Blackout curtain south 1",
+          "index": 10,
+          "kind": "shade"
+        },
+        {
+          "roomId": "vip-bedroom",
+          "name": "Sheer curtain south 2",
+          "index": 11,
+          "kind": "shade"
+        },
+        {
+          "roomId": "vip-bedroom",
+          "name": "Blackout curtain south 2",
+          "index": 12,
+          "kind": "shade"
+        },
+        {
+          "roomId": "vip-bedroom",
+          "name": "Blackout curtain north",
+          "index": 16,
+          "kind": "shade"
+        },
+        {
+          "roomId": "vip-bedroom",
+          "name": "Sheer curtain north",
+          "index": 19,
+          "kind": "shade"
+        },
+        {
+          "roomId": "vip-bedroom",
+          "name": "Exterior shade east",
+          "index": 22,
+          "kind": "exterior"
+        },
+        {
+          "roomId": "vip-bedroom",
+          "name": "Exterior shade south 2",
+          "index": 27,
+          "kind": "exterior"
+        },
+        {
+          "roomId": "vip-bedroom",
+          "name": "Exterior shade south 1",
+          "index": 28,
+          "kind": "exterior"
+        }
+      ]
     },
     {
       "id": 16,
@@ -223,7 +902,56 @@
       "windowWall": "none",
       "av": false,
       "moteurs": false,
-      "banne": false
+      "banne": false,
+      "a10Room": "vip-bath",
+      "circuits": [
+        {
+          "roomId": "vip-bath",
+          "name": "WC and shower cove",
+          "index": 84
+        },
+        {
+          "roomId": "vip-bath",
+          "name": "Basin",
+          "index": 85
+        },
+        {
+          "roomId": "vip-bath",
+          "name": "Spotlights",
+          "index": 86
+        },
+        {
+          "roomId": "vip-bath",
+          "name": "Spot shower",
+          "index": 87
+        },
+        {
+          "roomId": "vip-bath",
+          "name": "Niche shower",
+          "index": 88
+        },
+        {
+          "roomId": "vip-bath",
+          "name": "Spot WC",
+          "index": 89
+        },
+        {
+          "roomId": "vip-bath",
+          "name": "Niche WC",
+          "index": 90
+        },
+        {
+          "roomId": "vip-bath",
+          "name": "Cove lighting",
+          "index": 91
+        },
+        {
+          "roomId": "vip-bath",
+          "name": "Wall lights",
+          "index": 92
+        }
+      ],
+      "a10Shades": []
     },
     {
       "id": 17,
@@ -238,7 +966,56 @@
       "av": false,
       "cvc": false,
       "balcon": true,
-      "banne": false
+      "banne": false,
+      "a10Room": "terraces",
+      "circuits": [
+        {
+          "roomId": "terraces",
+          "name": "Living room and dining room",
+          "index": 93
+        },
+        {
+          "roomId": "terraces",
+          "name": "TV room · circuit 317",
+          "index": 94
+        },
+        {
+          "roomId": "terraces",
+          "name": "Lounge",
+          "index": 95
+        },
+        {
+          "roomId": "terraces",
+          "name": "TV room · circuit 346",
+          "index": 96
+        },
+        {
+          "roomId": "terraces",
+          "name": "Bedroom VIP",
+          "index": 97
+        },
+        {
+          "roomId": "terraces",
+          "name": "Bedroom Twin",
+          "index": 98
+        },
+        {
+          "roomId": "terraces",
+          "name": "Kitchen",
+          "index": 99
+        },
+        {
+          "roomId": "terraces",
+          "name": "Living room and master suite",
+          "index": 100
+        },
+        {
+          "roomId": "terraces",
+          "name": "Upper floor",
+          "index": 101
+        }
+      ],
+      "a10Shades": []
     }
   ]
 }

@@ -640,3 +640,8 @@ Titre public harmonisé sur la vitrine, la fiche et les pages intégrées. Dalle
 ## 12/11/2026 — Retrait du support TSW A10
 
 Aucun GUI TSW A10 dédié. La variante de vitrine a été retirée du sélecteur et des ressources générées. L’ancienne route `wallpanel` ouvre l’iPad. Les quatre supports A10 sont Crestron ONE sur iPhone et iPad, XPanel principal et XPanel Climat.
+
+
+## 22/11/2026 — A10 : synchronisation 3D et neige
+
+100 circuits et 34 moteurs individuels synchronisés depuis A10Bench. Représentation dédiée des luminaires et occultations, commandes groupées de démonstration corrigées. Montagnes enneigées, sapins et deux pistes balisées, cycle jour/nuit conservé. Générateur de plan actualisé depuis le catalogue public A10. Recette et limites : apps/showcase/docs/verification/2026-11-22-a10/README.md (depuis la racine). Aucun programme matériel modifié.
