@@ -29,5 +29,10 @@ export function configureA10Room(R) {
 }
 export function syncA10Room(R,state){
  R.sceneOff=false;R.cfg.circuits.forEach((c,i)=>{R.levels[i]=T.MathUtils.clamp((state.lights[c.index-1]||0)/100,0,1);});
- R.a10Motors?.forEach(m=>m.apply(1-T.MathUtils.clamp((state.shades[m.index-1]??100)/100,0,1)));
+ R.a10Motors?.forEach(m=>{m.reference=1-T.MathUtils.clamp((state.shades[m.index-1]??100)/100,0,1);m.direction=state.shadeMotion?.[m.index-1]||0;m.referenceAt=state.shadeAt||Date.now();});
+ animateA10Motors(R);
+}
+
+export function animateA10Motors(R,now=Date.now()){
+ R.a10Motors?.forEach(m=>{if(m.reference===undefined)return;const elapsed=Math.max(0,now-m.referenceAt);m.apply(T.MathUtils.clamp(m.reference-m.direction*elapsed/20000,0,1));});
 }

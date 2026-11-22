@@ -12,12 +12,12 @@
  * Usage (site) : const api = createPlan3D({ canvas, config, names }) ; api.attach(iframe.contentWindow) ;
  * api.setWindow(rect) cadre la pièce dans la zone libre de la page ; api.dispose() à la fin.
  * =========================================================================== */
-import { configureA10Room, syncA10Room } from './a10-room.js?v=2026-11-22';
+import { configureA10Room, syncA10Room, animateA10Motors } from './a10-room.js?v=2026-11-22-motion-2';
 import * as THREE from './vendor/three.module.min.js';
 import { createInteriors } from './interiors.js?v=2026-09-27-residence-1';
 import { buildLandscape } from './landscape.js?v=2026-11-22-detail-1';
 import { createEstate } from './estate.js?v=2026-09-17-lighting-1';
-import { createResidence } from './residence.js?v=2026-11-22-detail-1';
+import { createResidence } from './residence.js?v=2026-11-22-chalet-1';
 import { enrichRoom } from './room-features.js?v=2026-09-27-residence-1';
 import { furnishSpecialRoom } from './special-rooms.js?v=2026-09-17-rooms-1';
 import { createTVStage } from './tv-stage.js?v=2026-09-17-stadiums-1';
@@ -902,6 +902,7 @@ export function createPlan3D(opts) {
         }
         Object.values(ROOMS).forEach(function (R) {
             if (R.shades) animateShades(R, dt);
+            if (R.a10Motors) animateA10Motors(R);
             if(R.tv?.lift){
                 const lift=R.tv.lift,target=R.tv.source>0?1:0,old=lift.position;
                 lift.position=old<target?Math.min(target,old+dt/2):Math.max(target,old-dt/2);

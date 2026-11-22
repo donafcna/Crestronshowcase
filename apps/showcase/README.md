@@ -650,3 +650,8 @@ Aucun GUI TSW A10 dédié. La variante de vitrine a été retirée du sélecteur
 ## 22/11/2026 — A10 : neige et rivière détaillées
 
 Neige sculptée, grain et traces de piste, sapins en rameaux, toitures enneigées et glaçons. Eau animée, reflets, écume, galets et berges enneigées ; option hivernale propre à A10. Recette jour/nuit, trois thèmes, normal/Scène et synchronisation 100 circuits/34 moteurs réussie. Planche avant/après, mesures et limites : `apps/showcase/docs/verification/2026-11-22-alpine-detail/` depuis la racine. Aucun changement matériel.
+
+
+## 22/11/2026 — Chalet A10 : matériaux, vitrages et moteurs linéaires
+
+Bardage, veinage et patine du bois, cadres ajourés, vitrages à surfaces uniques, balcons et toiture détaillés. Conflit de profondeur verre/cadre (.21/.21) supprimé ; passe du vitrage stable au zoom. Motorisations de démonstration au temps écoulé, animation 3D par image et visuels GUI conservés entre les retours ; arrêt/inversion sans palier. Génération reproductible via sync-a10-demos.py. Recette, planche et limites : `apps/showcase/docs/verification/2026-11-22-chalet-motion/` depuis la racine. Aucun programme matériel ni vidéo modifié.

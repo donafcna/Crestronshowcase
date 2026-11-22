@@ -10,7 +10,7 @@ import { VenueBackground } from '../venues/VenueBackground';
 import { VENUE_PROJECTS } from '../venues/state';
 
 // A deployment changes the module URL, including its dependent assets.
-const PLAN3D_VERSION = "2026-11-22-alpine-detail-1";
+const PLAN3D_VERSION = "2026-11-22-chalet-1";
 
 // Fond de page 3D (Three.js) à la place de la vidéo, pour les projets qui ont un plan 3D
 // (public/plan3d/<id>.json). Le GUI tourne dans son iframe et n'est pas modifié : le module
@@ -135,7 +135,8 @@ const VillaPlan3DBackground = ({ projectId, stageRef, guiFrameRef, tourSessionRe
 
   // 2. Liaison au GUI + cadrage. Only the initial presentation is instantaneous.
   useEffect(() => {
-    let previousA10Room;
+    let previousA10Room,feedbackWindow,feedbackDocument,feedbackRaf=0;
+    const onFeedback=()=>{if(!feedbackRaf)feedbackRaf=requestAnimationFrame(()=>{feedbackRaf=0;tick();});};
     const tick = () => {
       const api = apiRef.current;
       if (!api) return;
@@ -143,6 +144,9 @@ const VillaPlan3DBackground = ({ projectId, stageRef, guiFrameRef, tourSessionRe
       const frame = guiFrameRef?.current;
       const win = frame && frame.contentWindow;
       if (projectId === "appartement-crans") {
+        if(win&&(feedbackWindow!==win||feedbackDocument!==win.document)){
+          feedbackWindow?.removeEventListener('a10-feedback',onFeedback);feedbackWindow=win;feedbackDocument=win.document;win.addEventListener('a10-feedback',onFeedback);
+        }
         const bench = win?.A10Bench;
         const room = A10_PLAN_ROOMS[bench?.getRoom?.()];
         if (bench?.getState?.()) api.syncA10(bench.getState());
@@ -186,7 +190,7 @@ const VillaPlan3DBackground = ({ projectId, stageRef, guiFrameRef, tourSessionRe
     stage?.addEventListener('click', click);
     window.addEventListener('resize', tick);
     window.addEventListener('plan3d-ready', tick);
-    return () => { clearInterval(id); window.removeEventListener('resize', tick); window.removeEventListener('plan3d-ready', tick); stage?.removeEventListener('wheel', wheel); stage?.removeEventListener('click', click); };
+    return () => { feedbackWindow?.removeEventListener('a10-feedback',onFeedback);cancelAnimationFrame(feedbackRaf);clearInterval(id); window.removeEventListener('resize', tick); window.removeEventListener('plan3d-ready', tick); stage?.removeEventListener('wheel', wheel); stage?.removeEventListener('click', click); };
   }, [projectId, stageRef, guiFrameRef, tourSessionRef]);
 
   if (failed) return <BackgroundVideo />;

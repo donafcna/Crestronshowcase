@@ -1,4 +1,5 @@
 import * as T from './vendor/three.module.min.js';
+import { createChaletMaterials, bevelBox } from './chalet-materials.js?v=2026-11-22-chalet-1';
 import { createSnowMaterial, snowAttributes, alpineNoise } from './alpine-snow.js?v=2026-11-22-detail-1';
 
 /* Enveloppe « résidence de montagne » : socle hôtelier de cinq niveaux (rez-de-chaussée vitré avec auvent,
@@ -12,7 +13,7 @@ export function createResidence(scene, rooms, kit, renderer, options) {
   options=options||{};
   const group=new T.Group(),garden=new T.Group();group.name='Mountain residence duplex';garden.name='Hotel base and forecourt';scene.add(group,garden);
   let opacity=1,disposed=false,nightLevel=0;
-  const A=kit.materials,rand=kit.random,facadeMaterials=new Set(),textures=new Set(),geometries=new Map();
+  const A=kit.materials,rand=kit.random,facadeMaterials=new Set(),persistentMaterials=new Map(),textures=new Set(),geometries=new Map();
   const material=(color,roughness=.65,extra={})=>new T.MeshStandardMaterial({color,roughness,...extra});
   const loader=new T.TextureLoader();
   function load(name,color){const t=loader.load(new URL('./textures/stone-'+name+'.webp',import.meta.url).href,t=>{if(disposed)t.dispose();else renderer.shadowMap.needsUpdate=true;});t.wrapS=t.wrapT=T.RepeatWrapping;t.anisotropy=4;if(color)t.colorSpace=T.SRGBColorSpace;textures.add(t);return t;}
@@ -22,33 +23,35 @@ export function createResidence(scene, rooms, kit, renderer, options) {
   const X0=minX-.5,X1=maxX+.5,Z0=minZ-.5,Z1=maxZ+.5,W=X1-X0,D=Z1-Z0,CX=(X0+X1)/2,CZ=(Z0+Z1)/2;
   const terrace=list.find(r=>r.ext);
   /* ---------- Matériaux ---------- */
-  const concrete=material(0xb7b3aa,.93),concreteDark=material(0x8e8b84,.95),plinth=material(0x6f6d68,.95);
-  // La texture de chêne est sombre (moyenne sRGB 128/96/66) : les multiplicateurs > 1 la ramènent à un chêne vieilli gris-brun.
-  const oak=A.oak.clone();oak.color.setRGB(1.15,1.4,1.8);            // chêne vieilli
-  const oakLight=A.oak.clone();oakLight.color.setRGB(1.5,1.8,2.2);   // séparations, sous-face, platelage
-  const timber=material(0x5f4d3b,.85);                           // charpente
-  const bronze=material(0x6f5e46,.32,{metalness:.75}),black=material(0x24292b,.42,{metalness:.45}),white=material(0xe6e0d4,.82);
+  let concrete,concreteDark,plinth,oak,oakLight,timber,bronze,black;
+  const white=material(0xe6e0d4,.82);
   const stoneRoof=material(0xffffff,.95,{map:load('color',true),normalMap:load('normal'),roughnessMap:load('roughness'),normalScale:new T.Vector2(.5,.5)});
   stoneRoof.color.setRGB(.85,1.0,1.45);   // neutralise le beige du grès : lauzes gris clair
   for(const t of [stoneRoof.map,stoneRoof.normalMap,stoneRoof.roughnessMap])t.repeat.set(2.5,2.5);
   const paving=A.stone.clone();paving.color.setHex(0xcfc8b8);
+  const buildingDetail={planks:0,balconyPanes:0,windows:[],roofDetails:true,footprint:{X0,X1,Z0,Z1}};
   const grass=material(0x4d6a3a,1),leaf=material(0x314c35,.95),leafLight=material(0x5b7041,.95),soil=material(0x393c2e,1);
   const glow=material(0xffe1a4,.6,{emissive:0xffc77c,emissiveIntensity:0});
   const canvas=document.createElement('canvas');canvas.width=512;canvas.height=256;const ctx=canvas.getContext('2d');
   const gradient=ctx.createLinearGradient(0,0,0,256);gradient.addColorStop(0,'#749bb5');gradient.addColorStop(.45,'#dde7df');gradient.addColorStop(.51,'#b6bca3');gradient.addColorStop(1,'#36443e');ctx.fillStyle=gradient;ctx.fillRect(0,0,512,256);
-  ctx.fillStyle='#fff3cc';ctx.fillRect(95,45,35,40);ctx.fillStyle='#657765';for(let i=0;i<9;i++)ctx.fillRect(i*70,128,20,30);
+  for(let layer=0;layer<3;layer++){
+    ctx.fillStyle=['#aab9c2','#7b929f','#4a6371'][layer];ctx.beginPath();ctx.moveTo(0,180);
+    for(let x=0;x<=512;x+=4){const ridge=105+layer*20-Math.abs(Math.sin(x*.018+layer*2))*30-Math.abs(Math.sin(x*.043))*14;ctx.lineTo(x,ridge);}
+    ctx.lineTo(512,200);ctx.lineTo(0,200);ctx.fill();
+  }
   const envTexture=new T.CanvasTexture(canvas);envTexture.colorSpace=T.SRGBColorSpace;envTexture.mapping=T.EquirectangularReflectionMapping;
   const pmrem=new T.PMREMGenerator(renderer),environment=pmrem.fromEquirectangular(envTexture);pmrem.dispose();envTexture.dispose();
-  const glassCanvas=document.createElement('canvas');glassCanvas.width=256;glassCanvas.height=512;const gg=glassCanvas.getContext('2d');
-  const reflection=gg.createLinearGradient(0,0,0,512);reflection.addColorStop(0,'#516774');reflection.addColorStop(.34,'#9faeae');reflection.addColorStop(.48,'#526969');reflection.addColorStop(1,'#333f3a');gg.fillStyle=reflection;gg.fillRect(0,0,256,512);
-  gg.fillStyle='rgba(226,212,176,.19)';gg.fillRect(12,22,44,475);gg.fillRect(217,22,28,475);
-  for(let i=0;i<6;i++){gg.fillStyle='rgba(255,255,240,.035)';gg.fillRect(14+i*6,24,2,470);}
-  const glazingTexture=new T.CanvasTexture(glassCanvas);glazingTexture.colorSpace=T.SRGBColorSpace;textures.add(glazingTexture);
-  const glassBase=material(0xb9c6c6,.19,{map:glazingTexture,metalness:.28,envMap:environment.texture,envMapIntensity:1.25,emissive:0xffd9a0,emissiveIntensity:0});
-  const hotelGlass=glassBase.clone(),hotelGlassLit=glassBase.clone(),lobbyGlass=glassBase.clone();
-  const railBase=material(0xc1d7da,.15,{transparent:true,opacity:.32,depthWrite:false,metalness:.15,envMap:environment.texture,envMapIntensity:.55,side:T.DoubleSide});
-  function facade(m){const clone=m.clone();clone.userData.baseOpacity=m.opacity;clone.userData.baseTransparent=m.transparent;facadeMaterials.add(clone);return clone;}
+  const detail=createChaletMaterials(environment.texture);
+  concrete=detail.concrete;concreteDark=detail.concreteDark;plinth=detail.stone;oak=detail.wood;oakLight=detail.woodLight;timber=detail.timber;bronze=detail.bronze;black=detail.metal;
+  const glassBase=detail.glass;
+  const hotelGlass=detail.glass,hotelGlassLit=detail.glassLit,lobbyGlass=detail.glassLit.clone();
+  lobbyGlass.onBeforeCompile=detail.glassLit.onBeforeCompile;lobbyGlass.customProgramCacheKey=detail.glassLit.customProgramCacheKey;
+  const railBase=detail.rail;
+  function facade(m){const clone=m.clone();clone.onBeforeCompile=m.onBeforeCompile;clone.customProgramCacheKey=m.customProgramCacheKey;clone.userData.baseOpacity=m.opacity;clone.userData.baseTransparent=m.transparent;facadeMaterials.add(clone);return clone;}
   const F={concrete:facade(concrete),concreteDark:facade(concreteDark),wood:facade(oak),woodLight:facade(oakLight),timber:facade(timber),metal:facade(black),bronze:facade(bronze),white:facade(white),roof:facade(stoneRoof),glass:facade(glassBase),glow:facade(glow),rail:facade(railBase)};
+  Object.assign(F,{deckX:facade(detail.deckX),deckZ:facade(detail.deckZ),beam:facade(detail.beam),rafter:facade(detail.rafter),gasket:facade(material(0x20292b,.95))});
+  // Keep the glazing in one rendering pass throughout the shell fade.
+  F.glass.transparent=true;F.glass.depthWrite=false;F.glass.userData.baseTransparent=true;
   if(options.winter){
     const snow=createSnowMaterial(new T.Vector3(CX,0,CZ));F.snow=facade(snow);F.snow.onBeforeCompile=snow.onBeforeCompile;F.snow.customProgramCacheKey=snow.customProgramCacheKey;
     F.ice=facade(material(0xaac9db,.22,{metalness:.12}));grass.color.setHex(0xe0e9f0);
@@ -56,9 +59,18 @@ export function createResidence(scene, rooms, kit, renderer, options) {
   /* ---------- Primitives ---------- */
   function boxGeo(w,h,d){const key=[w,h,d].join('/');if(geometries.has(key))return geometries.get(key);const g=new T.BoxGeometry(w,h,d),p=g.attributes.position,n=g.attributes.normal,uv=g.attributes.uv;for(let i=0;i<p.count;i++){const x=p.getX(i),y=p.getY(i),z=p.getZ(i);uv.setXY(i,(Math.abs(n.getX(i))>.5?z:x)/3,(Math.abs(n.getY(i))>.5?z:y)/3);}geometries.set(key,g);return g;}
   const sphere=new T.IcosahedronGeometry(1,2),cylinder=new T.CylinderGeometry(1,1,1,12);
-  function mesh(parent,m,geo,x,y,z,sx=1,sy=1,sz=1){const o=new T.Mesh(geo,m);o.position.set(x,y,z);o.scale.set(sx,sy,sz);o.castShadow=true;o.receiveShadow=true;parent.add(o);return o;}
-  const isGlass=m=>m===F.glass||m===hotelGlass||m===hotelGlassLit||m===lobbyGlass;
-  const box=(p,m,x,y,z,w,h,d)=>mesh(p,m,isGlass(m)?new T.BoxGeometry(w,h,d):boxGeo(w,h,d),x,y,z);
+  function mesh(parent,m,geo,x,y,z,sx=1,sy=1,sz=1){
+    let owner=parent;while(owner&&owner!==group)owner=owner.parent;
+    if(!owner&&facadeMaterials.has(m)){
+      if(!persistentMaterials.has(m)){const clone=m.clone();clone.onBeforeCompile=m.onBeforeCompile;clone.customProgramCacheKey=m.customProgramCacheKey;clone.opacity=m.userData.baseOpacity;clone.transparent=!!m.userData.baseTransparent;clone.depthWrite=!clone.transparent;persistentMaterials.set(m,clone);}
+      m=persistentMaterials.get(m);
+    }
+    const o=new T.Mesh(geo,m);o.position.set(x,y,z);o.scale.set(sx,sy,sz);o.castShadow=!m.userData.chaletGlazing;o.receiveShadow=true;parent.add(o);return o;}
+  const isGlass=m=>!!m.userData.chaletGlazing;
+  const box=(p,m,x,y,z,w,h,d)=>{
+    let geo;if(m.userData.chaletBevel){const key='bevel/'+[w,h,d].join('/');if(!geometries.has(key))geometries.set(key,bevelBox(w,h,d));geo=geometries.get(key);}else geo=boxGeo(w,h,d);
+    return mesh(p,m,geo,x,y,z);
+  };
   const ball=(p,m,x,y,z,r,ry=r,rz=r)=>mesh(p,m,sphere,x,y,z,r,ry,rz);
   const cyl=(p,m,x,y,z,r,h)=>mesh(p,m,cylinder,x,y,z,r,h,r);
   // Les vitrages de garde-corps (transparents) sont fusionnés en un seul maillage par groupe.
@@ -66,10 +78,10 @@ export function createResidence(scene, rooms, kit, renderer, options) {
   function railPane(parent,x,y,z,w,h,d){(parent===group?railPanes.group:railPanes.garden).push(new T.Matrix4().compose(new T.Vector3(x,y,z),new T.Quaternion(),new T.Vector3(w,h,d)));}
   function mergeRails(parent,matrices,m){
     if(!matrices.length)return null;
-    const unit=new T.BoxGeometry(1,1,1).toNonIndexed(),pos=[],nor=[];
-    for(const mat of matrices){const g=unit.clone().applyMatrix4(mat);pos.push(...g.attributes.position.array);nor.push(...g.attributes.normal.array);g.dispose();}
+    const unit=new T.PlaneGeometry(1,1).toNonIndexed(),pos=[],nor=[];
+    for(const mat of matrices){const g=unit.clone();if(Math.abs(mat.elements[0])<Math.abs(mat.elements[10]))g.rotateY(Math.PI/2);g.applyMatrix4(mat);pos.push(...g.attributes.position.array);nor.push(...g.attributes.normal.array);g.dispose();}
     unit.dispose();const geo=new T.BufferGeometry();geo.setAttribute('position',new T.Float32BufferAttribute(pos,3));geo.setAttribute('normal',new T.Float32BufferAttribute(nor,3));
-    const o=new T.Mesh(geo,m);o.name='Glass balustrades';o.receiveShadow=true;parent.add(o);geometries.set('rails-'+parent.name,geo);return o;
+    const o=new T.Mesh(geo,m);o.name='Glass balustrades';o.renderOrder=2;o.receiveShadow=true;parent.add(o);geometries.set('rails-'+parent.name,geo);return o;
   }
   const wallLights=[],baseLights=[];
   function sconce(parent,x,y,z,rotation=0){
@@ -81,18 +93,53 @@ export function createResidence(scene, rooms, kit, renderer, options) {
   const SIDE={S:{origin:[X0,Z1],u:[1,0],n:[0,1],length:W},E:{origin:[X1,Z0],u:[0,1],n:[1,0],length:D},N:{origin:[X0,Z0],u:[1,0],n:[0,-1],length:W},W:{origin:[X0,Z0],u:[0,1],n:[-1,0],length:D}};
   function place(side,u,n){const s=SIDE[side];return [s.origin[0]+s.u[0]*u+s.n[0]*n,s.origin[1]+s.u[1]*u+s.n[1]*n];}
   // Boîte alignée sur une façade : u = position le long du mur, n = décalage vers l'extérieur (centre), lu/ln = dimensions.
-  function fbox(parent,m,side,u,y,n,lu,h,ln){const s=SIDE[side],[x,z]=place(side,u,n);const along=Math.abs(s.u[0])>.5;return box(parent,m,x,y,z,along?lu:ln,h,along?ln:lu);}
+  function fbox(parent,m,side,u,y,n,lu,h,ln){const s=SIDE[side],[x,z]=place(side,u,n);const along=Math.abs(s.u[0])>.5;
+    if(isGlass(m)){const o=mesh(parent,m,new T.PlaneGeometry(lu,h),x,y,z);o.rotation.y=frot(side);o.name='Vitrage de façade — surface unique';return o;}
+    return box(parent,m,x,y,z,along?lu:ln,h,along?ln:lu);
+  }
   function frot(side){const s=SIDE[side];return Math.atan2(s.n[0],s.n[1]);}
+  function pipeBetween(parent,m,start,end,radius=.04){
+    const delta=new T.Vector3().subVectors(end,start),length=delta.length(),geo=new T.CylinderGeometry(radius,radius,length,10);
+    const pipe=mesh(parent,m,geo,(start.x+end.x)/2,(start.y+end.y)/2,(start.z+end.z)/2);pipe.quaternion.setFromUnitVectors(new T.Vector3(0,1,0),delta.normalize());return pipe;
+  }
   /* ---------- Éléments de façade ---------- */
+  function windowAssembly(parent,side,u,cy,n,w,h,frame,glass){
+    // The old full bronze back plate ended at n=.21, exactly like the glass.
+    // Real open frames and an 8 cm recess remove the coplanar depth conflict.
+    const frameWidth=.065,glassDepth=n-.025,backDepth=n-.115;
+    fbox(parent,F.gasket,side,u,cy,backDepth,w+.08,h+.08,.025);
+    fbox(parent,glass,side,u,cy,glassDepth,w,h,.01);
+    for(const edge of [-1,1]){
+      fbox(parent,frame,side,u+edge*(w/2+frameWidth/2),cy,n,frameWidth,h+.13,.075);
+      fbox(parent,frame,side,u,cy+edge*(h/2+frameWidth/2),n,w+.13,frameWidth,.075);
+      fbox(parent,F.gasket,side,u+edge*(w/2+.007),cy,n-.026,.018,h,.018);
+    }
+    fbox(parent,frame,side,u,cy,n-.005,.035,h,.04);
+    fbox(parent,frame,side,u+.10,cy-.12,n+.05,.025,.16,.027);
+    fbox(parent,frame,side,u,cy-h/2-.055,n+.055,w+.20,.035,.23);
+    buildingDetail.windows.push({side,u,cy,w,h,glassDepth,backFront:backDepth+.0125});
+  }
   function balcony(parent,side,y,from,to,separators){
-    const depth=1.75,len=to-from,mid=(from+to)/2;
+    const depth=1.75,len=to-from,mid=(from+to)/2,deck=(side==='S'||side==='N')?F.deckX:F.deckZ;
     fbox(parent,F.concrete,side,mid,y-.12,depth/2,len,.24,depth);
-    fbox(parent,F.woodLight,side,mid,y-.02,depth/2,len-.1,.04,depth-.25);   // platelage
-    const [rx,rz]=place(side,mid,depth-.03),s=SIDE[side],along=Math.abs(s.u[0])>.5;
-    railPane(parent,rx,y+.53,rz,along?len:.025,1.02,along?.025:len);
-    fbox(parent,F.bronze,side,mid,y+1.06,depth-.03,len,.035,.05);
-    for(let u=from+.02;u<=to;u+=1.7)fbox(parent,F.metal,side,Math.min(u,to-.02),y+.1,depth-.03,.045,.2,.085);
-    for(const u of separators)fbox(parent,F.wood,side,u,y+1,depth/2-.1,.07,2,depth-.4);
+    fbox(parent,F.metal,side,mid,y-.06,depth+.012,len,.055,.025); // drip edge
+    for(let n=.15;n<depth-.08;n+=.145){fbox(parent,deck,side,mid,y+.015,n,len-.12,.055,.135);buildingDetail.planks++;}
+    const panes=Math.ceil(len/1.15),span=len/panes,s=SIDE[side],along=Math.abs(s.u[0])>.5;
+    for(let i=0;i<panes;i++){
+      const u=from+(i+.5)*span,[rx,rz]=place(side,u,depth-.03);
+      railPane(parent,rx,y+.57,rz,along?span-.014:.02,1.02,along?.02:span-.014);buildingDetail.balconyPanes++;
+      for(const edge of [-1,1]){
+        const clampU=u+edge*(span*.33);
+        fbox(parent,F.metal,side,clampU,y+.13,depth-.03,.055,.18,.09);
+        fbox(parent,F.bronze,side,clampU,y+.17,depth+.02,.022,.022,.012);
+      }
+    }
+    fbox(parent,F.bronze,side,mid,y+1.10,depth-.03,len,.035,.05);
+    fbox(parent,F.metal,side,mid,y+.065,depth-.03,len,.025,.04);
+    for(const u of separators){
+      for(let h=.16;h<1.96;h+=.18){fbox(parent,(side==='S'||side==='N')?F.rafter:F.beam,side,u,y+h,depth/2-.1,.075,.168,depth-.4);buildingDetail.planks++;}
+      fbox(parent,F.metal,side,u,y+2.025,depth/2-.1,.085,.035,depth-.4);
+    }
   }
   function glazedElevation(parent,side,y,from,to,options={}){
     const len=to-from,bays=Math.max(1,Math.round(len/3.7)),bay=len/bays,h=options.height||3.28;
@@ -100,9 +147,7 @@ export function createResidence(scene, rooms, kit, renderer, options) {
     fbox(parent,F.wood,side,(from+to)/2,y+h-.14,.15,len,.28,.3);            // bandeau bois
     for(let i=0;i<bays;i++){
       const u0=from+i*bay,cu=u0+bay/2;
-      fbox(parent,F.metal,side,cu,y+.44+(h-.72)/2,.16,bay-.5,h-.72,.1);
-      fbox(parent,F.glass,side,cu,y+.44+(h-.72)/2,.24,bay-.62,h-.84,.014);
-      for(const k of [-1,0,1])fbox(parent,F.bronze,side,cu+k*(bay-.58)/2,y+.44+(h-.72)/2,.27,.045,h-.8,.05);
+      windowAssembly(parent,side,cu,y+.44+(h-.72)/2,.31,bay-.62,h-.84,F.bronze,F.glass);
       fbox(parent,F.wood,side,u0,y+h/2,.24,.5,h,.5);                       // pied-droit bois
       pierLight(u0);
     }
@@ -112,12 +157,16 @@ export function createResidence(scene, rooms, kit, renderer, options) {
   function claddedElevation(parent,side,y,windows,h=3.28){
     const s=SIDE[side],len=s.length;
     fbox(parent,F.concrete,side,len/2,y+h/2,.15,len,h,.3);
-    fbox(parent,F.wood,side,len/2,y+h/2,.34,len,h-.2,.07);                // bardage chêne vieilli
-    for(let u=1.2;u<len;u+=1.2)fbox(parent,F.woodLight,side,u,y+h/2,.39,.06,h-.4,.03);   // couvre-joints
+    for(let u=.10;u<len-.08;u+=.19){
+      const width=Math.min(.178,len-u-.03);let sections=[[y+.10,y+h-.10]];
+      for(const window of windows){if(Math.abs(u+width/2-window.u)>window.w/2+.12+width/2)continue;
+        const low=y+window.sill-.12,high=y+window.sill+window.h+.12;
+        sections=sections.flatMap(([a,b])=>b<=low||a>=high?[[a,b]]:[[a,Math.min(b,low)],[Math.max(a,high),b]].filter(([a,b])=>b-a>.02));
+      }
+      for(const [a,b] of sections){fbox(parent,F.wood,side,u+width/2,(a+b)/2,.365,width,b-a,.075);buildingDetail.planks++;}
+    }
     for(const w of windows){
-      fbox(parent,F.bronze,side,w.u,y+w.sill+w.h/2,.4,w.w+.16,w.h+.16,.08);
-      fbox(parent,F.glass,side,w.u,y+w.sill+w.h/2,.42,w.w,w.h,.02);
-      fbox(parent,F.concrete,side,w.u,y+w.sill-.05,.45,w.w+.3,.08,.2);  // appui
+      windowAssembly(parent,side,w.u,y+w.sill+w.h/2,.49,w.w,w.h,F.bronze,F.glass);
     }
     fbox(parent,F.concreteDark,side,len/2,y+h+.02,.2,len,.12,.5);        // nez de dalle
   }
@@ -128,10 +177,9 @@ export function createResidence(scene, rooms, kit, renderer, options) {
     const seps=[];
     for(let i=0;i<bays;i++){
       const u0=i*bay,cu=u0+bay/2;seps.push(u0);
-      fbox(parent,oak,side,u0+.55,y+1.8,.2,1.1,1.8,.2);                     // panneau bois
+      for(let plank=0;plank<5;plank++){fbox(parent,oak,side,u0+.11+plank*.22,y+1.8,.2,.21,1.8,.2);buildingDetail.planks++;}                     // panneau bois
       const lit=rand()<.55?hotelGlassLit:hotelGlass;
-      fbox(parent,bronze,side,cu+.55,y+1.8,.17,bay-1.16,1.86,.08);
-      fbox(parent,lit,side,cu+.55,y+1.8,.2,bay-1.3,1.72,.02);
+      windowAssembly(parent,side,cu+.55,y+1.8,.28,bay-1.3,1.72,bronze,lit);
     }
     seps.push(len);
     if(balconyFront)balcony(parent,side,y,0,len,seps);
@@ -192,7 +240,7 @@ export function createResidence(scene, rooms, kit, renderer, options) {
     const zc=CZ+sign*(D/2+overhang)/2,yc=(eave+ridgeY)/2;
     const pan=box(group,F.roof,CX,yc+.17,zc,W+1.8,.32,panLen);pan.rotation.x=sign*angle;
     if(options.winter){
-      const snowGeo=snowAttributes(new T.BoxGeometry(W+1.95,.22,panLen+.12,48,1,32));
+      const snowGeo=snowAttributes(new T.BoxGeometry(W+1.72,.22,panLen-.32,48,1,32));
       const pos=snowGeo.attributes.position;
       for(let j=0;j<pos.count;j++){if(pos.getY(j)>0)pos.setY(j,pos.getY(j)+alpineNoise(pos.getX(j)*.42,pos.getZ(j)*.35)*.11);}
       snowGeo.computeVertexNormals();geometries.set('roof-snow-'+sign,snowGeo);
@@ -200,9 +248,32 @@ export function createResidence(scene, rooms, kit, renderer, options) {
       for(let x=X0-.6;x<X1+.6;x+=.85){const length=.09+.29*alpineNoise(x*3,sign*17),geo=new T.ConeGeometry(.018,length,5);geo.rotateZ(Math.PI);geometries.set('icicle-'+sign+'-'+x,geo);mesh(group,F.ice,geo,x,eave+.21-length/2,CZ+sign*(D/2+overhang));}
     }
     const boards=box(group,F.woodLight,CX,yc-.02,zc,W+1.7,.05,panLen-.1);boards.rotation.x=sign*angle;
-    for(let x=X0-.7;x<=X1+.7;x+=1.15){const r=box(group,F.timber,x,yc-.12,zc,.12,.2,panLen-.3);r.rotation.x=sign*angle;}   // chevrons
-    for(const f of [.25,.62]){const purlin=box(group,F.timber,CX,eave+(D/2+overhang)*slope*f-.28,CZ+sign*(D/2+overhang)*(1-f),W+1.6,.24,.24);purlin.rotation.x=sign*angle;}   // pannes
-    box(group,F.timber,CX,eave-.1,CZ+sign*(D/2+overhang),W+1.8,.22,.16);   // planche de rive
+    for(let x=X0-.7;x<=X1+.7;x+=1.15){const r=box(group,F.rafter,x,yc-.12,zc,.12,.2,panLen-.3);r.rotation.x=sign*angle;}   // chevrons
+    for(const f of [.25,.62]){const purlin=box(group,F.beam,CX,eave+(D/2+overhang)*slope*f-.28,CZ+sign*(D/2+overhang)*(1-f),W+1.6,.24,.24);purlin.rotation.x=sign*angle;}   // pannes
+    box(group,F.timber,CX,eave-.1,CZ+sign*(D/2+overhang),W+1.8,.22,.16);
+    const roofFinish=new T.Group();roofFinish.name='Toiture — lauzes, rives et arrêts de neige';roofFinish.position.copy(pan.position);roofFinish.rotation.copy(pan.rotation);group.add(roofFinish);
+    // The exposed eave courses remain visible below the accumulated snow.
+    for(let row=0;row<3;row++)for(let x=-(W+1.8)/2+.18;x<(W+1.8)/2-.1;x+=.36){
+      const slate=box(roofFinish,F.roof,x+(row%2)*.08,.183+row*.009,sign*(panLen/2-.18-row*.29),.345,.032,.41);slate.rotation.y=(alpineNoise(x*7,row+sign)-.5)*.018;
+    }
+    for(let x=-(W+1.6)/2;x<=(W+1.6)/2;x+=2.1){
+      box(roofFinish,F.metal,x,.39,sign*(panLen/2-.74),.035,.15,.25);
+      box(roofFinish,F.bronze,x,.475,sign*(panLen/2-.72),1.95,.025,.025);
+    }
+    const gutterGeometry=new T.CylinderGeometry(.085,.085,W+2,14,1,true,0,Math.PI);gutterGeometry.rotateZ(-Math.PI/2);
+    const gutter=mesh(group,F.metal,gutterGeometry,CX,eave+.015,CZ+sign*(D/2+overhang+.04));gutter.name='Gouttière zinc — profil ouvert';
+    for(const x of [X0-.65,X1+.65]){
+      const cornerZ=sign>0?Z1+.55:Z0-.55,gutterZ=CZ+sign*(D/2+overhang+.04);
+      pipeBetween(group,F.metal,new T.Vector3(x,eave+.02,gutterZ),new T.Vector3(x,eave-.45,cornerZ),.045);
+      pipeBetween(group,F.metal,new T.Vector3(x,eave-.45,cornerZ),new T.Vector3(x,BASE-.22,cornerZ),.045);
+      pipeBetween(socle,black,new T.Vector3(x,BASE-.22,cornerZ),new T.Vector3(x,-.12,cornerZ),.045);
+      for(let y=1.2;y<BASE;y+=2.6)box(socle,bronze,x,y,cornerZ,.15,.035,.13);
+    }
+    for(let x=X0-.7;x<=X1+.7;x+=1.15){
+      box(group,F.metal,x,eave-.11,CZ+sign*(D/2+overhang+.085),.17,.14,.018);
+      for(const offset of [-.046,.046]){const bolt=cyl(group,F.bronze,x+offset,eave-.11,CZ+sign*(D/2+overhang+.10),.010,.018);bolt.rotation.x=Math.PI/2;}
+    }
+   // planche de rive
   }
   box(group,F.timber,CX,ridgeY-.05,CZ,W+1.8,.3,.3);                     // panne faîtière
   box(group,F.roof,CX,ridgeY+.24,CZ,W+1.9,.2,.9);                       // faîtage
@@ -234,6 +305,11 @@ export function createResidence(scene, rooms, kit, renderer, options) {
   }
   const duplexWash=wash(group,wallLights,'Duplex wall wash'),baseWash=wash(garden,baseLights,'Base wall wash');
   mergeRails(group,railPanes.group,F.rail);mergeRails(garden,railPanes.garden,railBase);
+  // Merge only the single outward-facing panes; preserve each pane's local UVs.
+  const glassPlanes=group.children.filter(o=>o.isMesh&&o.material===F.glass),gp=[],gn=[],gu=[];
+  group.updateMatrixWorld(true);
+  for(const o of glassPlanes){const geo=o.geometry.toNonIndexed();geo.applyMatrix4(o.matrix);gp.push(...geo.attributes.position.array);gn.push(...geo.attributes.normal.array);gu.push(...geo.attributes.uv.array);geo.dispose();o.removeFromParent();}
+  if(glassPlanes.length){const geo=new T.BufferGeometry();geo.setAttribute('position',new T.Float32BufferAttribute(gp,3));geo.setAttribute('normal',new T.Float32BufferAttribute(gn,3));geo.setAttribute('uv',new T.Float32BufferAttribute(gu,2));geometries.set('facade-glazing',geo);const glazing=new T.Mesh(geo,F.glass);glazing.name='Façade vitrée — surfaces uniques';glazing.renderOrder=1;group.add(glazing);}
   kit.batch(group);kit.batch(garden);
   /* ---------- Vues d'ensemble des pièces (écorché éclaté) ---------- */
   const lodPale=material(0xe4ded2,.9),lodWood=A.oak.clone(),lodDark=material(0x343c3c,.85),lodGreen=material(0x66745a,.95),lodMetal=material(0x898272,.5,{metalness:.3});
@@ -252,8 +328,8 @@ export function createResidence(scene, rooms, kit, renderer, options) {
   const bounds=new T.Box3(new T.Vector3(-6.5,-1,-4.5),new T.Vector3(31.5,ridgeY+1,30));
   return {group,garden,bounds,focusY:BASE*.62,shadow:{position:[-22,66,44],target:[CX,BASE*.6,CZ],size:44,far:160},get opacity(){return opacity;},
     setOpacity(v){opacity=Math.max(0,Math.min(1,v));group.visible=opacity>.001;duplexWash.opacity=nightLevel*opacity;for(const m of facadeMaterials){const transparent=m.userData.baseTransparent||opacity<.999;if(m.transparent!==transparent){m.transparent=transparent;m.needsUpdate=true;}m.opacity=opacity*m.userData.baseOpacity;m.depthWrite=!transparent;}},
-    setNight(night){if(F.snow)F.snow.emissiveIntensity=night*.09;nightLevel=night;glow.emissiveIntensity=night*3;F.glow.emissiveIntensity=night*3;F.glass.emissiveIntensity=night*.5;hotelGlassLit.emissiveIntensity=night*.9;lobbyGlass.emissiveIntensity=night*.7;poolGlow.opacity=night;duplexWash.opacity=night*opacity;baseWash.opacity=night;},
-    lighting(){return {sconces:wallLights.length+baseLights.length,washDrawCalls:2,intensity:duplexWash.opacity};},
+    setNight(night){detail.setNight(night);if(F.snow)F.snow.emissiveIntensity=night*.09;nightLevel=night;glow.emissiveIntensity=night*3;F.glow.emissiveIntensity=night*3;F.glass.emissiveIntensity=night*.5;hotelGlassLit.emissiveIntensity=night*.9;lobbyGlass.emissiveIntensity=night*.7;poolGlow.opacity=night;duplexWash.opacity=night*opacity;baseWash.opacity=night;for(const [source,clone] of persistentMaterials)clone.emissiveIntensity=source.emissiveIntensity;},
+    lighting(){return {sconces:wallLights.length+baseLights.length,washDrawCalls:2,intensity:duplexWash.opacity,building:buildingDetail};},
     dispose(){disposed=true;environment.dispose();textures.forEach(t=>t.dispose());geometries.forEach(g=>g.dispose());sphere.dispose();cylinder.dispose();duplexWash.dispose();baseWash.dispose();}
   };
 }
