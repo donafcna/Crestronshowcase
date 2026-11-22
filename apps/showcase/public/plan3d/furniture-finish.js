@@ -2,7 +2,7 @@ import * as T from './vendor/three.module.min.js';
 import { scaleFloorUV } from './material-finish.js?v=2026-11-22-villa-1';
 
 // Small bevels replace sharp boxes; no extra meshes, lights or per-frame work.
-function bevelBox(w, h, d, soft) {
+export function bevelBox(w, h, d, soft) {
   const r = Math.min(soft ? .085 : .025, Math.min(w,h,d) * (soft ? .28 : .22));
   const geo = new T.BoxGeometry(w,h,d,3,3,3);
   const p=geo.attributes.position,n=geo.attributes.normal,half=[w/2,h/2,d/2];
@@ -15,7 +15,7 @@ function bevelBox(w, h, d, soft) {
     p.setXYZ(i,inner[0]+normal.x*r,inner[1]+normal.y*r,inner[2]+normal.z*r);
     n.setXYZ(i,normal.x,normal.y,normal.z);
     // Baked cavity shading: restrained on timber, deeper on upholstery seams/base.
-    const height=(p.getY(i)+h/2)/h;
+    const height=T.MathUtils.clamp((p.getY(i)+h/2)/h,0,1);
     const shade=soft?.70+.30*Math.sqrt(height):.85+.15*height;
     colors.set([shade,shade,shade],i*3);
   }
@@ -23,8 +23,8 @@ function bevelBox(w, h, d, soft) {
   return geo;
 }
 
-export function finishFurniture(R, palette, assets, protectedMeshes) {
-  if(R.ext || ['sauna','garage','golf','technique'].includes(R.cfg.type))return;
+export function finishFurniture(R, palette, assets, protectedMeshes, special = false) {
+  if(!special && (R.ext || ['sauna','garage','golf','technique'].includes(R.cfg.type)))return;
   const soft=new Set([palette.tissu,palette.tissuFonce,palette.lit,palette.coussin,assets.cream,assets.moss,assets.clay]);
   const timber=new Set([palette.bois,palette.boisClair,assets.oak]);
   const room=R.group, occluders=[], owned=[];
@@ -54,6 +54,8 @@ export function finishFurniture(R, palette, assets, protectedMeshes) {
   // Contact shading baked into floor vertex colors; it follows static furniture only.
   // 24x24 grid is enough at this scale and adds no texture or draw call.
   for(const o of room.children){
+    // These rooms have a separate finish floor; do not tessellate the hidden slab.
+    if(special && ['sauna','garage','golf','technique'].includes(R.cfg.type))continue;
     if(!o.isMesh || ![palette.sol,palette.solChambre].includes(o.material))continue;
     const a=o.geometry.parameters;if(!a?.width || a.height>.05)continue;
     const geo=new T.BoxGeometry(a.width,a.height,a.depth,24,1,24);

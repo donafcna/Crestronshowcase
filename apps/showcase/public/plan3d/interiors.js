@@ -3,9 +3,10 @@
  */
 import * as T from './vendor/three.module.min.js';
 import { refineFabric, refineStone } from './material-finish.js?v=2026-11-22-villa-1';
-import { finishFurniture } from './furniture-finish.js?v=2026-11-22-villa-2';
+import { finishFurniture } from './furniture-finish.js?v=2026-11-22-villa-4';
+import { finishSpecialRoom } from './special-finish.js?v=2026-11-22-villa-4';
 
-export function createInteriors(renderer, palette, refined = false) {
+export function createInteriors(renderer, palette, refined = false, special = false, polish = false) {
   let disposed = false;
   const textures = new Set();
   const anisotropy = Math.min(4, renderer.capabilities.getMaxAnisotropy());
@@ -320,9 +321,10 @@ export function createInteriors(renderer, palette, refined = false) {
         // Track with three adjustable downlights, warm indirect LED cornice.
         if(type!=='cinema'&&type!=='wc'){
           // Keep suspended tracks near the rear wall, outside the camera-to-TV sightline.
+          const sideTrack=polish&&type==='golf';
           const trackZ=Math.min(1.25,d*.25);
-          box(details,A.black,w*.6,2.88,trackZ,w*.5,.025,.045);
-          for(let i=0;i<3;i++){const x=w*.4+i*w*.2;cylinder(details,A.black,x,2.79,trackZ,.065,.17);cylinder(details,e0,x,2.697,trackZ,.051,.008);}
+          box(details,A.black,sideTrack?.3:w*.6,2.88,sideTrack?d*.5:trackZ,sideTrack?.045:w*.5,.025,sideTrack?d*.75:.045);
+          for(let i=0;i<3;i++){const x=sideTrack?.3:w*.4+i*w*.2,z=sideTrack?d*(.2+i*.3):trackZ;cylinder(details,A.black,x,2.79,z,.065,.17);cylinder(details,e0,x,2.697,z,.051,.008);}
         }
         box(details,cornice,.215,2.84,d/2,.012,.014,d-.35);
         // Details on the HVAC case and the existing live thermostat.
@@ -468,5 +470,5 @@ export function createInteriors(renderer, palette, refined = false) {
   }
   function dispose(){disposed=true;textures.forEach(t=>t.dispose());Object.values(A).forEach(m=>m.dispose());unitBox.dispose();sphere.dispose();softGeometry.forEach(g=>g.dispose());}
   return {decorate,curtains,batch,dispose,materials:A,random:rand,
-    finish:(R,moving)=>{if(refined)finishFurniture(R,palette,A,moving);}};
+    finish:(R,moving)=>{if(refined)finishFurniture(R,palette,A,moving,special);if(special)finishSpecialRoom(R,palette,A,polish);}};
 }

@@ -6,6 +6,18 @@ export function addNaturalMotion(pool, landscape) {
   if(pool?.eau){
     const base=pool.eau,old=base.geometry;base.geometry=new T.PlaneGeometry(pool.cfg.w*.7,pool.cfg.d*.55,40,24);base.geometry.rotateX(-Math.PI/2);old.dispose();base.position.y=.32;
     const m=base.material;m.transparent=false;m.opacity=1;
+    if(pool.specialWater){
+      // Static shallow/deep tint and soft caustics on the existing wave grid.
+      // Same vertices, draw call and animated wave equations as the published water.
+      const p=base.geometry.attributes.position,c=new Float32Array(p.count*3);
+      for(let i=0;i<p.count;i++){
+        const x=p.getX(i),z=p.getZ(i),edge=Math.min(pool.cfg.w*.35-Math.abs(x),pool.cfg.d*.275-Math.abs(z));
+        const shallow=Math.exp(-Math.max(0,edge)*1.7),ripple=Math.pow(.5+.5*Math.sin(x*8+Math.sin(z*6)),8)*.11;
+        c.set([.48+shallow*.28+ripple,.70+shallow*.20+ripple,.83+shallow*.15+ripple],i*3);
+      }
+      base.geometry.setAttribute('color',new T.BufferAttribute(c,3));m.vertexColors=true;m.roughness=.16;
+    }
+
     m.onBeforeCompile=shader=>{
       shader.uniforms.natureTime=uniforms.time;shader.uniforms.natureStrength=uniforms.strength;
       shader.vertexShader='uniform float natureTime;uniform float natureStrength;\n'+shader.vertexShader;

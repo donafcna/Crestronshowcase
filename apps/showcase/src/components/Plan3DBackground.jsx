@@ -10,7 +10,7 @@ import { VenueBackground } from '../venues/VenueBackground';
 import { VENUE_PROJECTS } from '../venues/state';
 
 // A deployment changes the module URL, including its dependent assets.
-const PLAN3D_VERSION = "2026-11-22-villa-2";
+const PLAN3D_VERSION = "2026-11-22-villa-4";
 
 // Fond de page 3D (Three.js) à la place de la vidéo, pour les projets qui ont un plan 3D
 // (public/plan3d/<id>.json). Le GUI tourne dans son iframe et n'est pas modifié : le module

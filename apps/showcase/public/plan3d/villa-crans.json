@@ -1,6 +1,8 @@
 {
   "style": "chaleureux",
   "materialFinish": "villa-2026",
+  "specialFinish": true,
+  "specialPolish": true,
   "fpsMax": 60,
   "pieces": [
     {

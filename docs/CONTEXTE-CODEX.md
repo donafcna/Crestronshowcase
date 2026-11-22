@@ -471,3 +471,17 @@ Visite des 37 pièces rapprochée et latérale, noms et sélection renforcée, m
 ## 22/11/2026 — Yacht : matières mieux séparées et extérieur plus proche
 
 Murs grège, literie ivoire et bleu pétrole, tête de lit brune ; remplissage lumineux adouci pour éviter le blanchiment. Palette commune aux espaces, lits partagés. Extérieur ajusté sur les sommets et vue de trois quarts adaptée à la largeur libre : caméra 8 à 39 % plus proche, coque et mât entiers sur quatre formats. Navigation 37 espaces et jour/nuit vérifiés ; bancs cabine et extérieur sans baisse significative de cadence, budgets de rendu identiques. Build/lint et dix tests noyau réussis. Preuves et limites : apps/showcase/docs/verification/2026-11-22-yacht-close-contrast/ depuis la racine.
+
+## 22/11/2026 — Villa FTV : six espaces spécialisés, candidat local 2.3.15
+
+Pool House, piscine, sauna/hammam, garage, simulateur de golf et local technique : matériaux et relief complétés par des détails statiques regroupés avant rendu, sans nouvelle lumière ni animation CPU. Comparaison avec la version publiée a6c3cb2, option locale specialFinish, banc transitions/fondus/stabilisé et captures identiques. Voir apps/showcase/docs/verification/2026-11-22-villa-special/ depuis la racine. Validation visuelle de Donatien attendue avant tout commit/push de ce lot ; aucune publication ni intervention matérielle. Travail isolé dans villa-relief-publication, autres modifications concurrentes préservées.
+
+
+## 22/11/2026 — Villa FTV : blancs, projecteur et végétaux, candidat 2.3.16
+
+Seconde passe locale, comparée au candidat 2.3.15 avec specialPolish. Matériaux blancs et pierre atténués uniquement dans les six espaces spécialisés ; projecteur au-dessus de l’écran et éclairage visible du golf déplacé latéralement ; couronnes sphériques remplacées par feuilles pliées et tiges statiques, sans texture supplémentaire. Le mécanisme d’éclairage et les animations restent inchangés. Preuves : apps/showcase/docs/verification/2026-11-22-villa-polish/ depuis la racine. Aucune publication, attente de validation visuelle après nouvel avant/après.
+
+
+## 22/11/2026 — Publication Villa FTV validée
+
+Donatien valide le candidat 2.3.16 (six espaces spécialisés, blancs, projecteur et végétaux) et autorise commit/push vers main pour publication Vercel. Recette et comparaisons : apps/showcase/docs/verification/2026-11-22-villa-polish/. Les changements Yacht déjà publiés sont conservés. Aucun déploiement matériel.

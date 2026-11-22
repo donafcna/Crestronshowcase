@@ -14,7 +14,7 @@
  * =========================================================================== */
 import { configureA10Room, syncA10Room, animateA10Motors } from './a10-room.js?v=2026-11-22-motion-2';
 import * as THREE from './vendor/three.module.min.js';
-import { createInteriors } from './interiors.js?v=2026-11-22-villa-2';
+import { createInteriors } from './interiors.js?v=2026-11-22-villa-4';
 import { scaleFloorUV } from './material-finish.js?v=2026-11-22-villa-1';
 import { buildLandscape } from './landscape.js?v=2026-11-22-detail-1';
 import { createEstate } from './estate.js?v=2026-09-17-lighting-1';
@@ -23,7 +23,7 @@ import { enrichRoom } from './room-features.js?v=2026-09-27-residence-1';
 import { furnishSpecialRoom } from './special-rooms.js?v=2026-09-17-rooms-1';
 import { createTVStage } from './tv-stage.js?v=2026-09-17-stadiums-1';
 import { drawProgramme } from './tv-programmes.js?v=2026-09-16-estate-2';
-import { addNaturalMotion } from './natural-motion.js?v=2026-09-16-estate-2';
+import { addNaturalMotion } from './natural-motion.js?v=2026-11-22-villa-4';
 
 export function createPlan3D(opts) {
     'use strict';
@@ -132,7 +132,7 @@ export function createPlan3D(opts) {
         ecranOff: new THREE.MeshStandardMaterial({ color: 0x05060a, roughness: 0.12, metalness: 0.8 })
     };
     var refinedMaterials = cfg.materialFinish === 'villa-2026';
-    var interiors = createInteriors(renderer, M, refinedMaterials);
+    var interiors = createInteriors(renderer, M, refinedMaterials, cfg.specialFinish === true, cfg.specialPolish === true);
     var tvStage = null;
     // Textures dessinées des motorisations : lames du volet, toile du store, plis des rideaux
     function mkTex(w, h, fn) { var c = document.createElement('canvas'); c.width = w; c.height = h; fn(c.getContext('2d'), w, h); var t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.wrapS = t.wrapT = THREE.RepeatWrapping; return t; }

@@ -220,3 +220,20 @@ Banc alterné A/B/B/A répété : environ 60 images/s avant/après ; 19 textures
 ## 22/11/2026 — Villa FTV : relief et matériaux validés pour publication (2.3.14)
 
 Version approuvée par Donatien après comparaison avant/après. Mobilier aux arêtes adoucies, bois et tissus différenciés, ombres de contact précalculées. Environ 60 images/s avant/après sur le banc local ; 19 textures et appels de dessin conservés, +1,42 % de triangles dans le salon. Contrôles et limites : apps/showcase/docs/verification/2026-11-22-villa-relief/. Publication autorisée sur main vers Vercel ; aucun déploiement matériel.
+
+
+## 22/11/2026 — Villa FTV : six espaces spécialisés, candidat 2.3.15
+
+Option `specialFinish: true` propre à Villa Crans. `special-finish.js` complète les matériaux et détails statiques du Pool House (type terrasse), piscine, sauna/hammam, garage, golf et local technique avant le regroupement des maillages. Arêtes du mobilier étendues à ces espaces, ombres de contact précalculées, joints de mosaïque dessinés dans les textures existantes, teinte de profondeur de l’eau sur la grille de vagues existante. Pas de nouvelle lumière, texture distante ou boucle de simulation. Les programmes matériels, le GUI et A10 ne changent pas.
+
+Le banc local `scripts/verify-villa-special.html` conserve le traitement mobilier publié en référence et bascule uniquement `specialFinish`. Il compare séparément navigation, fondus de trois secondes et scène stabilisée, sur les six pièces, en ordre avant/après puis après/avant. Preuves et limites : `docs/verification/2026-11-22-villa-special/`. Ce candidat doit être présenté avant toute publication.
+
+
+## 22/11/2026 — Villa FTV : blancs, projecteur et végétaux, candidat 2.3.16
+
+Seconde passe locale, comparée au candidat 2.3.15 avec specialPolish. Matériaux blancs et pierre atténués uniquement dans les six espaces spécialisés ; projecteur au-dessus de l’écran et éclairage visible du golf déplacé latéralement ; couronnes sphériques remplacées par feuilles pliées et tiges statiques, sans texture supplémentaire. Le mécanisme d’éclairage et les animations restent inchangés. Preuves : apps/showcase/docs/verification/2026-11-22-villa-polish/ depuis la racine. Aucune publication, attente de validation visuelle après nouvel avant/après.
+
+
+## 22/11/2026 — Publication Villa FTV validée
+
+Donatien valide le candidat 2.3.16 (six espaces spécialisés, blancs, projecteur et végétaux) et autorise commit/push vers main pour publication Vercel. Recette et comparaisons : apps/showcase/docs/verification/2026-11-22-villa-polish/. Les changements Yacht déjà publiés sont conservés. Aucun déploiement matériel.

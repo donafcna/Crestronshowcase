@@ -1,0 +1,28 @@
+{
+  "themes": [
+    {
+      "theme": "dark",
+      "normal": true,
+      "scene": true
+    },
+    {
+      "theme": "light",
+      "normal": true,
+      "scene": true
+    },
+    {
+      "theme": "glass",
+      "normal": true,
+      "scene": true
+    }
+  ],
+  "rooms": [
+    11,
+    12,
+    13,
+    15,
+    16,
+    17
+  ],
+  "logs": []
+}
