@@ -688,3 +688,8 @@ Seconde passe locale, comparée au candidat 2.3.15 avec specialPolish. Matériau
 ## 22/11/2026 — Publication Villa FTV validée
 
 Donatien valide le candidat 2.3.16 (six espaces spécialisés, blancs, projecteur et végétaux) et autorise commit/push vers main pour publication Vercel. Recette et comparaisons : apps/showcase/docs/verification/2026-11-22-villa-polish/. Les changements Yacht déjà publiés sont conservés. Aucun déploiement matériel.
+
+
+## 22/11/2026 — Yacht : mobilier arrondi et literie modelée
+
+Canapés à assises et dossiers séparés, coussins bombés, fauteuils et tables aux arêtes adoucies ; matelas arrondis, couette à plis discrets et tête de lit rembourrée. Géométries mutualisées et calculées au chargement, nombre de maillages et textures conservé. Second banc contrôlé : cabine 59,75 → 59,38 i/s, salon 59,84 → 59,96, extérieur 59,90 → 59,93 ; premier passage irrégulier conservé dans les preuves. Build/lint, 37 sélections et dix tests noyau réussis. Limite du vieux test de zoom documentée. Preuves : apps/showcase/docs/verification/2026-11-22-yacht-soft-furniture/.

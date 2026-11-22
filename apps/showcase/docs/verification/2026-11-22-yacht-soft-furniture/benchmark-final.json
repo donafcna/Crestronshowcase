@@ -1,0 +1,325 @@
+{
+  "rooms": [
+    {
+      "id": "0",
+      "selected": "0",
+      "failed": 0
+    },
+    {
+      "id": "1",
+      "selected": "1",
+      "failed": 0
+    },
+    {
+      "id": "2",
+      "selected": "2",
+      "failed": 0
+    },
+    {
+      "id": "3",
+      "selected": "3",
+      "failed": 0
+    },
+    {
+      "id": "4",
+      "selected": "4",
+      "failed": 0
+    },
+    {
+      "id": "5",
+      "selected": "5",
+      "failed": 0
+    },
+    {
+      "id": "6",
+      "selected": "6",
+      "failed": 0
+    },
+    {
+      "id": "7",
+      "selected": "7",
+      "failed": 0
+    },
+    {
+      "id": "8",
+      "selected": "8",
+      "failed": 0
+    },
+    {
+      "id": "9",
+      "selected": "9",
+      "failed": 0
+    },
+    {
+      "id": "10",
+      "selected": "10",
+      "failed": 0
+    },
+    {
+      "id": "11",
+      "selected": "11",
+      "failed": 0
+    },
+    {
+      "id": "12",
+      "selected": "12",
+      "failed": 0
+    },
+    {
+      "id": "13",
+      "selected": "13",
+      "failed": 0
+    },
+    {
+      "id": "14",
+      "selected": "14",
+      "failed": 0
+    },
+    {
+      "id": "15",
+      "selected": "15",
+      "failed": 0
+    },
+    {
+      "id": "16",
+      "selected": "16",
+      "failed": 0
+    },
+    {
+      "id": "17",
+      "selected": "17",
+      "failed": 0
+    },
+    {
+      "id": "18",
+      "selected": "18",
+      "failed": 0
+    },
+    {
+      "id": "19",
+      "selected": "19",
+      "failed": 0
+    },
+    {
+      "id": "20",
+      "selected": "20",
+      "failed": 0
+    },
+    {
+      "id": "21",
+      "selected": "21",
+      "failed": 0
+    },
+    {
+      "id": "22",
+      "selected": "22",
+      "failed": 0
+    },
+    {
+      "id": "23",
+      "selected": "23",
+      "failed": 0
+    },
+    {
+      "id": "24",
+      "selected": "24",
+      "failed": 0
+    },
+    {
+      "id": "25",
+      "selected": "25",
+      "failed": 0
+    },
+    {
+      "id": "26",
+      "selected": "26",
+      "failed": 0
+    },
+    {
+      "id": "27",
+      "selected": "27",
+      "failed": 0
+    },
+    {
+      "id": "28",
+      "selected": "28",
+      "failed": 0
+    },
+    {
+      "id": "29",
+      "selected": "29",
+      "failed": 0
+    },
+    {
+      "id": "30",
+      "selected": "30",
+      "failed": 0
+    },
+    {
+      "id": "31",
+      "selected": "31",
+      "failed": 0
+    },
+    {
+      "id": "32",
+      "selected": "32",
+      "failed": 0
+    },
+    {
+      "id": "33",
+      "selected": "33",
+      "failed": 0
+    },
+    {
+      "id": "34",
+      "selected": "34",
+      "failed": 0
+    },
+    {
+      "id": "35",
+      "selected": "35",
+      "failed": 0
+    },
+    {
+      "id": "36",
+      "selected": "36",
+      "failed": 0
+    }
+  ],
+  "runs": [
+    {
+      "subject": "captain",
+      "after": false,
+      "fps": 59.75479109629806,
+      "calls": 603,
+      "triangles": 138554,
+      "textures": 7,
+      "failed": 0
+    },
+    {
+      "subject": "captain",
+      "after": true,
+      "fps": 59.891624679661064,
+      "calls": 599,
+      "triangles": 150230,
+      "textures": 7,
+      "failed": 0
+    },
+    {
+      "subject": "captain",
+      "after": true,
+      "fps": 58.877994349278566,
+      "calls": 599,
+      "triangles": 150230,
+      "textures": 7,
+      "failed": 0
+    },
+    {
+      "subject": "captain",
+      "after": false,
+      "fps": 59.73914699213072,
+      "calls": 603,
+      "triangles": 138554,
+      "textures": 7,
+      "failed": 0
+    },
+    {
+      "subject": "salon",
+      "after": false,
+      "fps": 59.74625693236903,
+      "calls": 842,
+      "triangles": 151376,
+      "textures": 7,
+      "failed": 0
+    },
+    {
+      "subject": "salon",
+      "after": true,
+      "fps": 59.97144217039505,
+      "calls": 841,
+      "triangles": 166788,
+      "textures": 7,
+      "failed": 0
+    },
+    {
+      "subject": "salon",
+      "after": true,
+      "fps": 59.950041631973356,
+      "calls": 841,
+      "triangles": 166788,
+      "textures": 7,
+      "failed": 0
+    },
+    {
+      "subject": "salon",
+      "after": false,
+      "fps": 59.94291151284491,
+      "calls": 842,
+      "triangles": 151376,
+      "textures": 7,
+      "failed": 0
+    },
+    {
+      "subject": "exterior",
+      "after": false,
+      "fps": 59.88166242883971,
+      "calls": 1738,
+      "triangles": 307054,
+      "textures": 8,
+      "failed": 0
+    },
+    {
+      "subject": "exterior",
+      "after": true,
+      "fps": 59.891624679661064,
+      "calls": 1738,
+      "triangles": 322766,
+      "textures": 8,
+      "failed": 0
+    },
+    {
+      "subject": "exterior",
+      "after": true,
+      "fps": 59.962880121489164,
+      "calls": 1738,
+      "triangles": 322766,
+      "textures": 8,
+      "failed": 0
+    },
+    {
+      "subject": "exterior",
+      "after": false,
+      "fps": 59.917257120948626,
+      "calls": 1738,
+      "triangles": 307054,
+      "textures": 8,
+      "failed": 0
+    }
+  ],
+  "errors": [],
+  "baselineMeshes": 6131,
+  "geometry": {
+    "meshes": 6131,
+    "softMeshes": 588,
+    "cachedGeometries": 82,
+    "finite": true
+  },
+  "performance": {
+    "captain": {
+      "before": 59.74696904421439,
+      "after": 59.384809514469815,
+      "percent": -0.606155484601345
+    },
+    "salon": {
+      "before": 59.84458422260697,
+      "after": 59.96074190118421,
+      "percent": 0.1940988981478542
+    },
+    "exterior": {
+      "before": 59.89945977489417,
+      "after": 59.927252400575114,
+      "percent": 0.04639879188459428
+    }
+  },
+  "status": "passed"
+}

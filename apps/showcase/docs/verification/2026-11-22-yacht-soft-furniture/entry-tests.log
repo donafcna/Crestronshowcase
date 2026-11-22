@@ -1,0 +1,23 @@
+✔ model-ready alone never acknowledges a rendered entry (1.917ms)
+✔ first presentation snaps all orbit components and acknowledges only after render (1.4973ms)
+✔ new layout supersedes stale pending presentation (0.7825ms)
+✖ manual zoom after presentation is not snapped or reset by later frames (0.8955ms)
+✔ invalid viewport, request and cross-origin messages cannot reveal a frame (0.8209ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 4
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 102.85
+
+✖ failing tests:
+
+test at scripts\test-yacht-entry.mjs:47:1
+✖ manual zoom after presentation is not snapped or reset by later frames (0.8955ms)
+  TypeError: api.select is not a function
+      at api.zoom (evalmachine.<anonymous>:17:16)
+      at TestContext.<anonymous> (file:///C:/Users/donat/Documents/Codex/2026-11-22/yacht-release-20261122/apps/showcase/scripts/test-yacht-entry.mjs:49:7)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)

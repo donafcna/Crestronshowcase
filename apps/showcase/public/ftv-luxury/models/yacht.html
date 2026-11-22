@@ -123,12 +123,56 @@ for(let x=-l/2+1.4;x<l/2;x+=3)for(const sign of [-1,1]){cyl(g,x,2.51,sign*(w/2-1
 // slender columns and windows are kept with the exterior shell
 for(const sign of [-1,1]){if(Math.abs(r.z+sign*w/2)>deckData[r.deck].w*.34){box(root,r.x,1.76,r.z+sign*w/2,l,1.1,.055,M.glass);for(let x=-l/2+.08;x<l/2;x+=2.8)box(root,r.x+x,1.9,r.z+sign*w/2,.1,1.65,.14,M.white)}}
 }const pick=box(g,0,.125,0,l-.15,.03,w-.15,new THREE.MeshBasicMaterial({visible:false}));pick.userData.room=r.id;clickables.push(pick)}
-function sofa(g,x,z,len=3,rot=0,color=M.cream){const s=new THREE.Group();s.position.set(x,0,z);s.rotation.y=rot;g.add(s);box(s,0,.28,0,len,.36,1.15,M.wood);box(s,0,.52,0,len-.08,.23,1.07,color);box(s,0,.89,-.48,len,.65,.22,color);box(s,-len/2+.1,.7,0,.18,.5,1.2,color);box(s,len/2-.1,.7,0,.18,.5,1.2,color);for(let i=-len/2+.55;i<len/2-.2;i+=.7){const b=box(s,i,.82,-.2,.5,.5,.16,i%2?M.taupe:color);b.rotation.x=-.15}return s}
-function chair(g,x,z,rot=0){const c=new THREE.Group();c.position.set(x,0,z);c.rotation.y=rot;g.add(c);box(c,0,.5,0,.75,.15,.7,M.cream);box(c,0,.92,-.28,.78,.78,.15,M.cream);for(const a of [-.29,.29])for(const b of [-.25,.25])cyl(c,a,.25,b,.035,.5,M.wood);return c}
-function table(g,x,z,l=2,w=1,h=.5){box(g,x,h,z,l,.13,w,M.marble);box(g,x,h/2,z,l*.62,h-.1,w*.62,M.wood);return g}
+
+// Soft furniture: cached low-segment geometry, no new meshes or per-frame deformation.
+const softGeometryCache=new Map();
+function roundedFurnitureGeometry(w,h,d,kind='rounded'){
+ const key=[kind,w,h,d].join('|');if(softGeometryCache.has(key))return softGeometryCache.get(key);
+ const quilt=kind==='duvet',pillow=kind==='pillow',nx=quilt?12:pillow?5:3,ny=3,nz=quilt?8:pillow?5:3;
+ const radius=Math.min(w,h,d)*(kind==='wood'?.12:quilt?.28:pillow?.40:.30);
+ const geometry=new THREE.BoxGeometry(1,1,1,nx,ny,nz),position=geometry.attributes.position,normal=geometry.attributes.normal;
+ const point=new THREE.Vector3(),core=new THREE.Vector3(),direction=new THREE.Vector3();
+ const remap=(v,size,segments)=>{const edge=.5-1/segments,a=Math.abs(v);return Math.sign(v)*(a<=edge?(size/2-radius)*a/edge:(size/2-radius)+radius*(a-edge)*segments);};
+ for(let i=0;i<position.count;i++){
+  point.set(remap(position.getX(i),w,nx),remap(position.getY(i),h,ny),remap(position.getZ(i),d,nz));
+  core.set(THREE.MathUtils.clamp(point.x,-w/2+radius,w/2-radius),THREE.MathUtils.clamp(point.y,-h/2+radius,h/2-radius),THREE.MathUtils.clamp(point.z,-d/2+radius,d/2-radius));
+  direction.copy(point).sub(core).normalize();point.copy(core).addScaledVector(direction,radius);
+  if((quilt||pillow)&&direction.y>0){
+   const edge=Math.max(0,1-Math.pow(point.x/(w/2),8))*Math.max(0,1-Math.pow(point.z/(d/2),8));
+   const fold=quilt?.045*Math.exp(-Math.pow((point.x-(w/2-.20))/.15,2)):0;
+   const folds=quilt?.022*Math.sin(point.x*5.2+Math.sin(point.z*2.7))+.010*Math.sin(point.z*9.+point.x*1.7):.035;
+   point.y+=direction.y*edge*(fold+folds);
+  }
+  position.setXYZ(i,point.x,point.y,point.z);normal.setXYZ(i,direction.x,direction.y,direction.z);
+ }
+ if(quilt||pillow){
+  geometry.computeVertexNormals();const shared=new Map();
+  for(let i=0;i<position.count;i++){const k=[position.getX(i),position.getY(i),position.getZ(i)].map(v=>Math.round(v*100000)).join(',');let group=shared.get(k);if(!group){group={indices:[],normal:new THREE.Vector3()};shared.set(k,group);}group.indices.push(i);group.normal.x+=normal.getX(i);group.normal.y+=normal.getY(i);group.normal.z+=normal.getZ(i);}
+  for(const group of shared.values()){group.normal.normalize();for(const i of group.indices)normal.setXYZ(i,group.normal.x,group.normal.y,group.normal.z);}
+ }
+ geometry.computeBoundingBox();geometry.computeBoundingSphere();geometry.userData.softFurniture=true;softGeometryCache.set(key,geometry);return geometry;
+}
+function furnitureRowGeometry(w,h,d,axis){
+ const key=['row',axis,w,h,d].join('|');if(softGeometryCache.has(key))return softGeometryCache.get(key);
+ const length=axis==='x'?w:d,count=axis==='x'?Math.max(1,Math.round(length/.95)):3,gap=.025,span=(length-gap*(count-1))/count;
+ const leaf=roundedFurnitureGeometry(axis==='x'?span:w,h,axis==='z'?span:d),positions=[],normals=[],uvs=[],indices=[];
+ for(let part=0;part<count;part++){const offset=-length/2+span/2+part*(span+gap),base=positions.length/3,p=leaf.attributes.position,n=leaf.attributes.normal,uv=leaf.attributes.uv;
+  for(let i=0;i<p.count;i++){positions.push(p.getX(i)+(axis==='x'?offset:0),p.getY(i),p.getZ(i)+(axis==='z'?offset:0));normals.push(n.getX(i),n.getY(i),n.getZ(i));uvs.push(uv.getX(i),uv.getY(i));}
+  for(const index of leaf.index.array)indices.push(base+index);
+ }
+ const geometry=new THREE.BufferGeometry();geometry.setAttribute('position',new THREE.Float32BufferAttribute(positions,3));geometry.setAttribute('normal',new THREE.Float32BufferAttribute(normals,3));geometry.setAttribute('uv',new THREE.Float32BufferAttribute(uvs,2));geometry.setIndex(indices);geometry.computeBoundingBox();geometry.computeBoundingSphere();geometry.userData.softFurniture=true;softGeometryCache.set(key,geometry);return geometry;
+}
+function softBox(g,x,y,z,w,h,d,material,kind='rounded'){
+ const geometry=kind==='seats'||kind==='backs'?furnitureRowGeometry(w,h,d,'x'):kind==='headboard'?furnitureRowGeometry(w,h,d,'z'):roundedFurnitureGeometry(w,h,d,kind);
+ const object=mesh(g,geometry,material,x,y,z);object.name='Soft furniture · '+kind;object.userData.softBox={w,h,d,kind};return object;
+}
+
+function sofa(g,x,z,len=3,rot=0,color=M.cream){const s=new THREE.Group();s.position.set(x,0,z);s.rotation.y=rot;g.add(s);softBox(s,0,.28,0,len,.36,1.15,M.wood,'wood');softBox(s,0,.52,0,len-.08,.23,1.07,color,'seats');softBox(s,0,.89,-.48,len,.65,.22,color,'backs');softBox(s,-len/2+.1,.7,0,.18,.5,1.2,color);softBox(s,len/2-.1,.7,0,.18,.5,1.2,color);let index=0;for(let i=-len/2+.55;i<len/2-.2;i+=.7){const b=softBox(s,i,.82,-.2,.54,.48,.24,index%3===0?color:M.taupe,'pillow');b.rotation.set(-.15,(index%3-1)*.06,index%2?.08:-.08);index++;}return s}
+function chair(g,x,z,rot=0){const c=new THREE.Group();c.position.set(x,0,z);c.rotation.y=rot;g.add(c);softBox(c,0,.5,0,.75,.15,.7,M.cream);const back=softBox(c,0,.92,-.28,.78,.78,.15,M.cream);back.rotation.x=-.08;for(const a of [-.29,.29])for(const b of [-.25,.25])cyl(c,a,.25,b,.035,.5,M.wood);return c}
+function table(g,x,z,l=2,w=1,h=.5){softBox(g,x,h,z,l,.13,w,M.marble);softBox(g,x,h/2,z,l*.62,h-.1,w*.62,M.wood,'wood');return g}
 function plant(g,x,z){cyl(g,x,.26,z,.24,.5,M.wood);for(let i=0;i<7;i++){const a=i/7*Math.PI*2;const stem=line(g,[[x,.4,z],[x+Math.sin(a)*.18,1,z+Math.cos(a)*.18],[x+Math.sin(a)*.4,1.35,z+Math.cos(a)*.4]],M.navy,.035);const leaf=ball(g,x+Math.sin(a)*.35,1.28,z+Math.cos(a)*.35,.18,M.navy);leaf.scale.y*=1.9}}
 function lamp(g,x,z){cyl(g,x,.45,z,.035,.8,M.gold);cyl(g,x,.075,z,.23,.07,M.gold);const geo=new THREE.CylinderGeometry(.18,.38,.36,18);mesh(g,geo,M.cream,x,.94,z);glow(g,x,.78,z,.24,.06,.24,'accent')}
-function bed(g,x,z,w=2.2,len=2.55){box(g,x,.3,z,len,.42,w,M.wood);box(g,x,.58,z,len-.05,.24,w-.04,M.mattress);box(g,x-.25,.73,z,len-.55,.1,w-.01,M.bedlinen);box(g,x+len/2,.85,z,.18,1.35,w+.6,M.headboard);for(const s of [-1,1]){box(g,x+len/2-.4,.77,z+s*w*.24,.6,.14,w*.38,M.mattress);table(g,x+len/2-.45,z+s*(w/2+.45),.75,.65,.49);lamp(g,x+len/2-.45,z+s*(w/2+.45))}glow(g,x,.19,z-w/2-.025,len,.04,.04,'night');glow(g,x,.19,z+w/2+.025,len,.04,.04,'night')}
+function bed(g,x,z,w=2.2,len=2.55){softBox(g,x,.3,z,len,.42,w,M.wood,'wood');softBox(g,x,.58,z,len-.05,.24,w-.04,M.mattress);softBox(g,x-.25,.76,z,len-.55,.16,w-.01,M.bedlinen,'duvet');softBox(g,x+len/2,.85,z,.18,1.35,w+.6,M.headboard,'headboard');for(const sign of [-1,1]){const pillow=softBox(g,x+len/2-.42,.82,z+sign*w*.24,.66,.20,w*.39,M.mattress,'pillow');pillow.rotation.z=sign*.035;table(g,x+len/2-.45,z+sign*(w/2+.45),.75,.65,.49);lamp(g,x+len/2-.45,z+sign*(w/2+.45))}glow(g,x,.19,z-w/2-.025,len,.04,.04,'night');glow(g,x,.19,z+w/2+.025,len,.04,.04,'night')}
 function screen(g,x,z,w=2.5,rot=0){const c=new THREE.Group();c.position.set(x,0,z);c.rotation.y=rot;g.add(c);box(c,0,1.35,0,w,1.4,.12,M.black);const m=new THREE.MeshStandardMaterial({color:0x24616b,emissive:0x296470,emissiveIntensity:.6});box(c,0,1.35,.071,w-.15,1.23,.015,m);box(c,-w*.12,1.2,.084,w*.37,.06,.02,M.gold);box(c,w*.17,1.6,.084,w*.19,.45,.02,M.navy)}
 function basin(g,x,z,r=1.8){cyl(g,x,.32,z,r,.55,M.marble);cyl(g,x,.62,z,r*.87,.06,M.sea);for(let a=0;a<6;a++){let t=a*Math.PI/3;glow(g,x+Math.cos(t)*r*.8,.66,z+Math.sin(t)*r*.8,.12,.04,.12,'pool',0x56dde3)}}
 function bathroom(g,x,z,l=2.6,w=2.4){box(g,x,.2,z,l,.18,w,M.marble);box(g,x+l/2,.85,z,.12,1.5,w,M.wall);box(g,x,.77,z-w/2+.4,l-.4,.15,.55,M.marble);for(const s of [-1,1])cyl(g,x+s*.48,.87,z-w/2+.4,.24,.12,M.white);box(g,x,1.4,z-w/2+.08,l-.4,.8,.035,M.chrome);glow(g,x,1.83,z-w/2+.07,l-.4,.06,.06,'accent');box(g,x-l/2+.1,.98,z+.3,.055,1.6,w*.4,M.clear);cyl(g,x+.55,.39,z+.6,.27,.5,M.white)}
