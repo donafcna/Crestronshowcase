@@ -365,12 +365,31 @@ function emphasizeRoom(active){
  roomOutline.visible=!!active;
  if(active){const {l,w}=active;roomOutline.geometry.dispose();roomOutline.geometry=new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(-l/2+.1,.16,-w/2+.1),new THREE.Vector3(l/2-.1,.16,-w/2+.1),new THREE.Vector3(l/2-.1,.16,w/2-.1),new THREE.Vector3(-l/2+.1,.16,w/2-.1)]);active.g.add(roomOutline);}
 }
+// Cache cabin furniture/wall bounds once: avoid fitting empty upper room corners.
+const cabinFitCache=new WeakMap();
+function cabinFitPoints(r){
+ if(cabinFitCache.has(r))return cabinFitCache.get(r);
+ r.g.updateWorldMatrix(true,true);const inverse=r.g.matrixWorld.clone().invert(),point=new THREE.Vector3(),points=[];
+ r.g.traverse(o=>{if(!o.isMesh||o.material?.visible===false)return;const geometry=o.geometry;if(!geometry.boundingBox)geometry.computeBoundingBox();const b=geometry.boundingBox,local=new THREE.Matrix4().multiplyMatrices(inverse,o.matrixWorld);
+  for(const x of [b.min.x,b.max.x])for(const y of [b.min.y,b.max.y])for(const z of [b.min.z,b.max.z]){point.set(x,y,z).applyMatrix4(local).multiply(r.g.scale);points.push(point.x,point.y,point.z);}
+ });
+ const result=new Float32Array(points);cabinFitCache.set(r,result);return result;
+}
 function fitRoom(r){
  const v=window.__ftvViewport,aspect=v?v.w/v.h:innerWidth/innerHeight;
  const c=new THREE.PerspectiveCamera(camera.fov,aspect,.12,900),dir=new THREE.Vector3(Math.sin(desiredYaw)*Math.cos(desiredPitch),Math.sin(desiredPitch),Math.cos(desiredYaw)*Math.cos(desiredPitch));
- const p=new THREE.Vector3();let lo=5,hi=100;
- // Fit the floor AND furniture, rather than a distance based only on room length.
- for(let i=0;i<17;i++){const distance=(lo+hi)/2;c.position.copy(desiredTarget).addScaledVector(dir,distance);c.lookAt(desiredTarget);c.updateMatrixWorld();let extent=0;for(const x of [-r.l/2,r.l/2])for(const y of [0,2.8])for(const z of [-r.w/2,r.w/2]){p.set(r.x+x,decks[r.deck].position.y+y,r.z+z).project(c);extent=Math.max(extent,Math.abs(p.x),Math.abs(p.y));}if(extent>.975)lo=distance;else hi=distance;}
+ const p=new THREE.Vector3(),points=['bed','owner','crew'].includes(r.type)?cabinFitPoints(r):null;let hi=100;
+ if(points)desiredTarget.set(r.x,decks[r.deck].position.y+.85,r.z);
+ // Recenter actual cabin bounds in the camera plane, then fit once more for safety.
+ for(let pass=0;pass<(points?4:1);pass++){
+ let lo=5;hi=100;
+ for(let i=0;i<17;i++){const distance=(lo+hi)/2;c.position.copy(desiredTarget).addScaledVector(dir,distance);c.lookAt(desiredTarget);c.updateMatrixWorld();let extent=0;if(points){for(let j=0;j<points.length;j+=3){p.set(r.x+points[j],decks[r.deck].position.y+points[j+1],r.z+points[j+2]).project(c);extent=Math.max(extent,Math.abs(p.x),Math.abs(p.y));}}else for(const x of [-r.l/2,r.l/2])for(const y of [0,2.8])for(const z of [-r.w/2,r.w/2]){p.set(r.x+x,decks[r.deck].position.y+y,r.z+z).project(c);extent=Math.max(extent,Math.abs(p.x),Math.abs(p.y));}if(extent>.975)lo=distance;else hi=distance;}
+ if(points&&pass<3){let minX=Infinity,maxX=-Infinity,minY=Infinity,maxY=-Infinity;
+ for(let j=0;j<points.length;j+=3){p.set(r.x+points[j],decks[r.deck].position.y+points[j+1],r.z+points[j+2]).project(c);minX=Math.min(minX,p.x);maxX=Math.max(maxX,p.x);minY=Math.min(minY,p.y);maxY=Math.max(maxY,p.y);}
+ const span=hi*Math.tan(THREE.MathUtils.degToRad(camera.fov)/2);
+ desiredTarget.addScaledVector(new THREE.Vector3().setFromMatrixColumn(c.matrixWorld,0),(minX+maxX)*.5*span*aspect).addScaledVector(new THREE.Vector3().setFromMatrixColumn(c.matrixWorld,1),(minY+maxY)*.5*span);
+ }
+ }
  return hi;
 }
 function focusRoom(id){if(id==='')return;const r=rooms[+id];if(!r)return;setMode('deck',r.deck);selectedRoom=r;lastSelectedRoom=r;updateRoomLights();setInfo(r);$('rooms').value=String(r.id);desiredTarget.set(r.x,decks[r.deck].position.y+.85,r.z);desiredPitch=.60;/* Beds have their headboard at +X: look from the foot (-X), keeping the same lateral elevation. */desiredYaw=-.65;if(r.z<-.5)desiredYaw=Math.PI-desiredYaw;desiredRadius=fitRoom(r);emphasizeRoom(r);mast.visible=false;updateLabels();auto=false;$('rotate').classList.remove('active');}

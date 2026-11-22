@@ -1,0 +1,936 @@
+{
+  "cabins": [
+    {
+      "id": 7,
+      "name": "Cabines équipage",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 1280,
+        "h": 800
+      },
+      "before": {
+        "extent": 0.9880738622730747,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 12.871971130371094,
+        "pitch": 0.6,
+        "yaw": 3.791592653589793,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749760942469825,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 10.147476196289062,
+        "pitch": 0.6,
+        "yaw": 3.791592653589793,
+        "failed": 0
+      }
+    },
+    {
+      "id": 9,
+      "name": "Équipage avant",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 1280,
+        "h": 800
+      },
+      "before": {
+        "extent": 0.9867239462799255,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 14.558563232421875,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.974926619095819,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 11.649246215820312,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 15,
+      "name": "Suite VIP",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 1280,
+        "h": 800
+      },
+      "before": {
+        "extent": 0.9898651880235381,
+        "hidden": 0,
+        "pillows": 2,
+        "radius": 12.877044677734375,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749966006975237,
+        "hidden": 0,
+        "pillows": 2,
+        "radius": 10.2532958984375,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 16,
+      "name": "Suite invités bâbord",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 1280,
+        "h": 800
+      },
+      "before": {
+        "extent": 0.9890815692882966,
+        "hidden": 0,
+        "pillows": 2,
+        "radius": 13.62213134765625,
+        "pitch": 0.6,
+        "yaw": 3.791592653589793,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749117040602782,
+        "hidden": 0,
+        "pillows": 2,
+        "radius": 10.501899719238281,
+        "pitch": 0.6,
+        "yaw": 3.791592653589793,
+        "failed": 0
+      }
+    },
+    {
+      "id": 17,
+      "name": "Suite invités tribord",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 1280,
+        "h": 800
+      },
+      "before": {
+        "extent": 0.9890815692882979,
+        "hidden": 0,
+        "pillows": 2,
+        "radius": 13.62213134765625,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749117040602784,
+        "hidden": 0,
+        "pillows": 2,
+        "radius": 10.501899719238281,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 22,
+      "name": "Suite propriétaire",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 1280,
+        "h": 800
+      },
+      "before": {
+        "extent": 0.9846718490404236,
+        "hidden": 0,
+        "pillows": 16,
+        "radius": 20.587387084960938,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749447135902836,
+        "hidden": 0,
+        "pillows": 16,
+        "radius": 15.16448974609375,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 25,
+      "name": "Suite familiale",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 1280,
+        "h": 800
+      },
+      "before": {
+        "extent": 0.9877377377889283,
+        "hidden": 0,
+        "pillows": 2,
+        "radius": 15.302200317382812,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749130774740835,
+        "hidden": 0,
+        "pillows": 2,
+        "radius": 11.623153686523438,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 30,
+      "name": "Cabine capitaine",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 1280,
+        "h": 800
+      },
+      "before": {
+        "extent": 0.9913730016901718,
+        "hidden": 0,
+        "pillows": 2,
+        "radius": 10.714263916015625,
+        "pitch": 0.6,
+        "yaw": 3.791592653589793,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749696929355793,
+        "hidden": 0,
+        "pillows": 2,
+        "radius": 9.194374084472656,
+        "pitch": 0.6,
+        "yaw": 3.791592653589793,
+        "failed": 0
+      }
+    },
+    {
+      "id": 7,
+      "name": "Cabines équipage",
+      "view": {
+        "x": 620,
+        "y": 100,
+        "w": 420,
+        "h": 600
+      },
+      "before": {
+        "extent": 0.9484659229935515,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 23.122711181640625,
+        "pitch": 0.6,
+        "yaw": 3.791592653589793,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749941891903486,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 21.540489196777344,
+        "pitch": 0.6,
+        "yaw": 3.791592653589793,
+        "failed": 0
+      }
+    },
+    {
+      "id": 9,
+      "name": "Équipage avant",
+      "view": {
+        "x": 620,
+        "y": 100,
+        "w": 420,
+        "h": 600
+      },
+      "before": {
+        "extent": 0.9466515541562763,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 23.654708862304688,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749726324721034,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 22.654495239257812,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 15,
+      "name": "Suite VIP",
+      "view": {
+        "x": 620,
+        "y": 100,
+        "w": 420,
+        "h": 600
+      },
+      "before": {
+        "extent": 0.9480218345843187,
+        "hidden": 0,
+        "pillows": 2,
+        "radius": 22.531280517578125,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749669059799857,
+        "hidden": 0,
+        "pillows": 2,
+        "radius": 21.21288299560547,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 16,
+      "name": "Suite invités bâbord",
+      "view": {
+        "x": 620,
+        "y": 100,
+        "w": 420,
+        "h": 600
+      },
+      "before": {
+        "extent": 0.9499604909857431,
+        "hidden": 0,
+        "pillows": 2,
+        "radius": 24.427337646484375,
+        "pitch": 0.6,
+        "yaw": 3.791592653589793,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749786570002535,
+        "hidden": 0,
+        "pillows": 2,
+        "radius": 22.85961151123047,
+        "pitch": 0.6,
+        "yaw": 3.791592653589793,
+        "failed": 0
+      }
+    },
+    {
+      "id": 17,
+      "name": "Suite invités tribord",
+      "view": {
+        "x": 620,
+        "y": 100,
+        "w": 420,
+        "h": 600
+      },
+      "before": {
+        "extent": 0.9499604909857431,
+        "hidden": 0,
+        "pillows": 2,
+        "radius": 24.427337646484375,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749786570002534,
+        "hidden": 0,
+        "pillows": 2,
+        "radius": 22.85961151123047,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 22,
+      "name": "Suite propriétaire",
+      "view": {
+        "x": 620,
+        "y": 100,
+        "w": 420,
+        "h": 600
+      },
+      "before": {
+        "extent": 0.9580039325884351,
+        "hidden": 0,
+        "pillows": 16,
+        "radius": 34.57878112792969,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749923147231823,
+        "hidden": 0,
+        "pillows": 16,
+        "radius": 33.848915100097656,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 25,
+      "name": "Suite familiale",
+      "view": {
+        "x": 620,
+        "y": 100,
+        "w": 420,
+        "h": 600
+      },
+      "before": {
+        "extent": 0.9479102860634299,
+        "hidden": 0,
+        "pillows": 2,
+        "radius": 24.659271240234375,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749755134398637,
+        "hidden": 0,
+        "pillows": 2,
+        "radius": 22.92266845703125,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 30,
+      "name": "Cabine capitaine",
+      "view": {
+        "x": 620,
+        "y": 100,
+        "w": 420,
+        "h": 600
+      },
+      "before": {
+        "extent": 0.9422552273730205,
+        "hidden": 0,
+        "pillows": 2,
+        "radius": 18.699302673339844,
+        "pitch": 0.6,
+        "yaw": 3.791592653589793,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749681154763818,
+        "hidden": 0,
+        "pillows": 2,
+        "radius": 17.39757537841797,
+        "pitch": 0.6,
+        "yaw": 3.791592653589793,
+        "failed": 0
+      }
+    },
+    {
+      "id": 7,
+      "name": "Cabines équipage",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 390,
+        "h": 700
+      },
+      "before": {
+        "extent": 0.9559751535973173,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 28.526039123535156,
+        "pitch": 0.6,
+        "yaw": 3.791592653589793,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749788275312086,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 27.007598876953125,
+        "pitch": 0.6,
+        "yaw": 3.791592653589793,
+        "failed": 0
+      }
+    },
+    {
+      "id": 9,
+      "name": "Équipage avant",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 390,
+        "h": 700
+      },
+      "before": {
+        "extent": 0.9543964333016701,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 29.343605041503906,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.974987254551799,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 28.406448364257812,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 15,
+      "name": "Suite VIP",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 390,
+        "h": 700
+      },
+      "before": {
+        "extent": 0.9556670047347492,
+        "hidden": 0,
+        "pillows": 2,
+        "radius": 27.846908569335938,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.974977116379163,
+        "hidden": 0,
+        "pillows": 2,
+        "radius": 26.584320068359375,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 16,
+      "name": "Suite invités bâbord",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 390,
+        "h": 700
+      },
+      "before": {
+        "extent": 0.9570362571315982,
+        "hidden": 0,
+        "pillows": 2,
+        "radius": 30.166244506835938,
+        "pitch": 0.6,
+        "yaw": 3.791592653589793,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749764712844415,
+        "hidden": 0,
+        "pillows": 2,
+        "radius": 28.653602600097656,
+        "pitch": 0.6,
+        "yaw": 3.791592653589793,
+        "failed": 0
+      }
+    },
+    {
+      "id": 17,
+      "name": "Suite invités tribord",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 390,
+        "h": 700
+      },
+      "before": {
+        "extent": 0.9570362571315966,
+        "hidden": 0,
+        "pillows": 2,
+        "radius": 30.166244506835938,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749764712844424,
+        "hidden": 0,
+        "pillows": 2,
+        "radius": 28.653602600097656,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 22,
+      "name": "Suite propriétaire",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 390,
+        "h": 700
+      },
+      "before": {
+        "extent": 0.9628473071929557,
+        "hidden": 0,
+        "pillows": 16,
+        "radius": 43.13495635986328,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749855819689537,
+        "hidden": 0,
+        "pillows": 16,
+        "radius": 42.460899353027344,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 25,
+      "name": "Suite familiale",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 390,
+        "h": 700
+      },
+      "before": {
+        "extent": 0.9548907685327317,
+        "hidden": 0,
+        "pillows": 2,
+        "radius": 30.41339874267578,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749807063352622,
+        "hidden": 0,
+        "pillows": 2,
+        "radius": 28.73260498046875,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 30,
+      "name": "Cabine capitaine",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 390,
+        "h": 700
+      },
+      "before": {
+        "extent": 0.9514896071557943,
+        "hidden": 0,
+        "pillows": 2,
+        "radius": 23.03863525390625,
+        "pitch": 0.6,
+        "yaw": 3.791592653589793,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749983700468032,
+        "hidden": 0,
+        "pillows": 2,
+        "radius": 21.794891357421875,
+        "pitch": 0.6,
+        "yaw": 3.791592653589793,
+        "failed": 0
+      }
+    },
+    {
+      "id": 7,
+      "name": "Cabines équipage",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 900,
+        "h": 700
+      },
+      "before": {
+        "extent": 0.9247964869562386,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 13.522834777832031,
+        "pitch": 0.6,
+        "yaw": 3.791592653589793,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749903804216578,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 11.845664978027344,
+        "pitch": 0.6,
+        "yaw": 3.791592653589793,
+        "failed": 0
+      }
+    },
+    {
+      "id": 9,
+      "name": "Équipage avant",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 900,
+        "h": 700
+      },
+      "before": {
+        "extent": 0.9867239462799258,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 14.558563232421875,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749499844815634,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 12.452316284179688,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 15,
+      "name": "Suite VIP",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 900,
+        "h": 700
+      },
+      "before": {
+        "extent": 0.9686044656181463,
+        "hidden": 0,
+        "pillows": 2,
+        "radius": 13.085784912109375,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749356942274605,
+        "hidden": 0,
+        "pillows": 2,
+        "radius": 11.669540405273438,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 16,
+      "name": "Suite invités bâbord",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 900,
+        "h": 700
+      },
+      "before": {
+        "extent": 0.932220141458141,
+        "hidden": 0,
+        "pillows": 2,
+        "radius": 14.232406616210938,
+        "pitch": 0.6,
+        "yaw": 3.791592653589793,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.974959944040648,
+        "hidden": 0,
+        "pillows": 2,
+        "radius": 12.566108703613281,
+        "pitch": 0.6,
+        "yaw": 3.791592653589793,
+        "failed": 0
+      }
+    },
+    {
+      "id": 17,
+      "name": "Suite invités tribord",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 900,
+        "h": 700
+      },
+      "before": {
+        "extent": 0.9322201414581406,
+        "hidden": 0,
+        "pillows": 2,
+        "radius": 14.232406616210938,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749599440406488,
+        "hidden": 0,
+        "pillows": 2,
+        "radius": 12.566108703613281,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 22,
+      "name": "Suite propriétaire",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 900,
+        "h": 700
+      },
+      "before": {
+        "extent": 0.9846718490404243,
+        "hidden": 0,
+        "pillows": 16,
+        "radius": 20.587387084960938,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.974967764276726,
+        "hidden": 0,
+        "pillows": 16,
+        "radius": 18.549270629882812,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 25,
+      "name": "Suite familiale",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 900,
+        "h": 700
+      },
+      "before": {
+        "extent": 0.9877377377889285,
+        "hidden": 0,
+        "pillows": 2,
+        "radius": 15.302200317382812,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749613167127729,
+        "hidden": 0,
+        "pillows": 2,
+        "radius": 12.600898742675781,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 30,
+      "name": "Cabine capitaine",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 900,
+        "h": 700
+      },
+      "before": {
+        "extent": 0.9587603602256023,
+        "hidden": 0,
+        "pillows": 2,
+        "radius": 10.988960266113281,
+        "pitch": 0.6,
+        "yaw": 3.791592653589793,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749409684834167,
+        "hidden": 0,
+        "pillows": 2,
+        "radius": 9.591560363769531,
+        "pitch": 0.6,
+        "yaw": 3.791592653589793,
+        "failed": 0
+      }
+    }
+  ],
+  "runs": [
+    {
+      "before": true,
+      "fps": 59.910134797803295,
+      "calls": 447,
+      "triangles": 131704,
+      "textures": 7
+    },
+    {
+      "before": false,
+      "fps": 59.90265818045676,
+      "calls": 445,
+      "triangles": 131680,
+      "textures": 7
+    },
+    {
+      "before": false,
+      "fps": 59.45392320915853,
+      "calls": 445,
+      "triangles": 131680,
+      "textures": 7
+    },
+    {
+      "before": true,
+      "fps": 59.71118772762114,
+      "calls": 447,
+      "triangles": 131704,
+      "textures": 7
+    }
+  ],
+  "performance": {
+    "before": 59.810661262712216,
+    "after": 59.67829069480764,
+    "percent": -0.22131600806609697
+  },
+  "status": "passed"
+}
