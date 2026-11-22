@@ -1,0 +1,200 @@
+{
+  "cabins": [
+    {
+      "id": 7,
+      "name": "Cabines équipage",
+      "before": {
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 12.871971130371094,
+        "pitch": 0.6,
+        "yaw": 3.791592653589793,
+        "failed": 0
+      },
+      "after": {
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 12.871971130371094,
+        "pitch": 0.6,
+        "yaw": 3.791592653589793,
+        "failed": 0
+      }
+    },
+    {
+      "id": 9,
+      "name": "Équipage avant",
+      "before": {
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 14.558563232421875,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 14.558563232421875,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 15,
+      "name": "Suite VIP",
+      "before": {
+        "hidden": 2,
+        "pillows": 2,
+        "radius": 12.877044677734375,
+        "pitch": 0.6,
+        "yaw": 0.65,
+        "failed": 0
+      },
+      "after": {
+        "hidden": 0,
+        "pillows": 2,
+        "radius": 12.877044677734375,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 16,
+      "name": "Suite invités bâbord",
+      "before": {
+        "hidden": 2,
+        "pillows": 2,
+        "radius": 13.62213134765625,
+        "pitch": 0.6,
+        "yaw": 2.491592653589793,
+        "failed": 0
+      },
+      "after": {
+        "hidden": 0,
+        "pillows": 2,
+        "radius": 13.62213134765625,
+        "pitch": 0.6,
+        "yaw": 3.791592653589793,
+        "failed": 0
+      }
+    },
+    {
+      "id": 17,
+      "name": "Suite invités tribord",
+      "before": {
+        "hidden": 2,
+        "pillows": 2,
+        "radius": 13.62213134765625,
+        "pitch": 0.6,
+        "yaw": 0.65,
+        "failed": 0
+      },
+      "after": {
+        "hidden": 0,
+        "pillows": 2,
+        "radius": 13.62213134765625,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 22,
+      "name": "Suite propriétaire",
+      "before": {
+        "hidden": 0,
+        "pillows": 16,
+        "radius": 20.587387084960938,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "hidden": 0,
+        "pillows": 16,
+        "radius": 20.587387084960938,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 25,
+      "name": "Suite familiale",
+      "before": {
+        "hidden": 2,
+        "pillows": 2,
+        "radius": 15.302200317382812,
+        "pitch": 0.6,
+        "yaw": 0.65,
+        "failed": 0
+      },
+      "after": {
+        "hidden": 0,
+        "pillows": 2,
+        "radius": 15.302200317382812,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 30,
+      "name": "Cabine capitaine",
+      "before": {
+        "hidden": 2,
+        "pillows": 2,
+        "radius": 10.714263916015625,
+        "pitch": 0.6,
+        "yaw": 2.491592653589793,
+        "failed": 0
+      },
+      "after": {
+        "hidden": 0,
+        "pillows": 2,
+        "radius": 10.714263916015625,
+        "pitch": 0.6,
+        "yaw": 3.791592653589793,
+        "failed": 0
+      }
+    }
+  ],
+  "runs": [
+    {
+      "before": true,
+      "fps": 59.86978322167129,
+      "calls": 599,
+      "triangles": 150230,
+      "textures": 7
+    },
+    {
+      "before": false,
+      "fps": 59.68732830456867,
+      "calls": 447,
+      "triangles": 131704,
+      "textures": 7
+    },
+    {
+      "before": false,
+      "fps": 59.9250936329588,
+      "calls": 447,
+      "triangles": 131704,
+      "textures": 7
+    },
+    {
+      "before": true,
+      "fps": 59.87725163343766,
+      "calls": 599,
+      "triangles": 150230,
+      "textures": 7
+    }
+  ],
+  "performance": {
+    "before": 59.873517427554475,
+    "after": 59.806210968763736,
+    "percent": -0.112414405704786
+  },
+  "status": "passed"
+}

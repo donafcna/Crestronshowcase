@@ -693,3 +693,8 @@ Donatien valide le candidat 2.3.16 (six espaces spécialisés, blancs, projecteu
 ## 22/11/2026 — Yacht : mobilier arrondi et literie modelée
 
 Canapés à assises et dossiers séparés, coussins bombés, fauteuils et tables aux arêtes adoucies ; matelas arrondis, couette à plis discrets et tête de lit rembourrée. Géométries mutualisées et calculées au chargement, nombre de maillages et textures conservé. Second banc contrôlé : cabine 59,75 → 59,38 i/s, salon 59,84 → 59,96, extérieur 59,90 → 59,93 ; premier passage irrégulier conservé dans les preuves. Build/lint, 37 sélections et dix tests noyau réussis. Limite du vieux test de zoom documentée. Preuves : apps/showcase/docs/verification/2026-11-22-yacht-soft-furniture/.
+
+
+## 22/11/2026 — Yacht : oreillers visibles dans les cabines
+
+Caméra des cinq pièces de type bed placée du côté du pied du lit, symétrie bâbord/tribord conservée. Même pitch (0,60 rad), même distance de cadrage, interpolation inchangée. Contrôle de huit espaces de couchage : aucune tête de lit devant les oreillers ; cabine 59,87 → 59,81 images/s. Build/lint réussis, aucun ajout au rendu. Preuves : apps/showcase/docs/verification/2026-11-22-yacht-cabin-view/.
