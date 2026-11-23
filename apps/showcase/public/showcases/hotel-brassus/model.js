@@ -627,6 +627,42 @@
     floorMesh.geometry=geometry;floorMesh.scale.set(w,.08,d);floorMesh.material=material;
   }
   // Keep light slots stable across room selection, disabling unused contributions.
+  // Static indirect-light footprint on receiver materials: no additional lights,
+  // textures, shadow maps or render passes. Shared textures, room-local uniforms.
+  for(const room of roomGroups){
+    const group=roomLighting.get(room.userData.zone);
+    group.energyUniform??={value:group.level/100};
+    const centre=new T.Vector3(room.userData.x,0,room.userData.z);room.localToWorld(centre);
+    const bounds={value:new T.Vector4(centre.x,centre.z,room.userData.w,room.userData.d)},clones=new Map();
+    room.traverse(object=>{
+      if(!object.isMesh||object.userData.lightingEffect)return;
+      const original=object.material;
+      if(!original.isMeshStandardMaterial||original.transparent||original.emissive.getHex())return;
+      if(!clones.has(original)){
+        const material=original.clone();
+        material.onBeforeCompile=shader=>{
+          shader.uniforms.hdhRoomEnergy=group.energyUniform;shader.uniforms.hdhRoomBounds=bounds;
+          shader.vertexShader='varying vec3 hdhReceiver;\n'+shader.vertexShader;
+          shader.vertexShader=shader.vertexShader.replace('#include <project_vertex>',`#include <project_vertex>
+            vec4 hdhP=vec4(transformed,1.0);
+            #ifdef USE_INSTANCING
+            hdhP=instanceMatrix*hdhP;
+            #endif
+            hdhReceiver=(modelMatrix*hdhP).xyz;`);
+          shader.fragmentShader='uniform float hdhRoomEnergy; uniform vec4 hdhRoomBounds; varying vec3 hdhReceiver;\n'+shader.fragmentShader;
+          shader.fragmentShader=shader.fragmentShader.replace('#include <lights_fragment_end>',`#include <lights_fragment_end>
+            float hdhX=mod(hdhReceiver.x-hdhRoomBounds.x+hdhRoomBounds.z*0.5-1.15+1.125,2.25)-1.125;
+            float hdhZ=hdhReceiver.z-hdhRoomBounds.y;
+            float hdhDepth=min(abs(hdhZ+0.9),abs(hdhZ-1.25));
+            float hdhPool=1.0/(1.0+hdhX*hdhX*0.16+hdhDepth*hdhDepth*0.12);
+            reflectedLight.indirectDiffuse+=diffuseColor.rgb*(1.0-metalnessFactor)*vec3(0.46,0.29,0.15)*hdhRoomEnergy*hdhPool;
+          `);
+        };
+        material.customProgramCacheKey=()=> 'hdh-room-indirect-1';clones.set(original,material);
+      }
+      object.material=clones.get(original);
+    });
+  }
   // This avoids separate shader families for 1, 2, 5 and 20 visible room lights.
   scene.updateMatrixWorld(true);
   for(const room of roomGroups){
@@ -715,9 +751,9 @@
   canvas.onpointerdown=e=>{if(tween){const done=tween.onDone;tween=null;done?.();}drag={x:e.clientX,y:e.clientY};canvas.setPointerCapture(e.pointerId)};
   canvas.onpointermove=e=>{if(!drag)return;theta-=(e.clientX-drag.x)*.006;phi=Math.max(.22,Math.min(1.4,phi+(e.clientY-drag.y)*.004));drag={x:e.clientX,y:e.clientY};};canvas.onpointerup=canvas.onpointercancel=()=>{drag=null};
   canvas.addEventListener('wheel',e=>{e.preventDefault();if(background)return;if(e.deltaY>0)overview();else progressiveFocus();},{passive:false});
-  function updateRoomEnvironment(group){group.points.forEach(light=>{light.intensity=light.userData.room.visible?group.level*.045:0});const closed=Math.max(0,Math.min(1,(group.blinds||0)/100)),off=1-Math.max(0,Math.min(1,group.level/100)),dayFactor=night?.08:1;const blackness=Math.min(.965,off*closed*.965);group.darkness.forEach(screen=>{screen.material.opacity=blackness*(screen.userData.darknessScale??1);screen.visible=blackness>.008});group.natural.forEach(light=>{light.intensity=light.userData.room.visible?(1-closed)*2.1*dayFactor:0});group.beams.forEach(beam=>{beam.material.opacity=(1-closed)*.012*dayFactor;beam.visible=beam.material.opacity>.005});}
-  function paintRoomLighting(group,level){group.level=level;group.materials.forEach(item=>{item.material.emissiveIntensity=item.factor*(.015+level/65);item.material.color.setHex(level?item.material.emissive.getHex():0x211e1b)});group.points.forEach(light=>{light.intensity=level*.045});updateRoomEnvironment(group);}
-  function setRoomLighting(zone,level,sceneId=null){const group=roomLighting.get(zone);if(!group)return;const targetLevel=Math.max(0,Math.min(100,Number(level)||0)),sceneChanged=sceneId!==null&&sceneId!==group.scene;if(sceneChanged){group.fade={from:group.level,to:targetLevel,start:performance.now(),duration:4000};group.scene=sceneId;}else if(!group.fade||sceneId===null){group.fade=null;group.scene=sceneId;paintRoomLighting(group,targetLevel);}}
+  function updateRoomEnvironment(group){group.points.forEach(light=>{light.intensity=light.userData.room.visible?group.level*.28:0});const closed=Math.max(0,Math.min(1,(group.blinds||0)/100)),off=1-Math.max(0,Math.min(1,group.level/100)),dayFactor=night?.08:1;const blackness=Math.min(.965,off*closed*.965);group.darkness.forEach(screen=>{screen.material.opacity=blackness*(screen.userData.darknessScale??1);screen.visible=blackness>.008});group.natural.forEach(light=>{light.intensity=light.userData.room.visible?(1-closed)*2.1*dayFactor:0});group.beams.forEach(beam=>{beam.material.opacity=(1-closed)*.012*dayFactor;beam.visible=beam.material.opacity>.005});}
+  function paintRoomLighting(group,level){group.level=level;if(group.energyUniform)group.energyUniform.value=Math.pow(level/100,1.2);group.materials.forEach(item=>{item.material.emissiveIntensity=item.factor*(level/65);item.material.color.setHex(level?item.material.emissive.getHex():0x211e1b)});group.points.forEach(light=>{light.intensity=level*.28});updateRoomEnvironment(group);}
+  function setRoomLighting(zone,level,sceneId=null){const group=roomLighting.get(zone);if(!group)return;const targetLevel=Math.max(0,Math.min(100,Number(level)||0)),sceneChanged=sceneId!==null&&sceneId!==group.scene;if(sceneChanged){group.fade={from:group.level,to:targetLevel,start:performance.now(),duration:1100};group.scene=sceneId;}else if(!group.fade||sceneId===null){group.fade=null;group.scene=sceneId;paintRoomLighting(group,targetLevel);}}
   function updateRoomLighting(now){roomLighting.forEach(group=>{if(group.fade){const q=Math.min(1,(now-group.fade.start)/group.fade.duration),k=q*q*(3-2*q);paintRoomLighting(group,T.MathUtils.lerp(group.fade.from,group.fade.to,k));if(q>=1)group.fade=null;}else updateRoomEnvironment(group);});}
   function setCurtains(zone,closed){const percent=Math.max(0,Math.min(100,Number(closed)||0)),value=percent/100;for(const panel of curtains.get(zone)||[]){const width=.38+(panel.userData.width/2-.38)*value;panel.scale.x=width;panel.position.x=panel.userData.center+panel.userData.side*(panel.userData.width/2-width/2);}const group=roomLighting.get(zone);if(group){group.blinds=percent;updateRoomEnvironment(group);}}
   window.addEventListener('message',e=>{if(e.origin!==location.origin||e.source!==parent)return;const m=e.data;if(m?.channel==='hdh-view'){if(typeof m.visible==='boolean')visible=m.visible;if(m.viewport){viewport=m.viewport;if(view==='room'){const pose=roomPose(selectedId,selectedZone);pose.radius*=Math.pow(.84,detailZoom);fly(pose,.25);}}if(Number.isFinite(m.zoom)){if(m.zoom>0)overview();else progressiveFocus();}}if(m?.channel==='hdh-demo'){const z=zoneTargets[m.zone],id=z?.id;if(background&&m.focus&&id){if(warming)pendingFocus={id,zone:m.zone};else if(m.zone!==window.HDH_ZONE){window.HDH_ZONE=m.zone;focus(id,m.zone)}}setRoomLighting(m.zone,m.level,m.scene);setCurtains(m.zone,m.blinds);}});

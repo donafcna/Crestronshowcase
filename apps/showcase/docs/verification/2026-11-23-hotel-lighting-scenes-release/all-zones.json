@@ -1,0 +1,561 @@
+{
+  "base": "local",
+  "rows": [
+    {
+      "zone": "bar",
+      "scene": 0,
+      "level": 0,
+      "energy": 0,
+      "points": [
+        0
+      ],
+      "emissive": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "programs": 37,
+      "travelling": false,
+      "lights": 42
+    },
+    {
+      "zone": "bar",
+      "scene": 1,
+      "level": 35,
+      "energy": 0.28371457908463216,
+      "points": [
+        9.8
+      ],
+      "emissive": [
+        0.6192307692307691,
+        0.8615384615384616,
+        0.7,
+        0.4576923076923077,
+        0.5653846153846154
+      ],
+      "programs": 37,
+      "travelling": false,
+      "lights": 42
+    },
+    {
+      "zone": "bar",
+      "scene": 2,
+      "level": 70,
+      "energy": 0.6518049405663864,
+      "points": [
+        19.6
+      ],
+      "emissive": [
+        1.2384615384615383,
+        1.7230769230769232,
+        1.4,
+        0.9153846153846154,
+        1.1307692307692307
+      ],
+      "programs": 37,
+      "travelling": false,
+      "lights": 42
+    },
+    {
+      "zone": "bar",
+      "scene": 3,
+      "level": 100,
+      "energy": 1,
+      "points": [
+        28.000000000000004
+      ],
+      "emissive": [
+        1.7692307692307692,
+        2.4615384615384617,
+        2,
+        1.3076923076923077,
+        1.6153846153846156
+      ],
+      "programs": 37,
+      "travelling": false,
+      "lights": 42
+    },
+    {
+      "zone": "entrance",
+      "scene": 0,
+      "level": 0,
+      "energy": 0,
+      "points": [
+        0
+      ],
+      "emissive": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "programs": 37,
+      "travelling": false,
+      "lights": 42
+    },
+    {
+      "zone": "entrance",
+      "scene": 1,
+      "level": 35,
+      "energy": 0.28371457908463216,
+      "points": [
+        9.8
+      ],
+      "emissive": [
+        0.6192307692307691,
+        0.8615384615384616,
+        0.7,
+        0.4576923076923077,
+        0.5653846153846154
+      ],
+      "programs": 37,
+      "travelling": false,
+      "lights": 42
+    },
+    {
+      "zone": "entrance",
+      "scene": 2,
+      "level": 70,
+      "energy": 0.6518049405663864,
+      "points": [
+        19.6
+      ],
+      "emissive": [
+        1.2384615384615383,
+        1.7230769230769232,
+        1.4,
+        0.9153846153846154,
+        1.1307692307692307
+      ],
+      "programs": 37,
+      "travelling": false,
+      "lights": 42
+    },
+    {
+      "zone": "entrance",
+      "scene": 3,
+      "level": 100,
+      "energy": 1,
+      "points": [
+        28.000000000000004
+      ],
+      "emissive": [
+        1.7692307692307692,
+        2.4615384615384617,
+        2,
+        1.3076923076923077,
+        1.6153846153846156
+      ],
+      "programs": 37,
+      "travelling": false,
+      "lights": 42
+    },
+    {
+      "zone": "restaurant",
+      "scene": 0,
+      "level": 0,
+      "energy": 0,
+      "points": [
+        0
+      ],
+      "emissive": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "programs": 37,
+      "travelling": false,
+      "lights": 42
+    },
+    {
+      "zone": "restaurant",
+      "scene": 1,
+      "level": 35,
+      "energy": 0.28371457908463216,
+      "points": [
+        9.8
+      ],
+      "emissive": [
+        0.6192307692307691,
+        0.8615384615384616,
+        0.7,
+        0.4576923076923077,
+        0.5653846153846154
+      ],
+      "programs": 37,
+      "travelling": false,
+      "lights": 42
+    },
+    {
+      "zone": "restaurant",
+      "scene": 2,
+      "level": 70,
+      "energy": 0.6518049405663864,
+      "points": [
+        19.6
+      ],
+      "emissive": [
+        1.2384615384615383,
+        1.7230769230769232,
+        1.4,
+        0.9153846153846154,
+        1.1307692307692307
+      ],
+      "programs": 37,
+      "travelling": false,
+      "lights": 42
+    },
+    {
+      "zone": "restaurant",
+      "scene": 3,
+      "level": 100,
+      "energy": 1,
+      "points": [
+        28.000000000000004
+      ],
+      "emissive": [
+        1.7692307692307692,
+        2.4615384615384617,
+        2,
+        1.3076923076923077,
+        1.6153846153846156
+      ],
+      "programs": 37,
+      "travelling": false,
+      "lights": 42
+    },
+    {
+      "zone": "salon",
+      "scene": 0,
+      "level": 0,
+      "energy": 0,
+      "points": [
+        0
+      ],
+      "emissive": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "programs": 37,
+      "travelling": false,
+      "lights": 42
+    },
+    {
+      "zone": "salon",
+      "scene": 1,
+      "level": 35,
+      "energy": 0.28371457908463216,
+      "points": [
+        9.8
+      ],
+      "emissive": [
+        0.6192307692307691,
+        0.8615384615384616,
+        0.7,
+        0.4576923076923077,
+        0.5653846153846154
+      ],
+      "programs": 37,
+      "travelling": false,
+      "lights": 42
+    },
+    {
+      "zone": "salon",
+      "scene": 2,
+      "level": 70,
+      "energy": 0.6518049405663864,
+      "points": [
+        19.6
+      ],
+      "emissive": [
+        1.2384615384615383,
+        1.7230769230769232,
+        1.4,
+        0.9153846153846154,
+        1.1307692307692307
+      ],
+      "programs": 37,
+      "travelling": false,
+      "lights": 42
+    },
+    {
+      "zone": "salon",
+      "scene": 3,
+      "level": 100,
+      "energy": 1,
+      "points": [
+        28.000000000000004
+      ],
+      "emissive": [
+        1.7692307692307692,
+        2.4615384615384617,
+        2,
+        1.3076923076923077,
+        1.6153846153846156
+      ],
+      "programs": 37,
+      "travelling": false,
+      "lights": 42
+    },
+    {
+      "zone": "pdr",
+      "scene": 0,
+      "level": 0,
+      "energy": 0,
+      "points": [
+        0
+      ],
+      "emissive": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "programs": 37,
+      "travelling": false,
+      "lights": 42
+    },
+    {
+      "zone": "pdr",
+      "scene": 1,
+      "level": 35,
+      "energy": 0.28371457908463216,
+      "points": [
+        9.8
+      ],
+      "emissive": [
+        0.6192307692307691,
+        0.8615384615384616,
+        0.7,
+        0.4576923076923077,
+        0.5653846153846154
+      ],
+      "programs": 37,
+      "travelling": false,
+      "lights": 42
+    },
+    {
+      "zone": "pdr",
+      "scene": 2,
+      "level": 70,
+      "energy": 0.6518049405663864,
+      "points": [
+        19.6
+      ],
+      "emissive": [
+        1.2384615384615383,
+        1.7230769230769232,
+        1.4,
+        0.9153846153846154,
+        1.1307692307692307
+      ],
+      "programs": 37,
+      "travelling": false,
+      "lights": 42
+    },
+    {
+      "zone": "pdr",
+      "scene": 3,
+      "level": 100,
+      "energy": 1,
+      "points": [
+        28.000000000000004
+      ],
+      "emissive": [
+        1.7692307692307692,
+        2.4615384615384617,
+        2,
+        1.3076923076923077,
+        1.6153846153846156
+      ],
+      "programs": 37,
+      "travelling": false,
+      "lights": 42
+    },
+    {
+      "zone": "wellness",
+      "scene": 0,
+      "level": 0,
+      "energy": 0,
+      "points": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "emissive": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "programs": 37,
+      "travelling": false,
+      "lights": 42
+    },
+    {
+      "zone": "wellness",
+      "scene": 1,
+      "level": 35,
+      "energy": 0.28371457908463216,
+      "points": [
+        9.8,
+        9.8,
+        9.8,
+        9.8,
+        9.8
+      ],
+      "emissive": [
+        0.6192307692307691,
+        0.8615384615384616,
+        0.7,
+        0.4576923076923077,
+        0.5653846153846154
+      ],
+      "programs": 37,
+      "travelling": false,
+      "lights": 42
+    },
+    {
+      "zone": "wellness",
+      "scene": 2,
+      "level": 70,
+      "energy": 0.6518049405663864,
+      "points": [
+        19.6,
+        19.6,
+        19.6,
+        19.6,
+        19.6
+      ],
+      "emissive": [
+        1.2384615384615383,
+        1.7230769230769232,
+        1.4,
+        0.9153846153846154,
+        1.1307692307692307
+      ],
+      "programs": 37,
+      "travelling": false,
+      "lights": 42
+    },
+    {
+      "zone": "wellness",
+      "scene": 3,
+      "level": 100,
+      "energy": 1,
+      "points": [
+        28.000000000000004,
+        28.000000000000004,
+        28.000000000000004,
+        28.000000000000004,
+        28.000000000000004
+      ],
+      "emissive": [
+        1.7692307692307692,
+        2.4615384615384617,
+        2,
+        1.3076923076923077,
+        1.6153846153846156
+      ],
+      "programs": 37,
+      "travelling": false,
+      "lights": 42
+    },
+    {
+      "zone": "seminar",
+      "scene": 0,
+      "level": 0,
+      "energy": 0,
+      "points": [
+        0,
+        0
+      ],
+      "emissive": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "programs": 37,
+      "travelling": false,
+      "lights": 42
+    },
+    {
+      "zone": "seminar",
+      "scene": 1,
+      "level": 35,
+      "energy": 0.28371457908463216,
+      "points": [
+        9.8,
+        9.8
+      ],
+      "emissive": [
+        0.6192307692307691,
+        0.8615384615384616,
+        0.7,
+        0.4576923076923077,
+        0.5653846153846154
+      ],
+      "programs": 37,
+      "travelling": false,
+      "lights": 42
+    },
+    {
+      "zone": "seminar",
+      "scene": 2,
+      "level": 70,
+      "energy": 0.6518049405663864,
+      "points": [
+        19.6,
+        19.6
+      ],
+      "emissive": [
+        1.2384615384615383,
+        1.7230769230769232,
+        1.4,
+        0.9153846153846154,
+        1.1307692307692307
+      ],
+      "programs": 37,
+      "travelling": false,
+      "lights": 42
+    },
+    {
+      "zone": "seminar",
+      "scene": 3,
+      "level": 100,
+      "energy": 1,
+      "points": [
+        28.000000000000004,
+        28.000000000000004
+      ],
+      "emissive": [
+        1.7692307692307692,
+        2.4615384615384617,
+        2,
+        1.3076923076923077,
+        1.6153846153846156
+      ],
+      "programs": 37,
+      "travelling": false,
+      "lights": 42
+    }
+  ],
+  "area": 35,
+  "slider": 38,
+  "restored": 100,
+  "errors": []
+}

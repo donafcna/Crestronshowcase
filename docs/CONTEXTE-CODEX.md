@@ -558,3 +558,8 @@ Publication autorisée des arbres/végétation, avec correction demandée des tr
 ## 23/11/2026 — Yacht : trajets de caméra sans traversée des pièces
 
 Trajets cubiques amortis avec prise de hauteur si nécessaire, vérifiés à la sélection contre les enveloppes des ponts et du mobilier (marge 40 cm). Passage de pont au point dégagé, reprise continue après nouveau clic ou redimensionnement. Cadrage final proche et latéral conservé. 2664 trajets et contrôles d’interruption réussis ; cadence 59,83 → 59,89 i/s. Preuves : apps/showcase/docs/verification/2026-11-23-yacht-camera-paths/.
+
+
+## 23/11/2026 — Hotel des Horlogers : scènes d’éclairage corrigées
+
+Bogue reproduit : les scènes Restaurant donnaient 43–77 % au lieu de 0–100 %, car le niveau incluait les autres zones d’éclairage à 65 %. Téléphone : scène/niveau issus de la zone active et état synchronisé lors du changement de zone. Sources existantes renforcées, empreinte indirecte douce sur les matériaux, fondu 1,1 s et extinction réelle des luminaires. Même nombre de lumières, triangles, appels et textures ; 34 → 37 programmes précompilés. Comparaison visuelle nuit/jour, 28 scènes réelles sur sept espaces, circuits et restauration de zone validés. Banc inter-pièces ~59,9 images/s avant/après, sans image >33,4 ms ; build/lint et 37 contrôles fonctionnels réussis. Correctif préparé dans le worktree isolé hotel-lighting-scenes-release depuis 91a67ed ; preuves dans apps/showcase/docs/verification/2026-11-23-hotel-lighting-scenes-release/. Aucun matériel modifié.

@@ -20,7 +20,7 @@
  const content=document.querySelector('#content'),nav=document.querySelector('nav'),theme=document.querySelector('#theme');
 
  theme.value=['clair','sombre'].includes(params.get('theme'))?params.get('theme'):'actuel';document.body.dataset.theme=theme.value;theme.onchange=()=>{document.body.dataset.theme=theme.value};
- const emit=(focus=false)=>{const s=state[zone],all=s.areas.flatMap(a=>a.lights);parent.postMessage({focus,channel:'hdh-demo',zone,level:all.reduce((a,b)=>a+b)/all.length,scene:cur(s).scene,blinds:s.blinds.length?s.blinds.reduce((a,b)=>a+b)/s.blinds.length:0},location.origin)};
+ const emit=(focus=false)=>{const s=state[zone],active=cur(s);parent.postMessage({focus,channel:'hdh-demo',zone,area:layout[zone].areas[s.area],level:active.lights.reduce((a,b)=>a+b)/active.lights.length,scene:active.scene,blinds:s.blinds.length?s.blinds.reduce((a,b)=>a+b)/s.blinds.length:0},location.origin)};
  const dialog = document.querySelector('#places');
  const currentPlace = document.querySelector('#current-place');
  const placeOptions = document.querySelector('#place-options');
@@ -66,7 +66,7 @@
  if(tab==='temperature')html=`<div class="eyebrow">Confort de la pièce</div><h1>Température</h1><div class="card"><p style="text-align:center">Consigne</p><div class="value" aria-live="polite">${s.temp.toFixed(1)}<span style="font-size:22px"> °C</span></div><div class="adjust"><button id="minus" aria-label="Diminuer la température">−</button><button id="plus" aria-label="Augmenter la température">+</button></div></div><p>Température ambiante · 21.0 °C</p>`;
  if(tab==='blinds')html='<div class="eyebrow">Maîtriser la lumière naturelle</div><h1>Stores</h1>'+s.blinds.map((v,i)=>`<div class="card stack"><div class="row"><span>Store ${i+1}</span><output data-blind-value="${i}">${Math.round(v)} %</output></div><div class="row">${['Ouvrir','Stop','Fermer'].map((n,j)=>`<button data-blind="${i}" data-action="${j}">${n}</button>`).join('')}</div></div>`).join('');
  content.innerHTML=html;
- content.querySelectorAll('[data-area]').forEach(b=>b.onclick=()=>{s.area=+b.dataset.area;render()});
+ content.querySelectorAll('[data-area]').forEach(b=>b.onclick=()=>{s.area=+b.dataset.area;emit();render()});
  content.querySelectorAll('[data-scene]').forEach(b=>b.onclick=()=>{a.scene=+b.dataset.scene;a.lights.fill([0,35,70,100][a.scene]);emit(true);render()});
  content.querySelectorAll('[data-light]').forEach(r=>r.oninput=()=>{a.lights[+r.dataset.light]=+r.value;a.scene=null;r.nextElementSibling.value=r.value+' %';emit(true)});
  content.querySelector('#circuits')?.addEventListener('click',()=>{circuits=!circuits;render()});
