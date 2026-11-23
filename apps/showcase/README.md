@@ -748,3 +748,8 @@ Publication autorisée des derniers ajustements Hotel des Horlogers : rendu noct
 ## 23/11/2026 — Yacht : murs animés progressivement
 
 Descente et remontée interpolées, cibles directionnelles progressives, continuité lors des changements de pièce et inversions. Appliques accompagnant le mur, mode réduction des animations respecté. Treize assertions de comportement réussies, passage rapide des 37 espaces et restauration complète. Trois bancs en rotation : écarts inférieurs à 1 %, build/lint réussis. Preuves : apps/showcase/docs/verification/2026-11-23-yacht-smooth-walls/.
+
+
+## 23/11/2026 — Yacht : murs coordonnés à la caméra
+
+Parois choisies selon la vraie position de caméra et anticipation de 240 ms. Maintien des murs quittés pendant le passage, remontée après arrivée ou sortie de zone visible. Quinze assertions réussies, 37 sélections rapides restaurées. Bancs Grand salon et Sky lounge stables ; cabine validée sur tour complet après mesures courtes dispersées. Build/lint réussis. Preuves : apps/showcase/docs/verification/2026-11-23-yacht-wall-camera-sync/.

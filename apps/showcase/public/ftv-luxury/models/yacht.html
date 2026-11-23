@@ -369,7 +369,8 @@ function setMode(m,d=-1){if(innerWidth<551)document.querySelector('.panel').clas
 const roomContextMaterial=new THREE.MeshStandardMaterial({name:'Neighbouring rooms · neutral context',color:0x6b8288,roughness:.95,metalness:0});
 const roomOriginalMaterials=new WeakMap();
 let contextualDeck=-1,cutawayRoom=null;
-const movingWallSides=new Set();
+const movingWallSides=new Set(),retiringWallRooms=new Set();
+const wallViewPoint=new THREE.Vector3(),wallCameraLead=1-Math.exp(-2.5*.24);
 function applyWallSide(side){
  const amount=side.amount;
  for(const p of side.parts){const o=p.o;o.visible=p.visible;o.position.y=p.y;o.scale.y=p.sy;
@@ -379,21 +380,33 @@ function applyWallSide(side){
  }
 }
 function restoreRoomWalls(r){if(r)for(const side of r.wallSides){side.amount=side.target=0;movingWallSides.delete(side);applyWallSide(side);}}
+function wallDirectionGoal(side,dx,dz){const length=Math.hypot(dx,dz);return length<.001?0:THREE.MathUtils.smoothstep(side.sign*(side.axis==='x'?dx:dz)/length,.08,.28);}
+function queueWallGoal(side,goal){if(goal!==side.target){side.target=goal;movingWallSides.add(side);}}
 function updateRoomCutaway(dt=1/60,instant=false){
- if(cutawayRoom){const sx=Math.sin(yaw),sz=Math.cos(yaw);
-  for(const side of cutawayRoom.wallSides){const goal=THREE.MathUtils.smoothstep(side.sign*(side.axis==='x'?sx:sz),.08,.28);
-   if(goal!==side.target){side.target=goal;movingWallSides.add(side);}
-  }
+ if(!cutawayRoom&&!retiringWallRooms.size&&!movingWallSides.size)return;
+ // Anticipate the same exponential camera path by 240 ms, without changing its speed.
+ const lead=wallCameraLead,fy=yaw+(desiredYaw-yaw)*lead,fp=pitch+(desiredPitch-pitch)*lead,fr=radius+(desiredRadius-radius)*lead;
+ const fx=target.x+(desiredTarget.x-target.x)*lead+Math.sin(fy)*Math.cos(fp)*fr,fz=target.z+(desiredTarget.z-target.z)*lead+Math.cos(fy)*Math.cos(fp)*fr;
+ if(cutawayRoom){const r=cutawayRoom;
+  for(const side of r.wallSides)queueWallGoal(side,Math.max(wallDirectionGoal(side,camera.position.x-r.x,camera.position.z-r.z),wallDirectionGoal(side,fx-r.x,fz-r.z)));
+ }
+ const moving=target.distanceToSquared(desiredTarget)>.09||Math.abs(desiredYaw-yaw)>.04||Math.abs(desiredPitch-pitch)>.025||Math.abs(desiredRadius-radius)>.15;
+ for(const r of retiringWallRooms){
+  wallViewPoint.set(r.x,decks[r.deck].position.y+.7,r.z).project(camera);const v=window.__ftvViewport;
+  const x=v?((wallViewPoint.x+1)*innerWidth/2-v.x)/v.w*2-1:wallViewPoint.x,y=v?((1-wallViewPoint.y)*innerHeight/2-v.y)/v.h*2-1:wallViewPoint.y;
+  const hold=!instant&&moving&&decks[r.deck].visible&&wallViewPoint.z<1&&Math.abs(x)<2.5&&Math.abs(y)<2.5;
+  for(const side of r.wallSides)queueWallGoal(side,hold?Math.max(side.target,wallDirectionGoal(side,camera.position.x-r.x,camera.position.z-r.z)):0);
+  if(!hold)retiringWallRooms.delete(r);
  }
  for(const side of movingWallSides){
   const delta=side.target-side.amount;
-  side.amount=instant||Math.abs(delta)<.001?side.target:side.amount+delta*(1-Math.exp(-Math.max(0,dt)*(delta>0?10:6)));
+  side.amount=instant||Math.abs(delta)<.001?side.target:side.amount+delta*(1-Math.exp(-Math.max(0,dt)*(delta>0?14:6)));
   applyWallSide(side);if(side.amount===side.target)movingWallSides.delete(side);
  }
 }
 function setRoomCutaway(r){
- if(cutawayRoom&&cutawayRoom!==r)for(const side of cutawayRoom.wallSides){side.target=0;if(side.amount!==0)movingWallSides.add(side);}
- cutawayRoom=r;
+ if(cutawayRoom&&cutawayRoom!==r)retiringWallRooms.add(cutawayRoom);
+ retiringWallRooms.delete(r);cutawayRoom=r;
 }
 const roomOutline=new THREE.LineLoop(new THREE.BufferGeometry(),new THREE.LineBasicMaterial({color:0x65dbc2,toneMapped:false,depthTest:true}));
 roomOutline.name='Selected room · floor perimeter';roomOutline.visible=false;roomOutline.frustumCulled=false;
