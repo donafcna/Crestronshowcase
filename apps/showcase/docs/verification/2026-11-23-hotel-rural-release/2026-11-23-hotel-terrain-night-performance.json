@@ -1,0 +1,58 @@
+[
+  {
+    "variant": "before",
+    "phase": "night",
+    "fog": false,
+    "fps": 59.88624958179993,
+    "p95": 16.900000000001455,
+    "over33": 0,
+    "calls": 641,
+    "triangles": 182314,
+    "captures": 1,
+    "lights": 42,
+    "programs": 28,
+    "errors": []
+  },
+  {
+    "variant": "after",
+    "phase": "night",
+    "fog": false,
+    "fps": 59.22445738485968,
+    "p95": 16.89999999999418,
+    "over33": 0,
+    "calls": 641,
+    "triangles": 182314,
+    "captures": 1,
+    "lights": 42,
+    "programs": 28,
+    "errors": []
+  },
+  {
+    "variant": "after",
+    "phase": "night",
+    "fog": false,
+    "fps": 59.88825320351966,
+    "p95": 17.299999999995634,
+    "over33": 0,
+    "calls": 641,
+    "triangles": 182314,
+    "captures": 1,
+    "lights": 42,
+    "programs": 28,
+    "errors": []
+  },
+  {
+    "variant": "before",
+    "phase": "night",
+    "fog": false,
+    "fps": 59.88424609414207,
+    "p95": 17.30000000000291,
+    "over33": 0,
+    "calls": 641,
+    "triangles": 182314,
+    "captures": 1,
+    "lights": 42,
+    "programs": 28,
+    "errors": []
+  }
+]

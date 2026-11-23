@@ -740,3 +740,8 @@ Angle 24,6° du Grand salon étendu à 18 autres espaces de vie et détente, cad
 ## 23/11/2026 — Yacht : murs de premier plan abaissés
 
 Pièce sélectionnée : parois proches réduites en murets de 22 cm et appliques hautes masquées, selon l’orientation réelle de la caméra. Autres parois et mobilier conservés ; restauration intégrale à la désélection. Pas de transparence ni nouvel objet. 148 contrôles de cadrage et 148 contrôles de rotation/restauration réussis, 59,84 → 59,80 i/s sur trois vues, build/lint réussis. Preuves : apps/showcase/docs/verification/2026-11-23-yacht-cutaway/.
+
+
+## 23/11/2026 — Publication du paysage et de la nuit de l’hôtel
+
+Publication autorisée des derniers ajustements Hotel des Horlogers : rendu nocturne, suppression de la brume, relief/pâtures/champs/chemins, clôtures, fossés, pierres, buissons et ruisseau. Livraison isolée depuis origin/main 49136dc, sans les autres modifications locales. Preuves de fluidité et recette : apps/showcase/docs/verification/2026-11-23-hotel-rural-release/. Aucun matériel modifié.
