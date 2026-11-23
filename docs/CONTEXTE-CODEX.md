@@ -550,3 +550,8 @@ Descente et remontée interpolées, cibles directionnelles progressives, continu
 ## 23/11/2026 — Yacht : murs coordonnés à la caméra
 
 Parois choisies selon la vraie position de caméra et anticipation de 240 ms. Maintien des murs quittés pendant le passage, remontée après arrivée ou sortie de zone visible. Quinze assertions réussies, 37 sélections rapides restaurées. Bancs Grand salon et Sky lounge stables ; cabine validée sur tour complet après mesures courtes dispersées. Build/lint réussis. Preuves : apps/showcase/docs/verification/2026-11-23-yacht-wall-camera-sync/.
+
+
+## 23/11/2026 — Publication des arbres et transitions de l’hôtel
+
+Publication autorisée des arbres/végétation, avec correction demandée des transitions caméra. Les pièces de départ et de destination restent visibles pendant le trajet ; départ depuis la pose courante, redirection continue lors de sélections rapides, chemin angulaire court et distance physique conservée à la sortie de la vue générale. Nettoyage à l’arrivée, ombres mises à jour aux changements de visibilité uniquement. Base isolée origin/main a0b6719, autres modifications locales préservées. Preuves : apps/showcase/docs/verification/2026-11-23-hotel-vegetation-camera-release/. Aucun matériel modifié.

@@ -437,7 +437,7 @@
     const center=clusters[i%clusters.length];let x=Math.sign(center[0])*Math.max(32,Math.abs(center[0])+(landscapeHash(i+17)-.5)*31),z=center[1]+(landscapeHash(i+83)-.5)*49;
     // Leave the foreground sightline to the hotel open, including the crown width.
     if(x>0&&.63*x+.78*z>48)x=Math.max(x,(35+.63*z)/.78);
-    return{x,z,width:.8+landscapeHash(i+221)*.45,height:.74+landscapeHash(i+317)*.8};
+    return{x,z,width:.78+landscapeHash(i+221)*.64,height:.52+landscapeHash(i+317)*.88,kind:i%5===0?2:i%3===0?1:0};
   });
   const terrainGeo=new T.PlaneGeometry(320,280,64,56);terrainGeo.rotateX(-Math.PI/2);
   const positions=terrainGeo.attributes.position,colors=new Float32Array(positions.count*3),tone=new T.Color();
@@ -504,30 +504,44 @@
   const landscapeMap=new T.CanvasTexture(atlas);landscapeMap.colorSpace=T.SRGBColorSpace;landscapeMap.anisotropy=Math.min(4,renderer.capabilities.getMaxAnisotropy());
   const terrain=new T.Mesh(terrainGeo,new T.MeshStandardMaterial({map:landscapeMap,vertexColors:true,roughness:1,envMapIntensity:.08}));
   terrain.userData.landscapeAtlas={width:1024,parcels:parcels.length,tracks:tracks.length};terrain.name='jura-meadow';terrain.receiveShadow=true;landscape.add(terrain);
-  // Serrated, drooping boughs: a full crown with fewer triangles than the old fans.
-  const vertices=[],treeColors=[];
-  const triangle=(a,b,c,shade)=>{for(const p of [a,b,c]){vertices.push(...p);treeColors.push(.075*shade,.155*shade,.085*shade);}};
-  for(let tier=0;tier<8;tier++){
-    const y=.85+tier*.69,r=(1-tier/9)*1.35;
-    for(let branch=0;branch<6;branch++){
-      const seed=tier*31+branch*7,angle=branch*Math.PI/3+tier*1.91,length=r*(.78+landscapeHash(seed+5)*.25),root=[0,y+.22,0];
-      const edge=[[-.48,.68,-.12],[-.18,.96,-.16],[0,1.1,-.27],[.18,.94,-.18],[.48,.67,-.13]].map(([a,l,h])=>[Math.cos(angle+a)*length*l,y+h,Math.sin(angle+a)*length*l]);
-      for(let i=0;i<edge.length-1;i++)triangle(root,edge[i],edge[i+1],.85+tier*.025+(i%2)*.17);
+  // Three static crown models: two irregular conifers and a minority of broadleaf trees.
+  // Fewer crown triangles overall; models and trunks remain instanced.
+  function crownGeometry(kind){
+    const vertices=[],colors=[];
+    function triangle(a,b,c,color){for(const p of [a,b,c]){vertices.push(...p);colors.push(...color);}}
+    if(kind<2){
+      for(let tier=0;tier<7;tier++){
+        const y=.9+tier*.77,r=(1-tier/8)*(kind?1.45:1.80),drift=Math.sin(tier*1.7+kind)*.09;
+        for(let branch=0;branch<6;branch++){
+          const seed=tier*37+branch*19+kind*311,angle=branch*Math.PI/3+tier*2.11,length=r*(.76+landscapeHash(seed+5)*.35),root=[drift,y+.25,-drift*.6];
+          const edge=[[-.68,.70,-.16],[-.29,1.01,-.25],[0,1.12,-.40],[.27,.97,-.24],[.65,.66,-.15]].map(([a,l,h])=>[drift+Math.cos(angle+a)*length*l,y+h+landscapeHash(seed+37)*.09,Math.sin(angle+a)*length*l]);
+          for(let i=0;i<4;i++){const shade=.83+tier*.027+landscapeHash(seed+i+17)*.18;triangle(root,edge[i],edge[i+1],[.085*shade,.18*shade,.092*shade]);}
+        }
+      }
+      triangle([0,6.32,0],[-.15,5.48,.09],[.15,5.48,-.09],[.10,.205,.105]);
+      triangle([0,6.32,0],[.09,5.48,.15],[-.09,5.48,-.15],[.08,.17,.09]);
+    }else{
+      const leaf=new T.IcosahedronGeometry(1,1),p=leaf.attributes.position;
+      for(const [cx,cy,cz,sx,sy,sz] of [[-.62,3.65,.12,1.35,1.40,1.18],[.65,4.04,-.20,1.30,1.55,1.15],[-.05,5.02,.10,1.12,1.28,1.02]]){
+        for(let i=0;i<p.count;i+=3){const shade=.86+landscapeHash(i+Math.round(cy*71))*.24,points=[];for(let j=0;j<3;j++){const k=i+j,rough=1+.10*Math.sin(p.getX(k)*8+p.getZ(k)*5);points.push([cx+p.getX(k)*sx*rough,cy+p.getY(k)*sy,cz+p.getZ(k)*sz*rough]);}triangle(...points,[.20*shade,.275*shade,.115*shade]);}
+      }
+      leaf.dispose();
     }
+    const geometry=new T.BufferGeometry();geometry.setAttribute('position',new T.Float32BufferAttribute(vertices,3));geometry.setAttribute('color',new T.Float32BufferAttribute(colors,3));geometry.computeVertexNormals();return geometry;
   }
-  triangle([0,6.15,0],[-.17,5.45,.08],[.17,5.45,-.08],1.1);
-  triangle([0,6.15,0],[.08,5.45,.17],[-.08,5.45,-.17],.95);
-  const treeGeo=new T.BufferGeometry();treeGeo.setAttribute('position',new T.Float32BufferAttribute(vertices,3));treeGeo.setAttribute('color',new T.Float32BufferAttribute(treeColors,3));treeGeo.computeVertexNormals();
-  const forest=new T.InstancedMesh(treeGeo,new T.MeshStandardMaterial({vertexColors:true,roughness:1,envMapIntensity:.08,side:T.DoubleSide}),trees.length);forest.name='jura-firs';forest.castShadow=true;forest.receiveShadow=true;
+  const foliageMaterial=new T.MeshStandardMaterial({vertexColors:true,roughness:1,envMapIntensity:.08,side:T.DoubleSide});
+  const forests=[0,1,2].map(kind=>{const mesh=new T.InstancedMesh(crownGeometry(kind),foliageMaterial,trees.filter(t=>t.kind===kind).length);mesh.name=['jura-firs','jura-spruces','jura-beeches'][kind];mesh.castShadow=true;mesh.receiveShadow=true;landscape.add(mesh);return mesh;});
   const trunks=new T.InstancedMesh(new T.CylinderGeometry(.035,.14,6.1,6),new T.MeshStandardMaterial({map:timberFinish,color:0x665548,roughness:1,envMapIntensity:.08}),trees.length);trunks.name='jura-trunks';trunks.castShadow=true;trunks.receiveShadow=true;
-  const dummy=new T.Object3D(),groundRay=new T.Raycaster();groundRay.ray.direction.set(0,-1,0);terrain.updateMatrixWorld(true);
+  const dummy=new T.Object3D(),groundRay=new T.Raycaster(),crownIndex=[0,0,0];groundRay.ray.direction.set(0,-1,0);terrain.updateMatrixWorld(true);
   trees.forEach((tree,i)=>{
-    groundRay.ray.origin.set(tree.x,50,tree.z);const groundHit=groundRay.intersectObject(terrain,false)[0];
-    dummy.position.set(tree.x,groundHit?.point.y??heightAt(tree.x,tree.z),tree.z);dummy.rotation.set(0,i*2.399,0);dummy.scale.set(tree.width,tree.height,tree.width);dummy.updateMatrix();forest.setMatrixAt(i,dummy.matrix);
-    forest.setColorAt(i,new T.Color().setRGB(.83+landscapeHash(i+811)*.17,.86+landscapeHash(i+947)*.14,.76+landscapeHash(i+411)*.18));
-    dummy.position.y+=3.05*tree.height;dummy.updateMatrix();trunks.setMatrixAt(i,dummy.matrix);
+    groundRay.ray.origin.set(tree.x,80,tree.z);const groundHit=groundRay.intersectObject(terrain,false)[0];
+    dummy.position.set(tree.x,groundHit?.point.y??heightAt(tree.x,tree.z),tree.z);dummy.rotation.set(0,i*2.399,0);dummy.scale.set(tree.width,tree.height,tree.width*(.80+landscapeHash(i+631)*.35));dummy.updateMatrix();
+    const mesh=forests[tree.kind],index=crownIndex[tree.kind]++;mesh.setMatrixAt(index,dummy.matrix);
+    mesh.setColorAt(index,new T.Color().setRGB(.80+landscapeHash(i+811)*.25,.84+landscapeHash(i+947)*.22,.75+landscapeHash(i+411)*.26));
+    // Broadleaf trunks stop within the crown instead of protruding through its top.
+    const trunkHeight=(tree.kind===2?4.2:6.1)*tree.height;dummy.position.y+=trunkHeight/2;dummy.scale.set(tree.width,trunkHeight/6.1,tree.width);dummy.updateMatrix();trunks.setMatrixAt(i,dummy.matrix);
   });
-  forest.instanceColor.needsUpdate=true;forest.instanceMatrix.needsUpdate=true;trunks.instanceMatrix.needsUpdate=true;landscape.add(forest,trunks);
+  forests.forEach(mesh=>{mesh.instanceColor.needsUpdate=true;mesh.instanceMatrix.needsUpdate=true;});trunks.instanceMatrix.needsUpdate=true;landscape.add(trunks);
   // Fixed rural details, batched by material; never updated in the animation loop.
   const details=new T.Group();details.name='jura-rural-details';landscape.add(details);
   const sampleGround=(x,z)=>{groundRay.ray.origin.set(x,80,z);return groundRay.intersectObject(terrain,false)[0]?.point.y??heightAt(x,z);};
@@ -583,10 +597,10 @@
     else{const cluster=[[-76,26],[113,53],[-105,-48],[72,-76]][i%4];x=cluster[0]+(landscapeHash(i+721)-.5)*16;z=cluster[1]+(landscapeHash(i+837)-.5)*12;}
     land.lineWidth=9;if(tracks.some(points=>{trackPath(points);return land.isPointInStroke(px(x),pz(z));}))continue;
     const radius=.18+landscapeHash(i+391)*.58;dummy.position.set(x,sampleGround(x,z)+radius*.18,z);dummy.rotation.set(i*.73,i*2.39,.3);dummy.scale.set(radius,radius*.55,radius*.77);dummy.updateMatrix();stoneMatrices.push(dummy.matrix.clone());
-    if(i%2===0){dummy.position.set(x+1.4,sampleGround(x+1.4,z+.5)+.22,z+.5);dummy.scale.set(.65,.36,.55);dummy.updateMatrix();shrubMatrices.push(dummy.matrix.clone());}
+    if(i%2===0){const sx=.42+landscapeHash(i+557)*.62,sy=.22+landscapeHash(i+293)*.37,sz=.38+landscapeHash(i+661)*.42;dummy.position.set(x+1.4,sampleGround(x+1.4,z+.5)+sy*.65,z+.5);dummy.rotation.set(0,i*2.39,0);dummy.scale.set(sx,sy,sz);dummy.updateMatrix();shrubMatrices.push(dummy.matrix.clone());}
   }
   for(const [name,matrices,color] of [['limestone-clusters',stoneMatrices,0x9b9b88],['pasture-scrub',shrubMatrices,0x526343]]){
-    const mesh=new T.InstancedMesh(ruralStoneGeo,new T.MeshStandardMaterial({color,roughness:1,envMapIntensity:.06}),matrices.length);mesh.name=name;mesh.receiveShadow=true;matrices.forEach((m,i)=>{mesh.setMatrixAt(i,m);const shade=.78+landscapeHash(i+341)*.3;mesh.setColorAt(i,new T.Color(shade,shade,shade*.95));});mesh.instanceMatrix.needsUpdate=true;mesh.instanceColor.needsUpdate=true;details.add(mesh);
+    const shrubGeometry=name==='pasture-scrub'?new T.IcosahedronGeometry(1,1):ruralStoneGeo;const mesh=new T.InstancedMesh(shrubGeometry,new T.MeshStandardMaterial({color,roughness:1,envMapIntensity:.06}),matrices.length);mesh.name=name;mesh.receiveShadow=true;matrices.forEach((m,i)=>{mesh.setMatrixAt(i,m);const shade=.78+landscapeHash(i+341)*.3;mesh.setColorAt(i,name==='pasture-scrub'?new T.Color(shade*.94,shade*(1.02+landscapeHash(i+29)*.12),shade*(.78+landscapeHash(i+67)*.18)):new T.Color(shade,shade,shade*.95));});mesh.instanceMatrix.needsUpdate=true;mesh.instanceColor.needsUpdate=true;details.add(mesh);
   }
   details.userData.diagnostics={fenceFootings,brook,posts:postMatrices.length,stones:stoneMatrices.length,scrub:shrubMatrices.length};
 
@@ -657,16 +671,16 @@
     return{target:center,radius:fittedRadius(center,bounds,theta,phi)*.78,theta,phi};
   };
   const ease=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
-  function showView(mode,id){
+  function showView(mode,id,travelRooms=[]){
     view=mode;selectedId=id||selectedId;const all=mode==='overview';
-    for(const [key,g]of Object.entries(levels)){g.visible=all||key===selectedId;g.traverse(o=>{if(o.userData.roomLabel)o.visible=!all&&key===selectedId;if(o.name==='room-glazing')o.visible=!all&&key===selectedId;if(o.userData.ceilingFixed)o.visible=all||!cut;});}
+    for(const [key,g]of Object.entries(levels)){g.visible=all||key===selectedId||travelRooms.some(room=>room.userData.id===key);g.traverse(o=>{if(o.userData.roomLabel)o.visible=!all&&key===selectedId;if(o.name==='room-glazing')o.visible=!all&&g.visible;if(o.userData.ceilingFixed)o.visible=all||!cut;});}
     const isolated=focusedRooms(selectedId,selectedZone);
-    roomGroups.forEach(g=>{g.visible=all||g.userData.id===selectedId&&(!isolated.length||isolated.includes(g));});
+    roomGroups.forEach(g=>{g.visible=all||travelRooms.includes(g)||g.userData.id===selectedId&&(!isolated.length||isolated.includes(g));});
     Object.values(levels).forEach(g=>g.children.forEach(o=>{if(o.isMesh)o.visible=all;}));
     roomLighting.forEach(group=>updateRoomEnvironment(group));
     landscape.visible=all;
     shell.visible=all;roofs.forEach(r=>r.visible=all?r.parent===shell:!cut&&r.parent.userData.id===selectedId);
-    const active=all?roomGroups:roomGroups.filter(g=>g.visible&&g.userData.id===selectedId);
+    const active=all?roomGroups:roomGroups.filter(g=>g.visible);
     const bounds=new T.Box3();
     for(const g of active){const {x,z,w,d}=g.userData,y=levels[g.userData.id].position.y,oz=levels[g.userData.id].position.z;bounds.expandByPoint(new T.Vector3(x-w/2,y-.4,z+oz-d/2));bounds.expandByPoint(new T.Vector3(x+w/2,y+3,z+oz+d/2));}
     const center=bounds.getCenter(new T.Vector3()),size=bounds.getSize(new T.Vector3()),extent=Math.max(size.x,size.z)*.75+3;
@@ -674,9 +688,23 @@
     Object.assign(sun.shadow.camera,{left:-extent,right:extent,top:extent,bottom:-extent});sun.shadow.camera.updateProjectionMatrix();sun.shadow.needsUpdate=true;renderer.shadowMap.needsUpdate=true;
     document.getElementById('status').textContent=all?'Vue complète de l’hôtel · enveloppe interprétée':'Niveau '+selectedId+' · aménagement d’après le plan';
   }
-  function fly(pose,duration=.95,onDone){tween={from:{target:target.clone(),radius,theta,phi},to:pose,start:performance.now(),duration:duration*1000,onDone};}
-  function overview(){detailZoom=0;showView('overview');fly(overviewPose(),1.25);}
-  function focus(id=selectedId,zone=selectedZone,immediate=false){if(!levels[id])return;detailZoom=0;selectedId=id;selectedZone=zone||selectedZone;showView('room',id);const p=roomPose(id,selectedZone);if(immediate){target.copy(p.target);radius=p.radius;theta=p.theta;phi=p.phi;tween=null;}else fly(p,1.35);}
+  const distanceScale=()=>view==='room'?1:background&&viewport?1.18/Math.min(1,viewport.w/viewport.h):1;
+  function fly(pose,duration=.95,onDone){
+    const finish=onDone||tween?.onDone;
+    const angle=theta+Math.atan2(Math.sin(pose.theta-theta),Math.cos(pose.theta-theta));
+    tween={from:{target:target.clone(),radius,theta,phi},to:{...pose,theta:angle},start:performance.now(),duration:duration*1000,onDone:finish};
+  }
+  function overview(){detailZoom=0;const distance=radius*distanceScale();tween=null;showView('overview');radius=distance/distanceScale();fly(overviewPose(),1.25);}
+  function focus(id=selectedId,zone=selectedZone,immediate=false){
+    if(!levels[id])return;
+    const departing=!immediate&&view==='room'?roomGroups.filter(g=>g.visible):[];
+    const distance=radius*distanceScale();
+    detailZoom=0;selectedId=id;selectedZone=zone||selectedZone;tween=null;
+    showView('room',id,departing);radius=distance/distanceScale();
+    const p=roomPose(id,selectedZone);
+    if(immediate){target.copy(p.target);radius=p.radius;theta=p.theta;phi=p.phi;}
+    else fly(p,1.35,()=>showView('room',selectedId));
+  }
   function progressiveFocus(){if(view!=='room'){focus(selectedId,selectedZone);return;}detailZoom=Math.min(3,detailZoom+1);const pose=roomPose(selectedId,selectedZone);pose.radius*=Math.pow(.84,detailZoom);fly(pose,.7);}
   function select(id){if(id==='all'){overview();return;}focus(id,null);}
   const floor=document.getElementById('floor');floor.onchange=()=>select(floor.value);
@@ -684,7 +712,7 @@
   document.getElementById('night').onclick=e=>{dayNightCycle=!dayNightCycle;e.currentTarget.setAttribute('aria-pressed',dayNightCycle);e.currentTarget.textContent=dayNightCycle?'Cycle jour/nuit':'Cycle en pause'};
   document.getElementById('rotate').onclick=e=>{auto=!auto;e.currentTarget.setAttribute('aria-pressed',auto)};
   document.getElementById('reset').onclick=()=>{theta=.64;phi=.85;select(floor.value)};
-  canvas.onpointerdown=e=>{drag={x:e.clientX,y:e.clientY};canvas.setPointerCapture(e.pointerId)};
+  canvas.onpointerdown=e=>{if(tween){const done=tween.onDone;tween=null;done?.();}drag={x:e.clientX,y:e.clientY};canvas.setPointerCapture(e.pointerId)};
   canvas.onpointermove=e=>{if(!drag)return;theta-=(e.clientX-drag.x)*.006;phi=Math.max(.22,Math.min(1.4,phi+(e.clientY-drag.y)*.004));drag={x:e.clientX,y:e.clientY};};canvas.onpointerup=canvas.onpointercancel=()=>{drag=null};
   canvas.addEventListener('wheel',e=>{e.preventDefault();if(background)return;if(e.deltaY>0)overview();else progressiveFocus();},{passive:false});
   function updateRoomEnvironment(group){group.points.forEach(light=>{light.intensity=light.userData.room.visible?group.level*.045:0});const closed=Math.max(0,Math.min(1,(group.blinds||0)/100)),off=1-Math.max(0,Math.min(1,group.level/100)),dayFactor=night?.08:1;const blackness=Math.min(.965,off*closed*.965);group.darkness.forEach(screen=>{screen.material.opacity=blackness*(screen.userData.darknessScale??1);screen.visible=blackness>.008});group.natural.forEach(light=>{light.intensity=light.userData.room.visible?(1-closed)*2.1*dayFactor:0});group.beams.forEach(beam=>{beam.material.opacity=(1-closed)*.012*dayFactor;beam.visible=beam.material.opacity>.005});}
@@ -697,7 +725,7 @@
   const dayColor=new T.Color('#283d43'),exteriorDayColor=new T.Color('#93a6aa'),nightColor=new T.Color('#07111c'),reducedMotion=matchMedia('(prefers-reduced-motion: reduce)');
   const moonTint=new T.Color(0x8caedb),daySunTint=new T.Color(0xffecd1),nightSkyTint=new T.Color(0x7795c0),daySkyTint=new T.Color(0xdceaff);
   let last=0;
-  function frame(now){requestAnimationFrame(frame);if(document.hidden||!visible)return;const w=canvas.clientWidth,h=canvas.clientHeight;if(!w||!h)return;if(canvas.width!==Math.round(w*renderer.getPixelRatio())||canvas.height!==Math.round(h*renderer.getPixelRatio())){renderer.setSize(w,h,false);}camera.aspect=w/h;updateRoomLighting(now);nightBlend.value=T.MathUtils.clamp((1.2-hemi.intensity)/.82,0,1);exteriorGlow.emissiveIntensity=nightBlend.value*1.8;fences.material.opacity=.54*(1-nightBlend.value*.75);const reflectionDay=T.MathUtils.lerp(1,.32,nightBlend.value);mats.glass.envMapIntensity=.75*reflectionDay;mats.facadeGlass.envMapIntensity=.9*reflectionDay;mats.facadeMetal.envMapIntensity=.3*reflectionDay;if(dayNightCycle){const phase=Math.floor(now/30000)%2?'night':'day';if(phase!==lastPhase){lastPhase=phase;night=phase==='night';document.body.dataset.phase=phase;}const goalHemi=night?.38:1.2,goalSun=night?.24:1.9;sun.color.lerp(night?moonTint:daySunTint,.035);hemi.color.lerp(night?nightSkyTint:daySkyTint,.035);hemi.intensity+= (goalHemi-hemi.intensity)*.035;sun.intensity+=(goalSun-sun.intensity)*.035;}scene.background.lerp(night?nightColor:view==='overview'?exteriorDayColor:dayColor,.035);if(tween){const q=Math.min(1,(now-tween.start)/tween.duration),k=ease(q);target.copy(tween.from.target).lerp(tween.to.target,k);radius=T.MathUtils.lerp(tween.from.radius,tween.to.radius,k);theta=T.MathUtils.lerp(tween.from.theta,tween.to.theta,k);phi=T.MathUtils.lerp(tween.from.phi,tween.to.phi,k);if(q===1){const done=tween.onDone;tween=null;done?.();}}if(auto&&!reducedMotion.matches)theta+=Math.min((now-last)/1000,.05)*.1;last=now;const distance=view==='room'?radius:background&&viewport?radius*1.18/Math.min(1,viewport.w/viewport.h):radius;camera.position.set(target.x+distance*Math.sin(phi)*Math.sin(theta),target.y+distance*Math.cos(phi),target.z+distance*Math.sin(phi)*Math.cos(theta));camera.lookAt(target);if(background&&viewport){const v=viewport;camera.setViewOffset(w,h,w/2-(v.x+v.w/2),h/2-(v.y+v.h/2),w,h);}else if(camera.view?.enabled)camera.clearViewOffset();camera.updateProjectionMatrix();renderer.render(scene,camera);}
+  function frame(now){requestAnimationFrame(frame);if(document.hidden||!visible)return;const w=canvas.clientWidth,h=canvas.clientHeight;if(!w||!h)return;if(canvas.width!==Math.round(w*renderer.getPixelRatio())||canvas.height!==Math.round(h*renderer.getPixelRatio())){renderer.setSize(w,h,false);}camera.aspect=w/h;updateRoomLighting(now);nightBlend.value=T.MathUtils.clamp((1.2-hemi.intensity)/.82,0,1);exteriorGlow.emissiveIntensity=nightBlend.value*1.8;fences.material.opacity=.54*(1-nightBlend.value*.75);const reflectionDay=T.MathUtils.lerp(1,.32,nightBlend.value);mats.glass.envMapIntensity=.75*reflectionDay;mats.facadeGlass.envMapIntensity=.9*reflectionDay;mats.facadeMetal.envMapIntensity=.3*reflectionDay;if(dayNightCycle){const phase=Math.floor(now/30000)%2?'night':'day';if(phase!==lastPhase){lastPhase=phase;night=phase==='night';document.body.dataset.phase=phase;}const goalHemi=night?.38:1.2,goalSun=night?.24:1.9;sun.color.lerp(night?moonTint:daySunTint,.035);hemi.color.lerp(night?nightSkyTint:daySkyTint,.035);hemi.intensity+= (goalHemi-hemi.intensity)*.035;sun.intensity+=(goalSun-sun.intensity)*.035;}scene.background.lerp(night?nightColor:view==='overview'?exteriorDayColor:dayColor,.035);if(tween){const q=Math.min(1,(now-tween.start)/tween.duration),k=ease(q);target.copy(tween.from.target).lerp(tween.to.target,k);radius=T.MathUtils.lerp(tween.from.radius,tween.to.radius,k);theta=T.MathUtils.lerp(tween.from.theta,tween.to.theta,k);phi=T.MathUtils.lerp(tween.from.phi,tween.to.phi,k);if(q===1){const done=tween.onDone;tween=null;done?.();}}if(auto&&!tween&&!reducedMotion.matches)theta+=Math.min((now-last)/1000,.05)*.1;last=now;const distance=radius*distanceScale();camera.position.set(target.x+distance*Math.sin(phi)*Math.sin(theta),target.y+distance*Math.cos(phi),target.z+distance*Math.sin(phi)*Math.cos(theta));camera.lookAt(target);if(background&&viewport){const v=viewport;camera.setViewOffset(w,h,w/2-(v.x+v.w/2),h/2-(v.y+v.h/2),w,h);}else if(camera.view?.enabled)camera.clearViewOffset();camera.updateProjectionMatrix();renderer.render(scene,camera);}
   roomLighting.forEach((_,zone)=>setRoomLighting(zone,65));curtains.forEach((_,zone)=>setCurtains(zone,0));
   const probeStart=performance.now();
   showView('overview');
@@ -716,5 +744,5 @@
   const warmupStart=performance.now();
   showView('overview');await renderer.compileAsync(scene,camera);
   const warmupMs=performance.now()-warmupStart;warming=false;
-  const initial=overviewPose();target.copy(initial.target);radius=initial.radius;theta=initial.theta;phi=initial.phi;requestAnimationFrame(frame);window.HDH_MODEL={warmupMs,facadeProbe,facadePanes,levels,roofs,shell,lights,select,overview,focus,progressiveFocus,renderer,scene,camera,roomLighting,curtains,navigation:()=>({view,selectedId,selectedZone,radius,detailZoom,phase:document.body.dataset.phase,dayNightCycle})};if(pendingFocus){window.HDH_ZONE=pendingFocus.zone;focus(pendingFocus.id,pendingFocus.zone,true);}parent.postMessage({channel:'hdh-ready'},location.origin);
+  const initial=overviewPose();target.copy(initial.target);radius=initial.radius;theta=initial.theta;phi=initial.phi;requestAnimationFrame(frame);window.HDH_MODEL={warmupMs,facadeProbe,facadePanes,levels,roofs,shell,lights,select,overview,focus,progressiveFocus,renderer,scene,camera,roomLighting,curtains,navigation:()=>({view,selectedId,selectedZone,radius,detailZoom,phase:document.body.dataset.phase,dayNightCycle,travelling:!!tween})};if(pendingFocus){window.HDH_ZONE=pendingFocus.zone;focus(pendingFocus.id,pendingFocus.zone,true);}parent.postMessage({channel:'hdh-ready'},location.origin);
 })();

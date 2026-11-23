@@ -1,0 +1,40 @@
+{
+  "data": {
+    "trees": 100,
+    "crowns": [
+      {
+        "name": "jura-firs",
+        "count": 53,
+        "triangles": 170
+      },
+      {
+        "name": "jura-spruces",
+        "count": 27,
+        "triangles": 170
+      },
+      {
+        "name": "jura-beeches",
+        "count": 20,
+        "triangles": 240
+      }
+    ],
+    "treeTriangles": 18400,
+    "terrainVertices": 3705,
+    "atlas": {
+      "width": 1024,
+      "parcels": 10,
+      "tracks": 4
+    },
+    "grassWidth": 1024,
+    "plants": 1521,
+    "floatingPlants": 0,
+    "rootError": 0.0000026248169859854897,
+    "pvCount": 27,
+    "pvClearance": 0.12241498406788548,
+    "finite": true,
+    "visibleRoofs": 6
+  },
+  "errors": [],
+  "night": true,
+  "hiddenInRoom": true
+}
