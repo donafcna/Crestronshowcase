@@ -510,6 +510,11 @@ Cadrage sur les volumes réels et recentrage étendus des cabines aux 37 espaces
 Publication autorisée des améliorations locales de l’hôtel : mobilier, matériaux, éclairage et ombres en cache, cadrage rapproché, paysage et toitures, façades et vitrages. Livraison isolée depuis origin/main, sans les autres modifications en cours. Fluidité locale mesurée autour de 59,9 images/s ; preuves conservées dans apps/showcase/docs/verification/2026-11-23-hotel-release/. Aucun matériel modifié.
 
 
+## 23/11/2026 — Yacht : Grand salon plus latéral
+
+Pitch du Grand salon 34,4° → 24,6°, orientation horizontale affinée. Caméra de 1 à 4 % plus proche selon le format, toute la pièce dans le cadre sur les quatre cas contrôlés. Cadence 59,94 → 59,90 i/s, build/lint réussis. Preuves : apps/showcase/docs/verification/2026-11-23-yacht-salon-lateral/.
+
+
 ## 23/11/2026 — Programme automobile 3D, candidat local 2.3.17
 
 Refonte validée comme direction par Donatien : circuit asymétrique, monoplaces détaillées et deux caméras de suivi, dans le programme TV du moteur plan3d. Rendu 640 × 360/cadence TV conservés, regroupement géométrique : 118 → 14 appels au cadrage comparé ; une petite texture GPU supplémentaire. Villa ~60 i/s sur fondus et vues stabilisées ; transitions initiales légèrement plus lentes (54–56 i/s), limites documentées. Trois thèmes/deux modes, recette navigateur locale et avant/après dans apps/showcase/docs/verification/2026-11-23-race-broadcast/ depuis la racine. Aucun commit/push ni changement GUI ou matériel ; validation visuelle requise avant publication.
@@ -523,3 +528,4 @@ Après validation de l'animation 2.3.17, nouvelle passe sur les matières : asph
 ## 23/11/2026 — Publication du programme automobile validé
 
 Donatien valide la version 2.3.18 et autorise commit/push vers main pour publication Vercel : nouvelle animation course et textures affinées. Recette locale et avant/après conservés dans apps/showcase/docs/verification/2026-11-23-race-broadcast/ et 2026-11-23-race-materials/. Aucun déploiement matériel.
+
