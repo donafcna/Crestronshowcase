@@ -132,7 +132,7 @@ function registerRoomWalls(r){
   for(const o of r.g.children){if(!o.isMesh||o.position.y>1.5||Math.abs(o.position[axis]-sign*limit)>.25)continue;
    parts.push({o,y:o.position.y,sy:o.scale.y,visible:o.visible});
   }
-  r.wallSides.push({axis,sign,parts});
+  r.wallSides.push({axis,sign,parts,amount:0,target:0});
  }
 }
 
@@ -368,22 +368,33 @@ function setMode(m,d=-1){if(innerWidth<551)document.querySelector('.panel').clas
 // Selection changes materials once; the animation loop never traverses the rooms.
 const roomContextMaterial=new THREE.MeshStandardMaterial({name:'Neighbouring rooms · neutral context',color:0x6b8288,roughness:.95,metalness:0});
 const roomOriginalMaterials=new WeakMap();
-let contextualDeck=-1,cutawayRoom=null,cutawayMask=-1;
-function restoreRoomWalls(r){if(r)for(const side of r.wallSides)for(const p of side.parts){p.o.position.y=p.y;p.o.scale.y=p.sy;p.o.visible=p.visible;}}
-function updateRoomCutaway(){
- if(!cutawayRoom)return;
- const sx=Math.sin(yaw),sz=Math.cos(yaw);let mask=0;
- for(let i=0;i<cutawayRoom.wallSides.length;i++){const side=cutawayRoom.wallSides[i];if(side.sign*(side.axis==='x'?sx:sz)>.18)mask|=1<<i;}
- if(mask===cutawayMask)return;cutawayMask=mask;
- cutawayRoom.wallSides.forEach((side,i)=>{const near=!!(mask&(1<<i));for(const p of side.parts){
-  const o=p.o;o.position.y=p.y;o.scale.y=p.sy;o.visible=p.visible;
-  if(!near)continue;
-  // Keep a low opaque sill; hide wall-mounted fittings above it.
-  if(o.material===M.wall||roomOriginalMaterials.get(o)===M.wall){const bottom=p.y-p.sy/2,top=Math.min(p.y+p.sy/2,.22);o.scale.y=Math.max(.01,top-bottom);o.position.y=bottom+o.scale.y/2;}
-  else if(p.y>.25)o.visible=false;
- }});
+let contextualDeck=-1,cutawayRoom=null;
+const movingWallSides=new Set();
+function applyWallSide(side){
+ const amount=side.amount;
+ for(const p of side.parts){const o=p.o;o.visible=p.visible;o.position.y=p.y;o.scale.y=p.sy;
+  if(amount===0)continue;
+  if(o.material===M.wall||roomOriginalMaterials.get(o)===M.wall){const bottom=p.y-p.sy/2,low=Math.max(.01,Math.min(p.y+p.sy/2,.22)-bottom);o.scale.y=p.sy+(low-p.sy)*amount;o.position.y=bottom+o.scale.y/2;}
+  else if(p.y>.25){o.position.y=p.y*(1-amount*(1-.22/1.24));o.scale.y=p.sy*(1-amount);o.visible=p.visible&&amount<.985;}
+ }
 }
-function setRoomCutaway(r){restoreRoomWalls(cutawayRoom);cutawayRoom=r;cutawayMask=-1;if(r)updateRoomCutaway();}
+function restoreRoomWalls(r){if(r)for(const side of r.wallSides){side.amount=side.target=0;movingWallSides.delete(side);applyWallSide(side);}}
+function updateRoomCutaway(dt=1/60,instant=false){
+ if(cutawayRoom){const sx=Math.sin(yaw),sz=Math.cos(yaw);
+  for(const side of cutawayRoom.wallSides){const goal=THREE.MathUtils.smoothstep(side.sign*(side.axis==='x'?sx:sz),.08,.28);
+   if(goal!==side.target){side.target=goal;movingWallSides.add(side);}
+  }
+ }
+ for(const side of movingWallSides){
+  const delta=side.target-side.amount;
+  side.amount=instant||Math.abs(delta)<.001?side.target:side.amount+delta*(1-Math.exp(-Math.max(0,dt)*(delta>0?10:6)));
+  applyWallSide(side);if(side.amount===side.target)movingWallSides.delete(side);
+ }
+}
+function setRoomCutaway(r){
+ if(cutawayRoom&&cutawayRoom!==r)for(const side of cutawayRoom.wallSides){side.target=0;if(side.amount!==0)movingWallSides.add(side);}
+ cutawayRoom=r;
+}
 const roomOutline=new THREE.LineLoop(new THREE.BufferGeometry(),new THREE.LineBasicMaterial({color:0x65dbc2,toneMapped:false,depthTest:true}));
 roomOutline.name='Selected room · floor perimeter';roomOutline.visible=false;roomOutline.frustumCulled=false;
 function emphasizeRoom(active){
@@ -473,6 +484,6 @@ window.__ftvModel={project:'yacht-monaco',catalog:rooms.map(r=>({id:String(r.id)
  state:()=>({room:selectedRoom?String(selectedRoom.id):'all',floor:deckIndex,view:mode}),lastRoom:()=>String(lastSelectedRoom?.id??0),capture:()=>$('shot').click()};
 canvas.addEventListener('pointerup',()=>setTimeout(()=>window.__ftvEmit?.(),0));
 
-let last=performance.now();function animate(now){requestAnimationFrame(animate);if(document.hidden||window.__ftvPaused)return;const dt=Math.min(.5,(now-last)/1000);last=now;sea.update(dt);if(auto)desiredYaw+=dt*.11;const a=matchMedia('(prefers-reduced-motion: reduce)').matches?1:1-Math.exp(-dt*2.5);yaw+=(desiredYaw-yaw)*a;pitch+=(desiredPitch-pitch)*a;radius+=(desiredRadius-radius)*a;target.lerp(desiredTarget,a);camera.position.set(target.x+Math.sin(yaw)*Math.cos(pitch)*radius,target.y+Math.sin(pitch)*radius,target.z+Math.cos(yaw)*Math.cos(pitch)*radius);camera.lookAt(target);sky.update(dt,camera);const viewport=window.__ftvViewport;if(viewport){const shift=0;camera.setViewOffset(viewport.w,viewport.h,-viewport.x-shift,-viewport.y,innerWidth,innerHeight)}else camera.setViewOffset(innerWidth,innerHeight,-innerWidth*.035,0,innerWidth,innerHeight);updateRoomCutaway();positionRoomLabels(now);renderer.render(scene,camera)}requestAnimationFrame(animate);$('loader').style.display='none';
+let last=performance.now();function animate(now){requestAnimationFrame(animate);if(document.hidden||window.__ftvPaused)return;const dt=Math.min(.5,(now-last)/1000);last=now;sea.update(dt);if(auto)desiredYaw+=dt*.11;const a=matchMedia('(prefers-reduced-motion: reduce)').matches?1:1-Math.exp(-dt*2.5);yaw+=(desiredYaw-yaw)*a;pitch+=(desiredPitch-pitch)*a;radius+=(desiredRadius-radius)*a;target.lerp(desiredTarget,a);camera.position.set(target.x+Math.sin(yaw)*Math.cos(pitch)*radius,target.y+Math.sin(pitch)*radius,target.z+Math.cos(yaw)*Math.cos(pitch)*radius);camera.lookAt(target);sky.update(dt,camera);const viewport=window.__ftvViewport;if(viewport){const shift=0;camera.setViewOffset(viewport.w,viewport.h,-viewport.x-shift,-viewport.y,innerWidth,innerHeight)}else camera.setViewOffset(innerWidth,innerHeight,-innerWidth*.035,0,innerWidth,innerHeight);updateRoomCutaway(dt,a===1);positionRoomLabels(now);renderer.render(scene,camera)}requestAnimationFrame(animate);$('loader').style.display='none';
 </script><script src="../model-bridge.js"></script></body></html>
 

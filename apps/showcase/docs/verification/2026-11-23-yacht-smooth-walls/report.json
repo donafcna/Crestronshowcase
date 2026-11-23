@@ -1,0 +1,133 @@
+{
+  "runs": [
+    {
+      "subject": "11",
+      "instant": true,
+      "fps": 53.592086314101294,
+      "calls": 703,
+      "triangles": 161704,
+      "textures": 7
+    },
+    {
+      "subject": "11",
+      "instant": false,
+      "fps": 59.94433740047485,
+      "calls": 643,
+      "triangles": 159152,
+      "textures": 7
+    },
+    {
+      "subject": "11",
+      "instant": false,
+      "fps": 54.74886931682933,
+      "calls": 639,
+      "triangles": 159104,
+      "textures": 7
+    },
+    {
+      "subject": "11",
+      "instant": true,
+      "fps": 60.022300776291566,
+      "calls": 643,
+      "triangles": 159152,
+      "textures": 7
+    },
+    {
+      "subject": "20",
+      "instant": true,
+      "fps": 59.922956199512214,
+      "calls": 563,
+      "triangles": 166260,
+      "textures": 7
+    },
+    {
+      "subject": "20",
+      "instant": false,
+      "fps": 59.86743639067929,
+      "calls": 563,
+      "triangles": 166260,
+      "textures": 7
+    },
+    {
+      "subject": "20",
+      "instant": false,
+      "fps": 59.95860001376567,
+      "calls": 563,
+      "triangles": 166260,
+      "textures": 7
+    },
+    {
+      "subject": "20",
+      "instant": true,
+      "fps": 59.88593155893536,
+      "calls": 563,
+      "triangles": 166260,
+      "textures": 7
+    },
+    {
+      "subject": "30",
+      "instant": true,
+      "fps": 59.94291151284491,
+      "calls": 492,
+      "triangles": 135376,
+      "textures": 7
+    },
+    {
+      "subject": "30",
+      "instant": false,
+      "fps": 59.88166242883971,
+      "calls": 494,
+      "triangles": 135548,
+      "textures": 7
+    },
+    {
+      "subject": "30",
+      "instant": false,
+      "fps": 59.74199076532212,
+      "calls": 495,
+      "triangles": 135620,
+      "textures": 7
+    },
+    {
+      "subject": "30",
+      "instant": true,
+      "fps": 59.911559127172794,
+      "calls": 495,
+      "triangles": 135620,
+      "textures": 7
+    }
+  ],
+  "behavior": {
+    "fullyLowered": true,
+    "noJumpOnDeselect": true,
+    "progressiveRaise": true,
+    "exactHeightRestored": true,
+    "intermediateHeight": true,
+    "noJumpOnOrbit": true,
+    "smoothReversal": true,
+    "noJumpOnRoomChange": true,
+    "allRoomsRestored": true,
+    "animationSetEmpty": true,
+    "furnitureUnchanged": true,
+    "reducedMotionImmediate": true,
+    "reducedMotionRestore": true
+  },
+  "subjects": {
+    "11": {
+      "before": 56.80719354519643,
+      "after": 57.34660335865209,
+      "percent": 0.949544907594313
+    },
+    "20": {
+      "before": 59.90444387922379,
+      "after": 59.913018202222474,
+      "percent": 0.01431333377532873
+    },
+    "30": {
+      "before": 59.92723532000885,
+      "after": 59.811826597080916,
+      "percent": -0.19258142364094732
+    }
+  },
+  "status": "passed"
+}

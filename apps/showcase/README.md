@@ -745,3 +745,6 @@ Pièce sélectionnée : parois proches réduites en murets de 22 cm et appliques
 ## 23/11/2026 — Publication du paysage et de la nuit de l’hôtel
 
 Publication autorisée des derniers ajustements Hotel des Horlogers : rendu nocturne, suppression de la brume, relief/pâtures/champs/chemins, clôtures, fossés, pierres, buissons et ruisseau. Livraison isolée depuis origin/main 49136dc, sans les autres modifications locales. Preuves de fluidité et recette : apps/showcase/docs/verification/2026-11-23-hotel-rural-release/. Aucun matériel modifié.
+## 23/11/2026 — Yacht : murs animés progressivement
+
+Descente et remontée interpolées, cibles directionnelles progressives, continuité lors des changements de pièce et inversions. Appliques accompagnant le mur, mode réduction des animations respecté. Treize assertions de comportement réussies, passage rapide des 37 espaces et restauration complète. Trois bancs en rotation : écarts inférieurs à 1 %, build/lint réussis. Preuves : apps/showcase/docs/verification/2026-11-23-yacht-smooth-walls/.
