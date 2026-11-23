@@ -1,0 +1,152 @@
+{
+  "cabins": [
+    {
+      "id": 11,
+      "name": "Grand salon",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 1280,
+        "h": 800
+      },
+      "before": {
+        "extent": 0.974939903574152,
+        "hidden": 0,
+        "pillows": 14,
+        "radius": 15.753746032714844,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749346430775326,
+        "hidden": 0,
+        "pillows": 14,
+        "radius": 15.566024780273438,
+        "pitch": 0.43,
+        "yaw": -0.4,
+        "failed": 0
+      }
+    },
+    {
+      "id": 11,
+      "name": "Grand salon",
+      "view": {
+        "x": 620,
+        "y": 100,
+        "w": 420,
+        "h": 600
+      },
+      "before": {
+        "extent": 0.9749863028493857,
+        "hidden": 0,
+        "pillows": 14,
+        "radius": 34.985389709472656,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749920985481129,
+        "hidden": 0,
+        "pillows": 14,
+        "radius": 33.646697998046875,
+        "pitch": 0.43,
+        "yaw": -0.4,
+        "failed": 0
+      }
+    },
+    {
+      "id": 11,
+      "name": "Grand salon",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 390,
+        "h": 700
+      },
+      "before": {
+        "extent": 0.9749971461790596,
+        "hidden": 0,
+        "pillows": 14,
+        "radius": 43.88801574707031,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749984341719558,
+        "hidden": 0,
+        "pillows": 14,
+        "radius": 42.23186492919922,
+        "pitch": 0.43,
+        "yaw": -0.4,
+        "failed": 0
+      }
+    },
+    {
+      "id": 11,
+      "name": "Grand salon",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 900,
+        "h": 700
+      },
+      "before": {
+        "extent": 0.9749871500580738,
+        "hidden": 0,
+        "pillows": 14,
+        "radius": 19.167518615722656,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749864487713495,
+        "hidden": 0,
+        "pillows": 14,
+        "radius": 18.3941650390625,
+        "pitch": 0.43,
+        "yaw": -0.4,
+        "failed": 0
+      }
+    }
+  ],
+  "runs": [
+    {
+      "before": true,
+      "fps": 59.97001499250375,
+      "calls": 830,
+      "triangles": 166320,
+      "textures": 7
+    },
+    {
+      "before": false,
+      "fps": 59.880239520958085,
+      "calls": 640,
+      "triangles": 158432,
+      "textures": 7
+    },
+    {
+      "before": false,
+      "fps": 59.91462166430692,
+      "calls": 640,
+      "triangles": 158432,
+      "textures": 7
+    },
+    {
+      "before": true,
+      "fps": 59.910134797803295,
+      "calls": 830,
+      "triangles": 166320,
+      "textures": 7
+    }
+  ],
+  "performance": {
+    "before": 59.94007489515352,
+    "after": 59.8974305926325,
+    "percent": -0.07114489362185505
+  },
+  "status": "passed"
+}
