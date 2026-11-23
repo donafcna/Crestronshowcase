@@ -703,3 +703,8 @@ Caméra des cinq pièces de type bed placée du côté du pied du lit, symétrie
 ## 22/11/2026 — Yacht : cadrage des cabines rapproché
 
 Fit des volumes réels du mobilier et des murs, mémorisé, recentré dans le plan de caméra. Vue latérale depuis le pied du lit conservée. 32 cas sur huit espaces et quatre formats : pièce entière dans le cadre, oreillers dégagés et caméra plus proche. Cabine capitaine 59,81 → 59,68 i/s, build/lint réussis. Aucun surcoût dans la boucle animation. Preuves : apps/showcase/docs/verification/2026-11-22-yacht-cabin-close/.
+
+
+## 23/11/2026 — Yacht : autres pièces rapprochées
+
+Cadrage sur les volumes réels et recentrage étendus des cabines aux 37 espaces. 148 cas vérifiés sur quatre formats : pièces entières, distances égales ou réduites, shaders valides. Grand salon 59,66 → 59,98 i/s, build/lint réussis ; interpolation et budget de rendu conservés. Preuves : apps/showcase/docs/verification/2026-11-23-yacht-room-close/.

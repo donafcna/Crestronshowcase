@@ -1,0 +1,4184 @@
+{
+  "cabins": [
+    {
+      "id": 0,
+      "name": "Beach club",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 1280,
+        "h": 800
+      },
+      "before": {
+        "extent": 0.9843566371107235,
+        "hidden": 0,
+        "pillows": 14,
+        "radius": 18.555068969726562,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.974980110867274,
+        "hidden": 0,
+        "pillows": 14,
+        "radius": 14.324455261230469,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 1,
+      "name": "Spa & massage",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 1280,
+        "h": 800
+      },
+      "before": {
+        "extent": 0.9884491020663004,
+        "hidden": 0,
+        "pillows": 4,
+        "radius": 12.499427795410156,
+        "pitch": 0.6,
+        "yaw": 3.791592653589793,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749468963319368,
+        "hidden": 0,
+        "pillows": 4,
+        "radius": 10.023536682128906,
+        "pitch": 0.6,
+        "yaw": 3.791592653589793,
+        "failed": 0
+      }
+    },
+    {
+      "id": 2,
+      "name": "Fitness",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 1280,
+        "h": 800
+      },
+      "before": {
+        "extent": 0.9884491020663022,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 12.499427795410156,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749468963319372,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 10.023536682128906,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 3,
+      "name": "Cinéma",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 1280,
+        "h": 800
+      },
+      "before": {
+        "extent": 0.9865900324217727,
+        "hidden": 0,
+        "pillows": 6,
+        "radius": 14.733238220214844,
+        "pitch": 0.6,
+        "yaw": 3.791592653589793,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.974974964315009,
+        "hidden": 0,
+        "pillows": 6,
+        "radius": 11.515159606933594,
+        "pitch": 0.6,
+        "yaw": 3.791592653589793,
+        "failed": 0
+      }
+    },
+    {
+      "id": 4,
+      "name": "Machines",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 1280,
+        "h": 800
+      },
+      "before": {
+        "extent": 0.9865900324217727,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 14.733238220214844,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749749643150079,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 11.515159606933594,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 5,
+      "name": "Mess équipage",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 1280,
+        "h": 800
+      },
+      "before": {
+        "extent": 0.9874506165025707,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 13.6163330078125,
+        "pitch": 0.6,
+        "yaw": 3.791592653589793,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749958854283238,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 11.143341064453125,
+        "pitch": 0.6,
+        "yaw": 3.791592653589793,
+        "failed": 0
+      }
+    },
+    {
+      "id": 6,
+      "name": "Buanderie",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 1280,
+        "h": 800
+      },
+      "before": {
+        "extent": 0.9874506165025716,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 13.6163330078125,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749958854283247,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 11.143341064453125,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 7,
+      "name": "Cabines équipage",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 1280,
+        "h": 800
+      },
+      "before": {
+        "extent": 0.9749760942469825,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 10.147476196289062,
+        "pitch": 0.6,
+        "yaw": 3.791592653589793,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749760942469825,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 10.147476196289062,
+        "pitch": 0.6,
+        "yaw": 3.791592653589793,
+        "failed": 0
+      }
+    },
+    {
+      "id": 8,
+      "name": "Réserve & racks AV",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 1280,
+        "h": 800
+      },
+      "before": {
+        "extent": 0.9880738622730754,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 12.871971130371094,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749760942469812,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 10.147476196289062,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 9,
+      "name": "Équipage avant",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 1280,
+        "h": 800
+      },
+      "before": {
+        "extent": 0.974926619095819,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 11.649246215820312,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.974926619095819,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 11.649246215820312,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 10,
+      "name": "Terrasse arrière & bassin",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 1280,
+        "h": 800
+      },
+      "before": {
+        "extent": 0.9561213369588142,
+        "hidden": 0,
+        "pillows": 4,
+        "radius": 19.79663848876953,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749828925540318,
+        "hidden": 0,
+        "pillows": 4,
+        "radius": 12.792243957519531,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 11,
+      "name": "Grand salon",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 1280,
+        "h": 800
+      },
+      "before": {
+        "extent": 0.9842635948244749,
+        "hidden": 0,
+        "pillows": 14,
+        "radius": 21.476707458496094,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.974939903574152,
+        "hidden": 0,
+        "pillows": 14,
+        "radius": 15.753746032714844,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 12,
+      "name": "Salle à manger",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 1280,
+        "h": 800
+      },
+      "before": {
+        "extent": 0.9844326988813867,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 21.104164123535156,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749724383368488,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 15.630531311035156,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 13,
+      "name": "Atrium & escalier",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 1280,
+        "h": 800
+      },
+      "before": {
+        "extent": 0.987253454166946,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 15.892181396484375,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749570531999092,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 12.39288330078125,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 14,
+      "name": "Cuisine principale",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 1280,
+        "h": 800
+      },
+      "before": {
+        "extent": 0.9898651880235383,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 12.877044677734375,
+        "pitch": 0.6,
+        "yaw": 3.791592653589793,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749966006975235,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 10.2532958984375,
+        "pitch": 0.6,
+        "yaw": 3.791592653589793,
+        "failed": 0
+      }
+    },
+    {
+      "id": 15,
+      "name": "Suite VIP",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 1280,
+        "h": 800
+      },
+      "before": {
+        "extent": 0.9749966006975237,
+        "hidden": 0,
+        "pillows": 2,
+        "radius": 10.2532958984375,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749966006975237,
+        "hidden": 0,
+        "pillows": 2,
+        "radius": 10.2532958984375,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 16,
+      "name": "Suite invités bâbord",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 1280,
+        "h": 800
+      },
+      "before": {
+        "extent": 0.9749117040602782,
+        "hidden": 0,
+        "pillows": 2,
+        "radius": 10.501899719238281,
+        "pitch": 0.6,
+        "yaw": 3.791592653589793,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749117040602782,
+        "hidden": 0,
+        "pillows": 2,
+        "radius": 10.501899719238281,
+        "pitch": 0.6,
+        "yaw": 3.791592653589793,
+        "failed": 0
+      }
+    },
+    {
+      "id": 17,
+      "name": "Suite invités tribord",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 1280,
+        "h": 800
+      },
+      "before": {
+        "extent": 0.9749117040602784,
+        "hidden": 0,
+        "pillows": 2,
+        "radius": 10.501899719238281,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749117040602784,
+        "hidden": 0,
+        "pillows": 2,
+        "radius": 10.501899719238281,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 18,
+      "name": "Salon avant",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 1280,
+        "h": 800
+      },
+      "before": {
+        "extent": 0.9898271422098373,
+        "hidden": 0,
+        "pillows": 7,
+        "radius": 12.900238037109375,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749799902479412,
+        "hidden": 0,
+        "pillows": 7,
+        "radius": 10.393180847167969,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 19,
+      "name": "Dîner extérieur",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 1280,
+        "h": 800
+      },
+      "before": {
+        "extent": 0.9537516805385067,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 17.418594360351562,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749148112867845,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 11.249160766601562,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 20,
+      "name": "Sky lounge",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 1280,
+        "h": 800
+      },
+      "before": {
+        "extent": 0.9864024897404813,
+        "hidden": 0,
+        "pillows": 14,
+        "radius": 17.26348876953125,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749210943747331,
+        "hidden": 0,
+        "pillows": 14,
+        "radius": 12.933578491210938,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 21,
+      "name": "Galerie centrale",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 1280,
+        "h": 800
+      },
+      "before": {
+        "extent": 0.9876535136241302,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 15.375404357910156,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749397589441275,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 11.921768188476562,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 22,
+      "name": "Suite propriétaire",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 1280,
+        "h": 800
+      },
+      "before": {
+        "extent": 0.9749447135902836,
+        "hidden": 0,
+        "pillows": 16,
+        "radius": 15.16448974609375,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749447135902836,
+        "hidden": 0,
+        "pillows": 16,
+        "radius": 15.16448974609375,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 23,
+      "name": "Salle de bain propriétaire",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 1280,
+        "h": 800
+      },
+      "before": {
+        "extent": 0.992296540645921,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 10.851974487304688,
+        "pitch": 0.6,
+        "yaw": 3.791592653589793,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749766253640202,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 8.656578063964844,
+        "pitch": 0.6,
+        "yaw": 3.791592653589793,
+        "failed": 0
+      }
+    },
+    {
+      "id": 24,
+      "name": "Dressing propriétaire",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 1280,
+        "h": 800
+      },
+      "before": {
+        "extent": 0.9922965406459214,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 10.851974487304688,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749799879871468,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 8.77471923828125,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 25,
+      "name": "Suite familiale",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 1280,
+        "h": 800
+      },
+      "before": {
+        "extent": 0.9749130774740835,
+        "hidden": 0,
+        "pillows": 2,
+        "radius": 11.623153686523438,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749130774740835,
+        "hidden": 0,
+        "pillows": 2,
+        "radius": 11.623153686523438,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 26,
+      "name": "Terrasse privée & jacuzzi",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 1280,
+        "h": 800
+      },
+      "before": {
+        "extent": 0.9497448144016412,
+        "hidden": 0,
+        "pillows": 4,
+        "radius": 14.37591552734375,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749050889028581,
+        "hidden": 0,
+        "pillows": 4,
+        "radius": 9.329185485839844,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 27,
+      "name": "Terrasse panoramique",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 1280,
+        "h": 800
+      },
+      "before": {
+        "extent": 0.9531537085456963,
+        "hidden": 0,
+        "pillows": 13,
+        "radius": 16.345176696777344,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749353963007217,
+        "hidden": 0,
+        "pillows": 13,
+        "radius": 11.26800537109375,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 28,
+      "name": "Salon observation",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 1280,
+        "h": 800
+      },
+      "before": {
+        "extent": 0.9868629367189106,
+        "hidden": 0,
+        "pillows": 13,
+        "radius": 15.365257263183594,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749493656442878,
+        "hidden": 0,
+        "pillows": 13,
+        "radius": 11.826820373535156,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 29,
+      "name": "Lobby supérieur",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 1280,
+        "h": 800
+      },
+      "before": {
+        "extent": 0.9885533181111059,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 13.312644958496094,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749762691023636,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 10.680198669433594,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 30,
+      "name": "Cabine capitaine",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 1280,
+        "h": 800
+      },
+      "before": {
+        "extent": 0.9749696929355793,
+        "hidden": 0,
+        "pillows": 2,
+        "radius": 9.194374084472656,
+        "pitch": 0.6,
+        "yaw": 3.791592653589793,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749696929355793,
+        "hidden": 0,
+        "pillows": 2,
+        "radius": 9.194374084472656,
+        "pitch": 0.6,
+        "yaw": 3.791592653589793,
+        "failed": 0
+      }
+    },
+    {
+      "id": 31,
+      "name": "Bureau navigation",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 1280,
+        "h": 800
+      },
+      "before": {
+        "extent": 0.9913730016901727,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 10.714263916015625,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.97496969293558,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 9.194374084472656,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 32,
+      "name": "Passerelle",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 1280,
+        "h": 800
+      },
+      "before": {
+        "extent": 0.9861031482236089,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 16.524925231933594,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749505407116508,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 13.398895263671875,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 33,
+      "name": "Solarium",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 1280,
+        "h": 800
+      },
+      "before": {
+        "extent": 0.9513383030821665,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 14.764404296875,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749795734179192,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 9.370498657226562,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 34,
+      "name": "Bar & cuisine extérieure",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 1280,
+        "h": 800
+      },
+      "before": {
+        "extent": 0.9508097325968605,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 14.391860961914062,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.974992287830216,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 10.585250854492188,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 35,
+      "name": "Lounge couvert",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 1280,
+        "h": 800
+      },
+      "before": {
+        "extent": 0.9897506495008344,
+        "hidden": 0,
+        "pillows": 9,
+        "radius": 11.756515502929688,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749532211435907,
+        "hidden": 0,
+        "pillows": 9,
+        "radius": 9.324836730957031,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 36,
+      "name": "Piscine du sun deck",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 1280,
+        "h": 800
+      },
+      "before": {
+        "extent": 0.95190533298,
+        "hidden": 0,
+        "pillows": 4,
+        "radius": 15.136222839355469,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749808029734255,
+        "hidden": 0,
+        "pillows": 4,
+        "radius": 9.800300598144531,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 0,
+      "name": "Beach club",
+      "view": {
+        "x": 620,
+        "y": 100,
+        "w": 420,
+        "h": 600
+      },
+      "before": {
+        "extent": 0.9533794304404983,
+        "hidden": 0,
+        "pillows": 14,
+        "radius": 30.690269470214844,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749797253886667,
+        "hidden": 0,
+        "pillows": 14,
+        "radius": 29.848060607910156,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 1,
+      "name": "Spa & massage",
+      "view": {
+        "x": 620,
+        "y": 100,
+        "w": 420,
+        "h": 600
+      },
+      "before": {
+        "extent": 0.947416057837287,
+        "hidden": 0,
+        "pillows": 4,
+        "radius": 22.1746826171875,
+        "pitch": 0.6,
+        "yaw": 3.791592653589793,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749866566636949,
+        "hidden": 0,
+        "pillows": 4,
+        "radius": 20.717124938964844,
+        "pitch": 0.6,
+        "yaw": 3.791592653589793,
+        "failed": 0
+      }
+    },
+    {
+      "id": 2,
+      "name": "Fitness",
+      "view": {
+        "x": 620,
+        "y": 100,
+        "w": 420,
+        "h": 600
+      },
+      "before": {
+        "extent": 0.947416057837287,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 22.1746826171875,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749866566636933,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 20.717124938964844,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 3,
+      "name": "Cinéma",
+      "view": {
+        "x": 620,
+        "y": 100,
+        "w": 420,
+        "h": 600
+      },
+      "before": {
+        "extent": 0.9526397573775793,
+        "hidden": 0,
+        "pillows": 6,
+        "radius": 27.865028381347656,
+        "pitch": 0.6,
+        "yaw": 3.791592653589793,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749927479363762,
+        "hidden": 0,
+        "pillows": 6,
+        "radius": 25.658035278320312,
+        "pitch": 0.6,
+        "yaw": 3.791592653589793,
+        "failed": 0
+      }
+    },
+    {
+      "id": 4,
+      "name": "Machines",
+      "view": {
+        "x": 620,
+        "y": 100,
+        "w": 420,
+        "h": 600
+      },
+      "before": {
+        "extent": 0.9526397573775799,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 27.865028381347656,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749927479363761,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 25.658035278320312,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 5,
+      "name": "Mess équipage",
+      "view": {
+        "x": 620,
+        "y": 100,
+        "w": 420,
+        "h": 600
+      },
+      "before": {
+        "extent": 0.9503163621381667,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 25.019493103027344,
+        "pitch": 0.6,
+        "yaw": 3.791592653589793,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749709740956913,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 23.187942504882812,
+        "pitch": 0.6,
+        "yaw": 3.791592653589793,
+        "failed": 0
+      }
+    },
+    {
+      "id": 6,
+      "name": "Buanderie",
+      "view": {
+        "x": 620,
+        "y": 100,
+        "w": 420,
+        "h": 600
+      },
+      "before": {
+        "extent": 0.9503163621381662,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 25.019493103027344,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749709740956913,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 23.187942504882812,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 7,
+      "name": "Cabines équipage",
+      "view": {
+        "x": 620,
+        "y": 100,
+        "w": 420,
+        "h": 600
+      },
+      "before": {
+        "extent": 0.9749941891903486,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 21.540489196777344,
+        "pitch": 0.6,
+        "yaw": 3.791592653589793,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749941891903486,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 21.540489196777344,
+        "pitch": 0.6,
+        "yaw": 3.791592653589793,
+        "failed": 0
+      }
+    },
+    {
+      "id": 8,
+      "name": "Réserve & racks AV",
+      "view": {
+        "x": 620,
+        "y": 100,
+        "w": 420,
+        "h": 600
+      },
+      "before": {
+        "extent": 0.9484659229935514,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 23.122711181640625,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749941891903491,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 21.540489196777344,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 9,
+      "name": "Équipage avant",
+      "view": {
+        "x": 620,
+        "y": 100,
+        "w": 420,
+        "h": 600
+      },
+      "before": {
+        "extent": 0.9749726324721034,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 22.654495239257812,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749726324721034,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 22.654495239257812,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 10,
+      "name": "Terrasse arrière & bassin",
+      "view": {
+        "x": 620,
+        "y": 100,
+        "w": 420,
+        "h": 600
+      },
+      "before": {
+        "extent": 0.9156725504421144,
+        "hidden": 0,
+        "pillows": 4,
+        "radius": 32.59574890136719,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749770513704259,
+        "hidden": 0,
+        "pillows": 4,
+        "radius": 29.773406982421875,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 11,
+      "name": "Grand salon",
+      "view": {
+        "x": 620,
+        "y": 100,
+        "w": 420,
+        "h": 600
+      },
+      "before": {
+        "extent": 0.9571407566126677,
+        "hidden": 0,
+        "pillows": 14,
+        "radius": 35.79643249511719,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749863028493857,
+        "hidden": 0,
+        "pillows": 14,
+        "radius": 34.985389709472656,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 12,
+      "name": "Salle à manger",
+      "view": {
+        "x": 620,
+        "y": 100,
+        "w": 420,
+        "h": 600
+      },
+      "before": {
+        "extent": 0.9567174630271882,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 35.09773254394531,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749829492290418,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 34.162025451660156,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 13,
+      "name": "Atrium & escalier",
+      "view": {
+        "x": 620,
+        "y": 100,
+        "w": 420,
+        "h": 600
+      },
+      "before": {
+        "extent": 0.9475464753622158,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 25.3173828125,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749744683009502,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 22.634201049804688,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 14,
+      "name": "Cuisine principale",
+      "view": {
+        "x": 620,
+        "y": 100,
+        "w": 420,
+        "h": 600
+      },
+      "before": {
+        "extent": 0.9480218345843197,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 22.531280517578125,
+        "pitch": 0.6,
+        "yaw": 3.791592653589793,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749669059799869,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 21.21288299560547,
+        "pitch": 0.6,
+        "yaw": 3.791592653589793,
+        "failed": 0
+      }
+    },
+    {
+      "id": 15,
+      "name": "Suite VIP",
+      "view": {
+        "x": 620,
+        "y": 100,
+        "w": 420,
+        "h": 600
+      },
+      "before": {
+        "extent": 0.9749669059799857,
+        "hidden": 0,
+        "pillows": 2,
+        "radius": 21.21288299560547,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749669059799857,
+        "hidden": 0,
+        "pillows": 2,
+        "radius": 21.21288299560547,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 16,
+      "name": "Suite invités bâbord",
+      "view": {
+        "x": 620,
+        "y": 100,
+        "w": 420,
+        "h": 600
+      },
+      "before": {
+        "extent": 0.9749786570002535,
+        "hidden": 0,
+        "pillows": 2,
+        "radius": 22.85961151123047,
+        "pitch": 0.6,
+        "yaw": 3.791592653589793,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749786570002535,
+        "hidden": 0,
+        "pillows": 2,
+        "radius": 22.85961151123047,
+        "pitch": 0.6,
+        "yaw": 3.791592653589793,
+        "failed": 0
+      }
+    },
+    {
+      "id": 17,
+      "name": "Suite invités tribord",
+      "view": {
+        "x": 620,
+        "y": 100,
+        "w": 420,
+        "h": 600
+      },
+      "before": {
+        "extent": 0.9749786570002534,
+        "hidden": 0,
+        "pillows": 2,
+        "radius": 22.85961151123047,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749786570002534,
+        "hidden": 0,
+        "pillows": 2,
+        "radius": 22.85961151123047,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 18,
+      "name": "Salon avant",
+      "view": {
+        "x": 620,
+        "y": 100,
+        "w": 420,
+        "h": 600
+      },
+      "before": {
+        "extent": 0.9420733605463174,
+        "hidden": 0,
+        "pillows": 7,
+        "radius": 20.489540100097656,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749977629459972,
+        "hidden": 0,
+        "pillows": 7,
+        "radius": 18.808746337890625,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 19,
+      "name": "Dîner extérieur",
+      "view": {
+        "x": 620,
+        "y": 100,
+        "w": 420,
+        "h": 600
+      },
+      "before": {
+        "extent": 0.9061765318222197,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 28.3673095703125,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749938509299216,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 25.342750549316406,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 20,
+      "name": "Sky lounge",
+      "view": {
+        "x": 620,
+        "y": 100,
+        "w": 420,
+        "h": 600
+      },
+      "before": {
+        "extent": 0.952362180969176,
+        "hidden": 0,
+        "pillows": 14,
+        "radius": 28.411521911621094,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749870690884195,
+        "hidden": 0,
+        "pillows": 14,
+        "radius": 27.51495361328125,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 21,
+      "name": "Galerie centrale",
+      "view": {
+        "x": 620,
+        "y": 100,
+        "w": 420,
+        "h": 600
+      },
+      "before": {
+        "extent": 0.9471994213037718,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 24.58099365234375,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749987836168863,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 22.32036590576172,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 22,
+      "name": "Suite propriétaire",
+      "view": {
+        "x": 620,
+        "y": 100,
+        "w": 420,
+        "h": 600
+      },
+      "before": {
+        "extent": 0.9749923147231823,
+        "hidden": 0,
+        "pillows": 16,
+        "radius": 33.848915100097656,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749923147231823,
+        "hidden": 0,
+        "pillows": 16,
+        "radius": 33.848915100097656,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 23,
+      "name": "Salle de bain propriétaire",
+      "view": {
+        "x": 620,
+        "y": 100,
+        "w": 420,
+        "h": 600
+      },
+      "before": {
+        "extent": 0.9419453400885545,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 18.2318115234375,
+        "pitch": 0.6,
+        "yaw": 3.791592653589793,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749967979954564,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 17.233047485351562,
+        "pitch": 0.6,
+        "yaw": 3.791592653589793,
+        "failed": 0
+      }
+    },
+    {
+      "id": 24,
+      "name": "Dressing propriétaire",
+      "view": {
+        "x": 620,
+        "y": 100,
+        "w": 420,
+        "h": 600
+      },
+      "before": {
+        "extent": 0.9419453400885551,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 18.2318115234375,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749967979954546,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 17.233047485351562,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 25,
+      "name": "Suite familiale",
+      "view": {
+        "x": 620,
+        "y": 100,
+        "w": 420,
+        "h": 600
+      },
+      "before": {
+        "extent": 0.9749755134398637,
+        "hidden": 0,
+        "pillows": 2,
+        "radius": 22.92266845703125,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749755134398637,
+        "hidden": 0,
+        "pillows": 2,
+        "radius": 22.92266845703125,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 26,
+      "name": "Terrasse privée & jacuzzi",
+      "view": {
+        "x": 620,
+        "y": 100,
+        "w": 420,
+        "h": 600
+      },
+      "before": {
+        "extent": 0.8886477273961921,
+        "hidden": 0,
+        "pillows": 4,
+        "radius": 22.96905517578125,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749726542346902,
+        "hidden": 0,
+        "pillows": 4,
+        "radius": 19.71691131591797,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 27,
+      "name": "Terrasse panoramique",
+      "view": {
+        "x": 620,
+        "y": 100,
+        "w": 420,
+        "h": 600
+      },
+      "before": {
+        "extent": 0.9040206792742473,
+        "hidden": 0,
+        "pillows": 13,
+        "radius": 26.73290252685547,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.974975506032481,
+        "hidden": 0,
+        "pillows": 13,
+        "radius": 24.496192932128906,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 28,
+      "name": "Salon observation",
+      "view": {
+        "x": 620,
+        "y": 100,
+        "w": 420,
+        "h": 600
+      },
+      "before": {
+        "extent": 0.9517663771260443,
+        "hidden": 0,
+        "pillows": 13,
+        "radius": 25.354347229003906,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749861008727272,
+        "hidden": 0,
+        "pillows": 13,
+        "radius": 24.663619995117188,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 29,
+      "name": "Lobby supérieur",
+      "view": {
+        "x": 620,
+        "y": 100,
+        "w": 420,
+        "h": 600
+      },
+      "before": {
+        "extent": 0.9422441872930762,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 21.155624389648438,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.974993329133466,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 19.329147338867188,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 30,
+      "name": "Cabine capitaine",
+      "view": {
+        "x": 620,
+        "y": 100,
+        "w": 420,
+        "h": 600
+      },
+      "before": {
+        "extent": 0.9749681154763818,
+        "hidden": 0,
+        "pillows": 2,
+        "radius": 17.39757537841797,
+        "pitch": 0.6,
+        "yaw": 3.791592653589793,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749681154763818,
+        "hidden": 0,
+        "pillows": 2,
+        "radius": 17.39757537841797,
+        "pitch": 0.6,
+        "yaw": 3.791592653589793,
+        "failed": 0
+      }
+    },
+    {
+      "id": 31,
+      "name": "Bureau navigation",
+      "view": {
+        "x": 620,
+        "y": 100,
+        "w": 420,
+        "h": 600
+      },
+      "before": {
+        "extent": 0.9422552273730205,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 18.699302673339844,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749681154763818,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 17.39757537841797,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 32,
+      "name": "Passerelle",
+      "view": {
+        "x": 620,
+        "y": 100,
+        "w": 420,
+        "h": 600
+      },
+      "before": {
+        "extent": 0.9536731345544809,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 27.762107849121094,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749968311120061,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 26.910476684570312,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 33,
+      "name": "Solarium",
+      "view": {
+        "x": 620,
+        "y": 100,
+        "w": 420,
+        "h": 600
+      },
+      "before": {
+        "extent": 0.8973385105485867,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 24.083786010742188,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749689531117167,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 21.96521759033203,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 34,
+      "name": "Bar & cuisine extérieure",
+      "view": {
+        "x": 620,
+        "y": 100,
+        "w": 420,
+        "h": 600
+      },
+      "before": {
+        "extent": 0.8946216024808082,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 23.385086059570312,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749909275916404,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 21.14185333251953,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 35,
+      "name": "Lounge couvert",
+      "view": {
+        "x": 620,
+        "y": 100,
+        "w": 420,
+        "h": 600
+      },
+      "before": {
+        "extent": 0.9411019613941243,
+        "hidden": 0,
+        "pillows": 9,
+        "radius": 18.89862060546875,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749653469331309,
+        "hidden": 0,
+        "pillows": 9,
+        "radius": 18.241233825683594,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 36,
+      "name": "Piscine du sun deck",
+      "view": {
+        "x": 620,
+        "y": 100,
+        "w": 420,
+        "h": 600
+      },
+      "before": {
+        "extent": 0.8998774967587879,
+        "hidden": 0,
+        "pillows": 4,
+        "radius": 24.782485961914062,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749743827217323,
+        "hidden": 0,
+        "pillows": 4,
+        "radius": 22.78858184814453,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 0,
+      "name": "Beach club",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 390,
+        "h": 700
+      },
+      "before": {
+        "extent": 0.9593326675428484,
+        "hidden": 0,
+        "pillows": 14,
+        "radius": 38.22303771972656,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749885739297377,
+        "hidden": 0,
+        "pillows": 14,
+        "radius": 37.444610595703125,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 1,
+      "name": "Spa & massage",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 390,
+        "h": 700
+      },
+      "before": {
+        "extent": 0.955206596692322,
+        "hidden": 0,
+        "pillows": 4,
+        "radius": 27.367095947265625,
+        "pitch": 0.6,
+        "yaw": 3.791592653589793,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749926625337224,
+        "hidden": 0,
+        "pillows": 4,
+        "radius": 25.97259521484375,
+        "pitch": 0.6,
+        "yaw": 3.791592653589793,
+        "failed": 0
+      }
+    },
+    {
+      "id": 2,
+      "name": "Fitness",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 390,
+        "h": 700
+      },
+      "before": {
+        "extent": 0.9552065966923206,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 27.367095947265625,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749926625337227,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 25.97259521484375,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 3,
+      "name": "Cinéma",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 390,
+        "h": 700
+      },
+      "before": {
+        "extent": 0.9589985345869638,
+        "hidden": 0,
+        "pillows": 6,
+        "radius": 34.32365417480469,
+        "pitch": 0.6,
+        "yaw": 3.791592653589793,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749926454953619,
+        "hidden": 0,
+        "pillows": 6,
+        "radius": 32.180442810058594,
+        "pitch": 0.6,
+        "yaw": 3.791592653589793,
+        "failed": 0
+      }
+    },
+    {
+      "id": 4,
+      "name": "Machines",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 390,
+        "h": 700
+      },
+      "before": {
+        "extent": 0.9589985345869624,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 34.32365417480469,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749926454953606,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 32.180442810058594,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 5,
+      "name": "Mess équipage",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 390,
+        "h": 700
+      },
+      "before": {
+        "extent": 0.9573027890128847,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 30.845375061035156,
+        "pitch": 0.6,
+        "yaw": 3.791592653589793,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749782729971974,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 29.076881408691406,
+        "pitch": 0.6,
+        "yaw": 3.791592653589793,
+        "failed": 0
+      }
+    },
+    {
+      "id": 6,
+      "name": "Buanderie",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 390,
+        "h": 700
+      },
+      "before": {
+        "extent": 0.9573027890128827,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 30.845375061035156,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749782729971994,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 29.076881408691406,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 7,
+      "name": "Cabines équipage",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 390,
+        "h": 700
+      },
+      "before": {
+        "extent": 0.9749788275312086,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 27.007598876953125,
+        "pitch": 0.6,
+        "yaw": 3.791592653589793,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749788275312086,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 27.007598876953125,
+        "pitch": 0.6,
+        "yaw": 3.791592653589793,
+        "failed": 0
+      }
+    },
+    {
+      "id": 8,
+      "name": "Réserve & racks AV",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 390,
+        "h": 700
+      },
+      "before": {
+        "extent": 0.955975153597314,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 28.526039123535156,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749788275312079,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 27.007598876953125,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 9,
+      "name": "Équipage avant",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 390,
+        "h": 700
+      },
+      "before": {
+        "extent": 0.974987254551799,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 28.406448364257812,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.974987254551799,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 28.406448364257812,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 10,
+      "name": "Terrasse arrière & bassin",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 390,
+        "h": 700
+      },
+      "before": {
+        "extent": 0.9246752927691644,
+        "hidden": 0,
+        "pillows": 4,
+        "radius": 40.447425842285156,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749903313393811,
+        "hidden": 0,
+        "pillows": 4,
+        "radius": 37.51636505126953,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 11,
+      "name": "Grand salon",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 390,
+        "h": 700
+      },
+      "before": {
+        "extent": 0.9617658541846559,
+        "hidden": 0,
+        "pillows": 14,
+        "radius": 44.64397430419922,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749971461790596,
+        "hidden": 0,
+        "pillows": 14,
+        "radius": 43.88801574707031,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 12,
+      "name": "Salle à manger",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 390,
+        "h": 700
+      },
+      "before": {
+        "extent": 0.9614456414407997,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 43.73435974121094,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749893088259256,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 42.853736877441406,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 13,
+      "name": "Atrium & escalier",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 390,
+        "h": 700
+      },
+      "before": {
+        "extent": 0.9546085738727954,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 30.997581481933594,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749837352443889,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 28.369483947753906,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 14,
+      "name": "Cuisine principale",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 390,
+        "h": 700
+      },
+      "before": {
+        "extent": 0.9556670047347502,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 27.846908569335938,
+        "pitch": 0.6,
+        "yaw": 3.791592653589793,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749771163791621,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 26.584320068359375,
+        "pitch": 0.6,
+        "yaw": 3.791592653589793,
+        "failed": 0
+      }
+    },
+    {
+      "id": 15,
+      "name": "Suite VIP",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 390,
+        "h": 700
+      },
+      "before": {
+        "extent": 0.974977116379163,
+        "hidden": 0,
+        "pillows": 2,
+        "radius": 26.584320068359375,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.974977116379163,
+        "hidden": 0,
+        "pillows": 2,
+        "radius": 26.584320068359375,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 16,
+      "name": "Suite invités bâbord",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 390,
+        "h": 700
+      },
+      "before": {
+        "extent": 0.9749764712844415,
+        "hidden": 0,
+        "pillows": 2,
+        "radius": 28.653602600097656,
+        "pitch": 0.6,
+        "yaw": 3.791592653589793,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749764712844415,
+        "hidden": 0,
+        "pillows": 2,
+        "radius": 28.653602600097656,
+        "pitch": 0.6,
+        "yaw": 3.791592653589793,
+        "failed": 0
+      }
+    },
+    {
+      "id": 17,
+      "name": "Suite invités tribord",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 390,
+        "h": 700
+      },
+      "before": {
+        "extent": 0.9749764712844424,
+        "hidden": 0,
+        "pillows": 2,
+        "radius": 28.653602600097656,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749764712844424,
+        "hidden": 0,
+        "pillows": 2,
+        "radius": 28.653602600097656,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 18,
+      "name": "Salon avant",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 390,
+        "h": 700
+      },
+      "before": {
+        "extent": 0.9505098734755224,
+        "hidden": 0,
+        "pillows": 7,
+        "radius": 25.18909454345703,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749898903249674,
+        "hidden": 0,
+        "pillows": 7,
+        "radius": 23.564109802246094,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 19,
+      "name": "Dîner extérieur",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 390,
+        "h": 700
+      },
+      "before": {
+        "extent": 0.9165426941753583,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 35.08251190185547,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749968656513626,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 31.94995880126953,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 20,
+      "name": "Sky lounge",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 390,
+        "h": 700
+      },
+      "before": {
+        "extent": 0.9582089316648663,
+        "hidden": 0,
+        "pillows": 14,
+        "radius": 35.34343719482422,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749832694946977,
+        "hidden": 0,
+        "pillows": 14,
+        "radius": 34.50267791748047,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 21,
+      "name": "Galerie centrale",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 390,
+        "h": 700
+      },
+      "before": {
+        "extent": 0.9543358570726634,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 30.18146514892578,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.974997330020269,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 27.975921630859375,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 22,
+      "name": "Suite propriétaire",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 390,
+        "h": 700
+      },
+      "before": {
+        "extent": 0.9749855819689537,
+        "hidden": 0,
+        "pillows": 16,
+        "radius": 42.460899353027344,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749855819689537,
+        "hidden": 0,
+        "pillows": 16,
+        "radius": 42.460899353027344,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 23,
+      "name": "Salle de bain propriétaire",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 390,
+        "h": 700
+      },
+      "before": {
+        "extent": 0.9512463191991882,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 22.52765655517578,
+        "pitch": 0.6,
+        "yaw": 3.791592653589793,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749763413003831,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 21.584701538085938,
+        "pitch": 0.6,
+        "yaw": 3.791592653589793,
+        "failed": 0
+      }
+    },
+    {
+      "id": 24,
+      "name": "Dressing propriétaire",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 390,
+        "h": 700
+      },
+      "before": {
+        "extent": 0.9512463191991856,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 22.52765655517578,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749763413003838,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 21.584701538085938,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 25,
+      "name": "Suite familiale",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 390,
+        "h": 700
+      },
+      "before": {
+        "extent": 0.9749807063352622,
+        "hidden": 0,
+        "pillows": 2,
+        "radius": 28.73260498046875,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749807063352622,
+        "hidden": 0,
+        "pillows": 2,
+        "radius": 28.73260498046875,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 26,
+      "name": "Terrasse privée & jacuzzi",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 390,
+        "h": 700
+      },
+      "before": {
+        "extent": 0.9014266024193693,
+        "hidden": 0,
+        "pillows": 4,
+        "radius": 28.241920471191406,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749855090120898,
+        "hidden": 0,
+        "pillows": 4,
+        "radius": 24.881057739257812,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 27,
+      "name": "Terrasse panoramique",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 390,
+        "h": 700
+      },
+      "before": {
+        "extent": 0.9147554745267115,
+        "hidden": 0,
+        "pillows": 13,
+        "radius": 33.18500518798828,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749834220183377,
+        "hidden": 0,
+        "pillows": 13,
+        "radius": 30.752601623535156,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 28,
+      "name": "Salon observation",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 390,
+        "h": 700
+      },
+      "before": {
+        "extent": 0.9583573286571422,
+        "hidden": 0,
+        "pillows": 13,
+        "radius": 31.55712127685547,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749956513570834,
+        "hidden": 0,
+        "pillows": 13,
+        "radius": 30.92437744140625,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 29,
+      "name": "Lobby supérieur",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 390,
+        "h": 700
+      },
+      "before": {
+        "extent": 0.9508873169767913,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 25.99071502685547,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749972639338824,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 24.22222137451172,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 30,
+      "name": "Cabine capitaine",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 390,
+        "h": 700
+      },
+      "before": {
+        "extent": 0.9749983700468032,
+        "hidden": 0,
+        "pillows": 2,
+        "radius": 21.794891357421875,
+        "pitch": 0.6,
+        "yaw": 3.791592653589793,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749983700468032,
+        "hidden": 0,
+        "pillows": 2,
+        "radius": 21.794891357421875,
+        "pitch": 0.6,
+        "yaw": 3.791592653589793,
+        "failed": 0
+      }
+    },
+    {
+      "id": 31,
+      "name": "Bureau navigation",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 390,
+        "h": 700
+      },
+      "before": {
+        "extent": 0.9514896071557928,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 23.03863525390625,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749983700468017,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 21.794891357421875,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 32,
+      "name": "Passerelle",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 390,
+        "h": 700
+      },
+      "before": {
+        "extent": 0.959730500344653,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 34.54109191894531,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749817344788778,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 33.7481689453125,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 33,
+      "name": "Solarium",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 390,
+        "h": 700
+      },
+      "before": {
+        "extent": 0.909015847474409,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 29.929237365722656,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749805634062818,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 27.706298828125,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 34,
+      "name": "Bar & cuisine extérieure",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 390,
+        "h": 700
+      },
+      "before": {
+        "extent": 0.9066689860223691,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 29.019622802734375,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749940888398472,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 26.671295166015625,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 35,
+      "name": "Lounge couvert",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 390,
+        "h": 700
+      },
+      "before": {
+        "extent": 0.9504089942130597,
+        "hidden": 0,
+        "pillows": 9,
+        "radius": 23.45539093017578,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749776208106642,
+        "hidden": 0,
+        "pillows": 9,
+        "radius": 22.85888671875,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 36,
+      "name": "Piscine du sun deck",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 390,
+        "h": 700
+      },
+      "before": {
+        "extent": 0.9112071239977677,
+        "hidden": 0,
+        "pillows": 4,
+        "radius": 30.838851928710938,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749923982450885,
+        "hidden": 0,
+        "pillows": 4,
+        "radius": 28.740577697753906,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 0,
+      "name": "Beach club",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 900,
+        "h": 700
+      },
+      "before": {
+        "extent": 0.9843566371107237,
+        "hidden": 0,
+        "pillows": 14,
+        "radius": 18.555068969726562,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749879059927806,
+        "hidden": 0,
+        "pillows": 14,
+        "radius": 16.368370056152344,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 1,
+      "name": "Spa & massage",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 900,
+        "h": 700
+      },
+      "before": {
+        "extent": 0.9426531585999975,
+        "hidden": 0,
+        "pillows": 4,
+        "radius": 12.94952392578125,
+        "pitch": 0.6,
+        "yaw": 3.791592653589793,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749429195608217,
+        "hidden": 0,
+        "pillows": 4,
+        "radius": 11.397743225097656,
+        "pitch": 0.6,
+        "yaw": 3.791592653589793,
+        "failed": 0
+      }
+    },
+    {
+      "id": 2,
+      "name": "Fitness",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 900,
+        "h": 700
+      },
+      "before": {
+        "extent": 0.9426531585999987,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 12.94952392578125,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749429195608236,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 11.397743225097656,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 3,
+      "name": "Cinéma",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 900,
+        "h": 700
+      },
+      "before": {
+        "extent": 0.9274789264622434,
+        "hidden": 0,
+        "pillows": 6,
+        "radius": 16.389389038085938,
+        "pitch": 0.6,
+        "yaw": 3.791592653589793,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749763495275723,
+        "hidden": 0,
+        "pillows": 6,
+        "radius": 14.088172912597656,
+        "pitch": 0.6,
+        "yaw": 3.791592653589793,
+        "failed": 0
+      }
+    },
+    {
+      "id": 4,
+      "name": "Machines",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 900,
+        "h": 700
+      },
+      "before": {
+        "extent": 0.9274789264622423,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 16.389389038085938,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749763495275717,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 14.088172912597656,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 5,
+      "name": "Mess équipage",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 900,
+        "h": 700
+      },
+      "before": {
+        "extent": 0.9226643275128081,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 14.669456481933594,
+        "pitch": 0.6,
+        "yaw": 3.791592653589793,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749536051363836,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 12.742958068847656,
+        "pitch": 0.6,
+        "yaw": 3.791592653589793,
+        "failed": 0
+      }
+    },
+    {
+      "id": 6,
+      "name": "Buanderie",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 900,
+        "h": 700
+      },
+      "before": {
+        "extent": 0.9226643275128077,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 14.669456481933594,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749536051363833,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 12.742958068847656,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 7,
+      "name": "Cabines équipage",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 900,
+        "h": 700
+      },
+      "before": {
+        "extent": 0.9749903804216578,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 11.845664978027344,
+        "pitch": 0.6,
+        "yaw": 3.791592653589793,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749903804216578,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 11.845664978027344,
+        "pitch": 0.6,
+        "yaw": 3.791592653589793,
+        "failed": 0
+      }
+    },
+    {
+      "id": 8,
+      "name": "Réserve & racks AV",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 900,
+        "h": 700
+      },
+      "before": {
+        "extent": 0.9247964869562397,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 13.522834777832031,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749903804216583,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 11.845664978027344,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 9,
+      "name": "Équipage avant",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 900,
+        "h": 700
+      },
+      "before": {
+        "extent": 0.9749499844815634,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 12.452316284179688,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749499844815634,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 12.452316284179688,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 10,
+      "name": "Terrasse arrière & bassin",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 900,
+        "h": 700
+      },
+      "before": {
+        "extent": 0.9561213369588144,
+        "hidden": 0,
+        "pillows": 4,
+        "radius": 19.79663848876953,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749641071807178,
+        "hidden": 0,
+        "pillows": 4,
+        "radius": 16.016845703125,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 11,
+      "name": "Grand salon",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 900,
+        "h": 700
+      },
+      "before": {
+        "extent": 0.9842635948244749,
+        "hidden": 0,
+        "pillows": 14,
+        "radius": 21.476707458496094,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749871500580738,
+        "hidden": 0,
+        "pillows": 14,
+        "radius": 19.167518615722656,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 12,
+      "name": "Salle à manger",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 900,
+        "h": 700
+      },
+      "before": {
+        "extent": 0.984432698881387,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 21.104164123535156,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.974965109275736,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 18.71959686279297,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 13,
+      "name": "Atrium & escalier",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 900,
+        "h": 700
+      },
+      "before": {
+        "extent": 0.987253454166946,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 15.892181396484375,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.974939097466512,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 12.45086669921875,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 14,
+      "name": "Cuisine principale",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 900,
+        "h": 700
+      },
+      "before": {
+        "extent": 0.968604465618147,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 13.085784912109375,
+        "pitch": 0.6,
+        "yaw": 3.791592653589793,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749356942274606,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 11.669540405273438,
+        "pitch": 0.6,
+        "yaw": 3.791592653589793,
+        "failed": 0
+      }
+    },
+    {
+      "id": 15,
+      "name": "Suite VIP",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 900,
+        "h": 700
+      },
+      "before": {
+        "extent": 0.9749356942274605,
+        "hidden": 0,
+        "pillows": 2,
+        "radius": 11.669540405273438,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749356942274605,
+        "hidden": 0,
+        "pillows": 2,
+        "radius": 11.669540405273438,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 16,
+      "name": "Suite invités bâbord",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 900,
+        "h": 700
+      },
+      "before": {
+        "extent": 0.974959944040648,
+        "hidden": 0,
+        "pillows": 2,
+        "radius": 12.566108703613281,
+        "pitch": 0.6,
+        "yaw": 3.791592653589793,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.974959944040648,
+        "hidden": 0,
+        "pillows": 2,
+        "radius": 12.566108703613281,
+        "pitch": 0.6,
+        "yaw": 3.791592653589793,
+        "failed": 0
+      }
+    },
+    {
+      "id": 17,
+      "name": "Suite invités tribord",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 900,
+        "h": 700
+      },
+      "before": {
+        "extent": 0.9749599440406488,
+        "hidden": 0,
+        "pillows": 2,
+        "radius": 12.566108703613281,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749599440406488,
+        "hidden": 0,
+        "pillows": 2,
+        "radius": 12.566108703613281,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 18,
+      "name": "Salon avant",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 900,
+        "h": 700
+      },
+      "before": {
+        "extent": 0.9898271422098373,
+        "hidden": 0,
+        "pillows": 7,
+        "radius": 12.900238037109375,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749799902479412,
+        "hidden": 0,
+        "pillows": 7,
+        "radius": 10.393180847167969,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 19,
+      "name": "Dîner extérieur",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 900,
+        "h": 700
+      },
+      "before": {
+        "extent": 0.9537516805385069,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 17.418594360351562,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749523681888617,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 13.606185913085938,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 20,
+      "name": "Sky lounge",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 900,
+        "h": 700
+      },
+      "before": {
+        "extent": 0.9864024897404813,
+        "hidden": 0,
+        "pillows": 14,
+        "radius": 17.26348876953125,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749620775473195,
+        "hidden": 0,
+        "pillows": 14,
+        "radius": 15.1007080078125,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 21,
+      "name": "Galerie centrale",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 900,
+        "h": 700
+      },
+      "before": {
+        "extent": 0.9876535136241302,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 15.375404357910156,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.974958506653195,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 12.275466918945312,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 22,
+      "name": "Suite propriétaire",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 900,
+        "h": 700
+      },
+      "before": {
+        "extent": 0.974967764276726,
+        "hidden": 0,
+        "pillows": 16,
+        "radius": 18.549270629882812,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.974967764276726,
+        "hidden": 0,
+        "pillows": 16,
+        "radius": 18.549270629882812,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 23,
+      "name": "Salle de bain propriétaire",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 900,
+        "h": 700
+      },
+      "before": {
+        "extent": 0.9922965406459214,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 10.851974487304688,
+        "pitch": 0.6,
+        "yaw": 3.791592653589793,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.974995479100313,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 9.502410888671875,
+        "pitch": 0.6,
+        "yaw": 3.791592653589793,
+        "failed": 0
+      }
+    },
+    {
+      "id": 24,
+      "name": "Dressing propriétaire",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 900,
+        "h": 700
+      },
+      "before": {
+        "extent": 0.9922965406459217,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 10.851974487304688,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749954791003117,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 9.502410888671875,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 25,
+      "name": "Suite familiale",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 900,
+        "h": 700
+      },
+      "before": {
+        "extent": 0.9749613167127729,
+        "hidden": 0,
+        "pillows": 2,
+        "radius": 12.600898742675781,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749613167127729,
+        "hidden": 0,
+        "pillows": 2,
+        "radius": 12.600898742675781,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 26,
+      "name": "Terrasse privée & jacuzzi",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 900,
+        "h": 700
+      },
+      "before": {
+        "extent": 0.9497448144016416,
+        "hidden": 0,
+        "pillows": 4,
+        "radius": 14.37591552734375,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749515525900607,
+        "hidden": 0,
+        "pillows": 4,
+        "radius": 10.546836853027344,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 27,
+      "name": "Terrasse panoramique",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 900,
+        "h": 700
+      },
+      "before": {
+        "extent": 0.9531537085456967,
+        "hidden": 0,
+        "pillows": 13,
+        "radius": 16.345176696777344,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749864805365476,
+        "hidden": 0,
+        "pillows": 13,
+        "radius": 13.380050659179688,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 28,
+      "name": "Salon observation",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 900,
+        "h": 700
+      },
+      "before": {
+        "extent": 0.9868629367189108,
+        "hidden": 0,
+        "pillows": 13,
+        "radius": 15.365257263183594,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749681664146368,
+        "hidden": 0,
+        "pillows": 13,
+        "radius": 13.547477722167969,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 29,
+      "name": "Lobby supérieur",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 900,
+        "h": 700
+      },
+      "before": {
+        "extent": 0.9885533181111064,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 13.312644958496094,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749762691023638,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 10.680198669433594,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 30,
+      "name": "Cabine capitaine",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 900,
+        "h": 700
+      },
+      "before": {
+        "extent": 0.9749409684834167,
+        "hidden": 0,
+        "pillows": 2,
+        "radius": 9.591560363769531,
+        "pitch": 0.6,
+        "yaw": 3.791592653589793,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749409684834167,
+        "hidden": 0,
+        "pillows": 2,
+        "radius": 9.591560363769531,
+        "pitch": 0.6,
+        "yaw": 3.791592653589793,
+        "failed": 0
+      }
+    },
+    {
+      "id": 31,
+      "name": "Bureau navigation",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 900,
+        "h": 700
+      },
+      "before": {
+        "extent": 0.9587603602256036,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 10.988960266113281,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749409684834169,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 9.591560363769531,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 32,
+      "name": "Passerelle",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 900,
+        "h": 700
+      },
+      "before": {
+        "extent": 0.9861031482236087,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 16.524925231933594,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749694252378702,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 14.770927429199219,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 33,
+      "name": "Solarium",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 900,
+        "h": 700
+      },
+      "before": {
+        "extent": 0.9513383030821669,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 14.764404296875,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749874585674383,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 11.764488220214844,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 34,
+      "name": "Bar & cuisine extérieure",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 900,
+        "h": 700
+      },
+      "before": {
+        "extent": 0.950809732596861,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 14.391860961914062,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749655951791345,
+        "hidden": 0,
+        "pillows": 0,
+        "radius": 11.454277038574219,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 35,
+      "name": "Lounge couvert",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 900,
+        "h": 700
+      },
+      "before": {
+        "extent": 0.9897506495008348,
+        "hidden": 0,
+        "pillows": 9,
+        "radius": 11.756515502929688,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749625524887815,
+        "hidden": 0,
+        "pillows": 9,
+        "radius": 10.05035400390625,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    },
+    {
+      "id": 36,
+      "name": "Piscine du sun deck",
+      "view": {
+        "x": 0,
+        "y": 0,
+        "w": 900,
+        "h": 700
+      },
+      "before": {
+        "extent": 0.9519053329800005,
+        "hidden": 0,
+        "pillows": 4,
+        "radius": 15.136222839355469,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      },
+      "after": {
+        "extent": 0.9749579758506894,
+        "hidden": 0,
+        "pillows": 4,
+        "radius": 12.213134765625,
+        "pitch": 0.6,
+        "yaw": -0.65,
+        "failed": 0
+      }
+    }
+  ],
+  "runs": [
+    {
+      "before": true,
+      "fps": 59.91611743612512,
+      "calls": 841,
+      "triangles": 166788,
+      "textures": 7
+    },
+    {
+      "before": false,
+      "fps": 59.997000150171296,
+      "calls": 830,
+      "triangles": 166320,
+      "textures": 7
+    },
+    {
+      "before": false,
+      "fps": 59.96102533317604,
+      "calls": 830,
+      "triangles": 166320,
+      "textures": 7
+    },
+    {
+      "before": true,
+      "fps": 59.399021663879495,
+      "calls": 841,
+      "triangles": 166788,
+      "textures": 7
+    }
+  ],
+  "performance": {
+    "before": 59.65756955000231,
+    "after": 59.97901274167367,
+    "percent": 0.5388137567386986
+  },
+  "status": "passed"
+}
