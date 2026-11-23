@@ -735,3 +735,8 @@ Donatien valide la version 2.3.18 et autorise commit/push vers main pour publica
 ## 23/11/2026 — Yacht : vue latérale des espaces de vie
 
 Angle 24,6° du Grand salon étendu à 18 autres espaces de vie et détente, cadrage entier ajusté automatiquement. Cabines et locaux techniques conservés. 148 cas sur quatre formats réussis ; bancs Sky lounge, Salle à manger, Terrasse panoramique et Spa : écarts inférieurs à 1 %, build/lint réussis. Preuves : apps/showcase/docs/verification/2026-11-23-yacht-living-lateral/.
+
+
+## 23/11/2026 — Yacht : murs de premier plan abaissés
+
+Pièce sélectionnée : parois proches réduites en murets de 22 cm et appliques hautes masquées, selon l’orientation réelle de la caméra. Autres parois et mobilier conservés ; restauration intégrale à la désélection. Pas de transparence ni nouvel objet. 148 contrôles de cadrage et 148 contrôles de rotation/restauration réussis, 59,84 → 59,80 i/s sur trois vues, build/lint réussis. Preuves : apps/showcase/docs/verification/2026-11-23-yacht-cutaway/.
