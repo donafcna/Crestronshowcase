@@ -1,0 +1,38 @@
+{
+  "runs": [
+    {
+      "legacy": true,
+      "fps": 59.82724767018745,
+      "calls": 628,
+      "triangles": 158288,
+      "textures": 7
+    },
+    {
+      "legacy": false,
+      "fps": 59.89072246626053,
+      "calls": 627,
+      "triangles": 158276,
+      "textures": 7
+    },
+    {
+      "legacy": false,
+      "fps": 59.886870103823135,
+      "calls": 627,
+      "triangles": 158276,
+      "textures": 7
+    },
+    {
+      "legacy": true,
+      "fps": 59.8355214634742,
+      "calls": 628,
+      "triangles": 158288,
+      "textures": 7
+    }
+  ],
+  "performance": {
+    "before": 59.83138456683082,
+    "after": 59.888796285041835,
+    "percent": 0.09595585766009052
+  },
+  "status": "passed"
+}

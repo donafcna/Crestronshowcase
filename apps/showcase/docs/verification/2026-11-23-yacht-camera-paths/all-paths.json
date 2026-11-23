@@ -1,0 +1,16 @@
+{
+  "cases": 2664,
+  "lifted": 124,
+  "failures": [],
+  "duration": {
+    "min": 0.9,
+    "max": 1.531546528965229
+  },
+  "maxArrivalError": 0,
+  "interruption": {
+    "continuous": true,
+    "completed": true,
+    "arrival": 0
+  },
+  "status": "passed"
+}

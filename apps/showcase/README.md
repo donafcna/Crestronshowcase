@@ -758,3 +758,6 @@ Parois choisies selon la vraie position de caméra et anticipation de 240 ms. Ma
 ## 23/11/2026 — Publication des arbres et transitions de l’hôtel
 
 Publication autorisée des arbres/végétation, avec correction demandée des transitions caméra. Les pièces de départ et de destination restent visibles pendant le trajet ; départ depuis la pose courante, redirection continue lors de sélections rapides, chemin angulaire court et distance physique conservée à la sortie de la vue générale. Nettoyage à l’arrivée, ombres mises à jour aux changements de visibilité uniquement. Base isolée origin/main a0b6719, autres modifications locales préservées. Preuves : apps/showcase/docs/verification/2026-11-23-hotel-vegetation-camera-release/. Aucun matériel modifié.
+## 23/11/2026 — Yacht : trajets de caméra sans traversée des pièces
+
+Trajets cubiques amortis avec prise de hauteur si nécessaire, vérifiés à la sélection contre les enveloppes des ponts et du mobilier (marge 40 cm). Passage de pont au point dégagé, reprise continue après nouveau clic ou redimensionnement. Cadrage final proche et latéral conservé. 2664 trajets et contrôles d’interruption réussis ; cadence 59,83 → 59,89 i/s. Preuves : apps/showcase/docs/verification/2026-11-23-yacht-camera-paths/.
