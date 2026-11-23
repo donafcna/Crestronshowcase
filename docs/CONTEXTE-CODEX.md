@@ -529,3 +529,6 @@ Après validation de l'animation 2.3.17, nouvelle passe sur les matières : asph
 
 Donatien valide la version 2.3.18 et autorise commit/push vers main pour publication Vercel : nouvelle animation course et textures affinées. Recette locale et avant/après conservés dans apps/showcase/docs/verification/2026-11-23-race-broadcast/ et 2026-11-23-race-materials/. Aucun déploiement matériel.
 
+## 23/11/2026 — Yacht : vue latérale des espaces de vie
+
+Angle 24,6° du Grand salon étendu à 18 autres espaces de vie et détente, cadrage entier ajusté automatiquement. Cabines et locaux techniques conservés. 148 cas sur quatre formats réussis ; bancs Sky lounge, Salle à manger, Terrasse panoramique et Spa : écarts inférieurs à 1 %, build/lint réussis. Preuves : apps/showcase/docs/verification/2026-11-23-yacht-living-lateral/.

@@ -392,7 +392,8 @@ function fitRoom(r){
  }
  return hi;
 }
-function focusRoom(id){if(id==='')return;const r=rooms[+id];if(!r)return;setMode('deck',r.deck);selectedRoom=r;lastSelectedRoom=r;updateRoomLights();setInfo(r);$('rooms').value=String(r.id);desiredTarget.set(r.x,decks[r.deck].position.y+.85,r.z);desiredPitch=r.id===11?.43:.60;/* Beds have their headboard at +X: look from the foot (-X), keeping the same lateral elevation. */desiredYaw=r.id===11?-.40:-.65;if(r.z<-.5)desiredYaw=Math.PI-desiredYaw;desiredRadius=fitRoom(r);emphasizeRoom(r);mast.visible=false;updateLabels();auto=false;$('rotate').classList.remove('active');}
+const lateralLivingTypes=new Set(['lounge','dining','mess','bar','sun','pool','cinema','spa','gym','galley']);
+function focusRoom(id){if(id==='')return;const r=rooms[+id];if(!r)return;setMode('deck',r.deck);selectedRoom=r;lastSelectedRoom=r;updateRoomLights();setInfo(r);$('rooms').value=String(r.id);desiredTarget.set(r.x,decks[r.deck].position.y+.85,r.z);const lateral=lateralLivingTypes.has(r.type);desiredPitch=lateral?.43:.60;/* Beds have their headboard at +X: look from the foot (-X), keeping the same lateral elevation. */desiredYaw=lateral?-.40:-.65;if(r.z<-.5)desiredYaw=Math.PI-desiredYaw;desiredRadius=fitRoom(r);emphasizeRoom(r);mast.visible=false;updateLabels();auto=false;$('rotate').classList.remove('active');}
 function updateRoomOptions(){const select=$('rooms');select.innerHTML='<option value="">Choisir une pièce…</option>';deckData.forEach(d=>{const list=rooms.filter(r=>r.deck===d.id);if(deckIndex<0||deckIndex===d.id){const opt=document.createElement('optgroup');opt.label=d.name;list.forEach(r=>{const o=document.createElement('option');o.value=r.id;o.textContent=r.name;opt.appendChild(o)});select.appendChild(opt)}})}
 let labelsUpdatedAt=0;
 function updateLabels(){
