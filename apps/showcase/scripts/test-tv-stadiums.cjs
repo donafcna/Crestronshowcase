@@ -21,7 +21,7 @@ fs.mkdirSync(out,{recursive:true});
     for(const [join,name] of [[154,'tennis'],[153,'football'],[152,'race']]){
      await gui.evaluate(j=>Villa.press(String(j)),join);await page.waitForFunction(n=>__plan3d.metrics().tv3D?.currentKind===n,name);
      const v=await page.evaluate(n=>__plan3d.metrics().tv3D.venues[n],name);
-     check(mode+' / '+theme+' / '+name+' live venue',v.stands===4&&v.spectators>=500&&v.staticDrawCalls<=3);
+     check(mode+' / '+theme+' / '+name+' live venue',name==='race' ? v.style==='broadcast'&&v.cars===7&&v.staticDrawCalls<=10 : v.stands===4&&v.spectators>=500&&v.staticDrawCalls<=3);
      if(theme==='dark')await page.screenshot({path:path.join(out,mode+'-'+name+'.png')});
     }
    }

@@ -1,14 +1,15 @@
+import { buildRaceBroadcast } from './tv-race.js?v=2026-11-23-race-2';
 import * as T from './vendor/three.module.min.js';
 import { buildSportsVenue } from './tv-venues.js?v=2026-09-17-stadiums-1';
 
 // One small render target, shared by the visible television. No video downloads,
 // extra WebGL context, shadows or post-processing; 10–15 updates/second.
-export function createTVStage(renderer) {
+export function createTVStage(renderer,{realisticRace=true,detailedRaceMaterials=true}={}) {
   const target=new T.WebGLRenderTarget(640,360,{depthBuffer:true,stencilBuffer:false});
   target.samples=2;
   target.texture.name='Live 3D television';
   const boxGeo=new T.BoxGeometry(1,1,1),ballGeo=new T.SphereGeometry(1,12,8),coneGeo=new T.ConeGeometry(1,1,8);
-  const materials=new Map(),scenes=new Map(),clearColor=new T.Color();let draws=0,currentKind='film';
+  const materials=new Map(),scenes=new Map(),clearColor=new T.Color();let draws=0,currentKind='film',lastRender={};
   const material=color=>{if(!materials.has(color))materials.set(color,new T.MeshLambertMaterial({color}));return materials.get(color);};
   function mesh(g,geo,color,x,y,z,w,h=w,d=w){const m=new T.Mesh(geo,material(color));m.position.set(x,y,z);m.scale.set(w,h,d);g.add(m);return m;}
   const box=(g,c,x,y,z,w,h,d)=>mesh(g,boxGeo,c,x,y,z,w,h,d);
@@ -24,6 +25,8 @@ export function createTVStage(renderer) {
       box(scene,0x606964,0,2,0,100,.3,2.4);for(let x=-45;x<=45;x+=6)box(scene,0x858a7c,x,.7,0,.9,2.6,1.5);
       for(let i=0;i<5;i++){const carriage=new T.Group();scene.add(carriage);box(carriage,0xb83e31,0,3.1,0,4.3,1.6,1.65);box(carriage,0xdbd9c9,0,4,0,4.5,.18,1.8);for(let k=0;k<5;k++)box(carriage,0x233f51,-1.7+k*.8,3.3,.84,.55,.65,.03);objects.push(carriage);}
       camera.position.set(16,12,27);camera.lookAt(0,3,0);
+    }else if(kind===1&&realisticRace){
+      // Construct the broadcast circuit below, independently of other programmes.
     }else if(kind===1){
       box(scene,0x526b38,0,-.2,0,70,.2,55);
       const shape=new T.Shape();shape.absellipse(0,0,22,14,0,Math.PI*2,false);const hole=new T.Path();hole.absellipse(0,0,14,6,0,Math.PI*2,true);shape.holes.push(hole);
@@ -50,22 +53,23 @@ export function createTVStage(renderer) {
       box(scene,0xf2ebd7,0,1.32,0,12,.055,.035);
       objects.push(ball(scene,0xd9e955,0,.4,0,.13));camera.position.set(22,22,31);camera.lookAt(0,1.1,0);
     }
-    const venue=kind?buildSportsVenue(scene,kind):null;
+    const venue=kind===1&&realisticRace?buildRaceBroadcast(scene,camera,{detailedMaterials:detailedRaceMaterials}):kind?buildSportsVenue(scene,kind):null;
     const item={scene,camera,objects,venue};scenes.set(kind,item);return item;
   }
   return {
     texture:target.texture,
     render(source,time,channel=0){
-      const kind=(source-1+channel)%4,{scene,camera,objects}=scenes.get(kind)||create(kind);currentKind=['film','race','football','tennis'][kind];
+      const kind=(source-1+channel)%4,{scene,camera,objects,venue}=scenes.get(kind)||create(kind);currentKind=['film','race','football','tennis'][kind];
       if(kind===0){const x=(time*2.4)%70-35;objects.forEach((o,i)=>o.position.x=x-i*4.7);camera.position.x=12+Math.sin(time*.12)*5;camera.lookAt(x*.18,3,0);}
+      else if(kind===1&&realisticRace)venue.update(time);
       else if(kind===1)objects.forEach((o,i)=>{const a=time*.4+i*.75;o.position.set(18*Math.cos(a),0,10*Math.sin(a));o.rotation.y=Math.atan2(-18*Math.sin(a),10*Math.cos(a));});
       else if(kind===2){objects.slice(0,22).forEach((o,i)=>{o.position.x=-14+(i%11%4)*7+Math.floor(i/11)*2+Math.sin(time+i)*.8;o.position.z=-9+Math.floor(i%11/4)*8+Math.cos(time*.8+i);o.rotation.z=Math.sin(time*5+i)*.055;});objects[22].position.set(Math.sin(time*.8)*11,.25+Math.abs(Math.sin(time*2))*.5,Math.sin(time*1.3)*7);}
       else{objects.slice(0,2).forEach((o,i)=>{o.position.x=Math.sin(time*1.6+i)*3;o.rotation.y=Math.sin(time*4+i)*.25;});objects[2].position.set(Math.sin(time*1.6)*3,.2+Math.abs(Math.cos(time*2.5))*2.5,Math.sin(time*2.5)*9);}
       const previous=renderer.getRenderTarget(),alpha=renderer.getClearAlpha();renderer.getClearColor(clearColor);
-      renderer.setRenderTarget(target);renderer.clear();renderer.render(scene,camera);renderer.setRenderTarget(previous);renderer.setClearColor(clearColor,alpha);draws++;
+      renderer.setRenderTarget(target);renderer.clear();renderer.render(scene,camera);lastRender={drawCalls:renderer.info.render.calls,triangles:renderer.info.render.triangles};renderer.setRenderTarget(previous);renderer.setClearColor(clearColor,alpha);draws++;
       return currentKind;
     },
-    metrics(){return {mode:'3d',version:'stadiums-1',width:640,height:360,programmes:scenes.size,draws,currentKind,venues:Object.fromEntries([...scenes].filter(([,v])=>v.venue).map(([k,v])=>[['film','race','football','tennis'][k],v.venue.metrics]))};},
+    metrics(){return {mode:'3d',version:'race-broadcast-1',...lastRender,width:640,height:360,programmes:scenes.size,draws,currentKind,venues:Object.fromEntries([...scenes].filter(([,v])=>v.venue).map(([k,v])=>[['film','race','football','tennis'][k],v.venue.metrics]))};},
     dispose(){const geometries=new Set([boxGeo,ballGeo,coneGeo]);scenes.forEach(({scene,venue})=>{scene.traverse(o=>{if(o.geometry)geometries.add(o.geometry);});venue?.dispose();});geometries.forEach(g=>g.dispose());materials.forEach(m=>m.dispose());target.dispose();}
   };
 }

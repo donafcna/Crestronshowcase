@@ -1,0 +1,107 @@
+{
+  "viewport": [
+    1280,
+    720
+  ],
+  "dpr": 1.5,
+  "runs": [
+    {
+      "refined": false,
+      "fps": 14.977066367236757,
+      "submitMedianMs": 0.699999988079071,
+      "submitP95Ms": 0.8999999761581421,
+      "mode": "3d",
+      "version": "race-broadcast-1",
+      "drawCalls": 14,
+      "triangles": 18734,
+      "width": 640,
+      "height": 360,
+      "programmes": 1,
+      "draws": 110,
+      "currentKind": "race",
+      "venues": {
+        "race": {
+          "cars": 7,
+          "staticDrawCalls": 9,
+          "style": "broadcast",
+          "trackSamples": 256
+        }
+      },
+      "textures": 3
+    },
+    {
+      "refined": true,
+      "fps": 14.953865733375755,
+      "submitMedianMs": 0.6000000238418579,
+      "submitP95Ms": 0.9000000357627869,
+      "mode": "3d",
+      "version": "race-broadcast-1",
+      "drawCalls": 15,
+      "triangles": 18724,
+      "width": 640,
+      "height": 360,
+      "programmes": 1,
+      "draws": 109,
+      "currentKind": "race",
+      "venues": {
+        "race": {
+          "cars": 7,
+          "staticDrawCalls": 9,
+          "style": "broadcast",
+          "trackSamples": 256
+        }
+      },
+      "textures": 5
+    },
+    {
+      "refined": true,
+      "fps": 15.034296990064592,
+      "submitMedianMs": 0.699999988079071,
+      "submitP95Ms": 1,
+      "mode": "3d",
+      "version": "race-broadcast-1",
+      "drawCalls": 15,
+      "triangles": 18724,
+      "width": 640,
+      "height": 360,
+      "programmes": 1,
+      "draws": 110,
+      "currentKind": "race",
+      "venues": {
+        "race": {
+          "cars": 7,
+          "staticDrawCalls": 9,
+          "style": "broadcast",
+          "trackSamples": 256
+        }
+      },
+      "textures": 5
+    },
+    {
+      "refined": false,
+      "fps": 15.06827813530058,
+      "submitMedianMs": 0.6000000238418579,
+      "submitP95Ms": 1.300000011920929,
+      "mode": "3d",
+      "version": "race-broadcast-1",
+      "drawCalls": 14,
+      "triangles": 18734,
+      "width": 640,
+      "height": 360,
+      "programmes": 1,
+      "draws": 110,
+      "currentKind": "race",
+      "venues": {
+        "race": {
+          "cars": 7,
+          "staticDrawCalls": 9,
+          "style": "broadcast",
+          "trackSamples": 256
+        }
+      },
+      "textures": 3
+    }
+  ],
+  "errors": [],
+  "status": "complete"
+}

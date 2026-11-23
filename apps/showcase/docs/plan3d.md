@@ -237,3 +237,18 @@ Seconde passe locale, comparée au candidat 2.3.15 avec specialPolish. Matériau
 ## 22/11/2026 — Publication Villa FTV validée
 
 Donatien valide le candidat 2.3.16 (six espaces spécialisés, blancs, projecteur et végétaux) et autorise commit/push vers main pour publication Vercel. Recette et comparaisons : apps/showcase/docs/verification/2026-11-22-villa-polish/. Les changements Yacht déjà publiés sont conservés. Aucun déploiement matériel.
+
+
+## 23/11/2026 — Programme automobile 3D, candidat local 2.3.17
+
+Refonte validée comme direction par Donatien : circuit asymétrique, monoplaces détaillées et deux caméras de suivi, dans le programme TV du moteur plan3d. Rendu 640 × 360/cadence TV conservés, regroupement géométrique : 118 → 14 appels au cadrage comparé ; une petite texture GPU supplémentaire. Villa ~60 i/s sur fondus et vues stabilisées ; transitions initiales légèrement plus lentes (54–56 i/s), limites documentées. Trois thèmes/deux modes, recette navigateur locale et avant/après dans apps/showcase/docs/verification/2026-11-23-race-broadcast/ depuis la racine. Aucun commit/push ni changement GUI ou matériel ; validation visuelle requise avant publication.
+
+
+## 23/11/2026 — Textures du programme automobile, candidat local 2.3.18
+
+Après validation de l'animation 2.3.17, nouvelle passe sur les matières : asphalte agrégé et réparations, herbe nuancée/tondue, béton avec joints et coulures, portes nervurées et reflets de vitrage. Textures déterministes générées au chargement, atlas unique des bâtiments ; aucune modification de la caméra ou des voitures. Deux textures GPU et un appel de rendu supplémentaires. Comparaison contre 2.3.17 et recette locale : apps/showcase/docs/verification/2026-11-23-race-materials/. Aucun changement GUI, C#, SIMPL ou matériel ; candidat non publié.
+
+
+## 23/11/2026 — Publication du programme automobile validé
+
+Donatien valide la version 2.3.18 et autorise commit/push vers main pour publication Vercel : nouvelle animation course et textures affinées. Recette locale et avant/après conservés dans apps/showcase/docs/verification/2026-11-23-race-broadcast/ et 2026-11-23-race-materials/. Aucun déploiement matériel.

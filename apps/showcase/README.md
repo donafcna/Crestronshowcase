@@ -711,3 +711,18 @@ Cadrage sur les volumes réels et recentrage étendus des cabines aux 37 espaces
 ## 23/11/2026 — Publication Hotel des Horlogers
 
 Publication autorisée des améliorations locales de l’hôtel : mobilier, matériaux, éclairage et ombres en cache, cadrage rapproché, paysage et toitures, façades et vitrages. Livraison isolée depuis origin/main, sans les autres modifications en cours. Fluidité locale mesurée autour de 59,9 images/s ; preuves conservées dans apps/showcase/docs/verification/2026-11-23-hotel-release/. Aucun matériel modifié.
+
+
+## 23/11/2026 — Programme automobile 3D, candidat local 2.3.17
+
+Refonte validée comme direction par Donatien : circuit asymétrique, monoplaces détaillées et deux caméras de suivi, dans le programme TV du moteur plan3d. Rendu 640 × 360/cadence TV conservés, regroupement géométrique : 118 → 14 appels au cadrage comparé ; une petite texture GPU supplémentaire. Villa ~60 i/s sur fondus et vues stabilisées ; transitions initiales légèrement plus lentes (54–56 i/s), limites documentées. Trois thèmes/deux modes, recette navigateur locale et avant/après dans apps/showcase/docs/verification/2026-11-23-race-broadcast/ depuis la racine. Aucun commit/push ni changement GUI ou matériel ; validation visuelle requise avant publication.
+
+
+## 23/11/2026 — Textures du programme automobile, candidat local 2.3.18
+
+Après validation de l'animation 2.3.17, nouvelle passe sur les matières : asphalte agrégé et réparations, herbe nuancée/tondue, béton avec joints et coulures, portes nervurées et reflets de vitrage. Textures déterministes générées au chargement, atlas unique des bâtiments ; aucune modification de la caméra ou des voitures. Deux textures GPU et un appel de rendu supplémentaires. Comparaison contre 2.3.17 et recette locale : apps/showcase/docs/verification/2026-11-23-race-materials/. Aucun changement GUI, C#, SIMPL ou matériel ; candidat non publié.
+
+
+## 23/11/2026 — Publication du programme automobile validé
+
+Donatien valide la version 2.3.18 et autorise commit/push vers main pour publication Vercel : nouvelle animation course et textures affinées. Recette locale et avant/après conservés dans apps/showcase/docs/verification/2026-11-23-race-broadcast/ et 2026-11-23-race-materials/. Aucun déploiement matériel.

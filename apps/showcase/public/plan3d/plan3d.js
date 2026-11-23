@@ -21,7 +21,7 @@ import { createEstate } from './estate.js?v=2026-09-17-lighting-1';
 import { createResidence } from './residence.js?v=2026-11-22-chalet-1';
 import { enrichRoom } from './room-features.js?v=2026-09-27-residence-1';
 import { furnishSpecialRoom } from './special-rooms.js?v=2026-09-17-rooms-1';
-import { createTVStage } from './tv-stage.js?v=2026-09-17-stadiums-1';
+import { createTVStage } from './tv-stage.js?v=2026-11-23-race-2';
 import { drawProgramme } from './tv-programmes.js?v=2026-09-16-estate-2';
 import { addNaturalMotion } from './natural-motion.js?v=2026-11-22-villa-4';
 
@@ -878,7 +878,7 @@ export function createPlan3D(opts) {
                 var television=activeRoom.tv,screen=television.screen;television.lastFrame=ts;
                 if(screen.st.program){
                     if(!screen.st.paused)screen.st.tick++;
-                    tvStage ||= createTVStage(renderer);
+                    tvStage ||= createTVStage(renderer,{realisticRace:cfg.raceBroadcast!==false,detailedRaceMaterials:cfg.raceMaterials!==false});
                     screen.st.programme=tvStage.render(screen.st.source,screen.st.tick/15,screen.st.row);
                     television.on.map=tvStage.texture;
                 }else television.on.map=screen.tex;
