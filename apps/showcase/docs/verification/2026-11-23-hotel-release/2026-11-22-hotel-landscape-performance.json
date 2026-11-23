@@ -1,0 +1,137 @@
+{
+  "results": [
+    {
+      "variant": "before",
+      "zone": "overview",
+      "fps": 56.561623651314214,
+      "p95": 33.19999999999982,
+      "calls": 711,
+      "triangles": 184420,
+      "textures": 30,
+      "geometries": 141,
+      "programs": 19
+    },
+    {
+      "variant": "before",
+      "zone": "bar",
+      "fps": 58.90505890505888,
+      "p95": 17.30000000000109,
+      "calls": 40,
+      "triangles": 8130,
+      "textures": 31,
+      "geometries": 142,
+      "programs": 19
+    },
+    {
+      "variant": "before",
+      "zone": "restaurant",
+      "fps": 59.88325281803541,
+      "p95": 16.899999999999636,
+      "calls": 31,
+      "triangles": 37370,
+      "textures": 32,
+      "geometries": 142,
+      "programs": 19
+    },
+    {
+      "variant": "after",
+      "zone": "overview",
+      "fps": 58.899227875668174,
+      "p95": 17,
+      "calls": 693,
+      "triangles": 181906,
+      "textures": 33,
+      "geometries": 150,
+      "programs": 23
+    },
+    {
+      "variant": "after",
+      "zone": "bar",
+      "fps": 59.88325281803546,
+      "p95": 16.80000000000109,
+      "calls": 40,
+      "triangles": 8130,
+      "textures": 34,
+      "geometries": 151,
+      "programs": 23
+    },
+    {
+      "variant": "after",
+      "zone": "restaurant",
+      "fps": 59.88626641839866,
+      "p95": 16.80000000000109,
+      "calls": 31,
+      "triangles": 37370,
+      "textures": 35,
+      "geometries": 151,
+      "programs": 23
+    },
+    {
+      "variant": "after",
+      "zone": "overview",
+      "fps": 59.88626641839868,
+      "p95": 16.90000000000009,
+      "calls": 693,
+      "triangles": 181906,
+      "textures": 33,
+      "geometries": 150,
+      "programs": 23
+    },
+    {
+      "variant": "after",
+      "zone": "bar",
+      "fps": 59.889280322093605,
+      "p95": 17,
+      "calls": 40,
+      "triangles": 8130,
+      "textures": 34,
+      "geometries": 151,
+      "programs": 23
+    },
+    {
+      "variant": "after",
+      "zone": "restaurant",
+      "fps": 59.88325281803546,
+      "p95": 17,
+      "calls": 31,
+      "triangles": 37370,
+      "textures": 35,
+      "geometries": 151,
+      "programs": 23
+    },
+    {
+      "variant": "before",
+      "zone": "overview",
+      "fps": 59.88325281803544,
+      "p95": 16.90000000000009,
+      "calls": 711,
+      "triangles": 184420,
+      "textures": 30,
+      "geometries": 141,
+      "programs": 19
+    },
+    {
+      "variant": "before",
+      "zone": "bar",
+      "fps": 59.889280322093605,
+      "p95": 16.800000000000182,
+      "calls": 40,
+      "triangles": 8130,
+      "textures": 31,
+      "geometries": 142,
+      "programs": 19
+    },
+    {
+      "variant": "before",
+      "zone": "restaurant",
+      "fps": 59.88626641839866,
+      "p95": 17,
+      "calls": 31,
+      "triangles": 37370,
+      "textures": 32,
+      "geometries": 142,
+      "programs": 19
+    }
+  ],
+  "errors": []
+}

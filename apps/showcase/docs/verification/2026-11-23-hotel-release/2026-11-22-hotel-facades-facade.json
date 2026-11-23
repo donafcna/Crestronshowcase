@@ -1,0 +1,32 @@
+{
+  "data": {
+    "visibleRoomPlanes": 0,
+    "panes": 120,
+    "metadataCount": 120,
+    "facades": 6,
+    "minGap": 0.14000000000000012,
+    "finite": true,
+    "paneTriangles": 2,
+    "forceSinglePass": true,
+    "depthWrite": false,
+    "sameCapturedEnvironment": true,
+    "independentEnvironment": true,
+    "roomPlanes": 20,
+    "captures": 1,
+    "probeMs": 1360,
+    "dayIntensity": 0.9
+  },
+  "cached": {
+    "visibleRoomPlanes": 1,
+    "shadow": 3,
+    "other": 0,
+    "captures": 1,
+    "version": 0
+  },
+  "night": {
+    "phase": "night",
+    "intensity": 0.21252374599076543,
+    "captures": 1
+  },
+  "errors": []
+}

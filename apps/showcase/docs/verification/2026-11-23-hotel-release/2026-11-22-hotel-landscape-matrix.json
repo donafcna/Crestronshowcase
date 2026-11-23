@@ -1,0 +1,320 @@
+{
+  "checks": [
+    {
+      "variant": "before",
+      "mode": "normal",
+      "theme": "actuel",
+      "ready": "true",
+      "overflow": false
+    },
+    {
+      "variant": "before",
+      "mode": "normal",
+      "theme": "clair",
+      "ready": "true",
+      "overflow": false
+    },
+    {
+      "variant": "before",
+      "mode": "normal",
+      "theme": "sombre",
+      "ready": "true",
+      "overflow": false
+    },
+    {
+      "variant": "before",
+      "mode": "scene",
+      "theme": "actuel",
+      "ready": "true",
+      "overflow": false
+    },
+    {
+      "variant": "before",
+      "mode": "scene",
+      "theme": "clair",
+      "ready": "true",
+      "overflow": false
+    },
+    {
+      "variant": "before",
+      "mode": "scene",
+      "theme": "sombre",
+      "ready": "true",
+      "overflow": false
+    },
+    {
+      "variant": "after",
+      "mode": "normal",
+      "theme": "actuel",
+      "ready": "true",
+      "overflow": false
+    },
+    {
+      "variant": "after",
+      "mode": "normal",
+      "theme": "clair",
+      "ready": "true",
+      "overflow": false
+    },
+    {
+      "variant": "after",
+      "mode": "normal",
+      "theme": "sombre",
+      "ready": "true",
+      "overflow": false
+    },
+    {
+      "variant": "after",
+      "mode": "scene",
+      "theme": "actuel",
+      "ready": "true",
+      "overflow": false
+    },
+    {
+      "variant": "after",
+      "mode": "scene",
+      "theme": "clair",
+      "ready": "true",
+      "overflow": false
+    },
+    {
+      "variant": "after",
+      "mode": "scene",
+      "theme": "sombre",
+      "ready": "true",
+      "overflow": false
+    },
+    {
+      "resources": {
+        "shadowEnabled": true,
+        "shadowCached": true,
+        "woodLoaded": true,
+        "environment": true
+      }
+    },
+    {
+      "zone": "bar",
+      "focus": true
+    },
+    {
+      "zone": "entrance",
+      "focus": true
+    },
+    {
+      "zone": "restaurant",
+      "focus": true
+    },
+    {
+      "zone": "salon",
+      "focus": true
+    },
+    {
+      "zone": "pdr",
+      "focus": true
+    },
+    {
+      "zone": "wellness",
+      "focus": true
+    },
+    {
+      "zone": "seminar",
+      "focus": true
+    },
+    {
+      "sceneOff": true,
+      "curtainsStop": true,
+      "closed": 9
+    },
+    {
+      "wheelOverview": true
+    },
+    {
+      "progressiveZoom": true,
+      "fitted": 25.595378612208588,
+      "closer": 21.500118034255213
+    },
+    {
+      "viewport": 1280,
+      "zone": "bar",
+      "closeupBounds": {
+        "min": 402.3383812127429,
+        "max": 1003.7618790459894
+      },
+      "free": {
+        "left": 408.97544860839844,
+        "right": 1044
+      },
+      "closeup": true
+    },
+    {
+      "viewport": 1280,
+      "zone": "entrance",
+      "closeupBounds": {
+        "min": 392.9381624343381,
+        "max": 1034.3724507268444
+      },
+      "free": {
+        "left": 408.97544860839844,
+        "right": 1044
+      },
+      "closeup": true
+    },
+    {
+      "viewport": 1280,
+      "zone": "restaurant",
+      "closeupBounds": {
+        "min": 386.32858012912106,
+        "max": 1058.9252743477468
+      },
+      "free": {
+        "left": 408.97544860839844,
+        "right": 1044
+      },
+      "closeup": true
+    },
+    {
+      "viewport": 1280,
+      "zone": "salon",
+      "closeupBounds": {
+        "min": 414.1557808222072,
+        "max": 971.3512946424556
+      },
+      "free": {
+        "left": 408.97544860839844,
+        "right": 1044
+      },
+      "closeup": true
+    },
+    {
+      "viewport": 1280,
+      "zone": "pdr",
+      "closeupBounds": {
+        "min": 407.3936269616929,
+        "max": 989.2382637364996
+      },
+      "free": {
+        "left": 408.97544860839844,
+        "right": 1044
+      },
+      "closeup": true
+    },
+    {
+      "viewport": 1280,
+      "zone": "wellness",
+      "closeupBounds": {
+        "min": 387.8819843686415,
+        "max": 1079.7516600805886
+      },
+      "free": {
+        "left": 408.97544860839844,
+        "right": 1044
+      },
+      "closeup": true
+    },
+    {
+      "viewport": 1280,
+      "zone": "seminar",
+      "closeupBounds": {
+        "min": 389.1145419504005,
+        "max": 1048.2284610796542
+      },
+      "free": {
+        "left": 408.97544860839844,
+        "right": 1044
+      },
+      "closeup": true
+    },
+    {
+      "viewport": 1920,
+      "zone": "bar",
+      "closeupBounds": {
+        "min": 536.9560455244472,
+        "max": 1490.562929398077
+      },
+      "free": {
+        "left": 542.9073333740234,
+        "right": 1572
+      },
+      "closeup": true
+    },
+    {
+      "viewport": 1920,
+      "zone": "entrance",
+      "closeupBounds": {
+        "min": 520.8147685629364,
+        "max": 1554.8714464377395
+      },
+      "free": {
+        "left": 542.9073333740234,
+        "right": 1572
+      },
+      "closeup": true
+    },
+    {
+      "viewport": 1920,
+      "zone": "restaurant",
+      "closeupBounds": {
+        "min": 509.5604641262526,
+        "max": 1606.6467642674752
+      },
+      "free": {
+        "left": 542.9073333740234,
+        "right": 1572
+      },
+      "closeup": true
+    },
+    {
+      "viewport": 1920,
+      "zone": "salon",
+      "closeupBounds": {
+        "min": 556.7709615131299,
+        "max": 1434.4362908914125
+      },
+      "free": {
+        "left": 542.9073333740234,
+        "right": 1572
+      },
+      "closeup": true
+    },
+    {
+      "viewport": 1920,
+      "zone": "pdr",
+      "closeupBounds": {
+        "min": 545.3398606941191,
+        "max": 1465.2767956850998
+      },
+      "free": {
+        "left": 542.9073333740234,
+        "right": 1572
+      },
+      "closeup": true
+    },
+    {
+      "viewport": 1920,
+      "zone": "wellness",
+      "closeupBounds": {
+        "min": 514.5284958097719,
+        "max": 1639.5674450503473
+      },
+      "free": {
+        "left": 542.9073333740234,
+        "right": 1572
+      },
+      "closeup": true
+    },
+    {
+      "viewport": 1920,
+      "zone": "seminar",
+      "closeupBounds": {
+        "min": 514.3073014628826,
+        "max": 1584.6994634511136
+      },
+      "free": {
+        "left": 542.9073333740234,
+        "right": 1572
+      },
+      "closeup": true
+    }
+  ],
+  "errors": []
+}

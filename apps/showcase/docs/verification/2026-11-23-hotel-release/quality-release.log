@@ -1,0 +1,166 @@
+
+> crestronshowcase@2.3.16 quality:test
+> node --test ../../tools/quality/quality.test.mjs ../../tools/quality/compatibility.test.mjs
+
+✖ socle examiné et configuration actuelle compatibles (16.7261ms)
+✖ noms, ordre des déclarations, description et profil de projet configurables (4.0428ms)
+✔ compatibilité refuse mapping de commande (4.041ms)
+✔ compatibilité refuse direction de signal (6.8581ms)
+✔ compatibilité refuse nouveau signal (5.5859ms)
+✔ compatibilité refuse base des pièces (4.1542ms)
+✔ compatibilité refuse join HVAC étendu (3.9131ms)
+✔ compatibilité refuse adresse EISC différente (2.9792ms)
+✔ compatibilité refuse autre version GUI (5.1669ms)
+✔ compatibilité refuse identifiants de pièces discontinus (3.4639ms)
+✔ compatibilité refuse plage HVAC globale (4.8023ms)
+✔ compatibilité refuse plage HVAC par pièce (3.7714ms)
+✔ compatibilité refuse sauna sans hammam (3.0729ms)
+✔ compatibilité refuse pas wellness non pris en charge (2.793ms)
+✔ compatibilité refuse consigne fractionnaire tronquée par C# (3.3879ms)
+✔ empreintes insensibles aux fins de ligne mais sensibles au code (5.7601ms)
+✔ configuration refusée avant toute copie de sources (21.4346ms)
+✔ SIMPL utilise le profil fourni et conserve le fichier de travail (389.6306ms)
+✔ téléphone/tablette limités au catalogue, dalle seule exclue (0.4261ms)
+✔ aucune GUI tablette chargée implicitement à la place du téléphone (0.0964ms)
+✔ configuration minimale valide (2.1185ms)
+✔ refus : identifiants pièces dupliqués (0.4772ms)
+✔ refus : nombre pièces dépassé (0.1615ms)
+✔ refus : type booléen erroné (0.1677ms)
+✔ refus : source inexistante (0.2024ms)
+✔ refus : trop de circuits (0.1361ms)
+✔ refus : niveau analogique hors plage (0.143ms)
+✔ refus : table de niveaux incohérente (0.112ms)
+✔ refus : pas CVC nul (0.1113ms)
+✔ refus : réactivation v3 (0.1776ms)
+✔ refus : collision de joins par plage (0.1721ms)
+✔ refus : miroir remappé sans support runtime (0.1091ms)
+✔ refus : mapping sans déclaration (0.1162ms)
+✔ refus : moteur inconnu (0.1973ms)
+✔ refus : mauvais mode (0.0929ms)
+✔ refus : signal null (0.0652ms)
+✔ les espaces de joins digital/analog sont distincts (0.0969ms)
+✔ profil client refuse un repli alarme sans exposer sa valeur (0.3419ms)
+✔ catalogue complet et GUI embarquée sans simulateur (0.3537ms)
+✔ oubli de simulateur détecté sans repli vers une autre villa (0.3915ms)
+✔ entrées dupliquées et simulateurs orphelins refusés (0.1159ms)
+✖ préparation injecte la config canonique sans modifier ni écraser les sources (23.5791ms)
+✖ une source vitrine ne peut être empaquetée comme déploiement (10.7331ms)
+ℹ tests 43
+ℹ suites 0
+ℹ pass 39
+ℹ fail 4
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 614.0311
+
+✖ failing tests:
+
+test at ..\..\tools\quality\compatibility.test.mjs:23:1
+✖ socle examiné et configuration actuelle compatibles (16.7261ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+  + [
+  +   {
+  +     message: 'Le contrat diffère du socle crans-montana-v4.1-gui1.0.196-csharp1.0.192.0 ; ne pas modifier les joins dans un profil de projet',
+  +     path: 'contrat',
+  +     severity: 'error'
+  +   },
+  +   {
+  +     message: 'Version différente du socle source 1.0.196',
+  +     path: 'meta.version',
+  +     severity: 'error'
+  +   }
+  + ]
+  - []
+  
+      at TestContext.<anonymous> (file:///C:/Users/donat/Documents/Codex/2026-11-22/hotel-release-20261123/tools/quality/compatibility.test.mjs:24:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ { path: 'contrat', message: 'Le contrat diffère du socle crans-montana-v4.1-gui1.0.196-csharp1.0.192.0 ; ne pas modifier les joins dans un profil de projet', severity: 'error' }, { path: 'meta.version', message: 'Version différente du socle source 1.0.196', severity: 'error' } ],
+    expected: [],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\tools\quality\compatibility.test.mjs:27:1
+✖ noms, ordre des déclarations, description et profil de projet configurables (4.0428ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+  + [
+  +   {
+  +     message: 'Le contrat diffère du socle crans-montana-v4.1-gui1.0.196-csharp1.0.192.0 ; ne pas modifier les joins dans un profil de projet',
+  +     path: 'contrat',
+  +     severity: 'error'
+  +   },
+  +   {
+  +     message: 'Version différente du socle source 1.0.196',
+  +     path: 'meta.version',
+  +     severity: 'error'
+  +   }
+  + ]
+  - []
+  
+      at TestContext.<anonymous> (file:///C:/Users/donat/Documents/Codex/2026-11-22/hotel-release-20261123/tools/quality/compatibility.test.mjs:30:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ { path: 'contrat', message: 'Le contrat diffère du socle crans-montana-v4.1-gui1.0.196-csharp1.0.192.0 ; ne pas modifier les joins dans un profil de projet', severity: 'error' }, { path: 'meta.version', message: 'Version différente du socle source 1.0.196', severity: 'error' } ],
+    expected: [],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at ..\..\tools\quality\quality.test.mjs:46:1
+✖ préparation injecte la config canonique sans modifier ni écraser les sources (23.5791ms)
+  Error: Socle incompatible : [{"path":"contrat","message":"Le contrat diffère du socle crans-montana-v4.1-gui1.0.196-csharp1.0.192.0 ; ne pas modifier les joins dans un profil de projet","severity":"error"},{"path":"meta.version","message":"Version différente du socle source 1.0.196","severity":"error"}]
+      at stageCh5 (file:///C:/Users/donat/Documents/Codex/2026-11-22/hotel-release-20261123/tools/quality/stage-ch5.mjs:22:35)
+      at TestContext.<anonymous> (file:///C:/Users/donat/Documents/Codex/2026-11-22/hotel-release-20261123/tools/quality/quality.test.mjs:55:13)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at ..\..\tools\quality\quality.test.mjs:64:1
+✖ une source vitrine ne peut être empaquetée comme déploiement (10.7331ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /simulation/. Input:
+  
+  'Error: Socle incompatible : [{"path":"contrat","message":"Le contrat diffère du socle crans-montana-v4.1-gui1.0.196-csharp1.0.192.0 ; ne pas modifier les joins dans un profil de projet","severity":"error"},{"path":"meta.version","message":"Version différente du socle source 1.0.196","severity":"error"}]'
+  
+      at TestContext.<anonymous> (file:///C:/Users/donat/Documents/Codex/2026-11-22/hotel-release-20261123/tools/quality/quality.test.mjs:70:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: Error: Socle incompatible : [{"path":"contrat","message":"Le contrat diffère du socle crans-montana-v4.1-gui1.0.196-csharp1.0.192.0 ; ne pas modifier les joins dans un profil de projet","severity":"error"},{"path":"meta.version","message":"Version différente du socle source 1.0.196","severity":"error"}]
+        at stageCh5 (file:///C:/Users/donat/Documents/Codex/2026-11-22/hotel-release-20261123/tools/quality/stage-ch5.mjs:22:35)
+        at file:///C:/Users/donat/Documents/Codex/2026-11-22/hotel-release-20261123/tools/quality/quality.test.mjs:70:23
+        at getActual (node:assert:611:5)
+        at strict.throws (node:assert:759:24)
+        at TestContext.<anonymous> (file:///C:/Users/donat/Documents/Codex/2026-11-22/hotel-release-20261123/tools/quality/quality.test.mjs:70:10)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+        at Test.postRun (node:internal/test_runner/test:1522:19)
+        at Test.run (node:internal/test_runner/test:1447:12),
+    expected: /simulation/,
+    operator: 'throws',
+    diff: 'simple'
+  }

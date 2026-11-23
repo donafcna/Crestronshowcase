@@ -505,3 +505,6 @@ Fit des volumes réels du mobilier et des murs, mémorisé, recentré dans le pl
 ## 23/11/2026 — Yacht : autres pièces rapprochées
 
 Cadrage sur les volumes réels et recentrage étendus des cabines aux 37 espaces. 148 cas vérifiés sur quatre formats : pièces entières, distances égales ou réduites, shaders valides. Grand salon 59,66 → 59,98 i/s, build/lint réussis ; interpolation et budget de rendu conservés. Preuves : apps/showcase/docs/verification/2026-11-23-yacht-room-close/.
+## 23/11/2026 — Publication Hotel des Horlogers
+
+Publication autorisée des améliorations locales de l’hôtel : mobilier, matériaux, éclairage et ombres en cache, cadrage rapproché, paysage et toitures, façades et vitrages. Livraison isolée depuis origin/main, sans les autres modifications en cours. Fluidité locale mesurée autour de 59,9 images/s ; preuves conservées dans apps/showcase/docs/verification/2026-11-23-hotel-release/. Aucun matériel modifié.

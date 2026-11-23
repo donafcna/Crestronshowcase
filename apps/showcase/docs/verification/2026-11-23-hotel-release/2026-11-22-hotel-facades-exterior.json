@@ -1,0 +1,18 @@
+{
+  "data": {
+    "trees": 100,
+    "treeTriangles": 194,
+    "terrainVertices": 3705,
+    "grassWidth": 512,
+    "plants": 1521,
+    "floatingPlants": 0,
+    "rootError": 7.255359406599382e-7,
+    "pvCount": 27,
+    "pvClearance": 0.12241498406788548,
+    "finite": true,
+    "visibleRoofs": 6
+  },
+  "errors": [],
+  "night": true,
+  "hiddenInRoom": true
+}

@@ -1,0 +1,22 @@
+{
+  "checks": [
+    {
+      "zone": "restaurant",
+      "programs": 28,
+      "warmupMs": 3747.2000000476837,
+      "active": [
+        "restaurant"
+      ]
+    },
+    {
+      "zone": "bar",
+      "programs": 28,
+      "warmupMs": 3747.2000000476837,
+      "active": [
+        "bar"
+      ]
+    }
+  ],
+  "errors": [],
+  "http": []
+}
