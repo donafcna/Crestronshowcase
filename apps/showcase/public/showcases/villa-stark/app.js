@@ -110,8 +110,6 @@ const SHADE_FOREGROUND={
  Fitness:[[[6,64],[23,57],[28,44],[36,45],[44,54],[44,58],[30,57],[28,71],[47,83],[44,89],[8,89],[6,85]],[[43,45],[46,45],[50,52],[52,62],[48,74],[42,75],[40,70]]],
  Master:[[[45,61],[54,60],[60,64],[68,66],[71,72],[70,80],[58,90],[44,88]],[[55,46],[58,47],[60,45],[62,48],[63,52],[67,51],[67,55],[63,59],[63,65],[56,66],[55,60]]]
 };
-const shadeMasks={};
-function shadeWindowMask(id){if(!SHADE_FOREGROUND[id])return 'none';if(shadeMasks[id])return shadeMasks[id];const [x,y,w,h]=INT[id].win,rect=`<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="white"/>`,svg=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="${x} ${y} ${w} ${h}" preserveAspectRatio="none"><defs><mask id="foreground" maskUnits="userSpaceOnUse" x="${x}" y="${y}" width="${w}" height="${h}">${rect}${SHADE_FOREGROUND[id].map(points=>`<polygon points="${points.map(p=>p.join(',')).join(' ')}" fill="black"/>`).join('')}</mask></defs><g mask="url(#foreground)">${rect}</g></svg>`;return shadeMasks[id]='url("data:image/svg+xml,'+encodeURIComponent(svg)+'")';}
 // Photographie originale, sans décalage entre la scène et ses calques.
 const SCENE = { W: 1672, H: 941, ox: 0, oy: 0 };
 const sx = x => (x + SCENE.ox) / SCENE.W * 100, sy = y => (y + SCENE.oy) / SCENE.H * 100;
@@ -269,9 +267,7 @@ function renderRoomView() {
   if (id === "Pool" && !v.querySelector(".pool-lighting")) v.appendChild(createPoolLighting("interior"));
   const poolLights = v.querySelector(".pool-lighting"); if (poolLights) { poolLights.style.display = id === "Pool" ? "block" : "none"; updatePoolLighting(poolLights); }
   if(r.shade&&INT[id].win){
-    const sh=v.querySelector('.rv-shade'),rect=INT[id].win,cover=Math.max(v.clientWidth/1672,v.clientHeight/941);
-    Object.assign(sh.style,{left:((v.clientWidth-1672*cover)/2+rect[0]/100*1672*cover)+'px',top:((v.clientHeight-941*cover)/2+rect[1]/100*941*cover)+'px',width:rect[2]/100*1672*cover+'px',height:rect[3]/100*941*cover+'px',clipPath:INT[id].winClip||'none',maskImage:shadeWindowMask(id),maskSize:'100% 100%',maskRepeat:'no-repeat'});
-    for(const type of ['roman','blackout']){const el=sh.querySelector('[data-shade="'+type+'"]');el.style.transition=shadeState(id,type).target!=null?"none":"clip-path 2.4s ease";el.style.clipPath='inset(0 0 '+(100-shadeState(id,type).pos)+'% 0)';el.dataset.position=shadeState(id,type).pos;}
+    window.STARK_SHADES.render(v.querySelector('.rv-shade'),id,INT[id].win,INT[id].winClip,SHADE_FOREGROUND[id],{roman:shadeState(id,'roman'),blackout:shadeState(id,'blackout')},v);
   }
   if (r.tv) {
     const e = v.querySelector(".rv-tv"), rect = INT[id].tv, cover = Math.max(v.clientWidth/1672,v.clientHeight/941);
@@ -458,10 +454,10 @@ function stopAllShadeMotion(){Object.values(shadeTimers).forEach(clearInterval);
 function moveShade(id,dir,type='roman'){
  const state=shadeState(id,type),key=id+':'+type;clearInterval(shadeTimers[key]);
  if(dir==='stop'){delete state.target;renderHouse();refreshShadeVis();return;}
- const target=dir==='down'?100:0,from=state.pos,started=performance.now();state.target=target;
- shadeTimers[key]=setInterval(()=>{const progress=Math.min(1,(performance.now()-started)/3200);state.pos=Math.round(from+(target-from)*progress);if(progress===1){clearInterval(shadeTimers[key]);delete state.target;}renderHouse();refreshShadeVis();},40);
+ const target=dir==='down'?100:0,from=state.pos,started=performance.now(),duration=Math.max(350,6500*Math.abs(target-from)/100);state.target=target;
+ shadeTimers[key]=setInterval(()=>{const progress=Math.min(1,(performance.now()-started)/duration),travel=progress*progress*(3-2*progress);state.pos=Math.round((from+(target-from)*travel)*10)/10;if(progress===1){clearInterval(shadeTimers[key]);delete state.target;}renderHouse();refreshShadeVis();},16);
 }
-function refreshShadeVis(){document.querySelectorAll('.shade-card[data-type]').forEach(c=>{const state=shadeState(c.dataset.id,c.dataset.type),pos=state.pos;c.querySelector('.blind').style.clipPath='inset(0 0 '+(100-pos)+'% 0)';c.querySelector('.pos').textContent=state.target!=null?(state.target>pos?'FERMETURE':'OUVERTURE')+' · '+pos+' %':pos===0?'OUVERT':pos===100?'FERMÉ':pos+' %';});}
+function refreshShadeVis(){document.querySelectorAll('.shade-card[data-type]').forEach(c=>{const state=shadeState(c.dataset.id,c.dataset.type),pos=Math.round(state.pos);c.querySelector('.blind').style.clipPath='inset(0 0 '+(100-pos)+'% 0)';c.querySelector('.pos').textContent=state.target!=null?(state.target>pos?'FERMETURE':'OUVERTURE')+' · '+pos+' %':pos===0?'OUVERT':pos===100?'FERMÉ':pos+' %';});}
 function renderShades(pg){
  const id=S.shadeRoom||roomView||'Living',wrap=document.createElement('section');wrap.className='room-shades';wrap.setAttribute('aria-label','Stores de la pièce sélectionnée');
  const label=document.createElement('label');label.className='shade-room-select';label.textContent='PIÈCE';const select=document.createElement('select');select.setAttribute('aria-label','Pièce des stores');

@@ -146,3 +146,7 @@ html[data-mode="background"] .room-view { inset:0; width:100%; height:100%; }
 .rv-physical-lighting{position:absolute;pointer-events:none;z-index:0}.rv-physical-lighting svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}.physical-darken{mix-blend-mode:multiply}.physical-radiance{mix-blend-mode:screen}.rv-physical-lighting [data-circuit]{transition:opacity .12s linear}.rv-shade,.rv-tv,.rv-back,.rv-title,.rv-panel{z-index:2}.rv-shade{z-index:1}.slider .label{width:170px;font-size:14px;line-height:1.3}.rv-cover{isolation:isolate}@media(max-width:600px){html[data-mode=panel] .slider .label{width:100px;font-size:10px;line-height:1.3}.room-shades .shade-command-icon{width:14px;height:14px}}
 
 .rv-tv{background:transparent;opacity:0;box-shadow:none}.rv-tv.on{opacity:1;box-shadow:0 0 12px 1px #b7d6ef22}.rv-tv canvas{position:absolute;inset:0;max-width:none;object-fit:fill}
+
+.rv-shade>svg{display:block;width:100%;height:100%;overflow:visible;pointer-events:none}.rv-shade [data-shade]{pointer-events:none}
+
+.room-shades .blind.blackout{background:linear-gradient(90deg,#655f56,#8b8274 8%,#7d7569 55%,#5d574f)}
