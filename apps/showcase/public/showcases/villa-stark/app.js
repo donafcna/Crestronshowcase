@@ -99,7 +99,7 @@ const POOL_CLIP = "polygon(" + POOL_PTS.map(([x, y]) => `${x / 1672 * 100}% ${y 
 const INT = {
  Living: { win:[0,6.3,44.4,63.6],winClip:"polygon(0 0,100% 24%,100% 86%,0 100%)", tv:[70.3,21.5,17.5,23.1],tvClip:"polygon(0 17%,100% 0,100% 94%,0 100%)",tvQuad:[[0,.17],[1,0],[1,.94],[0,1]] },
  Dining: { win:[46,1,54,85],winClip:"polygon(0 35%,100% 0,100% 100%,0 68%)" }, Kitchen: { win:[65.5,9,34.5,65],winClip:"polygon(0 22%,100% 0,100% 100%,0 82%)" }, Office: { win:[77,0,23,91],winClip:"polygon(0 21%,100% 0,100% 100%,0 82%)" },
- Cinema: { tv:[56.58,20.62,29.25,31.14], tvClip:"polygon(0 18%,100% 0,100% 100%,0 90%)",tvQuad:[[0,.18],[1,0],[1,1],[0,.9]] }, Fitness: { win:[0,0,48,98],winClip:"polygon(0 0,100% 32%,100% 69%,0 100%)" }, Entry: { win:[86,0,14,90],winClip:"polygon(0 0,100% 0,100% 100%,0 86%)" },
+ Cinema: { tv:[56.58,20.62,29.25,31.14], tvClip:"polygon(0 18%,100% 0,100% 100%,0 90%)",tvQuad:[[0,.18],[1,0],[1,1],[0,.9]] }, Fitness: { win:[0,0,48,98],winClip:"polygon(0 0,100% 32%,100% 69%,0 100%)" }, Entry: { win:[86.6,0,13.4,88.3],winClip:"polygon(0 0,100% 0,100% 100%,0 91%)" },
  Master: { win:[50.5,5.3,49.5,68.5],winClip:"polygon(0 24%,100% 0,100% 100%,0 89%)" }, Bedroom: { win:[78.6,11,17.2,48.4],winClip:"polygon(0 11%,100% 0,100% 100%,0 94%)" }, Pool: {},
 };
 // Silhouettes de premier plan : le store passe derrière les meubles, pas devant eux.
@@ -108,7 +108,7 @@ const SHADE_FOREGROUND={
  Dining:[[[0,56],[56,56],[65,59],[75,62],[73,100],[0,100]]],
  Kitchen:[[[0,52],[65,51],[78,54],[78,71],[70,80],[0,100]]],
  Fitness:[[[6,64],[23,57],[28,44],[36,45],[44,54],[44,58],[30,57],[28,71],[47,83],[44,89],[8,89],[6,85]],[[43,45],[46,45],[50,52],[52,62],[48,74],[42,75],[40,70]]],
- Master:[[[45,61],[54,60],[60,64],[68,66],[71,72],[70,80],[58,90],[44,88]],[[55,46],[58,47],[60,45],[62,48],[63,52],[67,51],[67,55],[63,59],[63,65],[56,66],[55,60]]]
+ Master:[] // Détourage détaillé en pixels photo dans shade-scene.js.
 };
 // Photographie originale, sans décalage entre la scène et ses calques.
 const SCENE = { W: 1672, H: 941, ox: 0, oy: 0 };

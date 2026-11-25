@@ -1,0 +1,155 @@
+[
+  {
+    "options": [
+      {
+        "bg": "rgb(248, 250, 252)",
+        "fg": "rgb(24, 33, 47)",
+        "name": "SALON"
+      },
+      {
+        "bg": "rgb(248, 250, 252)",
+        "fg": "rgb(24, 33, 47)",
+        "name": "SALLE À MANGER"
+      },
+      {
+        "bg": "rgb(248, 250, 252)",
+        "fg": "rgb(24, 33, 47)",
+        "name": "CUISINE"
+      },
+      {
+        "bg": "rgb(248, 250, 252)",
+        "fg": "rgb(24, 33, 47)",
+        "name": "BUREAU"
+      },
+      {
+        "bg": "rgb(248, 250, 252)",
+        "fg": "rgb(24, 33, 47)",
+        "name": "CINÉMA · SANS BAIE VISIBLE"
+      },
+      {
+        "bg": "rgb(248, 250, 252)",
+        "fg": "rgb(24, 33, 47)",
+        "name": "FITNESS"
+      },
+      {
+        "bg": "rgb(49, 94, 171)",
+        "fg": "rgb(255, 255, 255)",
+        "name": "ENTRÉE"
+      },
+      {
+        "bg": "rgb(248, 250, 252)",
+        "fg": "rgb(24, 33, 47)",
+        "name": "SUITE PARENTALE"
+      },
+      {
+        "bg": "rgb(248, 250, 252)",
+        "fg": "rgb(24, 33, 47)",
+        "name": "CHAMBRE AMIS"
+      }
+    ],
+    "page": "STORES",
+    "theme": "Sombre"
+  },
+  {
+    "options": [
+      {
+        "bg": "rgb(248, 250, 252)",
+        "fg": "rgb(24, 33, 47)",
+        "name": "SALON"
+      },
+      {
+        "bg": "rgb(248, 250, 252)",
+        "fg": "rgb(24, 33, 47)",
+        "name": "SALLE À MANGER"
+      },
+      {
+        "bg": "rgb(248, 250, 252)",
+        "fg": "rgb(24, 33, 47)",
+        "name": "CUISINE"
+      },
+      {
+        "bg": "rgb(248, 250, 252)",
+        "fg": "rgb(24, 33, 47)",
+        "name": "BUREAU"
+      },
+      {
+        "bg": "rgb(248, 250, 252)",
+        "fg": "rgb(24, 33, 47)",
+        "name": "CINÉMA · SANS BAIE VISIBLE"
+      },
+      {
+        "bg": "rgb(248, 250, 252)",
+        "fg": "rgb(24, 33, 47)",
+        "name": "FITNESS"
+      },
+      {
+        "bg": "rgb(49, 94, 171)",
+        "fg": "rgb(255, 255, 255)",
+        "name": "ENTRÉE"
+      },
+      {
+        "bg": "rgb(248, 250, 252)",
+        "fg": "rgb(24, 33, 47)",
+        "name": "SUITE PARENTALE"
+      },
+      {
+        "bg": "rgb(248, 250, 252)",
+        "fg": "rgb(24, 33, 47)",
+        "name": "CHAMBRE AMIS"
+      }
+    ],
+    "page": "STORES",
+    "theme": "Clair"
+  },
+  {
+    "options": [
+      {
+        "bg": "rgb(248, 250, 252)",
+        "fg": "rgb(24, 33, 47)",
+        "name": "SALON"
+      },
+      {
+        "bg": "rgb(248, 250, 252)",
+        "fg": "rgb(24, 33, 47)",
+        "name": "SALLE À MANGER"
+      },
+      {
+        "bg": "rgb(248, 250, 252)",
+        "fg": "rgb(24, 33, 47)",
+        "name": "CUISINE"
+      },
+      {
+        "bg": "rgb(248, 250, 252)",
+        "fg": "rgb(24, 33, 47)",
+        "name": "BUREAU"
+      },
+      {
+        "bg": "rgb(248, 250, 252)",
+        "fg": "rgb(24, 33, 47)",
+        "name": "CINÉMA · SANS BAIE VISIBLE"
+      },
+      {
+        "bg": "rgb(248, 250, 252)",
+        "fg": "rgb(24, 33, 47)",
+        "name": "FITNESS"
+      },
+      {
+        "bg": "rgb(49, 94, 171)",
+        "fg": "rgb(255, 255, 255)",
+        "name": "ENTRÉE"
+      },
+      {
+        "bg": "rgb(248, 250, 252)",
+        "fg": "rgb(24, 33, 47)",
+        "name": "SUITE PARENTALE"
+      },
+      {
+        "bg": "rgb(248, 250, 252)",
+        "fg": "rgb(24, 33, 47)",
+        "name": "CHAMBRE AMIS"
+      }
+    ],
+    "page": "STORES",
+    "theme": "Verre"
+  }
+]
