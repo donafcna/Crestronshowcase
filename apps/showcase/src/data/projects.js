@@ -78,12 +78,12 @@ export const projects = [
   "autoDemo": false,
   "embedUrl": "/showcases/villa-stark/index.html?mode=panel",
   "embedPhoneUrl": "/showcases/villa-stark/index.html?mode=panel",
-  "thumbnailUrl": "/showcases/villa-stark/assets/photos/scene.jpg",
+  "thumbnailUrl": "/showcases/villa-stark/assets/original/hero-on.webp",
   "year": "2026",
   "text": {
     "fr": {
       "description": "Une villa qui réagit à chaque geste.",
-      "details": "Démonstration interactive Villa Stark : explorez la villa, ses pièces et ses ambiances. Éclairage, stores, climat, musique, télévision, sécurité et interphone sont simulés en direct.",
+      "details": "Démonstration interactive Villa Stark : une architecture fictive originale en pierre, bois et zinc, dans un jardin au pied du Jura. Explorez ses pièces et ses ambiances. Éclairage, stores, climat, musique, télévision, sécurité et interphone sont simulés en direct.",
       "features": [
         "Scénarios Je rentre, Je pars, Je reçois, Mon film et Bonne nuit",
         "Villa et intérieurs interactifs",
@@ -94,7 +94,7 @@ export const projects = [
     },
     "en": {
       "description": "A villa that responds to every touch.",
-      "details": "Villa Stark interactive demonstration: explore the villa, its rooms and scenes. Lighting, shades, climate, music, television, security and intercom are simulated live.",
+      "details": "Villa Stark interactive demonstration: original fictional stone, timber and zinc architecture in a garden beneath the Jura. Explore its rooms and scenes. Lighting, shades, climate, music, television, security and intercom are simulated live.",
       "features": [
         "Arrival, departure, hosting, movie and night scenes",
         "Interactive villa and interiors",
@@ -105,7 +105,7 @@ export const projects = [
     },
     "de": {
       "description": "Eine Villa, die auf jede Berührung reagiert.",
-      "details": "Interaktive Demonstration Villa Stark: Villa, Räume und Szenen erkunden. Licht, Beschattung, Klima, Musik, Fernsehen, Sicherheit und Gegensprechanlage werden live simuliert.",
+      "details": "Interaktive Demonstration Villa Stark: eigenständige fiktive Architektur aus Stein, Holz und Zink in einem Garten am Jura. Räume und Szenen erkunden. Licht, Beschattung, Klima, Musik, Fernsehen, Sicherheit und Gegensprechanlage werden live simuliert.",
       "features": [
         "Ankunft, Abwesenheit, Empfang, Film und Nacht",
         "Interaktive Villa und Innenräume",

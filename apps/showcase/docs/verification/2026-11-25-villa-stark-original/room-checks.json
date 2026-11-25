@@ -1,0 +1,38 @@
+[
+  {
+    "room": "SALON",
+    "newPhoto": true
+  },
+  {
+    "room": "SALLE À MANGER",
+    "newPhoto": true
+  },
+  {
+    "room": "CUISINE",
+    "newPhoto": true
+  },
+  {
+    "room": "BUREAU",
+    "newPhoto": true
+  },
+  {
+    "room": "CINÉMA",
+    "newPhoto": true
+  },
+  {
+    "room": "FITNESS",
+    "newPhoto": true
+  },
+  {
+    "room": "ENTRÉE",
+    "newPhoto": true
+  },
+  {
+    "room": "SUITE PARENTALE",
+    "newPhoto": true
+  },
+  {
+    "room": "CHAMBRE AMIS",
+    "newPhoto": true
+  }
+]

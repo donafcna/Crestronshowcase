@@ -47,7 +47,7 @@ const hvacIco = c => c.heat ? ICO_HEAT : c.ac ? ICO_COOL : "";
 
 /* ---------------- état ---------------- */
 const S = {
-  page: "home", scene: null, theme: (() => { try { return localStorage.getItem("villa-stark-theme") || "aurum"; } catch { return "aurum"; } })(),
+  page: "home", scene: null, theme: (() => { try { return localStorage.getItem("villa-stark-theme-v2") || "glacier"; } catch { return "glacier"; } })(),
   lights: {}, climate: {}, music: {}, shades: {},
   house: { gate: false, garage: false, pool: false },
   security: { mode: "disarmed", alarm: false, zones: ZONES.map(n => ({ name: n, open: false })) },
@@ -86,31 +86,24 @@ function roomLightColor(id) {
    découpé dans la photo « lumières allumées » (clip-path sur la baie vitrée),
    dont l'opacité suit le niveau du variateur et dont la teinte suit la couleur
    choisie. Stores, portail, garage, piscine, sécurité : calques par-dessus.
-   Coordonnées en % de la photo 1600×900. */
-const WIN = { // [x, y, w, h] en px de la photo 1600×900
-  Living: [460, 287, 152, 133], Dining: [652, 287, 156, 133], Kitchen: [838, 287, 152, 133], Office: [1022, 287, 158, 133],
-  Cinema: [460, 458, 152, 132], Fitness: [636, 458, 112, 132], Entry: [768, 458, 112, 132], Master: [898, 458, 112, 132], Bedroom: [1030, 458, 158, 132],
+   Calques recadrés sur la photographie originale 1672×941. */
+const WIN = { // registered to the new 1672×941 original photograph
+  Living: [304, 316, 326, 155], Dining: [698, 330, 205, 142], Kitchen: [964, 348, 239, 123], Office: [1262, 373, 166, 98],
+  Cinema: [356, 516, 173, 129], Fitness: [588, 516, 189, 128], Entry: [840, 505, 174, 139], Master: [1102, 518, 253, 126], Bedroom: [1420, 517, 165, 127],
 };
-const PORTAIL = [25, 483, 115, 132], GARAGE = [201, 477, 190, 116];
-// arbuste au premier plan devant le garage (polygone en % du rect GARAGE), reste fixe quand la porte bouge
-const GARAGE_FG = "polygon(66% 101%, 75% 87%, 84% 80%, 94% 69%, 101% 64%, 101% 101%)";
-const POOL_PTS = [[78.1, 66.4], [100, 65.1], [100, 70.9], [85.6, 70.7], [81.3, 68.2]];
-const POOL_CLIP = "polygon(" + POOL_PTS.map(([px, py]) => `${(px * 16 + 7) / 24.96}% ${(py * 9 + 251) / 14.04}%`).join(", ") + ")";
+const PORTAIL = [237, 535, 65, 111], GARAGE = [37, 554, 164, 91];
+const GARAGE_FG = "polygon(0 100%,0 100%,0 100%)";
+const POOL_PTS = [[1318, 666], [1672, 671], [1672, 739], [1533, 735]];
+const POOL_CLIP = "polygon(" + POOL_PTS.map(([x, y]) => `${x / 1672 * 100}% ${y / 941 * 100}%`).join(", ") + ")";
 // intérieurs : zones de la baie vitrée et de l'écran TV, en % de la photo
 const INT = {
-  Living:  { win: [0, 6, 48, 50], tv: [67, 19.5, 19, 22.5] },
-  Dining:  { win: [57, 8, 43, 56] },
-  Kitchen: { win: [54, 11, 46, 54] },
-  Office:  { win: [68, 6, 32, 57] },
-  Cinema:  { tv: [49, 19, 31, 32] },
-  Fitness: { win: [3, 6, 77, 46] },
-  Entry:   { win: [61, 8, 25, 50] },
-  Master:  { win: [48, 10, 52, 50] },
-  Bedroom: { win: [52, 13, 27, 35] },
-  Pool:    { },
+ Living: { win:[0,5,43,62], tv:[70.4,21.8,17.4,20.7] },
+ Dining: { win:[46,5,54,77] }, Kitchen: { win:[66,14,34,59] }, Office: { win:[77,0,23,87] },
+ Cinema: { tv:[56.3,18.7,30,34.1] }, Fitness: { win:[0,3,44,92] }, Entry: { win:[86,0,14,90] },
+ Master: { win:[47,8,53,68] }, Bedroom: { win:[78.5,12,18.5,55] }, Pool: {},
 };
-// la scène plein écran (2496×1404) contient la photo de la villa (1600×900) à l'offset (7, 251)
-const SCENE = { W: 2496, H: 1404, ox: 7, oy: 251 };
+// Photographie originale, sans décalage entre la scène et ses calques.
+const SCENE = { W: 1672, H: 941, ox: 0, oy: 0 };
 const sx = x => (x + SCENE.ox) / SCENE.W * 100, sy = y => (y + SCENE.oy) / SCENE.H * 100;
 const pct = ([x, y, w, h]) => ({ left: sx(x) + "%", top: sy(y) + "%", width: w / SCENE.W * 100 + "%", height: h / SCENE.H * 100 + "%" });
 // trois circuits indépendants : ruban LED (corniche, en haut), spots (éclairage général), COULEURS (lumière d'ambiance, en bas)
@@ -129,7 +122,7 @@ const H = { rooms: {} };
 function div(cls, style = "") { const d = document.createElement("div"); d.className = cls; d.style.cssText = style; return d; }
 // calque image plein cadre, positionné pour que la zone [x,y,w,h] de la photo tombe sur l'élément parent (qui la découpe)
 function fullLayer(cls, img, [x, y, w, h]) {
-  return div(cls, `position:absolute;left:${-x / w * 100}%;top:${-y / h * 100}%;width:${1600 / w * 100}%;height:${900 / h * 100}%;background:url(${img}) 0 0/100% 100% no-repeat`);
+  return div(cls, `position:absolute;left:${-x / w * 100}%;top:${-y / h * 100}%;width:${SCENE.W / w * 100}%;height:${SCENE.H / h * 100}%;background:url(${img}) 0 0/100% 100% no-repeat`);
 }
 function buildHouse() {
   const stage = $("#houseStage");
@@ -137,8 +130,9 @@ function buildHouse() {
     const p = pct(WIN[r.id]);
     const win = div("win", `left:${p.left};top:${p.top};width:${p.width};height:${p.height}`);
     win.dataset.room = r.id;
-    const lit = fullLayer("win-lit", "assets/photos/villa_on.jpg", WIN[r.id]); const strip = div("win-strip"); const rgbw = div("win-rgbw"); const glow = div("win-glow");
+    const lit = fullLayer("win-lit", "assets/original/hero-on.webp", WIN[r.id]); const strip = div("win-strip"); const rgbw = div("win-rgbw"); const glow = div("win-glow");
     const shade = div("win-shade"); const tv = div("win-tv"); const hvac = div("win-hvac");
+    if (r.id === "Cinema") Object.assign(tv.style, {left:"12%",top:"18%",width:"29%",height:"32%"});
     const chip = div("win-chip"); chip.innerHTML = `<b>${r.name}</b><span></span>`;
     const clip = div("win-clip"); clip.appendChild(lit);
     win.append(glow, clip, strip, rgbw, hvac, tv, shade, chip);
@@ -149,19 +143,19 @@ function buildHouse() {
   // piscine
   const pool = div("pool", `clip-path:${POOL_CLIP}`); pool.dataset.room = "Pool";
   const pdark = div("pool-dark"), ptint = div("pool-tint"), pcover = div("pool-cover");
-  pcover.appendChild(div("pool-cover-img", "position:absolute;inset:0;background:url(assets/photos/villa_pool.jpg) 0 0/100% 100% no-repeat"));
+  pcover.appendChild(div("pool-cover-img", "position:absolute;inset:0;background:url(assets/original/mechanical-open.webp) 0 0/100% 100% no-repeat"));
   pool.append(pdark, ptint, pcover); pool.addEventListener("click", () => enterRoom("Pool")); stage.appendChild(pool);
   H.rooms.Pool = { dark: pdark, tint: ptint, cover: pcover };
   // portail (coulissant) et garage (sectionnel)
   const g = pct(PORTAIL); const gateSlot = div("gate-slot", `left:${g.left};top:${g.top};width:${g.width};height:${g.height}`);
-  const gateBg = fullLayer("gate-bg", "assets/photos/villa_gate.jpg", PORTAIL);
-  const gateL = div("gate-leaf gate-l"); gateL.appendChild(fullLayer("", "assets/photos/villa_off.jpg", PORTAIL));
-  const gateR = div("gate-leaf gate-r"); gateR.appendChild(fullLayer("", "assets/photos/villa_off.jpg", PORTAIL));
+  const gateBg = fullLayer("gate-bg", "assets/original/mechanical-open.webp", PORTAIL);
+  const gateL = div("gate-leaf gate-l"); gateL.appendChild(fullLayer("", "assets/original/hero-off.webp", PORTAIL));
+  const gateR = div("gate-leaf gate-r"); gateR.appendChild(fullLayer("", "assets/original/hero-off.webp", PORTAIL));
   gateSlot.append(gateBg, gateL, gateR); stage.appendChild(gateSlot);
   const ga = pct(GARAGE); const garSlot = div("garage-slot", `left:${ga.left};top:${ga.top};width:${ga.width};height:${ga.height}`);
-  const garIn = fullLayer("garage-inside", "assets/photos/villa_garage.jpg", GARAGE), garDoor = div("garage-door"); garDoor.appendChild(fullLayer("", "assets/photos/villa_off.jpg", GARAGE));
+  const garIn = fullLayer("garage-inside", "assets/original/mechanical-open.webp", GARAGE), garDoor = div("garage-door"); garDoor.appendChild(fullLayer("", "assets/original/hero-off.webp", GARAGE));
   garDoor.appendChild(div("garage-door-edge"));
-  const garFg = div("garage-fg", `clip-path:${GARAGE_FG}`); garFg.appendChild(fullLayer("", "assets/photos/villa_off.jpg", GARAGE));
+  const garFg = div("garage-fg", `clip-path:${GARAGE_FG}`); garFg.appendChild(fullLayer("", "assets/original/hero-off.webp", GARAGE));
   garSlot.append(garIn, garDoor, div("garage-lintel"), garFg); stage.appendChild(garSlot);
   H.gateL = gateL; H.gateR = gateR; H.garage = garDoor; H.garageIn = garIn;
   // sécurité, interphone
@@ -169,7 +163,7 @@ function buildHouse() {
   // bandeau des pièces
   const strip = $("#roomStrip"); H.thumbs = {};
   ROOMS.forEach(r => {
-    const t = div("thumb", `background-image:url(assets/photos/room_${r.id}.jpg)`); t.innerHTML = `<i></i><span>${r.name}</span>`;
+    const t = div("thumb", `background-image:url(assets/original/room-${r.id}.webp)`); t.innerHTML = `<i></i><span>${r.name}</span>`;
     t.onclick = () => (roomView === r.id ? leaveRoom() : enterRoom(r.id)); strip.appendChild(t); H.thumbs[r.id] = t;
   });
 }
@@ -223,7 +217,7 @@ function enterRoom(id) {
   if (backgroundOnly && !applyingSnapshot) { syncBus?.postMessage({ type: "command", action: "room", value: id }); return; }
   roomView = id;
   const r = roomById[id], v = $("#roomView");
-  v.querySelector(".rv-photo").style.backgroundImage = `url(assets/photos/room_${id}.jpg)`;
+  v.querySelector(".rv-photo").style.backgroundImage = `url(assets/original/room-${id}.webp)`;
   v.querySelector(".rv-title").textContent = r.name;
   const i = INT[id];
   const sh = v.querySelector(".rv-shade"), tv = v.querySelector(".rv-tv");
@@ -269,7 +263,7 @@ function navKey() { const p = S.page; return p.startsWith("light") ? "lights" : 
 const THEMES = [["aurum", "Sombre — or sur nuit"], ["glacier", "Clair élégant — verre clair"], ["carbone", "Verre dépoli — graphite et cuivre"]];
 function renderThemeBar() {
   const bar = $("#themeBar"); bar.querySelectorAll("button").forEach(b => b.remove());
-  THEMES.forEach(([k, lbl]) => { const b = document.createElement("button"); b.className = (S.theme === k ? "sel" : ""); b.innerHTML = `<i class="d-${k}"></i>${lbl.split(" — ")[0]}`; b.title = lbl; b.onclick = () => { S.theme = k; try { localStorage.setItem("villa-stark-theme", k); } catch {} render(); }; bar.appendChild(b); });
+  THEMES.forEach(([k, lbl]) => { const b = document.createElement("button"); b.className = (S.theme === k ? "sel" : ""); b.innerHTML = `<i class="d-${k}"></i>${lbl.split(" — ")[0]}`; b.title = lbl; b.onclick = () => { S.theme = k; try { localStorage.setItem("villa-stark-theme-v2", k); } catch {} render(); }; bar.appendChild(b); });
 }
 function render() {
   const tsw = $("#tsw"); tsw.classList.toggle("home", S.page === "home"); tsw.dataset.theme = S.theme;
@@ -363,6 +357,7 @@ function renderPlan(pg, mode) {
     if (mode === "light") { if (anyLight(r.id)) b.classList.add("sel"); b.title = r.name; b.setAttribute("aria-label", r.name); b.onclick = () => go("light:" + r.id); }
     else { const c = S.climate[r.id]; if (c.heat) b.classList.add("sel"); else if (c.ac) b.classList.add("cool");
       b.title = r.name; b.setAttribute("aria-label", r.name); b.innerHTML = `<span class="sub">${fmt(c.temp)}</span>`; b.onclick = () => go("clim:" + r.id); }
+    const label = document.createElement("span"); label.className = "plan-room-name"; label.textContent = r.name; b.appendChild(label);
     plan.appendChild(b);
   });
 }
@@ -528,7 +523,7 @@ function arm(mode) {
 /* ---------------- interphone ---------------- */
 function cameraHTML() {
   const ic = S.intercom, v = ic.state !== "idle" || ic.visitor;
-  return `<div class="cam-photo" style="background-image:url(assets/photos/cam_${v ? "visitor" : "gate"}.jpg)"></div>${ic.state === "ringing" ? '<div class="cam-ring">🔔 APPEL ENTRANT</div>' : ""}`;
+  return `${v ? '<div class="camera-visitor">' + $("#visitor svg").outerHTML + '</div>' : ""}<div class="cam-photo" style="background-image:url(assets/original/camera-gate.webp)"></div>${ic.state === "ringing" ? '<div class="cam-ring">🔔 APPEL ENTRANT</div>' : ""}`;
 }
 function renderIntercom(pg) {
   const ic = S.intercom;
@@ -609,13 +604,13 @@ window.addEventListener("message", event => {
   if (!backgroundOnly || event.source !== parent || event.origin !== location.origin || event.data?.type !== "villa-stark-layout") return;
   const r = event.data.rect;
   if (!r || ![r.x, r.y, r.width, r.height].every(Number.isFinite) || r.width <= 0 || r.height <= 0) return;
-  const house = $(".house-wrap"), fit = Math.min(r.width / 840, r.height / 440);
-  // Room bays in the composite photo occupy x=467..1195, y=538..841.
-  house.style.cssText = `position:absolute;left:${r.x + r.width / 2 - 830 * fit}px;top:${r.y + r.height / 2 - 690 * fit}px;width:${2496 * fit}px;height:${1404 * fit}px;transform:none;`;
+  const house = $(".house-wrap"), fit = Math.min(r.width / 1780, r.height / 600);
+  // New room bays occupy x=304..1585, y=316..645; include the gables and pool in the crop.
+  house.style.cssText = `position:absolute;left:${r.x + r.width / 2 - 836 * fit}px;top:${r.y + r.height / 2 - 480 * fit}px;width:${SCENE.W * fit}px;height:${SCENE.H * fit}px;transform:none;`;
   const view = $("#roomView");
   const vw = Math.min(r.width, r.height * 16 / 9), vh = vw * 9 / 16;
   // roomView is inside the transformed photo canvas, so convert the clear area back to local pixels.
-  view.style.cssText = `position:absolute;left:${(r.x + (r.width - vw) / 2) - (r.x + r.width / 2 - 830 * fit)}px;top:${(r.y + (r.height - vh) / 2) - (r.y + r.height / 2 - 690 * fit)}px;width:${vw}px;height:${vh}px;right:auto;bottom:auto;`;
+  view.style.cssText = `position:absolute;left:${(r.x + (r.width - vw) / 2) - (r.x + r.width / 2 - 836 * fit)}px;top:${(r.y + (r.height - vh) / 2) - (r.y + r.height / 2 - 480 * fit)}px;width:${vw}px;height:${vh}px;right:auto;bottom:auto;`;
 });
 
 /* ---------------- shared state between GUI and animated backdrop ---------------- */
@@ -643,7 +638,7 @@ if (syncBus) {
     else if (data.action === "exterior") leaveRoom();
     else if (data.action === "room" && roomById[data.value]) enterRoom(data.value);
     else if (data.action === "shade" && roomView && S.shades[roomView]) { S.shades[roomView].pos = S.shades[roomView].pos ? 0 : 100; render(); }
-    else if (data.action === "theme" && THEMES.some(([key]) => key === data.value)) { S.theme = data.value; try { localStorage.setItem("villa-stark-theme", data.value); } catch {} render(); }
+    else if (data.action === "theme" && THEMES.some(([key]) => key === data.value)) { S.theme = data.value; try { localStorage.setItem("villa-stark-theme-v2", data.value); } catch {} render(); }
   };
 }
 window.addEventListener("pagehide", () => { syncBus?.close(); Object.values(shadeTimers).forEach(clearInterval); });

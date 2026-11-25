@@ -1,0 +1,107 @@
+[
+  {
+    "file": "hero-on.webp",
+    "source_generation": "464bc656-0c7a-4225-a804-61ea1c01d177",
+    "width": 1672,
+    "height": 941,
+    "sha256": "d552fa524e4b11bc854dfe45e4f257434fb657a74e5db041050b782f15b14011"
+  },
+  {
+    "file": "hero-off.webp",
+    "source_generation": "7f4bf32d-4671-4b56-ad5c-5068bd7968c0",
+    "width": 1672,
+    "height": 941,
+    "sha256": "152e155a2f75ab79ac859afc9b261456732882f0621a2b5e9ff53502af444088"
+  },
+  {
+    "file": "mechanical-open.webp",
+    "source_generation": "4b8eb0f4-ae73-423a-a81c-0128b7e99c89",
+    "width": 1672,
+    "height": 941,
+    "sha256": "7fc53b40eaea93a780f56b63ea1f257dba01cc727a38e33a20bdd39a370a2e36"
+  },
+  {
+    "file": "room-Living.webp",
+    "source_generation": "552dc729-60f1-4048-bab0-82e69da91e0c",
+    "width": 1672,
+    "height": 941,
+    "sha256": "0a8fa17ff56085840711e67594f11155333c9388f35e2cf25e87ab556de9076d"
+  },
+  {
+    "file": "room-Dining.webp",
+    "source_generation": "c42f4d30-c760-41b8-a98b-3bfaf2244a91",
+    "width": 1672,
+    "height": 941,
+    "sha256": "2b78f05f123fc094d7236606d9145a25362868813cd4f048159f4c6c8dd31d54"
+  },
+  {
+    "file": "room-Kitchen.webp",
+    "source_generation": "fde2560d-b1bc-427a-abc3-20e15449a7f5",
+    "width": 1672,
+    "height": 941,
+    "sha256": "83dbb9842800b1456d227ea0b361e11993c301e2a0e098e7b92c35773d716cca"
+  },
+  {
+    "file": "room-Office.webp",
+    "source_generation": "f516c693-6ad9-4f01-97d6-0c78491d17db",
+    "width": 1672,
+    "height": 941,
+    "sha256": "42b20bc08a66c2e5a2356445399bf9532e926dbcb682ccff84a90de610311b37"
+  },
+  {
+    "file": "room-Cinema.webp",
+    "source_generation": "27afe413-b986-461e-bb21-e7d69e5de0f9",
+    "width": 1672,
+    "height": 941,
+    "sha256": "7dfd03ba75ca51790ccae61f7b416066362750eb8f5a6baad78f0c096638e761"
+  },
+  {
+    "file": "room-Fitness.webp",
+    "source_generation": "cc8641c8-de23-4995-b202-1781227b2312",
+    "width": 1672,
+    "height": 941,
+    "sha256": "df55c7c731e329a41940421801dfa1f875c5628bb3c82253ca1fb73294eed2f3"
+  },
+  {
+    "file": "room-Entry.webp",
+    "source_generation": "35acd5fd-9bee-470d-94f3-a8f3a6880c99",
+    "width": 1672,
+    "height": 941,
+    "sha256": "54c181ad8469f03f624b9b5bd1f9f6bb903b6121c0f72fcd20c19c78a6b7abc9"
+  },
+  {
+    "file": "room-Master.webp",
+    "source_generation": "17fede08-90da-4e0e-9f5c-b938d66057fd",
+    "width": 1672,
+    "height": 941,
+    "sha256": "39c8584deea9bb39c66c1c0631a218967d02f439bb82258c6a27113460884b49"
+  },
+  {
+    "file": "room-Bedroom.webp",
+    "source_generation": "04299961-4810-4e08-ab06-520a73d0a7d3",
+    "width": 1672,
+    "height": 941,
+    "sha256": "5728c903f1667012998e152d58f22b496fc30b4846bc7dcd683b9a3117407cc3"
+  },
+  {
+    "file": "room-Pool.webp",
+    "source_generation": "12db01db-74bc-4913-a6c6-21ef60acb662",
+    "width": 1672,
+    "height": 941,
+    "sha256": "e5e4d78a8d0371488e12310820b5e1db0f32b914b2e36b33ca91b2b07162e2f6"
+  },
+  {
+    "file": "camera-gate.webp",
+    "source_generation": "21a4599a-21df-4e09-a280-2448cb183a14",
+    "width": 1672,
+    "height": 941,
+    "sha256": "0307eba5361fedc9ff854c4b1b311524a3b783f210251d648d11a841048427d3"
+  },
+  {
+    "file": "landscape.webp",
+    "source_generation": "f3c391fc-c058-4e4d-b6e8-175c3dbde3f4",
+    "width": 1672,
+    "height": 941,
+    "sha256": "0e12d3454addf23845b38571edee288e306ba55af4f32b8f5fbb2656ee883355"
+  }
+]

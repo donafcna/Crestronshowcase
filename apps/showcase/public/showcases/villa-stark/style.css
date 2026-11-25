@@ -266,7 +266,7 @@ button { font-family: inherit; }
 .value { font-size: 20px; font-weight: 300; }
 
 /* ---------- Home ---------- */
-.home-bg { position: absolute; inset: 0; background: url("assets/AurumVilla.jpg") center/cover; }
+.home-bg { position: absolute; inset: 0; background: url("assets/original/hero-on.webp") center/cover; }
 .home-bg::after { content: ""; position: absolute; inset: 0; background: var(--t-home-veil); }
 .home-logo { position: absolute; left: 40px; top: 32px; height: 48px; filter: var(--t-logo-filter, none); filter: drop-shadow(0 3px 10px rgba(0,0,0,0.8)); }
 .home-clock { position: absolute; right: 48px; top: 22px; text-align: right; }
@@ -294,7 +294,7 @@ button { font-family: inherit; }
 .access-row .scene-btn.sel .st { color: var(--t-accent2); }
 
 /* ---------- plan (Lights / Climate) ---------- */
-.plan { position: absolute; left: 80px; top: 24px; width: 1120px; height: 560px; background: url("assets/AurumPlan.png") center/contain no-repeat; }
+.plan { position: absolute; left: 80px; top: 24px; width: 1120px; height: 560px; background: url("assets/original/floor-plan.svg") center/contain no-repeat; }
 .plan-btn { position: absolute; display: block; font-size: 0; background: color-mix(in srgb, var(--t-accent) 4%, transparent); border: 1px solid color-mix(in srgb, var(--t-accent) 25%, transparent); border-radius: 8px; color: var(--t-accent); font-size: 12px; letter-spacing: 3px; cursor: pointer; transition: background .25s, box-shadow .25s; }
 .plan-btn:hover { background: color-mix(in srgb, var(--t-accent) 12%, transparent); }
 .plan-btn.sel { background: radial-gradient(ellipse 70% 70% at 50% 40%, rgba(255,200,120,0.32), color-mix(in srgb, var(--t-accent) 10%, transparent)); border-color: var(--t-accent); box-shadow: 0 0 24px color-mix(in srgb, var(--t-accent) 45%, transparent) inset, 0 0 18px color-mix(in srgb, var(--t-accent) 25%, transparent); color: var(--t-accent2); }

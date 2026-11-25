@@ -54,7 +54,7 @@ html[data-mode="background"] .room-view { position:absolute; }
  html[data-mode="panel"] .hdr-logo { width:115px; max-height:42px; padding:5px; }
 }
 
-html[data-mode="background"] body::before { content:""; position:fixed; inset:0; background:linear-gradient(#05070c55,#05070c88),url(assets/photos/scene.jpg) center/cover; }
+html[data-mode="background"] body::before { content:""; position:fixed; inset:0; background:linear-gradient(#05070c55,#05070c88),url(assets/original/landscape.webp) center/cover; }
 html[data-mode="background"] .house-stage { mask-image:linear-gradient(to right,transparent,#000 5%,#000 95%,transparent); }
 
 html[data-mode="background"] .house-stage { mask-image:linear-gradient(to right,transparent,#000 5%,#000 95%,transparent),linear-gradient(to bottom,transparent,#000 5%,#000 95%,transparent); mask-composite:intersect; }
@@ -63,3 +63,14 @@ html[data-mode="background"] .rv-title { left:8px; bottom:8px; font-size:16px; l
 html[data-mode="background"] .rv-panel { right:8px; top:8px; max-width:55%; gap:4px; }
 html[data-mode="background"] .rv-climate,html[data-mode="background"] .rv-lights,html[data-mode="background"] .rv-music { font-size:10px; padding:6px 8px; letter-spacing:.2px; }
 html[data-mode="background"] .rv-climate b { font-size:14px; }
+
+.camera-visitor { position:absolute; z-index:2; left:45%; bottom:8%; width:13%; height:48%; filter:drop-shadow(0 5px 8px #0008); }
+.camera-visitor svg { width:100%; height:100%; }
+.plan-room-name { position:absolute; inset:auto 4px 9px; font-size:17px; font-weight:550; letter-spacing:.4px; }
+@media(max-width:600px) { .plan-room-name { position:static; display:block; font-size:13px; } }
+
+/* Default white canvas lets the official black/orange artwork blend into the GUI. */
+.tsw[data-theme="glacier"] { --t-bg:#fff; --t-hdr-bg:#fff; --t-nav-bg:#fff; --t-surface:#f3f5f7; --t-fg:#162235; --t-muted:#465369; --t-accent:#654b19; --t-accent2:#513908; --t-line:#8793a4; --t-sel-soft:#e1eadf; }
+.tsw[data-theme="glacier"] .home-bg { display:none; }
+.tsw[data-theme="glacier"] .home-logo,.tsw[data-theme="glacier"] .hdr-logo { background:transparent; }
+html[data-mode="panel"] body { background:#fff; }
