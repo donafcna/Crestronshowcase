@@ -792,3 +792,6 @@ Fond photographique unique, châssis commun et flèches conservés, logo adapté
 
 ### 25 novembre 2026 — Villa Stark 2.3.20
 Portail de l'interphone : passage photographique à la place des aplats, vantail d'origine pivotant en perspective sur sa charnière (3,2 s). Contrôles : deux commandes, ouverture/fermeture, paysage et smartphone. Preuves et prompt : docs/verification/2026-11-25-villa-stark-gate-v2/.
+
+### 25 novembre 2026 — Villa Stark 2.3.21
+Musique : tableau de 70 boutons remplacé par un lecteur de six boutons, sélecteur des dix pièces et volume sur curseur. Réglages indépendants conservés, fond lié à la pièce sélectionnée. 24 contrôles supports/thèmes/normal-Scène sans débordement. Preuves : docs/verification/2026-11-25-villa-stark-music/.

@@ -1,0 +1,194 @@
+[
+  {
+    "device": "Smartphone",
+    "theme": "Clair",
+    "buttons": 6,
+    "inside": true,
+    "pageScroll": false,
+    "pieces": 10
+  },
+  {
+    "device": "Smartphone",
+    "theme": "Sombre",
+    "buttons": 6,
+    "inside": true,
+    "pageScroll": false,
+    "pieces": 10
+  },
+  {
+    "device": "Smartphone",
+    "theme": "Verre",
+    "buttons": 6,
+    "inside": true,
+    "pageScroll": false,
+    "pieces": 10
+  },
+  {
+    "device": "Dalle TSW",
+    "theme": "Clair",
+    "buttons": 6,
+    "inside": true,
+    "pageScroll": false,
+    "pieces": 10
+  },
+  {
+    "device": "Dalle TSW",
+    "theme": "Sombre",
+    "buttons": 6,
+    "inside": true,
+    "pageScroll": false,
+    "pieces": 10
+  },
+  {
+    "device": "Dalle TSW",
+    "theme": "Verre",
+    "buttons": 6,
+    "inside": true,
+    "pageScroll": false,
+    "pieces": 10
+  },
+  {
+    "device": "Tablette",
+    "theme": "Clair",
+    "buttons": 6,
+    "inside": true,
+    "pageScroll": false,
+    "pieces": 10
+  },
+  {
+    "device": "Tablette",
+    "theme": "Sombre",
+    "buttons": 6,
+    "inside": true,
+    "pageScroll": false,
+    "pieces": 10
+  },
+  {
+    "device": "Tablette",
+    "theme": "Verre",
+    "buttons": 6,
+    "inside": true,
+    "pageScroll": false,
+    "pieces": 10
+  },
+  {
+    "device": "PC / Xpanel",
+    "theme": "Clair",
+    "buttons": 6,
+    "inside": true,
+    "pageScroll": false,
+    "pieces": 10
+  },
+  {
+    "device": "PC / Xpanel",
+    "theme": "Sombre",
+    "buttons": 6,
+    "inside": true,
+    "pageScroll": false,
+    "pieces": 10
+  },
+  {
+    "device": "PC / Xpanel",
+    "theme": "Verre",
+    "buttons": 6,
+    "inside": true,
+    "pageScroll": false,
+    "pieces": 10
+  },
+  {
+    "device": "Smartphone",
+    "theme": "Clair",
+    "mode": "scene",
+    "buttons": 6,
+    "inside": true,
+    "pageScroll": false
+  },
+  {
+    "device": "Smartphone",
+    "theme": "Sombre",
+    "mode": "scene",
+    "buttons": 6,
+    "inside": true,
+    "pageScroll": false
+  },
+  {
+    "device": "Smartphone",
+    "theme": "Verre",
+    "mode": "scene",
+    "buttons": 6,
+    "inside": true,
+    "pageScroll": false
+  },
+  {
+    "device": "Dalle TSW",
+    "theme": "Clair",
+    "mode": "scene",
+    "buttons": 6,
+    "inside": true,
+    "pageScroll": false
+  },
+  {
+    "device": "Dalle TSW",
+    "theme": "Sombre",
+    "mode": "scene",
+    "buttons": 6,
+    "inside": true,
+    "pageScroll": false
+  },
+  {
+    "device": "Dalle TSW",
+    "theme": "Verre",
+    "mode": "scene",
+    "buttons": 6,
+    "inside": true,
+    "pageScroll": false
+  },
+  {
+    "device": "Tablette",
+    "theme": "Clair",
+    "mode": "scene",
+    "buttons": 6,
+    "inside": true,
+    "pageScroll": false
+  },
+  {
+    "device": "Tablette",
+    "theme": "Sombre",
+    "mode": "scene",
+    "buttons": 6,
+    "inside": true,
+    "pageScroll": false
+  },
+  {
+    "device": "Tablette",
+    "theme": "Verre",
+    "mode": "scene",
+    "buttons": 6,
+    "inside": true,
+    "pageScroll": false
+  },
+  {
+    "device": "PC / Xpanel",
+    "theme": "Clair",
+    "mode": "scene",
+    "buttons": 6,
+    "inside": true,
+    "pageScroll": false
+  },
+  {
+    "device": "PC / Xpanel",
+    "theme": "Sombre",
+    "mode": "scene",
+    "buttons": 6,
+    "inside": true,
+    "pageScroll": false
+  },
+  {
+    "device": "PC / Xpanel",
+    "theme": "Verre",
+    "mode": "scene",
+    "buttons": 6,
+    "inside": true,
+    "pageScroll": false
+  }
+]

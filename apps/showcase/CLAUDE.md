@@ -214,3 +214,6 @@ La photographie plein fond remplace la mise en vignette du lot précédent. Devi
 
 ### 25 novembre 2026 — Villa Stark 2.3.20, portail
 Remplace le passage SVG de 2.3.19 par camera-gate-open-v2.webp, imagegen intégré, utilisée uniquement dans l'ouverture x721..976/y360..623. Décor original conservé. Vantail texturé dans foreignObject SVG avec rotation Y 0 à -88°, perspective 650 px, durée 3,2 s. Fermeture automatique conservée. Preuves, limites et prompt dans docs/verification/2026-11-25-villa-stark-gate-v2/.
+
+### 25 novembre 2026 — Villa Stark 2.3.21, musique
+renderMusic utilise S.musicRoom et les objets S.music existants : six boutons, select des dix pièces, range volume. Ne pas réintroduire le tableau par zone. Changement de pièce : enterRoom(id,false), page MUSIQUE conservée. Source rétablit le son ; arrêt limité à la pièce courante ; volume oninput publie sans reconstruire le DOM. Recette ciblée 24 combinaisons et indépendance des zones : docs/verification/2026-11-25-villa-stark-music/.

@@ -494,18 +494,27 @@ function renderApple(pg) {
 
 /* ---------------- musique ---------------- */
 function renderMusic(pg) {
-  const tbl = document.createElement("table"); tbl.className = "music-table";
-  tbl.innerHTML = `<thead><tr><th>PIÈCE</th>${SOURCES.map(s => `<th>${s.toUpperCase()}</th>`).join("")}<th>VOLUME</th></tr></thead><tbody></tbody>`;
-  const tb = tbl.querySelector("tbody");
-  ROOMS.forEach(r => {
-    const m = S.music[r.id], tr = document.createElement("tr");
-    const td0 = document.createElement("td"); td0.textContent = r.name; tr.appendChild(td0);
-    SOURCES.forEach(s => { const td = document.createElement("td"); td.appendChild(btn(m.src === s ? "✓ " + s.toUpperCase() : s.toUpperCase(), "", () => { m.src = m.src === s ? null : s; }, m.src === s)); tr.appendChild(td); });
-    const tv = document.createElement("td"); const v = document.createElement("div"); v.className = "vol";
-    v.append(btn("−", "", () => { m.vol = Math.max(0, m.vol - 5); }), Object.assign(document.createElement("span"), { className: "lvl", textContent: !m.src ? "ARRÊT" : m.mute ? "MUET" : m.vol + " %" }), btn("+", "", () => { m.vol = Math.min(100, m.vol + 5); }), btn("🔇", "mute", () => { m.mute = !m.mute; }, m.mute));
-    tv.appendChild(v); tr.appendChild(tv); tb.appendChild(tr);
-  });
-  pg.appendChild(tbl);
+  const id = roomById[S.musicRoom] ? S.musicRoom : roomView || "Living";
+  S.musicRoom = id;
+  const m = S.music[id], player = document.createElement("section"); player.className = "music-player card";
+  const roomLabel = document.createElement("label"); roomLabel.className = "music-room-label"; roomLabel.textContent = "PIÈCE"; roomLabel.htmlFor = "musicRoom";
+  const rooms = document.createElement("select"); rooms.id = "musicRoom"; rooms.setAttribute("aria-label", "Pièce musique");
+  ROOMS.forEach(r => rooms.appendChild(new Option(r.name, r.id, false, r.id === id)));
+  rooms.onchange = () => { S.musicRoom = rooms.value; enterRoom(rooms.value, false); };
+  const status = document.createElement("div"); status.className = "music-playback"; status.setAttribute("aria-live", "polite");
+  const describe = () => !m.src ? "Musique arrêtée" : `${m.src.toUpperCase()} · ${m.mute ? "son coupé" : m.vol + " %"}`;
+  status.textContent = describe();
+  const sources = document.createElement("div"); sources.className = "music-sources"; sources.setAttribute("aria-label", "Sources musicales");
+  SOURCES.forEach(s => sources.appendChild(btn(s.toUpperCase(), "", () => { m.src = s; m.mute = false; }, m.src === s)));
+  const volume = document.createElement("div"); volume.className = "music-volume";
+  const volumeLabel = document.createElement("label"); volumeLabel.htmlFor = "musicVolume"; volumeLabel.textContent = "VOLUME";
+  const level = document.createElement("output"); level.htmlFor = "musicVolume"; level.textContent = m.vol + " %";
+  const slider = document.createElement("input"); slider.type = "range"; slider.id = "musicVolume"; slider.min = "0"; slider.max = "100"; slider.step = "1"; slider.value = m.vol; slider.setAttribute("aria-label", "Volume musique — " + roomById[id].name); slider.style.setProperty("--p", m.vol + "%");
+  slider.oninput = () => { m.vol = +slider.value; slider.style.setProperty("--p", m.vol + "%"); level.textContent = m.vol + " %"; status.textContent = describe(); renderHouse(); };
+  volume.append(volumeLabel, level, slider);
+  const actions = document.createElement("div"); actions.className = "music-actions";
+  actions.append(btn("ARRÊTER", "", () => { m.src = null; }, !m.src), btn(m.mute ? "RÉTABLIR LE SON" : "COUPER LE SON", "", () => { m.mute = !m.mute; }, m.mute));
+  player.append(roomLabel, rooms, status, sources, volume, actions); pg.appendChild(player);
 }
 
 /* ---------------- sécurité ---------------- */

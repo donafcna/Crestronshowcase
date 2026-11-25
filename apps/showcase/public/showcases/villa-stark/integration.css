@@ -69,6 +69,28 @@ html[data-mode="background"] .rv-climate b { font-size:14px; }
 .camera-gate-leaf { position:relative; width:255px; height:263px; overflow:hidden; transform-origin:0 50%; backface-visibility:hidden; }
 .camera-gate-leaf img { position:absolute; left:-721px; top:-360px; width:1672px; height:941px; max-width:none; }
 .camera-gate-status { position:absolute; right:8px; bottom:8px; padding:5px 8px; border-radius:5px; background:#101923de; color:#fff; font-size:12px; letter-spacing:.3px; }
+
+/* One music zone at a time, instead of repeating every control in ten rows. */
+.music-player { position:absolute; top:30px; left:170px; width:940px; padding:28px!important; display:grid; gap:18px; }
+.music-room-label,.music-volume label { color:var(--t-accent); font-size:15px; letter-spacing:2px; }
+.music-player select { width:100%; min-height:54px; padding:10px 16px; border:1px solid var(--t-line); border-radius:var(--t-radius); background:var(--t-card2); color:var(--t-fg); font:inherit; font-size:22px; }
+.music-playback { min-height:46px; display:flex; align-items:center; justify-content:center; font-size:28px; color:var(--t-fg); }
+.music-sources { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px; }
+.music-player .btn { min-height:58px; font-size:17px; }
+.music-volume { display:grid; grid-template-columns:1fr auto; align-items:center; gap:8px; }
+.music-volume output { color:var(--t-fg); font-size:20px; }
+.music-volume input { grid-column:1/-1; width:100%; height:44px; margin:0; accent-color:var(--t-accent); }
+.music-actions { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+@media(max-width:600px) {
+ .music-player { position:relative; top:auto; left:auto; width:100%; padding:16px!important; gap:16px; }
+ .music-player select { min-height:48px; font-size:16px; }
+ .music-playback { font-size:23px; min-height:55px; }
+ .music-sources { grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; }
+ .music-player .btn { min-height:52px; font-size:13px; padding:6px; }
+ .music-room-label,.music-volume label { font-size:12px; }
+ .music-volume output { font-size:16px; }
+ .music-actions { gap:8px; }
+}
 .plan-room-name { position:absolute; inset:auto 4px 9px; font-size:17px; font-weight:550; letter-spacing:.4px; }
 @media(max-width:600px) { .plan-room-name { position:static; display:block; font-size:13px; } }
 
