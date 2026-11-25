@@ -69,6 +69,13 @@ html[data-mode="background"] .rv-climate b { font-size:14px; }
 .camera-gate-leaf { position:relative; width:255px; height:263px; overflow:hidden; transform-origin:0 50%; backface-visibility:hidden; }
 .camera-gate-leaf img { position:absolute; left:-721px; top:-360px; width:1672px; height:941px; max-width:none; }
 .camera-gate-status { position:absolute; right:8px; bottom:8px; padding:5px 8px; border-radius:5px; background:#101923de; color:#fff; font-size:12px; letter-spacing:.3px; }
+.rv-tv { opacity:1; background:#030506; overflow:hidden; }
+.rv-tv.on { opacity:1; animation:none; box-shadow:0 0 22px 3px #86b8ed44; }
+.rv-tv canvas,.win-tv canvas { width:100%; height:100%; display:block; }
+.win-tv { overflow:hidden; }
+.pool-lighting { position:absolute; inset:0; width:100%; height:100%; pointer-events:none; z-index:4; }
+.pool-illumination { transition:opacity .3s; mix-blend-mode:screen; }
+.pool-spot-core { transition:fill .3s; }
 
 /* One music zone at a time, instead of repeating every control in ten rows. */
 .music-player { position:absolute; top:30px; left:170px; width:940px; padding:28px!important; display:grid; gap:18px; }
@@ -92,7 +99,14 @@ html[data-mode="background"] .rv-climate b { font-size:14px; }
  .music-actions { gap:8px; }
 }
 .plan-room-name { position:absolute; inset:auto 4px 9px; font-size:17px; font-weight:550; letter-spacing:.4px; }
+.plan-room-icon { position:absolute; left:50%; top:44%; width:72px; height:72px; transform:translate(-50%,-50%); pointer-events:none; }
+.plan-room-icon svg { display:block; width:100%; height:100%; }
 @media(max-width:600px) { .plan-room-name { position:static; display:block; font-size:13px; } }
+@media(max-width:600px) {
+ .plan-room-icon { left:12px; top:50%; width:28px; height:28px; transform:translateY(-50%); }
+ .plan-btn { padding:8px 5px 8px 46px; }
+ .plan-btn .sub { position:absolute; top:5px; right:6px; left:auto; font-size:11px; }
+}
 
 /* Default white canvas lets the official black/orange artwork blend into the GUI. */
 .tsw[data-theme="glacier"] { --t-bg:#fff; --t-hdr-bg:#fff; --t-nav-bg:#fff; --t-surface:#f3f5f7; --t-fg:#162235; --t-muted:#465369; --t-accent:#654b19; --t-accent2:#513908; --t-line:#8793a4; --t-sel-soft:#e1eadf; }
@@ -106,12 +120,21 @@ html[data-mode="background"] .house-wrap { left:50%; top:50%; transform:translat
 html[data-mode="background"] .room-view { inset:0; width:100%; height:100%; }
 
 /* Portrait stores: give illustrations and controls separate grid tracks. */
+.shade-grid { top:12px; height:592px; grid-template-rows:repeat(3,minmax(0,1fr)); }
+.shade-card { height:auto; min-height:0; padding:10px 14px!important; display:grid; grid-template-columns:minmax(0,1fr) 110px; grid-template-rows:16px minmax(0,1fr) 18px; gap:6px 20px; }
+.shade-card .card-title { grid-column:1/-1; margin:0; font-size:13px; line-height:16px; letter-spacing:.5px; }
+.shade-card .col { grid-column:1; grid-row:2/4; width:100%; margin:0; display:grid; grid-template-rows:repeat(3,minmax(0,1fr)); gap:6px; }
+.shade-card .btn { width:100%; height:100%; min-height:40px; display:grid; grid-template-columns:18px minmax(0,1fr); gap:10px; align-items:center; justify-items:start; padding:0 12px; font-size:14px; line-height:1; letter-spacing:.3px; white-space:nowrap; }
+.shade-command-icon { display:block; width:18px; height:18px; }
+.shade-vis { position:relative; inset:auto; grid-column:2; grid-row:2; align-self:center; justify-self:center; width:82px; height:100%; max-height:112px; }
+.shade-card .pos { position:static; grid-column:2; grid-row:3; width:100%; font-size:12px; line-height:18px; text-align:center; letter-spacing:.5px; }
 @media(max-width:600px) {
  html[data-mode="panel"] #page>.shade-grid { height:100%!important; min-height:0; display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); grid-template-rows:repeat(5,minmax(0,1fr)); gap:6px; }
- html[data-mode="panel"] .shade-card { height:auto; min-height:0; min-width:0; padding:6px!important; display:grid; grid-template-rows:auto minmax(12px,1fr) 40px 14px; gap:3px; }
+ html[data-mode="panel"] .shade-card { height:auto; min-height:0; min-width:0; padding:6px!important; display:grid; grid-template-columns:minmax(0,1fr); grid-template-rows:auto minmax(12px,1fr) 40px 14px; gap:3px; }
  html[data-mode="panel"] .shade-card .card-title { margin:0; font-size:11px; line-height:14px; letter-spacing:0; }
- html[data-mode="panel"] .shade-vis { position:relative; inset:auto; grid-row:2; width:100%; height:100%; min-height:0; border-radius:3px; }
- html[data-mode="panel"] .shade-card .col { grid-row:3; width:100%; margin:0; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:3px; }
- html[data-mode="panel"] .shade-card .btn { height:40px; min-height:40px; min-width:0; padding:2px; font-size:10px; line-height:12px; }
- html[data-mode="panel"] .shade-card .pos { position:static; grid-row:4; width:100%; font-size:10px; line-height:14px; letter-spacing:0; }
+ html[data-mode="panel"] .shade-vis { position:relative; inset:auto; grid-column:1; grid-row:2; width:100%; height:100%; min-height:0; border-radius:3px; }
+ html[data-mode="panel"] .shade-card .col { grid-row:3; width:100%; margin:0; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); grid-template-rows:1fr; gap:3px; }
+ html[data-mode="panel"] .shade-card .btn { height:40px; min-height:40px; min-width:0; padding:2px; grid-template-columns:1fr; grid-template-rows:12px 12px; justify-items:center; justify-content:center; align-content:center; gap:2px; font-size:10px; line-height:12px; }
+ html[data-mode="panel"] .shade-command-icon { width:12px; height:12px; }
+ html[data-mode="panel"] .shade-card .pos { position:static; grid-column:1; grid-row:4; width:100%; font-size:10px; line-height:14px; letter-spacing:0; }
 }

@@ -1,0 +1,178 @@
+[
+  {
+    "size": {
+      "width": 1280,
+      "height": 600
+    },
+    "device": "Dalle TSW",
+    "clickable": true,
+    "inside": true,
+    "scrollbarStyle": "none",
+    "scrollbarWidth": 0
+  },
+  {
+    "size": {
+      "width": 1280,
+      "height": 600
+    },
+    "device": "Smartphone",
+    "clickable": true,
+    "inside": true,
+    "scrollbarStyle": "none",
+    "scrollbarWidth": 0
+  },
+  {
+    "size": {
+      "width": 1280,
+      "height": 600
+    },
+    "device": "Tablette",
+    "clickable": true,
+    "inside": true,
+    "scrollbarStyle": "none",
+    "scrollbarWidth": 0
+  },
+  {
+    "size": {
+      "width": 1280,
+      "height": 600
+    },
+    "device": "PC / Xpanel",
+    "clickable": true,
+    "inside": true,
+    "scrollbarStyle": "none",
+    "scrollbarWidth": 0
+  },
+  {
+    "size": {
+      "width": 1366,
+      "height": 650
+    },
+    "device": "Dalle TSW",
+    "clickable": true,
+    "inside": true,
+    "scrollbarStyle": "none",
+    "scrollbarWidth": 0
+  },
+  {
+    "size": {
+      "width": 1366,
+      "height": 650
+    },
+    "device": "Smartphone",
+    "clickable": true,
+    "inside": true,
+    "scrollbarStyle": "none",
+    "scrollbarWidth": 0
+  },
+  {
+    "size": {
+      "width": 1366,
+      "height": 650
+    },
+    "device": "Tablette",
+    "clickable": true,
+    "inside": true,
+    "scrollbarStyle": "none",
+    "scrollbarWidth": 0
+  },
+  {
+    "size": {
+      "width": 1366,
+      "height": 650
+    },
+    "device": "PC / Xpanel",
+    "clickable": true,
+    "inside": true,
+    "scrollbarStyle": "none",
+    "scrollbarWidth": 0
+  },
+  {
+    "size": {
+      "width": 1024,
+      "height": 640
+    },
+    "device": "Dalle TSW",
+    "clickable": true,
+    "inside": true,
+    "scrollbarStyle": "none",
+    "scrollbarWidth": 0
+  },
+  {
+    "size": {
+      "width": 1024,
+      "height": 640
+    },
+    "device": "Smartphone",
+    "clickable": true,
+    "inside": true,
+    "scrollbarStyle": "none",
+    "scrollbarWidth": 0
+  },
+  {
+    "size": {
+      "width": 1024,
+      "height": 640
+    },
+    "device": "Tablette",
+    "clickable": true,
+    "inside": true,
+    "scrollbarStyle": "none",
+    "scrollbarWidth": 0
+  },
+  {
+    "size": {
+      "width": 1024,
+      "height": 640
+    },
+    "device": "PC / Xpanel",
+    "clickable": true,
+    "inside": true,
+    "scrollbarStyle": "none",
+    "scrollbarWidth": 0
+  },
+  {
+    "size": {
+      "width": 1920,
+      "height": 1080
+    },
+    "device": "Dalle TSW",
+    "clickable": true,
+    "inside": true,
+    "scrollbarStyle": "none",
+    "scrollbarWidth": 0
+  },
+  {
+    "size": {
+      "width": 1920,
+      "height": 1080
+    },
+    "device": "Smartphone",
+    "clickable": true,
+    "inside": true,
+    "scrollbarStyle": "none",
+    "scrollbarWidth": 0
+  },
+  {
+    "size": {
+      "width": 1920,
+      "height": 1080
+    },
+    "device": "Tablette",
+    "clickable": true,
+    "inside": true,
+    "scrollbarStyle": "none",
+    "scrollbarWidth": 0
+  },
+  {
+    "size": {
+      "width": 1920,
+      "height": 1080
+    },
+    "device": "PC / Xpanel",
+    "clickable": true,
+    "inside": true,
+    "scrollbarStyle": "none",
+    "scrollbarWidth": 0
+  }
+]

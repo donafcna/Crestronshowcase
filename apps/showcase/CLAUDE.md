@@ -217,3 +217,6 @@ Remplace le passage SVG de 2.3.19 par camera-gate-open-v2.webp, imagegen intégr
 
 ### 25 novembre 2026 — Villa Stark 2.3.21, musique
 renderMusic utilise S.musicRoom et les objets S.music existants : six boutons, select des dix pièces, range volume. Ne pas réintroduire le tableau par zone. Changement de pièce : enterRoom(id,false), page MUSIQUE conservée. Source rétablit le son ; arrêt limité à la pièce courante ; volume oninput publie sans reconstruire le DOM. Recette ciblée 24 combinaisons et indépendance des zones : docs/verification/2026-11-25-villa-stark-music/.
+
+### 25 novembre 2026 — Villa Stark 2.3.22
+Styles locaux : flèche stage clampée, scrollbar workspace invisible mais scroll conservé. ROOM_ICONS commun à renderPlan light/clim, floor-plan.svg ne garde que les contours. Stores en grille avec icônes SVG séparées du texte et dimensions égales. tv-broadcast.js utilise directement createTVStage de Villa FTV, renderer lazy 640x360/15fps, uniquement vue intérieure ; routes TV par pièce et cadrage cover. Badges TV et flammes extérieurs masqués. circuits.rgbw actif uniquement Pool ; pas de teinte globale, spots SVG localisés. Voir docs/verification/2026-11-25-villa-stark-refinements/README.md pour tests et limites.

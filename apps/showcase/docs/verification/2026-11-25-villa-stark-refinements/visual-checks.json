@@ -1,0 +1,182 @@
+[
+  {
+    "device": "phone",
+    "theme": "Clair",
+    "page": 1,
+    "cards": 0,
+    "icons": 10,
+    "rooms": 10,
+    "scroll": false,
+    "shadeOverflow": false
+  },
+  {
+    "device": "phone",
+    "theme": "Clair",
+    "page": 3,
+    "cards": 0,
+    "icons": 10,
+    "rooms": 10,
+    "scroll": false,
+    "shadeOverflow": false
+  },
+  {
+    "device": "phone",
+    "theme": "Clair",
+    "page": 2,
+    "cards": 9,
+    "icons": 0,
+    "rooms": 0,
+    "scroll": false,
+    "shadeOverflow": false
+  },
+  {
+    "device": "phone",
+    "theme": "Sombre",
+    "page": 1,
+    "cards": 0,
+    "icons": 10,
+    "rooms": 10,
+    "scroll": false,
+    "shadeOverflow": false
+  },
+  {
+    "device": "phone",
+    "theme": "Sombre",
+    "page": 3,
+    "cards": 0,
+    "icons": 10,
+    "rooms": 10,
+    "scroll": false,
+    "shadeOverflow": false
+  },
+  {
+    "device": "phone",
+    "theme": "Sombre",
+    "page": 2,
+    "cards": 9,
+    "icons": 0,
+    "rooms": 0,
+    "scroll": false,
+    "shadeOverflow": false
+  },
+  {
+    "device": "phone",
+    "theme": "Verre",
+    "page": 1,
+    "cards": 0,
+    "icons": 10,
+    "rooms": 10,
+    "scroll": false,
+    "shadeOverflow": false
+  },
+  {
+    "device": "phone",
+    "theme": "Verre",
+    "page": 3,
+    "cards": 0,
+    "icons": 10,
+    "rooms": 10,
+    "scroll": false,
+    "shadeOverflow": false
+  },
+  {
+    "device": "phone",
+    "theme": "Verre",
+    "page": 2,
+    "cards": 9,
+    "icons": 0,
+    "rooms": 0,
+    "scroll": false,
+    "shadeOverflow": false
+  },
+  {
+    "device": "wallpanel",
+    "theme": "Clair",
+    "page": 1,
+    "cards": 0,
+    "icons": 10,
+    "rooms": 10,
+    "scroll": false,
+    "shadeOverflow": false
+  },
+  {
+    "device": "wallpanel",
+    "theme": "Clair",
+    "page": 3,
+    "cards": 0,
+    "icons": 10,
+    "rooms": 10,
+    "scroll": false,
+    "shadeOverflow": false
+  },
+  {
+    "device": "wallpanel",
+    "theme": "Clair",
+    "page": 2,
+    "cards": 9,
+    "icons": 0,
+    "rooms": 0,
+    "scroll": false,
+    "shadeOverflow": false
+  },
+  {
+    "device": "wallpanel",
+    "theme": "Sombre",
+    "page": 1,
+    "cards": 0,
+    "icons": 10,
+    "rooms": 10,
+    "scroll": false,
+    "shadeOverflow": false
+  },
+  {
+    "device": "wallpanel",
+    "theme": "Sombre",
+    "page": 3,
+    "cards": 0,
+    "icons": 10,
+    "rooms": 10,
+    "scroll": false,
+    "shadeOverflow": false
+  },
+  {
+    "device": "wallpanel",
+    "theme": "Sombre",
+    "page": 2,
+    "cards": 9,
+    "icons": 0,
+    "rooms": 0,
+    "scroll": false,
+    "shadeOverflow": false
+  },
+  {
+    "device": "wallpanel",
+    "theme": "Verre",
+    "page": 1,
+    "cards": 0,
+    "icons": 10,
+    "rooms": 10,
+    "scroll": false,
+    "shadeOverflow": false
+  },
+  {
+    "device": "wallpanel",
+    "theme": "Verre",
+    "page": 3,
+    "cards": 0,
+    "icons": 10,
+    "rooms": 10,
+    "scroll": false,
+    "shadeOverflow": false
+  },
+  {
+    "device": "wallpanel",
+    "theme": "Verre",
+    "page": 2,
+    "cards": 9,
+    "icons": 0,
+    "rooms": 0,
+    "scroll": false,
+    "shadeOverflow": false
+  }
+]

@@ -795,3 +795,6 @@ Portail de l'interphone : passage photographique à la place des aplats, vantail
 
 ### 25 novembre 2026 — Villa Stark 2.3.21
 Musique : tableau de 70 boutons remplacé par un lecteur de six boutons, sélecteur des dix pièces et volume sur curseur. Réglages indépendants conservés, fond lié à la pièce sélectionnée. 24 contrôles supports/thèmes/normal-Scène sans débordement. Preuves : docs/verification/2026-11-25-villa-stark-music/.
+
+### 25 novembre 2026 — Villa Stark 2.3.22
+Flèche petit écran non rognée, piste latérale supprimée ; icônes communes aux plans Éclairage/Climat ; stores alignés. TV 3D de Villa FTV réutilisée sur écrans réels de la photo, sources et extinction synchronisées. RGBW/DMX piscine seulement, dix spots et halos locaux ; badges TV/flamme extérieurs retirés. Recette et limites : docs/verification/2026-11-25-villa-stark-refinements/.

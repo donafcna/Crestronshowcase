@@ -67,12 +67,12 @@ defaults();
 /* ---------------- utilitaires ---------------- */
 const $ = (s, el = document) => el.querySelector(s);
 const fmt = t => t.toFixed(1) + "°";
-const anyLight = id => { const l = S.lights[id]; return l.strip !== "off" || l.spots !== "off" || l.rgbw !== "off"; };
+const anyLight = id => { const l = S.lights[id]; return l.strip !== "off" || l.spots !== "off" || (id === "Pool" && l.rgbw !== "off"); };
 const anyLightHouse = () => ROOMS.some(r => anyLight(r.id));
 const musicPlaying = () => ROOMS.some(r => S.music[r.id].src && !S.music[r.id].mute);
 function roomLightColor(id) {
   const l = S.lights[id];
-  if (l.rgbw !== "off") return { color: COLORS[l.rgbw], level: l.lv.rgbw };
+  if (id === "Pool" && l.rgbw !== "off") return { color: COLORS[l.rgbw], level: l.lv.rgbw };
   const parts = [];
   if (l.strip !== "off") parts.push({ color: COLORS[l.strip], level: l.lv.strip });
   if (l.spots !== "off") parts.push({ color: COLORS[l.spots], level: l.lv.spots });
@@ -99,7 +99,7 @@ const POOL_CLIP = "polygon(" + POOL_PTS.map(([x, y]) => `${x / 1672 * 100}% ${y 
 const INT = {
  Living: { win:[0,5,43,62], tv:[70.4,21.8,17.4,20.7] },
  Dining: { win:[46,5,54,77] }, Kitchen: { win:[66,14,34,59] }, Office: { win:[77,0,23,87] },
- Cinema: { tv:[56.3,18.7,30,34.1] }, Fitness: { win:[0,3,44,92] }, Entry: { win:[86,0,14,90] },
+ Cinema: { tv:[56.58,20.62,29.25,31.14], tvClip:"polygon(0 18%,100% 0,100% 100%,0 90%)" }, Fitness: { win:[0,3,44,92] }, Entry: { win:[86,0,14,90] },
  Master: { win:[47,8,53,68] }, Bedroom: { win:[78.5,12,18.5,55] }, Pool: {},
 };
 // Photographie originale, sans décalage entre la scène et ses calques.
@@ -113,12 +113,28 @@ function circuits(id) {
   return {
     strip: l.strip !== "off" ? { color: TEMP[l.strip], level: l.lv.strip, cool: l.strip === "6000" } : null,
     spots: l.spots !== "off" ? { color: TEMP[l.spots], level: l.lv.spots, cool: l.spots === "6000" } : null,
-    rgbw:  l.rgbw  !== "off" ? { color: COLORS[l.rgbw], level: l.lv.rgbw, white: l.rgbw === "white" } : null,
+    rgbw:  id === "Pool" && l.rgbw !== "off" ? { color: COLORS[l.rgbw], level: l.lv.rgbw, white: l.rgbw === "white" } : null,
   };
 }
 const COOL_FILTER = "sepia(0.55) hue-rotate(178deg) saturate(0.85) brightness(1.12)";
 
 const H = { rooms: {} };
+function createPoolLighting(view) {
+  const plane = document.createElementNS("http://www.w3.org/2000/svg","svg");
+  plane.classList.add("pool-lighting"); plane.setAttribute("viewBox","0 0 1672 941"); plane.setAttribute("preserveAspectRatio",view === "interior" ? "xMidYMid slice" : "none"); plane.setAttribute("aria-hidden","true");
+  const underwater = view === "interior" ? [[390,720,1],[715,677,.85],[1040,645,.65],[1146,617,.55]] : [[1412,689,.25],[1500,695,.25],[1600,699,.25]];
+  const deck = view === "interior" ? [[300,703,.65],[620,641,.6],[955,584,.45],[1240,685,.65],[1080,785,.8],[900,890,1]] : [[1380,655,.22],[1490,660,.22],[1605,666,.22],[1560,745,.22]];
+  const gradient = "pool-light-" + view;
+  plane.innerHTML = `<defs><radialGradient id="${gradient}"><stop stop-color="var(--pool-rgbw)" stop-opacity=".65"/><stop offset=".4" stop-color="var(--pool-rgbw)" stop-opacity=".28"/><stop offset="1" stop-color="var(--pool-rgbw)" stop-opacity="0"/></radialGradient></defs>` + [...underwater.map(p=>[...p,true]),...deck.map(p=>[...p,false])].map(([x,y,s,water])=>`<g transform="translate(${x} ${y}) scale(${s})" class="pool-spot ${water ? "underwater" : "deck"}"><g class="pool-illumination"><ellipse cy="${water ? 14 : 0}" rx="${water ? 110 : 65}" ry="${water ? 48 : 25}" fill="url(#${gradient})"/>${water ? `<ellipse cy="50" rx="65" ry="85" fill="url(#${gradient})" opacity=".4"/>` : ""}</g><ellipse rx="7" ry="3.5" fill="#293038" stroke="#8b9698" stroke-width="1"/><ellipse class="pool-spot-core" rx="4" ry="2"/></g>`).join("");
+  return plane;
+}
+function updatePoolLighting(plane) {
+  if (!plane) return;
+  const circuit = circuits("Pool").rgbw, active = !!circuit && circuit.level > 0 && !S.house.pool;
+  plane.style.setProperty("--pool-rgbw",active ? circuit.color : "#24343a");
+  plane.querySelectorAll(".pool-illumination").forEach(e=>e.style.opacity=active ? circuit.level/100 : 0);
+  plane.querySelectorAll(".pool-spot-core").forEach(e=>e.style.fill=active ? circuit.color : "#18252b");
+}
 function div(cls, style = "") { const d = document.createElement("div"); d.className = cls; d.style.cssText = style; return d; }
 // calque image plein cadre, positionné pour que la zone [x,y,w,h] de la photo tombe sur l'élément parent (qui la découpe)
 function fullLayer(cls, img, [x, y, w, h]) {
@@ -146,6 +162,7 @@ function buildHouse() {
   pcover.appendChild(div("pool-cover-img", "position:absolute;inset:0;background:url(assets/original/mechanical-open.webp) 0 0/100% 100% no-repeat"));
   pool.append(pdark, ptint, pcover); pool.addEventListener("click", () => enterRoom("Pool")); stage.appendChild(pool);
   H.rooms.Pool = { dark: pdark, tint: ptint, cover: pcover };
+  stage.appendChild(createPoolLighting("exterior"));
   // portail (coulissant) et garage (sectionnel)
   const g = pct(PORTAIL); const gateSlot = div("gate-slot", `left:${g.left};top:${g.top};width:${g.width};height:${g.height}`);
   const gateBg = fullLayer("gate-bg", "assets/original/mechanical-open.webp", PORTAIL);
@@ -187,14 +204,15 @@ function renderHouse() {
     h.glow.style.boxShadow = on ? `0 0 ${8 + level * 0.12}px ${2 + level * 0.02}px ${dom.color}` : "none"; h.glow.style.opacity = on ? 0.12 + level / 800 : 0;
     const c = S.climate[r.id];
     h.chip.innerHTML = fmt(c.temp) + hvacIco(c);
-    h.hvac.style.opacity = c.heat || c.ac ? 1 : 0; h.hvac.innerHTML = hvacIco(c);
+    h.hvac.style.display = "none";
     h.shade.style.transform = `scaleY(${r.shade ? S.shades[r.id].pos / 100 : 0})`;
-    if (r.tv) { const tv = S.tv[r.tv]; h.tv.style.opacity = tv.power || r.id === "Cinema" ? 1 : 0; h.tv.style.background = !tv.power && r.id === "Cinema" ? "#080a0d" : "linear-gradient(135deg, #3C7CFF, #9CC7F0)"; h.tv.style.boxShadow = tv.power ? "0 0 18px 6px rgba(120,170,255,0.6)" : "none"; h.tv.textContent = tv.power ? (r.tv === "swisscom" ? "CH " + (tv.ch || "1") : (tv.app || "tv")) : ""; }
+    if (r.tv) h.tv.style.display = "none";
   });
   // piscine
   const pl = anyLight("Pool"), { color, level } = roomLightColor("Pool"), P = H.rooms.Pool, pc = circuits("Pool");
   P.dark.style.opacity = pl ? 0.55 - 0.55 * level / 100 : 0.72;
-  P.tint.style.background = color; P.tint.style.opacity = pc.rgbw && !pc.rgbw.white ? 0.45 + 0.4 * pc.rgbw.level / 100 : 0;
+  P.tint.style.opacity = 0;
+  updatePoolLighting($("#houseStage .pool-lighting"));
   P.cover.style.clipPath = S.house.pool ? "inset(0 0 0 0)" : "inset(0 100% 0 0)";
   // portail, garage
   H.gateL.style.transform = S.house.gate ? "translateX(-100%)" : "none"; H.gateR.style.transform = S.house.gate ? "translateX(100%)" : "none";
@@ -225,7 +243,7 @@ function enterRoom(id, navigate = true) {
   const i = INT[id];
   const sh = v.querySelector(".rv-shade"), tv = v.querySelector(".rv-tv");
   if (i.win && r.shade) { Object.assign(sh.style, { left: i.win[0] + "%", top: i.win[1] + "%", width: i.win[2] + "%", height: i.win[3] + "%", display: "block" }); } else sh.style.display = "none";
-  if (i.tv) { Object.assign(tv.style, { left: i.tv[0] + "%", top: i.tv[1] + "%", width: i.tv[2] + "%", height: i.tv[3] + "%", display: "flex" }); } else tv.style.display = "none";
+  if (i.tv) { Object.assign(tv.style, { display: "flex", clipPath:i.tvClip || "none" }); } else tv.style.display = "none";
   // origine du zoom : la fenêtre cliquée
   const w = id === "Pool" ? [1400, 615, 10, 10] : WIN[id];
   v.style.transformOrigin = `${sx(w[0] + w[2] / 2)}% ${sy(w[1] + w[3] / 2)}%`;
@@ -242,9 +260,15 @@ function renderRoomView() {
   v.querySelector(".rv-photo").style.filter = `brightness(${b}) saturate(${on ? 1 : 0.55}) ${c3.spots && c3.spots.cool ? COOL_FILTER : ""}`;
   v.querySelector(".rv-night").style.opacity = on ? (c3.spots ? 0 : 0.3) : 0.45;
   const st = v.querySelector(".rv-strip"); st.style.setProperty("--c", c3.strip ? c3.strip.color : "transparent"); st.style.opacity = c3.strip ? 0.3 + 0.7 * c3.strip.level / 100 : 0;
-  const rg = v.querySelector(".rv-rgbw"); rg.style.setProperty("--c", c3.rgbw ? c3.rgbw.color : "transparent"); rg.style.opacity = c3.rgbw ? (c3.rgbw.white ? 0.3 : 0.55) + 0.4 * c3.rgbw.level / 100 : 0;
+  const rg = v.querySelector(".rv-rgbw"); rg.style.opacity = 0;
+  if (id === "Pool" && !v.querySelector(".pool-lighting")) v.appendChild(createPoolLighting("interior"));
+  const poolLights = v.querySelector(".pool-lighting"); if (poolLights) { poolLights.style.display = id === "Pool" ? "block" : "none"; updatePoolLighting(poolLights); }
   if (r.shade) v.querySelector(".rv-shade").style.transform = `scaleY(${S.shades[id].pos / 100})`;
-  if (r.tv) { const tv = S.tv[r.tv], e = v.querySelector(".rv-tv"); e.classList.toggle("on", tv.power); e.innerHTML = tv.power ? `<span>${r.tv === "swisscom" ? "SWISSCOM TV<br>CHAINE " + (tv.ch || "1") : (tv.app || "APPLE TV").toUpperCase()}</span>` : ""; }
+  if (r.tv) {
+    const e = v.querySelector(".rv-tv"), rect = INT[id].tv, cover = Math.max(v.clientWidth/1672,v.clientHeight/941);
+    Object.assign(e.style,{left:((v.clientWidth-1672*cover)/2+rect[0]/100*1672*cover)+"px",top:((v.clientHeight-941*cover)/2+rect[1]/100*941*cover)+"px",width:rect[2]/100*1672*cover+"px",height:rect[3]/100*941*cover+"px"});
+    paintTVScreen(e, tvSourceForRoom(r));
+  }
   const c = S.climate[id], m = S.music[id];
   v.querySelector(".rv-climate").style.display = id === "Pool" ? "none" : "flex";
   v.querySelector(".rv-climate").innerHTML = `<b>${fmt(c.temp)}</b>${hvacIco(c)}${c.heat ? "chauffage " + fmt(c.heatSP) : c.ac ? "clim " + fmt(c.acSP) + " · vitesse " + c.acSpeed : "climat en veille"}`;
@@ -356,6 +380,18 @@ function renderHome(pg) {
 }
 
 /* ---------------- plan (éclairage / climat) ---------------- */
+const ROOM_ICONS = {
+  Living: '<path d="M4 11V8a3 3 0 0 1 3-3h10a3 3 0 0 1 3 3v3M4 16v3m16-3v3M3 10a2 2 0 0 1 2 2v2h14v-2a2 2 0 1 1 4 0v5H1v-5a2 2 0 0 1 2-2Z"/>',
+  Dining: '<rect x="7" y="5" width="10" height="14" rx="2"/><path d="M3 6v12m18-12v12M10 2h4m-4 20h4"/>',
+  Kitchen: '<path d="M4 9h16v12H4zM4 4h16v5M7 6h.01M11 6h.01M17 6h.01"/><rect x="7" y="12" width="10" height="6" rx="1"/>',
+  Office: '<rect x="4" y="3" width="16" height="12" rx="2"/><path d="M8 21h8m-4-6v6M2 17h20"/>',
+  Cinema: '<rect x="2" y="3" width="20" height="14" rx="2"/><path d="m10 7 5 3-5 3ZM8 21h8m-4-4v4"/>',
+  Fitness: '<path d="m6 6 12 12M4 3 3 4l5 5 1-1ZM16 15l-1 1 5 5 1-1ZM8 2l3 3M2 8l3 3m14 2 3 3m-9 3 3 3"/>',
+  Entry: '<path d="M4 21h16M6 21V3h12v18M10 3v18m4-9h.01"/>',
+  Master: '<path d="M3 18v3m18-3v3M3 11V5h18v6M2 18v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5Z"/><path d="M6 8h4m4 0h4"/>',
+  Bedroom: '<path d="M4 18v3m16-3v3M4 11V5h16v6M3 18v-5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v5Z"/><path d="M8 8h8"/>',
+  Pool: '<path d="M7 14V4a2 2 0 0 1 4 0m3 10V4a2 2 0 0 1 4 0M7 7h7m-7 4h7M2 17q2-2 4 0t4 0 4 0 4 0 4 0M2 21q2-2 4 0t4 0 4 0 4 0 4 0"/>'
+};
 function renderPlan(pg, mode) {
   const plan = document.createElement("div"); plan.className = "plan"; pg.appendChild(plan);
   ROOMS.forEach(r => {
@@ -364,6 +400,7 @@ function renderPlan(pg, mode) {
     if (mode === "light") { b.title = r.name; b.setAttribute("aria-label", r.name); b.onclick = () => go("light:" + r.id); }
     else { const c = S.climate[r.id]; if (c.heat) b.classList.add("sel"); else if (c.ac) b.classList.add("cool");
       b.title = r.name; b.setAttribute("aria-label", r.name); b.innerHTML = `<span class="sub">${fmt(c.temp)}</span>`; b.onclick = () => go("clim:" + r.id); }
+    const icon = document.createElement("span"); icon.className = "plan-room-icon"; icon.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">${ROOM_ICONS[r.id]}</svg>`; b.appendChild(icon);
     const label = document.createElement("span"); label.className = "plan-room-name"; label.textContent = r.name; b.appendChild(label);
     plan.appendChild(b);
   });
@@ -383,12 +420,14 @@ function renderRoomLights(pg, id) {
     c.appendChild(r); pg.appendChild(c);
   };
   mk("ÉCLAIRAGE INDIRECT", 192, "strip"); mk("SPOTS", 310, "spots");
-  const rg = card(40, 428, 600, null, "COULEURS"); const rr = document.createElement("div"); rr.className = "row";
+  if (id === "Pool") {
+  const rg = card(40, 428, 600, null, "SPOTS RGBW · DMX"); const rr = document.createElement("div"); rr.className = "row";
   [["ARRÊT", "off", ""], ["ROUGE", "red", "#FF4A3C"], ["VERT", "green", "#3CE07A"], ["BLEU", "blue", "#3C7CFF"], ["BLANC", "white", "#F2EEE6"]].forEach(([lab, v, col]) =>
     rr.appendChild(btn((col ? `<span class="swatch" style="background:${col};color:${col}"></span>` : "") + lab, "", () => { l.rgbw = v; }, l.rgbw === v)));
   rg.appendChild(rr); pg.appendChild(rg);
+  }
   const lv = card(680, 70, 560, 462, "INTENSITÉ");
-  [["INDIRECT", "strip"], ["SPOTS", "spots"], ["COULEURS", "rgbw"]].forEach(([lab, key]) => {
+  [["INDIRECT", "strip"], ["SPOTS", "spots"], ...(id === "Pool" ? [["RGBW / DMX", "rgbw"]] : [])].forEach(([lab, key]) => {
     const s = document.createElement("div"); s.className = "slider";
     s.innerHTML = `<span class="label">${lab}</span><input type="range" min="0" max="100" value="${l.lv[key]}" style="--p:${l.lv[key]}%"><span class="pct">${l.lv[key]} %</span>`;
     const inp = s.querySelector("input"), pct = s.querySelector(".pct"); inp.setAttribute("aria-label", lab + " — " + roomById[id].name);
@@ -397,7 +436,7 @@ function renderRoomLights(pg, id) {
     lv.appendChild(s);
   });
   const note = document.createElement("p"); note.className = "label"; note.style.cssText = "margin-top:26px;line-height:1.7;letter-spacing:1.5px";
-  note.innerHTML = "Lutron HomeWorks QSX · DALI<br>Circuits gradables 0–100 %";
+  note.innerHTML = id === "Pool" ? "Spots de plage et immergés · RGBW / DMX<br>Intensité 0–100 %" : "Lutron HomeWorks QSX · DALI<br>Circuits gradables 0–100 %";
   lv.appendChild(note); pg.appendChild(lv);
 }
 
@@ -427,7 +466,11 @@ function renderShades(pg) {
     const c = document.createElement("div"); c.className = "card shade-card"; c.style.position = "relative"; c.dataset.id = id;
     c.innerHTML = `<div class="card-title">${roomById[id].name}</div><div class="col"></div><div class="shade-vis"><div class="blind" style="transform:scaleY(${S.shades[id].pos / 100})"></div></div><div class="pos">${S.shades[id].pos ? "FERMÉ" : "OUVERT"}</div>`;
     const col = c.querySelector(".col");
-    [["▲&nbsp; OUVRIR", "up"], ["■&nbsp; ARRÊTER", "stop"], ["▼&nbsp; FERMER", "down"]].forEach(([lab, d]) => { const b = document.createElement("button"); b.className = "btn"; b.innerHTML = lab; b.onclick = () => moveShade(id, d); col.appendChild(b); });
+    [["OUVRIR", "up", '<path d="m12 4 9 15H3Z"/>'], ["ARRÊTER", "stop", '<rect x="5" y="5" width="14" height="14"/>'], ["FERMER", "down", '<path d="m12 20 9-15H3Z"/>']].forEach(([lab, d, shape]) => {
+      const b = document.createElement("button"); b.className = "btn";
+      b.innerHTML = `<svg class="shade-command-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false">${shape}</svg><span>${lab}</span>`;
+      b.onclick = () => moveShade(id, d); col.appendChild(b);
+    });
     grid.appendChild(c);
   });
   pg.appendChild(grid);
@@ -456,16 +499,66 @@ function renderRoomClimate(pg, id) {
 }
 
 /* ---------------- TV ---------------- */
+function tvSourceForRoom(room) { return S.tv.routes?.[room.id] || room.tv; }
+function selectTVSource(source) {
+  const id = roomById[roomView]?.tv ? roomView : source === "apple" ? "Cinema" : "Living";
+  S.tv.routes ||= {}; S.tv.routes[id] = source; S.tv.dev = source;
+  S.tv[source].power = true;
+  if (source === "swisscom") S.tv.swisscom.ch ||= "1"; else S.tv.apple.app ||= "Apple TV";
+  S.page = "tv:" + source; enterRoom(id, false);
+}
+let drawTVProgramme = null, tvBroadcast = null, tvEngineRequested = false, tvAnimation = 0, lastTVFrame = 0;
+function loadTVEngine() {
+  if (tvEngineRequested) return;
+  tvEngineRequested = true;
+  import("./tv-broadcast.js").then(module=>{tvBroadcast=module.createTVBroadcast();}).catch(()=>{
+    import("/plan3d/tv-programmes.js").then(module=>{drawTVProgramme=module.drawProgramme;}).catch(()=>{});
+  });
+}
+function paintTVScreen(element, source) {
+  const tv = S.tv[source]; element.classList.toggle("on", tv.power); element.dataset.source = source;
+  element.style.background = "#030506";
+  if (!tv.power) { element.replaceChildren(); return; }
+  if (!element.querySelector("canvas")) {
+    const canvas = document.createElement("canvas"); canvas.width = element.classList.contains("rv-tv") ? 640 : 160; canvas.height = canvas.width * 9/16; canvas.setAttribute("aria-hidden","true"); element.replaceChildren(canvas);
+  }
+  drawTVScreen(element, performance.now()/1000);
+}
+function drawTVScreen(element, seconds) {
+  const canvas = element?.querySelector("canvas"), source = element?.dataset.source, tv = S.tv[source];
+  if (!canvas || !tv?.power || integrationMode === "panel") return;
+  loadTVEngine();
+  const programmeSource = source === "apple" ? 1 : 2, channel = source === "swisscom" ? Number(tv.ch || 1) : 0;
+  const ctx = canvas.getContext("2d");
+  if (tvBroadcast) {
+    ctx.drawImage(tvBroadcast.render(programmeSource,seconds,channel),0,0,canvas.width,canvas.height);
+    element.dataset.renderer = "villa-ftv-3d"; element.dataset.programme = tvBroadcast.programme;
+  } else if (drawTVProgramme) {
+    ctx.save(); ctx.scale(canvas.width/1024,canvas.height/576); drawTVProgramme(ctx,programmeSource,seconds,channel); ctx.restore();
+    element.dataset.renderer = "canvas-fallback";
+  }
+}
+function animateTVScreens(now) {
+  if (!document.hidden && now-lastTVFrame >= 1000/15 && integrationMode !== "panel") {
+    lastTVFrame = now;
+    const screens = roomView ? [$("#roomView .rv-tv")] : [];
+    screens.forEach(e=>drawTVScreen(e,now/1000));
+  }
+  tvAnimation = requestAnimationFrame(animateTVScreens);
+}
+tvAnimation=requestAnimationFrame(animateTVScreens);
+window.addEventListener("pagehide",()=>{cancelAnimationFrame(tvAnimation);tvBroadcast?.dispose();});
+window.addEventListener("resize",()=>{if(roomView) renderRoomView();});
 function renderTV(pg) {
   const d = document.createElement("div"); d.className = "tv-choice";
-  d.append(btn(`<img src="assets/Icon_tv.png" alt="">SWISSCOM TV`, "", () => (S.page = "tv:swisscom"), S.tv.swisscom.power), btn(`<img src="assets/Icon_tv.png" alt="">APPLE TV`, "", () => (S.page = "tv:apple"), S.tv.apple.power));
+  d.append(btn(`<img src="assets/Icon_tv.png" alt="">SWISSCOM TV`, "", () => selectTVSource("swisscom"), S.tv.swisscom.power), btn(`<img src="assets/Icon_tv.png" alt="">APPLE TV`, "", () => selectTVSource("apple"), S.tv.apple.power));
   pg.appendChild(d);
 }
 function renderSwisscom(pg) {
   const t = S.tv.swisscom;
   pg.appendChild(btn("◀&nbsp; TV", "back-btn", () => (S.page = "tv")));
   const np = card(40, 76, 380, 420, "CHAINES"); const grid = document.createElement("div"); grid.className = "numpad";
-  ["1", "2", "3", "4", "5", "6", "7", "8", "9", "◀", "0", "ⓘ"].forEach(k => grid.appendChild(btn(k, "", () => { if (/\d/.test(k)) { t.ch = (t.ch.length >= 2 ? "" : t.ch) + k; t.power = true; } else if (k === "◀") t.ch = ""; })));
+  ["1", "2", "3", "4", "5", "6", "7", "8", "9", "◀", "0", "ⓘ"].forEach(k => grid.appendChild(btn(k, "", () => { if (/\d/.test(k)) { const now = Date.now(); t.ch = (now - (t.entryAt || 0) > 1200 || t.ch.length >= 2 ? "" : t.ch) + k; t.entryAt = now; t.power = true; } else if (k === "◀") t.ch = ""; })));
   np.appendChild(grid); const st = document.createElement("div"); st.className = "tv-status"; st.innerHTML = `CHAINE <b>${t.ch || "—"}</b>`; np.appendChild(st); pg.appendChild(np);
   const nv = card(450, 76, 380, 420, "NAVIGATION"); const dp = document.createElement("div"); dp.className = "dpad";
   [["▲", "u"], ["▼", "d"], ["◀", "l"], ["▶", "r"], ["OK", "c"]].forEach(([k, cl]) => dp.appendChild(btn(k, cl, () => {}))); nv.appendChild(dp);
@@ -596,7 +689,7 @@ function visitorRings() {
 }
 
 /* ---------------- scénarios ---------------- */
-function setLight(id, strip, spots, lvl, rgbw = "off") { const l = S.lights[id]; l.strip = strip; l.spots = spots; l.rgbw = rgbw; if (lvl != null) l.lv.strip = l.lv.spots = lvl; }
+function setLight(id, strip, spots, lvl, rgbw = "off") { const l = S.lights[id]; l.strip = strip; l.spots = spots; l.rgbw = id === "Pool" ? rgbw : "off"; if (lvl != null) l.lv.strip = l.lv.spots = lvl; }
 function allOff() { ROOMS.forEach(r => setLight(r.id, "off", "off", null)); }
 const sceneHelp = {
  arrival: "Bienvenue : lumières d’accueil, stores ouverts et accès temporaires.",
@@ -611,7 +704,7 @@ function runScene(k) {
   stopAllShadeMotion();
   document.querySelectorAll(".win-shade,.rv-shade,.shade-vis .blind").forEach(el => el.style.transition = "");
   announce(sceneHelp[k] || "Ambiance appliquée");
-  if (k === "cinema") { allOff(); setLight("Cinema", "3000", "off", 12); SHADE_ROOMS.forEach(id => (S.shades[id].pos = 100)); S.tv.apple.power = true; S.tv.apple.app = "Apple TV"; ROOMS.forEach(r => (S.music[r.id].src = null)); }
+  if (k === "cinema") { allOff(); setLight("Cinema", "3000", "off", 12); SHADE_ROOMS.forEach(id => (S.shades[id].pos = 100)); S.tv.routes ||= {}; S.tv.routes.Cinema = "apple"; S.tv.apple.power = true; S.tv.apple.app = "Apple TV"; ROOMS.forEach(r => (S.music[r.id].src = null)); }
 
   S.scene = k;
   if (k === "arrival") { allOff(); ["Entry", "Living", "Kitchen", "Dining"].forEach(id => setLight(id, "3000", "3000", 85)); setLight("Pool", "off", "off", null, "white");
@@ -620,7 +713,7 @@ function runScene(k) {
   if (k === "evening") { allOff(); ["Living", "Dining", "Kitchen", "Master"].forEach(id => setLight(id, "3000", "3000", 40)); setLight("Pool", "off", "off", null, "blue"); S.lights.Pool.lv.rgbw = 60;
     ["Master", "Bedroom"].forEach(id => (S.shades[id].pos = 100)); S.music.Living.src = "Spotify"; S.music.Living.vol = 30; S.music.Living.mute = false; S.music.Dining.src = "Spotify"; S.music.Dining.vol = 25; S.music.Dining.mute = false; }
   if (k === "night") { allOff(); setLight("Entry", "3000", "off", 12); setLight("Master", "3000", "off", 8); SHADE_ROOMS.forEach(id => (S.shades[id].pos = 100)); ROOMS.forEach(r => (S.music[r.id].src = null)); S.tv.swisscom.power = S.tv.apple.power = false; arm("night"); }
-  if (k === "alloff") { allOff(); }
+  if (k === "alloff") { allOff(); S.tv.swisscom.power = S.tv.apple.power = false; ROOMS.forEach(r=>S.music[r.id].src=null); }
 }
 
 /* ---------------- événements extérieurs ---------------- */
@@ -630,7 +723,7 @@ function intrusion() {
   else setTimeout(() => { z.open = false; render(); }, 6000);
   render();
 }
-function resetAll() { clearInterval(gateMotionTimer); clearTimeout(gateCloseTimer); lastRoomView = null; Object.values(shadeTimers).forEach(clearInterval); clearTimeout(announce.timer); $("#feedback").classList.remove("visible"); $("#feedback").textContent = ""; defaults(); S.house = { gate: false, garage: false, pool: false }; S.security = { mode: "disarmed", alarm: false, zones: ZONES.map(n => ({ name: n, open: false })) }; hangup(); S.tv.dev = null; S.tv.swisscom.power = S.tv.apple.power = false; S.scene = null; S.page = "home"; render(); }
+function resetAll() { clearInterval(gateMotionTimer); clearTimeout(gateCloseTimer); lastRoomView = null; Object.values(shadeTimers).forEach(clearInterval); clearTimeout(announce.timer); $("#feedback").classList.remove("visible"); $("#feedback").textContent = ""; defaults(); S.house = { gate: false, garage: false, pool: false }; S.security = { mode: "disarmed", alarm: false, zones: ZONES.map(n => ({ name: n, open: false })) }; hangup(); S.tv.dev = null; S.tv.routes = {}; S.tv.swisscom.power = S.tv.apple.power = false; S.scene = null; S.page = "home"; render(); }
 
 /* ---------------- horloge & simulation thermique ---------------- */
 function tickClock() {
