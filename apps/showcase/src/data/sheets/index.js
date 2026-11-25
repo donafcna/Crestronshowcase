@@ -1,3 +1,4 @@
+import villaStark from "./villa-stark";
 import hotelBrassus from "./hotel-brassus";
 // Fiches détaillées par interface : chaque écran du GUI avec capture et explication
 // de chaque bouton (« Fonctionnalités en détail » de la fiche PDF).
@@ -25,6 +26,7 @@ import villaLeman from "./villa-leman";
 import yachtMonaco from "./yacht-monaco";
 
 const docs = {
+  "villa-stark": villaStark,
   "hotel-brassus": hotelBrassus,
   "appartement-carouge": appartementCarouge,
   "appartement-crans": appartementCrans,

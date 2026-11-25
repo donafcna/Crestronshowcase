@@ -766,3 +766,8 @@ Trajets cubiques amortis avec prise de hauteur si nécessaire, vérifiés à la 
 ## 23/11/2026 — Hotel des Horlogers : scènes d’éclairage corrigées
 
 Bogue reproduit : les scènes Restaurant donnaient 43–77 % au lieu de 0–100 %, car le niveau incluait les autres zones d’éclairage à 65 %. Téléphone : scène/niveau issus de la zone active et état synchronisé lors du changement de zone. Sources existantes renforcées, empreinte indirecte douce sur les matériaux, fondu 1,1 s et extinction réelle des luminaires. Même nombre de lumières, triangles, appels et textures ; 34 → 37 programmes précompilés. Comparaison visuelle nuit/jour, 28 scènes réelles sur sept espaces, circuits et restauration de zone validés. Banc inter-pièces ~59,9 images/s avant/après, sans image >33,4 ms ; build/lint et 37 contrôles fonctionnels réussis. Correctif préparé dans le worktree isolé hotel-lighting-scenes-release depuis 91a67ed ; preuves dans apps/showcase/docs/verification/2026-11-23-hotel-lighting-scenes-release/. Aucun matériel modifié.
+
+
+## 25/11/2026 — Villa Stark
+
+Ajout du concept Villa Stark dans Résidentiel : villa photographique et dalle interactives, commandes françaises, scénarios de vie dont Mon film, trois thèmes lisibles, agrandissement des commandes, adaptation tactile et arrêt intermédiaire des stores. Présentation immersive isolée via `immersiveDemo`, démo automatique générique désactivée. Ressources locales sous `public/showcases/villa-stark/`, fiches FR/EN/DE et captures dédiées. Recette, comparaison et limites : `docs/verification/2026-11-25-villa-stark/README.md`. Aucun programme matériel modifié.

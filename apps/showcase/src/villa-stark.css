@@ -1,0 +1,7 @@
+.immersive-project .workspace-main-content-row { gap:12px; }
+.immersive-project .project-workspace { min-width:0; flex:1; }
+.immersive-project .device-display-workspace { display:block; width:100%; height:100%; min-height:530px; padding:0; }
+.immersive-project .device-display-workspace>iframe { border-radius:16px; min-height:530px; }
+.immersive-project .workspace-device-sidebar { flex-basis:170px; }
+
+.villa-stark-backdrop { position:absolute; inset:0; background:linear-gradient(#080d1880,#080d18b0),url(/showcases/villa-stark/assets/photos/scene.jpg) center/cover; pointer-events:none; }

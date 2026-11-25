@@ -356,10 +356,12 @@ const ShowcaseInner = ({ sectorId, projectId, device }) => {
   // Le châssis est alors poussé à gauche pour laisser la pièce 3D visible entre lui et la colonne des boutons.
   return (
     <div
-      className={`showcase-container fade-in sector-${sectorId || "all"} ${isFullscreen ? "fullscreen-mode" : ""} ${plan3dOn ? "plan3d-on" : ""}`}
+      className={`showcase-container fade-in sector-${sectorId || "all"} ${isFullscreen ? "fullscreen-mode" : ""} ${plan3dOn ? "plan3d-on" : ""} ${activeProject.immersiveDemo ? "immersive-project" : ""}`}
       ref={stageRef}
     >
-      {plan3dOn ? (
+      {activeProject.immersiveDemo ? (
+        <div className="villa-stark-backdrop" aria-hidden="true" />
+      ) : plan3dOn ? (
         <Plan3DBackground projectId={activeProject.id} stageRef={stageRef} guiFrameRef={guiFrameRef} tourSessionRef={villaSessionRef} />
       ) : (
         <BackgroundVideo sectionId={sectorId || activeProject.sectors[0]} />
@@ -449,7 +451,7 @@ const ShowcaseInner = ({ sectorId, projectId, device }) => {
         <div className="workspace-main-content-row">
           <main className="project-workspace">
             <div className={`device-display-workspace ${isFullscreen ? "fullscreen-mode" : ""}`}>
-              <DeviceFrame
+              {activeProject.immersiveDemo ? guiContent : <DeviceFrame
                 deviceType={viewportDevice}
                 title={displayTitle}
                 browserAddress={activeProject.id === "appartement-crans" ? window.location.origin + shareUrl.split("?")[0] : undefined}
@@ -458,7 +460,7 @@ const ShowcaseInner = ({ sectorId, projectId, device }) => {
                 onEnterFullscreen={() => setIsFullscreen(true)}
               >
                 {guiContent}
-              </DeviceFrame>
+              </DeviceFrame>}
             </div>
           </main>
 

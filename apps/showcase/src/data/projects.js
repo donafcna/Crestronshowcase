@@ -60,6 +60,62 @@ export const PROJECT_STATUS = {
 };
 
 export const projects = [
+{
+  "id": "villa-stark",
+  "name": "Villa Stark",
+  "status": "concept",
+  "client": "Villa de démonstration",
+  "sectors": [
+    "residentiel"
+  ],
+  "devices": [
+    "xpanel",
+    "ios_tablet",
+    "ios_phone"
+  ],
+  "isInteractive": false,
+  "immersiveDemo": true,
+  "autoDemo": false,
+  "embedUrl": "/showcases/villa-stark/index.html",
+  "embedPhoneUrl": "/showcases/villa-stark/index.html",
+  "thumbnailUrl": "/showcases/villa-stark/assets/photos/scene.jpg",
+  "year": "2026",
+  "text": {
+    "fr": {
+      "description": "Une villa qui réagit à chaque geste.",
+      "details": "Démonstration interactive Villa Stark : explorez la villa, ses pièces et ses ambiances. Éclairage, stores, climat, musique, télévision, sécurité et interphone sont simulés en direct.",
+      "features": [
+        "Scénarios Je rentre, Je pars, Je reçois, Mon film et Bonne nuit",
+        "Villa et intérieurs interactifs",
+        "Éclairages, stores, climat et médias",
+        "Trois thèmes et commandes en français",
+        "Simulation sans équipement réel"
+      ]
+    },
+    "en": {
+      "description": "A villa that responds to every touch.",
+      "details": "Villa Stark interactive demonstration: explore the villa, its rooms and scenes. Lighting, shades, climate, music, television, security and intercom are simulated live.",
+      "features": [
+        "Arrival, departure, hosting, movie and night scenes",
+        "Interactive villa and interiors",
+        "Lighting, shades, climate and media",
+        "Three themes; controls in French",
+        "Simulation without connected equipment"
+      ]
+    },
+    "de": {
+      "description": "Eine Villa, die auf jede Berührung reagiert.",
+      "details": "Interaktive Demonstration Villa Stark: Villa, Räume und Szenen erkunden. Licht, Beschattung, Klima, Musik, Fernsehen, Sicherheit und Gegensprechanlage werden live simuliert.",
+      "features": [
+        "Ankunft, Abwesenheit, Empfang, Film und Nacht",
+        "Interaktive Villa und Innenräume",
+        "Licht, Beschattung, Klima und Medien",
+        "Drei Designs; Bedienung auf Französisch",
+        "Simulation ohne angeschlossene Geräte"
+      ]
+    }
+  }
+},
   {
     id: `villa-gemini-frequencetv`,
     name: `Villa FTV`,

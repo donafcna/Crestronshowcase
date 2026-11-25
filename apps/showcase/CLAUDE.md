@@ -188,3 +188,8 @@ Le fond 3D Hotel Brassus affiche l'enveloppe complète seulement en vue généra
 ## 29/09/2026 — interface Connect (Appartement Crans-Montana) et projets en retrait, vitrine 2.3.0
 - `meta.interface = "connect"` dans le JSON d'un projet issu du Core → `themes/connect.css` + `js/connect-ui.js` (API `window.ConnectUI` : `openRoom(id)`, `setTab(t)`, `state`). Le Core d'origine est masqué, pas supprimé. Tests : `test-appartement-crans.cjs`, `test-appartement-crans-modes.cjs`, `test-connect-flash.cjs` (aucun flash du Core au chargement) ; `check-contrast-dom.mjs` ne couvre pas Connect.
 - **Projets en retrait** : `src/data/retiredProjects.js` (Villa Nyon, Appartement Carouge, Appartement Eaux-Vives). Exclus du catalogue public, conservés dans le dépôt. « Ressort les projets maquettes mis en retrait » = retirer leurs identifiants de cette liste.
+
+
+## 25/11/2026 — Villa Stark
+
+Ajout du concept Villa Stark dans Résidentiel : villa photographique et dalle interactives, commandes françaises, scénarios de vie dont Mon film, trois thèmes lisibles, agrandissement des commandes, adaptation tactile et arrêt intermédiaire des stores. Présentation immersive isolée via `immersiveDemo`, démo automatique générique désactivée. Ressources locales sous `public/showcases/villa-stark/`, fiches FR/EN/DE et captures dédiées. Recette, comparaison et limites : `docs/verification/2026-11-25-villa-stark/README.md`. Aucun programme matériel modifié.
