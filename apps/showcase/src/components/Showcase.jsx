@@ -363,7 +363,7 @@ const ShowcaseInner = ({ sectorId, projectId, device }) => {
       ref={stageRef}
     >
       {activeProject.id === "villa-stark" ? (
-        <VillaStarkBackground channel={starkSession.current} />
+        <VillaStarkBackground channel={starkSession.current} stageRef={stageRef} />
       ) : plan3dOn ? (
         <Plan3DBackground projectId={activeProject.id} stageRef={stageRef} guiFrameRef={guiFrameRef} tourSessionRef={villaSessionRef} />
       ) : (

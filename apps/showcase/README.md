@@ -776,3 +776,8 @@ Ajout du concept Villa Stark dans Résidentiel : villa photographique et dalle i
 ## 25/11/2026 — Villa Stark : fond animé séparé du châssis
 
 Correction demandée : la villa animée est le fond du site ; le GUI seul utilise DeviceFrame pour TSW, XPanel, iPad et iPhone. `mode=panel` / `mode=background` réutilisent le même moteur, état diffusé par BroadcastChannel avec identifiant de session propre au Showcase. Le GUI reste l’autorité de simulation ; le fond ne simule pas de températures indépendantes. État conservé entre supports, commandes du fond relayées au GUI, outils de scène et thème dans la colonne standard. L’accueil iPhone tient sans défilement, navigation toujours disponible. Douze combinaisons châssis/thème vérifiées, Mode Scène, éclairage bleu, stores, cinéma et visiteur synchronisés ; build/lint réussis. Captures et limites : `docs/verification/2026-11-25-villa-stark-chassis/`. Remplace la présentation immersive sans châssis du lot précédent. Aucun matériel modifié.
+
+
+## 25/11/2026 — Villa Stark : cadrage dégagé et logo officiel
+
+Châssis aligné à gauche ; villa recadrée depuis les limites réelles du châssis et des outils, vues intérieures dans la même zone dégagée. Adaptation au support et au redimensionnement. Logo officiel du site, sans recoloration, remplace le texte recréé ; captures de fiche actualisées. Recette : 24 combinaisons (quatre supports × trois thèmes × normal/Scène Responsive), neuf baies sans recouvrement dans chaque cas ; complément 960×640 et bleu intérieur synchronisé. Résultats et limites : `docs/verification/2026-11-25-villa-stark-framing/`. Aucun matériel modifié.

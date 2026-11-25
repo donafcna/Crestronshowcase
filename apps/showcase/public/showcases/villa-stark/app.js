@@ -311,7 +311,7 @@ function card(x, y, w, h, title) {
 
 /* ---------------- Home ---------------- */
 function renderHome(pg) {
-  pg.innerHTML = `<div class="home-bg"></div><img class="home-logo" src="assets/brand.svg" alt="Frequence TV">
+  pg.innerHTML = `<div class="home-bg"></div><img class="home-logo" src="/assets/logo-frequence-tv-5LGUrtbd.png" alt="Frequence TV">
     <div class="home-clock"><div class="time" id="homeTime"></div><div class="date" id="homeDate"></div></div>
     <div class="home-welcome">BIENVENUE CHEZ VOUS</div><div class="status-row" id="statusRow"></div>
     <div class="home-section" style="left:40px"><div class="label">VOTRE QUOTIDIEN</div><div class="scene-row" id="sceneRow"></div></div>
@@ -604,6 +604,19 @@ if (!backgroundOnly) setInterval(() => {
 /* ---------------- mise à l'échelle de la dalle ---------------- */
 function scale() { const sc = $(".tsw-screen"); $("#tsw").style.transform = `scale(${sc.clientWidth / 1280}, ${sc.clientHeight / 800})`; }
 window.addEventListener("resize", scale);
+// Parent measures the actual visible chassis and tools; fit every room between them.
+window.addEventListener("message", event => {
+  if (!backgroundOnly || event.source !== parent || event.origin !== location.origin || event.data?.type !== "villa-stark-layout") return;
+  const r = event.data.rect;
+  if (!r || ![r.x, r.y, r.width, r.height].every(Number.isFinite) || r.width <= 0 || r.height <= 0) return;
+  const house = $(".house-wrap"), fit = Math.min(r.width / 840, r.height / 440);
+  // Room bays in the composite photo occupy x=467..1195, y=538..841.
+  house.style.cssText = `position:absolute;left:${r.x + r.width / 2 - 830 * fit}px;top:${r.y + r.height / 2 - 690 * fit}px;width:${2496 * fit}px;height:${1404 * fit}px;transform:none;`;
+  const view = $("#roomView");
+  const vw = Math.min(r.width, r.height * 16 / 9), vh = vw * 9 / 16;
+  // roomView is inside the transformed photo canvas, so convert the clear area back to local pixels.
+  view.style.cssText = `position:absolute;left:${(r.x + (r.width - vw) / 2) - (r.x + r.width / 2 - 830 * fit)}px;top:${(r.y + (r.height - vh) / 2) - (r.y + r.height / 2 - 690 * fit)}px;width:${vw}px;height:${vh}px;right:auto;bottom:auto;`;
+});
 
 /* ---------------- shared state between GUI and animated backdrop ---------------- */
 let applyingSnapshot = false;

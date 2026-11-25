@@ -44,3 +44,22 @@ html[data-mode="background"] .room-view { position:absolute; }
  html[data-mode="panel"] #lightRow .scene-btn img,html[data-mode="panel"] #shadeRow .scene-btn img { width:18px; height:18px; }
  html[data-mode="panel"] .home-section .label { margin-bottom:6px; font-size:12px; }
 }
+
+/* Use the official site artwork, with its original proportions and colours. */
+.home-logo,.hdr-logo,.site-logo { background:#fff; border-radius:5px; padding:8px 12px; object-fit:contain; filter:none!important; }
+.home-logo { width:300px; height:auto; }
+.hdr-logo { width:200px; height:auto; max-height:56px; }
+@media(max-width:600px) {
+ html[data-mode="panel"] .home-logo { width:150px; height:auto; padding:5px 7px; }
+ html[data-mode="panel"] .hdr-logo { width:115px; max-height:42px; padding:5px; }
+}
+
+html[data-mode="background"] body::before { content:""; position:fixed; inset:0; background:linear-gradient(#05070c55,#05070c88),url(assets/photos/scene.jpg) center/cover; }
+html[data-mode="background"] .house-stage { mask-image:linear-gradient(to right,transparent,#000 5%,#000 95%,transparent); }
+
+html[data-mode="background"] .house-stage { mask-image:linear-gradient(to right,transparent,#000 5%,#000 95%,transparent),linear-gradient(to bottom,transparent,#000 5%,#000 95%,transparent); mask-composite:intersect; }
+html[data-mode="background"] .rv-back { left:8px; top:8px; padding:6px 9px; min-height:30px; font-size:11px; letter-spacing:.3px; }
+html[data-mode="background"] .rv-title { left:8px; bottom:8px; font-size:16px; letter-spacing:1px; }
+html[data-mode="background"] .rv-panel { right:8px; top:8px; max-width:55%; gap:4px; }
+html[data-mode="background"] .rv-climate,html[data-mode="background"] .rv-lights,html[data-mode="background"] .rv-music { font-size:10px; padding:6px 8px; letter-spacing:.2px; }
+html[data-mode="background"] .rv-climate b { font-size:14px; }
