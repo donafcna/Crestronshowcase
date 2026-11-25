@@ -188,7 +188,7 @@ function renderHouse() {
     h.chip.innerHTML = fmt(c.temp) + hvacIco(c);
     h.hvac.style.opacity = c.heat || c.ac ? 1 : 0; h.hvac.innerHTML = hvacIco(c);
     h.shade.style.transform = `scaleY(${r.shade ? S.shades[r.id].pos / 100 : 0})`;
-    if (r.tv) { const tv = S.tv[r.tv]; h.tv.style.opacity = tv.power ? 1 : 0; h.tv.textContent = tv.power ? (r.tv === "swisscom" ? "CH " + (tv.ch || "1") : (tv.app || "tv")) : ""; }
+    if (r.tv) { const tv = S.tv[r.tv]; h.tv.style.opacity = tv.power || r.id === "Cinema" ? 1 : 0; h.tv.style.background = !tv.power && r.id === "Cinema" ? "#080a0d" : "linear-gradient(135deg, #3C7CFF, #9CC7F0)"; h.tv.style.boxShadow = tv.power ? "0 0 18px 6px rgba(120,170,255,0.6)" : "none"; h.tv.textContent = tv.power ? (r.tv === "swisscom" ? "CH " + (tv.ch || "1") : (tv.app || "tv")) : ""; }
   });
   // piscine
   const pl = anyLight("Pool"), { color, level } = roomLightColor("Pool"), P = H.rooms.Pool, pc = circuits("Pool");
