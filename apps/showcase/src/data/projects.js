@@ -75,7 +75,7 @@ export const projects = [
     "ios_phone"
   ],
   "isInteractive": false,
-  "autoDemo": false,
+  "autoDemo": true,
   "embedUrl": "/showcases/villa-stark/index.html?mode=panel",
   "embedPhoneUrl": "/showcases/villa-stark/index.html?mode=panel",
   "thumbnailUrl": "/showcases/villa-stark/assets/original/hero-on.webp",

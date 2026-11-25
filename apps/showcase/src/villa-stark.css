@@ -8,11 +8,8 @@
 
 .stark-project .btn-exit-fullscreen-device-corner { pointer-events:auto; }
 
-/* Reserve a left lane for the selected device and a clear view of the rooms. */
-.stark-project .workspace-main-content-row > .project-workspace {
- flex:0 0 38%!important; width:38%!important; max-width:480px; min-width:190px;
-}
-.stark-project .workspace-device-sidebar { margin-left:auto!important; }
+/* Keep the common DeviceFrame dimensions, scaling, toolbar and Scene mode.
+   Only anchor the existing chassis to the left as requested. */
 .stark-project .device-stage > .phone-device-frame,
 .stark-project .device-stage > .tablet-device-frame,
 .stark-project .device-stage > .crestron-panel-frame,
@@ -22,13 +19,3 @@
 .stark-project .btn-exit-fullscreen-device-corner--stage {
  right:auto!important; left:calc(var(--visible-chassis-width) + 12px)!important;
 }
-
-.stark-project .workspace-main-content-row { flex-direction:row!important; flex-wrap:nowrap!important; align-items:stretch!important; }
-.stark-project .workspace-device-sidebar { flex:0 0 170px!important; width:170px!important; max-width:170px!important; height:100%; overflow-y:auto; }
-.stark-project .workspace-main-content-row > .project-workspace { height:100%!important; }
-
-.stark-project .workspace-device-sidebar .device-buttons-column { display:flex!important; flex-direction:column!important; flex-wrap:nowrap!important; width:100%!important; }
-.stark-project .workspace-device-sidebar .device-vertical-btn { width:100%!important; min-width:0!important; }
-.stark-project .device-display-workspace.fullscreen-mode { position:relative!important; inset:auto!important; width:100%!important; height:100%!important; padding:0!important; }
-.stark-project.fullscreen-mode .device-viewport-container { position:relative!important; inset:auto!important; width:100%!important; height:100%!important; padding:0!important; }
-.stark-project.fullscreen-mode .device-stage { padding:0!important; width:100%!important; height:100%!important; }

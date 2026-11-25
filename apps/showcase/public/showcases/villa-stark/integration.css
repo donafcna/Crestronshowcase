@@ -46,7 +46,8 @@ html[data-mode="background"] .room-view { position:absolute; }
 }
 
 /* Use the official site artwork, with its original proportions and colours. */
-.home-logo,.hdr-logo,.site-logo { background:#fff; border-radius:5px; padding:8px 12px; object-fit:contain; filter:none!important; }
+.home-logo,.hdr-logo,.site-logo { background:transparent; border-radius:0; padding:8px 12px; object-fit:contain; filter:url(#logo-light)!important; }
+.tsw[data-theme="glacier"] .home-logo,.tsw[data-theme="glacier"] .hdr-logo { filter:url(#logo-clear)!important; }
 .home-logo { width:300px; height:auto; }
 .hdr-logo { width:200px; height:auto; max-height:56px; }
 @media(max-width:600px) {
@@ -54,10 +55,7 @@ html[data-mode="background"] .room-view { position:absolute; }
  html[data-mode="panel"] .hdr-logo { width:115px; max-height:42px; padding:5px; }
 }
 
-html[data-mode="background"] body::before { content:""; position:fixed; inset:0; background:linear-gradient(#05070c55,#05070c88),url(assets/original/landscape.webp) center/cover; }
-html[data-mode="background"] .house-stage { mask-image:linear-gradient(to right,transparent,#000 5%,#000 95%,transparent); }
 
-html[data-mode="background"] .house-stage { mask-image:linear-gradient(to right,transparent,#000 5%,#000 95%,transparent),linear-gradient(to bottom,transparent,#000 5%,#000 95%,transparent); mask-composite:intersect; }
 html[data-mode="background"] .rv-back { left:8px; top:8px; padding:6px 9px; min-height:30px; font-size:11px; letter-spacing:.3px; }
 html[data-mode="background"] .rv-title { left:8px; bottom:8px; font-size:16px; letter-spacing:1px; }
 html[data-mode="background"] .rv-panel { right:8px; top:8px; max-width:55%; gap:4px; }
@@ -66,6 +64,9 @@ html[data-mode="background"] .rv-climate b { font-size:14px; }
 
 .camera-visitor { position:absolute; z-index:2; left:45%; bottom:8%; width:13%; height:48%; filter:drop-shadow(0 5px 8px #0008); }
 .camera-visitor svg { width:100%; height:100%; }
+#visitor,.camera-visitor,#evVisitor { display:none!important; }
+.camera-gate-animation { position:absolute; inset:0; width:100%; height:100%; pointer-events:none; }
+.camera-gate-status { position:absolute; right:8px; bottom:8px; padding:5px 8px; border-radius:5px; background:#101923de; color:#fff; font-size:12px; letter-spacing:.3px; }
 .plan-room-name { position:absolute; inset:auto 4px 9px; font-size:17px; font-weight:550; letter-spacing:.4px; }
 @media(max-width:600px) { .plan-room-name { position:static; display:block; font-size:13px; } }
 
@@ -74,3 +75,19 @@ html[data-mode="background"] .rv-climate b { font-size:14px; }
 .tsw[data-theme="glacier"] .home-bg { display:none; }
 .tsw[data-theme="glacier"] .home-logo,.tsw[data-theme="glacier"] .hdr-logo { background:transparent; }
 html[data-mode="panel"] body { background:#fff; }
+/* A single photograph fills the entire backdrop, with all animation layers registered on it. */
+html[data-mode="background"] body::before { display:none; }
+html[data-mode="background"] .house-stage { mask:none; border-radius:0; }
+html[data-mode="background"] .house-wrap { left:50%; top:50%; transform:translate(-50%,-50%); width:max(100vw,calc(100vh * 1672 / 941)); height:auto; aspect-ratio:1672/941; }
+html[data-mode="background"] .room-view { inset:0; width:100%; height:100%; }
+
+/* Portrait stores: give illustrations and controls separate grid tracks. */
+@media(max-width:600px) {
+ html[data-mode="panel"] #page>.shade-grid { height:100%!important; min-height:0; display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); grid-template-rows:repeat(5,minmax(0,1fr)); gap:6px; }
+ html[data-mode="panel"] .shade-card { height:auto; min-height:0; min-width:0; padding:6px!important; display:grid; grid-template-rows:auto minmax(12px,1fr) 40px 14px; gap:3px; }
+ html[data-mode="panel"] .shade-card .card-title { margin:0; font-size:11px; line-height:14px; letter-spacing:0; }
+ html[data-mode="panel"] .shade-vis { position:relative; inset:auto; grid-row:2; width:100%; height:100%; min-height:0; border-radius:3px; }
+ html[data-mode="panel"] .shade-card .col { grid-row:3; width:100%; margin:0; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:3px; }
+ html[data-mode="panel"] .shade-card .btn { height:40px; min-height:40px; min-width:0; padding:2px; font-size:10px; line-height:12px; }
+ html[data-mode="panel"] .shade-card .pos { position:static; grid-row:4; width:100%; font-size:10px; line-height:14px; letter-spacing:0; }
+}

@@ -31,7 +31,7 @@ export const DemoCountdown = ({ resumeAt, total, onResumeNow }) => {
     return () => clearInterval(id);
   }, []);
 
-  const remainingMs = Math.max(0, resumeAt - now);
+  const remainingMs = Math.max(0, Math.min(total, resumeAt - now));
   const seconds = Math.ceil(remainingMs / 1000);
   const pct = Math.max(0, Math.min(100, Math.round((remainingMs / total) * 100)));
   const R = 17;

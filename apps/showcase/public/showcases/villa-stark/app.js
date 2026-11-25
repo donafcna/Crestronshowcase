@@ -12,7 +12,7 @@ const stateKey = syncId ? "villa-stark-state:" + syncId : null;
 const syncBus = syncId ? new BroadcastChannel("villa-stark:" + syncId) : null;
 function publishState() {
   if (backgroundOnly || !syncBus) return;
-  const snapshot = { state: S, room: roomView };
+  const snapshot = { state: S, room: roomView, lastRoom: lastRoomView };
   try { sessionStorage.setItem(stateKey, JSON.stringify(snapshot)); } catch { /* Live sync remains available when storage is disabled. */ }
   syncBus.postMessage({ type: "state", snapshot });
 }
@@ -169,6 +169,7 @@ function buildHouse() {
 }
 
 function renderHouse() {
+  if (!S.house.gateMotion) S.house.gatePosition = S.house.gate ? 1 : 0;
   ROOMS.filter(r => !r.pool).forEach(r => {
     const h = H.rooms[r.id], c3 = circuits(r.id), on = anyLight(r.id);
     // spots : la photo « allumée » révélée, en version froide si 6000 K
@@ -183,7 +184,7 @@ function renderHouse() {
     // halo sur la façade : couleur du circuit dominant
     const dom = [c3.rgbw && !c3.rgbw.white ? { ...c3.rgbw, w: 1.2 } : null, c3.spots, c3.strip, c3.rgbw].filter(Boolean).sort((a, b) => b.level * (b.w || 1) - a.level * (a.w || 1))[0];
     const level = dom ? dom.level : 0;
-    h.glow.style.boxShadow = on ? `0 0 ${18 + level * 0.5}px ${6 + level * 0.14}px ${dom.color}` : "none"; h.glow.style.opacity = on ? 0.2 + level / 250 : 0;
+    h.glow.style.boxShadow = on ? `0 0 ${8 + level * 0.12}px ${2 + level * 0.02}px ${dom.color}` : "none"; h.glow.style.opacity = on ? 0.12 + level / 800 : 0;
     const c = S.climate[r.id];
     h.chip.innerHTML = fmt(c.temp) + hvacIco(c);
     h.hvac.style.opacity = c.heat || c.ac ? 1 : 0; h.hvac.innerHTML = hvacIco(c);
@@ -213,9 +214,11 @@ function renderHouse() {
 
 /* ---------------- vue intérieure d'une pièce ---------------- */
 let roomView = null;
-function enterRoom(id) {
+let lastRoomView = null;
+function enterRoom(id, navigate = true) {
   if (backgroundOnly && !applyingSnapshot) { syncBus?.postMessage({ type: "command", action: "room", value: id }); return; }
   roomView = id;
+  lastRoomView = id;
   const r = roomById[id], v = $("#roomView");
   v.querySelector(".rv-photo").style.backgroundImage = `url(assets/original/room-${id}.webp)`;
   v.querySelector(".rv-title").textContent = r.name;
@@ -227,9 +230,9 @@ function enterRoom(id) {
   const w = id === "Pool" ? [1400, 615, 10, 10] : WIN[id];
   v.style.transformOrigin = `${sx(w[0] + w[2] / 2)}% ${sy(w[1] + w[3] / 2)}%`;
   $("#houseStage").classList.add("zoomed"); v.classList.add("open");
-  go(id === "Pool" ? "light:Pool" : "light:" + id);
+  if (navigate) go("light:" + id); else render();
 }
-function leaveRoom() { if (backgroundOnly && !applyingSnapshot) { syncBus?.postMessage({ type: "command", action: "exterior" }); return; } roomView = null; $("#roomView").classList.remove("open"); $("#houseStage").classList.remove("zoomed"); go("lights"); }
+function leaveRoom(keepPage = false) { if (backgroundOnly && !applyingSnapshot) { syncBus?.postMessage({ type: "command", action: "exterior" }); return; } roomView = null; $("#roomView").classList.remove("open"); $("#houseStage").classList.remove("zoomed"); if (keepPage) render(); else go("lights"); }
 function renderRoomView() {
   if (!roomView) return;
   const id = roomView, r = roomById[id], v = $("#roomView"), l = S.lights[id], c3 = circuits(id), on = anyLight(id);
@@ -251,7 +254,11 @@ function renderRoomView() {
 }
 
 /* ---------------- navigation de la dalle ---------------- */
-function go(p) { S.page = p; render(); }
+function go(p) {
+  S.page = p;
+  const id = p.startsWith("light:") ? p.slice(6) : p.startsWith("clim:") ? p.slice(5) : null;
+  if (id && roomById[id] && roomView !== id) enterRoom(id, false); else render();
+}
 function pageTitle() {
   const p = S.page;
   if (p.startsWith("light:")) return roomById[p.slice(6)].name;
@@ -354,7 +361,7 @@ function renderPlan(pg, mode) {
   ROOMS.forEach(r => {
     const [x, y, w, h] = r.plan, b = document.createElement("button"); b.className = "plan-btn";
     b.style.cssText = `left:${x}px;top:${y}px;width:${w}px;height:${h}px`;
-    if (mode === "light") { if (anyLight(r.id)) b.classList.add("sel"); b.title = r.name; b.setAttribute("aria-label", r.name); b.onclick = () => go("light:" + r.id); }
+    if (mode === "light") { b.title = r.name; b.setAttribute("aria-label", r.name); b.onclick = () => go("light:" + r.id); }
     else { const c = S.climate[r.id]; if (c.heat) b.classList.add("sel"); else if (c.ac) b.classList.add("cool");
       b.title = r.name; b.setAttribute("aria-label", r.name); b.innerHTML = `<span class="sub">${fmt(c.temp)}</span>`; b.onclick = () => go("clim:" + r.id); }
     const label = document.createElement("span"); label.className = "plan-room-name"; label.textContent = r.name; b.appendChild(label);
@@ -523,7 +530,29 @@ function arm(mode) {
 /* ---------------- interphone ---------------- */
 function cameraHTML() {
   const ic = S.intercom, v = ic.state !== "idle" || ic.visitor;
-  return `${v ? '<div class="camera-visitor">' + $("#visitor svg").outerHTML + '</div>' : ""}<div class="cam-photo" style="background-image:url(assets/original/camera-gate.webp)"></div>${ic.state === "ringing" ? '<div class="cam-ring">🔔 APPEL ENTRANT</div>' : ""}`;
+  const pos = S.house.gatePosition ?? (S.house.gate ? 1 : 0);
+  return `${v ? '<div class="camera-visitor">' + $("#visitor svg").outerHTML + '</div>' : ""}<div class="cam-photo" style="background-image:url(assets/original/camera-gate.webp)"></div><svg class="camera-gate-animation" viewBox="0 0 1672 941" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs><clipPath id="cameraGateClip"><rect x="721" y="360" width="255" height="263"/></clipPath></defs><g clip-path="url(#cameraGateClip)"><g class="camera-gate-passage" opacity="${pos > 0 ? 1 : 0}"><path fill="#40513a" d="M721 360h255v263H721z"/><path fill="#b7aa95" d="M832 360h46l98 263H721z"/><path fill="#938f7c" d="M845 360h19l76 263H765z"/></g><g class="camera-gate-leaf" transform="translate(721 0) scale(${1-pos} 1) translate(-721 0)"><image href="assets/original/camera-gate.webp" width="1672" height="941"/></g></g></svg><span class="camera-gate-status">${gateStatus()}</span>${ic.state === "ringing" ? '<div class="cam-ring">🔔 APPEL ENTRANT</div>' : ""}`;
+}
+function gateStatus() { return S.house.gateMotion === "opening" ? "PORTAIL EN OUVERTURE" : S.house.gateMotion === "closing" ? "PORTAIL EN FERMETURE" : S.house.gate ? "PORTAIL OUVERT" : "PORTAIL FERMÉ"; }
+let gateMotionTimer, gateCloseTimer;
+function animateGate(open) {
+  clearInterval(gateMotionTimer);
+  const from = S.house.gatePosition ?? (S.house.gate ? 1 : 0), target = open ? 1 : 0, start = performance.now();
+  S.house.gate = open; S.house.gateMotion = open ? "opening" : "closing";
+  gateMotionTimer = setInterval(() => {
+    const t = Math.min(1, (performance.now() - start) / 2200);
+    S.house.gatePosition = from + (target - from) * (t*t*(3-2*t));
+    if (t === 1) { clearInterval(gateMotionTimer); S.house.gateMotion = null; }
+    const pos = S.house.gatePosition;
+    document.querySelectorAll('.camera-gate-leaf').forEach(e => e.setAttribute('transform', `translate(721 0) scale(${1-pos} 1) translate(-721 0)`));
+    document.querySelectorAll('.camera-gate-passage').forEach(e => e.setAttribute('opacity', pos > 0 ? 1 : 0));
+    document.querySelectorAll('.camera-gate-status').forEach(e => e.textContent = gateStatus());
+    renderHouse();
+  }, 40);
+}
+function openIntercomGate() {
+  clearTimeout(gateCloseTimer); animateGate(true); flashMsg("PORTAIL EN OUVERTURE");
+  gateCloseTimer = setTimeout(() => animateGate(false), 9000);
 }
 function renderIntercom(pg) {
   const ic = S.intercom;
@@ -533,7 +562,7 @@ function renderIntercom(pg) {
   st.textContent = ic.msg || (ic.state === "ringing" ? "APPEL ENTRANT - PORTE D’ENTRÉE" : ic.state === "call" ? (ic.muted ? "MICRO COUPÉ" : "EN LIGNE - PORTE D’ENTRÉE") : "AUCUN APPEL"); side.appendChild(st);
   const r1 = document.createElement("div"); r1.className = "row";
   r1.append(btn("📞 RÉPONDRE", "green", () => { if (ic.state === "ringing") ic.state = "call"; else { ic.state = "call"; ic.visitor = true; } }, ic.state === "call"), btn("RACCROCHER", "red", () => hangup())); side.appendChild(r1);
-  side.append(btn("🎤 COUPER LE MICRO", "", () => { ic.muted = !ic.muted; }, ic.muted), btn("OUVRIR LA PORTE", "", () => flashMsg("PORTE OUVERTE")), btn("OUVRIR LE PORTAIL", "", () => { S.house.gate = true; flashMsg("PORTAIL OUVERT"); if (ic.state !== "idle") setTimeout(() => { hangup(); render(); }, 2500); setTimeout(() => { S.house.gate = false; render(); }, 9000); }));
+  side.append(btn("🎤 COUPER LE MICRO", "", () => { ic.muted = !ic.muted; }, ic.muted), btn("OUVRIR LA PORTE", "", openIntercomGate), btn("OUVRIR LE PORTAIL", "", openIntercomGate));
   pg.appendChild(side);
 }
 function flashMsg(m) { S.intercom.msg = m; setTimeout(() => { S.intercom.msg = null; render(); }, 3000); }
@@ -580,7 +609,7 @@ function intrusion() {
   else setTimeout(() => { z.open = false; render(); }, 6000);
   render();
 }
-function resetAll() { Object.values(shadeTimers).forEach(clearInterval); clearTimeout(announce.timer); $("#feedback").classList.remove("visible"); $("#feedback").textContent = ""; defaults(); S.house = { gate: false, garage: false, pool: false }; S.security = { mode: "disarmed", alarm: false, zones: ZONES.map(n => ({ name: n, open: false })) }; hangup(); S.tv.dev = null; S.tv.swisscom.power = S.tv.apple.power = false; S.scene = null; S.page = "home"; render(); }
+function resetAll() { clearInterval(gateMotionTimer); clearTimeout(gateCloseTimer); lastRoomView = null; Object.values(shadeTimers).forEach(clearInterval); clearTimeout(announce.timer); $("#feedback").classList.remove("visible"); $("#feedback").textContent = ""; defaults(); S.house = { gate: false, garage: false, pool: false }; S.security = { mode: "disarmed", alarm: false, zones: ZONES.map(n => ({ name: n, open: false })) }; hangup(); S.tv.dev = null; S.tv.swisscom.power = S.tv.apple.power = false; S.scene = null; S.page = "home"; render(); }
 
 /* ---------------- horloge & simulation thermique ---------------- */
 function tickClock() {
@@ -599,19 +628,24 @@ if (!backgroundOnly) setInterval(() => {
 /* ---------------- mise à l'échelle de la dalle ---------------- */
 function scale() { const sc = $(".tsw-screen"); $("#tsw").style.transform = `scale(${sc.clientWidth / 1280}, ${sc.clientHeight / 800})`; }
 window.addEventListener("resize", scale);
-// Parent measures the actual visible chassis and tools; fit every room between them.
-window.addEventListener("message", event => {
-  if (!backgroundOnly || event.source !== parent || event.origin !== location.origin || event.data?.type !== "villa-stark-layout") return;
-  const r = event.data.rect;
-  if (!r || ![r.x, r.y, r.width, r.height].every(Number.isFinite) || r.width <= 0 || r.height <= 0) return;
-  const house = $(".house-wrap"), fit = Math.min(r.width / 1780, r.height / 600);
-  // New room bays occupy x=304..1585, y=316..645; include the gables and pool in the crop.
-  house.style.cssText = `position:absolute;left:${r.x + r.width / 2 - 836 * fit}px;top:${r.y + r.height / 2 - 480 * fit}px;width:${SCENE.W * fit}px;height:${SCENE.H * fit}px;transform:none;`;
-  const view = $("#roomView");
-  const vw = Math.min(r.width, r.height * 16 / 9), vh = vw * 9 / 16;
-  // roomView is inside the transformed photo canvas, so convert the clear area back to local pixels.
-  view.style.cssText = `position:absolute;left:${(r.x + (r.width - vw) / 2) - (r.x + r.width / 2 - 836 * fit)}px;top:${(r.y + (r.height - vh) / 2) - (r.y + r.height / 2 - 480 * fit)}px;width:${vw}px;height:${vh}px;right:auto;bottom:auto;`;
-});
+// Only the photograph consumes the wheel; GUI scrolling stays native.
+let wheelLockUntil = 0, wheelTravel = 0;
+document.addEventListener("wheel", e => {
+  if (integrationMode === "panel" || e.target.closest(".panel-wrap,.site-header") || e.ctrlKey) return;
+  e.preventDefault();
+  if (e.isTrusted && backgroundOnly) parent.postMessage({ type:"villa-stark-user-activity", channel:syncId }, location.origin);
+  if (performance.now() < wheelLockUntil) return;
+  if (Math.sign(wheelTravel) !== Math.sign(e.deltaY)) wheelTravel = 0;
+  wheelTravel += e.deltaY;
+  if (Math.abs(wheelTravel) < 35) return;
+  const action = wheelTravel > 0 ? "zoom-out" : "zoom-in";
+  wheelTravel = 0; wheelLockUntil = performance.now() + 600;
+  if (backgroundOnly) syncBus?.postMessage({ type:"command", action });
+  else if (action === "zoom-out") leaveRoom(true);
+  else if (lastRoomView) enterRoom(lastRoomView, false);
+}, { passive:false });
+// Exterior and interior photographs share one full-viewport scene.
+// No second camera fits a reduced photograph between the GUI and the tools.
 
 /* ---------------- shared state between GUI and animated backdrop ---------------- */
 let applyingSnapshot = false;
@@ -619,8 +653,9 @@ function applySnapshot(snapshot) {
   if (!snapshot?.state?.lights?.Living || !snapshot.state.shades?.Living) return;
   applyingSnapshot = true;
   Object.assign(S, snapshot.state);
-  if (snapshot.room && roomById[snapshot.room] && snapshot.room !== roomView) enterRoom(snapshot.room);
-  else if (!snapshot.room && roomView) leaveRoom();
+  lastRoomView = snapshot.lastRoom || snapshot.room || lastRoomView;
+  if (snapshot.room && roomById[snapshot.room] && snapshot.room !== roomView) enterRoom(snapshot.room, false);
+  else if (!snapshot.room && roomView) leaveRoom(true);
   if (backgroundOnly) {
     document.querySelectorAll(".win").forEach(win => { win.querySelector(".win-shade").style.transition = S.shades[win.dataset.room]?.target != null ? "none" : ""; });
     renderHouse();
@@ -636,12 +671,14 @@ if (syncBus) {
     else if (data.action === "intrusion") intrusion();
     else if (data.action === "reset") { if (roomView) leaveRoom(); resetAll(); }
     else if (data.action === "exterior") leaveRoom();
+    else if (data.action === "zoom-out") leaveRoom(true);
+    else if (data.action === "zoom-in" && lastRoomView) enterRoom(lastRoomView, false);
     else if (data.action === "room" && roomById[data.value]) enterRoom(data.value);
     else if (data.action === "shade" && roomView && S.shades[roomView]) { S.shades[roomView].pos = S.shades[roomView].pos ? 0 : 100; render(); }
     else if (data.action === "theme" && THEMES.some(([key]) => key === data.value)) { S.theme = data.value; try { localStorage.setItem("villa-stark-theme-v2", data.value); } catch {} render(); }
   };
 }
-window.addEventListener("pagehide", () => { syncBus?.close(); Object.values(shadeTimers).forEach(clearInterval); });
+window.addEventListener("pagehide", () => { syncBus?.close(); clearInterval(gateMotionTimer); clearTimeout(gateCloseTimer); Object.values(shadeTimers).forEach(clearInterval); });
 
 /* ---------------- démarrage ---------------- */
 buildHouse();
@@ -651,10 +688,10 @@ document.querySelectorAll(".win,.thumb").forEach((el, i) => { el.tabIndex = 0; e
 $("#evVisitor").onclick = visitorRings;
 $("#evIntrusion").onclick = intrusion;
 $("#evReset").onclick = () => { if (roomView) leaveRoom(); resetAll(); };
-$("#rvBack").onclick = leaveRoom;
+$("#rvBack").onclick = () => leaveRoom();
 $("#roomView").addEventListener("click", e => { if (backgroundOnly && e.target.closest(".rv-shade")) { syncBus?.postMessage({ type: "command", action: "shade" }); return; } if (e.target.closest(".rv-shade") && roomById[roomView].shade) { S.shades[roomView].pos = S.shades[roomView].pos ? 0 : 100; render(); } });
 // état de départ : une ambiance de soirée pour que la villa ne soit pas éteinte
-setLight("Living", "3000", "3000", 70); setLight("Kitchen", "3000", "off", 60); setLight("Entry", "3000", "off", 50); S.climate.Living.heat = true; S.climate.Living.temp = 21.5;
+ROOMS.forEach(r => setLight(r.id, "off", "3000", 100)); S.climate.Living.heat = true; S.climate.Living.temp = 21.5;
 if (stateKey) { try { const saved = JSON.parse(sessionStorage.getItem(stateKey)); if (saved) applySnapshot(saved); } catch {} }
 if (!backgroundOnly) SHADE_ROOMS.forEach(id => { const shade = S.shades[id]; if (shade.target != null && shade.target !== shade.pos) moveShade(id, shade.target > shade.pos ? "down" : "up"); });
 render(); scale();

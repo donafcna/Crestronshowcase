@@ -1,0 +1,200 @@
+{
+  "stores": [
+    {
+      "cards": 9,
+      "minButtonHeight": 40,
+      "overflow": false,
+      "overlaps": false,
+      "theme": "glacier"
+    },
+    {
+      "cards": 9,
+      "minButtonHeight": 40,
+      "overflow": false,
+      "overlaps": false,
+      "theme": "aurum"
+    },
+    {
+      "cards": 9,
+      "minButtonHeight": 40,
+      "overflow": false,
+      "overlaps": false,
+      "theme": "carbone"
+    }
+  ],
+  "layouts": [
+    {
+      "device": "Smartphone",
+      "mode": "normal",
+      "theme": "Clair",
+      "cover": true,
+      "noMask": true
+    },
+    {
+      "device": "Smartphone",
+      "mode": "normal",
+      "theme": "Sombre",
+      "cover": true,
+      "noMask": true
+    },
+    {
+      "device": "Smartphone",
+      "mode": "normal",
+      "theme": "Verre",
+      "cover": true,
+      "noMask": true
+    },
+    {
+      "device": "Smartphone",
+      "mode": "scene",
+      "theme": "Clair",
+      "cover": true,
+      "noMask": true
+    },
+    {
+      "device": "Smartphone",
+      "mode": "scene",
+      "theme": "Sombre",
+      "cover": true,
+      "noMask": true
+    },
+    {
+      "device": "Smartphone",
+      "mode": "scene",
+      "theme": "Verre",
+      "cover": true,
+      "noMask": true
+    },
+    {
+      "device": "Dalle TSW",
+      "mode": "normal",
+      "theme": "Clair",
+      "cover": true,
+      "noMask": true
+    },
+    {
+      "device": "Dalle TSW",
+      "mode": "normal",
+      "theme": "Sombre",
+      "cover": true,
+      "noMask": true
+    },
+    {
+      "device": "Dalle TSW",
+      "mode": "normal",
+      "theme": "Verre",
+      "cover": true,
+      "noMask": true
+    },
+    {
+      "device": "Dalle TSW",
+      "mode": "scene",
+      "theme": "Clair",
+      "cover": true,
+      "noMask": true
+    },
+    {
+      "device": "Dalle TSW",
+      "mode": "scene",
+      "theme": "Sombre",
+      "cover": true,
+      "noMask": true
+    },
+    {
+      "device": "Dalle TSW",
+      "mode": "scene",
+      "theme": "Verre",
+      "cover": true,
+      "noMask": true
+    },
+    {
+      "device": "Tablette",
+      "mode": "normal",
+      "theme": "Clair",
+      "cover": true,
+      "noMask": true
+    },
+    {
+      "device": "Tablette",
+      "mode": "normal",
+      "theme": "Sombre",
+      "cover": true,
+      "noMask": true
+    },
+    {
+      "device": "Tablette",
+      "mode": "normal",
+      "theme": "Verre",
+      "cover": true,
+      "noMask": true
+    },
+    {
+      "device": "Tablette",
+      "mode": "scene",
+      "theme": "Clair",
+      "cover": true,
+      "noMask": true
+    },
+    {
+      "device": "Tablette",
+      "mode": "scene",
+      "theme": "Sombre",
+      "cover": true,
+      "noMask": true
+    },
+    {
+      "device": "Tablette",
+      "mode": "scene",
+      "theme": "Verre",
+      "cover": true,
+      "noMask": true
+    },
+    {
+      "device": "PC / Xpanel",
+      "mode": "normal",
+      "theme": "Clair",
+      "cover": true,
+      "noMask": true
+    },
+    {
+      "device": "PC / Xpanel",
+      "mode": "normal",
+      "theme": "Sombre",
+      "cover": true,
+      "noMask": true
+    },
+    {
+      "device": "PC / Xpanel",
+      "mode": "normal",
+      "theme": "Verre",
+      "cover": true,
+      "noMask": true
+    },
+    {
+      "device": "PC / Xpanel",
+      "mode": "scene",
+      "theme": "Clair",
+      "cover": true,
+      "noMask": true
+    },
+    {
+      "device": "PC / Xpanel",
+      "mode": "scene",
+      "theme": "Sombre",
+      "cover": true,
+      "noMask": true
+    },
+    {
+      "device": "PC / Xpanel",
+      "mode": "scene",
+      "theme": "Verre",
+      "cover": true,
+      "noMask": true
+    }
+  ],
+  "roomButtons": {
+    "count": 10,
+    "states": 0
+  },
+  "note": "Xpanel exit retested after scale animation completed; first rapid click during transition did not exit."
+}

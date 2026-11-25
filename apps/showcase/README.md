@@ -786,3 +786,6 @@ Châssis aligné à gauche ; villa recadrée depuis les limites réelles du châ
 ## 25/11/2026 — Villa Stark originale, GUI blanc par défaut
 
 Architecture et paysage recréés : pierre gneiss, bois et zinc, volumes décalés, jardin jurassien. Quinze nouveaux visuels générés, ancien ensemble photographique et ancien plan raster retirés du public ; plan SVG et calques recalés sur 1672×941. GUI blanc par défaut (glacier, clé de préférence v2), logo officiel intégré, trois thèmes conservés. Recette : 24 combinaisons supports/thèmes/modes ajustés, neuf intérieurs, éclairages, stores, garage, couverture et interphone. Captures de fiche actualisées ; détails, limites et provenance : `docs/verification/2026-11-25-villa-stark-original/` et `public/showcases/villa-stark/SOURCE.md`. Aucun matériel modifié.
+
+### 25 novembre 2026 — Villa Stark 2.3.19
+Fond photographique unique, châssis commun et flèches conservés, logo adapté aux thèmes, stores smartphone sans superposition et sélecteurs de pièces neutres. Molette maison/dernière pièce, sélection GUI liée à la vue, animation du portail dans l'interphone, visiteur retiré. Pause automatique commune portée à 120 s après interaction. Recette ciblée et limites : docs/verification/2026-11-25-villa-stark-unified/README.md.

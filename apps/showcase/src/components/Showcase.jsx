@@ -36,7 +36,7 @@ const firstViewportOf = (proj) => {
   const vps = proj.devices.map((id) => getDeviceById(id)?.viewport).filter(Boolean);
   return VIEWPORT_ORDER.find((v) => vps.includes(v)) || vps[0];
 };
-const IDLE_RESUME_MS = 10000; // reprise de la démo automatique après inactivité
+const IDLE_RESUME_MS = 120000; // deux minutes après la dernière interaction réelle
 
 const SimulatorFallback = () => (
   <div className="simulator-loading">
@@ -194,24 +194,27 @@ const ShowcaseInner = ({ sectorId, projectId, device }) => {
   const [demoRunning, setDemoRunning] = useState(true);
   const [resumeAt, setResumeAt] = useState(null);
   const resumeTimer = useRef(null);
-  const idleResumeMs = viewportDevice === "phone" ? 60000 : IDLE_RESUME_MS;
+  const manualPauseUntil = useRef(0);
+  const idleResumeMs = IDLE_RESUME_MS;
 
-  const armResume = useCallback(() => {
+  const armResume = useCallback((delay = idleResumeMs) => {
     clearTimeout(resumeTimer.current);
-    setResumeAt(Date.now() + idleResumeMs);
+    setResumeAt(Date.now() + delay);
     resumeTimer.current = setTimeout(() => {
+      manualPauseUntil.current = 0;
       setResumeAt(null);
       setDemoRunning(true);
-    }, idleResumeMs);
+    }, delay);
   }, [idleResumeMs]);
 
   const pauseDemo = useCallback(() => {
+    manualPauseUntil.current = Date.now() + idleResumeMs;
     if (villaSessionRef.current.started === null) villaSessionRef.current.started = performance.now();
     villaSessionRef.current.overview = false;
     window.__plan3d?.holdOverview(false);
     setDemoRunning(false);
     armResume();
-  }, [armResume]);
+  }, [armResume, idleResumeMs]);
 
   useEffect(() => {
     const key = `${activeProject.id}/${viewportDevice}`;
@@ -224,14 +227,18 @@ const ShowcaseInner = ({ sectorId, projectId, device }) => {
       setDemoEpoch(n => n + 1);
     }
     const guidedEntry = isGuidedProject(activeProject.id) && first;
-    if ((villaDevice && (entry || first || automaticAdvance.current)) || guidedEntry) {
+    if (manualPauseUntil.current > Date.now()) {
+      setDemoRunning(false);
+      armResume(manualPauseUntil.current - Date.now());
+    } else if ((villaDevice && (entry || first || automaticAdvance.current)) || guidedEntry) {
       clearTimeout(resumeTimer.current);
       setResumeAt(null); setDemoRunning(true);
-    } else { setDemoRunning(false); armResume(); }
+    } else { setDemoRunning(false); armResume(viewportDevice === "phone" ? 60000 : 10000); }
     automaticAdvance.current = false;
   }, [activeProject.id, viewportDevice, projectId, villaProject, villaDevice, armResume]);
 
   const resumeDemo = useCallback(() => {
+    manualPauseUntil.current = 0;
     clearTimeout(resumeTimer.current);
     setResumeAt(null);
     setDemoEnabled(true);
@@ -363,7 +370,7 @@ const ShowcaseInner = ({ sectorId, projectId, device }) => {
       ref={stageRef}
     >
       {activeProject.id === "villa-stark" ? (
-        <VillaStarkBackground channel={starkSession.current} stageRef={stageRef} />
+        <VillaStarkBackground channel={starkSession.current} />
       ) : plan3dOn ? (
         <Plan3DBackground projectId={activeProject.id} stageRef={stageRef} guiFrameRef={guiFrameRef} tourSessionRef={villaSessionRef} />
       ) : (
