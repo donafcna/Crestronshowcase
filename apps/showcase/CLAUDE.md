@@ -220,3 +220,7 @@ renderMusic utilise S.musicRoom et les objets S.music existants : six boutons, s
 
 ### 25 novembre 2026 — Villa Stark 2.3.22
 Styles locaux : flèche stage clampée, scrollbar workspace invisible mais scroll conservé. ROOM_ICONS commun à renderPlan light/clim, floor-plan.svg ne garde que les contours. Stores en grille avec icônes SVG séparées du texte et dimensions égales. tv-broadcast.js utilise directement createTVStage de Villa FTV, renderer lazy 640x360/15fps, uniquement vue intérieure ; routes TV par pièce et cadrage cover. Badges TV et flammes extérieurs masqués. circuits.rgbw actif uniquement Pool ; pas de teinte globale, spots SVG localisés. Voir docs/verification/2026-11-25-villa-stark-refinements/README.md pour tests et limites.
+
+### 25 novembre 2026 — Villa Stark 2.3.23
+
+Bouton « Intrusion terrasse » retiré des outils de simulation et de la page autonome. Gestionnaire correspondant retiré ; les commandes de sécurité du GUI restent disponibles. Fiche explicative mise à jour dans les trois langues.

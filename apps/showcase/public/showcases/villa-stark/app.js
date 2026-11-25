@@ -800,7 +800,6 @@ $("#zoomControls").onclick = () => { const on = document.body.classList.toggle("
 document.querySelectorAll(".win,.thumb").forEach((el, i) => { el.tabIndex = 0; el.setAttribute("role", "button"); el.setAttribute("aria-label", "Entrer dans " + ROOMS[i % ROOMS.length].name); el.onkeydown = e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); el.click(); } }; });
 
 $("#evVisitor").onclick = visitorRings;
-$("#evIntrusion").onclick = intrusion;
 $("#evReset").onclick = () => { if (roomView) leaveRoom(); resetAll(); };
 $("#rvBack").onclick = () => leaveRoom();
 $("#roomView").addEventListener("click", e => { if (backgroundOnly && e.target.closest(".rv-shade")) { syncBus?.postMessage({ type: "command", action: "shade" }); return; } if (e.target.closest(".rv-shade") && roomById[roomView].shade) { S.shades[roomView].pos = S.shades[roomView].pos ? 0 : 100; render(); } });

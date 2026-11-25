@@ -12,7 +12,6 @@ export function VillaStarkTools({ channel }) {
   return <div className="villa-stark-tools">
     <span>Villa Stark · simulation</span>
     <div className="stark-themes">{[["aurum", "Sombre"], ["glacier", "Clair"], ["carbone", "Verre"]].map(([id, label]) => <button key={id} onClick={() => send("theme", id)}>{label}</button>)}</div>
-    <button onClick={() => send("intrusion")}>Intrusion terrasse</button>
     <button onClick={() => send("exterior")}>Vue extérieure</button>
     <button onClick={() => send("reset")}>Réinitialiser</button>
   </div>;

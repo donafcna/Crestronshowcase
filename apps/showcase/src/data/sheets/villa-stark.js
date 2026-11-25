@@ -26,11 +26,11 @@ export default {
       },
       {
         "title": "Sécurité et interphone",
-        "text": "Simulez un visiteur ou une intrusion. L’alarme ne se déclenche que si la protection est armée.",
+        "text": "Consultez les états de sécurité et utilisez les commandes de l’interphone dans le GUI.",
         "buttons": [
           [
-            "Visiteur au portail / Intrusion terrasse",
-            "Simulez un visiteur ou une intrusion. L’alarme ne se déclenche que si la protection est armée."
+            "Sécurité / Interphone",
+            "Consultez les états de sécurité et utilisez les commandes de l’interphone dans le GUI."
           ]
         ],
         "image": "/sheets/villa-stark/intercom.jpg"
@@ -64,11 +64,11 @@ export default {
       },
       {
         "title": "Security and intercom",
-        "text": "Simulate a visitor or an intrusion. The alarm triggers only when protection is armed.",
+        "text": "Check security status and use the intercom controls in the GUI.",
         "buttons": [
           [
-            "Visiteur au portail / Intrusion terrasse",
-            "Simulate a visitor or an intrusion. The alarm triggers only when protection is armed."
+            "Sécurité / Interphone",
+            "Check security status and use the intercom controls in the GUI."
           ]
         ],
         "image": "/sheets/villa-stark/intercom.jpg"
@@ -102,11 +102,11 @@ export default {
       },
       {
         "title": "Sicherheit und Gegensprechanlage",
-        "text": "Besuch oder Einbruch simulieren. Der Alarm wird nur bei aktivierter Überwachung ausgelöst.",
+        "text": "Sicherheitsstatus und Gegensprechfunktionen über die Benutzeroberfläche bedienen.",
         "buttons": [
           [
-            "Visiteur au portail / Intrusion terrasse",
-            "Besuch oder Einbruch simulieren. Der Alarm wird nur bei aktivierter Überwachung ausgelöst."
+            "Sécurité / Interphone",
+            "Sicherheitsstatus und Gegensprechfunktionen über die Benutzeroberfläche bedienen."
           ]
         ],
         "image": "/sheets/villa-stark/intercom.jpg"
