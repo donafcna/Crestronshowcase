@@ -224,3 +224,11 @@ Styles locaux : flèche stage clampée, scrollbar workspace invisible mais scrol
 ### 25 novembre 2026 — Villa Stark 2.3.23
 
 Bouton « Intrusion terrasse » retiré des outils de simulation et de la page autonome. Gestionnaire correspondant retiré ; les commandes de sécurité du GUI restent disponibles. Fiche explicative mise à jour dans les trois langues.
+
+### 25 novembre 2026 — Villa Stark 2.3.24
+
+Stores de la pièce sélectionnée : bateau et blackout indépendants, montée / arrêt / descente, positions persistées et synchronisées entre le GUI et le fond. Recalage des baies sur la photo avec compensation du recadrage cover, perspective et silhouettes de premier plan. Le cinéma ne présente pas de faux store sur sa photo sans fenêtre.
+
+Éclairage intérieur : variation globale de la photo retirée ; circuits nommés selon les luminaires visibles, sources et retombées lumineuses localisées dans lighting-scene.js. Les sources de lumière extérieures et le contenu TV sont préservés. Les spots blancs de terrasse et de bassin partagent les points physiques RGBW de la piscine.
+
+TV : arrêt transparent et homographie sur quatre coins de la TV salon / cinéma. Recette et limites du rendu photographique : docs/verification/2026-11-25-villa-stark-realism/.

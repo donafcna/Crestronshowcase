@@ -1,0 +1,47 @@
+[
+  {
+    "id": "Living",
+    "cards": 2,
+    "photo": null
+  },
+  {
+    "id": "Dining",
+    "cards": 2,
+    "photo": null
+  },
+  {
+    "id": "Kitchen",
+    "cards": 2,
+    "photo": null
+  },
+  {
+    "id": "Office",
+    "cards": 2,
+    "photo": null
+  },
+  {
+    "id": "Cinema",
+    "cards": 0,
+    "photo": null
+  },
+  {
+    "id": "Fitness",
+    "cards": 2,
+    "photo": null
+  },
+  {
+    "id": "Entry",
+    "cards": 2,
+    "photo": null
+  },
+  {
+    "id": "Master",
+    "cards": 2,
+    "photo": null
+  },
+  {
+    "id": "Bedroom",
+    "cards": 2,
+    "photo": null
+  }
+]

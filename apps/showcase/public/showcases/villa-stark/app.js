@@ -60,7 +60,7 @@ function defaults() {
     S.climate[r.id] = { heat: false, heatSP: 21.0, ac: false, acSpeed: 1, acSP: 24.0, temp: 20 + Math.round(Math.random() * 30) / 10 };
     S.music[r.id] = { src: null, vol: 40, mute: false };
   });
-  SHADE_ROOMS.forEach(id => (S.shades[id] = { pos: 0 }));
+  SHADE_ROOMS.forEach(id => (S.shades[id] = { pos: 0, blackout: { pos: 0 } }));
 }
 defaults();
 
@@ -97,11 +97,21 @@ const POOL_PTS = [[1318, 666], [1672, 671], [1672, 739], [1533, 735]];
 const POOL_CLIP = "polygon(" + POOL_PTS.map(([x, y]) => `${x / 1672 * 100}% ${y / 941 * 100}%`).join(", ") + ")";
 // intérieurs : zones de la baie vitrée et de l'écran TV, en % de la photo
 const INT = {
- Living: { win:[0,5,43,62], tv:[70.4,21.8,17.4,20.7] },
- Dining: { win:[46,5,54,77] }, Kitchen: { win:[66,14,34,59] }, Office: { win:[77,0,23,87] },
- Cinema: { tv:[56.58,20.62,29.25,31.14], tvClip:"polygon(0 18%,100% 0,100% 100%,0 90%)" }, Fitness: { win:[0,3,44,92] }, Entry: { win:[86,0,14,90] },
- Master: { win:[47,8,53,68] }, Bedroom: { win:[78.5,12,18.5,55] }, Pool: {},
+ Living: { win:[0,6.3,44.4,63.6],winClip:"polygon(0 0,100% 24%,100% 86%,0 100%)", tv:[70.3,21.5,17.5,23.1],tvClip:"polygon(0 17%,100% 0,100% 94%,0 100%)",tvQuad:[[0,.17],[1,0],[1,.94],[0,1]] },
+ Dining: { win:[46,1,54,85],winClip:"polygon(0 35%,100% 0,100% 100%,0 68%)" }, Kitchen: { win:[65.5,9,34.5,65],winClip:"polygon(0 22%,100% 0,100% 100%,0 82%)" }, Office: { win:[77,0,23,91],winClip:"polygon(0 21%,100% 0,100% 100%,0 82%)" },
+ Cinema: { tv:[56.58,20.62,29.25,31.14], tvClip:"polygon(0 18%,100% 0,100% 100%,0 90%)",tvQuad:[[0,.18],[1,0],[1,1],[0,.9]] }, Fitness: { win:[0,0,48,98],winClip:"polygon(0 0,100% 32%,100% 69%,0 100%)" }, Entry: { win:[86,0,14,90],winClip:"polygon(0 0,100% 0,100% 100%,0 86%)" },
+ Master: { win:[50.5,5.3,49.5,68.5],winClip:"polygon(0 24%,100% 0,100% 100%,0 89%)" }, Bedroom: { win:[78.6,11,17.2,48.4],winClip:"polygon(0 11%,100% 0,100% 100%,0 94%)" }, Pool: {},
 };
+// Silhouettes de premier plan : le store passe derrière les meubles, pas devant eux.
+const SHADE_FOREGROUND={
+ Living:[[[0,59],[3,57],[7,59],[10,63],[13,64],[17,70],[19,84],[13,92],[4,87],[0,80]]],
+ Dining:[[[0,56],[56,56],[65,59],[75,62],[73,100],[0,100]]],
+ Kitchen:[[[0,52],[65,51],[78,54],[78,71],[70,80],[0,100]]],
+ Fitness:[[[6,64],[23,57],[28,44],[36,45],[44,54],[44,58],[30,57],[28,71],[47,83],[44,89],[8,89],[6,85]],[[43,45],[46,45],[50,52],[52,62],[48,74],[42,75],[40,70]]],
+ Master:[[[45,61],[54,60],[60,64],[68,66],[71,72],[70,80],[58,90],[44,88]],[[55,46],[58,47],[60,45],[62,48],[63,52],[67,51],[67,55],[63,59],[63,65],[56,66],[55,60]]]
+};
+const shadeMasks={};
+function shadeWindowMask(id){if(!SHADE_FOREGROUND[id])return 'none';if(shadeMasks[id])return shadeMasks[id];const [x,y,w,h]=INT[id].win,rect=`<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="white"/>`,svg=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="${x} ${y} ${w} ${h}" preserveAspectRatio="none"><defs><mask id="foreground" maskUnits="userSpaceOnUse" x="${x}" y="${y}" width="${w}" height="${h}">${rect}${SHADE_FOREGROUND[id].map(points=>`<polygon points="${points.map(p=>p.join(',')).join(' ')}" fill="black"/>`).join('')}</mask></defs><g mask="url(#foreground)">${rect}</g></svg>`;return shadeMasks[id]='url("data:image/svg+xml,'+encodeURIComponent(svg)+'")';}
 // Photographie originale, sans décalage entre la scène et ses calques.
 const SCENE = { W: 1672, H: 941, ox: 0, oy: 0 };
 const sx = x => (x + SCENE.ox) / SCENE.W * 100, sy = y => (y + SCENE.oy) / SCENE.H * 100;
@@ -125,15 +135,13 @@ function createPoolLighting(view) {
   const underwater = view === "interior" ? [[390,720,1],[715,677,.85],[1040,645,.65],[1146,617,.55]] : [[1412,689,.25],[1500,695,.25],[1600,699,.25]];
   const deck = view === "interior" ? [[300,703,.65],[620,641,.6],[955,584,.45],[1240,685,.65],[1080,785,.8],[900,890,1]] : [[1380,655,.22],[1490,660,.22],[1605,666,.22],[1560,745,.22]];
   const gradient = "pool-light-" + view;
-  plane.innerHTML = `<defs><radialGradient id="${gradient}"><stop stop-color="var(--pool-rgbw)" stop-opacity=".65"/><stop offset=".4" stop-color="var(--pool-rgbw)" stop-opacity=".28"/><stop offset="1" stop-color="var(--pool-rgbw)" stop-opacity="0"/></radialGradient></defs>` + [...underwater.map(p=>[...p,true]),...deck.map(p=>[...p,false])].map(([x,y,s,water])=>`<g transform="translate(${x} ${y}) scale(${s})" class="pool-spot ${water ? "underwater" : "deck"}"><g class="pool-illumination"><ellipse cy="${water ? 14 : 0}" rx="${water ? 110 : 65}" ry="${water ? 48 : 25}" fill="url(#${gradient})"/>${water ? `<ellipse cy="50" rx="65" ry="85" fill="url(#${gradient})" opacity=".4"/>` : ""}</g><ellipse rx="7" ry="3.5" fill="#293038" stroke="#8b9698" stroke-width="1"/><ellipse class="pool-spot-core" rx="4" ry="2"/></g>`).join("");
+  plane.innerHTML = `<defs>${["water","deck"].map(kind=>`<radialGradient id="${gradient}-${kind}"><stop stop-color="var(--pool-${kind}-color)" stop-opacity=".65"/><stop offset=".4" stop-color="var(--pool-${kind}-color)" stop-opacity=".28"/><stop offset="1" stop-color="var(--pool-${kind}-color)" stop-opacity="0"/></radialGradient>`).join("")}</defs>` + [...underwater.map(p=>[...p,true]),...deck.map(p=>[...p,false])].map(([x,y,s,water])=>`<g transform="translate(${x} ${y}) scale(${s})" class="pool-spot ${water ? "underwater" : "deck"}"><g class="pool-illumination"><ellipse cy="${water ? 14 : 0}" rx="${water ? 110 : 65}" ry="${water ? 48 : 25}" fill="url(#${gradient}-${water ? "water" : "deck"})"/>${water ? `<ellipse cy="50" rx="65" ry="85" fill="url(#${gradient}-${water ? "water" : "deck"})" opacity=".4"/>` : ""}</g><ellipse rx="7" ry="3.5" fill="#293038" stroke="#8b9698" stroke-width="1"/><ellipse class="pool-spot-core" rx="4" ry="2"/></g>`).join("");
   return plane;
 }
 function updatePoolLighting(plane) {
   if (!plane) return;
-  const circuit = circuits("Pool").rgbw, active = !!circuit && circuit.level > 0 && !S.house.pool;
-  plane.style.setProperty("--pool-rgbw",active ? circuit.color : "#24343a");
-  plane.querySelectorAll(".pool-illumination").forEach(e=>e.style.opacity=active ? circuit.level/100 : 0);
-  plane.querySelectorAll(".pool-spot-core").forEach(e=>e.style.fill=active ? circuit.color : "#18252b");
+  const c=circuits('Pool');for(const [kind,key] of [['underwater','spots'],['deck','strip']]){const circuit=c.rgbw||c[key],active=!!circuit&&circuit.level>0&&!S.house.pool,color=active?circuit.color:'#18252b';plane.style.setProperty('--pool-'+(kind==='underwater'?'water':'deck')+'-color',color);plane.querySelectorAll('.pool-spot.'+kind).forEach(g=>{g.querySelector('.pool-illumination').style.opacity=active?circuit.level/100:0;g.querySelector('.pool-spot-core').style.fill=color;});}
+
 }
 function div(cls, style = "") { const d = document.createElement("div"); d.className = cls; d.style.cssText = style; return d; }
 // calque image plein cadre, positionné pour que la zone [x,y,w,h] de la photo tombe sur l'élément parent (qui la découpe)
@@ -205,7 +213,7 @@ function renderHouse() {
     const c = S.climate[r.id];
     h.chip.innerHTML = fmt(c.temp) + hvacIco(c);
     h.hvac.style.display = "none";
-    h.shade.style.transform = `scaleY(${r.shade ? S.shades[r.id].pos / 100 : 0})`;
+    h.shade.style.transform = `scaleY(${r.shade ? Math.max(S.shades[r.id].pos, shadeState(r.id,"blackout").pos) / 100 : 0})`;h.shade.style.transition=r.shade&&(S.shades[r.id].target!=null||shadeState(r.id,"blackout").target!=null)?"none":"";h.shade.dataset.type=r.shade&&shadeState(r.id,"blackout").pos>S.shades[r.id].pos?"blackout":"roman";
     if (r.tv) h.tv.style.display = "none";
   });
   // piscine
@@ -254,16 +262,17 @@ function leaveRoom(keepPage = false) { if (backgroundOnly && !applyingSnapshot) 
 function renderRoomView() {
   if (!roomView) return;
   const id = roomView, r = roomById[id], v = $("#roomView"), l = S.lights[id], c3 = circuits(id), on = anyLight(id);
-  // spots = éclairage général de la photo ; ruban et COULEURS = calques additifs
-  const floor = id === "Pool" ? 0.32 : 0.12, sp = c3.spots ? c3.spots.level / 100 : 0;
-  const b = floor + (1 - floor) * sp + (!c3.spots && (c3.strip || c3.rgbw) ? 0.08 : 0);
-  v.querySelector(".rv-photo").style.filter = `brightness(${b}) saturate(${on ? 1 : 0.55}) ${c3.spots && c3.spots.cool ? COOL_FILTER : ""}`;
-  v.querySelector(".rv-night").style.opacity = on ? (c3.spots ? 0 : 0.3) : 0.45;
-  const st = v.querySelector(".rv-strip"); st.style.setProperty("--c", c3.strip ? c3.strip.color : "transparent"); st.style.opacity = c3.strip ? 0.3 + 0.7 * c3.strip.level / 100 : 0;
+  // L’environnement photographique reste stable ; seuls les luminaires de chaque circuit varient.
+  v.querySelector('.rv-photo').style.filter='none';v.querySelector('.rv-night').style.opacity=0;v.querySelector('.rv-strip').style.opacity=0;
+  window.STARK_LIGHTING.render(v,id,l,INT[id].tv);
   const rg = v.querySelector(".rv-rgbw"); rg.style.opacity = 0;
   if (id === "Pool" && !v.querySelector(".pool-lighting")) v.appendChild(createPoolLighting("interior"));
   const poolLights = v.querySelector(".pool-lighting"); if (poolLights) { poolLights.style.display = id === "Pool" ? "block" : "none"; updatePoolLighting(poolLights); }
-  if (r.shade) v.querySelector(".rv-shade").style.transform = `scaleY(${S.shades[id].pos / 100})`;
+  if(r.shade&&INT[id].win){
+    const sh=v.querySelector('.rv-shade'),rect=INT[id].win,cover=Math.max(v.clientWidth/1672,v.clientHeight/941);
+    Object.assign(sh.style,{left:((v.clientWidth-1672*cover)/2+rect[0]/100*1672*cover)+'px',top:((v.clientHeight-941*cover)/2+rect[1]/100*941*cover)+'px',width:rect[2]/100*1672*cover+'px',height:rect[3]/100*941*cover+'px',clipPath:INT[id].winClip||'none',maskImage:shadeWindowMask(id),maskSize:'100% 100%',maskRepeat:'no-repeat'});
+    for(const type of ['roman','blackout']){const el=sh.querySelector('[data-shade="'+type+'"]');el.style.transition=shadeState(id,type).target!=null?"none":"clip-path 2.4s ease";el.style.clipPath='inset(0 0 '+(100-shadeState(id,type).pos)+'% 0)';el.dataset.position=shadeState(id,type).pos;}
+  }
   if (r.tv) {
     const e = v.querySelector(".rv-tv"), rect = INT[id].tv, cover = Math.max(v.clientWidth/1672,v.clientHeight/941);
     Object.assign(e.style,{left:((v.clientWidth-1672*cover)/2+rect[0]/100*1672*cover)+"px",top:((v.clientHeight-941*cover)/2+rect[1]/100*941*cover)+"px",width:rect[2]/100*1672*cover+"px",height:rect[3]/100*941*cover+"px"});
@@ -274,12 +283,13 @@ function renderRoomView() {
   v.querySelector(".rv-climate").innerHTML = `<b>${fmt(c.temp)}</b>${hvacIco(c)}${c.heat ? "chauffage " + fmt(c.heatSP) : c.ac ? "clim " + fmt(c.acSP) + " · vitesse " + c.acSpeed : "climat en veille"}`;
   const mu = v.querySelector(".rv-music"); mu.style.opacity = m.src ? 1 : 0; mu.innerHTML = `<div class="eq-badge" style="opacity:${m.mute ? 0.3 : 1}"><i></i><i></i><i></i><i></i></div>${(m.src || "").toUpperCase()} · ${m.mute ? "MUET" : m.vol + " %"}`;
   const li = v.querySelector(".rv-lights");
-  li.textContent = !on ? "éclairage éteint" : [l.strip !== "off" ? "ruban " + l.strip + "K " + l.lv.strip + " %" : "", l.spots !== "off" ? "spots " + l.spots + "K " + l.lv.spots + " %" : "", l.rgbw !== "off" ? "COULEURS " + l.rgbw.toUpperCase() + " " + l.lv.rgbw + " %" : ""].filter(Boolean).join(" · ");
+  li.textContent = !on ? "éclairage éteint" : [l.strip !== "off" ? window.STARK_LIGHTING.label(id,"strip")+" · "+l.strip+"K "+l.lv.strip+" %" : "", l.spots !== "off" ? window.STARK_LIGHTING.label(id,"spots")+" · "+l.spots+"K "+l.lv.spots+" %" : "", l.rgbw !== "off" ? "COULEURS " + l.rgbw.toUpperCase() + " " + l.lv.rgbw + " %" : ""].filter(Boolean).join(" · ");
 }
 
 /* ---------------- navigation de la dalle ---------------- */
 function go(p) {
   S.page = p;
+  if(p==='shades'){S.shadeRoom=roomView&&roomById[roomView].shade?roomView:S.shadeRoom||((lastRoomView&&roomById[lastRoomView].shade)?lastRoomView:'Living');if(roomView!==S.shadeRoom)enterRoom(S.shadeRoom,false);else render();return;}
   const id = p.startsWith("light:") ? p.slice(6) : p.startsWith("clim:") ? p.slice(5) : null;
   if (id && roomById[id] && roomView !== id) enterRoom(id, false); else render();
 }
@@ -372,9 +382,9 @@ function renderHome(pg) {
   [["lights", "TOUT ALLUMER", () => ROOMS.forEach(r => setLight(r.id, "3000", "3000", 80)), allOn], ["alloff", "TOUT ÉTEINDRE", () => allOff(), noneOn]].forEach(([ico, l, fn, sel]) => {
     const b = document.createElement("button"); b.className = "scene-btn" + (sel ? " sel" : ""); b.innerHTML = `<img src="assets/Icon_${ico}.png" alt="">${l}`; b.onclick = () => { fn(); S.scene = null; render(); }; $("#lightRow").appendChild(b);
   });
-  const allUp = SHADE_ROOMS.every(id => !S.shades[id].pos), allDown = SHADE_ROOMS.every(id => S.shades[id].pos === 100);
+  const allUp = SHADE_ROOMS.every(id => !S.shades[id].pos&&!shadeState(id,"blackout").pos), allDown = SHADE_ROOMS.every(id => S.shades[id].pos === 100&&shadeState(id,"blackout").pos===100);
   [["shades", "TOUT OUVRIR", 0, allUp], ["shades", "TOUT FERMER", 100, allDown]].forEach(([ico, l, pos, sel]) => {
-    const b = document.createElement("button"); b.className = "scene-btn" + (sel ? " sel" : ""); b.innerHTML = `<img src="assets/Icon_${ico}.png" alt="">${l}`; b.onclick = () => { stopAllShadeMotion(); SHADE_ROOMS.forEach(id => (S.shades[id].pos = pos)); render(); }; $("#shadeRow").appendChild(b);
+    const b = document.createElement("button"); b.className = "scene-btn" + (sel ? " sel" : ""); b.innerHTML = `<img src="assets/Icon_${ico}.png" alt="">${l}`; b.onclick = () => { stopAllShadeMotion(); SHADE_ROOMS.forEach(id => setRoomShades(id,pos)); render(); }; $("#shadeRow").appendChild(b);
   });
   tickClock();
 }
@@ -419,7 +429,7 @@ function renderRoomLights(pg, id) {
     [["ARRÊT", "off"], ["CHAUD", "3000"], ["FROID", "6000"]].forEach(([lab, v]) => r.appendChild(btn(lab, "", () => { l[key] = v; }, l[key] === v)));
     c.appendChild(r); pg.appendChild(c);
   };
-  mk("ÉCLAIRAGE INDIRECT", 192, "strip"); mk("SPOTS", 310, "spots");
+  mk(window.STARK_LIGHTING.label(id,"strip").toUpperCase(), 192, "strip"); mk(window.STARK_LIGHTING.label(id,"spots").toUpperCase(), 310, "spots");
   if (id === "Pool") {
   const rg = card(40, 428, 600, null, "SPOTS RGBW · DMX"); const rr = document.createElement("div"); rr.className = "row";
   [["ARRÊT", "off", ""], ["ROUGE", "red", "#FF4A3C"], ["VERT", "green", "#3CE07A"], ["BLEU", "blue", "#3C7CFF"], ["BLANC", "white", "#F2EEE6"]].forEach(([lab, v, col]) =>
@@ -427,7 +437,7 @@ function renderRoomLights(pg, id) {
   rg.appendChild(rr); pg.appendChild(rg);
   }
   const lv = card(680, 70, 560, 462, "INTENSITÉ");
-  [["INDIRECT", "strip"], ["SPOTS", "spots"], ...(id === "Pool" ? [["RGBW / DMX", "rgbw"]] : [])].forEach(([lab, key]) => {
+  [[window.STARK_LIGHTING.label(id,"strip"), "strip"], [window.STARK_LIGHTING.label(id,"spots"), "spots"], ...(id === "Pool" ? [["RGBW / DMX", "rgbw"]] : [])].forEach(([lab, key]) => {
     const s = document.createElement("div"); s.className = "slider";
     s.innerHTML = `<span class="label">${lab}</span><input type="range" min="0" max="100" value="${l.lv[key]}" style="--p:${l.lv[key]}%"><span class="pct">${l.lv[key]} %</span>`;
     const inp = s.querySelector("input"), pct = s.querySelector(".pct"); inp.setAttribute("aria-label", lab + " — " + roomById[id].name);
@@ -442,38 +452,29 @@ function renderRoomLights(pg, id) {
 
 /* ---------------- stores ---------------- */
 let shadeTimers = {};
-function stopAllShadeMotion() {
-  Object.values(shadeTimers).forEach(clearInterval);
-  SHADE_ROOMS.forEach(id => delete S.shades[id].target);
+function shadeState(id,type='roman'){if(type==='roman')return S.shades[id];return S.shades[id].blackout||=( {pos:0} );}
+function setRoomShades(id,pos){for(const type of ['roman','blackout']){const state=shadeState(id,type);state.pos=pos;delete state.target;}}
+function stopAllShadeMotion(){Object.values(shadeTimers).forEach(clearInterval);shadeTimers={};for(const id of SHADE_ROOMS)for(const type of ['roman','blackout'])delete shadeState(id,type).target;}
+function moveShade(id,dir,type='roman'){
+ const state=shadeState(id,type),key=id+':'+type;clearInterval(shadeTimers[key]);
+ if(dir==='stop'){delete state.target;renderHouse();refreshShadeVis();return;}
+ const target=dir==='down'?100:0,from=state.pos,started=performance.now();state.target=target;
+ shadeTimers[key]=setInterval(()=>{const progress=Math.min(1,(performance.now()-started)/3200);state.pos=Math.round(from+(target-from)*progress);if(progress===1){clearInterval(shadeTimers[key]);delete state.target;}renderHouse();refreshShadeVis();},40);
 }
-function moveShade(id, dir) {
-  clearInterval(shadeTimers[id]);
-  document.querySelectorAll('.win-shade,.rv-shade,.shade-vis .blind').forEach(el => el.style.transition = 'none');
-  if (dir === "stop") { delete S.shades[id].target; renderHouse(); refreshShadeVis(); return; }
-  const target = dir === "down" ? 100 : 0, from = S.shades[id].pos, started = performance.now();
-  S.shades[id].target = target;
-  shadeTimers[id] = setInterval(() => {
-    const progress = Math.min(1, (performance.now() - started) / 2400);
-    S.shades[id].pos = Math.round(from + (target - from) * progress);
-    renderHouse(); refreshShadeVis();
-    if (progress === 1) { clearInterval(shadeTimers[id]); delete S.shades[id].target; }
-  }, 40);
-}
-function refreshShadeVis() { document.querySelectorAll(".shade-card").forEach(c => { const id = c.dataset.id, pos = S.shades[id].pos; c.querySelector(".blind").style.transform = `scaleY(${pos / 100})`; c.querySelector(".pos").textContent = pos === 0 ? "OUVERT" : pos === 100 ? "FERMÉ" : pos + " %"; }); }
-function renderShades(pg) {
-  const grid = document.createElement("div"); grid.className = "shade-grid";
-  SHADE_ROOMS.forEach(id => {
-    const c = document.createElement("div"); c.className = "card shade-card"; c.style.position = "relative"; c.dataset.id = id;
-    c.innerHTML = `<div class="card-title">${roomById[id].name}</div><div class="col"></div><div class="shade-vis"><div class="blind" style="transform:scaleY(${S.shades[id].pos / 100})"></div></div><div class="pos">${S.shades[id].pos ? "FERMÉ" : "OUVERT"}</div>`;
-    const col = c.querySelector(".col");
-    [["OUVRIR", "up", '<path d="m12 4 9 15H3Z"/>'], ["ARRÊTER", "stop", '<rect x="5" y="5" width="14" height="14"/>'], ["FERMER", "down", '<path d="m12 20 9-15H3Z"/>']].forEach(([lab, d, shape]) => {
-      const b = document.createElement("button"); b.className = "btn";
-      b.innerHTML = `<svg class="shade-command-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false">${shape}</svg><span>${lab}</span>`;
-      b.onclick = () => moveShade(id, d); col.appendChild(b);
-    });
-    grid.appendChild(c);
-  });
-  pg.appendChild(grid);
+function refreshShadeVis(){document.querySelectorAll('.shade-card[data-type]').forEach(c=>{const state=shadeState(c.dataset.id,c.dataset.type),pos=state.pos;c.querySelector('.blind').style.clipPath='inset(0 0 '+(100-pos)+'% 0)';c.querySelector('.pos').textContent=state.target!=null?(state.target>pos?'FERMETURE':'OUVERTURE')+' · '+pos+' %':pos===0?'OUVERT':pos===100?'FERMÉ':pos+' %';});}
+function renderShades(pg){
+ const id=S.shadeRoom||roomView||'Living',wrap=document.createElement('section');wrap.className='room-shades';wrap.setAttribute('aria-label','Stores de la pièce sélectionnée');
+ const label=document.createElement('label');label.className='shade-room-select';label.textContent='PIÈCE';const select=document.createElement('select');select.setAttribute('aria-label','Pièce des stores');
+ SHADE_ROOMS.forEach(rid=>{const o=document.createElement('option');o.value=rid;o.textContent=roomById[rid].name+(INT[rid].win?'':' · SANS BAIE VISIBLE');o.selected=rid===id;select.appendChild(o);});
+ select.onchange=()=>{S.shadeRoom=select.value;enterRoom(select.value,false);};label.appendChild(select);wrap.appendChild(label);
+ const grid=document.createElement('div');grid.className='shade-grid';wrap.appendChild(grid);pg.appendChild(wrap);
+ if(!INT[id].win){grid.innerHTML='<p class="shade-empty">Aucun store sur la photo de cette pièce. Sélectionnez une pièce avec une baie vitrée.</p>';return;}
+ [['roman','STORE BATEAU'],['blackout','BLACKOUT']].forEach(([type,name])=>{
+  const c=document.createElement('div');c.className='card shade-card';c.dataset.id=id;c.dataset.type=type;c.setAttribute('aria-label',name+' · '+roomById[id].name);
+  c.innerHTML=`<div class="card-title">${name}</div><div class="col"></div><div class="shade-vis"><div class="blind ${type}"></div></div><div class="pos"></div>`;
+  for(const [lab,dir,shape] of [['OUVRIR','up','<path d="m12 4 9 15H3Z"/>'],['ARRÊTER','stop','<rect x="5" y="5" width="14" height="14"/>'],['FERMER','down','<path d="m12 20 9-15H3Z"/>']]){const button=document.createElement('button');button.className='btn';button.setAttribute('aria-label',lab+' · '+name+' · '+roomById[id].name);button.innerHTML=`<svg class="shade-command-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">${shape}</svg><span>${lab}</span>`;button.onclick=()=>moveShade(id,dir,type);c.querySelector('.col').appendChild(button);}
+  grid.appendChild(c);
+ });refreshShadeVis();
 }
 
 /* ---------------- climat d'une pièce ---------------- */
@@ -515,13 +516,17 @@ function loadTVEngine() {
     import("/plan3d/tv-programmes.js").then(module=>{drawTVProgramme=module.drawProgramme;}).catch(()=>{});
   });
 }
+// Projection du programme sur les quatre coins de la dalle photographiée.
+function tvPerspective(quad,w,h){const [[x0,y0],[x1,y1],[x2,y2],[x3,y3]]=quad.map(([x,y])=>[x*w,y*h]),dx1=x1-x2,dx2=x3-x2,dx3=x0-x1+x2-x3,dy1=y1-y2,dy2=y3-y2,dy3=y0-y1+y2-y3,den=dx1*dy2-dx2*dy1,g=Math.abs(den)>1e-9?(dx3*dy2-dx2*dy3)/den:0,k=Math.abs(den)>1e-9?(dx1*dy3-dx3*dy1)/den:0,a=x1-x0+g*x1,b=x3-x0+k*x3,d=y1-y0+g*y1,e=y3-y0+k*y3;return [a/w,d/w,0,g/w,b/h,e/h,0,k/h,0,0,1,0,x0,y0,0,1];}
+function fitTVPerspective(element){const canvas=element.querySelector('canvas'),quad=INT[roomView]?.tvQuad;if(!canvas||!quad)return;canvas.style.transformOrigin='0 0';canvas.style.transform='matrix3d('+tvPerspective(quad,element.clientWidth,element.clientHeight).join(',')+')';}
 function paintTVScreen(element, source) {
   const tv = S.tv[source]; element.classList.toggle("on", tv.power); element.dataset.source = source;
-  element.style.background = "#030506";
+  element.style.background = "transparent";
   if (!tv.power) { element.replaceChildren(); return; }
   if (!element.querySelector("canvas")) {
     const canvas = document.createElement("canvas"); canvas.width = element.classList.contains("rv-tv") ? 640 : 160; canvas.height = canvas.width * 9/16; canvas.setAttribute("aria-hidden","true"); element.replaceChildren(canvas);
   }
+  if(element.classList.contains("rv-tv"))fitTVPerspective(element);
   drawTVScreen(element, performance.now()/1000);
 }
 function drawTVScreen(element, seconds) {
@@ -704,15 +709,15 @@ function runScene(k) {
   stopAllShadeMotion();
   document.querySelectorAll(".win-shade,.rv-shade,.shade-vis .blind").forEach(el => el.style.transition = "");
   announce(sceneHelp[k] || "Ambiance appliquée");
-  if (k === "cinema") { allOff(); setLight("Cinema", "3000", "off", 12); SHADE_ROOMS.forEach(id => (S.shades[id].pos = 100)); S.tv.routes ||= {}; S.tv.routes.Cinema = "apple"; S.tv.apple.power = true; S.tv.apple.app = "Apple TV"; ROOMS.forEach(r => (S.music[r.id].src = null)); }
+  if (k === "cinema") { allOff(); setLight("Cinema", "3000", "off", 12); SHADE_ROOMS.forEach(id => setRoomShades(id,100)); S.tv.routes ||= {}; S.tv.routes.Cinema = "apple"; S.tv.apple.power = true; S.tv.apple.app = "Apple TV"; ROOMS.forEach(r => (S.music[r.id].src = null)); }
 
   S.scene = k;
   if (k === "arrival") { allOff(); ["Entry", "Living", "Kitchen", "Dining"].forEach(id => setLight(id, "3000", "3000", 85)); setLight("Pool", "off", "off", null, "white");
-    SHADE_ROOMS.forEach(id => (S.shades[id].pos = 0)); S.house.gate = true; S.house.garage = true; arm("disarmed"); setTimeout(() => { S.house.gate = false; S.house.garage = false; render(); }, 12000); }
-  if (k === "departure") { allOff(); SHADE_ROOMS.forEach(id => (S.shades[id].pos = 100)); S.house.gate = false; S.house.garage = false; ROOMS.forEach(r => (S.music[r.id].src = null)); S.tv.swisscom.power = S.tv.apple.power = false; arm("away"); }
+    SHADE_ROOMS.forEach(id => setRoomShades(id,0)); S.house.gate = true; S.house.garage = true; arm("disarmed"); setTimeout(() => { S.house.gate = false; S.house.garage = false; render(); }, 12000); }
+  if (k === "departure") { allOff(); SHADE_ROOMS.forEach(id => setRoomShades(id,100)); S.house.gate = false; S.house.garage = false; ROOMS.forEach(r => (S.music[r.id].src = null)); S.tv.swisscom.power = S.tv.apple.power = false; arm("away"); }
   if (k === "evening") { allOff(); ["Living", "Dining", "Kitchen", "Master"].forEach(id => setLight(id, "3000", "3000", 40)); setLight("Pool", "off", "off", null, "blue"); S.lights.Pool.lv.rgbw = 60;
-    ["Master", "Bedroom"].forEach(id => (S.shades[id].pos = 100)); S.music.Living.src = "Spotify"; S.music.Living.vol = 30; S.music.Living.mute = false; S.music.Dining.src = "Spotify"; S.music.Dining.vol = 25; S.music.Dining.mute = false; }
-  if (k === "night") { allOff(); setLight("Entry", "3000", "off", 12); setLight("Master", "3000", "off", 8); SHADE_ROOMS.forEach(id => (S.shades[id].pos = 100)); ROOMS.forEach(r => (S.music[r.id].src = null)); S.tv.swisscom.power = S.tv.apple.power = false; arm("night"); }
+    ["Master", "Bedroom"].forEach(id => setRoomShades(id,100)); S.music.Living.src = "Spotify"; S.music.Living.vol = 30; S.music.Living.mute = false; S.music.Dining.src = "Spotify"; S.music.Dining.vol = 25; S.music.Dining.mute = false; }
+  if (k === "night") { allOff(); setLight("Entry", "3000", "off", 12); setLight("Master", "3000", "off", 8); SHADE_ROOMS.forEach(id => setRoomShades(id,100)); ROOMS.forEach(r => (S.music[r.id].src = null)); S.tv.swisscom.power = S.tv.apple.power = false; arm("night"); }
   if (k === "alloff") { allOff(); S.tv.swisscom.power = S.tv.apple.power = false; ROOMS.forEach(r=>S.music[r.id].src=null); }
 }
 
@@ -787,8 +792,8 @@ if (syncBus) {
     else if (data.action === "exterior") leaveRoom();
     else if (data.action === "zoom-out") leaveRoom(true);
     else if (data.action === "zoom-in" && lastRoomView) enterRoom(lastRoomView, false);
-    else if (data.action === "room" && roomById[data.value]) enterRoom(data.value);
-    else if (data.action === "shade" && roomView && S.shades[roomView]) { S.shades[roomView].pos = S.shades[roomView].pos ? 0 : 100; render(); }
+    else if (data.action === "room" && roomById[data.value]) { if(S.page==="shades"&&roomById[data.value].shade){S.shadeRoom=data.value;enterRoom(data.value,false);}else enterRoom(data.value); }
+    else if (data.action === "shade" && roomView && S.shades[roomView]) { const type=data.value==="blackout"?"blackout":"roman";moveShade(roomView,shadeState(roomView,type).pos?"up":"down",type); }
     else if (data.action === "theme" && THEMES.some(([key]) => key === data.value)) { S.theme = data.value; try { localStorage.setItem("villa-stark-theme-v2", data.value); } catch {} render(); }
   };
 }
@@ -802,11 +807,11 @@ document.querySelectorAll(".win,.thumb").forEach((el, i) => { el.tabIndex = 0; e
 $("#evVisitor").onclick = visitorRings;
 $("#evReset").onclick = () => { if (roomView) leaveRoom(); resetAll(); };
 $("#rvBack").onclick = () => leaveRoom();
-$("#roomView").addEventListener("click", e => { if (backgroundOnly && e.target.closest(".rv-shade")) { syncBus?.postMessage({ type: "command", action: "shade" }); return; } if (e.target.closest(".rv-shade") && roomById[roomView].shade) { S.shades[roomView].pos = S.shades[roomView].pos ? 0 : 100; render(); } });
+$("#roomView").addEventListener('click',e=>{const cover=e.target.closest('[data-shade]');if(!cover||!roomById[roomView]?.shade)return;const type=cover.dataset.shade;if(backgroundOnly)syncBus?.postMessage({type:'command',action:'shade',value:type});else moveShade(roomView,shadeState(roomView,type).pos?'up':'down',type);});
 // état de départ : une ambiance de soirée pour que la villa ne soit pas éteinte
 ROOMS.forEach(r => setLight(r.id, "off", "3000", 100)); S.climate.Living.heat = true; S.climate.Living.temp = 21.5;
 if (stateKey) { try { const saved = JSON.parse(sessionStorage.getItem(stateKey)); if (saved) applySnapshot(saved); } catch {} }
-if (!backgroundOnly) SHADE_ROOMS.forEach(id => { const shade = S.shades[id]; if (shade.target != null && shade.target !== shade.pos) moveShade(id, shade.target > shade.pos ? "down" : "up"); });
+if(!backgroundOnly)for(const id of SHADE_ROOMS)for(const type of ["roman","blackout"]){const shade=shadeState(id,type);if(shade.target!=null&&shade.target!==shade.pos)moveShade(id,shade.target>shade.pos?"down":"up",type);}
 render(); scale();
 if (backgroundOnly) syncBus?.postMessage({ type: "request-state" });
 })();
