@@ -5,6 +5,18 @@
    ============================================================ */
 (() => {
 "use strict";
+const integrationMode = new URLSearchParams(location.search).get("mode") || "standalone";
+const backgroundOnly = integrationMode === "background";
+const syncId = new URLSearchParams(location.search).get("channel");
+const stateKey = syncId ? "villa-stark-state:" + syncId : null;
+const syncBus = syncId ? new BroadcastChannel("villa-stark:" + syncId) : null;
+function publishState() {
+  if (backgroundOnly || !syncBus) return;
+  const snapshot = { state: S, room: roomView };
+  try { sessionStorage.setItem(stateKey, JSON.stringify(snapshot)); } catch { /* Live sync remains available when storage is disabled. */ }
+  syncBus.postMessage({ type: "state", snapshot });
+}
+
 
 /* ---------------- définition de la villa ---------------- */
 const ROOMS = [
@@ -202,11 +214,13 @@ function renderHouse() {
   H.visitor.classList.toggle("ringing", ic.state === "ringing");
   ROOMS.forEach(r => { const t = H.thumbs[r.id]; t.classList.toggle("lit", anyLight(r.id)); t.classList.toggle("active", roomView === r.id); });
   renderRoomView();
+  publishState();
 }
 
 /* ---------------- vue intérieure d'une pièce ---------------- */
 let roomView = null;
 function enterRoom(id) {
+  if (backgroundOnly && !applyingSnapshot) { syncBus?.postMessage({ type: "command", action: "room", value: id }); return; }
   roomView = id;
   const r = roomById[id], v = $("#roomView");
   v.querySelector(".rv-photo").style.backgroundImage = `url(assets/photos/room_${id}.jpg)`;
@@ -221,7 +235,7 @@ function enterRoom(id) {
   $("#houseStage").classList.add("zoomed"); v.classList.add("open");
   go(id === "Pool" ? "light:Pool" : "light:" + id);
 }
-function leaveRoom() { roomView = null; $("#roomView").classList.remove("open"); $("#houseStage").classList.remove("zoomed"); go("lights"); }
+function leaveRoom() { if (backgroundOnly && !applyingSnapshot) { syncBus?.postMessage({ type: "command", action: "exterior" }); return; } roomView = null; $("#roomView").classList.remove("open"); $("#houseStage").classList.remove("zoomed"); go("lights"); }
 function renderRoomView() {
   if (!roomView) return;
   const id = roomView, r = roomById[id], v = $("#roomView"), l = S.lights[id], c3 = circuits(id), on = anyLight(id);
@@ -335,7 +349,7 @@ function renderHome(pg) {
   });
   const allUp = SHADE_ROOMS.every(id => !S.shades[id].pos), allDown = SHADE_ROOMS.every(id => S.shades[id].pos === 100);
   [["shades", "TOUT OUVRIR", 0, allUp], ["shades", "TOUT FERMER", 100, allDown]].forEach(([ico, l, pos, sel]) => {
-    const b = document.createElement("button"); b.className = "scene-btn" + (sel ? " sel" : ""); b.innerHTML = `<img src="assets/Icon_${ico}.png" alt="">${l}`; b.onclick = () => { SHADE_ROOMS.forEach(id => (S.shades[id].pos = pos)); render(); }; $("#shadeRow").appendChild(b);
+    const b = document.createElement("button"); b.className = "scene-btn" + (sel ? " sel" : ""); b.innerHTML = `<img src="assets/Icon_${ico}.png" alt="">${l}`; b.onclick = () => { stopAllShadeMotion(); SHADE_ROOMS.forEach(id => (S.shades[id].pos = pos)); render(); }; $("#shadeRow").appendChild(b);
   });
   tickClock();
 }
@@ -387,16 +401,21 @@ function renderRoomLights(pg, id) {
 
 /* ---------------- stores ---------------- */
 let shadeTimers = {};
+function stopAllShadeMotion() {
+  Object.values(shadeTimers).forEach(clearInterval);
+  SHADE_ROOMS.forEach(id => delete S.shades[id].target);
+}
 function moveShade(id, dir) {
   clearInterval(shadeTimers[id]);
   document.querySelectorAll('.win-shade,.rv-shade,.shade-vis .blind').forEach(el => el.style.transition = 'none');
-  if (dir === "stop") { refreshShadeVis(); return; }
+  if (dir === "stop") { delete S.shades[id].target; renderHouse(); refreshShadeVis(); return; }
   const target = dir === "down" ? 100 : 0, from = S.shades[id].pos, started = performance.now();
+  S.shades[id].target = target;
   shadeTimers[id] = setInterval(() => {
     const progress = Math.min(1, (performance.now() - started) / 2400);
     S.shades[id].pos = Math.round(from + (target - from) * progress);
     renderHouse(); refreshShadeVis();
-    if (progress === 1) clearInterval(shadeTimers[id]);
+    if (progress === 1) { clearInterval(shadeTimers[id]); delete S.shades[id].target; }
   }, 40);
 }
 function refreshShadeVis() { document.querySelectorAll(".shade-card").forEach(c => { const id = c.dataset.id, pos = S.shades[id].pos; c.querySelector(".blind").style.transform = `scaleY(${pos / 100})`; c.querySelector(".pos").textContent = pos === 0 ? "OUVERT" : pos === 100 ? "FERMÉ" : pos + " %"; }); }
@@ -544,7 +563,7 @@ const sceneHelp = {
 };
 function announce(text) { const el = $("#feedback"); el.textContent = text; clearTimeout(announce.timer); el.classList.add("visible"); announce.timer = setTimeout(() => el.classList.remove("visible"), 5500); }
 function runScene(k) {
-  Object.values(shadeTimers).forEach(clearInterval);
+  stopAllShadeMotion();
   document.querySelectorAll(".win-shade,.rv-shade,.shade-vis .blind").forEach(el => el.style.transition = "");
   announce(sceneHelp[k] || "Ambiance appliquée");
   if (k === "cinema") { allOff(); setLight("Cinema", "3000", "off", 12); SHADE_ROOMS.forEach(id => (S.shades[id].pos = 100)); S.tv.apple.power = true; S.tv.apple.app = "Apple TV"; ROOMS.forEach(r => (S.music[r.id].src = null)); }
@@ -574,8 +593,8 @@ function tickClock() {
   $("#hdrClock").textContent = hm;
   const t = $("#homeTime"); if (t) { t.textContent = hm; $("#homeDate").textContent = d.toLocaleDateString("fr-CH", { day: "numeric", month: "long", year: "numeric" }); }
 }
-setInterval(tickClock, 1000);
-setInterval(() => {
+if (!backgroundOnly) setInterval(tickClock, 1000);
+if (!backgroundOnly) setInterval(() => {
   let changed = false;
   ROOMS.forEach(r => { const c = S.climate[r.id]; const target = c.heat ? c.heatSP : c.ac ? c.acSP : 20; const step = c.ac ? 0.1 * c.acSpeed : 0.1;
     if (Math.abs(c.temp - target) > 0.05) { c.temp = Math.round((c.temp + Math.sign(target - c.temp) * Math.min(step, Math.abs(target - c.temp))) * 10) / 10; changed = true; } });
@@ -586,6 +605,36 @@ setInterval(() => {
 function scale() { const sc = $(".tsw-screen"); $("#tsw").style.transform = `scale(${sc.clientWidth / 1280}, ${sc.clientHeight / 800})`; }
 window.addEventListener("resize", scale);
 
+/* ---------------- shared state between GUI and animated backdrop ---------------- */
+let applyingSnapshot = false;
+function applySnapshot(snapshot) {
+  if (!snapshot?.state?.lights?.Living || !snapshot.state.shades?.Living) return;
+  applyingSnapshot = true;
+  Object.assign(S, snapshot.state);
+  if (snapshot.room && roomById[snapshot.room] && snapshot.room !== roomView) enterRoom(snapshot.room);
+  else if (!snapshot.room && roomView) leaveRoom();
+  if (backgroundOnly) {
+    document.querySelectorAll(".win").forEach(win => { win.querySelector(".win-shade").style.transition = S.shades[win.dataset.room]?.target != null ? "none" : ""; });
+    renderHouse();
+  } else render();
+  applyingSnapshot = false;
+}
+if (syncBus) {
+  syncBus.onmessage = ({ data }) => {
+    if (backgroundOnly) { if (data?.type === "state") applySnapshot(data.snapshot); return; }
+    if (data?.type === "request-state") { publishState(); return; }
+    if (data?.type !== "command") return;
+    if (data.action === "visitor") visitorRings();
+    else if (data.action === "intrusion") intrusion();
+    else if (data.action === "reset") { if (roomView) leaveRoom(); resetAll(); }
+    else if (data.action === "exterior") leaveRoom();
+    else if (data.action === "room" && roomById[data.value]) enterRoom(data.value);
+    else if (data.action === "shade" && roomView && S.shades[roomView]) { S.shades[roomView].pos = S.shades[roomView].pos ? 0 : 100; render(); }
+    else if (data.action === "theme" && THEMES.some(([key]) => key === data.value)) { S.theme = data.value; try { localStorage.setItem("villa-stark-theme", data.value); } catch {} render(); }
+  };
+}
+window.addEventListener("pagehide", () => { syncBus?.close(); Object.values(shadeTimers).forEach(clearInterval); });
+
 /* ---------------- démarrage ---------------- */
 buildHouse();
 $("#zoomControls").onclick = () => { const on = document.body.classList.toggle("panel-focus"); $("#zoomControls").textContent = on ? "Voir la villa et les commandes" : "Agrandir les commandes"; $("#zoomControls").setAttribute("aria-pressed", String(on)); requestAnimationFrame(scale); };
@@ -595,8 +644,11 @@ $("#evVisitor").onclick = visitorRings;
 $("#evIntrusion").onclick = intrusion;
 $("#evReset").onclick = () => { if (roomView) leaveRoom(); resetAll(); };
 $("#rvBack").onclick = leaveRoom;
-$("#roomView").addEventListener("click", e => { if (e.target.closest(".rv-shade") && roomById[roomView].shade) { S.shades[roomView].pos = S.shades[roomView].pos ? 0 : 100; render(); } });
+$("#roomView").addEventListener("click", e => { if (backgroundOnly && e.target.closest(".rv-shade")) { syncBus?.postMessage({ type: "command", action: "shade" }); return; } if (e.target.closest(".rv-shade") && roomById[roomView].shade) { S.shades[roomView].pos = S.shades[roomView].pos ? 0 : 100; render(); } });
 // état de départ : une ambiance de soirée pour que la villa ne soit pas éteinte
 setLight("Living", "3000", "3000", 70); setLight("Kitchen", "3000", "off", 60); setLight("Entry", "3000", "off", 50); S.climate.Living.heat = true; S.climate.Living.temp = 21.5;
+if (stateKey) { try { const saved = JSON.parse(sessionStorage.getItem(stateKey)); if (saved) applySnapshot(saved); } catch {} }
+if (!backgroundOnly) SHADE_ROOMS.forEach(id => { const shade = S.shades[id]; if (shade.target != null && shade.target !== shade.pos) moveShade(id, shade.target > shade.pos ? "down" : "up"); });
 render(); scale();
+if (backgroundOnly) syncBus?.postMessage({ type: "request-state" });
 })();

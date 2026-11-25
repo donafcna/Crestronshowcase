@@ -69,15 +69,15 @@ export const projects = [
     "residentiel"
   ],
   "devices": [
+    "crestron",
     "xpanel",
     "ios_tablet",
     "ios_phone"
   ],
   "isInteractive": false,
-  "immersiveDemo": true,
   "autoDemo": false,
-  "embedUrl": "/showcases/villa-stark/index.html",
-  "embedPhoneUrl": "/showcases/villa-stark/index.html",
+  "embedUrl": "/showcases/villa-stark/index.html?mode=panel",
+  "embedPhoneUrl": "/showcases/villa-stark/index.html?mode=panel",
   "thumbnailUrl": "/showcases/villa-stark/assets/photos/scene.jpg",
   "year": "2026",
   "text": {
@@ -88,7 +88,7 @@ export const projects = [
         "Scénarios Je rentre, Je pars, Je reçois, Mon film et Bonne nuit",
         "Villa et intérieurs interactifs",
         "Éclairages, stores, climat et médias",
-        "Trois thèmes et commandes en français",
+        "GUI dans le châssis choisi, fond animé synchronisé",
         "Simulation sans équipement réel"
       ]
     },
@@ -99,7 +99,7 @@ export const projects = [
         "Arrival, departure, hosting, movie and night scenes",
         "Interactive villa and interiors",
         "Lighting, shades, climate and media",
-        "Three themes; controls in French",
+        "GUI in the selected device frame; synchronised animated background",
         "Simulation without connected equipment"
       ]
     },
@@ -110,7 +110,7 @@ export const projects = [
         "Ankunft, Abwesenheit, Empfang, Film und Nacht",
         "Interaktive Villa und Innenräume",
         "Licht, Beschattung, Klima und Medien",
-        "Drei Designs; Bedienung auf Französisch",
+        "GUI im ausgewählten Gerät; synchronisierter animierter Hintergrund",
         "Simulation ohne angeschlossene Geräte"
       ]
     }

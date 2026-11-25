@@ -1,3 +1,4 @@
+import { VillaStarkBackground, VillaStarkTools } from "./VillaStarkBackground";
 import { HotelBrassusTools } from "./HotelBrassusTools";
 import { VillaFtvTools } from "./VillaFtvTools";
 import React, { Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -142,6 +143,7 @@ const ShowcaseInner = ({ sectorId, projectId, device }) => {
   const [capturing, setCapturing] = useState(false);
   const [captureNotice, setCaptureNotice] = useState("");
   const stageRef = useRef(null);
+  const starkSession = useRef(crypto.randomUUID());
   const guiFrameRef = useRef(null);   // iframe du GUI embarqué : le fond 3D y lit les feedbacks
   const { windowW } = useViewportMetrics();
   const { guiFullscreen, setGuiFullscreen } = useGuiFullscreen();
@@ -326,6 +328,7 @@ const ShowcaseInner = ({ sectorId, projectId, device }) => {
       ? activeProject.embedByViewport?.[viewportDevice] ||
         (viewportDevice === "phone" && activeProject.embedPhoneUrl ? activeProject.embedPhoneUrl : activeProject.embedUrl)
       : null;
+  const starkPanelSrc = activeProject.id === "villa-stark" ? `${embedSrc}&channel=${starkSession.current}` : embedSrc;
   const displayTitle = clientName || getProjectName(activeProject, lang);
   const Simulator = getSimulator(activeProject);
   const simulatorType = viewportDevice === "wallpanel_hd" ? "wallpanel" : viewportDevice;
@@ -340,7 +343,7 @@ const ShowcaseInner = ({ sectorId, projectId, device }) => {
   ) : embedSrc ? (
     <iframe
       ref={guiFrameRef}
-      src={embedSrc}
+      src={starkPanelSrc}
       title={displayTitle}
       style={{ width: "100%", height: "100%", border: "none", backgroundColor: "#080b11" }}
       sandbox="allow-scripts allow-same-origin"
@@ -356,11 +359,11 @@ const ShowcaseInner = ({ sectorId, projectId, device }) => {
   // Le châssis est alors poussé à gauche pour laisser la pièce 3D visible entre lui et la colonne des boutons.
   return (
     <div
-      className={`showcase-container fade-in sector-${sectorId || "all"} ${isFullscreen ? "fullscreen-mode" : ""} ${plan3dOn ? "plan3d-on" : ""} ${activeProject.immersiveDemo ? "immersive-project" : ""}`}
+      className={`showcase-container fade-in sector-${sectorId || "all"} ${isFullscreen ? "fullscreen-mode" : ""} ${plan3dOn ? "plan3d-on" : ""} ${activeProject.id === "villa-stark" ? "stark-project" : ""}`}
       ref={stageRef}
     >
-      {activeProject.immersiveDemo ? (
-        <div className="villa-stark-backdrop" aria-hidden="true" />
+      {activeProject.id === "villa-stark" ? (
+        <VillaStarkBackground channel={starkSession.current} />
       ) : plan3dOn ? (
         <Plan3DBackground projectId={activeProject.id} stageRef={stageRef} guiFrameRef={guiFrameRef} tourSessionRef={villaSessionRef} />
       ) : (
@@ -451,7 +454,7 @@ const ShowcaseInner = ({ sectorId, projectId, device }) => {
         <div className="workspace-main-content-row">
           <main className="project-workspace">
             <div className={`device-display-workspace ${isFullscreen ? "fullscreen-mode" : ""}`}>
-              {activeProject.immersiveDemo ? guiContent : <DeviceFrame
+              <DeviceFrame
                 deviceType={viewportDevice}
                 title={displayTitle}
                 browserAddress={activeProject.id === "appartement-crans" ? window.location.origin + shareUrl.split("?")[0] : undefined}
@@ -460,7 +463,7 @@ const ShowcaseInner = ({ sectorId, projectId, device }) => {
                 onEnterFullscreen={() => setIsFullscreen(true)}
               >
                 {guiContent}
-              </DeviceFrame>}
+              </DeviceFrame>
             </div>
           </main>
 
@@ -497,6 +500,7 @@ const ShowcaseInner = ({ sectorId, projectId, device }) => {
                 )}
               </div>
             )}
+            {activeProject.id === "villa-stark" && <VillaStarkTools channel={starkSession.current} />}
             {activeProject.id === "hotel-brassus" && <HotelBrassusTools key={viewportDevice} guiFrameRef={guiFrameRef} main={["phone", "tablet", "desktop"].includes(viewportDevice)} />}
             {activeProject.id === "villa-gemini-frequencetv" && viewportDevice !== "phone" && <VillaFtvTools key={viewportDevice} guiFrameRef={guiFrameRef} />}
             <div className="device-buttons-column">

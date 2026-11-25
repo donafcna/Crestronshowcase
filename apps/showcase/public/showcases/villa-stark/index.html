@@ -7,8 +7,10 @@
 <meta name="description" content="Simulation d'une villa pilotée par une interface Crestron : éclairage, stores, climat, musique, TV, sécurité et interphone réagissent en direct.">
 
 
+<script>document.documentElement.dataset.mode = new URLSearchParams(location.search).get("mode") || "standalone";</script>
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="enhancements.css">
+<link rel="stylesheet" href="integration.css">
 </head>
 <body>
 

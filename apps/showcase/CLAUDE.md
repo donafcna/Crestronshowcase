@@ -193,3 +193,8 @@ Le fond 3D Hotel Brassus affiche l'enveloppe complète seulement en vue généra
 ## 25/11/2026 — Villa Stark
 
 Ajout du concept Villa Stark dans Résidentiel : villa photographique et dalle interactives, commandes françaises, scénarios de vie dont Mon film, trois thèmes lisibles, agrandissement des commandes, adaptation tactile et arrêt intermédiaire des stores. Présentation immersive isolée via `immersiveDemo`, démo automatique générique désactivée. Ressources locales sous `public/showcases/villa-stark/`, fiches FR/EN/DE et captures dédiées. Recette, comparaison et limites : `docs/verification/2026-11-25-villa-stark/README.md`. Aucun programme matériel modifié.
+
+
+## 25/11/2026 — Villa Stark : fond animé séparé du châssis
+
+Correction demandée : la villa animée est le fond du site ; le GUI seul utilise DeviceFrame pour TSW, XPanel, iPad et iPhone. `mode=panel` / `mode=background` réutilisent le même moteur, état diffusé par BroadcastChannel avec identifiant de session propre au Showcase. Le GUI reste l’autorité de simulation ; le fond ne simule pas de températures indépendantes. État conservé entre supports, commandes du fond relayées au GUI, outils de scène et thème dans la colonne standard. L’accueil iPhone tient sans défilement, navigation toujours disponible. Douze combinaisons châssis/thème vérifiées, Mode Scène, éclairage bleu, stores, cinéma et visiteur synchronisés ; build/lint réussis. Captures et limites : `docs/verification/2026-11-25-villa-stark-chassis/`. Remplace la présentation immersive sans châssis du lot précédent. Aucun matériel modifié.

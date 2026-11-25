@@ -1,0 +1,46 @@
+/* GUI-only view: the surrounding device belongs to the site's DeviceFrame. */
+html[data-mode="panel"] body { overflow:hidden; background:#0b111b; }
+html[data-mode="panel"] .site-header,html[data-mode="panel"] .house-wrap,html[data-mode="panel"] .panel-caption,html[data-mode="panel"] .theme-bar,html[data-mode="panel"] .zoom-controls { display:none!important; }
+html[data-mode="panel"] .stage { position:fixed; inset:0; display:block; padding:0; }
+html[data-mode="panel"] .panel-wrap { position:absolute; inset:0; width:100%; height:100%; transform:none; margin:0; }
+html[data-mode="panel"] .tsw-frame { width:100%; height:100%; background:none; aspect-ratio:auto; filter:none; }
+html[data-mode="panel"] .tsw-screen { position:absolute; inset:0; width:100%; height:100%; border:0; border-radius:0; }
+html[data-mode="panel"] #feedback { bottom:106px; font-size:16px; }
+/* The background retains all photo layers and animations, without a second panel. */
+html[data-mode="background"] body { overflow:hidden; }
+html[data-mode="background"] .site-header,html[data-mode="background"] .panel-wrap,html[data-mode="background"] .zoom-controls,html[data-mode="background"] #feedback { display:none!important; }
+html[data-mode="background"] .stage { position:fixed; inset:0; display:block; padding:0; }
+html[data-mode="background"] .house-wrap { position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); width:max(100vw,calc(100vh * 2496 / 1404)); aspect-ratio:2496/1404; overflow:visible; }
+html[data-mode="background"] .house-box { position:absolute; inset:0; width:100%; transform:none; aspect-ratio:auto; }
+html[data-mode="background"] .house-hint { display:none; }
+html[data-mode="background"] .room-view { position:absolute; }
+@media(max-width:600px) {
+ html[data-mode="panel"] body { overflow:auto; }
+ html[data-mode="panel"] .stage { position:static; }
+ html[data-mode="panel"] .panel-wrap { position:relative; }
+ html[data-mode="panel"] .tsw-frame { height:auto; }
+ html[data-mode="panel"] .tsw-screen { position:relative; height:auto; overflow:visible; }
+ html[data-mode="panel"] #tsw { border-radius:0; }
+ html[data-mode="panel"] #feedback { bottom:10px; }
+}
+
+@media(max-width:600px) {
+ html[data-mode="panel"] body { overflow:hidden; }
+ html[data-mode="panel"] .stage,html[data-mode="panel"] .panel-wrap,html[data-mode="panel"] .tsw-frame,html[data-mode="panel"] .tsw-screen,html[data-mode="panel"] #tsw { height:100%; }
+ html[data-mode="panel"] #tsw { overflow:hidden; }
+ html[data-mode="panel"] .page { height:calc(100% - 168px); min-height:0; overflow-y:auto; padding:10px; gap:8px; }
+ html[data-mode="panel"] .tsw.home .page { height:calc(100% - 108px); }
+ html[data-mode="panel"] .navbar { position:absolute; bottom:0; height:108px; }
+ html[data-mode="panel"] .nav-btn { min-height:54px; }
+ html[data-mode="panel"] .home-logo { width:130px; margin:0 0 10px; }
+ html[data-mode="panel"] .home-welcome { font-size:16px; padding:0; }
+ html[data-mode="panel"] .status-tile { min-height:54px; }
+ html[data-mode="panel"] #sceneRow { grid-template-columns:repeat(3,minmax(0,1fr)); }
+ html[data-mode="panel"] #sceneRow .scene-btn { min-height:58px; padding:6px; font-size:12px; }
+ html[data-mode="panel"] #sceneRow .scene-btn img { width:20px; height:20px; }
+ html[data-mode="panel"] #accessRow { grid-template-columns:repeat(3,minmax(0,1fr)); }
+ html[data-mode="panel"] #accessRow .scene-btn { min-height:68px; font-size:12px; padding:6px; }
+ html[data-mode="panel"] #lightRow .scene-btn,html[data-mode="panel"] #shadeRow .scene-btn { min-height:50px; font-size:12px; padding:4px; }
+ html[data-mode="panel"] #lightRow .scene-btn img,html[data-mode="panel"] #shadeRow .scene-btn img { width:18px; height:18px; }
+ html[data-mode="panel"] .home-section .label { margin-bottom:6px; font-size:12px; }
+}
