@@ -508,7 +508,7 @@ let drawTVProgramme = null, tvBroadcast = null, tvEngineRequested = false, tvAni
 function loadTVEngine() {
   if (tvEngineRequested) return;
   tvEngineRequested = true;
-  import("./tv-broadcast.js").then(module=>{tvBroadcast=module.createTVBroadcast();}).catch(()=>{
+  import("./tv-broadcast.js?v=2.3.27").then(module=>{tvBroadcast=module.createTVBroadcast();}).catch(()=>{
     import("/plan3d/tv-programmes.js").then(module=>{drawTVProgramme=module.drawProgramme;}).catch(()=>{});
   });
 }
@@ -528,19 +528,22 @@ function paintTVScreen(element, source) {
 function drawTVScreen(element, seconds) {
   const canvas = element?.querySelector("canvas"), source = element?.dataset.source, tv = S.tv[source];
   if (!canvas || !tv?.power || integrationMode === "panel") return;
+  if(tv.paused){tvBroadcast?.setActive(false);return;}
   loadTVEngine();
   const programmeSource = source === "apple" ? 1 : 2, channel = source === "swisscom" ? Number(tv.ch || 1) : 0;
   const ctx = canvas.getContext("2d");
   if (tvBroadcast) {
     ctx.drawImage(tvBroadcast.render(programmeSource,seconds,channel),0,0,canvas.width,canvas.height);
-    element.dataset.renderer = "villa-ftv-3d"; element.dataset.programme = tvBroadcast.programme;
+    element.dataset.renderer = tvBroadcast.renderer; element.dataset.programme = tvBroadcast.programme;
   } else if (drawTVProgramme) {
     ctx.save(); ctx.scale(canvas.width/1024,canvas.height/576); drawTVProgramme(ctx,programmeSource,seconds,channel); ctx.restore();
     element.dataset.renderer = "canvas-fallback";
   }
 }
 function animateTVScreens(now) {
-  if (!document.hidden && now-lastTVFrame >= 1000/15 && integrationMode !== "panel") {
+  const visibleTV=roomView&&roomById[roomView]?.tv&&S.tv[tvSourceForRoom(roomById[roomView])]?.power;
+  tvBroadcast?.setActive(!document.hidden&&!!visibleTV);
+  if (!document.hidden && now-lastTVFrame >= 1000/24 && integrationMode !== "panel") {
     lastTVFrame = now;
     const screens = roomView ? [$("#roomView .rv-tv")] : [];
     screens.forEach(e=>drawTVScreen(e,now/1000));
@@ -563,7 +566,7 @@ function renderSwisscom(pg) {
   np.appendChild(grid); const st = document.createElement("div"); st.className = "tv-status"; st.innerHTML = `CHAINE <b>${t.ch || "—"}</b>`; np.appendChild(st); pg.appendChild(np);
   const nv = card(450, 76, 380, 420, "NAVIGATION"); const dp = document.createElement("div"); dp.className = "dpad";
   [["▲", "u"], ["▼", "d"], ["◀", "l"], ["▶", "r"], ["OK", "c"]].forEach(([k, cl]) => dp.appendChild(btn(k, cl, () => {}))); nv.appendChild(dp);
-  const r2 = document.createElement("div"); r2.className = "row"; r2.style.marginTop = "30px"; r2.append(btn("MENU", "", () => {}), btn("▶ ❚❚", "", () => {})); nv.appendChild(r2); pg.appendChild(nv);
+  const r2 = document.createElement("div"); r2.className = "row"; r2.style.marginTop = "30px"; r2.append(btn("MENU", "", () => {}), btn("▶ ❚❚", "", () => { t.paused = !t.paused; }, !!t.paused)); nv.appendChild(r2); pg.appendChild(nv);
   const vc = card(860, 76, 380, 420, "CHAINE / VOLUME"); const cols = document.createElement("div"); cols.className = "row";
   const c1 = document.createElement("div"); c1.style.cssText = "flex:1;display:flex;flex-direction:column;gap:10px;align-items:center";
   c1.append(btn("CH ▲", "", () => { t.ch = String(Math.min(99, (+t.ch || 0) + 1)); t.power = true; }), Object.assign(document.createElement("div"), { className: "label", textContent: "CHAINE" }), btn("CH ▼", "", () => { t.ch = String(Math.max(1, (+t.ch || 1) - 1)); t.power = true; }));
@@ -579,7 +582,7 @@ function renderApple(pg) {
   pg.appendChild(btn("◀&nbsp; TV", "back-btn", () => (S.page = "tv")));
   const nv = card(250, 60, 380, 520, "APPLE TV"); const dp = document.createElement("div"); dp.className = "dpad";
   [["▲", "u"], ["▼", "d"], ["◀", "l"], ["▶", "r"], ["OK", "c"]].forEach(([k, cl]) => dp.appendChild(btn(k, cl, () => { if (cl === "c") { t.power = true; t.app = ["Netflix", "Apple TV+", "Disney+", "YouTube"][Math.floor(Math.random() * 4)]; } }))); nv.appendChild(dp);
-  const r2 = document.createElement("div"); r2.className = "row"; r2.style.marginTop = "30px"; r2.append(btn("MENU", "", () => { t.app = ""; }), btn("▶ ❚❚", "", () => {}), btn("TV", "", () => { t.app = "Apple TV"; t.power = true; })); nv.appendChild(r2);
+  const r2 = document.createElement("div"); r2.className = "row"; r2.style.marginTop = "30px"; r2.append(btn("MENU", "", () => { t.app = ""; }), btn("▶ ❚❚", "", () => { t.paused = !t.paused; }, !!t.paused), btn("TV", "", () => { t.app = "Apple TV"; t.power = true; })); nv.appendChild(r2);
   const st = document.createElement("div"); st.className = "tv-status"; st.innerHTML = `APP <b>${t.app || "—"}</b>`; nv.appendChild(st); pg.appendChild(nv);
   const vc = card(660, 60, 370, 520, "VOLUME"); const col = document.createElement("div"); col.style.cssText = "display:flex;flex-direction:column;gap:12px";
   col.append(btn("VOL +", "", () => { t.vol = Math.min(100, t.vol + 5); }), Object.assign(document.createElement("div"), { className: "value", textContent: t.vol + " %", style: "text-align:center;font-size:36px" }), btn("VOL −", "", () => { t.vol = Math.max(0, t.vol - 5); }), btn("🔇 MUET", "", () => { t.mute = !t.mute; }, t.mute), btn("⏻ " + (t.power ? "MARCHE" : "ARRÊT"), t.power ? "green" : "red", () => { t.power = !t.power; if (!t.power) t.app = ""; }, t.power));
