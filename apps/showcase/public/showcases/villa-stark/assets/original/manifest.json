@@ -103,5 +103,12 @@
     "width": 1672,
     "height": 941,
     "sha256": "0e12d3454addf23845b38571edee288e306ba55af4f32b8f5fbb2656ee883355"
+  },
+  {
+    "file": "camera-gate-open-v2.webp",
+    "source_generation": "exec-4ec0ee87-a252-4b90-83ce-17d31b490c4d",
+    "width": 1672,
+    "height": 941,
+    "sha256": "522d5354946d299919de913b72c156ad4d5354c6106ae1cc62d6b024bac8297f"
   }
 ]

@@ -66,6 +66,8 @@ html[data-mode="background"] .rv-climate b { font-size:14px; }
 .camera-visitor svg { width:100%; height:100%; }
 #visitor,.camera-visitor,#evVisitor { display:none!important; }
 .camera-gate-animation { position:absolute; inset:0; width:100%; height:100%; pointer-events:none; }
+.camera-gate-leaf { position:relative; width:255px; height:263px; overflow:hidden; transform-origin:0 50%; backface-visibility:hidden; }
+.camera-gate-leaf img { position:absolute; left:-721px; top:-360px; width:1672px; height:941px; max-width:none; }
 .camera-gate-status { position:absolute; right:8px; bottom:8px; padding:5px 8px; border-radius:5px; background:#101923de; color:#fff; font-size:12px; letter-spacing:.3px; }
 .plan-room-name { position:absolute; inset:auto 4px 9px; font-size:17px; font-weight:550; letter-spacing:.4px; }
 @media(max-width:600px) { .plan-room-name { position:static; display:block; font-size:13px; } }

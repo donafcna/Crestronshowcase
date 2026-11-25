@@ -529,10 +529,22 @@ function arm(mode) {
 
 /* ---------------- interphone ---------------- */
 function cameraHTML() {
-  const ic = S.intercom, v = ic.state !== "idle" || ic.visitor;
+  const ic = S.intercom;
   const pos = S.house.gatePosition ?? (S.house.gate ? 1 : 0);
-  return `${v ? '<div class="camera-visitor">' + $("#visitor svg").outerHTML + '</div>' : ""}<div class="cam-photo" style="background-image:url(assets/original/camera-gate.webp)"></div><svg class="camera-gate-animation" viewBox="0 0 1672 941" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs><clipPath id="cameraGateClip"><rect x="721" y="360" width="255" height="263"/></clipPath></defs><g clip-path="url(#cameraGateClip)"><g class="camera-gate-passage" opacity="${pos > 0 ? 1 : 0}"><path fill="#40513a" d="M721 360h255v263H721z"/><path fill="#b7aa95" d="M832 360h46l98 263H721z"/><path fill="#938f7c" d="M845 360h19l76 263H765z"/></g><g class="camera-gate-leaf" transform="translate(721 0) scale(${1-pos} 1) translate(-721 0)"><image href="assets/original/camera-gate.webp" width="1672" height="941"/></g></g></svg><span class="camera-gate-status">${gateStatus()}</span>${ic.state === "ringing" ? '<div class="cam-ring">🔔 APPEL ENTRANT</div>' : ""}`;
+  return `<div class="cam-photo" style="background-image:url(assets/original/camera-gate.webp)"></div>
+    <svg class="camera-gate-animation" viewBox="0 0 1672 941" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <defs><clipPath id="cameraGateClip"><rect x="721" y="360" width="255" height="263"/></clipPath></defs>
+      <g clip-path="url(#cameraGateClip)">
+        <image class="camera-gate-passage" href="assets/original/camera-gate-open-v2.webp" width="1672" height="941" opacity="${pos > 0 ? 1 : 0}"/>
+        <foreignObject x="721" y="360" width="255" height="263" overflow="visible">
+          <div xmlns="http://www.w3.org/1999/xhtml" class="camera-gate-leaf" style="transform:${gateLeafTransform(pos)}">
+            <img src="assets/original/camera-gate.webp" alt="" draggable="false"/>
+          </div>
+        </foreignObject>
+      </g>
+    </svg><span class="camera-gate-status">${gateStatus()}</span>${ic.state === "ringing" ? '<div class="cam-ring">🔔 APPEL ENTRANT</div>' : ""}`;
 }
+function gateLeafTransform(pos) { return `perspective(650px) rotateY(${-88 * pos}deg)`; }
 function gateStatus() { return S.house.gateMotion === "opening" ? "PORTAIL EN OUVERTURE" : S.house.gateMotion === "closing" ? "PORTAIL EN FERMETURE" : S.house.gate ? "PORTAIL OUVERT" : "PORTAIL FERMÉ"; }
 let gateMotionTimer, gateCloseTimer;
 function animateGate(open) {
@@ -540,11 +552,11 @@ function animateGate(open) {
   const from = S.house.gatePosition ?? (S.house.gate ? 1 : 0), target = open ? 1 : 0, start = performance.now();
   S.house.gate = open; S.house.gateMotion = open ? "opening" : "closing";
   gateMotionTimer = setInterval(() => {
-    const t = Math.min(1, (performance.now() - start) / 2200);
+    const t = Math.min(1, (performance.now() - start) / 3200);
     S.house.gatePosition = from + (target - from) * (t*t*(3-2*t));
     if (t === 1) { clearInterval(gateMotionTimer); S.house.gateMotion = null; }
     const pos = S.house.gatePosition;
-    document.querySelectorAll('.camera-gate-leaf').forEach(e => e.setAttribute('transform', `translate(721 0) scale(${1-pos} 1) translate(-721 0)`));
+    document.querySelectorAll('.camera-gate-leaf').forEach(e => e.style.transform = gateLeafTransform(pos));
     document.querySelectorAll('.camera-gate-passage').forEach(e => e.setAttribute('opacity', pos > 0 ? 1 : 0));
     document.querySelectorAll('.camera-gate-status').forEach(e => e.textContent = gateStatus());
     renderHouse();

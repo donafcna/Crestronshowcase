@@ -211,3 +211,6 @@ Architecture et paysage recréés : pierre gneiss, bois et zinc, volumes décal�
 
 ### 25 novembre 2026 — Villa Stark 2.3.19
 La photographie plein fond remplace la mise en vignette du lot précédent. DeviceFrame commun restauré, ancrage gauche conservé. Logo sans cartouche adapté aux thèmes via filtres SVG. Stores smartphone : grille deux colonnes sans superposition ; sélection des pièces d'éclairage sans état persistant. Molette sur fond = extérieur/dernière pièce, sélection GUI = intérieur ; dézoom sans changer les commandes. Interphone : animation SVG du portail et état synchronisé, fermeture automatique. Visiteur et Bonjour retirés visuellement. Pause commune de démo : 120 s après dernière interaction, conservée entre supports/projets ; délai initial inchangé. Voir docs/verification/2026-11-25-villa-stark-unified/README.md pour preuves et limites de recette. Aucun matériel modifié.
+
+### 25 novembre 2026 — Villa Stark 2.3.20, portail
+Remplace le passage SVG de 2.3.19 par camera-gate-open-v2.webp, imagegen intégré, utilisée uniquement dans l'ouverture x721..976/y360..623. Décor original conservé. Vantail texturé dans foreignObject SVG avec rotation Y 0 à -88°, perspective 650 px, durée 3,2 s. Fermeture automatique conservée. Preuves, limites et prompt dans docs/verification/2026-11-25-villa-stark-gate-v2/.

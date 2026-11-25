@@ -789,3 +789,6 @@ Architecture et paysage recréés : pierre gneiss, bois et zinc, volumes décal�
 
 ### 25 novembre 2026 — Villa Stark 2.3.19
 Fond photographique unique, châssis commun et flèches conservés, logo adapté aux thèmes, stores smartphone sans superposition et sélecteurs de pièces neutres. Molette maison/dernière pièce, sélection GUI liée à la vue, animation du portail dans l'interphone, visiteur retiré. Pause automatique commune portée à 120 s après interaction. Recette ciblée et limites : docs/verification/2026-11-25-villa-stark-unified/README.md.
+
+### 25 novembre 2026 — Villa Stark 2.3.20
+Portail de l'interphone : passage photographique à la place des aplats, vantail d'origine pivotant en perspective sur sa charnière (3,2 s). Contrôles : deux commandes, ouverture/fermeture, paysage et smartphone. Preuves et prompt : docs/verification/2026-11-25-villa-stark-gate-v2/.
