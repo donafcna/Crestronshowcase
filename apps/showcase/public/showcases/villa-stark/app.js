@@ -419,7 +419,7 @@ function renderPoolWheel(l){
   const rg=card(0,0,0,null,'COULEUR DES SPOTS');rg.classList.add('pool-color-card');
   const layout=div('color-wheel-layout'),wheel=div('color-wheel');wheel.tabIndex=0;wheel.setAttribute('role','slider');wheel.setAttribute('aria-label','Couleur des spots de la piscine');wheel.setAttribute('aria-valuemin','0');wheel.setAttribute('aria-valuemax','359');
   const marker=div('color-wheel-marker');wheel.appendChild(marker);
-  let hue=l.rgbwHue??({red:4,green:145,blue:220}[l.rgbw]??220),sat=l.rgbwSaturation??(l.rgbw==='white'?0:.85);
+  let hue=({red:4,green:145,blue:220}[l.rgbw]??l.rgbwHue??220),sat=l.rgbw==='white'?0:(l.rgbw.startsWith('#')||l.rgbw==='off'?l.rgbwSaturation??.85:.85);
   const controls=div('color-wheel-controls'),status=div('color-wheel-status');status.setAttribute('aria-live','off');
   const white=btn('BLANC','',()=>{l.rgbw='white';l.rgbwSaturation=0;},l.rgbw==='white'),off=btn('ARRÊT','',()=>{l.rgbw='off';},l.rgbw==='off');controls.append(status,white,off);
   function update(){const angle=hue*Math.PI/180;wheel.style.setProperty('--wheel-x',(50+48*sat*Math.cos(angle))+'%');wheel.style.setProperty('--wheel-y',(50+48*sat*Math.sin(angle))+'%');wheel.setAttribute('aria-valuenow',Math.round(hue));wheel.setAttribute('aria-valuetext',`Teinte ${Math.round(hue)} degrés, saturation ${Math.round(sat*100)} pour cent`);status.textContent=l.rgbw==='off'?'ÉTEINT':l.rgbw==='white'?'BLANC':'COULEUR';status.style.setProperty('--selected-color',l.rgbw==='off'?'transparent':rgbwColor(l));}
