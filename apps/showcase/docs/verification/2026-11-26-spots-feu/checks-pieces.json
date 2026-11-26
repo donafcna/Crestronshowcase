@@ -1,0 +1,72 @@
+[
+  {
+    "count": 6,
+    "ready": "true",
+    "room": "Living",
+    "spots": "0",
+    "strip": "0"
+  },
+  {
+    "count": 5,
+    "ready": "true",
+    "room": "Dining",
+    "spots": "0",
+    "strip": "0"
+  },
+  {
+    "count": 9,
+    "ready": "true",
+    "room": "Kitchen",
+    "spots": "0",
+    "strip": "0"
+  },
+  {
+    "count": 5,
+    "ready": "true",
+    "room": "Office",
+    "spots": "0",
+    "strip": "0"
+  },
+  {
+    "count": 14,
+    "ready": "true",
+    "room": "Fitness",
+    "spots": "0",
+    "strip": "0"
+  },
+  {
+    "count": 0,
+    "ready": "true",
+    "room": "Entry",
+    "spots": "0",
+    "strip": "0"
+  },
+  {
+    "count": 5,
+    "ready": "true",
+    "room": "Master",
+    "spots": "0",
+    "strip": "0"
+  },
+  {
+    "count": 1,
+    "ready": "true",
+    "room": "Bedroom",
+    "spots": "0",
+    "strip": "0"
+  },
+  {
+    "count": 0,
+    "ready": "true",
+    "room": "Pool",
+    "spots": "0",
+    "strip": "0"
+  },
+  {
+    "room": "Cinema",
+    "spots": "0",
+    "strip": "0",
+    "count": 5,
+    "ready": "true"
+  }
+]

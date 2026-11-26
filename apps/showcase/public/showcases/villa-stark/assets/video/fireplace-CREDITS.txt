@@ -2,3 +2,5 @@ Fireplace footage: Matthew Twin / Pexels, video 9314604.
 Source: https://www.pexels.com/video/a-fire-is-burning-in-a-fireplace-with-a-black-background-9314604/
 License: https://www.pexels.com/license/
 Adaptation by Frequence TV: silent crop, resize, flame extraction and compositing inside the Villa Stark fireplace. No endorsement implied.
+
+Version calme : seule la première partie du plan est utilisée, avant toute intervention dans le foyer. Boucle de 1,5 seconde, hauteur et intensité atténuées.
