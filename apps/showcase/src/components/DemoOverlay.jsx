@@ -19,8 +19,8 @@ export const DemoCursor = ({ cursor }) =>
     document.body
   );
 
-// Chronomètre de reprise : anneau de progression (en %) + compte à rebours.
-// Dans Showcase, rendu en flux dans la colonne d'outils : ne recouvre pas le GUI.
+// Chronomètre compact : anneau de progression et secondes restantes.
+// Dans Showcase, positionné dans le coin supérieur gauche.
 export const DemoCountdown = ({ resumeAt, total, onResumeNow, inline = false }) => {
   const { t } = useTranslation();
   const [now, setNow] = useState(Date.now());
@@ -37,7 +37,7 @@ export const DemoCountdown = ({ resumeAt, total, onResumeNow, inline = false }) 
   const C = 2 * Math.PI * R;
 
   const countdown = (
-    <button type="button" className={`demo-countdown glass-panel${inline ? " demo-countdown--inline" : ""}`} onClick={onResumeNow} title={t("demo_resume_now")}>
+    <button type="button" className={`demo-countdown glass-panel${inline ? " demo-countdown--inline" : ""}`} onClick={onResumeNow} title={t("demo_resume_now")} aria-label={t("demo_resume_in").replace("{s}", String(seconds))}>
       <svg className="demo-countdown-ring" viewBox="0 0 40 40" aria-hidden="true">
         <circle className="demo-countdown-track" cx="20" cy="20" r={R} />
         <circle
@@ -49,7 +49,7 @@ export const DemoCountdown = ({ resumeAt, total, onResumeNow, inline = false }) 
           strokeDashoffset={C * (1 - pct / 100)}
         />
         <text x="20" y="21.5" textAnchor="middle" dominantBaseline="middle" className="demo-countdown-pct">
-          {pct}%
+          {seconds}s
         </text>
       </svg>
       <span className="demo-countdown-text">

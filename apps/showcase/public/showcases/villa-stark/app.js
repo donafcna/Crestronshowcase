@@ -264,6 +264,7 @@ function renderRoomView() {
   // L’environnement photographique reste stable ; seuls les luminaires de chaque circuit varient.
   v.querySelector('.rv-photo').style.filter='none';v.querySelector('.rv-night').style.opacity=0;v.querySelector('.rv-strip').style.opacity=0;
   window.STARK_LIGHTING.render(v,id,l,INT[id].tv);
+  window.STARK_FIREPLACE.render(v,id);
   const rg = v.querySelector(".rv-rgbw"); rg.style.opacity = 0;
   if (id === "Pool" && !v.querySelector(".pool-lighting")) v.appendChild(createPoolLighting("interior"));
   const poolLights = v.querySelector(".pool-lighting"); if (poolLights) { poolLights.style.display = id === "Pool" ? "block" : "none"; updatePoolLighting(poolLights); }

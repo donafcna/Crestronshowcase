@@ -369,6 +369,9 @@ const ShowcaseInner = ({ sectorId, projectId, device }) => {
       className={`showcase-container fade-in sector-${sectorId || "all"} ${isFullscreen ? "fullscreen-mode" : ""} ${plan3dOn ? "plan3d-on" : ""} ${activeProject.id === "villa-stark" ? "stark-project" : ""}`}
       ref={stageRef}
     >
+            {demoEnabled && activeProject.autoDemo !== false && !demoRunning && resumeAt && (
+              <DemoCountdown inline resumeAt={resumeAt} total={idleResumeMs} onResumeNow={resumeDemo} />
+            )}
       {activeProject.id === "villa-stark" ? (
         <VillaStarkBackground channel={starkSession.current} />
       ) : plan3dOn ? (
@@ -510,9 +513,7 @@ const ShowcaseInner = ({ sectorId, projectId, device }) => {
             {activeProject.id === "villa-stark" && <VillaStarkTools channel={starkSession.current} />}
             {activeProject.id === "hotel-brassus" && <HotelBrassusTools key={viewportDevice} guiFrameRef={guiFrameRef} main={["phone", "tablet", "desktop"].includes(viewportDevice)} />}
             {activeProject.id === "villa-gemini-frequencetv" && viewportDevice !== "phone" && <VillaFtvTools key={viewportDevice} guiFrameRef={guiFrameRef} />}
-            {demoEnabled && activeProject.autoDemo !== false && !demoRunning && resumeAt && (
-              <DemoCountdown inline resumeAt={resumeAt} total={idleResumeMs} onResumeNow={resumeDemo} />
-            )}
+
             <div className="device-buttons-column">
               {projectViewports.map((dev) => (
                 <button

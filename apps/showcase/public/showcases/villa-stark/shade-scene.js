@@ -10,6 +10,7 @@
   // Les rails qui sortent du cadre photo continuent hors image : ne jamais
   // les rabattre sur y=0, sinon la pente de la toile devient fausse.
   const PHOTO_PANES={
+    Kitchen:[[[1098,216],[1206,196],[1206,619],[1098,594]],[[1227,191],[1674,105],[1674,671],[1227,623]]],
     Living:[[[0,64],[377,143],[377,613],[0,659]],[[396,152],[599,193],[599,587],[396,611]],[[617,197],[727,218],[727,575],[617,588]]],
     Office:[[[1294,176],[1674,-124],[1674,835],[1294,688]]],
     Fitness:[[[0,-111],[475,132],[475,713],[0,894]],[[505,149],[690,245],[690,633],[505,702]],[[711,258],[783,298],[783,601],[711,628]]]
@@ -48,7 +49,10 @@
     // montants, qui laisserait apparaître de grands trous de jardin dans la toile.
     const fitnessCut=id==='Fitness'?`<path d="M460 410Q455 409 459 421L511 491L602 501L548 421Z M483 493Q476 492 475 503L468 526Q468 534 480 535L651 540Q669 540 672 527L731 530Q746 532 747 518Q748 506 733 505L605 499Z M471 532L512 540L410 814Q406 829 382 830L362 827Q351 825 358 805Z M576 536L607 537L539 714L505 713Z M355 785Q369 748 409 734L466 715L947 724Q978 724 972 750L960 813Q956 844 923 850L443 848Q378 847 357 827Q349 816 355 785Z" fill="black"/><path d="M723 441Q718 440 723 449L756 489L796 494L776 450Z M788 486L823 489Q841 487 848 493L859 499L854 506L821 502L793 499Z M801 501L819 502L799 596L779 600Z M875 513Q870 504 879 503L932 507Q947 509 945 515L932 521L900 520L874 605L857 601L881 523Z M744 607Q767 588 797 594L836 600Q856 582 882 592Q932 596 945 636Q957 675 929 694L758 706Q735 708 731 687L733 631Z M709 698L751 694L759 705L922 694L943 680L960 680L958 706L940 718L714 716L696 709Z" fill="black"/>`:'';
     const livingCut=id==='Living'?`<path d="M43 562Q74 543 111 550L139 560L148 557L180 583L270 594Q288 597 291 624L294 638Q314 639 316 657L316 679Q315 693 304 701L307 745L313 768L309 771L295 726L272 732L99 735L78 730L58 778L52 776L67 717Q62 704 61 686Z" fill="black"/>`:'';
-    svg.innerHTML=`<defs><mask id="shade-foreground"><rect width="1672" height="941" fill="white"/>${id==='Dining'?diningCut:id==='Master'?masterCut:id==='Fitness'?fitnessCut:id==='Living'?livingCut:cut}</mask><pattern id="shade-weave" width="4" height="4" patternUnits="userSpaceOnUse"><path d="M0 0H4 M0 2H4" stroke="#fff" stroke-width=".4"/><path d="M1 0V4" stroke="#554c3d" stroke-width=".45"/></pattern></defs>`;
+    // Le bord du plan de travail va de (1041,492) à (1294,510).
+    // Le masque s'arrête sur ce bord, sans réserver de bande de jardin au-dessus.
+    const kitchenCut=id==='Kitchen'?`<path d="M227 532L1041 492L1294 510L1293 705L657 846L392 898L228 793Z" fill="black"/>`:'';
+    svg.innerHTML=`<defs><mask id="shade-foreground"><rect width="1672" height="941" fill="white"/>${id==='Dining'?diningCut:id==='Master'?masterCut:id==='Fitness'?fitnessCut:id==='Living'?livingCut:id==='Kitchen'?kitchenCut:cut}</mask><pattern id="shade-weave" width="4" height="4" patternUnits="userSpaceOnUse"><path d="M0 0H4 M0 2H4" stroke="#fff" stroke-width=".4"/><path d="M1 0V4" stroke="#554c3d" stroke-width=".45"/></pattern></defs>`;
     const q=id==='Dining'?DINING[0]:quad(rect,clip),stops=PANES[id]||[0,1];
     root._shadePanels=PHOTO_PANES[id]?PHOTO_PANES[id].map(pane=>pane.map(([x,y])=>[x/16.72,y/9.41])):stops.slice(0,-1).map((a,i)=>panel(q,a,stops[i+1]));
     for(const type of ['blackout','roman']){
