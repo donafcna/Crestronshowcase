@@ -510,6 +510,9 @@ const ShowcaseInner = ({ sectorId, projectId, device }) => {
             {activeProject.id === "villa-stark" && <VillaStarkTools channel={starkSession.current} />}
             {activeProject.id === "hotel-brassus" && <HotelBrassusTools key={viewportDevice} guiFrameRef={guiFrameRef} main={["phone", "tablet", "desktop"].includes(viewportDevice)} />}
             {activeProject.id === "villa-gemini-frequencetv" && viewportDevice !== "phone" && <VillaFtvTools key={viewportDevice} guiFrameRef={guiFrameRef} />}
+            {demoEnabled && activeProject.autoDemo !== false && !demoRunning && resumeAt && (
+              <DemoCountdown inline resumeAt={resumeAt} total={idleResumeMs} onResumeNow={resumeDemo} />
+            )}
             <div className="device-buttons-column">
               {projectViewports.map((dev) => (
                 <button
@@ -557,9 +560,6 @@ const ShowcaseInner = ({ sectorId, projectId, device }) => {
       </div>
       {calibOpen && <CalibrateCard onClose={() => setCalibOpen(false)} />}
       {demoEnabled && activeProject.autoDemo !== false && <DemoCursor cursor={cursor} />}
-      {demoEnabled && activeProject.autoDemo !== false && !demoRunning && resumeAt && (
-        <DemoCountdown resumeAt={resumeAt} total={idleResumeMs} onResumeNow={resumeDemo} />
-      )}
     </div>
   );
 };

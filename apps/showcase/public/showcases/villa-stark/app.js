@@ -39,6 +39,7 @@ const SOURCES = ["Spotify", "Radio", "TV", "AirPlay"];
 const ZONES = ["PORTE D’ENTRÉE", "PORTE DU GARAGE", "BAIES TERRASSE", "DÉTECTION SALON", "DÉTECTION BUREAU", "PÉRIMÈTRE PISCINE"];
 const NAV = [["home", "ACCUEIL"], ["lights", "LUMIÈRES"], ["shades", "STORES"], ["climate", "CLIMAT"], ["tv", "TV"], ["music", "MUSIQUE"], ["security", "SÉCURITÉ"], ["intercom", "INTERPHONE"]];
 const COLORS = { "3000": "#FFC878", "6000": "#DCEBFF", red: "#FF4A3C", green: "#3CE07A", blue: "#3C7CFF", white: "#F2EEE6" };
+const rgbwColor=l=>/^#[0-9a-f]{6}$/i.test(l.rgbw)?l.rgbw:COLORS[l.rgbw];
 const roomById = Object.fromEntries(ROOMS.map(r => [r.id, r]));
 // icônes fines chauffage / climatisation (trait 1.5, remplace les emojis)
 const ICO_HEAT = `<svg class="ico heat" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5c.9 3.6 5.5 5.6 5.5 11a5.5 5.5 0 0 1-11 0c0-2.3 1-4.2 2.4-5.6.2 1.7 1.1 2.7 2.3 3C10.7 8.4 11.1 5.4 12 2.5z"/><path d="M12 21a2.6 2.6 0 0 0 2.6-2.6c0-1.6-1.4-2.4-2.6-4.2-1.2 1.8-2.6 2.6-2.6 4.2A2.6 2.6 0 0 0 12 21z"/></svg>`;
@@ -72,7 +73,7 @@ const anyLightHouse = () => ROOMS.some(r => anyLight(r.id));
 const musicPlaying = () => ROOMS.some(r => S.music[r.id].src && !S.music[r.id].mute);
 function roomLightColor(id) {
   const l = S.lights[id];
-  if (id === "Pool" && l.rgbw !== "off") return { color: COLORS[l.rgbw], level: l.lv.rgbw };
+  if (id === "Pool" && l.rgbw !== "off") return { color: rgbwColor(l), level: l.lv.rgbw };
   const parts = [];
   if (l.strip !== "off") parts.push({ color: COLORS[l.strip], level: l.lv.strip });
   if (l.spots !== "off") parts.push({ color: COLORS[l.spots], level: l.lv.spots });
@@ -121,7 +122,7 @@ function circuits(id) {
   return {
     strip: l.strip !== "off" ? { color: TEMP[l.strip], level: l.lv.strip, cool: l.strip === "6000" } : null,
     spots: l.spots !== "off" ? { color: TEMP[l.spots], level: l.lv.spots, cool: l.spots === "6000" } : null,
-    rgbw:  id === "Pool" && l.rgbw !== "off" ? { color: COLORS[l.rgbw], level: l.lv.rgbw, white: l.rgbw === "white" } : null,
+    rgbw:  id === "Pool" && l.rgbw !== "off" ? { color: rgbwColor(l), level: l.lv.rgbw, white: l.rgbw === "white" } : null,
   };
 }
 const COOL_FILTER = "sepia(0.55) hue-rotate(178deg) saturate(0.85) brightness(1.12)";
@@ -279,7 +280,7 @@ function renderRoomView() {
   v.querySelector(".rv-climate").innerHTML = `<b>${fmt(c.temp)}</b>${hvacIco(c)}${c.heat ? "chauffage " + fmt(c.heatSP) : c.ac ? "clim " + fmt(c.acSP) + " · vitesse " + c.acSpeed : "climat en veille"}`;
   const mu = v.querySelector(".rv-music"); mu.style.opacity = m.src ? 1 : 0; mu.innerHTML = `<div class="eq-badge" style="opacity:${m.mute ? 0.3 : 1}"><i></i><i></i><i></i><i></i></div>${(m.src || "").toUpperCase()} · ${m.mute ? "MUET" : m.vol + " %"}`;
   const li = v.querySelector(".rv-lights");
-  li.textContent = !on ? "éclairage éteint" : [l.strip !== "off" ? window.STARK_LIGHTING.label(id,"strip")+" · "+l.strip+"K "+l.lv.strip+" %" : "", l.spots !== "off" ? window.STARK_LIGHTING.label(id,"spots")+" · "+l.spots+"K "+l.lv.spots+" %" : "", l.rgbw !== "off" ? "COULEURS " + l.rgbw.toUpperCase() + " " + l.lv.rgbw + " %" : ""].filter(Boolean).join(" · ");
+  li.textContent = !on ? "éclairage éteint" : [l.strip !== "off" ? window.STARK_LIGHTING.label(id,"strip")+" · "+l.strip+"K "+l.lv.strip+" %" : "", l.spots !== "off" ? window.STARK_LIGHTING.label(id,"spots")+" · "+l.spots+"K "+l.lv.spots+" %" : "", l.rgbw !== "off" ? (l.rgbw.startsWith("#")?"COULEUR PERSONNALISÉE": "COULEURS " + l.rgbw.toUpperCase()) + " " + l.lv.rgbw + " %" : ""].filter(Boolean).join(" · ");
 }
 
 /* ---------------- navigation de la dalle ---------------- */
@@ -413,8 +414,27 @@ function renderPlan(pg, mode) {
 }
 
 /* ---------------- éclairage d'une pièce ---------------- */
+function hsvColor(h,s){const c=s,x=c*(1-Math.abs(h/60%2-1)),m=1-c,rgb=h<60?[c,x,0]:h<120?[x,c,0]:h<180?[0,c,x]:h<240?[0,x,c]:h<300?[x,0,c]:[c,0,x];return '#'+rgb.map(v=>Math.round((v+m)*255).toString(16).padStart(2,'0')).join('');}
+function renderPoolWheel(l){
+  const rg=card(0,0,0,null,'COULEUR DES SPOTS');rg.classList.add('pool-color-card');
+  const layout=div('color-wheel-layout'),wheel=div('color-wheel');wheel.tabIndex=0;wheel.setAttribute('role','slider');wheel.setAttribute('aria-label','Couleur des spots de la piscine');wheel.setAttribute('aria-valuemin','0');wheel.setAttribute('aria-valuemax','359');
+  const marker=div('color-wheel-marker');wheel.appendChild(marker);
+  let hue=l.rgbwHue??({red:4,green:145,blue:220}[l.rgbw]??220),sat=l.rgbwSaturation??(l.rgbw==='white'?0:.85);
+  const controls=div('color-wheel-controls'),status=div('color-wheel-status');status.setAttribute('aria-live','off');
+  const white=btn('BLANC','',()=>{l.rgbw='white';l.rgbwSaturation=0;},l.rgbw==='white'),off=btn('ARRÊT','',()=>{l.rgbw='off';},l.rgbw==='off');controls.append(status,white,off);
+  function update(){const angle=hue*Math.PI/180;wheel.style.setProperty('--wheel-x',(50+48*sat*Math.cos(angle))+'%');wheel.style.setProperty('--wheel-y',(50+48*sat*Math.sin(angle))+'%');wheel.setAttribute('aria-valuenow',Math.round(hue));wheel.setAttribute('aria-valuetext',`Teinte ${Math.round(hue)} degrés, saturation ${Math.round(sat*100)} pour cent`);status.textContent=l.rgbw==='off'?'ÉTEINT':l.rgbw==='white'?'BLANC':'COULEUR';status.style.setProperty('--selected-color',l.rgbw==='off'?'transparent':rgbwColor(l));}
+  function apply(h,s){hue=(h+360)%360;sat=Math.max(0,Math.min(1,s));if(sat<.01)sat=0;l.rgbwHue=hue;l.rgbwSaturation=sat;l.rgbw=hsvColor(hue,sat);if(!l.lv.rgbw)l.lv.rgbw=80;white.classList.remove('sel');off.classList.remove('sel');white.setAttribute('aria-pressed','false');off.setAttribute('aria-pressed','false');const intensity=rg.parentElement?.querySelector('input[data-light-circuit=rgbw]');if(intensity){intensity.value=l.lv.rgbw;intensity.style.setProperty('--p',l.lv.rgbw+'%');intensity.parentElement.querySelector('.pct').textContent=l.lv.rgbw+' %';}update();renderHouse();}
+  function point(e){const r=wheel.getBoundingClientRect(),x=(e.clientX-r.left-r.width/2)/(r.width*.48),y=(e.clientY-r.top-r.height/2)/(r.height*.48);apply(Math.atan2(y,x)*180/Math.PI,Math.hypot(x,y));}
+  wheel.onpointerdown=e=>{if(e.button!==0)return;e.preventDefault();wheel.focus();wheel.setPointerCapture(e.pointerId);point(e);};
+  wheel.onpointermove=e=>{if(wheel.hasPointerCapture(e.pointerId))point(e);};
+  wheel.onpointerup=e=>{if(wheel.hasPointerCapture(e.pointerId)){point(e);wheel.releasePointerCapture(e.pointerId);}};
+  wheel.onpointercancel=e=>{if(wheel.hasPointerCapture(e.pointerId))wheel.releasePointerCapture(e.pointerId);};
+  wheel.onkeydown=e=>{const key=e.key;if(!['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','PageUp','PageDown','Home','End'].includes(key))return;e.preventDefault();if(key==='PageUp'||key==='PageDown')apply(hue,sat+(key==='PageUp'?.1:-.1));else apply(key==='Home'?0:key==='End'?359:hue+(['ArrowRight','ArrowUp'].includes(key)?5:-5),sat<.01?1:sat);};
+  update();layout.append(wheel,controls);rg.appendChild(layout);return rg;
+}
 function renderRoomLights(pg, id) {
   const l = S.lights[id];
+  if(id==='Pool')pg.classList.add('pool-light-controls');
   pg.appendChild(btn("◀&nbsp; PLAN", "back-btn", () => (S.page = "lights")));
   pg.classList.add("rl"); const g = card(40, 70, 600, null, "ENSEMBLE");
   const row = document.createElement("div"); row.className = "row";
@@ -426,17 +446,12 @@ function renderRoomLights(pg, id) {
     c.appendChild(r); pg.appendChild(c);
   };
   mk(window.STARK_LIGHTING.label(id,"strip").toUpperCase(), 192, "strip"); mk(window.STARK_LIGHTING.label(id,"spots").toUpperCase(), 310, "spots");
-  if (id === "Pool") {
-  const rg = card(40, 428, 600, null, "SPOTS RGBW · DMX"); const rr = document.createElement("div"); rr.className = "row";
-  [["ARRÊT", "off", ""], ["ROUGE", "red", "#FF4A3C"], ["VERT", "green", "#3CE07A"], ["BLEU", "blue", "#3C7CFF"], ["BLANC", "white", "#F2EEE6"]].forEach(([lab, v, col]) =>
-    rr.appendChild(btn((col ? `<span class="swatch" style="background:${col};color:${col}"></span>` : "") + lab, "", () => { l.rgbw = v; }, l.rgbw === v)));
-  rg.appendChild(rr); pg.appendChild(rg);
-  }
+  if (id === "Pool") pg.appendChild(renderPoolWheel(l));
   const lv = card(680, 70, 560, 462, "INTENSITÉ");
   [[window.STARK_LIGHTING.label(id,"strip"), "strip"], [window.STARK_LIGHTING.label(id,"spots"), "spots"], ...(id === "Pool" ? [["RGBW / DMX", "rgbw"]] : [])].forEach(([lab, key]) => {
     const s = document.createElement("div"); s.className = "slider";
     s.innerHTML = `<span class="label">${lab}</span><input type="range" min="0" max="100" value="${l.lv[key]}" style="--p:${l.lv[key]}%"><span class="pct">${l.lv[key]} %</span>`;
-    const inp = s.querySelector("input"), pct = s.querySelector(".pct"); inp.setAttribute("aria-label", lab + " — " + roomById[id].name);
+    const inp = s.querySelector("input"), pct = s.querySelector(".pct"); inp.dataset.lightCircuit=key; inp.setAttribute("aria-label", lab + " — " + roomById[id].name);
     inp.oninput = () => { l.lv[key] = +inp.value; inp.style.setProperty("--p", inp.value + "%"); pct.textContent = inp.value + " %"; if (+inp.value > 0 && l[key] === "off") l[key] = key === "rgbw" ? "white" : "3000"; renderHouse(); };
     inp.onchange = () => render();
     lv.appendChild(s);

@@ -13,6 +13,12 @@
  Bedroom:{strip:{label:'Applique gauche',emit:[[20.7,34,3.6,4]],pools:[[21,34,16,27],[27,62,21,19]]},spots:{label:'Applique droite et bureau',emit:[[44,44,1.5,2],[69,43,.4,1.3]],pools:[[44,43,11,21],[68,52,12,19],[51,67,21,18]]}},
  Pool:{strip:{label:'Spots de la terrasse',emit:[[18,75,.4,.2],[37,68,.4,.2],[57,62,.3,.2],[74,73,.4,.2]],pools:[[29,73,24,10],[66,81,21,16]]},spots:{label:'Spots dans le bassin',emit:[[23,77,.4,.2],[43,72,.4,.2],[62,69,.4,.2],[69,66,.35,.18]],pools:[[24,81,13,12],[44,76,14,12],[63,72,14,10]]}}
  };
+ // Repères relevés dans la photo de l'entrée (pixels 1672 × 941).
+ // La variation porte sur le verre lumineux et les lèvres des marches,
+ // jamais sur des pastilles ou traits approximatifs posés dans le décor.
+ MAP.Entry.spots.emit=[];
+ MAP.Entry.spots.glass=[[752,159,13,74],[782,139,13,73],[872,136,12,80],[783,213,12,53],[816,220,12,65],[846,163,12,93],[876,259,12,57],[826,318,11,57]];
+ MAP.Entry.strip.traces=['M1040 339H1150','M1050 355H1160','M1060 369H1171','M1068 383H1181','M1077 401H1193','M1088 417H1207','M1096 435H1220','M1105 451H1232','M1117 471H1247','M1129 491H1263','M1143 515H1279','M1157 539H1295','M1158 566H1309','M1158 595H1325','M1158 623H1345','M1158 657H1367','M1157 695Q1270 696 1400 693','M1127 736Q1255 749 1410 738','M1113 779Q1250 800 1430 781'];
  const ns='http://www.w3.org/2000/svg';
  function build(v,id,tv){
   v.querySelector('.rv-physical-lighting')?.remove();
@@ -24,12 +30,13 @@
    for(const key of ['strip','spots']){
     const cfg=MAP[id][key],g=document.createElementNS(ns,'g');g.dataset.circuit=key;g.setAttribute('mask','url(#'+prefix+'-mask)');
     const grad=prefix+'-'+key;
-    const color=layer==='darken'?'#080b12':'var(--fixture-color)';
+
     const stops=layer==='darken'?'<stop stop-color="#080b12" stop-opacity=".8"/><stop offset=".45" stop-color="#080b12" stop-opacity=".4"/><stop offset="1" stop-color="#080b12" stop-opacity="0"/>':'<stop stop-color="var(--fixture-color)" stop-opacity=".35"/><stop offset=".4" stop-color="var(--fixture-color)" stop-opacity=".12"/><stop offset="1" stop-color="var(--fixture-color)" stop-opacity="0"/>';
     const areas=(cfg.pools||[]).map(([x,y,rx,ry])=>`<ellipse cx="${x}" cy="${y}" rx="${rx}" ry="${ry}" fill="url(#${grad})"/>`).join('');
-    const emit=(cfg.emit||[]).map(([x,y,rx,ry])=>layer==='darken'?`<ellipse cx="${x}" cy="${y}" rx="${rx*2}" ry="${Math.max(1,ry*2)}" fill="url(#${grad})"/><ellipse cx="${x}" cy="${y}" rx="${rx}" ry="${ry}" fill="#151511" opacity=".96"/>`:`<ellipse cx="${x}" cy="${y}" rx="${rx*2.5}" ry="${Math.max(1,ry*2.5)}" fill="url(#${grad})"/><ellipse cx="${x}" cy="${y}" rx="${rx*.65}" ry="${ry*.7}" fill="${color}" opacity=".55"/>`).join('');
-    const lines=(cfg.lines||[]).map(d=>`<path d="${d}" fill="none" stroke="${color}" stroke-width="${layer==='darken'?'.65':'.14'}" opacity="${layer==='darken'?'.78':'.8'}"/>`).join('');
-    g.innerHTML=`<defs><radialGradient id="${grad}">${stops}</radialGradient></defs>`+areas+emit+lines;svg.appendChild(g);
+    const emit=(cfg.emit||[]).map(([x,y,rx,ry])=>`<ellipse cx="${x}" cy="${y}" rx="${rx*2.5}" ry="${Math.max(1,ry*2.5)}" fill="url(#${grad})"/>`).join('');
+    const glass=layer==='darken'?(cfg.glass||[]).map(([x,y,w,h])=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="3" fill="#77746b" opacity=".85"/>`).join(''):'';
+    const traces=(cfg.traces||[]).map(d=>`<path d="${d}" fill="none" stroke="${layer==='darken'?'#8d846f':'var(--fixture-color)'}" stroke-width="${layer==='darken'?3:1.3}" opacity="${layer==='darken'?.85:.5}"/>`).join('');
+    g.innerHTML=`<defs><radialGradient id="${grad}">${stops}</radialGradient></defs>`+areas+emit+`<g transform="scale(${100/1672} ${100/941})">${glass}${traces}</g>`;svg.appendChild(g);
    }root.appendChild(svg);
   }v.appendChild(root);return root;
  }

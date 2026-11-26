@@ -1,0 +1,38 @@
+[
+  {
+    "actionsVisible": true,
+    "device": "TSW panel",
+    "overflow": false,
+    "wheel": 290
+  },
+  {
+    "actionsVisible": true,
+    "device": "PC / Xpanel",
+    "overflow": false,
+    "wheel": 435
+  },
+  {
+    "actionsVisible": true,
+    "device": "Tablet",
+    "overflow": false,
+    "wheel": 267.34375
+  },
+  {
+    "actionsVisible": true,
+    "device": "Smartphone",
+    "overflow": false,
+    "wheel": 210
+  },
+  {
+    "overflow": false,
+    "theme": "Sombre"
+  },
+  {
+    "overflow": false,
+    "theme": "Clair"
+  },
+  {
+    "overflow": false,
+    "theme": "Verre"
+  }
+]
