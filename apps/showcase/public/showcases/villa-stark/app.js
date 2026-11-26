@@ -272,6 +272,7 @@ function renderRoomView() {
   v.querySelector('.rv-photo').style.filter='none';v.querySelector('.rv-night').style.opacity=0;v.querySelector('.rv-strip').style.opacity=0;
   window.STARK_LIGHTING.render(v,id,l,INT[id].tv);
   window.STARK_FIXTURES.render(v,id,l);
+  window.STARK_LEDS.render(v,id,l);
   window.STARK_FIREPLACE.render(v,id);
   const rg = v.querySelector(".rv-rgbw"); rg.style.opacity = 0;
   if (id === "Pool" && !v.querySelector(".pool-lighting")) v.appendChild(createPoolLighting("interior"));
@@ -525,21 +526,21 @@ function tvSourceForRoom(room) { return S.tv.routes?.[room.id] || room.tv; }
 function selectTVSource(source) {
   const id = roomById[roomView]?.tv ? roomView : source === "apple" ? "Cinema" : "Living";
   S.tv.routes ||= {}; S.tv.routes[id] = source; S.tv.dev = source;
-  S.tv[source].power = true;
-  if (source === "swisscom") S.tv.swisscom.ch ||= "1"; else S.tv.apple.app ||= "Apple TV";
+  S.tv[source].power = true; S.tv[source].paused = false;
+  if (source === "swisscom") S.tv.swisscom.ch ||= "1"; else { S.tv.apple.app = "Apple TV"; S.tv.apple.focus = 0; }
   S.page = "tv:" + source; enterRoom(id, false);
 }
 let drawTVProgramme = null, tvBroadcast = null, tvEngineRequested = false, tvAnimation = 0, lastTVFrame = 0;
 function loadTVEngine() {
   if (tvEngineRequested) return;
   tvEngineRequested = true;
-  import("./tv-broadcast.js?v=2.3.27").then(module=>{tvBroadcast=module.createTVBroadcast();}).catch(()=>{
+  import("./tv-broadcast.js?v=2.3.32").then(module=>{tvBroadcast=module.createTVBroadcast();}).catch(()=>{
     import("/plan3d/tv-programmes.js").then(module=>{drawTVProgramme=module.drawProgramme;}).catch(()=>{});
   });
 }
 // Projection du programme sur les quatre coins de la dalle photographiée.
 function tvPerspective(quad,w,h){const [[x0,y0],[x1,y1],[x2,y2],[x3,y3]]=quad.map(([x,y])=>[x*w,y*h]),dx1=x1-x2,dx2=x3-x2,dx3=x0-x1+x2-x3,dy1=y1-y2,dy2=y3-y2,dy3=y0-y1+y2-y3,den=dx1*dy2-dx2*dy1,g=Math.abs(den)>1e-9?(dx3*dy2-dx2*dy3)/den:0,k=Math.abs(den)>1e-9?(dx1*dy3-dx3*dy1)/den:0,a=x1-x0+g*x1,b=x3-x0+k*x3,d=y1-y0+g*y1,e=y3-y0+k*y3;return [a/w,d/w,0,g/w,b/h,e/h,0,k/h,0,0,1,0,x0,y0,0,1];}
-function fitTVPerspective(element){const canvas=element.querySelector('canvas'),quad=INT[roomView]?.tvQuad;if(!canvas||!quad)return;canvas.style.transformOrigin='0 0';canvas.style.transform='matrix3d('+tvPerspective(quad,element.clientWidth,element.clientHeight).join(',')+')';}
+function fitTVPerspective(element){const canvas=element.querySelector('canvas'),outer=INT[roomView]?.tvQuad;if(!canvas||!outer)return;const m=tvPerspective(outer,1,1),quad=[[.012,.012],[.988,.012],[.988,.988],[.012,.988]].map(([u,v])=>{const d=m[3]*u+m[7]*v+1;return[(m[0]*u+m[4]*v+m[12])/d,(m[1]*u+m[5]*v+m[13])/d];});canvas.style.transformOrigin='0 0';canvas.style.transform='matrix3d('+tvPerspective(quad,element.clientWidth,element.clientHeight).join(',')+')';}
 function paintTVScreen(element, source) {
   const tv = S.tv[source]; element.classList.toggle("on", tv.power); element.dataset.source = source;
   element.style.background = "transparent";
@@ -553,12 +554,12 @@ function paintTVScreen(element, source) {
 function drawTVScreen(element, seconds) {
   const canvas = element?.querySelector("canvas"), source = element?.dataset.source, tv = S.tv[source];
   if (!canvas || !tv?.power || integrationMode === "panel") return;
-  if(tv.paused){tvBroadcast?.setActive(false);return;}
+  if(tv.paused&&source!=="apple"){tvBroadcast?.setActive(false);return;}
   loadTVEngine();
   const programmeSource = source === "apple" ? 1 : 2, channel = source === "swisscom" ? Number(tv.ch || 1) : 0;
   const ctx = canvas.getContext("2d");
   if (tvBroadcast) {
-    ctx.drawImage(tvBroadcast.render(programmeSource,seconds,channel),0,0,canvas.width,canvas.height);
+    ctx.drawImage(tvBroadcast.render(source,seconds,channel,tv),0,0,canvas.width,canvas.height);
     element.dataset.renderer = tvBroadcast.renderer; element.dataset.programme = tvBroadcast.programme;
   } else if (drawTVProgramme) {
     ctx.save(); ctx.scale(canvas.width/1024,canvas.height/576); drawTVProgramme(ctx,programmeSource,seconds,channel); ctx.restore();
@@ -578,9 +579,11 @@ function animateTVScreens(now) {
 tvAnimation=requestAnimationFrame(animateTVScreens);
 window.addEventListener("pagehide",()=>{cancelAnimationFrame(tvAnimation);tvBroadcast?.dispose();});
 window.addEventListener("resize",()=>{if(roomView) renderRoomView();});
+const APPLE_TV_APPS=["Apple TV+","Netflix","Disney+","YouTube","Musique","Photos","App Store","Réglages","Ordinateurs","Recherche"];
 function renderTV(pg) {
+  const route=S.tv.routes?.[roomView]||S.tv.dev;
   const d = document.createElement("div"); d.className = "tv-choice";
-  d.append(btn(`<img src="assets/Icon_tv.png" alt="">SWISSCOM TV`, "", () => selectTVSource("swisscom"), S.tv.swisscom.power), btn(`<img src="assets/Icon_tv.png" alt="">APPLE TV`, "", () => selectTVSource("apple"), S.tv.apple.power));
+  d.append(btn(`<img src="assets/Icon_tv.png" alt="">SWISSCOM TV`, "", () => selectTVSource("swisscom"), route==="swisscom"), btn(`<img src="assets/Icon_tv.png" alt="">APPLE TV`, "", () => selectTVSource("apple"), route==="apple"));
   pg.appendChild(d);
 }
 function renderSwisscom(pg) {
@@ -606,8 +609,8 @@ function renderApple(pg) {
   const t = S.tv.apple;
   pg.appendChild(btn("◀&nbsp; TV", "back-btn", () => (S.page = "tv")));
   const nv = card(250, 60, 380, 520, "APPLE TV"); const dp = document.createElement("div"); dp.className = "dpad";
-  [["▲", "u"], ["▼", "d"], ["◀", "l"], ["▶", "r"], ["OK", "c"]].forEach(([k, cl]) => dp.appendChild(btn(k, cl, () => { if (cl === "c") { t.power = true; t.app = ["Netflix", "Apple TV+", "Disney+", "YouTube"][Math.floor(Math.random() * 4)]; } }))); nv.appendChild(dp);
-  const r2 = document.createElement("div"); r2.className = "row"; r2.style.marginTop = "30px"; r2.append(btn("MENU", "", () => { t.app = ""; }), btn("▶ ❚❚", "", () => { t.paused = !t.paused; }, !!t.paused), btn("TV", "", () => { t.app = "Apple TV"; t.power = true; })); nv.appendChild(r2);
+  [["▲", "u"], ["▼", "d"], ["◀", "l"], ["▶", "r"], ["OK", "c"]].forEach(([k, cl]) => dp.appendChild(btn(k, cl, () => { t.power=true;t.focus=Math.max(0,Math.min(9,(t.focus||0)+({u:-5,d:5,l:-1,r:1}[cl]||0)));if(cl==="c")t.app=APPLE_TV_APPS[t.focus]; }))); nv.appendChild(dp);
+  const r2 = document.createElement("div"); r2.className = "row"; r2.style.marginTop = "30px"; r2.append(btn("MENU", "", () => { t.app = "Apple TV"; t.focus=0; }), btn("▶ ❚❚", "", () => { t.paused = !t.paused; }, !!t.paused), btn("TV", "", () => { t.app = "Apple TV"; t.focus=0; t.power = true; })); nv.appendChild(r2);
   const st = document.createElement("div"); st.className = "tv-status"; st.innerHTML = `APP <b>${t.app || "—"}</b>`; nv.appendChild(st); pg.appendChild(nv);
   const vc = card(660, 60, 370, 520, "VOLUME"); const col = document.createElement("div"); col.style.cssText = "display:flex;flex-direction:column;gap:12px";
   col.append(btn("VOL +", "", () => { t.vol = Math.min(100, t.vol + 5); }), Object.assign(document.createElement("div"), { className: "value", textContent: t.vol + " %", style: "text-align:center;font-size:36px" }), btn("VOL −", "", () => { t.vol = Math.max(0, t.vol - 5); }), btn("🔇 MUET", "", () => { t.mute = !t.mute; }, t.mute), btn("⏻ " + (t.power ? "MARCHE" : "ARRÊT"), t.power ? "green" : "red", () => { t.power = !t.power; if (!t.power) t.app = ""; }, t.power));

@@ -8,10 +8,7 @@
  const flame=document.createElement('canvas');flame.width=w;flame.height=h;
  const fc=flame.getContext('2d',{willReadFrequently:true});
  const base=document.createElement('canvas');base.width=w;base.height=h;
- const first=document.createElement('canvas');first.width=w;first.height=h;
- let firstReady=false;
  let canvas,view,video,active=false,raf=0,last=0,prepared=false;
- const smooth=n=>{const v=Math.max(0,Math.min(1,n));return v*v*(3-2*v);};
  function prepare(){
   if(prepared||!photo.naturalWidth)return;
   const c=base.getContext('2d',{willReadFrequently:true});c.drawImage(photo,x,y,w,h,0,0,w,h);
@@ -25,7 +22,6 @@
   raf=requestAnimationFrame(frame);
   if(ms-last<40||!photo.naturalWidth||video.readyState<2)return;last=ms;prepare();
   fc.clearRect(0,0,w,h);fc.drawImage(video,0,fireTop,w,fireHeight);
-  if(firstReady&&video.duration-video.currentTime<.35){fc.globalAlpha=smooth(1-(video.duration-video.currentTime)/.35);fc.drawImage(first,0,0);fc.globalAlpha=1;}
   // Conserver la séquence filmée entière à l'intérieur du foyer :
   // pas de seuillage des flammes qui supprimerait leurs contours orangés.
   const c=canvas.getContext('2d');c.clearRect(0,0,w,h);c.drawImage(base,0,0);c.globalCompositeOperation='screen';c.globalAlpha=.62;c.drawImage(flame,0,0);c.globalAlpha=1;c.globalCompositeOperation='source-over';
@@ -36,7 +32,7 @@
  }
  function start(){
   if(!active||document.hidden||reduced.matches){video?.pause();return;}
-  if(!video){video=document.createElement('video');video.src='assets/video/fireplace-calm.mp4';video.muted=true;video.loop=true;video.playsInline=true;video.preload='auto';video.addEventListener('loadeddata',()=>{first.getContext('2d').drawImage(video,0,fireTop,w,fireHeight);firstReady=true;},{once:true});video.setAttribute('aria-hidden','true');video.dataset.fireSource='filmed';video.style.display='none';view.appendChild(video);}
+  if(!video){video=document.createElement('video');video.src='assets/video/fireplace-slow-loop.mp4';video.muted=true;video.loop=true;video.playsInline=true;video.preload='auto';video.setAttribute('aria-hidden','true');video.dataset.fireSource='filmed';video.style.display='none';view.appendChild(video);}
   if(video.paused)video.play().catch(()=>{});
   if(!raf)raf=requestAnimationFrame(frame);
  }

@@ -2,7 +2,7 @@
 (() => {
  'use strict';
  const MAP={
- Living:{strip:{label:'Bibliothèque et corniche',lines:['M63 17.5 92 6.5','M53.8 27.8 61.5 26','M53.8 35.5 61.5 33.7','M53.8 43.3 61.5 41.5','M53.8 51 61.5 49.2'],pools:[[60,37,13,31],[81,14,23,12]]},spots:{label:'Spots plafond',emit:[[19.5,1.8,.45,.18],[47,4.8,.45,.18],[63,10.5,.35,.16]],pools:[[20,7,10,13],[47,11,13,18],[71,45,25,30],[50,77,35,18]]}},
+ Living:{strip:{label:'LED étagères et corniche',lines:['M63 17.5 92 6.5','M53.8 27.8 61.5 26','M53.8 35.5 61.5 33.7','M53.8 43.3 61.5 41.5','M53.8 51 61.5 49.2'],pools:[[60,37,13,31],[81,14,23,12]]},spots:{label:'Spots plafond',emit:[[19.5,1.8,.45,.18],[47,4.8,.45,.18],[63,10.5,.35,.16]],pools:[[20,7,10,13],[47,11,13,18],[71,45,25,30],[50,77,35,18]]}},
  Dining:{strip:{label:'Éclairage buffet',lines:['M11 33 11 53','M21 43 28 43'],pools:[[12,44,10,23],[26,49,8,12]]},spots:{label:'Suspension et plafond',emit:[[51.5,37,7,1.2],[80.5,4,.4,.18],[37.4,10.7,.3,.15]],pools:[[52,53,24,22],[80,14,12,18],[40,12,12,14],[59,74,25,16]]}},
  Kitchen:{strip:{label:'Plan de travail et plinthes',lines:['M0 4 62 21','M10 34 57 43','M16 84 25 95 60 77'],pools:[[35,18,36,14],[35,43,25,13],[35,82,28,17]]},spots:{label:'Spots plafond',emit:[[33,10,.35,.16],[69,4,.35,.16],[52,4,.35,.16]],pools:[[34,12,12,15],[58,17,18,19],[51,61,22,21]]}},
  Office:{strip:{label:'Rubans bibliothèque',lines:['M1 7 23 26 70 20','M25 36 66 30','M25 47 66 43'],pools:[[25,29,25,33],[52,36,22,28]]},spots:{label:'Suspension bureau et spots',emit:[[64,50.3,4,.5],[25.5,2.5,.4,.15]],pools:[[64,59,12,21],[47,75,25,17],[26,9,12,15]]}},
@@ -43,7 +43,7 @@
  function render(v,id,lights,tv){
   let root=v.querySelector('.rv-physical-lighting');if(!root||root.dataset.room!==id)root=build(v,id,tv);
   const cover=Math.max(v.clientWidth/1672,v.clientHeight/941);Object.assign(root.style,{left:(v.clientWidth-1672*cover)/2+'px',top:(v.clientHeight-941*cover)/2+'px',width:1672*cover+'px',height:941*cover+'px'});
-  for(const key of ['strip','spots']){const level=lights[key]==='off'?0:Math.max(0,Math.min(1,lights.lv[key]/100)),color=lights[key]==='6000'?'#dcecff':'#ffd09a';root.querySelector('.physical-darken [data-circuit='+key+']').style.opacity=1-level;const radiant=root.querySelector('.physical-radiance [data-circuit='+key+']');radiant.style.opacity=Math.pow(level,.7);radiant.style.setProperty('--fixture-color',color);root.dataset[key]=Math.round(level*100);}
+  for(const key of ['strip','spots']){const level=lights[key]==='off'?0:Math.max(0,Math.min(1,lights.lv[key]/100)),color=lights[key]==='6000'?'#dcecff':'#ffd09a';root.querySelector('.physical-darken [data-circuit='+key+']').style.opacity=1-level;const radiant=root.querySelector('.physical-radiance [data-circuit='+key+']');radiant.style.opacity=id==='Living'&&key==='strip'&&lights.strip!=='6000'?0:Math.pow(level,.7);radiant.style.setProperty('--fixture-color',color);root.dataset[key]=Math.round(level*100);}
  }
  window.STARK_LIGHTING={maps:MAP,label:(id,key)=>MAP[id][key].label,render};
 })();

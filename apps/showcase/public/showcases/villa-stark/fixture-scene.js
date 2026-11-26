@@ -32,15 +32,16 @@
   // Reprendre le bois immédiatement au-dessus et au-dessous du spot pour
   // retirer son éclat, en conservant les veines et les bords du plafond.
   for(let j=0;j<height;j++)for(let i=0;i<width;i++){
-   const distance=Math.hypot((i-cx)/(rx*2.6),(j-cy)/(ry*3.4));if(distance>=1)continue;
-   const a=Math.min(1,(1-distance)*3),k=(j*width+i)*4;
+   const distance=Math.hypot((i-cx)/(rx*2.6),(j-cy)/(ry*3.4));const k=(j*width+i)*4;if(distance>=1){d[k+3]=0;continue;}
+   const fade=Math.max(0,Math.min(1,(1-distance)/.55)),a=fade*fade*(3-2*fade);
    const upper=(Math.max(0,Math.floor(cy-ry*3.7))*width+i)*4,lower=(Math.min(height-1,Math.ceil(cy+ry*3.7))*width+i)*4;
    const t=j/height;
-   for(let ch=0;ch<3;ch++)d[k+ch]=original[k+ch]*(1-a)+(original[upper+ch]*(1-t)+original[lower+ch]*t)*a;
+   for(let ch=0;ch<3;ch++)d[k+ch]=original[upper+ch]*(1-t)+original[lower+ch]*t;
+   d[k+3]=Math.round(255*a);
   }
   ctx.putImageData(image,0,0);
   // L'ouverture éteinte conserve une petite collerette éclairée par la pièce.
-  const ambient=ctx.getImageData(Math.round(cx),Math.max(0,Math.round(cy-ry*3.7)),1,1).data;
+  const sample=(Math.max(0,Math.round(cy-ry*3.7))*width+Math.round(cx))*4,ambient=original.slice(sample,sample+3);
   ctx.beginPath();ctx.ellipse(cx,cy,rx,ry,0,0,Math.PI*2);ctx.fillStyle=`rgb(${ambient[0]*.46},${ambient[1]*.46},${ambient[2]*.46})`;ctx.fill();ctx.strokeStyle=`rgba(${ambient[0]},${ambient[1]},${ambient[2]},.7)`;ctx.lineWidth=.7;ctx.stroke();
   return {href:c.toDataURL(),left,top,width,height};
  }
@@ -58,7 +59,8 @@
     const k=(j*width+i)*4,px=left+i,py=top+j;
     if(body&&px>=body[0]&&px<=body[2]&&py>=body[1]&&py<=body[3]){d[k+3]=0;continue;}
     const edge=Math.min(1,i/12,(width-1-i)/12,j/14,(height-1-j)/14);
-    for(let ch=0;ch<3;ch++){const value=original[k+ch];const target=Math.min(value,ambient[ch]+(value-ambient[ch])*.2);d[k+ch]=value*(1-edge)+target*edge;}
+    for(let ch=0;ch<3;ch++){const value=original[k+ch];const target=Math.min(value,ambient[ch]+(value-ambient[ch])*.2);d[k+ch]=target;}
+    d[k+3]=Math.round(255*Math.max(0,edge));
    }
   }
   ctx.putImageData(image,0,0);return {href:c.toDataURL(),left,top,width,height};
