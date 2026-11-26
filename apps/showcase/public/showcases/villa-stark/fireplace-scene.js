@@ -1,30 +1,46 @@
-/* Animation photographique localisée : les pierres et les bûches restent fixes. */
+/* Feu filmé : aucun étirement de la photographie ni mouvement des pierres. */
 (() => {
  'use strict';
  const photo=new Image();photo.src='assets/original/room-Living.webp';
  const reduced=matchMedia('(prefers-reduced-motion: reduce)');
- let canvas,view,active=false,raf=0,last=0;
- const x=1230,y=492,w=220,h=56;
+ const x=1215,y=486,w=245,h=62;
+ const flame=document.createElement('canvas');flame.width=w;flame.height=h;
+ const fc=flame.getContext('2d',{willReadFrequently:true});
+ const base=document.createElement('canvas');base.width=w;base.height=h;
+ const first=document.createElement('canvas');first.width=w;first.height=h;
+ let firstReady=false;
+ let canvas,view,video,active=false,raf=0,last=0,prepared=false;
+ const smooth=n=>{const v=Math.max(0,Math.min(1,n));return v*v*(3-2*v);};
+ function prepare(){
+  if(prepared||!photo.naturalWidth)return;
+  const c=base.getContext('2d',{willReadFrequently:true});c.drawImage(photo,x,y,w,h,0,0,w,h);
+  // Fond continu sous le feu : pas de silhouettes découpées des anciennes flammes.
+  c.drawImage(photo,x,y,w,8,0,0,w,54);
+  prepared=true;
+ }
  function frame(ms){
   raf=0;
-  if(!active||!view?.classList.contains('open')||document.hidden||reduced.matches)return;
+  if(!active||!view?.classList.contains('open')||document.hidden||reduced.matches){video?.pause();return;}
   raf=requestAnimationFrame(frame);
-  if(ms-last<40||!photo.complete||!photo.naturalWidth)return;last=ms;
-  const c=canvas.getContext('2d'),t=ms/1000;
-  c.clearRect(0,0,w,h);
-  // Chaque langue de feu oscille indépendamment, autour de sa base.
-  for(let i=0;i<w;i+=2){
-   const wave=Math.sin(t*3.7+i*.13)*.07+Math.sin(t*6.1+i*.047)*.045;
-   const height=h*(1+wave),dx=Math.sin(t*4.3+i*.09)*1.1;
-   c.drawImage(photo,x+i,y,2,h,i+dx,h-height,3,height);
-  }
+  if(ms-last<40||!photo.naturalWidth||video.readyState<2)return;last=ms;prepare();
+  fc.clearRect(0,0,w,h);fc.drawImage(video,0,0,w,h);
+  if(firstReady&&video.duration-video.currentTime<.35){fc.globalAlpha=smooth(1-(video.duration-video.currentTime)/.35);fc.drawImage(first,0,0);fc.globalAlpha=1;}
+  // Conserver la séquence filmée entière à l'intérieur du foyer :
+  // pas de seuillage des flammes qui supprimerait leurs contours orangés.
+  const c=canvas.getContext('2d');c.clearRect(0,0,w,h);c.drawImage(base,0,0);c.globalCompositeOperation='screen';c.drawImage(flame,0,0);c.globalCompositeOperation='source-over';
+  // Fondu périphérique pour raccorder exactement le foyer photographié.
   c.globalCompositeOperation='destination-in';
-  const edge=c.createLinearGradient(0,0,w,0);edge.addColorStop(0,'transparent');edge.addColorStop(.08,'white');edge.addColorStop(.92,'white');edge.addColorStop(1,'transparent');c.fillStyle=edge;c.fillRect(0,0,w,h);
-  const vertical=c.createLinearGradient(0,0,0,h);vertical.addColorStop(0,'transparent');vertical.addColorStop(.22,'white');vertical.addColorStop(.83,'white');vertical.addColorStop(1,'transparent');c.fillStyle=vertical;c.fillRect(0,0,w,h);
-  c.globalCompositeOperation='source-over';
+  const edge=c.createLinearGradient(0,0,w,0);edge.addColorStop(0,'transparent');edge.addColorStop(.05,'white');edge.addColorStop(.95,'white');edge.addColorStop(1,'transparent');c.fillStyle=edge;c.fillRect(0,0,w,h);
+  const vertical=c.createLinearGradient(0,0,0,h);vertical.addColorStop(0,'transparent');vertical.addColorStop(.14,'white');vertical.addColorStop(.91,'white');vertical.addColorStop(1,'transparent');c.fillStyle=vertical;c.fillRect(0,0,w,h);c.globalCompositeOperation='source-over';
  }
- function start(){if(!raf&&active&&!document.hidden&&!reduced.matches)raf=requestAnimationFrame(frame);}
- document.addEventListener('visibilitychange',start);reduced.addEventListener('change',()=>{if(reduced.matches)canvas?.getContext('2d').clearRect(0,0,w,h);else start();});
+ function start(){
+  if(!active||document.hidden||reduced.matches){video?.pause();return;}
+  if(!video){video=document.createElement('video');video.src='assets/video/fireplace.mp4';video.muted=true;video.loop=true;video.playsInline=true;video.preload='auto';video.addEventListener('loadeddata',()=>{first.getContext('2d').drawImage(video,0,0,w,h);firstReady=true;},{once:true});video.setAttribute('aria-hidden','true');video.dataset.fireSource='filmed';video.style.display='none';view.appendChild(video);}
+  if(video.paused)video.play().catch(()=>{});
+  if(!raf)raf=requestAnimationFrame(frame);
+ }
+ document.addEventListener('visibilitychange',start);
+ reduced.addEventListener('change',()=>{if(reduced.matches){video?.pause();canvas?.getContext('2d').clearRect(0,0,w,h);}else start();});
  window.STARK_FIREPLACE={render(v,id){
   active=id==='Living';view=v;
   if(!canvas){canvas=document.createElement('canvas');canvas.width=w;canvas.height=h;canvas.className='rv-fireplace';canvas.setAttribute('aria-hidden','true');Object.assign(canvas.style,{position:'absolute',pointerEvents:'none',zIndex:'1'});v.appendChild(canvas);}

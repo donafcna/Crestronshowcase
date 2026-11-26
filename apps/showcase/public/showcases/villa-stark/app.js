@@ -213,6 +213,13 @@ function renderHouse() {
     h.chip.innerHTML = fmt(c.temp) + hvacIco(c);
     h.hvac.style.display = "none";
     h.shade.style.transform = `scaleY(${r.shade ? Math.max(S.shades[r.id].pos, shadeState(r.id,"blackout").pos) / 100 : 0})`;h.shade.style.transition=r.shade&&(S.shades[r.id].target!=null||shadeState(r.id,"blackout").target!=null)?"none":"";h.shade.dataset.type=r.shade&&shadeState(r.id,"blackout").pos>S.shades[r.id].pos?"blackout":"roman";
+    if(window.STARK_SHADES.hasCurtain(r.id)){
+      h.shade.style.transform=`scaleY(${S.shades[r.id].pos/100})`;h.shade.dataset.type='roman';
+      if(!h.curtain){h.curtain=div('win-shade win-curtain');h.shade.parentElement.appendChild(h.curtain);}
+      const side=window.STARK_SHADES.curtainSide(r.id);
+      h.curtain.style.transformOrigin=side==='left'?'left':'right';
+      h.curtain.style.transform=`scaleX(${shadeState(r.id,'blackout').pos/100})`;
+    }
     if (r.tv) h.tv.style.display = "none";
   });
   // piscine
@@ -473,7 +480,7 @@ function moveShade(id,dir,type='roman'){
  const target=dir==='down'?100:0,from=state.pos,started=performance.now(),duration=Math.max(350,6500*Math.abs(target-from)/100);state.target=target;
  shadeTimers[key]=setInterval(()=>{const progress=Math.min(1,(performance.now()-started)/duration),travel=progress*progress*(3-2*progress);state.pos=Math.round((from+(target-from)*travel)*10)/10;if(progress===1){clearInterval(shadeTimers[key]);delete state.target;}renderHouse();refreshShadeVis();},16);
 }
-function refreshShadeVis(){document.querySelectorAll('.shade-card[data-type]').forEach(c=>{const state=shadeState(c.dataset.id,c.dataset.type),pos=Math.round(state.pos);c.querySelector('.blind').style.clipPath='inset(0 0 '+(100-pos)+'% 0)';c.querySelector('.pos').textContent=state.target!=null?(state.target>pos?'FERMETURE':'OUVERTURE')+' · '+pos+' %':pos===0?'OUVERT':pos===100?'FERMÉ':pos+' %';});}
+function refreshShadeVis(){document.querySelectorAll('.shade-card[data-type]').forEach(c=>{const state=shadeState(c.dataset.id,c.dataset.type),pos=Math.round(state.pos);const blind=c.querySelector('.blind');if(c.classList.contains('is-curtain')){blind.style.clipPath='none';blind.style.width=(12+pos*.88)+'%';}else blind.style.clipPath='inset(0 0 '+(100-pos)+'% 0)';c.querySelector('.pos').textContent=state.target!=null?(state.target>pos?'FERMETURE':'OUVERTURE')+' · '+pos+' %':pos===0?'OUVERT':pos===100?'FERMÉ':pos+' %';});}
 function renderShades(pg){
  const id=S.shadeRoom||roomView||'Living',wrap=document.createElement('section');wrap.className='room-shades';wrap.setAttribute('aria-label','Stores de la pièce sélectionnée');
  const label=document.createElement('label');label.className='shade-room-select';label.textContent='PIÈCE';const select=document.createElement('select');select.setAttribute('aria-label','Pièce des stores');
@@ -481,10 +488,11 @@ function renderShades(pg){
  select.onchange=()=>{S.shadeRoom=select.value;enterRoom(select.value,false);};label.appendChild(select);wrap.appendChild(label);
  const grid=document.createElement('div');grid.className='shade-grid';wrap.appendChild(grid);pg.appendChild(wrap);
  if(!INT[id].win){grid.innerHTML='<p class="shade-empty">Aucun store sur la photo de cette pièce. Sélectionnez une pièce avec une baie vitrée.</p>';return;}
- [['roman','STORE BATEAU'],['blackout','BLACKOUT']].forEach(([type,name])=>{
-  const c=document.createElement('div');c.className='card shade-card';c.dataset.id=id;c.dataset.type=type;c.setAttribute('aria-label',name+' · '+roomById[id].name);
+ [['roman','STORE BATEAU'],['blackout',window.STARK_SHADES.hasCurtain(id)?'RIDEAU':'BLACKOUT']].forEach(([type,name])=>{
+  const isCurtain=type==='blackout'&&window.STARK_SHADES.hasCurtain(id);
+  const c=document.createElement('div');c.className='card shade-card';c.dataset.id=id;c.dataset.type=type;if(isCurtain){c.classList.add('is-curtain');c.dataset.side=window.STARK_SHADES.curtainSide(id);}c.setAttribute('aria-label',name+' · '+roomById[id].name);
   c.innerHTML=`<div class="card-title">${name}</div><div class="col"></div><div class="shade-vis"><div class="blind ${type}"></div></div><div class="pos"></div>`;
-  for(const [lab,dir,shape] of [['OUVRIR','up','<path d="m12 4 9 15H3Z"/>'],['ARRÊTER','stop','<rect x="5" y="5" width="14" height="14"/>'],['FERMER','down','<path d="m12 20 9-15H3Z"/>']]){const button=document.createElement('button');button.className='btn';button.setAttribute('aria-label',lab+' · '+name+' · '+roomById[id].name);button.innerHTML=`<svg class="shade-command-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">${shape}</svg><span>${lab}</span>`;button.onclick=()=>moveShade(id,dir,type);c.querySelector('.col').appendChild(button);}
+  for(const [lab,dir,shape] of [['OUVRIR','up','<path d="m12 4 9 15H3Z"/>'],['ARRÊTER','stop','<rect x="5" y="5" width="14" height="14"/>'],['FERMER','down','<path d="m12 20 9-15H3Z"/>']]){const button=document.createElement('button');button.className='btn';button.setAttribute('aria-label',lab+' · '+name+' · '+roomById[id].name);const icon=isCurtain&&dir!=='stop'?(dir==='up'?'<path d="m15 4-8 8 8 8" fill="none" stroke="currentColor" stroke-width="3"/>':'<path d="m9 4 8 8-8 8" fill="none" stroke="currentColor" stroke-width="3"/>'):shape;button.innerHTML=`<svg class="shade-command-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">${icon}</svg><span>${lab}</span>`;button.onclick=()=>moveShade(id,dir,type);c.querySelector('.col').appendChild(button);}
   grid.appendChild(c);
  });refreshShadeVis();
 }
