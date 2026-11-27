@@ -43,7 +43,7 @@
  function render(v,id,lights,tv){
   let root=v.querySelector('.rv-physical-lighting');if(!root||root.dataset.room!==id)root=build(v,id,tv);
   const cover=Math.max(v.clientWidth/1672,v.clientHeight/941);Object.assign(root.style,{left:(v.clientWidth-1672*cover)/2+'px',top:(v.clientHeight-941*cover)/2+'px',width:1672*cover+'px',height:941*cover+'px'});
-  for(const key of ['strip','spots']){const level=lights[key]==='off'?0:Math.max(0,Math.min(1,lights.lv[key]/100)),color=lights[key]==='6000'?'#dcecff':'#ffd09a';root.querySelector('.physical-darken [data-circuit='+key+']').style.opacity=1-level;const radiant=root.querySelector('.physical-radiance [data-circuit='+key+']');radiant.style.opacity=id==='Living'&&key==='strip'&&lights.strip!=='6000'?0:Math.pow(level,.7);radiant.style.setProperty('--fixture-color',color);root.dataset[key]=Math.round(level*100);}
+  for(const key of ['strip','spots']){const level=lights[key]==='off'?0:Math.max(0,Math.min(1,lights.lv[key]/100)),color=lights[key]==='6000'?'#dcecff':'#ffd09a';root.querySelector('.physical-darken [data-circuit='+key+']').style.opacity=1-level;const radiant=root.querySelector('.physical-radiance [data-circuit='+key+']');radiant.style.opacity=key==='spots'||(id==='Living'&&key==='strip'&&lights.strip!=='6000')?0:Math.pow(level,.7);radiant.style.setProperty('--fixture-color',color);root.dataset[key]=Math.round(level*100);}
  }
  window.STARK_LIGHTING={maps:MAP,label:(id,key)=>MAP[id][key].label,render};
 })();

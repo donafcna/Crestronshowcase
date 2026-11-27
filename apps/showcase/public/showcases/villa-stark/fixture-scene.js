@@ -4,7 +4,7 @@
  const NS='http://www.w3.org/2000/svg';
  // Centre et demi-dimensions des ouvertures lumineuses, en pixels photo 1672 × 941.
  const CEILING={
-  Living:[[343,52,7,3],[881,46,7,3],[1318,44,7,3],[1032,103,5.5,2.5],[585,117,5,2],[742,150,4.5,2]],
+  Living:[[343,52,7,3],[881,46,7,3],[1318,44,7,3],[1032,103,5.5,2.5],[585,117,5,2],[742,150,4.5,2],[824,185,3.5,1.5]],
   Kitchen:[[266,51,9,3],[719,51,9,3.5],[1537,55,9.5,3],[888,89,8,3],[556,102,8,2.5],[1301,110,7.5,2.5],[843,149,6,2],[1112,152,6,2],[1008,174,5.5,1.5]],
   Office:[[423,29,9.5,3.5],[1261,29,9.5,3.5],[486,135,7,2.5],[812,135,7,2.5],[1208,135,7,2.5]],
   Dining:[[1386,38,10.5,4],[340,118,9,3],[1040,157,8,2.5],[327,194,6.5,2],[863,220,6,2]],
@@ -76,9 +76,15 @@
    const paths=LAMPS[id]?.[key]||[];
    if(paths.length){const clip=document.createElementNS(NS,'clipPath');clip.id=prefix+'-'+key;clip.innerHTML=paths.map(d=>`<path d="${d}"/>`).join('');svg.querySelector('defs').appendChild(clip);svg.querySelector('[data-native-circuit='+key+']').innerHTML=`<image href="assets/original/room-${id}.webp" width="1672" height="941" clip-path="url(#${clip.id})" filter="url(#${prefix}-off)"/>`;}
   }
+  // Le blanc froid reste limité aux sources photographiées : aucun halo inventé.
+  const coolClip=document.createElementNS(NS,'clipPath');coolClip.id=prefix+'-cool-sources';
+  coolClip.innerHTML=(CEILING[id]||[]).map(([x,y,rx,ry])=>`<ellipse cx="${x}" cy="${y}" rx="${rx}" ry="${ry}"/>`).join('')+(LAMPS[id]?.spots||[]).map(d=>`<path d="${d}"/>`).join('');
+  svg.querySelector('defs').appendChild(coolClip);
+  svg.querySelector('defs').insertAdjacentHTML('beforeend',`<filter id="${prefix}-cool" color-interpolation-filters="sRGB"><feColorMatrix values=".78 0 0 0 .10 0 .94 0 0 .03 0 0 1.1 0 .15 0 0 0 1 0"/></filter>`);
+  const cool=document.createElementNS(NS,'g');cool.dataset.nativeCool='spots';cool.innerHTML=`<image href="assets/original/room-${id}.webp" width="1672" height="941" clip-path="url(#${coolClip.id})" filter="url(#${prefix}-cool)"/>`;svg.appendChild(cool);
   root.appendChild(svg);v.appendChild(root);
   const photo=photoFor(id),add=()=>{if(!root.isConnected)return;const group=svg.querySelector('[data-native-circuit=spots]');for(const [x,y,rx,ry] of CEILING[id]||[]){const p=offSpot(photo,x,y,rx,ry),img=document.createElementNS(NS,'image');for(const [key,value] of Object.entries({href:p.href,x:p.left,y:p.top,width:p.width,height:p.height}))img.setAttribute(key,value);img.dataset.ceilingSpot=x+','+y;group.appendChild(img);}if(id==='Cinema')for(const [rect,body] of [[[120,165,175,270],[182,252,232,335]],[[615,255,115,170],[657,313,688,366]],[[1550,280,120,220],null]]){const p=offWall(photo,rect,body),img=document.createElementNS(NS,'image');for(const [key,value] of Object.entries({href:p.href,x:p.left,y:p.top,width:p.width,height:p.height}))img.setAttribute(key,value);img.dataset.sconceHalo='off';group.appendChild(img);}root.dataset.ready='true';};
   if(photo.complete&&photo.naturalWidth)add();else photo.addEventListener('load',add,{once:true});return root;
  }
- window.STARK_FIXTURES={render(v,id,lights){let root=v.querySelector('.rv-native-fixtures');if(!root||root.dataset.room!==id)root=build(v,id);const scale=Math.max(v.clientWidth/1672,v.clientHeight/941);Object.assign(root.style,{left:(v.clientWidth-1672*scale)/2+'px',top:(v.clientHeight-941*scale)/2+'px',width:1672*scale+'px',height:941*scale+'px'});for(const key of ['strip','spots']){const level=lights[key]==='off'?0:Math.max(0,Math.min(1,lights.lv[key]/100));root.querySelector('[data-native-circuit='+key+']').style.opacity=1-level;root.dataset[key]=Math.round(level*100);}}};
+ window.STARK_FIXTURES={render(v,id,lights){let root=v.querySelector('.rv-native-fixtures');if(!root||root.dataset.room!==id)root=build(v,id);const scale=Math.max(v.clientWidth/1672,v.clientHeight/941);Object.assign(root.style,{left:(v.clientWidth-1672*scale)/2+'px',top:(v.clientHeight-941*scale)/2+'px',width:1672*scale+'px',height:941*scale+'px'});for(const key of ['strip','spots']){const level=lights[key]==='off'?0:Math.max(0,Math.min(1,lights.lv[key]/100));root.querySelector('[data-native-circuit='+key+']').style.opacity=1-level;root.dataset[key]=Math.round(level*100);}root.querySelector('[data-native-cool]').style.opacity=lights.spots==='6000'?Math.max(0,Math.min(1,lights.lv.spots/100)):0;}};
 })();
