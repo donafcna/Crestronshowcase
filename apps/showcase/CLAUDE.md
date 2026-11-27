@@ -258,3 +258,6 @@ TV : Swisscom montre le journal Runway ; Apple TV montre un accueil tvOS simulé
 ### 27 novembre 2026 — Villa Stark 2.3.33
 Ajout du septième spot du salon, juste au-dessus du mur en pierre : centre photo (824,185), demi-dimensions 3,5 × 1,5 pixels. Il utilise le même circuit spots, la même variation et le même raccord transparent que les autres appareils ; aucun nouveau masque global.
 Le calque de radiance artificielle du circuit spots est supprimé dans toutes les pièces : à 100 % chaud, seule la photo d’origine est révélée, sans apparition d’un second halo. Le blanc froid est limité par découpe aux ouvertures et appareils photographiés, sans ajouter de source ailleurs.
+
+### 27 novembre 2026 — Villa Stark 2.3.34
+Le faisceau du spot (824,185) sur le mur en pierre suit le même groupe et la même opacité que son ouverture lumineuse. Nouvelle référence photo room-Living-stone-spot-off-v1.webp : retrait du seul faisceau, éclairage ambiant et autres sources conservés. Le moteur extrait un champ d’éclairement lissé pour le réappliquer à la photo d’origine ; pierres, joints, grain et silhouettes stables. Contour limité à la face en pierre, alpha progressif intérieur sans bord rectangulaire. Pleine intensité : photo source inchangée ; niveau nul : état ambiant sans ce faisceau.

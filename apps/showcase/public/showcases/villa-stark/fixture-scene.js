@@ -65,6 +65,28 @@
   }
   ctx.putImageData(image,0,0);return {href:c.toDataURL(),left,top,width,height};
  }
+ let stoneReference;
+ function stoneWallOff(photo,reference){
+  const left=738,top=174,width=151,height=416;
+  function pixels(image,blur=0){const c=document.createElement('canvas');c.width=width;c.height=height;const ctx=c.getContext('2d',{willReadFrequently:true});if(blur)ctx.filter=`blur(${blur}px)`;ctx.drawImage(image,left,top,width,height,0,0,width,height);return ctx.getImageData(0,0,width,height);}
+  const data=pixels(photo),on=pixels(photo,6).data,off=pixels(reference,6).data,d=data.data;
+  const face=[[754,209],[876,184],[879,553],[746,580]].map(([x,y])=>[x-left,y-top]);
+  function edgeDistance(x,y){let inside=false,min=Infinity;for(let i=0,j=face.length-1;i<face.length;j=i++){
+   const [ax,ay]=face[j],[bx,by]=face[i],dx=bx-ax,dy=by-ay,t=Math.max(0,Math.min(1,((x-ax)*dx+(y-ay)*dy)/(dx*dx+dy*dy)));
+   min=Math.min(min,Math.hypot(x-ax-t*dx,y-ay-t*dy));
+   if((ay>y)!==(by>y)&&x<(bx-ax)*(y-ay)/(by-ay)+ax)inside=!inside;
+  }return inside?min:0;}
+  // Seul le champ d'éclairement change. Les pierres et les joints restent
+  // ceux de la photo source, jusque dans leurs petits reliefs et leurs ombres.
+  for(let y=0;y<height;y++)for(let x=0;x<width;x++){
+   const k=(y*width+x)*4,t=Math.min(1,edgeDistance(x,y)/7),alpha=t*t*(3-2*t);
+   if(!alpha){d[k+3]=0;continue;}
+   for(let ch=0;ch<3;ch++)d[k+ch]*=Math.max(.12,Math.min(1,off[k+ch]/Math.max(1,on[k+ch])));
+   d[k+3]=Math.round(255*alpha);
+  }
+  const canvas=document.createElement('canvas');canvas.width=width;canvas.height=height;canvas.getContext('2d').putImageData(data,0,0);
+  return {href:canvas.toDataURL(),left,top,width,height};
+ }
  function build(v,id){
   v.querySelector('.rv-native-fixtures')?.remove();
   const root=document.createElement('div');root.className='rv-native-fixtures';root.dataset.room=id;
@@ -84,6 +106,16 @@
   const cool=document.createElementNS(NS,'g');cool.dataset.nativeCool='spots';cool.innerHTML=`<image href="assets/original/room-${id}.webp" width="1672" height="941" clip-path="url(#${coolClip.id})" filter="url(#${prefix}-cool)"/>`;svg.appendChild(cool);
   root.appendChild(svg);v.appendChild(root);
   const photo=photoFor(id),add=()=>{if(!root.isConnected)return;const group=svg.querySelector('[data-native-circuit=spots]');for(const [x,y,rx,ry] of CEILING[id]||[]){const p=offSpot(photo,x,y,rx,ry),img=document.createElementNS(NS,'image');for(const [key,value] of Object.entries({href:p.href,x:p.left,y:p.top,width:p.width,height:p.height}))img.setAttribute(key,value);img.dataset.ceilingSpot=x+','+y;group.appendChild(img);}if(id==='Cinema')for(const [rect,body] of [[[120,165,175,270],[182,252,232,335]],[[615,255,115,170],[657,313,688,366]],[[1550,280,120,220],null]]){const p=offWall(photo,rect,body),img=document.createElementNS(NS,'image');for(const [key,value] of Object.entries({href:p.href,x:p.left,y:p.top,width:p.width,height:p.height}))img.setAttribute(key,value);img.dataset.sconceHalo='off';group.appendChild(img);}root.dataset.ready='true';};
+  if(id==='Living'){
+   if(!stoneReference){stoneReference=new Image();stoneReference.src='assets/original/room-Living-stone-spot-off-v1.webp';}
+   const addBeam=()=>{if(!root.isConnected||!photo.naturalWidth||!stoneReference.naturalWidth||svg.querySelector('[data-stone-beam]'))return;
+    const p=stoneWallOff(photo,stoneReference),img=document.createElementNS(NS,'image');
+    for(const [key,value] of Object.entries({href:p.href,x:p.left,y:p.top,width:p.width,height:p.height}))img.setAttribute(key,value);
+    img.dataset.stoneBeam='824,185';svg.querySelector('[data-native-circuit=spots]').appendChild(img);root.dataset.beamReady='true';
+   };
+   if(photo.complete&&stoneReference.complete)addBeam();
+   photo.addEventListener('load',addBeam,{once:true});stoneReference.addEventListener('load',addBeam,{once:true});
+  }
   if(photo.complete&&photo.naturalWidth)add();else photo.addEventListener('load',add,{once:true});return root;
  }
  window.STARK_FIXTURES={render(v,id,lights){let root=v.querySelector('.rv-native-fixtures');if(!root||root.dataset.room!==id)root=build(v,id);const scale=Math.max(v.clientWidth/1672,v.clientHeight/941);Object.assign(root.style,{left:(v.clientWidth-1672*scale)/2+'px',top:(v.clientHeight-941*scale)/2+'px',width:1672*scale+'px',height:941*scale+'px'});for(const key of ['strip','spots']){const level=lights[key]==='off'?0:Math.max(0,Math.min(1,lights.lv[key]/100));root.querySelector('[data-native-circuit='+key+']').style.opacity=1-level;root.dataset[key]=Math.round(level*100);}root.querySelector('[data-native-cool]').style.opacity=lights.spots==='6000'?Math.max(0,Math.min(1,lights.lv.spots/100)):0;}};
