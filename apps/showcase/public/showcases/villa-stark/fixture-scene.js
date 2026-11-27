@@ -7,7 +7,7 @@
   Living:[[343,52,7,3],[881,46,7,3],[1318,44,7,3],[1032,103,5.5,2.5],[585,117,5,2],[742,150,4.5,2],[824,185,3.5,1.5]],
   Kitchen:[[266,51,9,3],[719,51,9,3.5],[1537,55,9.5,3],[888,89,8,3],[556,102,8,2.5],[1301,110,7.5,2.5],[843,149,6,2],[1112,152,6,2],[1008,174,5.5,1.5]],
   Office:[[423,29,9.5,3.5],[1261,29,9.5,3.5],[486,135,7,2.5],[812,135,7,2.5],[1208,135,7,2.5]],
-  Dining:[[1386,38,10.5,4],[340,118,9,3],[1040,157,8,2.5],[327,194,6.5,2],[863,220,6,2]],
+  Dining:[[1386,38,10.5,4],[340,118,9,3],[1040,157,8,2.5],[327,194,6.5,2],[863,220,6,2],[463,244,5,1.5]],
   Cinema:[[424,83,8,3],[964,78,7.5,2.5],[1345,111,7.5,2.5],[728,142,6,2],[918,178,4.5,1.5]],
   Fitness:[[650,47,12.5,5.5],[1242,44,12,5.5],[773,168,8.5,3],[1206,167,8.5,2.5],[1581,166,9.5,3],[862,251,6,2],[1183,250,6.5,2],[1479,250,6.5,2],[896,286,5,1.5],[1172,286,5,1.5],[1425,286,5,1.5],[1035,303,4,1.5],[1091,303,3.5,1.5],[1147,302,3.5,1.5]],
   Master:[[1327,54,8,3],[386,75,7.5,3],[950,133,6,2],[658,163,4.5,1.5],[793,166,5.5,2]],
@@ -44,26 +44,6 @@
   const sample=(Math.max(0,Math.round(cy-ry*3.7))*width+Math.round(cx))*4,ambient=original.slice(sample,sample+3);
   ctx.beginPath();ctx.ellipse(cx,cy,rx,ry,0,0,Math.PI*2);ctx.fillStyle=`rgb(${ambient[0]*.46},${ambient[1]*.46},${ambient[2]*.46})`;ctx.fill();ctx.strokeStyle=`rgba(${ambient[0]},${ambient[1]},${ambient[2]},.7)`;ctx.lineWidth=.7;ctx.stroke();
   return {href:c.toDataURL(),left,top,width,height};
- }
- // Extinction des faisceaux d'appliques : restaurer la luminance du même
- // revêtement, sans ajouter d'ellipse noire sur le mur.
- function offWall(photo,rect,body){
-  const [left,top,width,height]=rect,c=document.createElement('canvas');c.width=width;c.height=height;
-  const ctx=c.getContext('2d',{willReadFrequently:true});ctx.drawImage(photo,left,top,width,height,0,0,width,height);
-  const image=ctx.getImageData(0,0,width,height),d=image.data,original=new Uint8ClampedArray(d);
-  for(let j=0;j<height;j++){
-   const ambient=[0,0,0];let samples=0;
-   for(let row=Math.max(0,j-12);row<=Math.min(height-1,j+12);row++)for(let k=0;k<5;k++){for(let ch=0;ch<3;ch++)ambient[ch]+=original[(row*width+k)*4+ch]+original[(row*width+width-1-k)*4+ch];samples+=2;}
-   for(let ch=0;ch<3;ch++)ambient[ch]/=samples;
-   for(let i=0;i<width;i++){
-    const k=(j*width+i)*4,px=left+i,py=top+j;
-    if(body&&px>=body[0]&&px<=body[2]&&py>=body[1]&&py<=body[3]){d[k+3]=0;continue;}
-    const edge=Math.min(1,i/12,(width-1-i)/12,j/14,(height-1-j)/14);
-    for(let ch=0;ch<3;ch++){const value=original[k+ch];const target=Math.min(value,ambient[ch]+(value-ambient[ch])*.2);d[k+ch]=target;}
-    d[k+3]=Math.round(255*Math.max(0,edge));
-   }
-  }
-  ctx.putImageData(image,0,0);return {href:c.toDataURL(),left,top,width,height};
  }
  let stoneReference;
  function stoneWallOff(photo,reference){
@@ -105,7 +85,7 @@
   svg.querySelector('defs').insertAdjacentHTML('beforeend',`<filter id="${prefix}-cool" color-interpolation-filters="sRGB"><feColorMatrix values=".78 0 0 0 .10 0 .94 0 0 .03 0 0 1.1 0 .15 0 0 0 1 0"/></filter>`);
   const cool=document.createElementNS(NS,'g');cool.dataset.nativeCool='spots';cool.innerHTML=`<image href="assets/original/room-${id}.webp" width="1672" height="941" clip-path="url(#${coolClip.id})" filter="url(#${prefix}-cool)"/>`;svg.appendChild(cool);
   root.appendChild(svg);v.appendChild(root);
-  const photo=photoFor(id),add=()=>{if(!root.isConnected)return;const group=svg.querySelector('[data-native-circuit=spots]');for(const [x,y,rx,ry] of CEILING[id]||[]){const p=offSpot(photo,x,y,rx,ry),img=document.createElementNS(NS,'image');for(const [key,value] of Object.entries({href:p.href,x:p.left,y:p.top,width:p.width,height:p.height}))img.setAttribute(key,value);img.dataset.ceilingSpot=x+','+y;group.appendChild(img);}if(id==='Cinema')for(const [rect,body] of [[[120,165,175,270],[182,252,232,335]],[[615,255,115,170],[657,313,688,366]],[[1550,280,120,220],null]]){const p=offWall(photo,rect,body),img=document.createElementNS(NS,'image');for(const [key,value] of Object.entries({href:p.href,x:p.left,y:p.top,width:p.width,height:p.height}))img.setAttribute(key,value);img.dataset.sconceHalo='off';group.appendChild(img);}root.dataset.ready='true';};
+  const photo=photoFor(id),add=()=>{if(!root.isConnected)return;const group=svg.querySelector('[data-native-circuit=spots]');for(const [x,y,rx,ry] of CEILING[id]||[]){const p=offSpot(photo,x,y,rx,ry),img=document.createElementNS(NS,'image');for(const [key,value] of Object.entries({href:p.href,x:p.left,y:p.top,width:p.width,height:p.height}))img.setAttribute(key,value);img.dataset.ceilingSpot=x+','+y;group.appendChild(img);}root.dataset.ready='true';};
   if(id==='Living'){
    if(!stoneReference){stoneReference=new Image();stoneReference.src='assets/original/room-Living-stone-spot-off-v1.webp';}
    const addBeam=()=>{if(!root.isConnected||!photo.naturalWidth||!stoneReference.naturalWidth||svg.querySelector('[data-stone-beam]'))return;

@@ -271,6 +271,7 @@ function renderRoomView() {
   // L’environnement photographique reste stable ; seuls les luminaires de chaque circuit varient.
   v.querySelector('.rv-photo').style.filter='none';v.querySelector('.rv-night').style.opacity=0;v.querySelector('.rv-strip').style.opacity=0;
   window.STARK_LIGHTING.render(v,id,l,INT[id].tv);
+  window.STARK_RELIGHT.render(v,id,l);
   window.STARK_FIXTURES.render(v,id,l);
   window.STARK_LEDS.render(v,id,l);
   window.STARK_FIREPLACE.render(v,id);

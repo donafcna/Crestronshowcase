@@ -1,0 +1,758 @@
+[
+  {
+    "room": "Dining",
+    "labels": [
+      "Éclairage buffet — SALLE À MANGER",
+      "Suspension et plafond — SALLE À MANGER"
+    ],
+    "states": [
+      {
+        "name": "100",
+        "layers": [
+          {
+            "circuit": "strip",
+            "level": "100",
+            "ready": "true"
+          },
+          {
+            "circuit": "spots",
+            "level": "100",
+            "ready": "true"
+          }
+        ]
+      },
+      {
+        "name": "spots-0",
+        "layers": [
+          {
+            "circuit": "strip",
+            "level": "100",
+            "ready": "true"
+          },
+          {
+            "circuit": "spots",
+            "level": "0",
+            "ready": "true"
+          }
+        ]
+      },
+      {
+        "name": "strip-0",
+        "layers": [
+          {
+            "circuit": "strip",
+            "level": "0",
+            "ready": "true"
+          },
+          {
+            "circuit": "spots",
+            "level": "100",
+            "ready": "true"
+          }
+        ]
+      },
+      {
+        "name": "0",
+        "layers": [
+          {
+            "circuit": "strip",
+            "level": "0",
+            "ready": "true"
+          },
+          {
+            "circuit": "spots",
+            "level": "0",
+            "ready": "true"
+          }
+        ]
+      },
+      {
+        "name": "50",
+        "layers": [
+          {
+            "circuit": "strip",
+            "level": "50",
+            "ready": "true"
+          },
+          {
+            "circuit": "spots",
+            "level": "50",
+            "ready": "true"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "room": "Kitchen",
+    "labels": [
+      "Plan de travail et plinthes — CUISINE",
+      "Spots plafond — CUISINE"
+    ],
+    "states": [
+      {
+        "name": "100",
+        "layers": [
+          {
+            "circuit": "strip",
+            "level": "100",
+            "ready": "true"
+          },
+          {
+            "circuit": "spots",
+            "level": "100",
+            "ready": "true"
+          }
+        ]
+      },
+      {
+        "name": "spots-0",
+        "layers": [
+          {
+            "circuit": "strip",
+            "level": "100",
+            "ready": "true"
+          },
+          {
+            "circuit": "spots",
+            "level": "0",
+            "ready": "true"
+          }
+        ]
+      },
+      {
+        "name": "strip-0",
+        "layers": [
+          {
+            "circuit": "strip",
+            "level": "0",
+            "ready": "true"
+          },
+          {
+            "circuit": "spots",
+            "level": "100",
+            "ready": "true"
+          }
+        ]
+      },
+      {
+        "name": "0",
+        "layers": [
+          {
+            "circuit": "strip",
+            "level": "0",
+            "ready": "true"
+          },
+          {
+            "circuit": "spots",
+            "level": "0",
+            "ready": "true"
+          }
+        ]
+      },
+      {
+        "name": "50",
+        "layers": [
+          {
+            "circuit": "strip",
+            "level": "50",
+            "ready": "true"
+          },
+          {
+            "circuit": "spots",
+            "level": "50",
+            "ready": "true"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "room": "Office",
+    "labels": [
+      "Rubans bibliothèque — BUREAU",
+      "Suspension bureau et spots — BUREAU"
+    ],
+    "states": [
+      {
+        "name": "100",
+        "layers": [
+          {
+            "circuit": "strip",
+            "level": "100",
+            "ready": "true"
+          },
+          {
+            "circuit": "spots",
+            "level": "100",
+            "ready": "true"
+          }
+        ]
+      },
+      {
+        "name": "spots-0",
+        "layers": [
+          {
+            "circuit": "strip",
+            "level": "100",
+            "ready": "true"
+          },
+          {
+            "circuit": "spots",
+            "level": "0",
+            "ready": "true"
+          }
+        ]
+      },
+      {
+        "name": "strip-0",
+        "layers": [
+          {
+            "circuit": "strip",
+            "level": "0",
+            "ready": "true"
+          },
+          {
+            "circuit": "spots",
+            "level": "100",
+            "ready": "true"
+          }
+        ]
+      },
+      {
+        "name": "0",
+        "layers": [
+          {
+            "circuit": "strip",
+            "level": "0",
+            "ready": "true"
+          },
+          {
+            "circuit": "spots",
+            "level": "0",
+            "ready": "true"
+          }
+        ]
+      },
+      {
+        "name": "50",
+        "layers": [
+          {
+            "circuit": "strip",
+            "level": "50",
+            "ready": "true"
+          },
+          {
+            "circuit": "spots",
+            "level": "50",
+            "ready": "true"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "room": "Cinema",
+    "labels": [
+      "Balisage des marches — CINÉMA",
+      "Appliques, corniche et plafond — CINÉMA"
+    ],
+    "states": [
+      {
+        "name": "100",
+        "layers": [
+          {
+            "circuit": "strip",
+            "level": "100",
+            "ready": "true"
+          },
+          {
+            "circuit": "spots",
+            "level": "100",
+            "ready": "true"
+          }
+        ]
+      },
+      {
+        "name": "spots-0",
+        "layers": [
+          {
+            "circuit": "strip",
+            "level": "100",
+            "ready": "true"
+          },
+          {
+            "circuit": "spots",
+            "level": "0",
+            "ready": "true"
+          }
+        ]
+      },
+      {
+        "name": "strip-0",
+        "layers": [
+          {
+            "circuit": "strip",
+            "level": "0",
+            "ready": "true"
+          },
+          {
+            "circuit": "spots",
+            "level": "100",
+            "ready": "true"
+          }
+        ]
+      },
+      {
+        "name": "0",
+        "layers": [
+          {
+            "circuit": "strip",
+            "level": "0",
+            "ready": "true"
+          },
+          {
+            "circuit": "spots",
+            "level": "0",
+            "ready": "true"
+          }
+        ]
+      },
+      {
+        "name": "50",
+        "layers": [
+          {
+            "circuit": "strip",
+            "level": "50",
+            "ready": "true"
+          },
+          {
+            "circuit": "spots",
+            "level": "50",
+            "ready": "true"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "room": "Fitness",
+    "labels": [
+      "Niches haltères — FITNESS",
+      "Spots plafond — FITNESS"
+    ],
+    "states": [
+      {
+        "name": "100",
+        "layers": [
+          {
+            "circuit": "strip",
+            "level": "100",
+            "ready": "true"
+          },
+          {
+            "circuit": "spots",
+            "level": "100",
+            "ready": "true"
+          }
+        ]
+      },
+      {
+        "name": "spots-0",
+        "layers": [
+          {
+            "circuit": "strip",
+            "level": "100",
+            "ready": "true"
+          },
+          {
+            "circuit": "spots",
+            "level": "0",
+            "ready": "true"
+          }
+        ]
+      },
+      {
+        "name": "strip-0",
+        "layers": [
+          {
+            "circuit": "strip",
+            "level": "0",
+            "ready": "true"
+          },
+          {
+            "circuit": "spots",
+            "level": "100",
+            "ready": "true"
+          }
+        ]
+      },
+      {
+        "name": "0",
+        "layers": [
+          {
+            "circuit": "strip",
+            "level": "0",
+            "ready": "true"
+          },
+          {
+            "circuit": "spots",
+            "level": "0",
+            "ready": "true"
+          }
+        ]
+      },
+      {
+        "name": "50",
+        "layers": [
+          {
+            "circuit": "strip",
+            "level": "50",
+            "ready": "true"
+          },
+          {
+            "circuit": "spots",
+            "level": "50",
+            "ready": "true"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "room": "Entry",
+    "labels": [
+      "LED escalier et corniches — ENTRÉE",
+      "Suspension entrée — ENTRÉE"
+    ],
+    "states": [
+      {
+        "name": "100",
+        "layers": [
+          {
+            "circuit": "strip",
+            "level": "100",
+            "ready": "true"
+          },
+          {
+            "circuit": "spots",
+            "level": "100",
+            "ready": "true"
+          }
+        ]
+      },
+      {
+        "name": "spots-0",
+        "layers": [
+          {
+            "circuit": "strip",
+            "level": "100",
+            "ready": "true"
+          },
+          {
+            "circuit": "spots",
+            "level": "0",
+            "ready": "true"
+          }
+        ]
+      },
+      {
+        "name": "strip-0",
+        "layers": [
+          {
+            "circuit": "strip",
+            "level": "0",
+            "ready": "true"
+          },
+          {
+            "circuit": "spots",
+            "level": "100",
+            "ready": "true"
+          }
+        ]
+      },
+      {
+        "name": "0",
+        "layers": [
+          {
+            "circuit": "strip",
+            "level": "0",
+            "ready": "true"
+          },
+          {
+            "circuit": "spots",
+            "level": "0",
+            "ready": "true"
+          }
+        ]
+      },
+      {
+        "name": "50",
+        "layers": [
+          {
+            "circuit": "strip",
+            "level": "50",
+            "ready": "true"
+          },
+          {
+            "circuit": "spots",
+            "level": "50",
+            "ready": "true"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "room": "Master",
+    "labels": [
+      "Chevet gauche et corniche — SUITE PARENTALE",
+      "Lampe droite et spots plafond — SUITE PARENTALE"
+    ],
+    "states": [
+      {
+        "name": "100",
+        "layers": [
+          {
+            "circuit": "strip",
+            "level": "100",
+            "ready": "true"
+          },
+          {
+            "circuit": "spots",
+            "level": "100",
+            "ready": "true"
+          }
+        ]
+      },
+      {
+        "name": "spots-0",
+        "layers": [
+          {
+            "circuit": "strip",
+            "level": "100",
+            "ready": "true"
+          },
+          {
+            "circuit": "spots",
+            "level": "0",
+            "ready": "true"
+          }
+        ]
+      },
+      {
+        "name": "strip-0",
+        "layers": [
+          {
+            "circuit": "strip",
+            "level": "0",
+            "ready": "true"
+          },
+          {
+            "circuit": "spots",
+            "level": "100",
+            "ready": "true"
+          }
+        ]
+      },
+      {
+        "name": "0",
+        "layers": [
+          {
+            "circuit": "strip",
+            "level": "0",
+            "ready": "true"
+          },
+          {
+            "circuit": "spots",
+            "level": "0",
+            "ready": "true"
+          }
+        ]
+      },
+      {
+        "name": "50",
+        "layers": [
+          {
+            "circuit": "strip",
+            "level": "50",
+            "ready": "true"
+          },
+          {
+            "circuit": "spots",
+            "level": "50",
+            "ready": "true"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "room": "Bedroom",
+    "labels": [
+      "Applique gauche — CHAMBRE AMIS",
+      "Applique droite, bureau et plafond — CHAMBRE AMIS"
+    ],
+    "states": [
+      {
+        "name": "100",
+        "layers": [
+          {
+            "circuit": "strip",
+            "level": "100",
+            "ready": "true"
+          },
+          {
+            "circuit": "spots",
+            "level": "100",
+            "ready": "true"
+          }
+        ]
+      },
+      {
+        "name": "spots-0",
+        "layers": [
+          {
+            "circuit": "strip",
+            "level": "100",
+            "ready": "true"
+          },
+          {
+            "circuit": "spots",
+            "level": "0",
+            "ready": "true"
+          }
+        ]
+      },
+      {
+        "name": "strip-0",
+        "layers": [
+          {
+            "circuit": "strip",
+            "level": "0",
+            "ready": "true"
+          },
+          {
+            "circuit": "spots",
+            "level": "100",
+            "ready": "true"
+          }
+        ]
+      },
+      {
+        "name": "0",
+        "layers": [
+          {
+            "circuit": "strip",
+            "level": "0",
+            "ready": "true"
+          },
+          {
+            "circuit": "spots",
+            "level": "0",
+            "ready": "true"
+          }
+        ]
+      },
+      {
+        "name": "50",
+        "layers": [
+          {
+            "circuit": "strip",
+            "level": "50",
+            "ready": "true"
+          },
+          {
+            "circuit": "spots",
+            "level": "50",
+            "ready": "true"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "room": "Pool",
+    "labels": [
+      "Spots de la terrasse — PISCINE",
+      "Spots dans le bassin — PISCINE"
+    ],
+    "states": [
+      {
+        "name": "100",
+        "layers": [
+          {
+            "circuit": "strip",
+            "level": "100",
+            "ready": "true"
+          },
+          {
+            "circuit": "spots",
+            "level": "100",
+            "ready": "true"
+          }
+        ]
+      },
+      {
+        "name": "spots-0",
+        "layers": [
+          {
+            "circuit": "strip",
+            "level": "100",
+            "ready": "true"
+          },
+          {
+            "circuit": "spots",
+            "level": "0",
+            "ready": "true"
+          }
+        ]
+      },
+      {
+        "name": "strip-0",
+        "layers": [
+          {
+            "circuit": "strip",
+            "level": "0",
+            "ready": "true"
+          },
+          {
+            "circuit": "spots",
+            "level": "100",
+            "ready": "true"
+          }
+        ]
+      },
+      {
+        "name": "0",
+        "layers": [
+          {
+            "circuit": "strip",
+            "level": "0",
+            "ready": "true"
+          },
+          {
+            "circuit": "spots",
+            "level": "0",
+            "ready": "true"
+          }
+        ]
+      },
+      {
+        "name": "50",
+        "layers": [
+          {
+            "circuit": "strip",
+            "level": "50",
+            "ready": "true"
+          },
+          {
+            "circuit": "spots",
+            "level": "50",
+            "ready": "true"
+          }
+        ]
+      }
+    ]
+  }
+]

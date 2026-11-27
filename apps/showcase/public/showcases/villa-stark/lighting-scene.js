@@ -19,6 +19,10 @@
  MAP.Entry.spots.emit=[];
  MAP.Entry.spots.glass=[]; // Extinction par la texture photographique dans fixture-scene.js.
  MAP.Entry.strip.traces=['M1040 339H1150','M1050 355H1160','M1060 369H1171','M1068 383H1181','M1077 401H1193','M1088 417H1207','M1096 435H1220','M1105 451H1232','M1117 471H1247','M1129 491H1263','M1143 515H1279','M1157 539H1295','M1158 566H1309','M1158 595H1325','M1158 623H1345','M1158 657H1367','M1157 695Q1270 696 1400 693','M1127 736Q1255 749 1410 738','M1113 779Q1250 800 1430 781'];
+ MAP.Entry.strip.traces=[]; // Transport photographique des marches et des reflets.
+ MAP.Entry.strip.label='LED escalier et corniches';
+ MAP.Master.strip.label='Chevet gauche et corniche';
+ MAP.Cinema.spots.label='Appliques, corniche et plafond';
  const ns='http://www.w3.org/2000/svg';
  function build(v,id,tv){
   v.querySelector('.rv-physical-lighting')?.remove();
@@ -43,7 +47,7 @@
  function render(v,id,lights,tv){
   let root=v.querySelector('.rv-physical-lighting');if(!root||root.dataset.room!==id)root=build(v,id,tv);
   const cover=Math.max(v.clientWidth/1672,v.clientHeight/941);Object.assign(root.style,{left:(v.clientWidth-1672*cover)/2+'px',top:(v.clientHeight-941*cover)/2+'px',width:1672*cover+'px',height:941*cover+'px'});
-  for(const key of ['strip','spots']){const level=lights[key]==='off'?0:Math.max(0,Math.min(1,lights.lv[key]/100)),color=lights[key]==='6000'?'#dcecff':'#ffd09a';root.querySelector('.physical-darken [data-circuit='+key+']').style.opacity=1-level;const radiant=root.querySelector('.physical-radiance [data-circuit='+key+']');radiant.style.opacity=key==='spots'||(id==='Living'&&key==='strip'&&lights.strip!=='6000')?0:Math.pow(level,.7);radiant.style.setProperty('--fixture-color',color);root.dataset[key]=Math.round(level*100);}
+  for(const key of ['strip','spots']){const level=lights[key]==='off'?0:Math.max(0,Math.min(1,lights.lv[key]/100)),color=lights[key]==='6000'?'#dcecff':'#ffd09a';root.querySelector('.physical-darken [data-circuit='+key+']').style.opacity=1-level;const radiant=root.querySelector('.physical-radiance [data-circuit='+key+']');radiant.style.opacity=0;radiant.style.setProperty('--fixture-color',color);root.dataset[key]=Math.round(level*100);}
  }
  window.STARK_LIGHTING={maps:MAP,label:(id,key)=>MAP[id][key].label,render};
 })();

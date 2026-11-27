@@ -1,0 +1,146 @@
+[
+  {
+    "room": "Dining",
+    "circuit": "strip",
+    "asset": "room-Dining-strip-off-v1.webp",
+    "prompt": "Turn OFF ONLY the light in the left wood buffet niche. Remove its warm glow on the niche walls, ceiling, flowers, cabinet top and nearby floor. Keep pendant and ceiling spots fully on.",
+    "tool": "image_gen built-in",
+    "usage": "Reference illumination only; rendered geometry and textures use original photo."
+  },
+  {
+    "room": "Dining",
+    "circuit": "spots",
+    "asset": "room-Dining-spots-off-v1.webp",
+    "prompt": "Turn OFF ONLY the brass pendant above the table and all recessed ceiling downlights. Remove their projected cones on both stone pillars, ceiling, tabletop and floor. Keep buffet niche LEDs on. Keep candles, outdoor garden and lights in the distant adjoining kitchen unchanged.",
+    "tool": "image_gen built-in",
+    "usage": "Reference illumination only; rendered geometry and textures use original photo."
+  },
+  {
+    "room": "Kitchen",
+    "circuit": "strip",
+    "asset": "room-Kitchen-strip-off-v1.webp",
+    "prompt": "Turn OFF ONLY all kitchen LED strips: top cabinet cornice, under wall cabinets, island toe kick. Remove their glow on ceiling, cabinet wood, stone backsplash, countertop and floor. Keep ceiling downlights on.",
+    "tool": "image_gen built-in",
+    "usage": "Reference illumination only; rendered geometry and textures use original photo."
+  },
+  {
+    "room": "Kitchen",
+    "circuit": "spots",
+    "asset": "room-Kitchen-spots-off-v1.webp",
+    "prompt": "Turn OFF ONLY recessed ceiling downlights. Remove their projected illumination and ceiling glow, island countertop direct light. Keep cabinet cornice, under cabinet and island toe kick LED strips fully on.",
+    "tool": "image_gen built-in",
+    "usage": "Reference illumination only; rendered geometry and textures use original photo."
+  },
+  {
+    "room": "Office",
+    "circuit": "strip",
+    "asset": "room-Office-strip-off-v1.webp",
+    "prompt": "Turn OFF ONLY all shelf LED strips in both the left and back bookshelves. Remove glow on all wood shelves, books, objects, nearby ceiling. Keep ceiling downlights and brass desk lamp on.",
+    "tool": "image_gen built-in",
+    "usage": "Reference illumination only; rendered geometry and textures use original photo."
+  },
+  {
+    "room": "Office",
+    "circuit": "spots",
+    "asset": "room-Office-spots-off-v1.webp",
+    "prompt": "Turn OFF ONLY recessed ceiling downlights and brass desk lamp. Remove light on stone pillar at right, desk and ceiling, their warm reflected light. Keep all bookshelf LED strips on.",
+    "tool": "image_gen built-in",
+    "usage": "Reference illumination only; rendered geometry and textures use original photo."
+  },
+  {
+    "room": "Cinema",
+    "circuit": "strip",
+    "asset": "room-Cinema-strip-off-v1.webp",
+    "prompt": "Turn OFF ONLY floor step/riser LED strips below the seating rows. Remove the luminous lines and their spill on carpet and chair bases. Keep sconces, ceiling spots and upper wall cornice lights on.",
+    "tool": "image_gen built-in",
+    "usage": "Reference illumination only; rendered geometry and textures use original photo."
+  },
+  {
+    "room": "Cinema",
+    "circuit": "spots",
+    "asset": "room-Cinema-spots-off-v1.webp",
+    "prompt": "Turn OFF ONLY wall sconces, recessed ceiling downlights and upper wall cornice LEDs. Remove all their cones and glow on walls and ceiling. Keep seating step lights fully on. Keep TV screen off.",
+    "tool": "image_gen built-in",
+    "usage": "Reference illumination only; rendered geometry and textures use original photo."
+  },
+  {
+    "room": "Fitness",
+    "circuit": "strip",
+    "asset": "room-Fitness-strip-off-v1.webp",
+    "prompt": "Turn OFF ONLY accent lighting in the back dumbbell niche, including light onto the flower vase and its reflection in right mirror. Keep recessed ceiling downlights on.",
+    "tool": "image_gen built-in",
+    "usage": "Reference illumination only; rendered geometry and textures use original photo."
+  },
+  {
+    "room": "Fitness",
+    "circuit": "spots",
+    "asset": "room-Fitness-spots-off-v1.webp",
+    "prompt": "Turn OFF ONLY all recessed ceiling downlights including their mirror reflections. Remove their illumination from ceiling, stone pillars, floor and equipment. Keep back dumbbell niche accent lighting on, including mirrored niche.",
+    "tool": "image_gen built-in",
+    "usage": "Reference illumination only; rendered geometry and textures use original photo."
+  },
+  {
+    "room": "Entry",
+    "circuit": "strip",
+    "asset": "room-Entry-strip-off-v1.webp",
+    "prompt": "Turn OFF ONLY staircase step LED strips, long LED cornice atop the left wood wall and both upper wall/ceiling edge LED strips. Remove all their glow on wood, staircase stone, wall and ceiling. Keep hanging tubular pendant lights fully on, keep distant living room and fireplace unchanged.",
+    "tool": "image_gen built-in",
+    "usage": "Reference illumination only; rendered geometry and textures use original photo."
+  },
+  {
+    "room": "Entry",
+    "circuit": "spots",
+    "asset": "room-Entry-spots-off-v1.webp",
+    "prompt": "Turn OFF ONLY the eight hanging tubular pendant lights in the foyer. Remove their light projected on ceiling, walls, table, vase and floor. Keep staircase LEDs, wall cornice strips and all lighting in distant living room fully on.",
+    "tool": "image_gen built-in",
+    "usage": "Reference illumination only; rendered geometry and textures use original photo."
+  },
+  {
+    "room": "Master",
+    "circuit": "strip",
+    "asset": "room-Master-strip-off-v1.webp",
+    "prompt": "Turn OFF ONLY the left bedside table lamp and the long concealed cornice LED above the headboard stone wall. Remove their warm glow on left slatted wall, stone wall, ceiling, bed and bedside. Keep right bedside lamp and recessed ceiling spots on. Keep outdoor lights and candle on bench unchanged.",
+    "tool": "image_gen built-in",
+    "usage": "Reference illumination only; rendered geometry and textures use original photo."
+  },
+  {
+    "room": "Master",
+    "circuit": "spots",
+    "asset": "room-Master-spots-off-v1.webp",
+    "prompt": "Turn OFF ONLY right bedside lamp and all recessed ceiling downlights. Remove their projected glow on right slatted wall, curtains, bed, ceiling and floor. Keep left bedside lamp, long cornice LED above stone headboard wall, outdoor lights and bench candle on.",
+    "tool": "image_gen built-in",
+    "usage": "Reference illumination only; rendered geometry and textures use original photo."
+  },
+  {
+    "room": "Bedroom",
+    "circuit": "strip",
+    "asset": "room-Bedroom-strip-off-v1.webp",
+    "prompt": "Turn OFF ONLY the left bedside wall lamp. Remove its upward and downward cones on left wall and its light on the bed, nightstand and ceiling. Keep right wall lamp, desk lamp and recessed ceiling spot fully on.",
+    "tool": "image_gen built-in",
+    "usage": "Reference illumination only; rendered geometry and textures use original photo."
+  },
+  {
+    "room": "Bedroom",
+    "circuit": "spots",
+    "asset": "room-Bedroom-spots-off-v1.webp",
+    "prompt": "Turn OFF ONLY right bedside wall lamp, small desk lamp and recessed ceiling downlight. Remove their upward/downward glow on wall, framed artwork, desk, ceiling, bed and floor. Keep left wall lamp fully on.",
+    "tool": "image_gen built-in",
+    "usage": "Reference illumination only; rendered geometry and textures use original photo."
+  },
+  {
+    "room": "Pool",
+    "circuit": "strip",
+    "asset": "room-Pool-strip-off-v1.webp",
+    "prompt": "Turn OFF ONLY the outdoor terrace and facade lighting: recessed ground lights, stone pillar uplights, garden step lights. Remove their light on terrace paving, stone facade and reflected in pool. Keep all interior house lights, underwater pool lights, garden trees and candle unchanged.",
+    "tool": "image_gen built-in",
+    "usage": "Reference illumination only; rendered geometry and textures use original photo."
+  },
+  {
+    "room": "Pool",
+    "circuit": "spots",
+    "asset": "room-Pool-spots-off-v1.webp",
+    "prompt": "Turn OFF ONLY all underwater pool lamps. Remove their cyan luminous spots and projected light from water and pool bottom. Keep terrace, facade, garden and all house interior lights unchanged. Keep reflections of house in pool.",
+    "tool": "image_gen built-in",
+    "usage": "Reference illumination only; rendered geometry and textures use original photo."
+  }
+]
