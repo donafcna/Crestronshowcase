@@ -4,6 +4,8 @@
   "specialFinish": true,
   "specialPolish": true,
   "fpsMax": 60,
+  "visibleRoomMatrices": true,
+  "pooledTvLight": true,
   "pieces": [
     {
       "id": 1,
@@ -176,5 +178,7 @@
       "windowWall": "none",
       "av": false
     }
-  ]
+  ],
+  "salonPhoto": true,
+  "photoViews": true
 }

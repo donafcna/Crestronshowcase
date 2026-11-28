@@ -1,0 +1,36 @@
+<!doctype html><html lang="fr"><meta charset="utf-8"><title>Recette des décors Villa FTV</title>
+<style>body{margin:0;background:#101719;color:white;font:14px system-ui}canvas{width:100vw;height:80vh}header{padding:12px;display:flex;gap:15px}button,select{padding:8px}pre{white-space:pre-wrap}#results{max-height:150px;overflow:auto}</style>
+<header><button id="run">Vérifier les 18 vues</button><select id="room"></select><button id="off">OFF</button><button id="on">TOTAL</button><span id="status">Chargement</span></header>
+<canvas id="view"></canvas><pre id="state"></pre><pre id="results"></pre>
+<script type="module">
+import {createPlan3D} from '/plan3d/plan3d.js';
+import {PHOTO_ROOMS} from '/plan3d/villa-photo-layouts.js';
+const $=id=>document.getElementById(id),errors=[],results=[];
+addEventListener('error',e=>errors.push(e.message));
+const cfg=await (await fetch('/plan3d/villa-crans.json')).json();
+const api=createPlan3D({canvas:$('view'),config:cfg,startOverview:false});
+api.setWindow({x:16,y:16,w:innerWidth-32,h:innerHeight*.8-32});api.setDay(1);api.holdOverview(false);
+for(const [id,r] of Object.entries(PHOTO_ROOMS))$('room').add(new Option(r.name,id));
+const set=(id)=>{if(id===0)api.overview();else api.setRoom(id);};
+$('room').onchange=()=>set(Number($('room').value));
+function lights(v){const id=Number($('room').value);for(let i=0;i<5;i++)api.setCircuit(id,i,v);}
+$('off').onclick=()=>lights(0);$('on').onclick=()=>lights(1);
+setInterval(()=>$('state').textContent=JSON.stringify(api.metrics().villaPhoto),200);
+const frame=()=>new Promise(r=>requestAnimationFrame(r));
+async function until(fn){const t=performance.now();while(!fn()){if(performance.now()-t>15000)throw Error('Délai dépassé');await frame();}}
+async function sample(ms){const t=performance.now(),first=api.metrics().renderedFrames;let last=t;const intervals=[];while(last-t<ms){const now=await frame();intervals.push(now-last);last=now;}intervals.sort((a,b)=>a-b);return {fps:(api.metrics().renderedFrames-first)*1000/(last-t),p95:intervals[Math.floor(intervals.length*.95)],max:intervals.at(-1)};}
+$('status').textContent='Prêt';
+$('run').onclick=async()=>{
+ $('run').disabled=true;results.length=0;
+ try{for(let id=0;id<=17;id++){
+   $('status').textContent=`Vue ${id}/17`;$('room').value=String(id);set(id);
+   const transitionPerf=await sample(1800);
+   await until(()=>api.metrics().villaPhoto?.room===id&&api.metrics().villaPhoto.transition===1);
+   if(id){lights(0);api.setVideoSource(id,2);await until(()=>api.metrics().villaPhoto.state.level<.01);lights(1);}
+   const perf=await sample(2400),photo=api.metrics().villaPhoto;
+   results.push({id,name:PHOTO_ROOMS[id].name,...perf,transitionPerf,photo,errors:[...errors]});$('results').textContent=JSON.stringify(results);
+   if(photo.failed.length||photo.cacheSize>4||errors.length)throw Error('Erreur décor/cache/console');
+ }
+ $('status').textContent='Terminé : 18/18';}catch(e){$('status').textContent='Échec : '+e.message;}finally{$('run').disabled=false;}
+};
+</script></html>

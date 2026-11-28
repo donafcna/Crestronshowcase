@@ -1,0 +1,218 @@
+[
+  {
+    "room": 11,
+    "phase": "room",
+    "photo": {
+      "ready": true,
+      "room": 11,
+      "wanted": 11,
+      "transition": 1,
+      "cacheSize": 3,
+      "pending": 0,
+      "failed": [],
+      "state": {
+        "room": 11,
+        "name": "Pool House",
+        "level": 0,
+        "motors": [
+          0,
+          0,
+          0
+        ],
+        "source": 2,
+        "paused": true,
+        "hvac": 0,
+        "steam": 0,
+        "heat": 0
+      },
+      "rect": {
+        "x": 382.9659843444824,
+        "y": 200.36213853712857,
+        "w": 649.0340156555176,
+        "h": 365.27572292574285
+      }
+    },
+    "tv": "race",
+    "errors": []
+  },
+  {
+    "room": 11,
+    "phase": "room",
+    "photo": {
+      "ready": true,
+      "room": 11,
+      "wanted": 11,
+      "transition": 1,
+      "cacheSize": 3,
+      "pending": 0,
+      "failed": [],
+      "state": {
+        "room": 11,
+        "name": "Pool House",
+        "level": 1,
+        "motors": [
+          0,
+          0,
+          1
+        ],
+        "source": 0,
+        "paused": false,
+        "hvac": 0,
+        "steam": 0,
+        "heat": 0
+      },
+      "rect": {
+        "x": 382.9659843444824,
+        "y": 200.36213853712857,
+        "w": 649.0340156555176,
+        "h": 365.27572292574285
+      }
+    },
+    "tv": "tennis",
+    "errors": []
+  },
+  {
+    "room": 11,
+    "phase": "room",
+    "photo": {
+      "ready": true,
+      "room": 11,
+      "wanted": 11,
+      "transition": 1,
+      "cacheSize": 3,
+      "pending": 0,
+      "failed": [],
+      "state": {
+        "room": 11,
+        "name": "Pool House",
+        "level": 1,
+        "motors": [
+          1,
+          0,
+          0
+        ],
+        "source": 0,
+        "paused": false,
+        "hvac": 0,
+        "steam": 0,
+        "heat": 0
+      },
+      "rect": {
+        "x": 382.9659843444824,
+        "y": 200.36213853712857,
+        "w": 649.0340156555176,
+        "h": 365.27572292574285
+      }
+    },
+    "tv": "tennis",
+    "errors": []
+  },
+  {
+    "room": 11,
+    "phase": "room",
+    "photo": {
+      "ready": true,
+      "room": 11,
+      "wanted": 11,
+      "transition": 1,
+      "cacheSize": 3,
+      "pending": 0,
+      "failed": [],
+      "state": {
+        "room": 11,
+        "name": "Pool House",
+        "level": 1,
+        "motors": [
+          0,
+          1,
+          0
+        ],
+        "source": 0,
+        "paused": false,
+        "hvac": 0,
+        "steam": 0,
+        "heat": 0
+      },
+      "rect": {
+        "x": 382.9659843444824,
+        "y": 200.36213853712857,
+        "w": 649.0340156555176,
+        "h": 365.27572292574285
+      }
+    },
+    "tv": "tennis",
+    "errors": []
+  },
+  {
+    "room": 13,
+    "phase": "room",
+    "photo": {
+      "ready": true,
+      "room": 13,
+      "wanted": 13,
+      "transition": 1,
+      "cacheSize": 4,
+      "pending": 0,
+      "failed": [],
+      "state": {
+        "room": 13,
+        "name": "Sauna & Hammam",
+        "level": 0,
+        "motors": [
+          0,
+          0,
+          0
+        ],
+        "source": 0,
+        "paused": false,
+        "hvac": 1,
+        "steam": 0.51,
+        "heat": 0
+      },
+      "rect": {
+        "x": 382.9659843444824,
+        "y": 200.36213853712857,
+        "w": 649.0340156555176,
+        "h": 365.27572292574285
+      }
+    },
+    "tv": "tennis",
+    "errors": []
+  },
+  {
+    "room": 13,
+    "phase": "room",
+    "photo": {
+      "ready": true,
+      "room": 13,
+      "wanted": 13,
+      "transition": 1,
+      "cacheSize": 4,
+      "pending": 0,
+      "failed": [],
+      "state": {
+        "room": 13,
+        "name": "Sauna & Hammam",
+        "level": 1,
+        "motors": [
+          0,
+          0,
+          0
+        ],
+        "source": 0,
+        "paused": false,
+        "hvac": 1,
+        "steam": 0.54,
+        "heat": 1
+      },
+      "rect": {
+        "x": 382.9659843444824,
+        "y": 200.36213853712857,
+        "w": 649.0340156555176,
+        "h": 365.27572292574285
+      }
+    },
+    "tv": "tennis",
+    "errors": []
+  }
+]

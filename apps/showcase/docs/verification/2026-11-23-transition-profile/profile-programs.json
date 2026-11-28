@@ -1,0 +1,1326 @@
+{
+  "status": "complete",
+  "warmMs": 0,
+  "runs": [
+    {
+      "id": 4,
+      "transition": {
+        "fps": 48.04506295528344,
+        "sampledMedianMs": 17.099999964237213,
+        "sampledP95Ms": 44,
+        "maxMs": 155.10000002384186,
+        "movingSamples": 61,
+        "frames": 180,
+        "renderedFrames": 204,
+        "medianMs": 24.26666666666779,
+        "p95Ms": 32.36666666666224,
+        "pixelRatio": 1.5,
+        "drawCalls": 146,
+        "triangles": 216898,
+        "zone": null,
+        "tv3D": {
+          "mode": "3d",
+          "version": "race-broadcast-1",
+          "drawCalls": 161,
+          "triangles": 235622,
+          "width": 640,
+          "height": 360,
+          "programmes": 1,
+          "draws": 51,
+          "currentKind": "race",
+          "venues": {
+            "race": {
+              "cars": 7,
+              "staticDrawCalls": 10,
+              "materials": "textured",
+              "style": "broadcast",
+              "trackSamples": 256
+            }
+          }
+        },
+        "geometries": 162,
+        "textures": 28,
+        "programs": 43
+      },
+      "steady": {
+        "fps": 60.28233498664632,
+        "sampledMedianMs": 16.600000023841858,
+        "sampledP95Ms": 18.69999998807907,
+        "maxMs": 20.600000023841858,
+        "movingSamples": 0,
+        "frames": 180,
+        "renderedFrames": 283,
+        "medianMs": 23.599999999997635,
+        "p95Ms": 32.399999999999636,
+        "pixelRatio": 1.5,
+        "drawCalls": 106,
+        "triangles": 202090,
+        "zone": null,
+        "tv3D": {
+          "mode": "3d",
+          "version": "race-broadcast-1",
+          "drawCalls": 121,
+          "triangles": 220814,
+          "width": 640,
+          "height": 360,
+          "programmes": 1,
+          "draws": 70,
+          "currentKind": "race",
+          "venues": {
+            "race": {
+              "cars": 7,
+              "staticDrawCalls": 10,
+              "materials": "textured",
+              "style": "broadcast",
+              "trackSamples": 256
+            }
+          }
+        },
+        "geometries": 162,
+        "textures": 28,
+        "programs": 43
+      }
+    },
+    {
+      "id": 5,
+      "transition": {
+        "fps": 59.83379501385041,
+        "sampledMedianMs": 16.69999998807907,
+        "sampledP95Ms": 19.899999976158142,
+        "maxMs": 26.899999976158142,
+        "movingSamples": 80,
+        "frames": 180,
+        "renderedFrames": 391,
+        "medianMs": 23.599999999997635,
+        "p95Ms": 31.799999999999272,
+        "pixelRatio": 1.5,
+        "drawCalls": 150,
+        "triangles": 218962,
+        "zone": null,
+        "tv3D": {
+          "mode": "3d",
+          "version": "race-broadcast-1",
+          "drawCalls": 165,
+          "triangles": 237686,
+          "width": 640,
+          "height": 360,
+          "programmes": 1,
+          "draws": 97,
+          "currentKind": "race",
+          "venues": {
+            "race": {
+              "cars": 7,
+              "staticDrawCalls": 10,
+              "materials": "textured",
+              "style": "broadcast",
+              "trackSamples": 256
+            }
+          }
+        },
+        "geometries": 230,
+        "textures": 34,
+        "programs": 43
+      },
+      "steady": {
+        "fps": 60.03951968329858,
+        "sampledMedianMs": 16.69999998807907,
+        "sampledP95Ms": 19.30000001192093,
+        "maxMs": 28.30000001192093,
+        "movingSamples": 0,
+        "frames": 180,
+        "renderedFrames": 470,
+        "medianMs": 23.700000000004366,
+        "p95Ms": 31.899999999999636,
+        "pixelRatio": 1.5,
+        "drawCalls": 108,
+        "triangles": 203122,
+        "zone": null,
+        "tv3D": {
+          "mode": "3d",
+          "version": "race-broadcast-1",
+          "drawCalls": 123,
+          "triangles": 221846,
+          "width": 640,
+          "height": 360,
+          "programmes": 1,
+          "draws": 117,
+          "currentKind": "race",
+          "venues": {
+            "race": {
+              "cars": 7,
+              "staticDrawCalls": 10,
+              "materials": "textured",
+              "style": "broadcast",
+              "trackSamples": 256
+            }
+          }
+        },
+        "geometries": 230,
+        "textures": 34,
+        "programs": 43
+      }
+    },
+    {
+      "id": 4,
+      "transition": {
+        "fps": 59.96335572626193,
+        "sampledMedianMs": 16.80000001192093,
+        "sampledP95Ms": 19.399999976158142,
+        "maxMs": 26.69999998807907,
+        "movingSamples": 80,
+        "frames": 180,
+        "renderedFrames": 578,
+        "medianMs": 23.60000000000582,
+        "p95Ms": 32.19999999999891,
+        "pixelRatio": 1.5,
+        "drawCalls": 106,
+        "triangles": 202090,
+        "zone": null,
+        "tv3D": {
+          "mode": "3d",
+          "version": "race-broadcast-1",
+          "drawCalls": 121,
+          "triangles": 220814,
+          "width": 640,
+          "height": 360,
+          "programmes": 1,
+          "draws": 144,
+          "currentKind": "race",
+          "venues": {
+            "race": {
+              "cars": 7,
+              "staticDrawCalls": 10,
+              "materials": "textured",
+              "style": "broadcast",
+              "trackSamples": 256
+            }
+          }
+        },
+        "geometries": 230,
+        "textures": 34,
+        "programs": 43
+      },
+      "steady": {
+        "fps": 40.73163233788639,
+        "sampledMedianMs": 16.5,
+        "sampledP95Ms": 21,
+        "maxMs": 427,
+        "movingSamples": 0,
+        "frames": 180,
+        "renderedFrames": 631,
+        "medianMs": 23.500000000005457,
+        "p95Ms": 31.5,
+        "pixelRatio": 1.5,
+        "drawCalls": 106,
+        "triangles": 202090,
+        "zone": null,
+        "tv3D": {
+          "mode": "3d",
+          "version": "race-broadcast-1",
+          "drawCalls": 121,
+          "triangles": 220814,
+          "width": 640,
+          "height": 360,
+          "programmes": 1,
+          "draws": 157,
+          "currentKind": "race",
+          "venues": {
+            "race": {
+              "cars": 7,
+              "staticDrawCalls": 10,
+              "materials": "textured",
+              "style": "broadcast",
+              "trackSamples": 256
+            }
+          }
+        },
+        "geometries": 230,
+        "textures": 34,
+        "programs": 43
+      }
+    }
+  ],
+  "events": [
+    {
+      "type": "getProgramParameter",
+      "ms": 1.100000023841858,
+      "phase": "transition-4",
+      "at": 4571
+    },
+    {
+      "type": "getProgramParameter",
+      "ms": 1.4000000357627869,
+      "phase": "transition-4",
+      "at": 4593.5
+    },
+    {
+      "type": "getProgramParameter",
+      "ms": 1.300000011920929,
+      "phase": "transition-4",
+      "at": 4628.800000011921
+    },
+    {
+      "type": "getProgramParameter",
+      "ms": 1.199999988079071,
+      "phase": "transition-4",
+      "at": 4646.900000035763
+    },
+    {
+      "type": "render",
+      "ms": 147.80000001192093,
+      "phase": "transition-4",
+      "at": 4516.5,
+      "shadowDirty": true,
+      "scene": "interior",
+      "programs": 34,
+      "newPrograms": [
+        {
+          "name": "",
+          "key": "physical,STANDARD,,highp,srgb,false,,uv,false,false,false,false,uv,false,false,false,uv,false,false,false,false,false,false,false,false,false,false,false,false,false,,,false,0,,2,4,1,0,1,0,1,0,0,0,0,2,4,0,0,0,2177,132099,srgb,onBeforeCompile(){}"
+        },
+        {
+          "name": "",
+          "key": "physical,STANDARD,,highp,srgb,false,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,false,0,,2,4,1,0,1,0,1,0,0,0,0,2,4,0,0,0,1,132099,srgb,onBeforeCompile(){}"
+        },
+        {
+          "name": "",
+          "key": "physical,STANDARD,,highp,srgb,false,,uv,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,false,0,,2,4,1,0,1,0,1,0,0,0,0,2,4,0,0,0,2049,132099,srgb,onBeforeCompile(){}"
+        },
+        {
+          "name": "",
+          "key": "physical,STANDARD,,highp,srgb,false,,uv,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,false,0,,2,4,1,0,1,0,1,0,0,0,0,2,4,0,0,0,1,132099,srgb,onBeforeCompile(){}"
+        },
+        {
+          "name": "",
+          "key": "basic,highp,srgb,false,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,0,,false,0,,2,4,1,0,1,0,1,0,0,0,0,2,4,0,0,0,1,5123,srgb,onBeforeCompile(){}"
+        },
+        {
+          "name": "",
+          "key": "basic,highp,srgb,false,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,0,,false,0,,2,4,1,0,1,0,1,0,0,0,0,2,4,0,0,0,1,1027,srgb,onBeforeCompile(){}"
+        }
+      ]
+    },
+    {
+      "type": "longtask",
+      "at": 4510.699999988079,
+      "ms": 156,
+      "phase": "transition-4"
+    },
+    {
+      "type": "render",
+      "ms": 10.300000011920929,
+      "phase": "transition-4",
+      "at": 4777.600000023842,
+      "shadowDirty": true,
+      "scene": "interior",
+      "programs": 34,
+      "newPrograms": []
+    },
+    {
+      "type": "render",
+      "ms": 4.599999964237213,
+      "phase": "transition-4",
+      "at": 4833.600000023842,
+      "shadowDirty": true,
+      "scene": "interior",
+      "programs": 34,
+      "newPrograms": []
+    },
+    {
+      "type": "render",
+      "ms": 4.799999952316284,
+      "phase": "transition-4",
+      "at": 4841.900000035763,
+      "shadowDirty": true,
+      "scene": "interior",
+      "programs": 34,
+      "newPrograms": []
+    },
+    {
+      "type": "render",
+      "ms": 4.5,
+      "phase": "transition-4",
+      "at": 4941.199999988079,
+      "shadowDirty": true,
+      "scene": "other",
+      "programs": 34,
+      "newPrograms": []
+    },
+    {
+      "type": "render",
+      "ms": 4.699999988079071,
+      "phase": "transition-4",
+      "at": 5064.100000023842,
+      "shadowDirty": true,
+      "scene": "other",
+      "programs": 34,
+      "newPrograms": []
+    },
+    {
+      "type": "render",
+      "ms": 4.5,
+      "phase": "transition-4",
+      "at": 5101.699999988079,
+      "shadowDirty": true,
+      "scene": "interior",
+      "programs": 34,
+      "newPrograms": []
+    },
+    {
+      "type": "render",
+      "ms": 9.900000035762787,
+      "phase": "transition-4",
+      "at": 5122.199999988079,
+      "shadowDirty": true,
+      "scene": "interior",
+      "programs": 34,
+      "newPrograms": []
+    },
+    {
+      "type": "render",
+      "ms": 23.899999976158142,
+      "phase": "transition-4",
+      "at": 5187.900000035763,
+      "shadowDirty": true,
+      "scene": "interior",
+      "programs": 35,
+      "newPrograms": [
+        {
+          "name": "",
+          "key": "basic,highp,srgb,false,,uv,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,0,,false,0,,2,4,1,0,1,0,1,0,0,0,0,2,4,0,0,0,1,1027,srgb,onBeforeCompile(){}"
+        }
+      ]
+    },
+    {
+      "type": "render",
+      "ms": 9.400000035762787,
+      "phase": "transition-4",
+      "at": 5238.199999988079,
+      "shadowDirty": true,
+      "scene": "interior",
+      "programs": 35,
+      "newPrograms": []
+    },
+    {
+      "type": "render",
+      "ms": 27.30000001192093,
+      "phase": "transition-4",
+      "at": 5252.199999988079,
+      "shadowDirty": true,
+      "scene": "interior",
+      "programs": 36,
+      "newPrograms": [
+        {
+          "name": "",
+          "key": "basic,highp,srgb,false,,uv,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,0,,false,0,,2,4,1,0,1,0,1,0,0,0,0,2,4,0,0,0,1,132099,srgb,onBeforeCompile(){}"
+        }
+      ]
+    },
+    {
+      "type": "render",
+      "ms": 49.39999997615814,
+      "phase": "transition-4",
+      "at": 5284.300000011921,
+      "shadowDirty": true,
+      "scene": "interior",
+      "programs": 37,
+      "newPrograms": [
+        {
+          "name": "",
+          "key": "physical,STANDARD,,highp,srgb,false,,uv,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,false,0,,2,4,1,0,1,0,1,0,0,0,0,2,4,0,0,0,1,134147,srgb,onBeforeCompile(){}"
+        }
+      ]
+    },
+    {
+      "type": "longtask",
+      "at": 5280,
+      "ms": 54,
+      "phase": "transition-4"
+    },
+    {
+      "type": "render",
+      "ms": 94.80000001192093,
+      "phase": "transition-4",
+      "at": 5336.100000023842,
+      "shadowDirty": true,
+      "scene": "interior",
+      "programs": 39,
+      "newPrograms": [
+        {
+          "name": "",
+          "key": "physical,STANDARD,,highp,srgb,false,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,false,0,,2,4,1,0,1,0,1,0,0,0,0,2,4,0,0,0,1,5123,srgb,onBeforeCompile(){}"
+        },
+        {
+          "name": "",
+          "key": "physical,STANDARD,,highp,srgb,false,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,false,0,,2,4,1,0,1,0,1,0,0,0,0,2,4,0,0,0,1,1027,srgb,onBeforeCompile(){}"
+        }
+      ]
+    },
+    {
+      "type": "getProgramParameter",
+      "ms": 1.600000023841858,
+      "phase": "transition-4",
+      "at": 5459.5
+    },
+    {
+      "type": "render",
+      "ms": 27.69999998807907,
+      "phase": "transition-4",
+      "at": 5434,
+      "shadowDirty": true,
+      "scene": "interior",
+      "programs": 40,
+      "newPrograms": [
+        {
+          "name": "",
+          "key": "sprite,highp,srgb,false,,uv,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,true,0,,2,4,1,0,1,0,1,0,0,0,0,2,4,0,0,0,1,1027,srgb,onBeforeCompile(){}"
+        }
+      ]
+    },
+    {
+      "type": "longtask",
+      "at": 5334.5,
+      "ms": 97,
+      "phase": "transition-4"
+    },
+    {
+      "type": "render",
+      "ms": 4.199999988079071,
+      "phase": "transition-4",
+      "at": 5464.600000023842,
+      "shadowDirty": true,
+      "scene": "interior",
+      "programs": 40,
+      "newPrograms": []
+    },
+    {
+      "type": "render",
+      "ms": 4.800000011920929,
+      "phase": "transition-4",
+      "at": 5510.5,
+      "shadowDirty": true,
+      "scene": "other",
+      "programs": 40,
+      "newPrograms": []
+    },
+    {
+      "type": "render",
+      "ms": 7.899999976158142,
+      "phase": "transition-4",
+      "at": 5515.300000011921,
+      "shadowDirty": true,
+      "scene": "interior",
+      "programs": 40,
+      "newPrograms": []
+    },
+    {
+      "type": "render",
+      "ms": 6,
+      "phase": "transition-4",
+      "at": 5588,
+      "shadowDirty": true,
+      "scene": "interior",
+      "programs": 40,
+      "newPrograms": []
+    },
+    {
+      "type": "render",
+      "ms": 6.199999988079071,
+      "phase": "transition-4",
+      "at": 5639.400000035763,
+      "shadowDirty": true,
+      "scene": "interior",
+      "programs": 40,
+      "newPrograms": []
+    },
+    {
+      "type": "render",
+      "ms": 8.199999988079071,
+      "phase": "transition-4",
+      "at": 5656.800000011921,
+      "shadowDirty": true,
+      "scene": "interior",
+      "programs": 40,
+      "newPrograms": []
+    },
+    {
+      "type": "render",
+      "ms": 5.199999988079071,
+      "phase": "transition-4",
+      "at": 5707.300000011921,
+      "shadowDirty": true,
+      "scene": "interior",
+      "programs": 40,
+      "newPrograms": []
+    },
+    {
+      "type": "render",
+      "ms": 6.5,
+      "phase": "transition-4",
+      "at": 5777.900000035763,
+      "shadowDirty": true,
+      "scene": "interior",
+      "programs": 40,
+      "newPrograms": []
+    },
+    {
+      "type": "render",
+      "ms": 75.60000002384186,
+      "phase": "transition-4",
+      "at": 5845.800000011921,
+      "shadowDirty": true,
+      "scene": "interior",
+      "programs": 43,
+      "newPrograms": [
+        {
+          "name": "",
+          "key": "physical,STANDARD,,highp,srgb,false,,uv,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,false,0,,2,3,1,0,1,0,1,0,0,0,0,2,4,0,0,0,1,134147,srgb,onBeforeCompile(){}"
+        },
+        {
+          "name": "",
+          "key": "physical,STANDARD,,highp,srgb,false,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,false,0,,2,3,1,0,1,0,1,0,0,0,0,2,4,0,0,0,1,5123,srgb,onBeforeCompile(){}"
+        },
+        {
+          "name": "",
+          "key": "physical,STANDARD,,highp,srgb,false,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,false,0,,2,3,1,0,1,0,1,0,0,0,0,2,4,0,0,0,1,1027,srgb,onBeforeCompile(){}"
+        }
+      ]
+    },
+    {
+      "type": "longtask",
+      "at": 5842.300000011921,
+      "ms": 79,
+      "phase": "transition-4"
+    },
+    {
+      "type": "render",
+      "ms": 6,
+      "phase": "transition-4",
+      "at": 5962,
+      "shadowDirty": true,
+      "scene": "interior",
+      "programs": 43,
+      "newPrograms": []
+    },
+    {
+      "type": "render",
+      "ms": 5.399999976158142,
+      "phase": "transition-4",
+      "at": 5978.900000035763,
+      "shadowDirty": true,
+      "scene": "interior",
+      "programs": 43,
+      "newPrograms": []
+    },
+    {
+      "type": "render",
+      "ms": 4.199999988079071,
+      "phase": "transition-4",
+      "at": 6030,
+      "shadowDirty": true,
+      "scene": "interior",
+      "programs": 43,
+      "newPrograms": []
+    },
+    {
+      "type": "render",
+      "ms": 6.200000047683716,
+      "phase": "transition-4",
+      "at": 6062.699999988079,
+      "shadowDirty": true,
+      "scene": "interior",
+      "programs": 43,
+      "newPrograms": []
+    },
+    {
+      "type": "render",
+      "ms": 4.400000035762787,
+      "phase": "transition-4",
+      "at": 6080.699999988079,
+      "shadowDirty": true,
+      "scene": "interior",
+      "programs": 43,
+      "newPrograms": []
+    },
+    {
+      "type": "render",
+      "ms": 5,
+      "phase": "transition-4",
+      "at": 6095.400000035763,
+      "shadowDirty": true,
+      "scene": "interior",
+      "programs": 43,
+      "newPrograms": []
+    },
+    {
+      "type": "render",
+      "ms": 4.599999964237213,
+      "phase": "transition-4",
+      "at": 6160.900000035763,
+      "shadowDirty": true,
+      "scene": "other",
+      "programs": 43,
+      "newPrograms": []
+    },
+    {
+      "type": "render",
+      "ms": 5.399999976158142,
+      "phase": "transition-4",
+      "at": 6229.400000035763,
+      "shadowDirty": true,
+      "scene": "interior",
+      "programs": 43,
+      "newPrograms": []
+    },
+    {
+      "type": "render",
+      "ms": 7.199999988079071,
+      "phase": "transition-4",
+      "at": 6247.600000023842,
+      "shadowDirty": true,
+      "scene": "interior",
+      "programs": 43,
+      "newPrograms": []
+    },
+    {
+      "type": "render",
+      "ms": 4.799999952316284,
+      "phase": "transition-4",
+      "at": 6280.400000035763,
+      "shadowDirty": true,
+      "scene": "interior",
+      "programs": 43,
+      "newPrograms": []
+    },
+    {
+      "type": "render",
+      "ms": 5.699999988079071,
+      "phase": "transition-4",
+      "at": 6296,
+      "shadowDirty": true,
+      "scene": "interior",
+      "programs": 43,
+      "newPrograms": []
+    },
+    {
+      "type": "render",
+      "ms": 6,
+      "phase": "transition-4",
+      "at": 6314.300000011921,
+      "shadowDirty": true,
+      "scene": "interior",
+      "programs": 43,
+      "newPrograms": []
+    },
+    {
+      "type": "render",
+      "ms": 5.299999952316284,
+      "phase": "steady-4",
+      "at": 6331.900000035763,
+      "shadowDirty": true,
+      "scene": "interior",
+      "programs": 43,
+      "newPrograms": []
+    },
+    {
+      "type": "render",
+      "ms": 5.700000047683716,
+      "phase": "steady-4",
+      "at": 6398.199999988079,
+      "shadowDirty": true,
+      "scene": "interior",
+      "programs": 43,
+      "newPrograms": []
+    },
+    {
+      "type": "render",
+      "ms": 8.599999964237213,
+      "phase": "steady-4",
+      "at": 6415.900000035763,
+      "shadowDirty": true,
+      "scene": "interior",
+      "programs": 43,
+      "newPrograms": []
+    },
+    {
+      "type": "render",
+      "ms": 4.699999988079071,
+      "phase": "steady-4",
+      "at": 6446.300000011921,
+      "shadowDirty": true,
+      "scene": "interior",
+      "programs": 43,
+      "newPrograms": []
+    },
+    {
+      "type": "render",
+      "ms": 6.899999976158142,
+      "phase": "steady-4",
+      "at": 6479.600000023842,
+      "shadowDirty": true,
+      "scene": "interior",
+      "programs": 43,
+      "newPrograms": []
+    },
+    {
+      "type": "render",
+      "ms": 8.699999988079071,
+      "phase": "transition-5",
+      "at": 7647.600000023842,
+      "shadowDirty": true,
+      "scene": "interior",
+      "programs": 43,
+      "newPrograms": []
+    },
+    {
+      "type": "render",
+      "ms": 4.100000023841858,
+      "phase": "transition-5",
+      "at": 7704,
+      "shadowDirty": true,
+      "scene": "interior",
+      "programs": 43,
+      "newPrograms": []
+    },
+    {
+      "type": "render",
+      "ms": 4.100000023841858,
+      "phase": "transition-5",
+      "at": 7715.800000011921,
+      "shadowDirty": true,
+      "scene": "interior",
+      "programs": 43,
+      "newPrograms": []
+    },
+    {
+      "type": "render",
+      "ms": 4.700000047683716,
+      "phase": "transition-5",
+      "at": 7766.699999988079,
+      "shadowDirty": true,
+      "scene": "interior",
+      "programs": 43,
+      "newPrograms": []
+    },
+    {
+      "type": "render",
+      "ms": 4.199999988079071,
+      "phase": "transition-5",
+      "at": 7815.100000023842,
+      "shadowDirty": true,
+      "scene": "interior",
+      "programs": 43,
+      "newPrograms": []
+    },
+    {
+      "type": "render",
+      "ms": 4.800000011920929,
+      "phase": "transition-5",
+      "at": 7831.800000011921,
+      "shadowDirty": true,
+      "scene": "interior",
+      "programs": 43,
+      "newPrograms": []
+    },
+    {
+      "type": "render",
+      "ms": 4.699999988079071,
+      "phase": "transition-5",
+      "at": 7849.400000035763,
+      "shadowDirty": true,
+      "scene": "interior",
+      "programs": 43,
+      "newPrograms": []
+    },
+    {
+      "type": "render",
+      "ms": 4.800000011920929,
+      "phase": "transition-5",
+      "at": 7865.699999988079,
+      "shadowDirty": true,
+      "scene": "interior",
+      "programs": 43,
+      "newPrograms": []
+    },
+    {
+      "type": "render",
+      "ms": 4.800000011920929,
+      "phase": "transition-5",
+      "at": 7882.300000011921,
+      "shadowDirty": true,
+      "scene": "interior",
+      "programs": 43,
+      "newPrograms": []
+    },
+    {
+      "type": "render",
+      "ms": 4.199999988079071,
+      "phase": "transition-5",
+      "at": 7898.5,
+      "shadowDirty": true,
+      "scene": "interior",
+      "programs": 43,
+      "newPrograms": []
+    },
+    {
+      "type": "render",
+      "ms": 4.200000047683716,
+      "phase": "transition-5",
+      "at": 8015.699999988079,
+      "shadowDirty": true,
+      "scene": "interior",
+      "programs": 43,
+      "newPrograms": []
+    },
+    {
+      "type": "render",
+      "ms": 4.300000011920929,
+      "phase": "transition-5",
+      "at": 8082.5,
+      "shadowDirty": true,
+      "scene": "interior",
+      "programs": 43,
+      "newPrograms": []
+    },
+    {
+      "type": "render",
+      "ms": 4.5,
+      "phase": "transition-5",
+      "at": 8116.5,
+      "shadowDirty": true,
+      "scene": "interior",
+      "programs": 43,
+      "newPrograms": []
+    },
+    {
+      "type": "render",
+      "ms": 4.399999976158142,
+      "phase": "transition-5",
+      "at": 8149.600000023842,
+      "shadowDirty": true,
+      "scene": "interior",
+      "programs": 43,
+      "newPrograms": []
+    },
+    {
+      "type": "render",
+      "ms": 4.800000011920929,
+      "phase": "transition-5",
+      "at": 8216.600000023842,
+      "shadowDirty": true,
+      "scene": "interior",
+      "programs": 43,
+      "newPrograms": []
+    },
+    {
+      "type": "render",
+      "ms": 5.800000011920929,
+      "phase": "transition-5",
+      "at": 8250.800000011921,
+      "shadowDirty": true,
+      "scene": "interior",
+      "programs": 43,
+      "newPrograms": []
+    },
+    {
+      "type": "render",
+      "ms": 4.599999964237213,
+      "phase": "transition-5",
+      "at": 8283.100000023842,
+      "shadowDirty": true,
+      "scene": "interior",
+      "programs": 43,
+      "newPrograms": []
+    },
+    {
+      "type": "render",
+      "ms": 4.699999988079071,
+      "phase": "transition-5",
+      "at": 8332.800000011921,
+      "shadowDirty": true,
+      "scene": "interior",
+      "programs": 43,
+      "newPrograms": []
+    },
+    {
+      "type": "render",
+      "ms": 4.600000023841858,
+      "phase": "transition-5",
+      "at": 8365.699999988079,
+      "shadowDirty": true,
+      "scene": "interior",
+      "programs": 43,
+      "newPrograms": []
+    },
+    {
+      "type": "render",
+      "ms": 5.299999952316284,
+      "phase": "transition-5",
+      "at": 8383.400000035763,
+      "shadowDirty": true,
+      "scene": "interior",
+      "programs": 43,
+      "newPrograms": []
+    },
+    {
+      "type": "render",
+      "ms": 5.699999988079071,
+      "phase": "transition-5",
+      "at": 8399.100000023842,
+      "shadowDirty": true,
+      "scene": "interior",
+      "programs": 43,
+      "newPrograms": []
+    },
+    {
+      "type": "render",
+      "ms": 4.299999952316284,
+      "phase": "transition-5",
+      "at": 8415.400000035763,
+      "shadowDirty": true,
+      "scene": "interior",
+      "programs": 43,
+      "newPrograms": []
+    },
+    {
+      "type": "render",
+      "ms": 4.099999964237213,
+      "phase": "transition-5",
+      "at": 8432.600000023842,
+      "shadowDirty": true,
+      "scene": "interior",
+      "programs": 43,
+      "newPrograms": []
+    },
+    {
+      "type": "render",
+      "ms": 4.199999988079071,
+      "phase": "transition-5",
+      "at": 8450.300000011921,
+      "shadowDirty": true,
+      "scene": "interior",
+      "programs": 43,
+      "newPrograms": []
+    },
+    {
+      "type": "render",
+      "ms": 4.199999988079071,
+      "phase": "transition-5",
+      "at": 8516.600000023842,
+      "shadowDirty": true,
+      "scene": "interior",
+      "programs": 43,
+      "newPrograms": []
+    },
+    {
+      "type": "render",
+      "ms": 5.100000023841858,
+      "phase": "transition-5",
+      "at": 8566.5,
+      "shadowDirty": true,
+      "scene": "interior",
+      "programs": 43,
+      "newPrograms": []
+    },
+    {
+      "type": "render",
+      "ms": 4.199999988079071,
+      "phase": "transition-5",
+      "at": 8583.900000035763,
+      "shadowDirty": true,
+      "scene": "interior",
+      "programs": 43,
+      "newPrograms": []
+    },
+    {
+      "type": "render",
+      "ms": 4.300000011920929,
+      "phase": "transition-5",
+      "at": 8767.5,
+      "shadowDirty": true,
+      "scene": "interior",
+      "programs": 43,
+      "newPrograms": []
+    },
+    {
+      "type": "render",
+      "ms": 4.199999988079071,
+      "phase": "transition-5",
+      "at": 8802,
+      "shadowDirty": true,
+      "scene": "interior",
+      "programs": 43,
+      "newPrograms": []
+    },
+    {
+      "type": "render",
+      "ms": 4.199999988079071,
+      "phase": "transition-5",
+      "at": 8817.900000035763,
+      "shadowDirty": true,
+      "scene": "interior",
+      "programs": 43,
+      "newPrograms": []
+    },
+    {
+      "type": "render",
+      "ms": 4.099999964237213,
+      "phase": "transition-5",
+      "at": 8834.100000023842,
+      "shadowDirty": true,
+      "scene": "interior",
+      "programs": 43,
+      "newPrograms": []
+    },
+    {
+      "type": "render",
+      "ms": 6.5,
+      "phase": "transition-5",
+      "at": 8851.699999988079,
+      "shadowDirty": true,
+      "scene": "interior",
+      "programs": 43,
+      "newPrograms": []
+    },
+    {
+      "type": "render",
+      "ms": 5,
+      "phase": "transition-5",
+      "at": 8866.900000035763,
+      "shadowDirty": true,
+      "scene": "interior",
+      "programs": 43,
+      "newPrograms": []
+    },
+    {
+      "type": "render",
+      "ms": 4.399999976158142,
+      "phase": "transition-5",
+      "at": 8883.600000023842,
+      "shadowDirty": true,
+      "scene": "interior",
+      "programs": 43,
+      "newPrograms": []
+    },
+    {
+      "type": "render",
+      "ms": 4.800000011920929,
+      "phase": "transition-5",
+      "at": 8933.800000011921,
+      "shadowDirty": true,
+      "scene": "interior",
+      "programs": 43,
+      "newPrograms": []
+    },
+    {
+      "type": "render",
+      "ms": 4.899999976158142,
+      "phase": "transition-5",
+      "at": 8950.400000035763,
+      "shadowDirty": true,
+      "scene": "interior",
+      "programs": 43,
+      "newPrograms": []
+    },
+    {
+      "type": "render",
+      "ms": 5.300000011920929,
+      "phase": "transition-5",
+      "at": 8967.5,
+      "shadowDirty": true,
+      "scene": "interior",
+      "programs": 43,
+      "newPrograms": []
+    },
+    {
+      "type": "render",
+      "ms": 4.699999988079071,
+      "phase": "transition-5",
+      "at": 8984.5,
+      "shadowDirty": true,
+      "scene": "interior",
+      "programs": 43,
+      "newPrograms": []
+    },
+    {
+      "type": "render",
+      "ms": 4.100000023841858,
+      "phase": "steady-5",
+      "at": 9468.800000011921,
+      "shadowDirty": true,
+      "scene": "interior",
+      "programs": 43,
+      "newPrograms": []
+    },
+    {
+      "type": "render",
+      "ms": 4.099999964237213,
+      "phase": "steady-5",
+      "at": 9520.100000023842,
+      "shadowDirty": true,
+      "scene": "interior",
+      "programs": 43,
+      "newPrograms": []
+    },
+    {
+      "type": "render",
+      "ms": 4.399999976158142,
+      "phase": "steady-5",
+      "at": 9568.900000035763,
+      "shadowDirty": true,
+      "scene": "interior",
+      "programs": 43,
+      "newPrograms": []
+    },
+    {
+      "type": "render",
+      "ms": 7,
+      "phase": "steady-5",
+      "at": 9903.100000023842,
+      "shadowDirty": false,
+      "scene": "interior",
+      "programs": 43,
+      "newPrograms": []
+    },
+    {
+      "type": "render",
+      "ms": 4.299999952316284,
+      "phase": "steady-5",
+      "at": 9921.400000035763,
+      "shadowDirty": false,
+      "scene": "interior",
+      "programs": 43,
+      "newPrograms": []
+    },
+    {
+      "type": "render",
+      "ms": 4.699999988079071,
+      "phase": "transition-4",
+      "at": 10770.5,
+      "shadowDirty": false,
+      "scene": "interior",
+      "programs": 43,
+      "newPrograms": []
+    },
+    {
+      "type": "render",
+      "ms": 4.300000011920929,
+      "phase": "transition-4",
+      "at": 11087.699999988079,
+      "shadowDirty": false,
+      "scene": "interior",
+      "programs": 43,
+      "newPrograms": []
+    },
+    {
+      "type": "render",
+      "ms": 4.5,
+      "phase": "transition-4",
+      "at": 11421.199999988079,
+      "shadowDirty": false,
+      "scene": "interior",
+      "programs": 43,
+      "newPrograms": []
+    },
+    {
+      "type": "render",
+      "ms": 4.5,
+      "phase": "transition-4",
+      "at": 11655.699999988079,
+      "shadowDirty": false,
+      "scene": "interior",
+      "programs": 43,
+      "newPrograms": []
+    },
+    {
+      "type": "render",
+      "ms": 4.199999988079071,
+      "phase": "transition-4",
+      "at": 11907,
+      "shadowDirty": false,
+      "scene": "interior",
+      "programs": 43,
+      "newPrograms": []
+    },
+    {
+      "type": "render",
+      "ms": 4.899999976158142,
+      "phase": "transition-4",
+      "at": 12043.400000035763,
+      "shadowDirty": false,
+      "scene": "interior",
+      "programs": 43,
+      "newPrograms": []
+    },
+    {
+      "type": "render",
+      "ms": 4.399999976158142,
+      "phase": "steady-4",
+      "at": 13458.900000035763,
+      "shadowDirty": false,
+      "scene": "other",
+      "programs": 43,
+      "newPrograms": []
+    },
+    {
+      "type": "render",
+      "ms": 6.199999988079071,
+      "phase": "steady-4",
+      "at": 13575.300000011921,
+      "shadowDirty": false,
+      "scene": "interior",
+      "programs": 43,
+      "newPrograms": []
+    },
+    {
+      "type": "render",
+      "ms": 4.600000023841858,
+      "phase": "steady-4",
+      "at": 13609.199999988079,
+      "shadowDirty": false,
+      "scene": "interior",
+      "programs": 43,
+      "newPrograms": []
+    },
+    {
+      "type": "render",
+      "ms": 4.599999964237213,
+      "phase": "steady-4",
+      "at": 13695.100000023842,
+      "shadowDirty": false,
+      "scene": "interior",
+      "programs": 43,
+      "newPrograms": []
+    },
+    {
+      "type": "render",
+      "ms": 6,
+      "phase": "steady-4",
+      "at": 13762.900000035763,
+      "shadowDirty": false,
+      "scene": "interior",
+      "programs": 43,
+      "newPrograms": []
+    },
+    {
+      "type": "render",
+      "ms": 4.5,
+      "phase": "steady-4",
+      "at": 13793.5,
+      "shadowDirty": false,
+      "scene": "interior",
+      "programs": 43,
+      "newPrograms": []
+    },
+    {
+      "type": "render",
+      "ms": 4.400000035762787,
+      "phase": "steady-4",
+      "at": 13859.5,
+      "shadowDirty": false,
+      "scene": "interior",
+      "programs": 43,
+      "newPrograms": []
+    }
+  ]
+}

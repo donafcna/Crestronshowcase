@@ -1,0 +1,72 @@
+{
+  "status": "complete",
+  "runs": [
+    {
+      "i": 0,
+      "state": "load"
+    },
+    {
+      "i": 1,
+      "state": "load"
+    },
+    {
+      "i": 2,
+      "state": "load"
+    },
+    {
+      "i": 3,
+      "state": "load"
+    }
+  ],
+  "records": [],
+  "summaries": [
+    {
+      "url": "http://127.0.0.1:4344/showcases/villa-gemini-frequencetv/iphone.html?observerRun=0",
+      "calls": 518,
+      "targets": {
+        "CH5-BUTTON": 79,
+        "DIV": 422,
+        "CH5-SLIDER": 15,
+        "BODY": 1,
+        "#document": 1
+      },
+      "records": []
+    },
+    {
+      "url": "http://127.0.0.1:4344/showcases/villa-gemini-frequencetv/iphone.html?observerRun=1",
+      "calls": 518,
+      "targets": {
+        "CH5-BUTTON": 79,
+        "DIV": 422,
+        "CH5-SLIDER": 15,
+        "BODY": 1,
+        "#document": 1
+      },
+      "records": []
+    },
+    {
+      "url": "http://127.0.0.1:4344/showcases/villa-gemini-frequencetv/iphone.html?observerRun=2",
+      "calls": 518,
+      "targets": {
+        "CH5-BUTTON": 79,
+        "DIV": 422,
+        "CH5-SLIDER": 15,
+        "BODY": 1,
+        "#document": 1
+      },
+      "records": []
+    },
+    {
+      "url": "http://127.0.0.1:4344/showcases/villa-gemini-frequencetv/iphone.html?observerRun=3",
+      "calls": 518,
+      "targets": {
+        "CH5-BUTTON": 79,
+        "DIV": 422,
+        "CH5-SLIDER": 15,
+        "BODY": 1,
+        "#document": 1
+      },
+      "records": []
+    }
+  ]
+}

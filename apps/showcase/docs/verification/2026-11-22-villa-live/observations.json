@@ -1,0 +1,841 @@
+{
+  "url": "https://crestrongui.vercel.app/interfaces/residentiel/villa-gemini-frequencetv/phone",
+  "commit": "a6c3cb209f60913c769dc698d4f8bbe608aef918",
+  "viewport": [
+    1280,
+    720
+  ],
+  "checks": [
+    {
+      "id": 2,
+      "shots": 10
+    },
+    {
+      "id": 3,
+      "shots": 10
+    },
+    {
+      "id": 4,
+      "shots": 10
+    },
+    {
+      "id": 5,
+      "shots": 10
+    },
+    {
+      "id": 6,
+      "shots": 10
+    },
+    {
+      "id": 7,
+      "shots": 10
+    },
+    {
+      "id": 8,
+      "shots": 10
+    },
+    {
+      "id": 9,
+      "shots": 10
+    },
+    {
+      "id": 10,
+      "shots": 10
+    },
+    {
+      "id": 11,
+      "shots": 10
+    },
+    {
+      "id": 12,
+      "shots": 10
+    },
+    {
+      "id": 13,
+      "shots": 10
+    },
+    {
+      "id": 14,
+      "shots": 10
+    },
+    {
+      "id": 15,
+      "shots": 10
+    },
+    {
+      "id": 16,
+      "shots": 10
+    },
+    {
+      "id": 17,
+      "shots": 10
+    },
+    {
+      "id": 1,
+      "shots": 10
+    }
+  ],
+  "sequences": [
+    {
+      "label": "salon-extinction",
+      "frames": [
+        {
+          "file": "salon-extinction-00.jpg",
+          "ms": 69
+        },
+        {
+          "file": "salon-extinction-01.jpg",
+          "ms": 120
+        },
+        {
+          "file": "salon-extinction-02.jpg",
+          "ms": 169
+        },
+        {
+          "file": "salon-extinction-03.jpg",
+          "ms": 219
+        },
+        {
+          "file": "salon-extinction-04.jpg",
+          "ms": 270
+        },
+        {
+          "file": "salon-extinction-05.jpg",
+          "ms": 335
+        },
+        {
+          "file": "salon-extinction-06.jpg",
+          "ms": 389
+        },
+        {
+          "file": "salon-extinction-07.jpg",
+          "ms": 437
+        },
+        {
+          "file": "salon-extinction-08.jpg",
+          "ms": 486
+        },
+        {
+          "file": "salon-extinction-09.jpg",
+          "ms": 542
+        },
+        {
+          "file": "salon-extinction-10.jpg",
+          "ms": 606
+        },
+        {
+          "file": "salon-extinction-11.jpg",
+          "ms": 671
+        },
+        {
+          "file": "salon-extinction-12.jpg",
+          "ms": 721
+        },
+        {
+          "file": "salon-extinction-13.jpg",
+          "ms": 770
+        },
+        {
+          "file": "salon-extinction-14.jpg",
+          "ms": 823
+        },
+        {
+          "file": "salon-extinction-15.jpg",
+          "ms": 888
+        },
+        {
+          "file": "salon-extinction-16.jpg",
+          "ms": 938
+        },
+        {
+          "file": "salon-extinction-17.jpg",
+          "ms": 987
+        },
+        {
+          "file": "salon-extinction-18.jpg",
+          "ms": 1038
+        },
+        {
+          "file": "salon-extinction-19.jpg",
+          "ms": 1087
+        },
+        {
+          "file": "salon-extinction-20.jpg",
+          "ms": 1139
+        },
+        {
+          "file": "salon-extinction-21.jpg",
+          "ms": 1185
+        },
+        {
+          "file": "salon-extinction-22.jpg",
+          "ms": 1234
+        },
+        {
+          "file": "salon-extinction-23.jpg",
+          "ms": 1286
+        },
+        {
+          "file": "salon-extinction-24.jpg",
+          "ms": 1338
+        },
+        {
+          "file": "salon-extinction-25.jpg",
+          "ms": 1390
+        },
+        {
+          "file": "salon-extinction-26.jpg",
+          "ms": 1457
+        },
+        {
+          "file": "salon-extinction-27.jpg",
+          "ms": 1506
+        },
+        {
+          "file": "salon-extinction-28.jpg",
+          "ms": 1559
+        },
+        {
+          "file": "salon-extinction-29.jpg",
+          "ms": 1630
+        },
+        {
+          "file": "salon-extinction-30.jpg",
+          "ms": 1692
+        },
+        {
+          "file": "salon-extinction-31.jpg",
+          "ms": 1740
+        },
+        {
+          "file": "salon-extinction-32.jpg",
+          "ms": 1786
+        },
+        {
+          "file": "salon-extinction-33.jpg",
+          "ms": 1841
+        },
+        {
+          "file": "salon-extinction-34.jpg",
+          "ms": 1892
+        },
+        {
+          "file": "salon-extinction-35.jpg",
+          "ms": 1959
+        },
+        {
+          "file": "salon-extinction-36.jpg",
+          "ms": 2025
+        },
+        {
+          "file": "salon-extinction-37.jpg",
+          "ms": 2091
+        },
+        {
+          "file": "salon-extinction-38.jpg",
+          "ms": 2142
+        },
+        {
+          "file": "salon-extinction-39.jpg",
+          "ms": 2194
+        },
+        {
+          "file": "salon-extinction-40.jpg",
+          "ms": 2257
+        },
+        {
+          "file": "salon-extinction-41.jpg",
+          "ms": 2309
+        },
+        {
+          "file": "salon-extinction-42.jpg",
+          "ms": 2362
+        },
+        {
+          "file": "salon-extinction-43.jpg",
+          "ms": 2421
+        },
+        {
+          "file": "salon-extinction-44.jpg",
+          "ms": 2473
+        },
+        {
+          "file": "salon-extinction-45.jpg",
+          "ms": 2524
+        },
+        {
+          "file": "salon-extinction-46.jpg",
+          "ms": 2573
+        },
+        {
+          "file": "salon-extinction-47.jpg",
+          "ms": 2623
+        }
+      ]
+    },
+    {
+      "label": "salon-allumage",
+      "frames": [
+        {
+          "file": "salon-allumage-00.jpg",
+          "ms": 59
+        },
+        {
+          "file": "salon-allumage-01.jpg",
+          "ms": 106
+        },
+        {
+          "file": "salon-allumage-02.jpg",
+          "ms": 158
+        },
+        {
+          "file": "salon-allumage-03.jpg",
+          "ms": 206
+        },
+        {
+          "file": "salon-allumage-04.jpg",
+          "ms": 256
+        },
+        {
+          "file": "salon-allumage-05.jpg",
+          "ms": 309
+        },
+        {
+          "file": "salon-allumage-06.jpg",
+          "ms": 358
+        },
+        {
+          "file": "salon-allumage-07.jpg",
+          "ms": 409
+        },
+        {
+          "file": "salon-allumage-08.jpg",
+          "ms": 458
+        },
+        {
+          "file": "salon-allumage-09.jpg",
+          "ms": 507
+        },
+        {
+          "file": "salon-allumage-10.jpg",
+          "ms": 558
+        },
+        {
+          "file": "salon-allumage-11.jpg",
+          "ms": 606
+        },
+        {
+          "file": "salon-allumage-12.jpg",
+          "ms": 665
+        },
+        {
+          "file": "salon-allumage-13.jpg",
+          "ms": 742
+        },
+        {
+          "file": "salon-allumage-14.jpg",
+          "ms": 815
+        },
+        {
+          "file": "salon-allumage-15.jpg",
+          "ms": 880
+        },
+        {
+          "file": "salon-allumage-16.jpg",
+          "ms": 948
+        },
+        {
+          "file": "salon-allumage-17.jpg",
+          "ms": 1016
+        },
+        {
+          "file": "salon-allumage-18.jpg",
+          "ms": 1085
+        },
+        {
+          "file": "salon-allumage-19.jpg",
+          "ms": 1168
+        },
+        {
+          "file": "salon-allumage-20.jpg",
+          "ms": 1232
+        },
+        {
+          "file": "salon-allumage-21.jpg",
+          "ms": 1298
+        },
+        {
+          "file": "salon-allumage-22.jpg",
+          "ms": 1373
+        },
+        {
+          "file": "salon-allumage-23.jpg",
+          "ms": 1432
+        },
+        {
+          "file": "salon-allumage-24.jpg",
+          "ms": 1499
+        },
+        {
+          "file": "salon-allumage-25.jpg",
+          "ms": 1564
+        },
+        {
+          "file": "salon-allumage-26.jpg",
+          "ms": 1633
+        },
+        {
+          "file": "salon-allumage-27.jpg",
+          "ms": 1704
+        },
+        {
+          "file": "salon-allumage-28.jpg",
+          "ms": 1774
+        },
+        {
+          "file": "salon-allumage-29.jpg",
+          "ms": 1857
+        },
+        {
+          "file": "salon-allumage-30.jpg",
+          "ms": 1941
+        },
+        {
+          "file": "salon-allumage-31.jpg",
+          "ms": 2022
+        },
+        {
+          "file": "salon-allumage-32.jpg",
+          "ms": 2116
+        },
+        {
+          "file": "salon-allumage-33.jpg",
+          "ms": 2241
+        },
+        {
+          "file": "salon-allumage-34.jpg",
+          "ms": 2331
+        },
+        {
+          "file": "salon-allumage-35.jpg",
+          "ms": 2415
+        },
+        {
+          "file": "salon-allumage-36.jpg",
+          "ms": 2511
+        },
+        {
+          "file": "salon-allumage-37.jpg",
+          "ms": 2633
+        }
+      ]
+    },
+    {
+      "label": "transition-salon-chambre",
+      "frames": [
+        {
+          "file": "transition-salon-chambre-00.jpg",
+          "ms": 63
+        },
+        {
+          "file": "transition-salon-chambre-01.jpg",
+          "ms": 108
+        },
+        {
+          "file": "transition-salon-chambre-02.jpg",
+          "ms": 165
+        },
+        {
+          "file": "transition-salon-chambre-03.jpg",
+          "ms": 216
+        },
+        {
+          "file": "transition-salon-chambre-04.jpg",
+          "ms": 264
+        },
+        {
+          "file": "transition-salon-chambre-05.jpg",
+          "ms": 312
+        },
+        {
+          "file": "transition-salon-chambre-06.jpg",
+          "ms": 360
+        },
+        {
+          "file": "transition-salon-chambre-07.jpg",
+          "ms": 411
+        },
+        {
+          "file": "transition-salon-chambre-08.jpg",
+          "ms": 460
+        },
+        {
+          "file": "transition-salon-chambre-09.jpg",
+          "ms": 511
+        },
+        {
+          "file": "transition-salon-chambre-10.jpg",
+          "ms": 563
+        },
+        {
+          "file": "transition-salon-chambre-11.jpg",
+          "ms": 633
+        },
+        {
+          "file": "transition-salon-chambre-12.jpg",
+          "ms": 700
+        },
+        {
+          "file": "transition-salon-chambre-13.jpg",
+          "ms": 751
+        },
+        {
+          "file": "transition-salon-chambre-14.jpg",
+          "ms": 811
+        },
+        {
+          "file": "transition-salon-chambre-15.jpg",
+          "ms": 858
+        },
+        {
+          "file": "transition-salon-chambre-16.jpg",
+          "ms": 915
+        },
+        {
+          "file": "transition-salon-chambre-17.jpg",
+          "ms": 964
+        },
+        {
+          "file": "transition-salon-chambre-18.jpg",
+          "ms": 1014
+        },
+        {
+          "file": "transition-salon-chambre-19.jpg",
+          "ms": 1061
+        },
+        {
+          "file": "transition-salon-chambre-20.jpg",
+          "ms": 1134
+        },
+        {
+          "file": "transition-salon-chambre-21.jpg",
+          "ms": 1180
+        },
+        {
+          "file": "transition-salon-chambre-22.jpg",
+          "ms": 1230
+        },
+        {
+          "file": "transition-salon-chambre-23.jpg",
+          "ms": 1277
+        },
+        {
+          "file": "transition-salon-chambre-24.jpg",
+          "ms": 1329
+        },
+        {
+          "file": "transition-salon-chambre-25.jpg",
+          "ms": 1379
+        },
+        {
+          "file": "transition-salon-chambre-26.jpg",
+          "ms": 1430
+        },
+        {
+          "file": "transition-salon-chambre-27.jpg",
+          "ms": 1476
+        },
+        {
+          "file": "transition-salon-chambre-28.jpg",
+          "ms": 1531
+        },
+        {
+          "file": "transition-salon-chambre-29.jpg",
+          "ms": 1579
+        },
+        {
+          "file": "transition-salon-chambre-30.jpg",
+          "ms": 1631
+        },
+        {
+          "file": "transition-salon-chambre-31.jpg",
+          "ms": 1679
+        },
+        {
+          "file": "transition-salon-chambre-32.jpg",
+          "ms": 1726
+        },
+        {
+          "file": "transition-salon-chambre-33.jpg",
+          "ms": 1785
+        },
+        {
+          "file": "transition-salon-chambre-34.jpg",
+          "ms": 1837
+        },
+        {
+          "file": "transition-salon-chambre-35.jpg",
+          "ms": 1897
+        },
+        {
+          "file": "transition-salon-chambre-36.jpg",
+          "ms": 1953
+        },
+        {
+          "file": "transition-salon-chambre-37.jpg",
+          "ms": 2013
+        },
+        {
+          "file": "transition-salon-chambre-38.jpg",
+          "ms": 2065
+        },
+        {
+          "file": "transition-salon-chambre-39.jpg",
+          "ms": 2112
+        },
+        {
+          "file": "transition-salon-chambre-40.jpg",
+          "ms": 2160
+        },
+        {
+          "file": "transition-salon-chambre-41.jpg",
+          "ms": 2216
+        },
+        {
+          "file": "transition-salon-chambre-42.jpg",
+          "ms": 2268
+        },
+        {
+          "file": "transition-salon-chambre-43.jpg",
+          "ms": 2318
+        },
+        {
+          "file": "transition-salon-chambre-44.jpg",
+          "ms": 2379
+        },
+        {
+          "file": "transition-salon-chambre-45.jpg",
+          "ms": 2437
+        },
+        {
+          "file": "transition-salon-chambre-46.jpg",
+          "ms": 2499
+        },
+        {
+          "file": "transition-salon-chambre-47.jpg",
+          "ms": 2549
+        },
+        {
+          "file": "transition-salon-chambre-48.jpg",
+          "ms": 2600
+        }
+      ]
+    },
+    {
+      "label": "transition-chambre-piscine",
+      "frames": [
+        {
+          "file": "transition-chambre-piscine-00.jpg",
+          "ms": 62
+        },
+        {
+          "file": "transition-chambre-piscine-01.jpg",
+          "ms": 115
+        },
+        {
+          "file": "transition-chambre-piscine-02.jpg",
+          "ms": 162
+        },
+        {
+          "file": "transition-chambre-piscine-03.jpg",
+          "ms": 212
+        },
+        {
+          "file": "transition-chambre-piscine-04.jpg",
+          "ms": 261
+        },
+        {
+          "file": "transition-chambre-piscine-05.jpg",
+          "ms": 311
+        },
+        {
+          "file": "transition-chambre-piscine-06.jpg",
+          "ms": 363
+        },
+        {
+          "file": "transition-chambre-piscine-07.jpg",
+          "ms": 416
+        },
+        {
+          "file": "transition-chambre-piscine-08.jpg",
+          "ms": 463
+        },
+        {
+          "file": "transition-chambre-piscine-09.jpg",
+          "ms": 511
+        },
+        {
+          "file": "transition-chambre-piscine-10.jpg",
+          "ms": 558
+        },
+        {
+          "file": "transition-chambre-piscine-11.jpg",
+          "ms": 613
+        },
+        {
+          "file": "transition-chambre-piscine-12.jpg",
+          "ms": 663
+        },
+        {
+          "file": "transition-chambre-piscine-13.jpg",
+          "ms": 713
+        },
+        {
+          "file": "transition-chambre-piscine-14.jpg",
+          "ms": 762
+        },
+        {
+          "file": "transition-chambre-piscine-15.jpg",
+          "ms": 810
+        },
+        {
+          "file": "transition-chambre-piscine-16.jpg",
+          "ms": 866
+        },
+        {
+          "file": "transition-chambre-piscine-17.jpg",
+          "ms": 913
+        },
+        {
+          "file": "transition-chambre-piscine-18.jpg",
+          "ms": 965
+        },
+        {
+          "file": "transition-chambre-piscine-19.jpg",
+          "ms": 1011
+        },
+        {
+          "file": "transition-chambre-piscine-20.jpg",
+          "ms": 1058
+        },
+        {
+          "file": "transition-chambre-piscine-21.jpg",
+          "ms": 1114
+        },
+        {
+          "file": "transition-chambre-piscine-22.jpg",
+          "ms": 1163
+        },
+        {
+          "file": "transition-chambre-piscine-23.jpg",
+          "ms": 1213
+        },
+        {
+          "file": "transition-chambre-piscine-24.jpg",
+          "ms": 1262
+        },
+        {
+          "file": "transition-chambre-piscine-25.jpg",
+          "ms": 1315
+        },
+        {
+          "file": "transition-chambre-piscine-26.jpg",
+          "ms": 1368
+        },
+        {
+          "file": "transition-chambre-piscine-27.jpg",
+          "ms": 1414
+        },
+        {
+          "file": "transition-chambre-piscine-28.jpg",
+          "ms": 1464
+        },
+        {
+          "file": "transition-chambre-piscine-29.jpg",
+          "ms": 1508
+        },
+        {
+          "file": "transition-chambre-piscine-30.jpg",
+          "ms": 1567
+        },
+        {
+          "file": "transition-chambre-piscine-31.jpg",
+          "ms": 1613
+        },
+        {
+          "file": "transition-chambre-piscine-32.jpg",
+          "ms": 1664
+        },
+        {
+          "file": "transition-chambre-piscine-33.jpg",
+          "ms": 1711
+        },
+        {
+          "file": "transition-chambre-piscine-34.jpg",
+          "ms": 1768
+        },
+        {
+          "file": "transition-chambre-piscine-35.jpg",
+          "ms": 1821
+        },
+        {
+          "file": "transition-chambre-piscine-36.jpg",
+          "ms": 1881
+        },
+        {
+          "file": "transition-chambre-piscine-37.jpg",
+          "ms": 1933
+        },
+        {
+          "file": "transition-chambre-piscine-38.jpg",
+          "ms": 2005
+        },
+        {
+          "file": "transition-chambre-piscine-39.jpg",
+          "ms": 2070
+        },
+        {
+          "file": "transition-chambre-piscine-40.jpg",
+          "ms": 2116
+        },
+        {
+          "file": "transition-chambre-piscine-41.jpg",
+          "ms": 2169
+        },
+        {
+          "file": "transition-chambre-piscine-42.jpg",
+          "ms": 2236
+        },
+        {
+          "file": "transition-chambre-piscine-43.jpg",
+          "ms": 2284
+        },
+        {
+          "file": "transition-chambre-piscine-44.jpg",
+          "ms": 2331
+        },
+        {
+          "file": "transition-chambre-piscine-45.jpg",
+          "ms": 2389
+        },
+        {
+          "file": "transition-chambre-piscine-46.jpg",
+          "ms": 2455
+        },
+        {
+          "file": "transition-chambre-piscine-47.jpg",
+          "ms": 2521
+        },
+        {
+          "file": "transition-chambre-piscine-48.jpg",
+          "ms": 2587
+        },
+        {
+          "file": "transition-chambre-piscine-49.jpg",
+          "ms": 2635
+        }
+      ]
+    }
+  ],
+  "performanceMeasurement": "Unavailable: read-only browser evaluation does not expose performance or the engine counters. Screenshot sampling is not a frame-rate benchmark."
+}

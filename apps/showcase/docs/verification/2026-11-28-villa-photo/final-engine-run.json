@@ -1,0 +1,776 @@
+[
+  {
+    "id": 0,
+    "name": "Vue générale",
+    "fps": 60.066280033288336,
+    "p95": 17.199999999999818,
+    "max": 17.400000000000546,
+    "transitionPerf": {
+      "fps": 60.34100974333462,
+      "p95": 17.100000000000364,
+      "max": 17.300000000000182
+    },
+    "photo": {
+      "ready": true,
+      "room": 0,
+      "wanted": 0,
+      "transition": 1,
+      "cacheSize": 1,
+      "pending": 0,
+      "failed": [],
+      "state": {
+        "room": 0,
+        "name": "Vue générale",
+        "level": 1,
+        "motors": [
+          0,
+          0,
+          0
+        ],
+        "source": 0,
+        "paused": false,
+        "hvac": 0,
+        "steam": 0,
+        "heat": 0
+      },
+      "rect": {
+        "x": 156.70138150903296,
+        "y": 16,
+        "w": 966.5972369819341,
+        "h": 544
+      }
+    },
+    "errors": []
+  },
+  {
+    "id": 1,
+    "name": "Salon",
+    "fps": 60.10362694330219,
+    "p95": 16.899999999999636,
+    "max": 17.299999999999272,
+    "transitionPerf": {
+      "fps": 56.846404326575595,
+      "p95": 16.900000000000546,
+      "max": 117
+    },
+    "photo": {
+      "ready": true,
+      "room": 1,
+      "wanted": 1,
+      "transition": 1,
+      "cacheSize": 2,
+      "pending": 0,
+      "failed": [],
+      "state": {
+        "room": 1,
+        "name": "Salon",
+        "level": 0.8041758054212597,
+        "motors": [
+          0,
+          0,
+          0
+        ],
+        "source": 2,
+        "paused": false,
+        "hvac": 1,
+        "steam": 0,
+        "heat": 0
+      },
+      "rect": {
+        "x": 156.70138150903296,
+        "y": 16,
+        "w": 966.5972369819341,
+        "h": 544
+      }
+    },
+    "errors": []
+  },
+  {
+    "id": 2,
+    "name": "Cuisine",
+    "fps": 60.05384137487763,
+    "p95": 16.899999999999636,
+    "max": 17,
+    "transitionPerf": {
+      "fps": 60.15784535590188,
+      "p95": 16.80000000000109,
+      "max": 16.900000000001455
+    },
+    "photo": {
+      "ready": true,
+      "room": 2,
+      "wanted": 2,
+      "transition": 1,
+      "cacheSize": 3,
+      "pending": 0,
+      "failed": [],
+      "state": {
+        "room": 2,
+        "name": "Cuisine",
+        "level": 0.8048333333353203,
+        "motors": [
+          0,
+          0,
+          0
+        ],
+        "source": 2,
+        "paused": false,
+        "hvac": 1,
+        "steam": 0,
+        "heat": 0
+      },
+      "rect": {
+        "x": 156.70138150903296,
+        "y": 16,
+        "w": 966.5972369819341,
+        "h": 544
+      }
+    },
+    "errors": []
+  },
+  {
+    "id": 3,
+    "name": "Salle à manger",
+    "fps": 60.07623467049887,
+    "p95": 16.899999999997817,
+    "max": 17.5,
+    "transitionPerf": {
+      "fps": 60.14456767643328,
+      "p95": 16.80000000000109,
+      "max": 17.200000000000728
+    },
+    "photo": {
+      "ready": true,
+      "room": 3,
+      "wanted": 3,
+      "transition": 1,
+      "cacheSize": 4,
+      "pending": 0,
+      "failed": [],
+      "state": {
+        "room": 3,
+        "name": "Salle à manger",
+        "level": 0.8045333333293602,
+        "motors": [
+          0,
+          0,
+          0
+        ],
+        "source": 2,
+        "paused": false,
+        "hvac": 1,
+        "steam": 0,
+        "heat": 0
+      },
+      "rect": {
+        "x": 156.70138150903296,
+        "y": 16,
+        "w": 966.5972369819341,
+        "h": 544
+      }
+    },
+    "errors": []
+  },
+  {
+    "id": 4,
+    "name": "Suite parentale",
+    "fps": 60.07374570147159,
+    "p95": 16.900000000001455,
+    "max": 17.5,
+    "transitionPerf": {
+      "fps": 59.5763459845048,
+      "p95": 16.899999999997817,
+      "max": 33.29999999999927
+    },
+    "photo": {
+      "ready": true,
+      "room": 4,
+      "wanted": 4,
+      "transition": 1,
+      "cacheSize": 4,
+      "pending": 0,
+      "failed": [],
+      "state": {
+        "room": 4,
+        "name": "Suite parentale",
+        "level": 0.8045731810258501,
+        "motors": [
+          0,
+          0,
+          0
+        ],
+        "source": 2,
+        "paused": false,
+        "hvac": 1,
+        "steam": 0,
+        "heat": 0
+      },
+      "rect": {
+        "x": 156.70138150903296,
+        "y": 16,
+        "w": 966.5972369819341,
+        "h": 544
+      }
+    },
+    "errors": []
+  },
+  {
+    "id": 5,
+    "name": "Chambre 1",
+    "fps": 60.0961538464508,
+    "p95": 16.899999999997817,
+    "max": 17.200000000000728,
+    "transitionPerf": {
+      "fps": 59.00843765490994,
+      "p95": 16.899999999997817,
+      "max": 49.80000000000291
+    },
+    "photo": {
+      "ready": true,
+      "room": 5,
+      "wanted": 5,
+      "transition": 1,
+      "cacheSize": 4,
+      "pending": 0,
+      "failed": [],
+      "state": {
+        "room": 5,
+        "name": "Chambre 1",
+        "level": 0.8042692764410925,
+        "motors": [
+          0,
+          0,
+          0
+        ],
+        "source": 2,
+        "paused": false,
+        "hvac": 1,
+        "steam": 0,
+        "heat": 0
+      },
+      "rect": {
+        "x": 156.70138150903296,
+        "y": 16,
+        "w": 966.5972369819341,
+        "h": 544
+      }
+    },
+    "errors": []
+  },
+  {
+    "id": 6,
+    "name": "Chambre 2",
+    "fps": 60.06876838296614,
+    "p95": 17,
+    "max": 17.30000000000291,
+    "transitionPerf": {
+      "fps": 58.43762059650472,
+      "p95": 16.899999999997817,
+      "max": 66.89999999999782
+    },
+    "photo": {
+      "ready": true,
+      "room": 6,
+      "wanted": 6,
+      "transition": 1,
+      "cacheSize": 4,
+      "pending": 0,
+      "failed": [],
+      "state": {
+        "room": 6,
+        "name": "Chambre 2",
+        "level": 0.8046359382240539,
+        "motors": [
+          0,
+          0,
+          0
+        ],
+        "source": 2,
+        "paused": false,
+        "hvac": 1,
+        "steam": 0,
+        "heat": 0
+      },
+      "rect": {
+        "x": 156.70138150903296,
+        "y": 16,
+        "w": 966.5972369819341,
+        "h": 544
+      }
+    },
+    "errors": []
+  },
+  {
+    "id": 7,
+    "name": "Bureau",
+    "fps": 60.078723845335,
+    "p95": 16.900000000001455,
+    "max": 17.400000000001455,
+    "transitionPerf": {
+      "fps": 59.102960672064036,
+      "p95": 17.200000000004366,
+      "max": 50.10000000000218
+    },
+    "photo": {
+      "ready": true,
+      "room": 7,
+      "wanted": 7,
+      "transition": 1,
+      "cacheSize": 4,
+      "pending": 0,
+      "failed": [],
+      "state": {
+        "room": 7,
+        "name": "Bureau",
+        "level": 0.8044999999960274,
+        "motors": [
+          0,
+          0,
+          0
+        ],
+        "source": 2,
+        "paused": false,
+        "hvac": 1,
+        "steam": 0,
+        "heat": 0
+      },
+      "rect": {
+        "x": 156.70138150903296,
+        "y": 16,
+        "w": 966.5972369819341,
+        "h": 544
+      }
+    },
+    "errors": []
+  },
+  {
+    "id": 8,
+    "name": "Home Cinéma",
+    "fps": 60.0762346700539,
+    "p95": 17,
+    "max": 17.5,
+    "transitionPerf": {
+      "fps": 59.01494677623964,
+      "p95": 16.900000000001455,
+      "max": 33.400000000001455
+    },
+    "photo": {
+      "ready": true,
+      "room": 8,
+      "wanted": 8,
+      "transition": 1,
+      "cacheSize": 4,
+      "pending": 0,
+      "failed": [],
+      "state": {
+        "room": 8,
+        "name": "Home Cinéma",
+        "level": 0.8045359395573861,
+        "motors": [
+          0,
+          0,
+          0
+        ],
+        "source": 2,
+        "paused": false,
+        "hvac": 1,
+        "steam": 0,
+        "heat": 0
+      },
+      "rect": {
+        "x": 156.70138150903296,
+        "y": 16,
+        "w": 966.5972369819341,
+        "h": 544
+      }
+    },
+    "errors": []
+  },
+  {
+    "id": 9,
+    "name": "Chambre 3",
+    "fps": 60.033950234073615,
+    "p95": 16.80000000000291,
+    "max": 17.200000000004366,
+    "transitionPerf": {
+      "fps": 59.5960710736368,
+      "p95": 16.80000000000291,
+      "max": 33.900000000001455
+    },
+    "photo": {
+      "ready": true,
+      "room": 9,
+      "wanted": 9,
+      "transition": 1,
+      "cacheSize": 4,
+      "pending": 0,
+      "failed": [],
+      "state": {
+        "room": 9,
+        "name": "Chambre 3",
+        "level": 0.8051051973310358,
+        "motors": [
+          0,
+          0,
+          0
+        ],
+        "source": 2,
+        "paused": false,
+        "hvac": 1,
+        "steam": 0,
+        "heat": 0
+      },
+      "rect": {
+        "x": 156.70138150903296,
+        "y": 16,
+        "w": 966.5972369819341,
+        "h": 544
+      }
+    },
+    "errors": []
+  },
+  {
+    "id": 10,
+    "name": "Suite invités",
+    "fps": 59.65697240865019,
+    "p95": 16.89999999999418,
+    "max": 33.200000000004366,
+    "transitionPerf": {
+      "fps": 60.16780746281825,
+      "p95": 16.80000000000291,
+      "max": 16.900000000001455
+    },
+    "photo": {
+      "ready": true,
+      "room": 10,
+      "wanted": 10,
+      "transition": 1,
+      "cacheSize": 4,
+      "pending": 0,
+      "failed": [],
+      "state": {
+        "room": 10,
+        "name": "Suite invités",
+        "level": 0.80460130266659,
+        "motors": [
+          0,
+          0,
+          0
+        ],
+        "source": 2,
+        "paused": false,
+        "hvac": 1,
+        "steam": 0,
+        "heat": 0
+      },
+      "rect": {
+        "x": 156.70138150903296,
+        "y": 16,
+        "w": 966.5972369819341,
+        "h": 544
+      }
+    },
+    "errors": []
+  },
+  {
+    "id": 11,
+    "name": "Pool House",
+    "fps": 60.038921783480646,
+    "p95": 16.900000000001455,
+    "max": 17.400000000001455,
+    "transitionPerf": {
+      "fps": 59.592782651486836,
+      "p95": 16.80000000000291,
+      "max": 33.299999999995634
+    },
+    "photo": {
+      "ready": true,
+      "room": 11,
+      "wanted": 11,
+      "transition": 1,
+      "cacheSize": 4,
+      "pending": 0,
+      "failed": [],
+      "state": {
+        "room": 11,
+        "name": "Pool House",
+        "level": 0.8050359328927085,
+        "motors": [
+          0,
+          0,
+          0
+        ],
+        "source": 2,
+        "paused": false,
+        "hvac": 0,
+        "steam": 0,
+        "heat": 0
+      },
+      "rect": {
+        "x": 156.70138150903296,
+        "y": 16,
+        "w": 966.5972369819341,
+        "h": 544
+      }
+    },
+    "errors": []
+  },
+  {
+    "id": 12,
+    "name": "Piscine & Spa",
+    "fps": 60.091172813776176,
+    "p95": 16.89999999999418,
+    "max": 17.30000000000291,
+    "transitionPerf": {
+      "fps": 59.56320317631252,
+      "p95": 17.099999999998545,
+      "max": 33.599999999998545
+    },
+    "photo": {
+      "ready": true,
+      "room": 12,
+      "wanted": 12,
+      "transition": 1,
+      "cacheSize": 4,
+      "pending": 0,
+      "failed": [],
+      "state": {
+        "room": 12,
+        "name": "Piscine & Spa",
+        "level": 0.8043333333353196,
+        "motors": [
+          0,
+          0,
+          0
+        ],
+        "source": 0,
+        "paused": false,
+        "hvac": 0,
+        "steam": 0,
+        "heat": 0
+      },
+      "rect": {
+        "x": 156.70138150903296,
+        "y": 16,
+        "w": 966.5972369819341,
+        "h": 544
+      }
+    },
+    "errors": []
+  },
+  {
+    "id": 13,
+    "name": "Sauna & Hammam",
+    "fps": 60.06379188961349,
+    "p95": 16.900000000001455,
+    "max": 17.5,
+    "transitionPerf": {
+      "fps": 59.01494677585148,
+      "p95": 16.900000000001455,
+      "max": 50.30000000000291
+    },
+    "photo": {
+      "ready": true,
+      "room": 13,
+      "wanted": 13,
+      "transition": 1,
+      "cacheSize": 4,
+      "pending": 0,
+      "failed": [],
+      "state": {
+        "room": 13,
+        "name": "Sauna & Hammam",
+        "level": 0.8047026039966477,
+        "motors": [
+          0,
+          0,
+          0
+        ],
+        "source": 0,
+        "paused": false,
+        "hvac": 1,
+        "steam": 0,
+        "heat": 0
+      },
+      "rect": {
+        "x": 156.70138150903296,
+        "y": 16,
+        "w": 966.5972369819341,
+        "h": 544
+      }
+    },
+    "errors": []
+  },
+  {
+    "id": 14,
+    "name": "Bar & Lounge",
+    "fps": 60.12605738898784,
+    "p95": 16.80000000000291,
+    "max": 17.19999999999709,
+    "transitionPerf": {
+      "fps": 59.08664200160392,
+      "p95": 16.900000000001455,
+      "max": 50.30000000000291
+    },
+    "photo": {
+      "ready": true,
+      "room": 14,
+      "wanted": 14,
+      "transition": 1,
+      "cacheSize": 4,
+      "pending": 0,
+      "failed": [],
+      "state": {
+        "room": 14,
+        "name": "Bar & Lounge",
+        "level": 0.8038692817815966,
+        "motors": [
+          0,
+          0,
+          0
+        ],
+        "source": 2,
+        "paused": false,
+        "hvac": 1,
+        "steam": 0,
+        "heat": 0
+      },
+      "rect": {
+        "x": 156.70138150903296,
+        "y": 16,
+        "w": 966.5972369819341,
+        "h": 544
+      }
+    },
+    "errors": []
+  },
+  {
+    "id": 15,
+    "name": "Garage & Ateliers",
+    "fps": 60.08619260762319,
+    "p95": 17,
+    "max": 17.39999999999418,
+    "transitionPerf": {
+      "fps": 59.0409976271304,
+      "p95": 16.90000000000873,
+      "max": 50
+    },
+    "photo": {
+      "ready": true,
+      "room": 15,
+      "wanted": 15,
+      "transition": 1,
+      "cacheSize": 4,
+      "pending": 0,
+      "failed": [],
+      "state": {
+        "room": 15,
+        "name": "Garage & Ateliers",
+        "level": 0.8043999999960263,
+        "motors": [
+          0,
+          0,
+          0
+        ],
+        "source": 2,
+        "paused": false,
+        "hvac": 1,
+        "steam": 0,
+        "heat": 0
+      },
+      "rect": {
+        "x": 156.70138150903296,
+        "y": 16,
+        "w": 966.5972369819341,
+        "h": 544
+      }
+    },
+    "errors": []
+  },
+  {
+    "id": 16,
+    "name": "Simulateur de golf",
+    "fps": 60.076234670350544,
+    "p95": 16.80000000000291,
+    "max": 17,
+    "transitionPerf": {
+      "fps": 59.54021721172872,
+      "p95": 16.90000000000873,
+      "max": 33.39999999999418
+    },
+    "photo": {
+      "ready": true,
+      "room": 16,
+      "wanted": 16,
+      "transition": 1,
+      "cacheSize": 4,
+      "pending": 0,
+      "failed": [],
+      "state": {
+        "room": 16,
+        "name": "Simulateur de golf",
+        "level": 0.8045333333313465,
+        "motors": [
+          0,
+          0,
+          0
+        ],
+        "source": 2,
+        "paused": false,
+        "hvac": 1,
+        "steam": 0,
+        "heat": 0
+      },
+      "rect": {
+        "x": 156.70138150903296,
+        "y": 16,
+        "w": 966.5972369819341,
+        "h": 544
+      }
+    },
+    "errors": []
+  },
+  {
+    "id": 17,
+    "name": "Local technique",
+    "fps": 60.038921784073565,
+    "p95": 16.80000000000291,
+    "max": 17.30000000000291,
+    "transitionPerf": {
+      "fps": 59.5993598585315,
+      "p95": 16.80000000000291,
+      "max": 33.30000000000291
+    },
+    "photo": {
+      "ready": true,
+      "room": 17,
+      "wanted": 17,
+      "transition": 1,
+      "cacheSize": 4,
+      "pending": 0,
+      "failed": [],
+      "state": {
+        "room": 17,
+        "name": "Local technique",
+        "level": 0.8050333333293578,
+        "motors": [
+          0,
+          0,
+          0
+        ],
+        "source": 0,
+        "paused": false,
+        "hvac": 1,
+        "steam": 0,
+        "heat": 0
+      },
+      "rect": {
+        "x": 156.70138150903296,
+        "y": 16,
+        "w": 966.5972369819341,
+        "h": 544
+      }
+    },
+    "errors": []
+  }
+]

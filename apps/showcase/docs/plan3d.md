@@ -252,3 +252,21 @@ Après validation de l'animation 2.3.17, nouvelle passe sur les matières : asph
 ## 23/11/2026 — Publication du programme automobile validé
 
 Donatien valide la version 2.3.18 et autorise commit/push vers main pour publication Vercel : nouvelle animation course et textures affinées. Recette locale et avant/après conservés dans apps/showcase/docs/verification/2026-11-23-race-broadcast/ et 2026-11-23-race-materials/. Aucun déploiement matériel.
+
+
+## 23/11/2026 — Diagnostic MutationObserver et essai CPU des transitions
+
+Candidat local 2.3.19 : mise à jour des matrices limitée aux branches visibles, activée uniquement pour la Villa. Matrices visibles identiques dans cinq pièces ; travail CPU de cette étape nettement réduit. Gain FPS global non démontré (premières transitions encore variables), ne pas annoncer les baisses corrigées. Erreur MutationObserver non reproduite sur trois chargements instrumentés ; origine non identifiée, aucun faux correctif de masquage. Preuves : apps/showcase/docs/verification/2026-11-23-transitions/. Non publié, aucun changement GUI/matériel.
+
+
+## 23/11/2026 — Cause shader des transitions, candidat local 2.3.20
+
+Profilage : le nombre de PointLights TV passe de 3 à 4 pendant le chevauchement des pièces, déclenchant des variantes de shaders. Correctif local Villa : lumière TV mutualisée, position/intensité identiques, nombre constant. Profil répété : 43→31 programmes, pire rendu 41,2→22,4 ms, pire intervalle 43,4→32,6 ms ; passages suivants ~60 i/s. Matériaux/géométrie/résolution conservés. MutationObserver non reproduit : quatre chargements complets supplémentaires, 2072 appels observe sans exception ; ne pas annoncer corrigé. Preuves : apps/showcase/docs/verification/2026-11-23-transition-profile/. Aucune publication, attente explicite de résultat concluant sur le diagnostic global.
+
+## 28/11/2026 — Salon photoréaliste intégré, candidat local 2.3.21
+
+Prototype approuvé intégré au fond Villa FTV smartphone : scènes d'éclairage (fondu global OFF/ON), volets/stores/rideaux et TV réutilisent les états du bridge existant. Même renderer et même texture TV ; vue générale et autres pièces restent en 3D. Caméra photographique fixe. Recette locale : docs/verification/2026-11-28-salon-integrated/ (57–60 i/s sur cinq fenêtres courtes, retour au salon encore variable). Aucun changement CH5/C#/SIMPL, aucun commit/push/publication. Présentation locale pour validation.
+
+## 28/11/2026 — Toute la Villa en décors photographiques, candidat 2.3.22
+
+18 vues locales (extérieur + 17 pièces), commandées par le bridge existant. Fondu OFF/ON global, moteurs, TV/projection, eau et vapeur. Même renderer, cache de quatre paires, chargement à la demande, programme TV préparé à l'entrée. Caméra fixe et transitions par fondus ; autres projets inchangés. Actifs originaux imagegen, prompts et sources dans prototypes/villa-photo ; recette dans docs/verification/2026-11-28-villa-photo. Non publié, validation visuelle locale requise.

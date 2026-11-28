@@ -1,0 +1,80 @@
+{
+  "status": "complete",
+  "runs": [
+    {
+      "i": 0,
+      "interrupted": true
+    },
+    {
+      "i": 1,
+      "interrupted": false
+    },
+    {
+      "i": 2,
+      "interrupted": false
+    },
+    {
+      "i": 3,
+      "interrupted": false
+    },
+    {
+      "i": 4,
+      "interrupted": true
+    },
+    {
+      "i": 5,
+      "interrupted": false
+    },
+    {
+      "i": 6,
+      "interrupted": false
+    },
+    {
+      "i": 7,
+      "interrupted": false
+    },
+    {
+      "i": 8,
+      "interrupted": true
+    },
+    {
+      "i": 9,
+      "interrupted": false
+    },
+    {
+      "i": 10,
+      "interrupted": false
+    },
+    {
+      "i": 11,
+      "interrupted": false
+    }
+  ],
+  "records": [],
+  "summaries": [
+    {
+      "url": "http://127.0.0.1:4344/showcases/villa-gemini-frequencetv/iphone.html?observerRun=2",
+      "calls": 518,
+      "targets": {
+        "CH5-BUTTON": 79,
+        "DIV": 422,
+        "CH5-SLIDER": 15,
+        "BODY": 1,
+        "#document": 1
+      },
+      "records": []
+    },
+    {
+      "url": "http://127.0.0.1:4344/showcases/villa-gemini-frequencetv/iphone.html?observerRun=7",
+      "calls": 518,
+      "targets": {
+        "CH5-BUTTON": 79,
+        "DIV": 422,
+        "CH5-SLIDER": 15,
+        "BODY": 1,
+        "#document": 1
+      },
+      "records": []
+    }
+  ]
+}

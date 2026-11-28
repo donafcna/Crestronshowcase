@@ -1,0 +1,104 @@
+[
+  {
+    "id": 0,
+    "key": "overview",
+    "source": "C:\\Users\\donat\\.codex\\generated_images\\01a09294-fecf-7b13-8186-de40678c5419\\exec-f7c2acf7-a312-4b74-ab29-aaf39e52a57a.png",
+    "off": "C:\\Users\\donat\\.codex\\generated_images\\01a09294-fecf-7b13-8186-de40678c5419\\exec-aace9914-a2b3-4ab9-ae91-81317951c421.png"
+  },
+  {
+    "id": 2,
+    "key": "cuisine",
+    "source": "C:\\Users\\donat\\.codex\\generated_images\\01a09294-fecf-7b13-8186-de40678c5419\\exec-79cc4a23-45c5-4868-8f54-3c849ef50318.png",
+    "off": "C:\\Users\\donat\\.codex\\generated_images\\01a09294-fecf-7b13-8186-de40678c5419\\exec-2ea56fb2-f2d5-49f1-a69b-0432b0732f65.png"
+  },
+  {
+    "id": 3,
+    "key": "repas",
+    "source": "C:\\Users\\donat\\.codex\\generated_images\\01a09294-fecf-7b13-8186-de40678c5419\\exec-678e9151-09a2-48ac-83ee-5cec73b3e011.png",
+    "off": "C:\\Users\\donat\\.codex\\generated_images\\01a09294-fecf-7b13-8186-de40678c5419\\exec-a69a0982-e00b-4a7f-a842-81ae3eee0591.png"
+  },
+  {
+    "id": 4,
+    "key": "suite",
+    "source": "C:\\Users\\donat\\.codex\\generated_images\\01a09294-fecf-7b13-8186-de40678c5419\\exec-8688351c-827c-4ee4-a9df-05bc7ce5111c.png",
+    "off": "C:\\Users\\donat\\.codex\\generated_images\\01a09294-fecf-7b13-8186-de40678c5419\\exec-55bf7f5d-337c-4cac-87de-f56055f92bcb.png"
+  },
+  {
+    "id": 5,
+    "key": "chambre1",
+    "source": "C:\\Users\\donat\\.codex\\generated_images\\01a09294-fecf-7b13-8186-de40678c5419\\exec-43a4e92e-4237-41a3-b6f8-cfea9a2975e9.png",
+    "off": "C:\\Users\\donat\\.codex\\generated_images\\01a09294-fecf-7b13-8186-de40678c5419\\exec-e8678653-3d84-41cc-a96c-a565038f834c.png"
+  },
+  {
+    "id": 6,
+    "key": "chambre2",
+    "source": "C:\\Users\\donat\\.codex\\generated_images\\01a09294-fecf-7b13-8186-de40678c5419\\exec-53005cb3-1dd6-4f58-8b96-767f46bf0f45.png",
+    "off": "C:\\Users\\donat\\.codex\\generated_images\\01a09294-fecf-7b13-8186-de40678c5419\\exec-31be015a-c90a-4c97-8d83-2b8b31e031fa.png"
+  },
+  {
+    "id": 7,
+    "key": "bureau",
+    "source": "C:\\Users\\donat\\.codex\\generated_images\\01a09294-fecf-7b13-8186-de40678c5419\\exec-22148bf6-0cdf-47b9-a252-e4cd27a79b32.png",
+    "off": "C:\\Users\\donat\\.codex\\generated_images\\01a09294-fecf-7b13-8186-de40678c5419\\exec-9f750f72-5013-4dfe-8eff-7bc5700d2082.png"
+  },
+  {
+    "id": 8,
+    "key": "cinema",
+    "source": "C:\\Users\\donat\\.codex\\generated_images\\01a09294-fecf-7b13-8186-de40678c5419\\exec-2c3aa826-5caa-4b33-b362-392c69708902.png",
+    "off": "C:\\Users\\donat\\.codex\\generated_images\\01a09294-fecf-7b13-8186-de40678c5419\\exec-29aee393-e0e8-4cce-b328-9d4d035a22aa.png"
+  },
+  {
+    "id": 9,
+    "key": "chambre3",
+    "source": "C:\\Users\\donat\\.codex\\generated_images\\01a09294-fecf-7b13-8186-de40678c5419\\exec-a9a656c3-8162-4cc1-977d-ef88cc5d25f6.png",
+    "off": "C:\\Users\\donat\\.codex\\generated_images\\01a09294-fecf-7b13-8186-de40678c5419\\exec-7bf67528-3f8b-43bd-a4f0-78eac79f6274.png"
+  },
+  {
+    "id": 10,
+    "key": "invites",
+    "source": "C:\\Users\\donat\\.codex\\generated_images\\01a09294-fecf-7b13-8186-de40678c5419\\exec-0c7fdd64-1228-4ea5-a370-56f4853e613b.png",
+    "off": "C:\\Users\\donat\\.codex\\generated_images\\01a09294-fecf-7b13-8186-de40678c5419\\exec-57cc51e3-e120-492d-9cbe-0a5290323760.png"
+  },
+  {
+    "id": 11,
+    "key": "poolhouse",
+    "source": "C:\\Users\\donat\\.codex\\generated_images\\01a09294-fecf-7b13-8186-de40678c5419\\exec-fba4dcac-3b1e-4f96-b699-ec34493c772a.png",
+    "off": "C:\\Users\\donat\\.codex\\generated_images\\01a09294-fecf-7b13-8186-de40678c5419\\exec-cf7f3c87-46d2-448b-bfff-d92a0686ba68.png"
+  },
+  {
+    "id": 12,
+    "key": "piscine",
+    "source": "C:\\Users\\donat\\.codex\\generated_images\\01a09294-fecf-7b13-8186-de40678c5419\\exec-60f4a9f2-74f3-4b64-98bb-bcf595ff7907.png",
+    "off": "C:\\Users\\donat\\.codex\\generated_images\\01a09294-fecf-7b13-8186-de40678c5419\\exec-7a9a75af-93d8-453b-a70c-a430640613e0.png"
+  },
+  {
+    "id": 13,
+    "key": "sauna",
+    "source": "C:\\Users\\donat\\.codex\\generated_images\\01a09294-fecf-7b13-8186-de40678c5419\\exec-4a4ba1e0-8fb6-43b2-aa66-1e27ec42208e.png",
+    "off": "C:\\Users\\donat\\.codex\\generated_images\\01a09294-fecf-7b13-8186-de40678c5419\\exec-7eff516f-77e6-473f-9d3f-08e2ab5ee8df.png"
+  },
+  {
+    "id": 14,
+    "key": "bar",
+    "source": "C:\\Users\\donat\\.codex\\generated_images\\01a09294-fecf-7b13-8186-de40678c5419\\exec-3d633ab0-ce63-457b-9095-fd49e4b1c1d5.png",
+    "off": "C:\\Users\\donat\\.codex\\generated_images\\01a09294-fecf-7b13-8186-de40678c5419\\exec-38c33ef0-0014-4dd2-aa6c-cd6f5291d5e0.png"
+  },
+  {
+    "id": 15,
+    "key": "garage",
+    "source": "C:\\Users\\donat\\.codex\\generated_images\\01a09294-fecf-7b13-8186-de40678c5419\\exec-03b215ff-8436-4c5e-aaaa-0e523ab11b46.png",
+    "off": "C:\\Users\\donat\\.codex\\generated_images\\01a09294-fecf-7b13-8186-de40678c5419\\exec-8130c7dd-877a-477d-9a6f-975a662ff751.png"
+  },
+  {
+    "id": 16,
+    "key": "golf",
+    "source": "C:\\Users\\donat\\.codex\\generated_images\\01a09294-fecf-7b13-8186-de40678c5419\\exec-b06624d6-522f-4af3-ac97-aa4c95fd8f30.png",
+    "off": "C:\\Users\\donat\\.codex\\generated_images\\01a09294-fecf-7b13-8186-de40678c5419\\exec-596d68c4-27f8-449b-9ac6-09a4f7222621.png"
+  },
+  {
+    "id": 17,
+    "key": "technique",
+    "source": "C:\\Users\\donat\\.codex\\generated_images\\01a09294-fecf-7b13-8186-de40678c5419\\exec-a976377c-dda2-42d7-8854-eb92f3051310.png",
+    "off": "C:\\Users\\donat\\.codex\\generated_images\\01a09294-fecf-7b13-8186-de40678c5419\\exec-437b6b9d-d6d8-446a-8ca9-bb25de4cc247.png"
+  }
+]

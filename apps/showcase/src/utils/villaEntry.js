@@ -14,6 +14,7 @@ export function createVillaEntry({ api, measure, onReady, isOverview = () => tru
     const layout = measure();
     if (!layout || !fontsReady()) { signature = ''; stableSince = null; return; }
     api.setWindow(layout.rect);
+    if (api.metrics().villaPhoto && !api.metrics().villaPhoto.ready) return;
     // setWindow normally flies from the canvas-wide default to the phone-side
     // viewport. Finish that initial flight while the canvas is still hidden.
     if (isOverview() && api.navigation().phase === 'overview-closed') api.jump();

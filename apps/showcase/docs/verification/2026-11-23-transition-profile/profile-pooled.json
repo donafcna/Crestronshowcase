@@ -1,0 +1,279 @@
+{
+  "status": "complete",
+  "warmMs": 0,
+  "runs": [
+    {
+      "id": 4,
+      "transition": {
+        "fps": 59.827165965385106,
+        "sampledMedianMs": 16.80000001192093,
+        "sampledP95Ms": 18.100000023841858,
+        "maxMs": 32.200000047683716,
+        "movingSamples": 80,
+        "frames": 180,
+        "renderedFrames": 233,
+        "medianMs": 23.599999999996726,
+        "p95Ms": 32.29999999999973,
+        "pixelRatio": 1.5,
+        "drawCalls": 146,
+        "triangles": 216898,
+        "zone": null,
+        "tv3D": {
+          "mode": "3d",
+          "version": "race-broadcast-1",
+          "drawCalls": 161,
+          "triangles": 235622,
+          "width": 640,
+          "height": 360,
+          "programmes": 1,
+          "draws": 57,
+          "currentKind": "race",
+          "venues": {
+            "race": {
+              "cars": 7,
+              "staticDrawCalls": 10,
+              "materials": "textured",
+              "style": "broadcast",
+              "trackSamples": 256
+            }
+          }
+        },
+        "geometries": 162,
+        "textures": 28,
+        "programs": 31
+      },
+      "steady": {
+        "fps": 59.94466646227682,
+        "sampledMedianMs": 16.69999998807907,
+        "sampledP95Ms": 17.599999964237213,
+        "maxMs": 18,
+        "movingSamples": 0,
+        "frames": 180,
+        "renderedFrames": 311,
+        "medianMs": 23.599999999996726,
+        "p95Ms": 32.19999999999982,
+        "pixelRatio": 1.5,
+        "drawCalls": 106,
+        "triangles": 202090,
+        "zone": null,
+        "tv3D": {
+          "mode": "3d",
+          "version": "race-broadcast-1",
+          "drawCalls": 121,
+          "triangles": 220814,
+          "width": 640,
+          "height": 360,
+          "programmes": 1,
+          "draws": 75,
+          "currentKind": "race",
+          "venues": {
+            "race": {
+              "cars": 7,
+              "staticDrawCalls": 10,
+              "materials": "textured",
+              "style": "broadcast",
+              "trackSamples": 256
+            }
+          }
+        },
+        "geometries": 162,
+        "textures": 28,
+        "programs": 31
+      }
+    },
+    {
+      "id": 5,
+      "transition": {
+        "fps": 59.309350924073534,
+        "sampledMedianMs": 16.69999998807907,
+        "sampledP95Ms": 18.19999998807907,
+        "maxMs": 32.89999997615814,
+        "movingSamples": 80,
+        "frames": 180,
+        "renderedFrames": 418,
+        "medianMs": 23.30000000000473,
+        "p95Ms": 32,
+        "pixelRatio": 1.5,
+        "drawCalls": 150,
+        "triangles": 218962,
+        "zone": null,
+        "tv3D": {
+          "mode": "3d",
+          "version": "race-broadcast-1",
+          "drawCalls": 165,
+          "triangles": 237686,
+          "width": 640,
+          "height": 360,
+          "programmes": 1,
+          "draws": 100,
+          "currentKind": "race",
+          "venues": {
+            "race": {
+              "cars": 7,
+              "staticDrawCalls": 10,
+              "materials": "textured",
+              "style": "broadcast",
+              "trackSamples": 256
+            }
+          }
+        },
+        "geometries": 230,
+        "textures": 34,
+        "programs": 31
+      },
+      "steady": {
+        "fps": 59.91703794690869,
+        "sampledMedianMs": 16.69999998807907,
+        "sampledP95Ms": 18,
+        "maxMs": 19.600000023841858,
+        "movingSamples": 0,
+        "frames": 180,
+        "renderedFrames": 496,
+        "medianMs": 23.60000000000582,
+        "p95Ms": 31.833333333343035,
+        "pixelRatio": 1.5,
+        "drawCalls": 108,
+        "triangles": 203122,
+        "zone": null,
+        "tv3D": {
+          "mode": "3d",
+          "version": "race-broadcast-1",
+          "drawCalls": 123,
+          "triangles": 221846,
+          "width": 640,
+          "height": 360,
+          "programmes": 1,
+          "draws": 118,
+          "currentKind": "race",
+          "venues": {
+            "race": {
+              "cars": 7,
+              "staticDrawCalls": 10,
+              "materials": "textured",
+              "style": "broadcast",
+              "trackSamples": 256
+            }
+          }
+        },
+        "geometries": 230,
+        "textures": 34,
+        "programs": 31
+      }
+    },
+    {
+      "id": 4,
+      "transition": {
+        "fps": 59.913458339144945,
+        "sampledMedianMs": 16.69999998807907,
+        "sampledP95Ms": 17.600000023841858,
+        "maxMs": 18.100000023841858,
+        "movingSamples": 80,
+        "frames": 180,
+        "renderedFrames": 604,
+        "medianMs": 23.900000000006912,
+        "p95Ms": 31.80000000000109,
+        "pixelRatio": 1.5,
+        "drawCalls": 106,
+        "triangles": 202090,
+        "zone": null,
+        "tv3D": {
+          "mode": "3d",
+          "version": "race-broadcast-1",
+          "drawCalls": 121,
+          "triangles": 220814,
+          "width": 640,
+          "height": 360,
+          "programmes": 1,
+          "draws": 143,
+          "currentKind": "race",
+          "venues": {
+            "race": {
+              "cars": 7,
+              "staticDrawCalls": 10,
+              "materials": "textured",
+              "style": "broadcast",
+              "trackSamples": 256
+            }
+          }
+        },
+        "geometries": 230,
+        "textures": 34,
+        "programs": 31
+      },
+      "steady": {
+        "fps": 59.87564289333301,
+        "sampledMedianMs": 16.80000001192093,
+        "sampledP95Ms": 18.099999964237213,
+        "maxMs": 18.599999964237213,
+        "movingSamples": 0,
+        "frames": 180,
+        "renderedFrames": 682,
+        "medianMs": 23.900000000006912,
+        "p95Ms": 31.799999999999272,
+        "pixelRatio": 1.5,
+        "drawCalls": 106,
+        "triangles": 202090,
+        "zone": null,
+        "tv3D": {
+          "mode": "3d",
+          "version": "race-broadcast-1",
+          "drawCalls": 121,
+          "triangles": 220814,
+          "width": 640,
+          "height": 360,
+          "programmes": 1,
+          "draws": 160,
+          "currentKind": "race",
+          "venues": {
+            "race": {
+              "cars": 7,
+              "staticDrawCalls": 10,
+              "materials": "textured",
+              "style": "broadcast",
+              "trackSamples": 256
+            }
+          }
+        },
+        "geometries": 230,
+        "textures": 34,
+        "programs": 31
+      }
+    }
+  ],
+  "events": [
+    {
+      "type": "render",
+      "ms": 12.300000011920929,
+      "phase": "transition-4",
+      "at": 4902.100000023842,
+      "shadowDirty": true,
+      "scene": "interior",
+      "programs": 29,
+      "newPrograms": [
+        {
+          "name": "",
+          "key": "physical,STANDARD,,highp,srgb,false,,uv,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,false,0,,2,3,1,0,1,0,1,0,0,0,0,2,4,0,0,0,1,134147,srgb,onBeforeCompile(){}"
+        }
+      ]
+    },
+    {
+      "type": "render",
+      "ms": 25.5,
+      "phase": "transition-4",
+      "at": 4918.300000011921,
+      "shadowDirty": true,
+      "scene": "interior",
+      "programs": 31,
+      "newPrograms": [
+        {
+          "name": "",
+          "key": "physical,STANDARD,,highp,srgb,false,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,false,0,,2,3,1,0,1,0,1,0,0,0,0,2,4,0,0,0,1,5123,srgb,onBeforeCompile(){}"
+        },
+        {
+          "name": "",
+          "key": "physical,STANDARD,,highp,srgb,false,,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,,,false,0,,2,3,1,0,1,0,1,0,0,0,0,2,4,0,0,0,1,1027,srgb,onBeforeCompile(){}"
+        }
+      ]
+    }
+  ]
+}

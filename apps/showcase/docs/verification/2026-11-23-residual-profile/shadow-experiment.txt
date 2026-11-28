@@ -1,0 +1,3 @@
+Expérience dans test-results uniquement, non intégrée au candidat.
+Remplacer sun.castShadow = !!R && !R.ext par sun.castShadow = true; sun.shadow.intensity = R && !R.ext ? 1 : 0;
+Garder sunE.castShadow=true et basculer sunE.shadow.intensity entre 0 et 1 selon exteriorShadow, avec invalidation de shadowMap.

@@ -1,0 +1,21 @@
+// Rectangles normalized to the approved photographic assets, measured inside frames.
+export const PHOTO_ROOMS = {
+  0: { key:'overview', name:'Vue générale', water:[[.748,.55],[.81,.55],[.95,.67],[.85,.67]] },
+  1: { key:'salon', name:'Salon', window:[.1555,.2435,.347,.431], tv:[.6035,.3195,.2305,.2315] },
+  2: { key:'cuisine', name:'Cuisine', window:[.17,.26,.299,.235], tv:[.632,.329,.155,.149] },
+  3: { key:'repas', name:'Salle à manger', window:[.223,.29,.257,.25], tv:[.615,.322,.207,.197] },
+  4: { key:'suite', name:'Suite parentale', window:[.207,.244,.281,.31], tv:[.602,.308,.22,.21] },
+  5: { key:'chambre1', name:'Chambre 1', window:[.185,.256,.277,.272], tv:[.605,.314,.202,.196] },
+  6: { key:'chambre2', name:'Chambre 2', window:[.218,.273,.273,.272], tv:[.617,.334,.209,.191] },
+  7: { key:'bureau', name:'Bureau', window:[.208,.252,.289,.273], tv:[.597,.288,.226,.214] },
+  8: { key:'cinema', name:'Home Cinéma', tv:[.289,.238,.421,.341] },
+  9: { key:'chambre3', name:'Chambre 3', window:[.197,.263,.284,.26], tv:[.624,.33,.182,.177] },
+  10: { key:'invites', name:'Suite invités', window:[.197,.293,.264,.28], tv:[.62,.35,.207,.198] },
+  11: { key:'poolhouse', name:'Pool House', window:[.125,.295,.37,.342], tv:[.602,.345,.215,.205] },
+  12: { key:'piscine', name:'Piscine & Spa', water:[[.363,.58],[.636,.58],[1,.81],[1,1],[.16,1]] },
+  13: { key:'sauna', name:'Sauna & Hammam', steam:[.59,.3,.33,.5], heat:[.44,.59] },
+  14: { key:'bar', name:'Bar & Lounge', window:[.142,.31,.248,.225], tv:[.69,.334,.177,.17] },
+  15: { key:'garage', name:'Garage & Ateliers', tv:[.827,.329,.136,.134] },
+  16: { key:'golf', name:'Simulateur de golf', tv:[.275,.26,.463,.416] },
+  17: { key:'technique', name:'Local technique' },
+};

@@ -21,6 +21,9 @@ import { createEstate } from './estate.js?v=2026-09-17-lighting-1';
 import { createResidence } from './residence.js?v=2026-11-22-chalet-1';
 import { enrichRoom } from './room-features.js?v=2026-09-27-residence-1';
 import { furnishSpecialRoom } from './special-rooms.js?v=2026-09-17-rooms-1';
+import { createSalonPhoto } from './salon-photo.js?v=2026-11-28-1';
+import { createVillaPhoto } from './villa-photo.js?v=2026-11-28-1';
+import { PHOTO_ROOMS } from './villa-photo-layouts.js';
 import { createTVStage } from './tv-stage.js?v=2026-11-23-race-2';
 import { drawProgramme } from './tv-programmes.js?v=2026-09-16-estate-2';
 import { addNaturalMotion } from './natural-motion.js?v=2026-11-22-villa-4';
@@ -62,6 +65,11 @@ export function createPlan3D(opts) {
     scene = new THREE.Scene();
     scene.fog = new THREE.Fog(0x0b1020, 90, 260);
     var sceneR = new THREE.Scene(); sceneR.fog = scene.fog;
+    // Hidden interiors remain in memory, but need no world-matrix traversal.
+    // Each visible branch is updated before rendering (including lights and targets).
+    // Room parents retain automatic matrices so unfolding and TV lifts stay exact.
+    var visibleRoomMatrices = cfg.visibleRoomMatrices === true;
+    if (visibleRoomMatrices) sceneR.matrixWorldAutoUpdate = false;
     camera = new THREE.PerspectiveCamera(38, 1, 0.3, 500);
     renderer.autoClear = false;
 
@@ -86,6 +94,10 @@ export function createPlan3D(opts) {
     // Deux lampes réelles : celles de la pièce zoomée (les autres pièces n'ont que des matériaux émissifs)
     var roomLights = [new THREE.PointLight(0xffd9a3, 0, 16, 2), new THREE.PointLight(0xffe6c4, 0, 12, 2)];
     roomLights.forEach(function (l) { sceneR.add(l); });
+    // Zero-intensity lights still change shader light counts. Keep one TV light
+    // while outgoing/incoming rooms overlap during navigation.
+    var pooledTvLight = cfg.pooledTvLight === true ? new THREE.PointLight(0x9db8ff, 0, 2.2, 2) : null;
+    if (pooledTvLight) sceneR.add(pooledTvLight);
     var dayCur = 1, environmentDay = 1, fixedDay = null, landscape;
     // 30 seconds of daylight, 10 seconds of dusk, 30 seconds of night, 10 seconds of dawn.
     var dayDuration = 30, nightDuration = 30, transitionDuration = 10;
@@ -134,6 +146,8 @@ export function createPlan3D(opts) {
     var refinedMaterials = cfg.materialFinish === 'villa-2026';
     var interiors = createInteriors(renderer, M, refinedMaterials, cfg.specialFinish === true, cfg.specialPolish === true);
     var tvStage = null;
+    var villaPhoto = cfg.photoViews === true ? createVillaPhoto(renderer) : null;
+    var salonPhoto = !villaPhoto && cfg.salonPhoto === true ? createSalonPhoto() : null;
     // Textures dessinées des motorisations : lames du volet, toile du store, plis des rideaux
     function mkTex(w, h, fn) { var c = document.createElement('canvas'); c.width = w; c.height = h; fn(c.getContext('2d'), w, h); var t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.wrapS = t.wrapT = THREE.RepeatWrapping; return t; }
     var TEX = {
@@ -462,7 +476,8 @@ export function createPlan3D(opts) {
                 tvPos = null; break;
             case 'sauna': tvPos=null;break;
             case 'entree': case 'wc': case 'buanderie': case 'sdb': case 'escalier': tvPos = null; break;   // décor dans interiors.js
-            case 'garage': case 'golf': case 'technique': tvPos = null; break;
+            case 'garage': case 'golf': tvPos = cfg.photoViews ? { x:w/2,y:1.5,z:.19,size:2 } : null; break;
+            case 'technique': tvPos = null; break;
             case 'poolhouse':
                 box(2.6, 1.0, 0.7, M.bois, w * 0.45, 0.5, 0.75, g); box(2.7, 0.06, 0.8, M.metal, w * 0.45, 1.03, 0.75, g);
                 for (var st2 = 0; st2 < 3; st2++) cyl(0.18, 0.75, M.metal, w * 0.45 - 0.9 + st2 * 0.9, 0.37, 1.5, g);
@@ -489,6 +504,7 @@ export function createPlan3D(opts) {
         }
 
         // Audio / vidéo : TV murale + 2 enceintes
+        if (cfg.photoViews && p.id === 11 && !tvPos) tvPos = {x:w/2,y:1.5,z:.19,size:1.6};
         if (tvPos && p.av !== false && p.tv !== false) {
             var sw = tvPos.size, shh = sw * 9 / 16;
             var avRoomGroup=g, tvGroup=new THREE.Group();tvGroup.name='Television assembly';g.add(tvGroup);g=tvGroup;
@@ -505,7 +521,7 @@ export function createPlan3D(opts) {
             var scr = makeScreen();
             var scrMat = new THREE.MeshBasicMaterial({ map: scr.tex });
             var scrMesh = new THREE.Mesh(new THREE.PlaneGeometry(sw, shh), M.ecranOff); scrMesh.position.set(tvPos.x, tvPos.y, tvPos.z + 0.02); g.add(scrMesh);
-            var tvLight = new THREE.PointLight(0x9db8ff, 0, 2.2, 2); tvLight.position.set(tvPos.x, tvPos.y, tvPos.z + 0.4); g.add(tvLight);
+            var tvLight = pooledTvLight ? new THREE.Object3D() : new THREE.PointLight(0x9db8ff, 0, 2.2, 2); tvLight.position.set(tvPos.x, tvPos.y, tvPos.z + 0.4); g.add(tvLight);
             R.tv = { group:tvGroup, mesh: scrMesh, on: scrMat, off: M.ecranOff, screen: scr, light: tvLight, source: 0, veille: veille, width:sw };
             g=avRoomGroup;
             if(tvPos.lift){
@@ -543,6 +559,13 @@ export function createPlan3D(opts) {
         interiors.curtains(R);
         enrichRoom(R, M);
         interiors.decorate(R);
+        // Some older outdoor layouts only had an awning. Photographed glazing
+        // still needs all three motor states driven by the unchanged GUI bridge.
+        if (cfg.photoViews && PHOTO_ROOMS[p.id]?.window) {
+            R.shades ||= {};
+            for (const family of ['volet','store','rideau'])
+                R.shades[family] ||= {mesh:new THREE.Object3D(),pos:0,cible:0,min:0};
+        }
         if (p.circuits) configureA10Room(R);
         if(p.type==='sauna'||p.type==='garage'){
             for(const lamp of R.lamps.slice(0,2)){lamp.mesh?.removeFromParent();lamp.extra?.removeFromParent();}
@@ -787,6 +810,7 @@ export function createPlan3D(opts) {
         hits.sort(function (a,b) { return a.distance - b.distance; }); return hits[0] && hits[0].id;
     }
     function clickPlan(x, y) {
+        if (villaPhoto) { if (!activeRoom && selectedRoom) focusRoom(selectedRoom); return true; }
         if (!win || x < win.x || x > win.x + win.w || y < win.y || y > win.y + win.h) return false;
         if (phase === 'overview-closed') { openOverview(); return true; }
         if (phase !== 'overview-open') return false;
@@ -914,10 +938,30 @@ export function createPlan3D(opts) {
                 if(old!==lift.position&&R===activeRoom)renderer.shadowMap.needsUpdate=true;
             }
         });
+        if (visibleRoomMatrices) {
+            for (var branch of sceneR.children) if (branch.visible) branch.updateMatrixWorld(true);
+        }
+        if (pooledTvLight) {
+            pooledTvLight.intensity = activeRoom?.tv?.light.intensity || 0;
+            if (activeRoom?.tv) activeRoom.tv.light.getWorldPosition(pooledTvLight.position);
+            pooledTvLight.updateMatrixWorld(true);
+        }
+        // Prime the existing race programme while the first photograph is loading,
+        // before villaEntry reveals the canvas. Avoid first-TV shader work in a room transition.
+        if (villaPhoto && !tvStage && villaPhoto.metrics().ready) {
+            tvStage = createTVStage(renderer,{realisticRace:cfg.raceBroadcast!==false,detailedRaceMaterials:cfg.raceMaterials!==false});
+            tvStage.render(2,0,0);
+        }
         renderer.info.autoReset = false; renderer.info.reset();
         renderer.clear();
-        renderer.render(scene, camera);          // extérieurs, lumière du jour constante
-        renderer.render(sceneR, camera);         // pièces, même profondeur, lumière du jour de la pièce active
+        const photoOpacity = salonPhoto?.advance(activeRoom?.id === 1 && phase === 'room', dt) || 0;
+        if (villaPhoto) {
+            villaPhoto.render(ROOMS, activeRoom?.id || 0, win, canvas.clientWidth, canvas.clientHeight, dt, idle, environmentDay);
+        } else if (photoOpacity < 1) {
+            renderer.render(scene, camera);
+            renderer.render(sceneR, camera);
+        }
+        if (photoOpacity > 0) salonPhoto.render(renderer, ROOMS[1], win, canvas.clientWidth, canvas.clientHeight);
         renderedFrames++;
     }
 
@@ -970,7 +1014,7 @@ export function createPlan3D(opts) {
         navigation: function () { return { phase: phase, walls: envelope.opacity, explosion: explosion, camera: camState.pos.toArray(), target: camState.tgt.toArray(), moving: !!tween, lamps: roomLights.map(function (l) { return l.intensity; }), day: dayCur, presentationFill: { hemi:hemi.intensity, fill:fill.intensity } }; },
         roomPoint: function (id) { var R = ROOMS[id]; if (!R) return null; var v = R.group.localToWorld(new THREE.Vector3(R.cfg.w * .6, .1, R.cfg.d * .8)).project(camera); return { x: (v.x + 1) * canvas.clientWidth / 2, y: (1 - v.y) * canvas.clientHeight / 2 }; },
         selectedRoom: function () { return selectedRoom && selectedRoom.id; },
-        metrics: function () { var sorted = frames.slice().sort(function (a,b) { return a-b; }); return { frames: frames.length, renderedFrames:renderedFrames, medianMs: sorted[Math.floor(sorted.length / 2)] || 0, p95Ms: sorted[Math.floor(sorted.length * .95)] || 0, pixelRatio: renderer.getPixelRatio(), drawCalls: renderer.info.render.calls, triangles: renderer.info.render.triangles, zone: win, tv3D:tvStage?.metrics() }; },
+        metrics: function () { var sorted = frames.slice().sort(function (a,b) { return a-b; }); return { frames: frames.length, renderedFrames:renderedFrames, medianMs: sorted[Math.floor(sorted.length / 2)] || 0, p95Ms: sorted[Math.floor(sorted.length * .95)] || 0, pixelRatio: renderer.getPixelRatio(), drawCalls: renderer.info.render.calls, triangles: renderer.info.render.triangles, zone: win, villaPhoto:villaPhoto?.metrics(), salonPhoto:salonPhoto?.metrics(), tv3D:tvStage?.metrics() }; },
         environment: function(){return {day:environmentDay,seconds:opts.environmentTime?.() ?? idle,cycleSeconds:environmentCycle,landscape:landscape?.metrics,facade:envelope.lighting()};},
         setDay: function(value){fixedDay=value===null?null:Math.max(0,Math.min(1,value));},
         setCircuit: function (roomId, idx, level) { var R = ROOMS[roomId]; if (!R) return; R.levels[idx] = Math.max(0, Math.min(1, level)); targetLights(R); },
@@ -1041,7 +1085,7 @@ export function createPlan3D(opts) {
         var geos = new Set(), mats = new Set(), maps = new Set();
         [scene, sceneR].forEach(function (s) { s.traverse(function (o) { if (o.geometry) geos.add(o.geometry); if (o.material) (Array.isArray(o.material) ? o.material : [o.material]).forEach(function (m) { mats.add(m); Object.values(m).forEach(function (v) { if (v && v.isTexture) maps.add(v); }); }); }); });
         geos.forEach(function (g) { g.dispose(); }); maps.forEach(function (t) { t.dispose(); }); mats.forEach(function (m) { m.dispose(); });
-        tvStage?.dispose(); envelope.dispose(); interiors.dispose(); if (sun.shadow.map) sun.shadow.map.dispose(); if(sunE.shadow.map)sunE.shadow.map.dispose(); renderer.dispose();
+        villaPhoto?.dispose(); salonPhoto?.dispose(); tvStage?.dispose(); envelope.dispose(); interiors.dispose(); if (sun.shadow.map) sun.shadow.map.dispose(); if(sunE.shadow.map)sunE.shadow.map.dispose(); renderer.dispose();
     };
 
     /* ---------- Liaison aux joins (feedbacks CrComLib) ---------- */

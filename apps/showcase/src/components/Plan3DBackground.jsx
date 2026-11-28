@@ -10,7 +10,7 @@ import { VenueBackground } from '../venues/VenueBackground';
 import { VENUE_PROJECTS } from '../venues/state';
 
 // A deployment changes the module URL, including its dependent assets.
-const PLAN3D_VERSION = "2026-11-23-race-2";
+const PLAN3D_VERSION = "2026-11-28-villa-photo-1";
 
 // Fond de page 3D (Three.js) à la place de la vidéo, pour les projets qui ont un plan 3D
 // (public/plan3d/<id>.json). Le GUI tourne dans son iframe et n'est pas modifié : le module
@@ -195,9 +195,11 @@ const VillaPlan3DBackground = ({ projectId, stageRef, guiFrameRef, tourSessionRe
 
   if (failed) return <BackgroundVideo />;
   return (
-    <div className="plan3d-bg-container villa-entry-background" data-ready={ready} aria-hidden="true">
+    <><div className="plan3d-bg-container villa-entry-background" data-ready={ready} aria-hidden="true">
       <canvas ref={canvasRef} className="plan3d-bg-canvas" style={{ opacity: ready ? 1 : 0 }} />
-      {!ready && <span className="luxury-background-loading">Chargement de la 3D…</span>}
+      {!ready && <span className="luxury-background-loading">Chargement du décor…</span>}
     </div>
+    {projectId === 'villa-gemini-frequencetv' && ready && <button type="button" onClick={() => apiRef.current?.overview()} style={{position:'absolute',right:240,top:76,zIndex:4,padding:'8px 14px',borderRadius:20,border:'1px solid #ffffff35',background:'#141c24cc',color:'white',cursor:'pointer'}}>Vue générale</button>}
+    </>
   );
 };

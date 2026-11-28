@@ -1,0 +1,45 @@
+{
+  "status": "complete",
+  "checks": [
+    {
+      "id": 1,
+      "changed": 0,
+      "fullTraversal": 1191,
+      "visibleTraversal": 95,
+      "fullMs": 0.22875000014901162,
+      "visibleMs": 0.017500000447034834
+    },
+    {
+      "id": 4,
+      "changed": 0,
+      "fullTraversal": 1191,
+      "visibleTraversal": 92,
+      "fullMs": 0.08374999985098838,
+      "visibleMs": 0.007499999552965164
+    },
+    {
+      "id": 5,
+      "changed": 0,
+      "fullTraversal": 1191,
+      "visibleTraversal": 96,
+      "fullMs": 0.09499999955296516,
+      "visibleMs": 0.0050000004470348355
+    },
+    {
+      "id": 8,
+      "changed": 0,
+      "fullTraversal": 1191,
+      "visibleTraversal": 73,
+      "fullMs": 0.10375000014901162,
+      "visibleMs": 0.003750000149011612
+    },
+    {
+      "id": 10,
+      "changed": 0,
+      "fullTraversal": 1191,
+      "visibleTraversal": 96,
+      "fullMs": 0.18624999970197678,
+      "visibleMs": 0.015000000596046448
+    }
+  ]
+}

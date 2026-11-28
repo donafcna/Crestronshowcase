@@ -1,0 +1,32 @@
+[
+  {
+    "file": "plan3d.js",
+    "http": 200,
+    "sha256": "a8cfcfaf320c6e4df05bf39b660d30a270982dac92b2efabe10a11a2b859cef7",
+    "matchesLocal": true
+  },
+  {
+    "file": "tv-stage.js",
+    "http": 200,
+    "sha256": "b29aafd04380670f5a30cffd7f9e3417bca34a63486246fcd8c9a99f8ee77dcc",
+    "matchesLocal": true
+  },
+  {
+    "file": "tv-race.js",
+    "http": 200,
+    "sha256": "675cb1310bcfb02663014cf909153a037c48ef3776c1b8e58506ad7c06089268",
+    "matchesLocal": true
+  },
+  {
+    "file": "tv-race-materials.js",
+    "http": 200,
+    "sha256": "ec0d6ffad32f256379c9b1db0c250e20718f382bfc1feaad5ce067a7d09abcb0",
+    "matchesLocal": true
+  },
+  {
+    "file": "villa-crans.json",
+    "http": 200,
+    "sha256": "5cadf55a2fe927987bc64b6cce0b2c10e98da801400ce2655c974b2645922798",
+    "matchesLocal": true
+  }
+]

@@ -732,3 +732,23 @@ Après validation de l'animation 2.3.17, nouvelle passe sur les matières : asph
 
 Donatien valide la version 2.3.18 et autorise commit/push vers main pour publication Vercel : nouvelle animation course et textures affinées. Recette locale et avant/après conservés dans apps/showcase/docs/verification/2026-11-23-race-broadcast/ et 2026-11-23-race-materials/. Aucun déploiement matériel.
 
+
+
+## 23/11/2026 — Diagnostic MutationObserver et essai CPU des transitions
+
+Candidat local 2.3.19 : mise à jour des matrices limitée aux branches visibles, activée uniquement pour la Villa. Matrices visibles identiques dans cinq pièces ; travail CPU de cette étape nettement réduit. Gain FPS global non démontré (premières transitions encore variables), ne pas annoncer les baisses corrigées. Erreur MutationObserver non reproduite sur trois chargements instrumentés ; origine non identifiée, aucun faux correctif de masquage. Preuves : apps/showcase/docs/verification/2026-11-23-transitions/. Non publié, aucun changement GUI/matériel.
+
+
+## 23/11/2026 — Cause shader des transitions, candidat local 2.3.20
+
+Profilage : le nombre de PointLights TV passe de 3 à 4 pendant le chevauchement des pièces, déclenchant des variantes de shaders. Correctif local Villa : lumière TV mutualisée, position/intensité identiques, nombre constant. Profil répété : 43→31 programmes, pire rendu 41,2→22,4 ms, pire intervalle 43,4→32,6 ms ; passages suivants ~60 i/s. Matériaux/géométrie/résolution conservés. MutationObserver non reproduit : quatre chargements complets supplémentaires, 2072 appels observe sans exception ; ne pas annoncer corrigé. Preuves : apps/showcase/docs/verification/2026-11-23-transition-profile/. Aucune publication, attente explicite de résultat concluant sur le diagnostic global.
+
+
+## 23/11/2026 — Validation du candidat 2.3.20 dans la GUI complète
+
+Parcours natif des 11 TV, OFF/TOTAL dans chaque pièce, navigation rapide 4→5→10→8 et cinq TV escamotables : états finaux et lumière TV cohérents. 75 fenêtres de deux secondes : 58,27–60,54 i/s, pic résiduel 63,9 ms (TOTAL Chambre 2). Trois thèmes × modes normal/Scène capturés. 1448 appels MutationObserver sans exception dans le dernier relevé iframe ; erreur initiale toujours non reproduite, non corrigée. Preuves : apps/showcase/docs/verification/2026-11-23-transition-gui/. Aucune publication ni changement fonctionnel dans cette étape. Tests locaux, pas de validation matérielle ni promesse de 60 i/s constants.
+
+
+## 23/11/2026 — Attribution des pics résiduels, expériences non retenues
+
+Profilage GUI : frame longue 64,5 ms, dont 40,3 ms dans le rendu intérieur avec deux nouveaux shaders lors de la première visite de Chambre 1. Six répétitions OFF/TOTAL dans Chambre 2 ~60 i/s, pic précédent non reproduit. Préparation progressive : gain causal non démontré. Stabilisation des ombres dans une copie expérimentale : 71→45 programmes, mais pauses initiales encore importantes ; non intégrée. Candidat maintenu en 2.3.20. Dernier chargement instrumenté : 578 appels MutationObserver sans exception ; origine de l'erreur initiale toujours inconnue. Preuves et limites : apps/showcase/docs/verification/2026-11-23-residual-profile/. Aucun commit/push/déploiement.

@@ -1,0 +1,1 @@
+[{"level":"error","message":"TypeError: Cannot read properties of undefined (reading 'activeRoom')\n    at http://127.0.0.1:4348/validation-ui.js:4:2561","timestamp":"2026-11-23T08:32:55.623Z","url":"http://127.0.0.1:4348/validation-ui.js"}]
