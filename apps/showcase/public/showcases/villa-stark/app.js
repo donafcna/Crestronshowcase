@@ -193,6 +193,7 @@ function buildHouse() {
 }
 
 function renderHouse() {
+  window.STARK_LANDSCAPE.exterior($("#houseStage"),!roomView);
   if (!S.house.gateMotion) S.house.gatePosition = S.house.gate ? 1 : 0;
   ROOMS.filter(r => !r.pool).forEach(r => {
     const h = H.rooms[r.id], c3 = circuits(r.id), on = anyLight(r.id);
@@ -281,6 +282,7 @@ function renderRoomView() {
   if(r.shade&&INT[id].win){
     window.STARK_SHADES.render(v.querySelector('.rv-shade'),id,INT[id].win,INT[id].winClip,SHADE_FOREGROUND[id],{roman:shadeState(id,'roman'),blackout:shadeState(id,'blackout')},v);
   }
+  window.STARK_LANDSCAPE.interior(v,id,v.querySelector('.rv-shade'),r.shade?{roman:shadeState(id,'roman'),blackout:shadeState(id,'blackout')}:null);
   if (r.tv) {
     const e = v.querySelector(".rv-tv"), rect = INT[id].tv, cover = Math.max(v.clientWidth/1672,v.clientHeight/941);
     Object.assign(e.style,{left:((v.clientWidth-1672*cover)/2+rect[0]/100*1672*cover)+"px",top:((v.clientHeight-941*cover)/2+rect[1]/100*941*cover)+"px",width:rect[2]/100*1672*cover+"px",height:rect[3]/100*941*cover+"px"});
@@ -483,7 +485,7 @@ function moveShade(id,dir,type='roman'){
  const target=dir==='down'?100:0,from=state.pos,started=performance.now(),duration=Math.max(350,6500*Math.abs(target-from)/100);state.target=target;
  shadeTimers[key]=setInterval(()=>{const progress=Math.min(1,(performance.now()-started)/duration),travel=progress*progress*(3-2*progress);state.pos=Math.round((from+(target-from)*travel)*10)/10;if(progress===1){clearInterval(shadeTimers[key]);delete state.target;}renderHouse();refreshShadeVis();},16);
 }
-function refreshShadeVis(){document.querySelectorAll('.shade-card[data-type]').forEach(c=>{const state=shadeState(c.dataset.id,c.dataset.type),pos=Math.round(state.pos);const blind=c.querySelector('.blind');if(c.classList.contains('is-curtain')){blind.style.clipPath='none';blind.style.width=(12+pos*.88)+'%';}else blind.style.clipPath='inset(0 0 '+(100-pos)+'% 0)';c.querySelector('.pos').textContent=state.target!=null?(state.target>pos?'FERMETURE':'OUVERTURE')+' · '+pos+' %':pos===0?'OUVERT':pos===100?'FERMÉ':pos+' %';});}
+function refreshShadeVis(){document.querySelectorAll('.shade-card[data-type]').forEach(c=>{const state=shadeState(c.dataset.id,c.dataset.type),pos=Math.round(state.pos);c.dataset.position=state.pos;const blind=c.querySelector('.blind');if(c.classList.contains('is-curtain')){blind.style.clipPath='none';blind.style.width=(12+state.pos*.88)+'%';}else blind.style.clipPath='inset(0 0 '+(100-pos)+'% 0)';c.querySelector('.pos').textContent=state.target!=null?(state.target>pos?'FERMETURE':'OUVERTURE')+' · '+pos+' %':pos===0?'OUVERT':pos===100?'FERMÉ':pos+' %';});}
 function renderShades(pg){
  const id=S.shadeRoom||roomView||'Living',wrap=document.createElement('section');wrap.className='room-shades';wrap.setAttribute('aria-label','Stores de la pièce sélectionnée');
  const label=document.createElement('label');label.className='shade-room-select';label.textContent='PIÈCE';const select=document.createElement('select');select.setAttribute('aria-label','Pièce des stores');
@@ -495,7 +497,7 @@ function renderShades(pg){
   const isCurtain=type==='blackout'&&window.STARK_SHADES.hasCurtain(id);
   const c=document.createElement('div');c.className='card shade-card';c.dataset.id=id;c.dataset.type=type;if(isCurtain){c.classList.add('is-curtain');c.dataset.side=window.STARK_SHADES.curtainSide(id);}c.setAttribute('aria-label',name+' · '+roomById[id].name);
   c.innerHTML=`<div class="card-title">${name}</div><div class="col"></div><div class="shade-vis"><div class="blind ${type}"></div></div><div class="pos"></div>`;
-  for(const [lab,dir,shape] of [['OUVRIR','up','<path d="m12 4 9 15H3Z"/>'],['ARRÊTER','stop','<rect x="5" y="5" width="14" height="14"/>'],['FERMER','down','<path d="m12 20 9-15H3Z"/>']]){const button=document.createElement('button');button.className='btn';button.setAttribute('aria-label',lab+' · '+name+' · '+roomById[id].name);const icon=isCurtain&&dir!=='stop'?(dir==='up'?'<path d="m15 4-8 8 8 8" fill="none" stroke="currentColor" stroke-width="3"/>':'<path d="m9 4 8 8-8 8" fill="none" stroke="currentColor" stroke-width="3"/>'):shape;button.innerHTML=`<svg class="shade-command-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">${icon}</svg><span>${lab}</span>`;button.onclick=()=>moveShade(id,dir,type);c.querySelector('.col').appendChild(button);}
+  for(const [lab,dir,shape] of [['OUVRIR','up','<path d="m12 4 9 15H3Z"/>'],['ARRÊTER','stop','<rect x="5" y="5" width="14" height="14"/>'],['FERMER','down','<path d="m12 20 9-15H3Z"/>']]){const button=document.createElement('button');button.className='btn';button.setAttribute('aria-label',lab+' · '+name+' · '+roomById[id].name);const icon=isCurtain&&dir!=='stop'?((dir==='up')===(window.STARK_SHADES.curtainSide(id)==='left')?'<path d="m15 4-8 8 8 8" fill="none" stroke="currentColor" stroke-width="3"/>':'<path d="m9 4 8 8-8 8" fill="none" stroke="currentColor" stroke-width="3"/>'):shape;button.innerHTML=`<svg class="shade-command-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">${icon}</svg><span>${lab}</span>`;button.onclick=()=>moveShade(id,dir,type);c.querySelector('.col').appendChild(button);}
   grid.appendChild(c);
  });refreshShadeVis();
 }
@@ -795,7 +797,7 @@ document.addEventListener("wheel", e => {
 // No second camera fits a reduced photograph between the GUI and the tools.
 
 /* ---------------- shared state between GUI and animated backdrop ---------------- */
-let applyingSnapshot = false;
+let applyingSnapshot = false, pendingSnapshot = null, snapshotFrame = 0;
 function applySnapshot(snapshot) {
   if (!snapshot?.state?.lights?.Living || !snapshot.state.shades?.Living) return;
   applyingSnapshot = true;
@@ -811,7 +813,13 @@ function applySnapshot(snapshot) {
 }
 if (syncBus) {
   syncBus.onmessage = ({ data }) => {
-    if (backgroundOnly) { if (data?.type === "state") applySnapshot(data.snapshot); return; }
+    if (backgroundOnly) {
+      if (data?.type === "state") {
+        pendingSnapshot=data.snapshot;
+        if(!snapshotFrame)snapshotFrame=setTimeout(()=>{snapshotFrame=0;const latest=pendingSnapshot;pendingSnapshot=null;applySnapshot(latest);},16);
+      }
+      return;
+    }
     if (data?.type === "request-state") { publishState(); return; }
     if (data?.type !== "command") return;
     if (data.action === "visitor") visitorRings();

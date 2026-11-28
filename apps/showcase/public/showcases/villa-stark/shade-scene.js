@@ -36,6 +36,18 @@
     const u=cfg.side==='left'?end:start,l=xy(project(q,u,0)),r=xy(project(q,u,1));
     return out+`<path d="M${l}L${r}" stroke="#3d3024" stroke-opacity=".25" stroke-width="2"/>`;
   }
+  function renderCurtain(el,id,p){
+    const cfg=CURTAINS[id],q=cfg.quad.map(([x,y])=>[x/16.72,y/9.41]);
+    if(!el.dataset.textured){
+      const key='curtain-travel-'+id;
+      el.innerHTML=`<defs><clipPath id="${key}"><polygon data-curtain-travel/></clipPath></defs><g clip-path="url(#${key})">${curtain(id,1)}</g><path data-curtain-edge fill="none" stroke="#3d3024" stroke-opacity=".25" stroke-width="2"/>`;
+      el.dataset.textured='true';
+    }
+    const a=cfg.side==='left'?0:1-p,b=cfg.side==='left'?p:1;
+    el.querySelector('[data-curtain-travel]').setAttribute('points',points([project(q,a,0),project(q,b,0),project(q,b,1),project(q,a,1)]));
+    const u=cfg.side==='left'?b:a;
+    el.querySelector('[data-curtain-edge]').setAttribute('d',p>0?'M'+xy(project(q,u,0))+'L'+xy(project(q,u,1)):'');
+  }
   function project(q,u,v){
     const [[x0,y0],[x1,y1],[x2,y2],[x3,y3]]=q,dx1=x1-x2,dx2=x3-x2,dx3=x0-x1+x2-x3,dy1=y1-y2,dy2=y3-y2,dy3=y0-y1+y2-y3,den=dx1*dy2-dx2*dy1;
     const g=Math.abs(den)>1e-9?(dx3*dy2-dx2*dy3)/den:0,h=Math.abs(den)>1e-9?(dx1*dy3-dx3*dy1)/den:0,d=g*u+h*v+1;
@@ -86,7 +98,7 @@
     if(root.dataset.sceneRoom!==id)build(root,id,rect,clip,foreground);
     const scale=Math.max(v.clientWidth/1672,v.clientHeight/941);
     Object.assign(root.style,{left:(v.clientWidth-1672*scale)/2+'px',top:(v.clientHeight-941*scale)/2+'px',width:1672*scale+'px',height:941*scale+'px',clipPath:'none',maskImage:'none'});
-    for(const type of (CURTAINS[id]?['roman','blackout']:['blackout','roman'])){const el=root.querySelector('[data-shade='+type+']'),p=Math.max(0,Math.min(1,states[type].pos/100));el.dataset.position=states[type].pos;el.dataset.motor=type==='blackout'&&CURTAINS[id]?'curtain':type;el.innerHTML=type==='blackout'&&CURTAINS[id]?curtain(id,p):root._shadePanels.map(q=>cloth(q,p,type,'shade-'+type)).join('');}
+    for(const type of (CURTAINS[id]?['roman','blackout']:['blackout','roman'])){const el=root.querySelector('[data-shade='+type+']'),p=Math.max(0,Math.min(1,states[type].pos/100));el.dataset.position=states[type].pos;el.dataset.motor=type==='blackout'&&CURTAINS[id]?'curtain':type;if(el.dataset.motor==='curtain')renderCurtain(el,id,p);else el.innerHTML=root._shadePanels.map(q=>cloth(q,p,type,'shade-'+type)).join('');}
   }
-  window.STARK_SHADES={render,hasCurtain:id=>Boolean(CURTAINS[id]),curtainSide:id=>CURTAINS[id]?.side};
+  window.STARK_SHADES={render,hasCurtain:id=>Boolean(CURTAINS[id]),curtainSide:id=>CURTAINS[id]?.side,landscapeGeometry:root=>({panes:(root._shadePanels||[]).map(q=>q.map(xy)),foreground:root.querySelector('#shade-foreground')?.innerHTML||''})};
 })();
