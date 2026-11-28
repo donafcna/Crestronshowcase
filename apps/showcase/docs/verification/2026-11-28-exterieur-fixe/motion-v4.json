@@ -1,0 +1,132 @@
+{
+  "left_trunk": {
+    "roiPhoto": [
+      13,
+      420,
+      22,
+      80
+    ],
+    "p90": 0.009,
+    "samples": 196
+  },
+  "right_trunk": {
+    "roiPhoto": [
+      1635,
+      340,
+      18,
+      100
+    ],
+    "p90": 0.01,
+    "samples": 280
+  },
+  "rock_main": {
+    "roiPhoto": [
+      552,
+      726,
+      42,
+      30
+    ],
+    "p90": 0.013,
+    "samples": 280
+  },
+  "rock_right": {
+    "roiPhoto": [
+      900,
+      805,
+      65,
+      35
+    ],
+    "p90": 0.009,
+    "samples": 280
+  },
+  "rock_left": {
+    "roiPhoto": [
+      125,
+      806,
+      40,
+      24
+    ],
+    "p90": 0.013,
+    "samples": 140
+  },
+  "lower_steps": {
+    "roiPhoto": [
+      646,
+      773,
+      85,
+      35
+    ],
+    "p90": 0.021,
+    "samples": 280
+  },
+  "upper_steps": {
+    "roiPhoto": [
+      805,
+      672,
+      80,
+      22
+    ],
+    "p90": 0.022,
+    "samples": 280
+  },
+  "roof": {
+    "roiPhoto": [
+      810,
+      294,
+      55,
+      15
+    ],
+    "p90": 0.061,
+    "samples": 63
+  },
+  "fern_left": {
+    "roiPhoto": [
+      487,
+      779,
+      43,
+      30
+    ],
+    "p90": 3.251,
+    "samples": 224
+  },
+  "fern_right": {
+    "roiPhoto": [
+      843,
+      741,
+      67,
+      28
+    ],
+    "p90": 4.54,
+    "samples": 280
+  },
+  "tree_leaves": {
+    "roiPhoto": [
+      250,
+      15,
+      80,
+      45
+    ],
+    "p90": 5.743,
+    "samples": 280
+  },
+  "grass": {
+    "roiPhoto": [
+      1050,
+      680,
+      85,
+      70
+    ],
+    "p90": 10.157,
+    "samples": 280
+  },
+  "above_roof_leaves": {
+    "roiPhoto": [
+      650,
+      237,
+      35,
+      25
+    ],
+    "p90": 1.071,
+    "samples": 196
+  }
+}
