@@ -529,6 +529,55 @@ Après validation de l'animation 2.3.17, nouvelle passe sur les matières : asph
 
 Donatien valide la version 2.3.18 et autorise commit/push vers main pour publication Vercel : nouvelle animation course et textures affinées. Recette locale et avant/après conservés dans apps/showcase/docs/verification/2026-11-23-race-broadcast/ et 2026-11-23-race-materials/. Aucun déploiement matériel.
 
+## 23/11/2026 — Yacht : vue latérale des espaces de vie
+
+Angle 24,6° du Grand salon étendu à 18 autres espaces de vie et détente, cadrage entier ajusté automatiquement. Cabines et locaux techniques conservés. 148 cas sur quatre formats réussis ; bancs Sky lounge, Salle à manger, Terrasse panoramique et Spa : écarts inférieurs à 1 %, build/lint réussis. Preuves : apps/showcase/docs/verification/2026-11-23-yacht-living-lateral/.
+
+
+## 23/11/2026 — Yacht : murs de premier plan abaissés
+
+Pièce sélectionnée : parois proches réduites en murets de 22 cm et appliques hautes masquées, selon l’orientation réelle de la caméra. Autres parois et mobilier conservés ; restauration intégrale à la désélection. Pas de transparence ni nouvel objet. 148 contrôles de cadrage et 148 contrôles de rotation/restauration réussis, 59,84 → 59,80 i/s sur trois vues, build/lint réussis. Preuves : apps/showcase/docs/verification/2026-11-23-yacht-cutaway/.
+
+
+## 23/11/2026 — Publication du paysage et de la nuit de l’hôtel
+
+Publication autorisée des derniers ajustements Hotel des Horlogers : rendu nocturne, suppression de la brume, relief/pâtures/champs/chemins, clôtures, fossés, pierres, buissons et ruisseau. Livraison isolée depuis origin/main 49136dc, sans les autres modifications locales. Preuves de fluidité et recette : apps/showcase/docs/verification/2026-11-23-hotel-rural-release/. Aucun matériel modifié.
+## 23/11/2026 — Yacht : murs animés progressivement
+
+Descente et remontée interpolées, cibles directionnelles progressives, continuité lors des changements de pièce et inversions. Appliques accompagnant le mur, mode réduction des animations respecté. Treize assertions de comportement réussies, passage rapide des 37 espaces et restauration complète. Trois bancs en rotation : écarts inférieurs à 1 %, build/lint réussis. Preuves : apps/showcase/docs/verification/2026-11-23-yacht-smooth-walls/.
+
+
+## 23/11/2026 — Yacht : murs coordonnés à la caméra
+
+Parois choisies selon la vraie position de caméra et anticipation de 240 ms. Maintien des murs quittés pendant le passage, remontée après arrivée ou sortie de zone visible. Quinze assertions réussies, 37 sélections rapides restaurées. Bancs Grand salon et Sky lounge stables ; cabine validée sur tour complet après mesures courtes dispersées. Build/lint réussis. Preuves : apps/showcase/docs/verification/2026-11-23-yacht-wall-camera-sync/.
+
+
+## 23/11/2026 — Publication des arbres et transitions de l’hôtel
+
+Publication autorisée des arbres/végétation, avec correction demandée des transitions caméra. Les pièces de départ et de destination restent visibles pendant le trajet ; départ depuis la pose courante, redirection continue lors de sélections rapides, chemin angulaire court et distance physique conservée à la sortie de la vue générale. Nettoyage à l’arrivée, ombres mises à jour aux changements de visibilité uniquement. Base isolée origin/main a0b6719, autres modifications locales préservées. Preuves : apps/showcase/docs/verification/2026-11-23-hotel-vegetation-camera-release/. Aucun matériel modifié.
+## 23/11/2026 — Yacht : trajets de caméra sans traversée des pièces
+
+Trajets cubiques amortis avec prise de hauteur si nécessaire, vérifiés à la sélection contre les enveloppes des ponts et du mobilier (marge 40 cm). Passage de pont au point dégagé, reprise continue après nouveau clic ou redimensionnement. Cadrage final proche et latéral conservé. 2664 trajets et contrôles d’interruption réussis ; cadence 59,83 → 59,89 i/s. Preuves : apps/showcase/docs/verification/2026-11-23-yacht-camera-paths/.
+
+
+## 23/11/2026 — Hotel des Horlogers : scènes d’éclairage corrigées
+
+Bogue reproduit : les scènes Restaurant donnaient 43–77 % au lieu de 0–100 %, car le niveau incluait les autres zones d’éclairage à 65 %. Téléphone : scène/niveau issus de la zone active et état synchronisé lors du changement de zone. Sources existantes renforcées, empreinte indirecte douce sur les matériaux, fondu 1,1 s et extinction réelle des luminaires. Même nombre de lumières, triangles, appels et textures ; 34 → 37 programmes précompilés. Comparaison visuelle nuit/jour, 28 scènes réelles sur sept espaces, circuits et restauration de zone validés. Banc inter-pièces ~59,9 images/s avant/après, sans image >33,4 ms ; build/lint et 37 contrôles fonctionnels réussis. Correctif préparé dans le worktree isolé hotel-lighting-scenes-release depuis 91a67ed ; preuves dans apps/showcase/docs/verification/2026-11-23-hotel-lighting-scenes-release/. Aucun matériel modifié.
+
+
+## 28/11/2026 — Yacht : changement de pont progressif
+
+Fondu de 320 ms sur image GPU conservée, sans rendre deux ponts complets. Trajets et cadrages finaux inchangés, clics rapides et réduction des animations gérés. Douze contrôles et vingt passages couvrant les cinq ponts réussis ; 59,68 → 59,97 i/s sur le banc local. Build/lint réussis. Preuves : apps/showcase/docs/verification/2026-11-28-yacht-deck-blend/.
+
+## 28/11/2026 — M/Y Jewel, secteur Yacht2
+
+Projet `my-jewel`, nouveau secteur `yacht2` demandé par Donatien. GUI de Villa Stark repris dans un dossier autonome `apps/showcase/public/showcases/my-jewel`, images originales de motor-yacht Riviera et mer animée. Conserver l’isolation des canaux, les trois thèmes et les châssis communs. Les sources Villa Stark ne sont pas à remplacer par celles du yacht. Directions alternatives proposées : Grand Bleu et Épure. Limites et provenance dans `SOURCE.md`, vérifications dans `apps/showcase/docs/verification/2026-11-28-my-jewel`.
+
+
+## 28/11/2026 — M/Y Jewel Riviera HD, 2.3.40
+
+Donatien confirme Riviera et demande plus de netteté, réalisme et mouvement marin dans toutes les pièces. Dix vues individuelles `room-<id>-hd.png`, 1672 × 941, remplacent les atlas. Le cinéma possède une baie marine. Géométrie et masques dans `scene-manifest.js`, à recaler avec tout changement de photo. Shader WebGL continu, reflets et mouvement atténué à l’horizon ; repli Canvas et réduction des animations. Préserver cadres, côtes, meubles et objets traversant la vue (robinet, lampe, vélo, fleurs, garde-corps). Les essais de pixels doivent lire le contexte WebGL et comparer les mêmes coordonnées. Preuves dans `apps/showcase/docs/verification/2026-11-28-my-jewel-riviera-hd`.
+
 
 
 ## 23/11/2026 — Diagnostic MutationObserver et essai CPU des transitions
@@ -549,3 +598,9 @@ Parcours natif des 11 TV, OFF/TOTAL dans chaque pièce, navigation rapide 4→5�
 ## 23/11/2026 — Attribution des pics résiduels, expériences non retenues
 
 Profilage GUI : frame longue 64,5 ms, dont 40,3 ms dans le rendu intérieur avec deux nouveaux shaders lors de la première visite de Chambre 1. Six répétitions OFF/TOTAL dans Chambre 2 ~60 i/s, pic précédent non reproduit. Préparation progressive : gain causal non démontré. Stabilisation des ombres dans une copie expérimentale : 71→45 programmes, mais pauses initiales encore importantes ; non intégrée. Candidat maintenu en 2.3.20. Dernier chargement instrumenté : 578 appels MutationObserver sans exception ; origine de l'erreur initiale toujours inconnue. Preuves et limites : apps/showcase/docs/verification/2026-11-23-residual-profile/. Aucun commit/push/déploiement.
+
+
+
+## 28/11/2026 — Publication Villa FTV photoréaliste 2.3.42
+
+Version validée par Donatien : 18 décors, commandes et animations conservées. Intégration avec les autres évolutions de main ; preuves locales dans apps/showcase/docs/verification/2026-11-28-villa-photo/. Publication GitHub/Vercel autorisée, aucun déploiement matériel.

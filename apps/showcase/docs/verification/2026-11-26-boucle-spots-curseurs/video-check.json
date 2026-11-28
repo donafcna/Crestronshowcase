@@ -1,0 +1,9 @@
+{
+  "frames": 720,
+  "durationSeconds": 30.0,
+  "sizeBytes": 2048726,
+  "seamMeanDifference": 5.74472713470459,
+  "medianAdjacentFrameDifference": 5.578060626983643,
+  "p95AdjacentFrameDifference": 8.718904495239258,
+  "seamWithinNormalMotion": true
+}

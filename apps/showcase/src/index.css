@@ -5224,3 +5224,23 @@ body.workspace-maximized .demo-countdown { left: 16px; bottom: 16px; }
 }
 .plan3d-on.fullscreen-mode .plan3d-bg-container { position: fixed; }
 
+/* Le délai de reprise occupe sa place dans les outils, hors du châssis. */
+.workspace-device-sidebar .demo-countdown--inline{position:static;inset:auto;z-index:auto;width:100%;min-height:48px;flex-shrink:0;box-sizing:border-box;border-radius:14px;padding:8px;gap:8px;box-shadow:none;font-size:12px;text-align:left;white-space:normal}
+.workspace-device-sidebar .demo-countdown--inline .demo-countdown-ring{width:32px;height:32px;flex:0 0 32px}
+.workspace-device-sidebar .demo-countdown--inline .demo-countdown-text{min-width:0;flex:1;line-height:1.3;white-space:normal}
+.workspace-device-sidebar .demo-countdown--inline .demo-countdown-text svg{flex-shrink:0}
+
+@media(min-width:900px){.workspace-device-sidebar:has(.demo-countdown--inline){max-height:calc(100dvh - 140px);overflow-y:auto;overscroll-behavior:contain;scrollbar-width:none}.workspace-device-sidebar:has(.demo-countdown--inline)::-webkit-scrollbar{display:none}}
+
+/* Compteur compact, réservé au coin supérieur gauche du contenu. */
+.showcase-container > .demo-countdown--inline{position:absolute!important;inset:8px auto auto 8px!important;z-index:100001!important;width:46px!important;height:46px!important;min-height:46px;padding:3px!important;border-radius:50%!important;display:grid;place-items:center;box-sizing:border-box}
+.showcase-container > .demo-countdown--inline .demo-countdown-ring{width:40px;height:40px}
+.showcase-container > .demo-countdown--inline .demo-countdown-text{display:none}
+.showcase-container:has(> .demo-countdown--inline) .projects-strip{margin-left:54px!important;width:calc(100% - 54px)!important}
+.showcase-container.fullscreen-mode:has(> .demo-countdown--inline) .main-workspace-container{padding-top:52px!important;box-sizing:border-box}
+.stark-project .workspace-device-sidebar{overflow:visible!important;max-height:none!important;justify-content:space-evenly!important;gap:clamp(5px,1vh,14px)!important}
+.stark-project .workspace-device-sidebar.is-fullscreen{top:8px!important;bottom:8px!important;padding-top:0!important;padding-bottom:0!important}
+.stark-project .workspace-device-sidebar .fullscreen-frequencetv-logo-card{margin-top:0!important;height:clamp(46px,7vh,80px)!important;flex-shrink:0}
+.stark-project .workspace-device-sidebar .device-buttons-column{gap:clamp(4px,.8vh,10px)!important;width:100%}
+.stark-project .workspace-device-sidebar .device-vertical-btn{min-height:28px!important;padding:clamp(6px,1vh,14px) 10px!important}
+@media(max-height:720px){.stark-project .villa-stark-tools{padding:7px;gap:4px}.stark-project .villa-stark-tools button{min-height:28px;padding:4px 7px}.stark-project .workspace-device-sidebar .side-info{margin:0!important}.stark-project .workspace-device-sidebar .chassis-caption{padding:6px!important}}

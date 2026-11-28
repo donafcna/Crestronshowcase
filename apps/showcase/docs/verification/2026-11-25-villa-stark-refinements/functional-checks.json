@@ -1,0 +1,19 @@
+{
+  "tv3d": [
+    "football",
+    "race"
+  ],
+  "tvPowerOffCanvas": 0,
+  "indoorRgbButtons": 0,
+  "indoorTint": 0,
+  "exteriorTVBadges": 0,
+  "exteriorFlameBadges": 0,
+  "pool": {
+    "underwater": 4,
+    "deck": 6,
+    "red": "#FF4A3C",
+    "blue": "#3C7CFF",
+    "globalTint": 0
+  },
+  "consoleErrors": []
+}

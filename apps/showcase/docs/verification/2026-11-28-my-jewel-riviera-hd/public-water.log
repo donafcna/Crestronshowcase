@@ -1,0 +1,16 @@
+Living true 30.7
+Dining true 29.9
+Kitchen true 30.9
+Office true 29.9
+Cinema true 29.8
+Fitness true 29.7
+Entry true 29.8
+Master true 28.9
+Bedroom true 29.8
+Pool true 30.8
+{
+  "failed": [],
+  "reduced": true,
+  "noSound": true,
+  "errors": []
+}

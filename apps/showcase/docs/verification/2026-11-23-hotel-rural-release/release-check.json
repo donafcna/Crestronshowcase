@@ -1,0 +1,25 @@
+{
+  "base": "local",
+  "day": {
+    "fog": false,
+    "atlas": {
+      "width": 1024,
+      "parcels": 10,
+      "tracks": 4
+    },
+    "posts": 105,
+    "stones": 59,
+    "scrub": 30,
+    "brook": 12,
+    "downhill": true,
+    "captures": 1
+  },
+  "night": {
+    "phase": "night",
+    "fog": false,
+    "wireOpacity": 0.13807395107730566,
+    "captures": 1,
+    "glow": 1.786337995211975
+  },
+  "errors": []
+}

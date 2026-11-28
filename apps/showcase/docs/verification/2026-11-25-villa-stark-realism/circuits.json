@@ -1,0 +1,73 @@
+[
+  {
+    "room": "SALON",
+    "labels": [
+      "Bibliothèque et corniche — SALON",
+      "Spots plafond — SALON"
+    ]
+  },
+  {
+    "room": "SALLE À MANGER",
+    "labels": [
+      "Éclairage buffet — SALLE À MANGER",
+      "Suspension et plafond — SALLE À MANGER"
+    ]
+  },
+  {
+    "room": "CUISINE",
+    "labels": [
+      "Plan de travail et plinthes — CUISINE",
+      "Spots plafond — CUISINE"
+    ]
+  },
+  {
+    "room": "BUREAU",
+    "labels": [
+      "Rubans bibliothèque — BUREAU",
+      "Suspension bureau et spots — BUREAU"
+    ]
+  },
+  {
+    "room": "CINÉMA",
+    "labels": [
+      "Balisage des marches — CINÉMA",
+      "Appliques et plafond — CINÉMA"
+    ]
+  },
+  {
+    "room": "FITNESS",
+    "labels": [
+      "Niches haltères — FITNESS",
+      "Spots plafond — FITNESS"
+    ]
+  },
+  {
+    "room": "ENTRÉE",
+    "labels": [
+      "Rubans escalier — ENTRÉE",
+      "Suspension entrée — ENTRÉE"
+    ]
+  },
+  {
+    "room": "SUITE PARENTALE",
+    "labels": [
+      "Lampe de chevet gauche — SUITE PARENTALE",
+      "Lampe de chevet droite — SUITE PARENTALE"
+    ]
+  },
+  {
+    "room": "CHAMBRE AMIS",
+    "labels": [
+      "Applique gauche — CHAMBRE AMIS",
+      "Applique droite et bureau — CHAMBRE AMIS"
+    ]
+  },
+  {
+    "room": "PISCINE",
+    "labels": [
+      "Spots de la terrasse — PISCINE",
+      "Spots dans le bassin — PISCINE",
+      "RGBW / DMX — PISCINE"
+    ]
+  }
+]

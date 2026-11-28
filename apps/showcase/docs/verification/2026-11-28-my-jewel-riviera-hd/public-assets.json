@@ -1,0 +1,83 @@
+{
+  "commit": "c8e22591",
+  "checks": [
+    {
+      "name": "app.js",
+      "status": 200,
+      "sha256": "3f189c7d60dd33d1ff9b09c2467d3c63bf02170b65d80a452bde036f64984a41",
+      "match": true
+    },
+    {
+      "name": "marine-scene.js",
+      "status": 200,
+      "sha256": "732b4785b92f794fb7ffdbf4b5af71a2343efbf74fb3556725e71c148931a2cf",
+      "match": true
+    },
+    {
+      "name": "scene-manifest.js",
+      "status": 200,
+      "sha256": "4a3798c064d2b42a91869edda5aeb945beec76439ec0838330bd9c1f89bdfaa8",
+      "match": true
+    },
+    {
+      "name": "assets/room-Living-hd.png",
+      "status": 200,
+      "sha256": "45639d8e08c49bf1b886589e4d4ffbd6f4c1a4594f52b757da2ff8eacd6cc957",
+      "match": true
+    },
+    {
+      "name": "assets/room-Dining-hd.png",
+      "status": 200,
+      "sha256": "59124308b4b375800ba82b77a373bc1607e433789a18402a2adf1410e4054826",
+      "match": true
+    },
+    {
+      "name": "assets/room-Kitchen-hd.png",
+      "status": 200,
+      "sha256": "3f35fe33015f5ee76ac9a9d9557d01cb7df1df05df69b8a0536f0aef8543519b",
+      "match": true
+    },
+    {
+      "name": "assets/room-Office-hd.png",
+      "status": 200,
+      "sha256": "f90ef4340dc563b417aee9af03c4265d73f93ff75cade74b4fe45f46633a9a85",
+      "match": true
+    },
+    {
+      "name": "assets/room-Cinema-hd.png",
+      "status": 200,
+      "sha256": "5e3c4f63a215f4c9fc59ae6c152999d7128ddfd81ac05054d241693b91835657",
+      "match": true
+    },
+    {
+      "name": "assets/room-Fitness-hd.png",
+      "status": 200,
+      "sha256": "e4dee2fc989ebc6955f4d1085beae20651d78d434261d263a813d137386decfe",
+      "match": true
+    },
+    {
+      "name": "assets/room-Entry-hd.png",
+      "status": 200,
+      "sha256": "ab399ea6d72b2388954c08e782030d6d57e109eb846bcfeb71e58d5ec4aa7a11",
+      "match": true
+    },
+    {
+      "name": "assets/room-Master-hd.png",
+      "status": 200,
+      "sha256": "648ea7389523901a813e9dca81c5b25d33718bb094b470779e56efcc28e5b5a3",
+      "match": true
+    },
+    {
+      "name": "assets/room-Bedroom-hd.png",
+      "status": 200,
+      "sha256": "1c233c5e0b8a9cb1fd0027eec625731d32c09786b3348fe7fecc3bb646c30f98",
+      "match": true
+    },
+    {
+      "name": "assets/room-Pool-hd.png",
+      "status": 200,
+      "sha256": "8cceb1a80660a7d07b75ca164fb2d58c6375e160ab760835105b298153e67183",
+      "match": true
+    }
+  ]
+}

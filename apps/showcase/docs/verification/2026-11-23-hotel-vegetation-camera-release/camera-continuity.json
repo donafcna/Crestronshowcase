@@ -1,0 +1,393 @@
+[
+  {
+    "variant": "before",
+    "start": {
+      "position": [
+        -12.794776226088427,
+        8.423528385518651,
+        -5.397326476654111
+      ],
+      "rooms": [
+        "bar"
+      ],
+      "nav": {
+        "view": "room",
+        "selectedId": "550",
+        "selectedZone": "bar",
+        "radius": 14.689394723052388,
+        "detailZoom": 0,
+        "phase": "day",
+        "dayNightCycle": true
+      },
+      "programs": 34
+    },
+    "chosen": {
+      "position": [
+        -12.794776226088427,
+        8.423528385518651,
+        -5.397326476654111
+      ],
+      "rooms": [
+        "restaurant"
+      ],
+      "nav": {
+        "view": "room",
+        "selectedId": "350",
+        "selectedZone": "restaurant",
+        "radius": 14.689394723052388,
+        "detailZoom": 0,
+        "phase": "day",
+        "dayNightCycle": true
+      },
+      "programs": 34
+    },
+    "samples": [
+      {
+        "position": [
+          -12.794748895837456,
+          8.423556465449188,
+          -5.3972249934512675
+        ],
+        "rooms": [
+          "restaurant"
+        ],
+        "nav": {
+          "view": "room",
+          "selectedId": "350",
+          "selectedZone": "restaurant",
+          "radius": 14.689467820589899,
+          "detailZoom": 0,
+          "phase": "day",
+          "dayNightCycle": true
+        },
+        "programs": 34
+      },
+      {
+        "position": [
+          -12.694958934358255,
+          8.526083704940392,
+          -5.026683028303207
+        ],
+        "rooms": [
+          "restaurant"
+        ],
+        "nav": {
+          "view": "room",
+          "selectedId": "350",
+          "selectedZone": "restaurant",
+          "radius": 14.95636622779707,
+          "detailZoom": 0,
+          "phase": "day",
+          "dayNightCycle": true
+        },
+        "programs": 34
+      },
+      {
+        "position": [
+          -11.123176523269617,
+          10.140980727656824,
+          0.8096890351465476
+        ],
+        "rooms": [
+          "restaurant"
+        ],
+        "nav": {
+          "view": "room",
+          "selectedId": "350",
+          "selectedZone": "restaurant",
+          "radius": 19.16025824035425,
+          "detailZoom": 0,
+          "phase": "day",
+          "dayNightCycle": true
+        },
+        "programs": 34
+      },
+      {
+        "position": [
+          -3.559175421818212,
+          17.912465363432432,
+          28.8964804414951
+        ],
+        "rooms": [
+          "restaurant"
+        ],
+        "nav": {
+          "view": "room",
+          "selectedId": "350",
+          "selectedZone": "restaurant",
+          "radius": 39.39094894476376,
+          "detailZoom": 0,
+          "phase": "day",
+          "dayNightCycle": true
+        },
+        "programs": 34
+      },
+      {
+        "position": [
+          3.5785241068171754,
+          25.245954806067342,
+          55.400320815540866
+        ],
+        "rooms": [
+          "restaurant"
+        ],
+        "nav": {
+          "view": "room",
+          "selectedId": "350",
+          "selectedZone": "restaurant",
+          "radius": 58.48145270964607,
+          "detailZoom": 0,
+          "phase": "day",
+          "dayNightCycle": true
+        },
+        "programs": 34
+      },
+      {
+        "position": [
+          4.015890331738559,
+          25.695318159085822,
+          57.02435732251493
+        ],
+        "rooms": [
+          "restaurant"
+        ],
+        "nav": {
+          "view": "room",
+          "selectedId": "350",
+          "selectedZone": "restaurant",
+          "radius": 59.65123318723509,
+          "detailZoom": 0,
+          "phase": "day",
+          "dayNightCycle": true
+        },
+        "programs": 34
+      }
+    ],
+    "firstDistance": 0.00010878541067877935,
+    "rapidEnd": {
+      "position": [
+        20.979609080965435,
+        39.01755947007908,
+        100.21280734726858
+      ],
+      "rooms": [
+        "wellness"
+      ],
+      "nav": {
+        "view": "room",
+        "selectedId": "250",
+        "selectedZone": "wellness",
+        "radius": 96.14859387790679,
+        "detailZoom": 0,
+        "phase": "day",
+        "dayNightCycle": true
+      },
+      "programs": 34
+    },
+    "entryDistance": 59.182728910231944,
+    "errors": []
+  },
+  {
+    "variant": "after",
+    "start": {
+      "position": [
+        -12.794776226088427,
+        8.423528385518651,
+        -5.397326476654111
+      ],
+      "rooms": [
+        "bar"
+      ],
+      "nav": {
+        "view": "room",
+        "selectedId": "550",
+        "selectedZone": "bar",
+        "radius": 14.689394723052388,
+        "detailZoom": 0,
+        "phase": "day",
+        "dayNightCycle": true,
+        "travelling": true
+      },
+      "programs": 34
+    },
+    "chosen": {
+      "position": [
+        -12.794776226088427,
+        8.423528385518651,
+        -5.397326476654111
+      ],
+      "rooms": [
+        "restaurant",
+        "bar"
+      ],
+      "nav": {
+        "view": "room",
+        "selectedId": "350",
+        "selectedZone": "restaurant",
+        "radius": 14.689394723052388,
+        "detailZoom": 0,
+        "phase": "day",
+        "dayNightCycle": true,
+        "travelling": true
+      },
+      "programs": 34
+    },
+    "samples": [
+      {
+        "position": [
+          -12.794748895837456,
+          8.423556465449188,
+          -5.3972249934512675
+        ],
+        "rooms": [
+          "restaurant",
+          "bar"
+        ],
+        "nav": {
+          "view": "room",
+          "selectedId": "350",
+          "selectedZone": "restaurant",
+          "radius": 14.689467820589899,
+          "detailZoom": 0,
+          "phase": "day",
+          "dayNightCycle": true,
+          "travelling": true
+        },
+        "programs": 34
+      },
+      {
+        "position": [
+          -12.694958934358255,
+          8.526083704940392,
+          -5.026683028303207
+        ],
+        "rooms": [
+          "restaurant",
+          "bar"
+        ],
+        "nav": {
+          "view": "room",
+          "selectedId": "350",
+          "selectedZone": "restaurant",
+          "radius": 14.95636622779707,
+          "detailZoom": 0,
+          "phase": "day",
+          "dayNightCycle": true,
+          "travelling": true
+        },
+        "programs": 34
+      },
+      {
+        "position": [
+          -11.123176523269617,
+          10.140980727656824,
+          0.8096890351465476
+        ],
+        "rooms": [
+          "restaurant",
+          "bar"
+        ],
+        "nav": {
+          "view": "room",
+          "selectedId": "350",
+          "selectedZone": "restaurant",
+          "radius": 19.16025824035425,
+          "detailZoom": 0,
+          "phase": "day",
+          "dayNightCycle": true,
+          "travelling": true
+        },
+        "programs": 34
+      },
+      {
+        "position": [
+          -3.559175421818212,
+          17.912465363432432,
+          28.8964804414951
+        ],
+        "rooms": [
+          "restaurant",
+          "bar"
+        ],
+        "nav": {
+          "view": "room",
+          "selectedId": "350",
+          "selectedZone": "restaurant",
+          "radius": 39.39094894476376,
+          "detailZoom": 0,
+          "phase": "day",
+          "dayNightCycle": true,
+          "travelling": true
+        },
+        "programs": 34
+      },
+      {
+        "position": [
+          3.5785241068171754,
+          25.245954806067342,
+          55.400320815540866
+        ],
+        "rooms": [
+          "restaurant",
+          "bar"
+        ],
+        "nav": {
+          "view": "room",
+          "selectedId": "350",
+          "selectedZone": "restaurant",
+          "radius": 58.48145270964607,
+          "detailZoom": 0,
+          "phase": "day",
+          "dayNightCycle": true,
+          "travelling": true
+        },
+        "programs": 34
+      },
+      {
+        "position": [
+          4.015890331738559,
+          25.695318159085822,
+          57.02435732251493
+        ],
+        "rooms": [
+          "restaurant"
+        ],
+        "nav": {
+          "view": "room",
+          "selectedId": "350",
+          "selectedZone": "restaurant",
+          "radius": 59.65123318723509,
+          "detailZoom": 0,
+          "phase": "day",
+          "dayNightCycle": true,
+          "travelling": false
+        },
+        "programs": 34
+      }
+    ],
+    "firstDistance": 0.00010878541067877935,
+    "rapidEnd": {
+      "position": [
+        20.979609080965435,
+        39.01755947007908,
+        100.21280734726858
+      ],
+      "rooms": [
+        "wellness"
+      ],
+      "nav": {
+        "view": "room",
+        "selectedId": "250",
+        "selectedZone": "wellness",
+        "radius": 96.14859387790679,
+        "detailZoom": 0,
+        "phase": "day",
+        "dayNightCycle": true,
+        "travelling": false
+      },
+      "programs": 34
+    },
+    "entryDistance": 0.0014067612835305242,
+    "errors": []
+  }
+]

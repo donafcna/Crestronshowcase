@@ -1,3 +1,4 @@
+import { VillaStarkBackground, VillaStarkTools } from "./VillaStarkBackground";
 import { HotelBrassusTools } from "./HotelBrassusTools";
 import { VillaFtvTools } from "./VillaFtvTools";
 import React, { Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -35,7 +36,7 @@ const firstViewportOf = (proj) => {
   const vps = proj.devices.map((id) => getDeviceById(id)?.viewport).filter(Boolean);
   return VIEWPORT_ORDER.find((v) => vps.includes(v)) || vps[0];
 };
-const IDLE_RESUME_MS = 10000; // reprise de la démo automatique après inactivité
+const IDLE_RESUME_MS = 120000; // deux minutes après la dernière interaction réelle
 
 const SimulatorFallback = () => (
   <div className="simulator-loading">
@@ -142,6 +143,7 @@ const ShowcaseInner = ({ sectorId, projectId, device }) => {
   const [capturing, setCapturing] = useState(false);
   const [captureNotice, setCaptureNotice] = useState("");
   const stageRef = useRef(null);
+  const starkSession = useRef(crypto.randomUUID());
   const guiFrameRef = useRef(null);   // iframe du GUI embarqué : le fond 3D y lit les feedbacks
   const { windowW } = useViewportMetrics();
   const { guiFullscreen, setGuiFullscreen } = useGuiFullscreen();
@@ -192,24 +194,27 @@ const ShowcaseInner = ({ sectorId, projectId, device }) => {
   const [demoRunning, setDemoRunning] = useState(true);
   const [resumeAt, setResumeAt] = useState(null);
   const resumeTimer = useRef(null);
-  const idleResumeMs = viewportDevice === "phone" ? 60000 : IDLE_RESUME_MS;
+  const manualPauseUntil = useRef(0);
+  const idleResumeMs = IDLE_RESUME_MS;
 
-  const armResume = useCallback(() => {
+  const armResume = useCallback((delay = idleResumeMs) => {
     clearTimeout(resumeTimer.current);
-    setResumeAt(Date.now() + idleResumeMs);
+    setResumeAt(Date.now() + delay);
     resumeTimer.current = setTimeout(() => {
+      manualPauseUntil.current = 0;
       setResumeAt(null);
       setDemoRunning(true);
-    }, idleResumeMs);
+    }, delay);
   }, [idleResumeMs]);
 
   const pauseDemo = useCallback(() => {
+    manualPauseUntil.current = Date.now() + idleResumeMs;
     if (villaSessionRef.current.started === null) villaSessionRef.current.started = performance.now();
     villaSessionRef.current.overview = false;
     window.__plan3d?.holdOverview(false);
     setDemoRunning(false);
     armResume();
-  }, [armResume]);
+  }, [armResume, idleResumeMs]);
 
   useEffect(() => {
     const key = `${activeProject.id}/${viewportDevice}`;
@@ -222,14 +227,18 @@ const ShowcaseInner = ({ sectorId, projectId, device }) => {
       setDemoEpoch(n => n + 1);
     }
     const guidedEntry = isGuidedProject(activeProject.id) && first;
-    if ((villaDevice && (entry || first || automaticAdvance.current)) || guidedEntry) {
+    if (manualPauseUntil.current > Date.now()) {
+      setDemoRunning(false);
+      armResume(manualPauseUntil.current - Date.now());
+    } else if ((villaDevice && (entry || first || automaticAdvance.current)) || guidedEntry) {
       clearTimeout(resumeTimer.current);
       setResumeAt(null); setDemoRunning(true);
-    } else { setDemoRunning(false); armResume(); }
+    } else { setDemoRunning(false); armResume(viewportDevice === "phone" ? 60000 : 10000); }
     automaticAdvance.current = false;
   }, [activeProject.id, viewportDevice, projectId, villaProject, villaDevice, armResume]);
 
   const resumeDemo = useCallback(() => {
+    manualPauseUntil.current = 0;
     clearTimeout(resumeTimer.current);
     setResumeAt(null);
     setDemoEnabled(true);
@@ -326,6 +335,7 @@ const ShowcaseInner = ({ sectorId, projectId, device }) => {
       ? activeProject.embedByViewport?.[viewportDevice] ||
         (viewportDevice === "phone" && activeProject.embedPhoneUrl ? activeProject.embedPhoneUrl : activeProject.embedUrl)
       : null;
+  const starkPanelSrc = ["villa-stark", "my-jewel"].includes(activeProject.id) ? `${embedSrc}&channel=${starkSession.current}` : embedSrc;
   const displayTitle = clientName || getProjectName(activeProject, lang);
   const Simulator = getSimulator(activeProject);
   const simulatorType = viewportDevice === "wallpanel_hd" ? "wallpanel" : viewportDevice;
@@ -340,7 +350,7 @@ const ShowcaseInner = ({ sectorId, projectId, device }) => {
   ) : embedSrc ? (
     <iframe
       ref={guiFrameRef}
-      src={embedSrc}
+      src={starkPanelSrc}
       title={displayTitle}
       style={{ width: "100%", height: "100%", border: "none", backgroundColor: "#080b11" }}
       sandbox="allow-scripts allow-same-origin"
@@ -356,10 +366,15 @@ const ShowcaseInner = ({ sectorId, projectId, device }) => {
   // Le châssis est alors poussé à gauche pour laisser la pièce 3D visible entre lui et la colonne des boutons.
   return (
     <div
-      className={`showcase-container fade-in sector-${sectorId || "all"} ${isFullscreen ? "fullscreen-mode" : ""} ${plan3dOn ? "plan3d-on" : ""}`}
+      className={`showcase-container fade-in sector-${sectorId || "all"} ${isFullscreen ? "fullscreen-mode" : ""} ${plan3dOn ? "plan3d-on" : ""} ${["villa-stark", "my-jewel"].includes(activeProject.id) ? "stark-project" : ""}`}
       ref={stageRef}
     >
-      {plan3dOn ? (
+            {demoEnabled && activeProject.autoDemo !== false && !demoRunning && resumeAt && (
+              <DemoCountdown inline resumeAt={resumeAt} total={idleResumeMs} onResumeNow={resumeDemo} />
+            )}
+      {["villa-stark", "my-jewel"].includes(activeProject.id) ? (
+        <VillaStarkBackground channel={starkSession.current} projectId={activeProject.id} />
+      ) : plan3dOn ? (
         <Plan3DBackground projectId={activeProject.id} stageRef={stageRef} guiFrameRef={guiFrameRef} tourSessionRef={villaSessionRef} />
       ) : (
         <BackgroundVideo sectionId={sectorId || activeProject.sectors[0]} />
@@ -495,8 +510,10 @@ const ShowcaseInner = ({ sectorId, projectId, device }) => {
                 )}
               </div>
             )}
+            {["villa-stark", "my-jewel"].includes(activeProject.id) && <VillaStarkTools channel={starkSession.current} projectId={activeProject.id} />}
             {activeProject.id === "hotel-brassus" && <HotelBrassusTools key={viewportDevice} guiFrameRef={guiFrameRef} main={["phone", "tablet", "desktop"].includes(viewportDevice)} />}
             {activeProject.id === "villa-gemini-frequencetv" && viewportDevice !== "phone" && <VillaFtvTools key={viewportDevice} guiFrameRef={guiFrameRef} />}
+
             <div className="device-buttons-column">
               {projectViewports.map((dev) => (
                 <button
@@ -544,9 +561,6 @@ const ShowcaseInner = ({ sectorId, projectId, device }) => {
       </div>
       {calibOpen && <CalibrateCard onClose={() => setCalibOpen(false)} />}
       {demoEnabled && activeProject.autoDemo !== false && <DemoCursor cursor={cursor} />}
-      {demoEnabled && activeProject.autoDemo !== false && !demoRunning && resumeAt && (
-        <DemoCountdown resumeAt={resumeAt} total={idleResumeMs} onResumeNow={resumeDemo} />
-      )}
     </div>
   );
 };

@@ -1,0 +1,61 @@
+{
+  "runs": [
+    {
+      "subject": "30",
+      "instant": true,
+      "fps": 42.509736867585026,
+      "calls": 459,
+      "triangles": 132088,
+      "textures": 8
+    },
+    {
+      "subject": "30",
+      "instant": false,
+      "fps": 53.77495419626455,
+      "calls": 478,
+      "triangles": 134472,
+      "textures": 8
+    },
+    {
+      "subject": "30",
+      "instant": false,
+      "fps": 60.020876826892085,
+      "calls": 495,
+      "triangles": 135620,
+      "textures": 8
+    },
+    {
+      "subject": "30",
+      "instant": true,
+      "fps": 50.44016178919819,
+      "calls": 495,
+      "triangles": 135620,
+      "textures": 8
+    }
+  ],
+  "behavior": {
+    "settledFurnitureClear": true,
+    "noJumpOnSelection": true,
+    "departingWallHeldDuringPan": true,
+    "departingWallStaysLow": true,
+    "restoreStartsAfterArrival": true,
+    "departingWallRestored": true,
+    "actualPositionOpensCorrectWall": true,
+    "anticipatedPathOpensNextWall": true,
+    "progressiveMovement": true,
+    "rotationHasNoJump": true,
+    "rotationReversesSmoothly": true,
+    "rapidSelectionFullyRestored": true,
+    "setsEmpty": true,
+    "reducedMotionImmediate": true,
+    "reducedMotionRestoration": true
+  },
+  "subjects": {
+    "30": {
+      "before": 46.47494932839161,
+      "after": 56.89791551157832,
+      "percent": 22.42706303892472
+    }
+  },
+  "status": "passed"
+}

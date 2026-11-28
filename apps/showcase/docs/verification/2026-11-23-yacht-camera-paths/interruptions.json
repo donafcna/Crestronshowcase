@@ -1,0 +1,23 @@
+{
+  "cases": 0,
+  "lifted": 0,
+  "failures": [],
+  "duration": {
+    "min": 10,
+    "max": 0
+  },
+  "maxArrivalError": 0,
+  "interruption": {
+    "continuous": true,
+    "completed": true,
+    "arrival": 0
+  },
+  "retarget": {
+    "continuous": true,
+    "clear": true,
+    "resized": true,
+    "sameRoomContinuous": true,
+    "canceled": true
+  },
+  "status": "passed"
+}

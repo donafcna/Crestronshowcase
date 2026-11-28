@@ -1,0 +1,29 @@
+[
+  {
+    "inline": true,
+    "mode": "normal",
+    "overlap": false,
+    "size": {
+      "height": 575,
+      "width": 1280
+    }
+  },
+  {
+    "inline": true,
+    "mode": "normal",
+    "overlap": false,
+    "size": {
+      "height": 800,
+      "width": 1280
+    }
+  },
+  {
+    "inline": true,
+    "mode": "scene",
+    "overlap": false,
+    "size": {
+      "height": 800,
+      "width": 1280
+    }
+  }
+]

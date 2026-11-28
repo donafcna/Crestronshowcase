@@ -1,0 +1,18 @@
+[
+  {
+    "contained": true,
+    "device": "TSW panel"
+  },
+  {
+    "contained": true,
+    "device": "PC / Xpanel"
+  },
+  {
+    "contained": true,
+    "device": "Tablet"
+  },
+  {
+    "contained": true,
+    "device": "Smartphone"
+  }
+]

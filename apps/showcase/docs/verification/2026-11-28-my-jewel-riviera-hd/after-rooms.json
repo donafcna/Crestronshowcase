@@ -1,0 +1,42 @@
+[
+  {
+    "id": "Living",
+    "frames": "6"
+  },
+  {
+    "id": "Dining",
+    "frames": "7"
+  },
+  {
+    "id": "Kitchen",
+    "frames": "6"
+  },
+  {
+    "id": "Office",
+    "frames": "7"
+  },
+  {
+    "id": "Cinema",
+    "frames": "7"
+  },
+  {
+    "id": "Fitness",
+    "frames": "7"
+  },
+  {
+    "id": "Entry",
+    "frames": "6"
+  },
+  {
+    "id": "Master",
+    "frames": "7"
+  },
+  {
+    "id": "Bedroom",
+    "frames": "7"
+  },
+  {
+    "id": "Pool",
+    "frames": "7"
+  }
+]

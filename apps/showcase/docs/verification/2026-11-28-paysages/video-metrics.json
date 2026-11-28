@@ -1,0 +1,90 @@
+[
+  {
+    "room": "Living",
+    "frames": 383,
+    "duration": 15.958333333333334,
+    "fps": 24,
+    "speed": 0.5555555555555556,
+    "crossfadeSeconds": 2.0,
+    "seamDifference": 0.3411555989583333,
+    "adjacentMedian": 0.2394874855324074,
+    "adjacentP95": 0.5727079354745369,
+    "alignmentMedianScore": 0.9988667734635323,
+    "translationRangePixels": [
+      0.22773849964141846,
+      0.06774409860372543
+    ],
+    "bytes": 4984414,
+    "encodedSeamDifference": 1.8253106915509258,
+    "encodedAdjacentP95": 0.5406829969618056,
+    "encodedAdjacentMedian": 0.19502115885416665,
+    "smoothSeamDifference": 0.4684371383101852,
+    "smoothAdjacentP95": 0.2604755497685185
+  },
+  {
+    "room": "Dining",
+    "frames": 383,
+    "duration": 15.958333333333334,
+    "fps": 24,
+    "speed": 0.5555555555555556,
+    "crossfadeSeconds": 2.0,
+    "seamDifference": 0.1852076099537037,
+    "adjacentMedian": 0.23885886863425926,
+    "adjacentP95": 0.5111368091724537,
+    "alignmentMedianScore": 0.9982145099754527,
+    "translationRangePixels": [
+      0.1886001080274582,
+      0.13238364458084106
+    ],
+    "bytes": 4575339,
+    "encodedSeamDifference": 1.8492657696759258,
+    "encodedAdjacentP95": 0.4801542607060185,
+    "encodedAdjacentMedian": 0.19901602285879627,
+    "smoothSeamDifference": 0.43617440682870373,
+    "smoothAdjacentP95": 0.2385075593171296
+  },
+  {
+    "room": "Master",
+    "frames": 383,
+    "duration": 15.958333333333334,
+    "fps": 24,
+    "speed": 0.5555555555555556,
+    "crossfadeSeconds": 2.0,
+    "seamDifference": 0.1996820746527778,
+    "adjacentMedian": 0.22345775462962963,
+    "adjacentP95": 0.5324259620949073,
+    "alignmentMedianScore": 0.9988097119956728,
+    "translationRangePixels": [
+      0.17784623801708221,
+      0.12694017589092255
+    ],
+    "bytes": 4600024,
+    "encodedSeamDifference": 1.8763675491898149,
+    "encodedAdjacentP95": 0.5197715205439815,
+    "encodedAdjacentMedian": 0.20189597800925924,
+    "smoothSeamDifference": 0.43119176793981484,
+    "smoothAdjacentP95": 0.24702095992476852
+  },
+  {
+    "room": "Exterior",
+    "frames": 383,
+    "duration": 15.958333333333334,
+    "fps": 24,
+    "speed": 0.5555555555555556,
+    "crossfadeSeconds": 2.0,
+    "seamDifference": 0.37700665509259257,
+    "adjacentMedian": 0.3005228226273148,
+    "adjacentP95": 0.5753883825231481,
+    "alignmentMedianScore": 0.9966751246513605,
+    "translationRangePixels": [
+      0.3224426507949829,
+      0.2905483841896057
+    ],
+    "bytes": 5931085,
+    "encodedSeamDifference": 1.9138295717592593,
+    "encodedAdjacentP95": 0.5939166124131944,
+    "encodedAdjacentMedian": 0.27888436776620373,
+    "smoothSeamDifference": 0.4811429398148148,
+    "smoothAdjacentP95": 0.2816584382233796
+  }
+]

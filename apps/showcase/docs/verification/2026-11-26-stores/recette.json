@@ -1,0 +1,126 @@
+{
+  "pieces": [
+    {
+      "clip": "none",
+      "layers": 2,
+      "room": "Living",
+      "svg": true
+    },
+    {
+      "clip": "none",
+      "layers": 2,
+      "room": "Dining",
+      "svg": true
+    },
+    {
+      "clip": "none",
+      "layers": 2,
+      "room": "Kitchen",
+      "svg": true
+    },
+    {
+      "clip": "none",
+      "layers": 2,
+      "room": "Office",
+      "svg": true
+    },
+    {
+      "clip": "none",
+      "layers": 2,
+      "room": "Fitness",
+      "svg": true
+    },
+    {
+      "clip": "none",
+      "layers": 2,
+      "room": "Entry",
+      "svg": true
+    },
+    {
+      "clip": "none",
+      "layers": 2,
+      "room": "Master",
+      "svg": true
+    },
+    {
+      "clip": "none",
+      "layers": 2,
+      "room": "Bedroom",
+      "svg": true
+    }
+  ],
+  "chassis": [
+    {
+      "cards": 2,
+      "device": "TSW panel",
+      "overflow": false,
+      "theme": "Sombre"
+    },
+    {
+      "cards": 2,
+      "device": "TSW panel",
+      "overflow": false,
+      "theme": "Clair"
+    },
+    {
+      "cards": 2,
+      "device": "TSW panel",
+      "overflow": false,
+      "theme": "Verre"
+    },
+    {
+      "cards": 2,
+      "device": "PC / Xpanel",
+      "overflow": false,
+      "theme": "Sombre"
+    },
+    {
+      "cards": 2,
+      "device": "PC / Xpanel",
+      "overflow": false,
+      "theme": "Clair"
+    },
+    {
+      "cards": 2,
+      "device": "PC / Xpanel",
+      "overflow": false,
+      "theme": "Verre"
+    },
+    {
+      "cards": 2,
+      "device": "Tablet",
+      "overflow": false,
+      "theme": "Sombre"
+    },
+    {
+      "cards": 2,
+      "device": "Tablet",
+      "overflow": false,
+      "theme": "Clair"
+    },
+    {
+      "cards": 2,
+      "device": "Tablet",
+      "overflow": false,
+      "theme": "Verre"
+    },
+    {
+      "cards": 2,
+      "device": "Smartphone",
+      "overflow": false,
+      "theme": "Sombre"
+    },
+    {
+      "cards": 2,
+      "device": "Smartphone",
+      "overflow": false,
+      "theme": "Clair"
+    },
+    {
+      "cards": 2,
+      "device": "Smartphone",
+      "overflow": false,
+      "theme": "Verre"
+    }
+  ]
+}

@@ -1,0 +1,135 @@
+{
+  "runs": [
+    {
+      "subject": "11",
+      "instant": true,
+      "fps": 59.347181008902076,
+      "calls": 743,
+      "triangles": 162724,
+      "textures": 8
+    },
+    {
+      "subject": "11",
+      "instant": false,
+      "fps": 59.799565093903546,
+      "calls": 643,
+      "triangles": 159152,
+      "textures": 8
+    },
+    {
+      "subject": "11",
+      "instant": false,
+      "fps": 59.84895264298986,
+      "calls": 643,
+      "triangles": 159152,
+      "textures": 8
+    },
+    {
+      "subject": "11",
+      "instant": true,
+      "fps": 59.911559127172794,
+      "calls": 641,
+      "triangles": 159128,
+      "textures": 8
+    },
+    {
+      "subject": "20",
+      "instant": true,
+      "fps": 59.875971202678684,
+      "calls": 563,
+      "triangles": 166260,
+      "textures": 8
+    },
+    {
+      "subject": "20",
+      "instant": false,
+      "fps": 59.93863425523523,
+      "calls": 563,
+      "triangles": 166260,
+      "textures": 8
+    },
+    {
+      "subject": "20",
+      "instant": false,
+      "fps": 59.82763942027483,
+      "calls": 563,
+      "triangles": 166260,
+      "textures": 8
+    },
+    {
+      "subject": "20",
+      "instant": true,
+      "fps": 59.67665240133143,
+      "calls": 563,
+      "triangles": 166260,
+      "textures": 8
+    },
+    {
+      "subject": "30",
+      "instant": true,
+      "fps": 59.72209003504522,
+      "calls": 495,
+      "triangles": 135620,
+      "textures": 8
+    },
+    {
+      "subject": "30",
+      "instant": false,
+      "fps": 59.27120130904316,
+      "calls": 494,
+      "triangles": 135548,
+      "textures": 8
+    },
+    {
+      "subject": "30",
+      "instant": false,
+      "fps": 55.82743383886802,
+      "calls": 490,
+      "triangles": 135352,
+      "textures": 8
+    },
+    {
+      "subject": "30",
+      "instant": true,
+      "fps": 59.96002664873066,
+      "calls": 494,
+      "triangles": 135548,
+      "textures": 8
+    }
+  ],
+  "behavior": {
+    "settledFurnitureClear": true,
+    "noJumpOnSelection": true,
+    "departingWallHeldDuringPan": true,
+    "departingWallStaysLow": true,
+    "restoreStartsAfterArrival": true,
+    "departingWallRestored": true,
+    "actualPositionOpensCorrectWall": true,
+    "anticipatedPathOpensNextWall": true,
+    "progressiveMovement": true,
+    "rotationHasNoJump": true,
+    "rotationReversesSmoothly": true,
+    "rapidSelectionFullyRestored": true,
+    "setsEmpty": true,
+    "reducedMotionImmediate": true,
+    "reducedMotionRestoration": true
+  },
+  "subjects": {
+    "11": {
+      "before": 59.62937006803743,
+      "after": 59.824258868446705,
+      "percent": 0.3268335724273097
+    },
+    "20": {
+      "before": 59.776311802005054,
+      "after": 59.88313683775503,
+      "percent": 0.17870797399446303
+    },
+    "30": {
+      "before": 59.841058341887944,
+      "after": 57.54931757395559,
+      "percent": -3.8297129620252113
+    }
+  },
+  "status": "failed"
+}

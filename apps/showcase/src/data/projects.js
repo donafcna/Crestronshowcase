@@ -26,6 +26,7 @@ export const sectors = [
   { id: `meeting`, name: `Salle de Réunion`, iconName: `Briefcase` },
   { id: `conference`, name: `Salle de Conférence`, iconName: `Tv` },
   { id: `discoteque`, name: `Discothèque`, iconName: `Music` },
+  { id: `yacht2`, name: `Yacht2`, iconName: `Ship` },
   { id: `yacht`, name: `Yacht`, iconName: `Ship` },
   { id: `boutique`, name: `Boutique`, iconName: `ShoppingBag` },
   { id: `restaurant`, name: `Restaurant`, iconName: `Utensils` },
@@ -60,6 +61,118 @@ export const PROJECT_STATUS = {
 };
 
 export const projects = [
+{
+  "id": "my-jewel",
+  "name": "M/Y Jewel",
+  "status": "concept",
+  "client": "Motor yacht de démonstration",
+  "sectors": [
+    "yacht2"
+  ],
+  "devices": [
+    "crestron",
+    "xpanel",
+    "ios_tablet",
+    "ios_phone"
+  ],
+  "isInteractive": false,
+  "autoDemo": true,
+  "embedUrl": "/showcases/my-jewel/index.html?mode=panel",
+  "embedPhoneUrl": "/showcases/my-jewel/index.html?mode=panel",
+  "thumbnailUrl": "/showcases/my-jewel/assets/hero.png",
+  "year": "2026",
+  "text": {
+    "fr": {
+      "description": "Votre yacht, en un geste.",
+      "details": "Un motor-yacht fictif de luxe inspiré de la Riviera : teck, ivoire et mer turquoise. GUI issu de Villa Stark, dix espaces, éclairages, stores, climat et médias synchronisés avec les fonds marins animés.",
+      "features": [
+        "Dix espaces à bord",
+        "Mer et reflets animés, horizon stable",
+        "Scénarios À bord, À terre, Réception, Cinéma et Bonne nuit",
+        "Trois thèmes, dalle, XPanel, iPad et smartphone",
+        "Simulation de confort sans équipement réel ; aucune commande de navigation"
+      ]
+    },
+    "en": {
+      "description": "Your yacht, at a touch.",
+      "details": "A fictional luxury motor yacht with Riviera-inspired teak, ivory and turquoise water. Villa Stark-based controls synchronise ten spaces, lighting, shades, climate and media with animated marine backgrounds.",
+      "features": [
+        "Ten spaces aboard",
+        "Animated water and reflections, stable horizon",
+        "Boarding, ashore, reception, cinema and night scenes",
+        "Three themes, touch panel, XPanel, iPad and smartphone",
+        "Comfort simulation without connected equipment; no navigation controls"
+      ]
+    },
+    "de": {
+      "description": "Ihre Yacht mit einer Berührung.",
+      "details": "Fiktive Luxus-Motoryacht mit Teak, Elfenbein und türkisblauem Meer. Die von Villa Stark übernommene Oberfläche synchronisiert zehn Bereiche, Licht, Beschattung, Klima und Medien mit animierten Meereshintergründen.",
+      "features": [
+        "Zehn Bereiche an Bord",
+        "Animiertes Wasser und Reflexionen, stabiler Horizont",
+        "An Bord, Landgang, Empfang, Kino und Nacht",
+        "Drei Designs für Touchpanel, XPanel, iPad und Smartphone",
+        "Komfortsimulation ohne verbundene Geräte; keine Navigation"
+      ]
+    }
+  }
+},
+{
+  "id": "villa-stark",
+  "name": "Villa Stark",
+  "status": "concept",
+  "client": "Villa de démonstration",
+  "sectors": [
+    "residentiel"
+  ],
+  "devices": [
+    "crestron",
+    "xpanel",
+    "ios_tablet",
+    "ios_phone"
+  ],
+  "isInteractive": false,
+  "autoDemo": true,
+  "embedUrl": "/showcases/villa-stark/index.html?mode=panel",
+  "embedPhoneUrl": "/showcases/villa-stark/index.html?mode=panel",
+  "thumbnailUrl": "/showcases/villa-stark/assets/original/hero-on.webp",
+  "year": "2026",
+  "text": {
+    "fr": {
+      "description": "Une villa qui réagit à chaque geste.",
+      "details": "Démonstration interactive Villa Stark : une architecture fictive originale en pierre, bois et zinc, dans un jardin au pied du Jura. Explorez ses pièces et ses ambiances. Éclairage, stores, climat, musique, télévision, sécurité et interphone sont simulés en direct.",
+      "features": [
+        "Scénarios Je rentre, Je pars, Je reçois, Mon film et Bonne nuit",
+        "Villa et intérieurs interactifs",
+        "Éclairages, stores, climat et médias",
+        "GUI dans le châssis choisi, fond animé synchronisé",
+        "Simulation sans équipement réel"
+      ]
+    },
+    "en": {
+      "description": "A villa that responds to every touch.",
+      "details": "Villa Stark interactive demonstration: original fictional stone, timber and zinc architecture in a garden beneath the Jura. Explore its rooms and scenes. Lighting, shades, climate, music, television, security and intercom are simulated live.",
+      "features": [
+        "Arrival, departure, hosting, movie and night scenes",
+        "Interactive villa and interiors",
+        "Lighting, shades, climate and media",
+        "GUI in the selected device frame; synchronised animated background",
+        "Simulation without connected equipment"
+      ]
+    },
+    "de": {
+      "description": "Eine Villa, die auf jede Berührung reagiert.",
+      "details": "Interaktive Demonstration Villa Stark: eigenständige fiktive Architektur aus Stein, Holz und Zink in einem Garten am Jura. Räume und Szenen erkunden. Licht, Beschattung, Klima, Musik, Fernsehen, Sicherheit und Gegensprechanlage werden live simuliert.",
+      "features": [
+        "Ankunft, Abwesenheit, Empfang, Film und Nacht",
+        "Interaktive Villa und Innenräume",
+        "Licht, Beschattung, Klima und Medien",
+        "GUI im ausgewählten Gerät; synchronisierter animierter Hintergrund",
+        "Simulation ohne angeschlossene Geräte"
+      ]
+    }
+  }
+},
   {
     id: `villa-gemini-frequencetv`,
     name: `Villa FTV`,

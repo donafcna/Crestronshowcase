@@ -1,0 +1,53 @@
+
+> crestronshowcase@2.3.18 prebuild
+> node scripts/check-catalogue.mjs && node scripts/generate-sitemap.mjs
+
+Catalogue valide : 19 projets publics (3 en retrait), 17 simulateurs, 8 secteurs.
+sitemap.xml : 30 URLs
+
+> crestronshowcase@2.3.18 build
+> vite build
+
+vite v8.1.5 building client environment for production...
+[2K
+transforming...✓ 1918 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                                  2.46 kB │ gzip:   1.02 kB
+dist/assets/VenuePhone-DHVJ1pOU.css             11.47 kB │ gzip:   3.28 kB
+dist/assets/HuddleRoomNyon-B_4RMUKw.css         12.75 kB │ gzip:   2.98 kB
+dist/assets/AppartementEauxVives-D-pMcsep.css   12.85 kB │ gzip:   2.87 kB
+dist/assets/SuitePalaceMontreux-BB4aT8qY.css    13.45 kB │ gzip:   3.05 kB
+dist/assets/HomeCinemaCologny-CcZjmK0c.css      14.00 kB │ gzip:   3.16 kB
+dist/assets/SiegeNyon-DDfkobd7.css              14.18 kB │ gzip:   3.00 kB
+dist/assets/AppartementCarouge-BLYszvcq.css     14.82 kB │ gzip:   3.21 kB
+dist/assets/VillaLeman-BBsoUSCJ.css             17.67 kB │ gzip:   3.46 kB
+dist/assets/CrestronHome-Diygzu_x.css           24.51 kB │ gzip:   4.85 kB
+dist/assets/index-CrLxSdg5.css                 206.25 kB │ gzip:  34.90 kB
+dist/assets/YachtMonaco-CgHwnY2A.js              0.26 kB │ gzip:   0.21 kB
+dist/assets/BoutiqueHermes-Cn9NUY8n.js           0.27 kB │ gzip:   0.22 kB
+dist/assets/rolldown-runtime-Bh1tDfsg.js         0.56 kB │ gzip:   0.36 kB
+dist/assets/LuxuryControl-DVqN4OB4.js            1.12 kB │ gzip:   0.71 kB
+dist/assets/VenuePhone-ZHCm_mtx.js               1.86 kB │ gzip:   0.82 kB
+dist/assets/SushiBarKyoto-Dwj0fjDo.js            7.72 kB │ gzip:   2.60 kB
+dist/assets/Contact-CV68ZL5R.js                  7.84 kB │ gzip:   2.67 kB
+dist/assets/BoardroomFutureAV-CWQVND2m.js       12.80 kB │ gzip:   3.01 kB
+dist/assets/VillaGemini-BC4zWkkB.js             14.32 kB │ gzip:   3.51 kB
+dist/assets/ClubEtoile-Ben46trv.js              14.63 kB │ gzip:   4.41 kB
+dist/assets/HomeCinemaCologny-CsyJ7Wy6.js       15.63 kB │ gzip:   4.63 kB
+dist/assets/HuddleRoomNyon-STs3FeXX.js          17.17 kB │ gzip:   5.04 kB
+dist/assets/HotelGeneva-C1ilEFxk.js             18.69 kB │ gzip:   5.90 kB
+dist/assets/AppartementEauxVives-Ja3HHs2X.js    18.89 kB │ gzip:   5.27 kB
+dist/assets/SuitePalaceMontreux-uwx1xrOp.js     20.69 kB │ gzip:   6.67 kB
+dist/assets/AppartementCarouge-DMP9LyRR.js      22.66 kB │ gzip:   5.93 kB
+dist/assets/AuditoriumRichmond-9Fms4hBO.js      23.08 kB │ gzip:   5.28 kB
+dist/assets/browser-Nztc4jrW.js                 23.47 kB │ gzip:   8.85 kB
+dist/assets/ChaletZermatt-DUM7VxmX.js           23.50 kB │ gzip:   4.89 kB
+dist/assets/VillaLeman-CwgI7yRh.js              23.68 kB │ gzip:   6.98 kB
+dist/assets/SiegeNyon-Bwy0-060.js               24.14 kB │ gzip:   6.43 kB
+dist/assets/CrestronHome-BbrldSR6.js            40.35 kB │ gzip:  10.67 kB
+dist/assets/html2canvas-CRV6Yc1K.js            199.56 kB │ gzip:  46.78 kB
+dist/assets/ProjectSheet-NNSryuVl.js           386.33 kB │ gzip: 122.10 kB
+dist/assets/index-DTZv6Fg3.js                  486.93 kB │ gzip: 158.31 kB
+
+✓ built in 1.96s

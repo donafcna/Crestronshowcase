@@ -1,0 +1,146 @@
+[
+  {
+    "mode": "normal",
+    "device": "Dalle TSW",
+    "theme": "Clair",
+    "roomsClear": true
+  },
+  {
+    "mode": "normal",
+    "device": "Dalle TSW",
+    "theme": "Sombre",
+    "roomsClear": true
+  },
+  {
+    "mode": "normal",
+    "device": "Dalle TSW",
+    "theme": "Verre",
+    "roomsClear": true
+  },
+  {
+    "mode": "normal",
+    "device": "PC / Xpanel",
+    "theme": "Clair",
+    "roomsClear": true
+  },
+  {
+    "mode": "normal",
+    "device": "PC / Xpanel",
+    "theme": "Sombre",
+    "roomsClear": true
+  },
+  {
+    "mode": "normal",
+    "device": "PC / Xpanel",
+    "theme": "Verre",
+    "roomsClear": true
+  },
+  {
+    "mode": "normal",
+    "device": "Tablette",
+    "theme": "Clair",
+    "roomsClear": true
+  },
+  {
+    "mode": "normal",
+    "device": "Tablette",
+    "theme": "Sombre",
+    "roomsClear": true
+  },
+  {
+    "mode": "normal",
+    "device": "Tablette",
+    "theme": "Verre",
+    "roomsClear": true
+  },
+  {
+    "mode": "normal",
+    "device": "Smartphone",
+    "theme": "Clair",
+    "roomsClear": true
+  },
+  {
+    "mode": "normal",
+    "device": "Smartphone",
+    "theme": "Sombre",
+    "roomsClear": true
+  },
+  {
+    "mode": "normal",
+    "device": "Smartphone",
+    "theme": "Verre",
+    "roomsClear": true
+  },
+  {
+    "mode": "scene",
+    "device": "Dalle TSW",
+    "theme": "Clair",
+    "roomsClear": true
+  },
+  {
+    "mode": "scene",
+    "device": "Dalle TSW",
+    "theme": "Sombre",
+    "roomsClear": true
+  },
+  {
+    "mode": "scene",
+    "device": "Dalle TSW",
+    "theme": "Verre",
+    "roomsClear": true
+  },
+  {
+    "mode": "scene",
+    "device": "PC / Xpanel",
+    "theme": "Clair",
+    "roomsClear": true
+  },
+  {
+    "mode": "scene",
+    "device": "PC / Xpanel",
+    "theme": "Sombre",
+    "roomsClear": true
+  },
+  {
+    "mode": "scene",
+    "device": "PC / Xpanel",
+    "theme": "Verre",
+    "roomsClear": true
+  },
+  {
+    "mode": "scene",
+    "device": "Tablette",
+    "theme": "Clair",
+    "roomsClear": true
+  },
+  {
+    "mode": "scene",
+    "device": "Tablette",
+    "theme": "Sombre",
+    "roomsClear": true
+  },
+  {
+    "mode": "scene",
+    "device": "Tablette",
+    "theme": "Verre",
+    "roomsClear": true
+  },
+  {
+    "mode": "scene",
+    "device": "Smartphone",
+    "theme": "Clair",
+    "roomsClear": true
+  },
+  {
+    "mode": "scene",
+    "device": "Smartphone",
+    "theme": "Sombre",
+    "roomsClear": true
+  },
+  {
+    "mode": "scene",
+    "device": "Smartphone",
+    "theme": "Verre",
+    "roomsClear": true
+  }
+]

@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>M/Y Jewel — Frequence TV</title>
+<meta name="description" content="Simulation d’un motor-yacht piloté par une interface Crestron : éclairage, stores, climat, musique, TV, sécurité et interphone réagissent en direct.">
+
+
+<script>document.documentElement.dataset.mode = new URLSearchParams(location.search).get("mode") || "standalone";</script>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="enhancements.css">
+<link rel="stylesheet" href="integration.css">
+<link rel="stylesheet" href="jewel.css?v=2.3.40">
+</head>
+<body>
+<svg width="0" height="0" aria-hidden="true" style="position:absolute;pointer-events:none">
+  <defs>
+    <filter id="logo-clear" color-interpolation-filters="sRGB"><feColorMatrix values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  -1 -1 -1 3 0"/></filter>
+    <filter id="logo-light" color-interpolation-filters="sRGB"><feColorMatrix values="0 0 0 0 1  -1 1 0 0 1  -1 0 1 0 1  -1 -1 -1 3 0"/></filter>
+  </defs>
+</svg>
+
+<header class="site-header">
+  <img class="site-logo" src="/assets/logo-frequence-tv-5LGUrtbd.png" alt="Frequence TV — M/Y Jewel">
+  <div class="site-tag">
+    <h1>M/Y Jewel</h1>
+    <p>Votre yacht, en un geste. Explorez les espaces et les ambiances à bord.</p>
+  </div>
+  <div class="house-events">
+    <span class="house-events-title">Événements</span>
+    <button id="evVisitor" type="button"> Visiteur au portail</button>
+    <button id="evReset" type="button">↺ Réinitialiser</button>
+  </div>
+</header>
+
+<main class="stage">
+
+  <!-- ============ LA SCÈNE PLEIN ÉCRAN (photo + calques, complétée par app.js) ============ -->
+  <section class="house-wrap" aria-label="Yacht simulé">
+   <div class="house-box">
+    <div class="house-stage" id="houseStage">
+      <img class="house-base" src="assets/hero.png" alt="Motor-yacht M/Y Jewel au mouillage en Méditerranée">
+      <!-- balise d'alarme sur le pilier du portail, caméras -->
+      <div class="beacon" id="beacon" style="left:13.1%;top:55.9%"></div>
+      <!-- visiteur devant le portail -->
+      <div class="visitor" id="visitor" style="left:14.9%;top:61.3%">
+        <svg viewBox="0 0 60 120" width="100%" height="100%"><ellipse cx="30" cy="116" rx="18" ry="4" fill="#000" opacity="0.5"/><circle cx="30" cy="18" r="11" fill="#D8C7B0"/><path d="M14 112 L16 48 Q30 34 44 48 L46 112Z" fill="#2A3148"/><path d="M18 50 L8 84 L14 86 L22 60Z" fill="#2A3148"/><rect x="40" y="62" width="16" height="12" rx="2" fill="#B89468"/></svg>
+        <div class="visitor-bubble">Bonjour&nbsp;! </div>
+      </div>
+      <div class="alarm-banner">ALARME — INTRUSION DÉTECTÉE</div>
+      <div class="house-hint">Cliquez sur une baie vitrée pour entrer dans la pièce</div>
+    </div>
+
+    <!-- vue intérieure -->
+    <div class="room-view" id="roomView">
+      <div class="rv-photo"></div>
+      <div class="rv-night"></div>
+      <div class="rv-strip"></div>
+      <div class="rv-rgbw"></div>
+      <div class="rv-shade"><div class="rv-cover blackout" data-shade="blackout" title="Blackout"></div><div class="rv-cover roman" data-shade="roman" title="Store bateau"></div></div>
+      <div class="rv-tv"></div>
+      <button class="rv-back" id="rvBack" type="button">◀&nbsp; VUE EXTÉRIEURE</button>
+      <div class="rv-title"></div>
+      <div class="rv-panel">
+        <div class="rv-climate"></div>
+        <div class="rv-lights"></div>
+        <div class="rv-music"></div>
+      </div>
+    </div>
+   </div>
+   <div class="room-strip" id="roomStrip" aria-label="Pièces" hidden></div>
+  </section>
+
+  <!-- ============ LA DALLE CRESTRON TSW-1070 ============ -->
+  <section class="panel-wrap" aria-label="Interface Crestron">
+    <div class="tsw-frame">
+      <div class="tsw-screen">
+        <div class="tsw" id="tsw">
+          <div class="hdr" id="hdr">
+            <img class="hdr-logo" src="/assets/logo-frequence-tv-5LGUrtbd.png" alt="">
+            <div class="hdr-title" id="hdrTitle">LIGHTING</div>
+            <div class="hdr-clock" id="hdrClock">--:--</div>
+          </div>
+          <div class="page" id="page"></div>
+          <nav class="navbar" id="navbar"></nav>
+        </div>
+      </div>
+      <div class="tsw-bezel-cam"></div>
+      <div class="tsw-mic"></div>
+    </div>
+    <div class="theme-bar" id="themeBar"><span class="tb-label">Style</span></div>
+    <p class="panel-caption">Crestron TSW-1070 · Frequence TV · simulation, aucun équipement réel n'est piloté</p>
+  </section>
+
+</main>
+
+<button class="zoom-controls" id="zoomControls" aria-pressed="false">Agrandir les commandes</button>
+<div id="feedback" role="status" aria-live="polite"></div>
+
+
+
+
+
+
+
+<script src="scene-manifest.js?v=2.3.40"></script>
+<script src="marine-scene.js?v=2.3.40"></script>
+<script src="app.js?v=2.3.40"></script>
+</body>
+</html>
+

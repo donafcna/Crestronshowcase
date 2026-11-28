@@ -1,0 +1,8 @@
+{
+  "wheelDown": "room-view exterior; GUI remains SALON",
+  "wheelUp": "room-view open SALON",
+  "guiSelection": "CUISINE opened in background",
+  "gate": "opening observed, then scale(0 1) and PORTAIL OUVERT",
+  "pause": "120 seconds after trusted click",
+  "visitor": "button and character absent"
+}

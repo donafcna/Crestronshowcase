@@ -1,0 +1,11 @@
+Fireplace footage: Matthew Twin / Pexels, video 9314604.
+Source: https://www.pexels.com/video/a-fire-is-burning-in-a-fireplace-with-a-black-background-9314604/
+License: https://www.pexels.com/license/
+Adaptation by Frequence TV: silent crop, resize, flame extraction and compositing inside the Villa Stark fireplace. No endorsement implied.
+
+Version calme : seule la première partie du plan est utilisée, avant toute intervention dans le foyer. Boucle de 1,5 seconde, hauteur et intensité atténuées.
+
+Version longue fireplace-slow-loop.mp4 (active depuis 2.3.32): Merve Sezer / Pexels, video 6611724.
+Source: https://www.pexels.com/video/wood-burning-in-the-fireplace-6611724/
+License: https://www.pexels.com/license/
+Adaptation: silent 30-second loop from the first 18 seconds; playback slowed by factor 1.8, interpolated at 24 fps, 2-second moving crossfade. No people or interaction with the fireplace in the selected footage.

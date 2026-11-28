@@ -732,6 +732,87 @@ Après validation de l'animation 2.3.17, nouvelle passe sur les matières : asph
 
 Donatien valide la version 2.3.18 et autorise commit/push vers main pour publication Vercel : nouvelle animation course et textures affinées. Recette locale et avant/après conservés dans apps/showcase/docs/verification/2026-11-23-race-broadcast/ et 2026-11-23-race-materials/. Aucun déploiement matériel.
 
+## 23/11/2026 — Yacht : vue latérale des espaces de vie
+
+Angle 24,6° du Grand salon étendu à 18 autres espaces de vie et détente, cadrage entier ajusté automatiquement. Cabines et locaux techniques conservés. 148 cas sur quatre formats réussis ; bancs Sky lounge, Salle à manger, Terrasse panoramique et Spa : écarts inférieurs à 1 %, build/lint réussis. Preuves : apps/showcase/docs/verification/2026-11-23-yacht-living-lateral/.
+
+
+## 23/11/2026 — Yacht : murs de premier plan abaissés
+
+Pièce sélectionnée : parois proches réduites en murets de 22 cm et appliques hautes masquées, selon l’orientation réelle de la caméra. Autres parois et mobilier conservés ; restauration intégrale à la désélection. Pas de transparence ni nouvel objet. 148 contrôles de cadrage et 148 contrôles de rotation/restauration réussis, 59,84 → 59,80 i/s sur trois vues, build/lint réussis. Preuves : apps/showcase/docs/verification/2026-11-23-yacht-cutaway/.
+
+
+## 23/11/2026 — Publication du paysage et de la nuit de l’hôtel
+
+Publication autorisée des derniers ajustements Hotel des Horlogers : rendu nocturne, suppression de la brume, relief/pâtures/champs/chemins, clôtures, fossés, pierres, buissons et ruisseau. Livraison isolée depuis origin/main 49136dc, sans les autres modifications locales. Preuves de fluidité et recette : apps/showcase/docs/verification/2026-11-23-hotel-rural-release/. Aucun matériel modifié.
+## 23/11/2026 — Yacht : murs animés progressivement
+
+Descente et remontée interpolées, cibles directionnelles progressives, continuité lors des changements de pièce et inversions. Appliques accompagnant le mur, mode réduction des animations respecté. Treize assertions de comportement réussies, passage rapide des 37 espaces et restauration complète. Trois bancs en rotation : écarts inférieurs à 1 %, build/lint réussis. Preuves : apps/showcase/docs/verification/2026-11-23-yacht-smooth-walls/.
+
+
+## 23/11/2026 — Yacht : murs coordonnés à la caméra
+
+Parois choisies selon la vraie position de caméra et anticipation de 240 ms. Maintien des murs quittés pendant le passage, remontée après arrivée ou sortie de zone visible. Quinze assertions réussies, 37 sélections rapides restaurées. Bancs Grand salon et Sky lounge stables ; cabine validée sur tour complet après mesures courtes dispersées. Build/lint réussis. Preuves : apps/showcase/docs/verification/2026-11-23-yacht-wall-camera-sync/.
+
+
+## 23/11/2026 — Publication des arbres et transitions de l’hôtel
+
+Publication autorisée des arbres/végétation, avec correction demandée des transitions caméra. Les pièces de départ et de destination restent visibles pendant le trajet ; départ depuis la pose courante, redirection continue lors de sélections rapides, chemin angulaire court et distance physique conservée à la sortie de la vue générale. Nettoyage à l’arrivée, ombres mises à jour aux changements de visibilité uniquement. Base isolée origin/main a0b6719, autres modifications locales préservées. Preuves : apps/showcase/docs/verification/2026-11-23-hotel-vegetation-camera-release/. Aucun matériel modifié.
+## 23/11/2026 — Yacht : trajets de caméra sans traversée des pièces
+
+Trajets cubiques amortis avec prise de hauteur si nécessaire, vérifiés à la sélection contre les enveloppes des ponts et du mobilier (marge 40 cm). Passage de pont au point dégagé, reprise continue après nouveau clic ou redimensionnement. Cadrage final proche et latéral conservé. 2664 trajets et contrôles d’interruption réussis ; cadence 59,83 → 59,89 i/s. Preuves : apps/showcase/docs/verification/2026-11-23-yacht-camera-paths/.
+
+
+## 23/11/2026 — Hotel des Horlogers : scènes d’éclairage corrigées
+
+Bogue reproduit : les scènes Restaurant donnaient 43–77 % au lieu de 0–100 %, car le niveau incluait les autres zones d’éclairage à 65 %. Téléphone : scène/niveau issus de la zone active et état synchronisé lors du changement de zone. Sources existantes renforcées, empreinte indirecte douce sur les matériaux, fondu 1,1 s et extinction réelle des luminaires. Même nombre de lumières, triangles, appels et textures ; 34 → 37 programmes précompilés. Comparaison visuelle nuit/jour, 28 scènes réelles sur sept espaces, circuits et restauration de zone validés. Banc inter-pièces ~59,9 images/s avant/après, sans image >33,4 ms ; build/lint et 37 contrôles fonctionnels réussis. Correctif préparé dans le worktree isolé hotel-lighting-scenes-release depuis 91a67ed ; preuves dans apps/showcase/docs/verification/2026-11-23-hotel-lighting-scenes-release/. Aucun matériel modifié.
+
+
+## 25/11/2026 — Villa Stark
+
+Ajout du concept Villa Stark dans Résidentiel : villa photographique et dalle interactives, commandes françaises, scénarios de vie dont Mon film, trois thèmes lisibles, agrandissement des commandes, adaptation tactile et arrêt intermédiaire des stores. Présentation immersive isolée via `immersiveDemo`, démo automatique générique désactivée. Ressources locales sous `public/showcases/villa-stark/`, fiches FR/EN/DE et captures dédiées. Recette, comparaison et limites : `docs/verification/2026-11-25-villa-stark/README.md`. Aucun programme matériel modifié.
+
+
+## 25/11/2026 — Villa Stark : fond animé séparé du châssis
+
+Correction demandée : la villa animée est le fond du site ; le GUI seul utilise DeviceFrame pour TSW, XPanel, iPad et iPhone. `mode=panel` / `mode=background` réutilisent le même moteur, état diffusé par BroadcastChannel avec identifiant de session propre au Showcase. Le GUI reste l’autorité de simulation ; le fond ne simule pas de températures indépendantes. État conservé entre supports, commandes du fond relayées au GUI, outils de scène et thème dans la colonne standard. L’accueil iPhone tient sans défilement, navigation toujours disponible. Douze combinaisons châssis/thème vérifiées, Mode Scène, éclairage bleu, stores, cinéma et visiteur synchronisés ; build/lint réussis. Captures et limites : `docs/verification/2026-11-25-villa-stark-chassis/`. Remplace la présentation immersive sans châssis du lot précédent. Aucun matériel modifié.
+
+
+## 25/11/2026 — Villa Stark : cadrage dégagé et logo officiel
+
+Châssis aligné à gauche ; villa recadrée depuis les limites réelles du châssis et des outils, vues intérieures dans la même zone dégagée. Adaptation au support et au redimensionnement. Logo officiel du site, sans recoloration, remplace le texte recréé ; captures de fiche actualisées. Recette : 24 combinaisons (quatre supports × trois thèmes × normal/Scène Responsive), neuf baies sans recouvrement dans chaque cas ; complément 960×640 et bleu intérieur synchronisé. Résultats et limites : `docs/verification/2026-11-25-villa-stark-framing/`. Aucun matériel modifié.
+
+
+## 25/11/2026 — Villa Stark originale, GUI blanc par défaut
+
+Architecture et paysage recréés : pierre gneiss, bois et zinc, volumes décalés, jardin jurassien. Quinze nouveaux visuels générés, ancien ensemble photographique et ancien plan raster retirés du public ; plan SVG et calques recalés sur 1672×941. GUI blanc par défaut (glacier, clé de préférence v2), logo officiel intégré, trois thèmes conservés. Recette : 24 combinaisons supports/thèmes/modes ajustés, neuf intérieurs, éclairages, stores, garage, couverture et interphone. Captures de fiche actualisées ; détails, limites et provenance : `docs/verification/2026-11-25-villa-stark-original/` et `public/showcases/villa-stark/SOURCE.md`. Aucun matériel modifié.
+
+### 25 novembre 2026 — Villa Stark 2.3.19
+Fond photographique unique, châssis commun et flèches conservés, logo adapté aux thèmes, stores smartphone sans superposition et sélecteurs de pièces neutres. Molette maison/dernière pièce, sélection GUI liée à la vue, animation du portail dans l'interphone, visiteur retiré. Pause automatique commune portée à 120 s après interaction. Recette ciblée et limites : docs/verification/2026-11-25-villa-stark-unified/README.md.
+
+### 25 novembre 2026 — Villa Stark 2.3.20
+Portail de l'interphone : passage photographique à la place des aplats, vantail d'origine pivotant en perspective sur sa charnière (3,2 s). Contrôles : deux commandes, ouverture/fermeture, paysage et smartphone. Preuves et prompt : docs/verification/2026-11-25-villa-stark-gate-v2/.
+
+### 25 novembre 2026 — Villa Stark 2.3.21
+Musique : tableau de 70 boutons remplacé par un lecteur de six boutons, sélecteur des dix pièces et volume sur curseur. Réglages indépendants conservés, fond lié à la pièce sélectionnée. 24 contrôles supports/thèmes/normal-Scène sans débordement. Preuves : docs/verification/2026-11-25-villa-stark-music/.
+
+### 25 novembre 2026 — Villa Stark 2.3.22
+Flèche petit écran non rognée, piste latérale supprimée ; icônes communes aux plans Éclairage/Climat ; stores alignés. TV 3D de Villa FTV réutilisée sur écrans réels de la photo, sources et extinction synchronisées. RGBW/DMX piscine seulement, dix spots et halos locaux ; badges TV/flamme extérieurs retirés. Recette et limites : docs/verification/2026-11-25-villa-stark-refinements/.
+
+
+## 28/11/2026 — Yacht : changement de pont progressif
+
+Fondu de 320 ms sur image GPU conservée, sans rendre deux ponts complets. Trajets et cadrages finaux inchangés, clics rapides et réduction des animations gérés. Douze contrôles et vingt passages couvrant les cinq ponts réussis ; 59,68 → 59,97 i/s sur le banc local. Build/lint réussis. Preuves : apps/showcase/docs/verification/2026-11-28-yacht-deck-blend/.
+
+## 28/11/2026 — M/Y Jewel 2.3.39
+
+Nouveau secteur Yacht2 et concept M/Y Jewel, issu du GUI Villa Stark. Dix espaces marins, visuels originaux Riviera, mer animée à partir des photographies, commandes et fonds synchronisés, trois thèmes et quatre supports. Canal de communication propre au yacht. Ajustements téléphone Climat, Sécurité et télécommandes pour garder tous les contrôles dans l’écran. Fiche FR/EN/DE et captures propres au projet. Provenance et limites : `public/showcases/my-jewel/SOURCE.md` ; recette et comparatif : `docs/verification/2026-11-28-my-jewel/`. Aucun matériel modifié.
+
+
+## 28/11/2026 — M/Y Jewel Riviera 2.3.40
+
+Riviera confirmé par Donatien. Dix photographies individuelles 1672 × 941 remplacent les planches : détails du lin, du bois et des métaux plus nets, ponts sans étirement. Baie marine ajoutée au cinéma. Mer animée par shader continu à plusieurs rythmes, reflets discrets et atténuation près de l’horizon ; géométrie propre à chaque vue pour protéger meubles et montants. GUI et canaux conservés. Provenance et limites dans `public/showcases/my-jewel/SOURCE.md` ; recette et comparatifs dans `docs/verification/2026-11-28-my-jewel-riviera-hd/`. Aucun matériel modifié.
+
 
 
 ## 23/11/2026 — Diagnostic MutationObserver et essai CPU des transitions
@@ -752,3 +833,9 @@ Parcours natif des 11 TV, OFF/TOTAL dans chaque pièce, navigation rapide 4→5�
 ## 23/11/2026 — Attribution des pics résiduels, expériences non retenues
 
 Profilage GUI : frame longue 64,5 ms, dont 40,3 ms dans le rendu intérieur avec deux nouveaux shaders lors de la première visite de Chambre 1. Six répétitions OFF/TOTAL dans Chambre 2 ~60 i/s, pic précédent non reproduit. Préparation progressive : gain causal non démontré. Stabilisation des ombres dans une copie expérimentale : 71→45 programmes, mais pauses initiales encore importantes ; non intégrée. Candidat maintenu en 2.3.20. Dernier chargement instrumenté : 578 appels MutationObserver sans exception ; origine de l'erreur initiale toujours inconnue. Preuves et limites : apps/showcase/docs/verification/2026-11-23-residual-profile/. Aucun commit/push/déploiement.
+
+
+
+## 28/11/2026 — Publication Villa FTV photoréaliste 2.3.42
+
+Version validée par Donatien : 18 décors, commandes et animations conservées. Intégration avec les autres évolutions de main ; preuves locales dans apps/showcase/docs/verification/2026-11-28-villa-photo/. Publication GitHub/Vercel autorisée, aucun déploiement matériel.

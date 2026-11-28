@@ -1,0 +1,60 @@
+[
+  {
+    "variant": "after",
+    "rows": [
+      {
+        "scene": 0,
+        "phase": "night",
+        "level": 0,
+        "energy": 0,
+        "points": [
+          0
+        ],
+        "programs": 37,
+        "lights": 42,
+        "calls": 29,
+        "triangles": 37336
+      },
+      {
+        "scene": 1,
+        "phase": "night",
+        "level": 35,
+        "energy": 0.28371457908463216,
+        "points": [
+          9.8
+        ],
+        "programs": 37,
+        "lights": 42,
+        "calls": 29,
+        "triangles": 37336
+      },
+      {
+        "scene": 2,
+        "phase": "night",
+        "level": 70,
+        "energy": 0.6518049405663864,
+        "points": [
+          19.6
+        ],
+        "programs": 37,
+        "lights": 42,
+        "calls": 29,
+        "triangles": 37336
+      },
+      {
+        "scene": 3,
+        "phase": "night",
+        "level": 100,
+        "energy": 1,
+        "points": [
+          28.000000000000004
+        ],
+        "programs": 37,
+        "lights": 42,
+        "calls": 29,
+        "triangles": 37336
+      }
+    ],
+    "errors": []
+  }
+]

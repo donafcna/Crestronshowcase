@@ -1,0 +1,170 @@
+[
+  {
+    "mode": "normal",
+    "device": "Smartphone",
+    "theme": "Sombre",
+    "clear": true,
+    "logo": "/assets/logo-frequence-tv-5LGUrtbd.png"
+  },
+  {
+    "mode": "normal",
+    "device": "Smartphone",
+    "theme": "Clair",
+    "clear": true,
+    "logo": "/assets/logo-frequence-tv-5LGUrtbd.png"
+  },
+  {
+    "mode": "normal",
+    "device": "Smartphone",
+    "theme": "Verre",
+    "clear": true,
+    "logo": "/assets/logo-frequence-tv-5LGUrtbd.png"
+  },
+  {
+    "mode": "normal",
+    "device": "Dalle TSW",
+    "theme": "Sombre",
+    "clear": true,
+    "logo": "/assets/logo-frequence-tv-5LGUrtbd.png"
+  },
+  {
+    "mode": "normal",
+    "device": "Dalle TSW",
+    "theme": "Clair",
+    "clear": true,
+    "logo": "/assets/logo-frequence-tv-5LGUrtbd.png"
+  },
+  {
+    "mode": "normal",
+    "device": "Dalle TSW",
+    "theme": "Verre",
+    "clear": true,
+    "logo": "/assets/logo-frequence-tv-5LGUrtbd.png"
+  },
+  {
+    "mode": "normal",
+    "device": "PC / Xpanel",
+    "theme": "Sombre",
+    "clear": true,
+    "logo": "/assets/logo-frequence-tv-5LGUrtbd.png"
+  },
+  {
+    "mode": "normal",
+    "device": "PC / Xpanel",
+    "theme": "Clair",
+    "clear": true,
+    "logo": "/assets/logo-frequence-tv-5LGUrtbd.png"
+  },
+  {
+    "mode": "normal",
+    "device": "PC / Xpanel",
+    "theme": "Verre",
+    "clear": true,
+    "logo": "/assets/logo-frequence-tv-5LGUrtbd.png"
+  },
+  {
+    "mode": "normal",
+    "device": "Tablette",
+    "theme": "Sombre",
+    "clear": true,
+    "logo": "/assets/logo-frequence-tv-5LGUrtbd.png"
+  },
+  {
+    "mode": "normal",
+    "device": "Tablette",
+    "theme": "Clair",
+    "clear": true,
+    "logo": "/assets/logo-frequence-tv-5LGUrtbd.png"
+  },
+  {
+    "mode": "normal",
+    "device": "Tablette",
+    "theme": "Verre",
+    "clear": true,
+    "logo": "/assets/logo-frequence-tv-5LGUrtbd.png"
+  },
+  {
+    "mode": "scene",
+    "device": "Smartphone",
+    "theme": "Sombre",
+    "clear": true,
+    "logo": "/assets/logo-frequence-tv-5LGUrtbd.png"
+  },
+  {
+    "mode": "scene",
+    "device": "Smartphone",
+    "theme": "Clair",
+    "clear": true,
+    "logo": "/assets/logo-frequence-tv-5LGUrtbd.png"
+  },
+  {
+    "mode": "scene",
+    "device": "Smartphone",
+    "theme": "Verre",
+    "clear": true,
+    "logo": "/assets/logo-frequence-tv-5LGUrtbd.png"
+  },
+  {
+    "mode": "scene",
+    "device": "Dalle TSW",
+    "theme": "Sombre",
+    "clear": true,
+    "logo": "/assets/logo-frequence-tv-5LGUrtbd.png"
+  },
+  {
+    "mode": "scene",
+    "device": "Dalle TSW",
+    "theme": "Clair",
+    "clear": true,
+    "logo": "/assets/logo-frequence-tv-5LGUrtbd.png"
+  },
+  {
+    "mode": "scene",
+    "device": "Dalle TSW",
+    "theme": "Verre",
+    "clear": true,
+    "logo": "/assets/logo-frequence-tv-5LGUrtbd.png"
+  },
+  {
+    "mode": "scene",
+    "device": "PC / Xpanel",
+    "theme": "Sombre",
+    "clear": true,
+    "logo": "/assets/logo-frequence-tv-5LGUrtbd.png"
+  },
+  {
+    "mode": "scene",
+    "device": "PC / Xpanel",
+    "theme": "Clair",
+    "clear": true,
+    "logo": "/assets/logo-frequence-tv-5LGUrtbd.png"
+  },
+  {
+    "mode": "scene",
+    "device": "PC / Xpanel",
+    "theme": "Verre",
+    "clear": true,
+    "logo": "/assets/logo-frequence-tv-5LGUrtbd.png"
+  },
+  {
+    "mode": "scene",
+    "device": "Tablette",
+    "theme": "Sombre",
+    "clear": true,
+    "logo": "/assets/logo-frequence-tv-5LGUrtbd.png"
+  },
+  {
+    "mode": "scene",
+    "device": "Tablette",
+    "theme": "Clair",
+    "clear": true,
+    "logo": "/assets/logo-frequence-tv-5LGUrtbd.png"
+  },
+  {
+    "mode": "scene",
+    "device": "Tablette",
+    "theme": "Verre",
+    "clear": true,
+    "logo": "/assets/logo-frequence-tv-5LGUrtbd.png"
+  }
+]

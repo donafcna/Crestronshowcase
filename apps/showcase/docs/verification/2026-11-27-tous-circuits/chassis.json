@@ -1,0 +1,242 @@
+[
+  {
+    "chassis": "Smartphone",
+    "theme": "Sombre",
+    "levels": [
+      {
+        "circuit": "strip",
+        "level": "50",
+        "ready": "true"
+      },
+      {
+        "circuit": "spots",
+        "level": "50",
+        "ready": "true"
+      }
+    ],
+    "overflow": {
+      "horizontal": false,
+      "vertical": false
+    }
+  },
+  {
+    "chassis": "Smartphone",
+    "theme": "Clair",
+    "levels": [
+      {
+        "circuit": "strip",
+        "level": "50",
+        "ready": "true"
+      },
+      {
+        "circuit": "spots",
+        "level": "50",
+        "ready": "true"
+      }
+    ],
+    "overflow": {
+      "horizontal": false,
+      "vertical": false
+    }
+  },
+  {
+    "chassis": "Smartphone",
+    "theme": "Verre",
+    "levels": [
+      {
+        "circuit": "strip",
+        "level": "50",
+        "ready": "true"
+      },
+      {
+        "circuit": "spots",
+        "level": "50",
+        "ready": "true"
+      }
+    ],
+    "overflow": {
+      "horizontal": false,
+      "vertical": false
+    }
+  },
+  {
+    "chassis": "Tablet",
+    "theme": "Sombre",
+    "levels": [
+      {
+        "circuit": "strip",
+        "level": "50",
+        "ready": "true"
+      },
+      {
+        "circuit": "spots",
+        "level": "50",
+        "ready": "true"
+      }
+    ],
+    "overflow": {
+      "horizontal": false,
+      "vertical": false
+    }
+  },
+  {
+    "chassis": "Tablet",
+    "theme": "Clair",
+    "levels": [
+      {
+        "circuit": "strip",
+        "level": "50",
+        "ready": "true"
+      },
+      {
+        "circuit": "spots",
+        "level": "50",
+        "ready": "true"
+      }
+    ],
+    "overflow": {
+      "horizontal": false,
+      "vertical": false
+    }
+  },
+  {
+    "chassis": "Tablet",
+    "theme": "Verre",
+    "levels": [
+      {
+        "circuit": "strip",
+        "level": "50",
+        "ready": "true"
+      },
+      {
+        "circuit": "spots",
+        "level": "50",
+        "ready": "true"
+      }
+    ],
+    "overflow": {
+      "horizontal": false,
+      "vertical": false
+    }
+  },
+  {
+    "chassis": "TSW panel",
+    "theme": "Sombre",
+    "levels": [
+      {
+        "circuit": "strip",
+        "level": "50",
+        "ready": "true"
+      },
+      {
+        "circuit": "spots",
+        "level": "50",
+        "ready": "true"
+      }
+    ],
+    "overflow": {
+      "horizontal": false,
+      "vertical": false
+    }
+  },
+  {
+    "chassis": "TSW panel",
+    "theme": "Clair",
+    "levels": [
+      {
+        "circuit": "strip",
+        "level": "50",
+        "ready": "true"
+      },
+      {
+        "circuit": "spots",
+        "level": "50",
+        "ready": "true"
+      }
+    ],
+    "overflow": {
+      "horizontal": false,
+      "vertical": false
+    }
+  },
+  {
+    "chassis": "TSW panel",
+    "theme": "Verre",
+    "levels": [
+      {
+        "circuit": "strip",
+        "level": "50",
+        "ready": "true"
+      },
+      {
+        "circuit": "spots",
+        "level": "50",
+        "ready": "true"
+      }
+    ],
+    "overflow": {
+      "horizontal": false,
+      "vertical": false
+    }
+  },
+  {
+    "chassis": "PC / Xpanel",
+    "theme": "Sombre",
+    "levels": [
+      {
+        "circuit": "strip",
+        "level": "50",
+        "ready": "true"
+      },
+      {
+        "circuit": "spots",
+        "level": "50",
+        "ready": "true"
+      }
+    ],
+    "overflow": {
+      "horizontal": false,
+      "vertical": false
+    }
+  },
+  {
+    "chassis": "PC / Xpanel",
+    "theme": "Clair",
+    "levels": [
+      {
+        "circuit": "strip",
+        "level": "50",
+        "ready": "true"
+      },
+      {
+        "circuit": "spots",
+        "level": "50",
+        "ready": "true"
+      }
+    ],
+    "overflow": {
+      "horizontal": false,
+      "vertical": false
+    }
+  },
+  {
+    "chassis": "PC / Xpanel",
+    "theme": "Verre",
+    "levels": [
+      {
+        "circuit": "strip",
+        "level": "50",
+        "ready": "true"
+      },
+      {
+        "circuit": "spots",
+        "level": "50",
+        "ready": "true"
+      }
+    ],
+    "overflow": {
+      "horizontal": false,
+      "vertical": false
+    }
+  }
+]

@@ -1,7 +1,8 @@
 {
   "name": "crestronshowcase",
   "private": true,
-  "version": "2.3.22",
+  "version": "2.3.42",
+
   "type": "module",
   "scripts": {
     "dev": "vite",

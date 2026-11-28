@@ -1,0 +1,34 @@
+{
+  "runs": [
+    {
+      "after": false,
+      "fps": 59.33739904400857,
+      "calls": 438,
+      "textures": 8
+    },
+    {
+      "after": true,
+      "fps": 59.95097930969624,
+      "calls": 438,
+      "textures": 8
+    },
+    {
+      "after": true,
+      "fps": 59.98985465681473,
+      "calls": 438,
+      "textures": 8
+    },
+    {
+      "after": false,
+      "fps": 60.01277336089615,
+      "calls": 438,
+      "textures": 8
+    }
+  ],
+  "performance": {
+    "before": 59.67508620245236,
+    "after": 59.97041698325548,
+    "percent": 0.4948979542336751
+  },
+  "status": "passed"
+}

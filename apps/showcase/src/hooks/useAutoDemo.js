@@ -335,6 +335,12 @@ export const useAutoDemo = ({ enabled, running, stageRef, guiKey, onCycleEnd, on
       onActivityRef.current?.();
     };
     const embeddedActivity = (event) => {
+      const backdrop = stage.querySelector('iframe.villa-stark-background');
+      if (event.origin === window.location.origin && event.source === backdrop?.contentWindow
+          && ['villa-stark-user-activity', 'my-jewel-user-activity'].includes(event.data?.type)) {
+        onActivityRef.current?.();
+        return;
+      }
       const frame = stage.querySelector('.device-screen iframe.ftv-luxury-interface');
       if (event.origin === window.location.origin && event.source === frame?.contentWindow
           && event.data?.channel === 'ftv-luxury/v1' && event.data?.type === 'user-activity') {

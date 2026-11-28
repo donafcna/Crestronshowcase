@@ -1,0 +1,66 @@
+[
+  {
+    "room": "Living",
+    "file": "landscape-living-loop-v3.mp4",
+    "bytes": 3544665,
+    "source": "original photograph + local foliage wind",
+    "frames": 383,
+    "fps": 24
+  },
+  {
+    "room": "Dining",
+    "file": "landscape-dining-loop-v3.mp4",
+    "bytes": 4795986,
+    "source": "original photograph + local foliage wind",
+    "frames": 383,
+    "fps": 24
+  },
+  {
+    "room": "Master",
+    "file": "landscape-master-loop-v3.mp4",
+    "bytes": 4403402,
+    "source": "original photograph + local foliage wind",
+    "frames": 383,
+    "fps": 24
+  },
+  {
+    "room": "Kitchen",
+    "file": "landscape-kitchen-loop-v3.mp4",
+    "bytes": 3083013,
+    "source": "original photograph + local foliage wind",
+    "frames": 383,
+    "fps": 24
+  },
+  {
+    "room": "Office",
+    "file": "landscape-office-loop-v3.mp4",
+    "bytes": 5401662,
+    "source": "original photograph + local foliage wind",
+    "frames": 383,
+    "fps": 24
+  },
+  {
+    "room": "Fitness",
+    "file": "landscape-fitness-loop-v3.mp4",
+    "bytes": 3906043,
+    "source": "original photograph + local foliage wind",
+    "frames": 383,
+    "fps": 24
+  },
+  {
+    "room": "Entry",
+    "file": "landscape-entry-loop-v3.mp4",
+    "bytes": 3885911,
+    "source": "original photograph + local foliage wind",
+    "frames": 383,
+    "fps": 24
+  },
+  {
+    "room": "Bedroom",
+    "file": "landscape-bedroom-loop-v3.mp4",
+    "bytes": 2474881,
+    "source": "original photograph + local foliage wind",
+    "frames": 383,
+    "fps": 24
+  }
+]

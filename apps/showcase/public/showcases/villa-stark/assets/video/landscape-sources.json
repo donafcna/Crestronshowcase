@@ -1,0 +1,34 @@
+[
+  {
+    "id": "Living",
+    "taskId": "f4eb469c-56e4-4a4c-958d-25a9f5cced82",
+    "prompt": "A locked-off architectural interior photograph brought subtly to life. The camera is rigidly fixed on a tripod for the entire shot, with identical framing, perspective and scale throughout. Outside the glass windows on the left, only the birch leaves and finest twig tips move almost imperceptibly in a very gentle evening breeze, with slow, tiny, irregular natural swaying. Tree trunks, distant mountains, horizon and clouds remain stationary. Every interior element remains completely still, including furniture, flowers in the vase, window frames, stone walls, television and the depicted fireplace flames and candle lights. All straight architectural lines stay precisely aligned. Constant warm interior lighting and constant dusk exposure and colors. Restrained photorealistic ambient motion, like a nearly still cinemagraph.",
+    "sourceConversation": "Animer le paysage de Villa Stark",
+    "sourceDate": "2026-11-27",
+    "file": "landscape-living-loop-v1.mp4"
+  },
+  {
+    "id": "Dining",
+    "taskId": "e27d1b1c-c258-4558-b953-3375f94d4383",
+    "prompt": "A locked-off architectural dining room photograph brought subtly to life. The camera is rigidly fixed on a tripod throughout, with exactly constant framing, perspective and scale. Outside the floor-to-ceiling glass windows on the right, only the birch leaves and the finest twig tips sway almost imperceptibly in a very gentle evening breeze, slowly and irregularly, with extremely small amplitude. Outdoor ornamental grasses move very slightly. Tree trunks, distant mountains, horizon, sky and stone garden walls remain stationary. The entire interior stays perfectly still: dining table, chairs, pendant lamp and its suspension rods, indoor flower arrangements, candles, cabinetry, window frames and reflections. All straight architectural lines remain precisely aligned throughout. Constant warm interior lighting, constant dusk exposure and colors. Photorealistic, calm, nearly still cinemagraph with restrained natural outdoor foliage motion.",
+    "sourceConversation": "Animer le paysage de Villa Stark",
+    "sourceDate": "2026-11-27",
+    "file": "landscape-dining-loop-v1.mp4"
+  },
+  {
+    "id": "Master",
+    "taskId": "ec49b69b-5833-42db-b0d9-ac76bf9333c2",
+    "prompt": "A locked-off architectural bedroom photograph brought subtly to life. The camera is rigidly fixed on a tripod for the entire shot, with precisely identical framing, perspective and scale throughout. Outside the floor-to-ceiling glass windows on the right, only the birch leaves and finest twig tips sway almost imperceptibly in an extremely gentle evening breeze, slowly and irregularly with tiny amplitude. Outdoor ornamental grasses move very slightly. Tree trunks, distant mountains, horizon, sky, stone garden walls and steps remain stationary. The entire bedroom interior stays perfectly still: bed, bedding, cushions, bench, indoor flower arrangements, curtains, lamps, candle, picture, furniture, window frames and reflections. All straight architectural lines stay precisely aligned. Constant warm interior lighting and constant dusk exposure and colors. Calm photorealistic nearly still cinemagraph, restrained natural outdoor foliage motion.",
+    "sourceConversation": "Animer le paysage de Villa Stark",
+    "sourceDate": "2026-11-27",
+    "file": "landscape-master-loop-v1.mp4"
+  },
+  {
+    "id": "Exterior",
+    "taskId": "fda97b44-d7c4-4ba5-9ce1-004dbda83aec",
+    "prompt": "A locked-off architectural exterior photograph brought subtly to life at dusk. The camera is rigidly fixed on a tripod for the entire shot, with exactly constant framing, perspective and scale. A very gentle consistent evening breeze creates extremely restrained natural motion throughout the living garden: birch leaves and fine twig tips softly flutter, shrub foliage and flowers barely stir, ferns gently flex, ornamental grass plumes slowly sway with tiny amplitude. Mature tree trunks stay rigid. The pool surface has delicate small ripples and subtle moving reflections confined to the water. Clouds drift almost imperceptibly slowly and thin distant valley mist gently drifts, maintaining the same dusk atmosphere. Mountains, rocks, soil, lawns, stone walls, paths and steps stay stationary. The entire villa stays perfectly still, with precisely straight stable architectural lines, unchanged rooflines, glazing, doors and window frames. All furniture, interior plants and decorative objects inside the villa remain motionless. Interior and garden lights maintain constant intensity and color. Constant exposure and dusk colors. Calm photorealistic nearly still cinemagraph with exceptionally subtle ambient natural movement, preserving the original scene.",
+    "sourceConversation": "Animer le paysage de Villa Stark",
+    "sourceDate": "2026-11-27",
+    "file": "landscape-exterior-loop-v1.mp4"
+  }
+]

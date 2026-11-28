@@ -1,0 +1,74 @@
+[
+  {
+    "device": "phone",
+    "theme": "Sombre",
+    "cardCount": 2,
+    "scroll": false
+  },
+  {
+    "device": "phone",
+    "theme": "Clair",
+    "cardCount": 2,
+    "scroll": false
+  },
+  {
+    "device": "phone",
+    "theme": "Verre",
+    "cardCount": 2,
+    "scroll": false
+  },
+  {
+    "device": "tablet",
+    "theme": "Sombre",
+    "cardCount": 2,
+    "scroll": false
+  },
+  {
+    "device": "tablet",
+    "theme": "Clair",
+    "cardCount": 2,
+    "scroll": false
+  },
+  {
+    "device": "tablet",
+    "theme": "Verre",
+    "cardCount": 2,
+    "scroll": false
+  },
+  {
+    "device": "desktop",
+    "theme": "Sombre",
+    "cardCount": 2,
+    "scroll": false
+  },
+  {
+    "device": "desktop",
+    "theme": "Clair",
+    "cardCount": 2,
+    "scroll": false
+  },
+  {
+    "device": "desktop",
+    "theme": "Verre",
+    "cardCount": 2,
+    "scroll": false
+  },
+  {
+    "device": "tsw",
+    "theme": "Sombre",
+    "cardCount": 2,
+    "scroll": false
+  },
+  {
+    "device": "tsw",
+    "theme": "Clair",
+    "cardCount": 2,
+    "scroll": false
+  },
+  {
+    "device": "tsw",
+    "theme": "Verre",
+    "cardCount": 2,
+    "scroll": false
+  }
+]

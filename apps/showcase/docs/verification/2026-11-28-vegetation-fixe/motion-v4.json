@@ -1,0 +1,166 @@
+[
+  {
+    "room": "Living",
+    "regions": {
+      "trunk": {
+        "p90": 0.009,
+        "samples": 280
+      },
+      "rock": {
+        "p90": 0.016,
+        "samples": 182
+      },
+      "frame": {
+        "p90": null,
+        "samples": 0
+      },
+      "foliage": {
+        "p90": 9.111,
+        "samples": 280
+      }
+    }
+  },
+  {
+    "room": "Dining",
+    "regions": {
+      "trunk": {
+        "p90": 0.01,
+        "samples": 280
+      },
+      "rock": {
+        "p90": 0.016,
+        "samples": 252
+      },
+      "frame": {
+        "p90": 0.093,
+        "samples": 196
+      },
+      "foliage": {
+        "p90": 9.404,
+        "samples": 280
+      }
+    }
+  },
+  {
+    "room": "Kitchen",
+    "regions": {
+      "trunk": {
+        "p90": 0.01,
+        "samples": 217
+      },
+      "rock": {
+        "p90": 0.013,
+        "samples": 217
+      },
+      "frame": {
+        "p90": 0.024,
+        "samples": 175
+      },
+      "foliage": {
+        "p90": 5.151,
+        "samples": 280
+      }
+    }
+  },
+  {
+    "room": "Office",
+    "regions": {
+      "trunk": {
+        "p90": 0.007,
+        "samples": 280
+      },
+      "frame": {
+        "p90": 0.091,
+        "samples": 252
+      },
+      "foliage": {
+        "p90": 5.666,
+        "samples": 280
+      }
+    }
+  },
+  {
+    "room": "Fitness",
+    "regions": {
+      "trunk": {
+        "p90": 0.011,
+        "samples": 280
+      },
+      "rock": {
+        "p90": 0.011,
+        "samples": 280
+      },
+      "frame": {
+        "p90": 0.191,
+        "samples": 175
+      },
+      "foliage": {
+        "p90": 9.515,
+        "samples": 280
+      }
+    }
+  },
+  {
+    "room": "Entry",
+    "regions": {
+      "trunk": {
+        "p90": 0.012,
+        "samples": 280
+      },
+      "rock": {
+        "p90": 0.016,
+        "samples": 280
+      },
+      "frame": {
+        "p90": 0.305,
+        "samples": 196
+      },
+      "foliage": {
+        "p90": 9.085,
+        "samples": 278
+      }
+    }
+  },
+  {
+    "room": "Master",
+    "regions": {
+      "trunk": {
+        "p90": 0.011,
+        "samples": 217
+      },
+      "rock": {
+        "p90": 0.017,
+        "samples": 280
+      },
+      "frame": {
+        "p90": 0.125,
+        "samples": 175
+      },
+      "foliage": {
+        "p90": 7.778,
+        "samples": 280
+      }
+    }
+  },
+  {
+    "room": "Bedroom",
+    "regions": {
+      "trunk": {
+        "p90": 0.01,
+        "samples": 280
+      },
+      "rock": {
+        "p90": 0.006,
+        "samples": 56
+      },
+      "frame": {
+        "p90": 0.497,
+        "samples": 84
+      },
+      "foliage": {
+        "p90": 4.58,
+        "samples": 133
+      }
+    }
+  }
+]

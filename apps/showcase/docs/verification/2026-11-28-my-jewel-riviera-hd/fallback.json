@@ -1,0 +1,5 @@
+{
+  "renderer": "canvas-water",
+  "moving": true,
+  "fixedAlpha": 0
+}

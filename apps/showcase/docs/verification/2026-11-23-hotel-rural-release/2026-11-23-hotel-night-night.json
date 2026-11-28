@@ -1,0 +1,19 @@
+{
+  "phase": "night",
+  "materials": {
+    "colorWidth": 1024,
+    "normalWidth": 512,
+    "roughnessWidth": 512,
+    "aoChannel": 1,
+    "shadowCached": true
+  },
+  "level": 0,
+  "blinds": 100,
+  "natural": [
+    0
+  ],
+  "darkness": [
+    0.965,
+    0.8299
+  ]
+}
