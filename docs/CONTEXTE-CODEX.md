@@ -572,3 +572,8 @@ Fondu de 320 ms sur image GPU conservée, sans rendre deux ponts complets. Traje
 ## 28/11/2026 — M/Y Jewel, secteur Yacht2
 
 Projet `my-jewel`, nouveau secteur `yacht2` demandé par Donatien. GUI de Villa Stark repris dans un dossier autonome `apps/showcase/public/showcases/my-jewel`, images originales de motor-yacht Riviera et mer animée. Conserver l’isolation des canaux, les trois thèmes et les châssis communs. Les sources Villa Stark ne sont pas à remplacer par celles du yacht. Directions alternatives proposées : Grand Bleu et Épure. Limites et provenance dans `SOURCE.md`, vérifications dans `apps/showcase/docs/verification/2026-11-28-my-jewel`.
+
+
+## 28/11/2026 — M/Y Jewel Riviera HD, 2.3.40
+
+Donatien confirme Riviera et demande plus de netteté, réalisme et mouvement marin dans toutes les pièces. Dix vues individuelles `room-<id>-hd.png`, 1672 × 941, remplacent les atlas. Le cinéma possède une baie marine. Géométrie et masques dans `scene-manifest.js`, à recaler avec tout changement de photo. Shader WebGL continu, reflets et mouvement atténué à l’horizon ; repli Canvas et réduction des animations. Préserver cadres, côtes, meubles et objets traversant la vue (robinet, lampe, vélo, fleurs, garde-corps). Les essais de pixels doivent lire le contexte WebGL et comparer les mêmes coordonnées. Preuves dans `apps/showcase/docs/verification/2026-11-28-my-jewel-riviera-hd`.

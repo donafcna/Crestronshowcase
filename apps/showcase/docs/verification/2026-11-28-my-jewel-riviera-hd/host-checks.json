@@ -1,0 +1,250 @@
+{
+  "checks": [
+    {
+      "device": "wallpanel",
+      "theme": "aurum",
+      "mode": "normal",
+      "panelTheme": "aurum",
+      "background": true
+    },
+    {
+      "device": "wallpanel",
+      "theme": "aurum",
+      "mode": "scene",
+      "active": true
+    },
+    {
+      "device": "wallpanel",
+      "theme": "aurum",
+      "mode": "scene-responsive",
+      "active": true
+    },
+    {
+      "device": "wallpanel",
+      "theme": "glacier",
+      "mode": "normal",
+      "panelTheme": "glacier",
+      "background": true
+    },
+    {
+      "device": "wallpanel",
+      "theme": "glacier",
+      "mode": "scene",
+      "active": true
+    },
+    {
+      "device": "wallpanel",
+      "theme": "glacier",
+      "mode": "scene-responsive",
+      "active": true
+    },
+    {
+      "device": "wallpanel",
+      "theme": "carbone",
+      "mode": "normal",
+      "panelTheme": "carbone",
+      "background": true
+    },
+    {
+      "device": "wallpanel",
+      "theme": "carbone",
+      "mode": "scene",
+      "active": true
+    },
+    {
+      "device": "wallpanel",
+      "theme": "carbone",
+      "mode": "scene-responsive",
+      "active": true
+    },
+    {
+      "device": "tablet",
+      "theme": "aurum",
+      "mode": "normal",
+      "panelTheme": "aurum",
+      "background": true
+    },
+    {
+      "device": "tablet",
+      "theme": "aurum",
+      "mode": "scene",
+      "active": true
+    },
+    {
+      "device": "tablet",
+      "theme": "aurum",
+      "mode": "scene-responsive",
+      "active": true
+    },
+    {
+      "device": "tablet",
+      "theme": "glacier",
+      "mode": "normal",
+      "panelTheme": "glacier",
+      "background": true
+    },
+    {
+      "device": "tablet",
+      "theme": "glacier",
+      "mode": "scene",
+      "active": true
+    },
+    {
+      "device": "tablet",
+      "theme": "glacier",
+      "mode": "scene-responsive",
+      "active": true
+    },
+    {
+      "device": "tablet",
+      "theme": "carbone",
+      "mode": "normal",
+      "panelTheme": "carbone",
+      "background": true
+    },
+    {
+      "device": "tablet",
+      "theme": "carbone",
+      "mode": "scene",
+      "active": true
+    },
+    {
+      "device": "tablet",
+      "theme": "carbone",
+      "mode": "scene-responsive",
+      "active": true
+    },
+    {
+      "device": "phone",
+      "theme": "aurum",
+      "mode": "normal",
+      "panelTheme": "aurum",
+      "background": true
+    },
+    {
+      "device": "phone",
+      "theme": "aurum",
+      "mode": "scene",
+      "active": true
+    },
+    {
+      "device": "phone",
+      "theme": "aurum",
+      "mode": "scene-responsive",
+      "active": true
+    },
+    {
+      "device": "phone",
+      "theme": "glacier",
+      "mode": "normal",
+      "panelTheme": "glacier",
+      "background": true
+    },
+    {
+      "device": "phone",
+      "theme": "glacier",
+      "mode": "scene",
+      "active": true
+    },
+    {
+      "device": "phone",
+      "theme": "glacier",
+      "mode": "scene-responsive",
+      "active": true
+    },
+    {
+      "device": "phone",
+      "theme": "carbone",
+      "mode": "normal",
+      "panelTheme": "carbone",
+      "background": true
+    },
+    {
+      "device": "phone",
+      "theme": "carbone",
+      "mode": "scene",
+      "active": true
+    },
+    {
+      "device": "phone",
+      "theme": "carbone",
+      "mode": "scene-responsive",
+      "active": true
+    },
+    {
+      "device": "desktop",
+      "theme": "aurum",
+      "mode": "normal",
+      "panelTheme": "aurum",
+      "background": true
+    },
+    {
+      "device": "desktop",
+      "theme": "aurum",
+      "mode": "scene",
+      "active": true
+    },
+    {
+      "device": "desktop",
+      "theme": "aurum",
+      "mode": "scene-responsive",
+      "active": true
+    },
+    {
+      "device": "desktop",
+      "theme": "glacier",
+      "mode": "normal",
+      "panelTheme": "glacier",
+      "background": true
+    },
+    {
+      "device": "desktop",
+      "theme": "glacier",
+      "mode": "scene",
+      "active": true
+    },
+    {
+      "device": "desktop",
+      "theme": "glacier",
+      "mode": "scene-responsive",
+      "active": true
+    },
+    {
+      "device": "desktop",
+      "theme": "carbone",
+      "mode": "normal",
+      "panelTheme": "carbone",
+      "background": true
+    },
+    {
+      "device": "desktop",
+      "theme": "carbone",
+      "mode": "scene",
+      "active": true
+    },
+    {
+      "device": "desktop",
+      "theme": "carbone",
+      "mode": "scene-responsive",
+      "active": true
+    },
+    {
+      "type": "room-sync",
+      "title": "SALON",
+      "open": true
+    },
+    {
+      "type": "water-animation",
+      "advances": true
+    },
+    {
+      "type": "light-sync",
+      "opacity": "0"
+    },
+    {
+      "type": "exterior-command",
+      "closed": true
+    }
+  ],
+  "errors": []
+}

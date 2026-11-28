@@ -72,14 +72,14 @@ const anyLight = id => { const l = S.lights[id]; return l.strip !== "off" || l.s
 const anyLightHouse = () => ROOMS.some(r => anyLight(r.id));
 const musicPlaying = () => ROOMS.some(r => S.music[r.id].src && !S.music[r.id].mute);
 // Marine photo atlas coordinates and independent control feedback.
-const INT={Living:{tile:1,win:[0,20,45,35],tv:[86,14,13,37]},Dining:{tile:2,win:[64,17,36,36]},Kitchen:{tile:3,win:[64,14,36,37]},Office:{tile:4,win:[59,15,41,35]},Cinema:{tile:5,tv:[73,6,25,58]},Fitness:{tile:6,win:[0,12,57,46]},Entry:{deck:0},Master:{tile:7,win:[65,23,35,33]},Bedroom:{tile:8,win:[65,20,35,34]},Pool:{deck:1}};
+const INT=window.JEWEL_SCENES;
 
 const H={rooms:{},thumbs:{}};
 function div(cls,style=''){const d=document.createElement('div');d.className=cls;d.style.cssText=style;return d;}
 function circuits(id){const l=S.lights[id];return Object.fromEntries(['strip','spots','rgbw'].map(k=>[k,l[k]!=='off'?{color:COLORS[l[k]]||rgbwColor(l),level:l.lv[k]}:null]));}
 window.STARK_LIGHTING={label:(_id,k)=>k==='strip'?'Rubans LED':'Spots'};
 window.STARK_SHADES={hasCurtain:id=>['Living','Dining','Master','Bedroom'].includes(id),curtainSide:()=> 'right'};
-function photo(el,id){const i=INT[id];el.style.backgroundImage=`url(assets/${i.deck!=null?'decks.png':'interiors.png'})`;el.style.backgroundSize=i.deck!=null?'100% 200%':'300% 300%';el.style.backgroundPosition=i.deck!=null?`0 ${i.deck*100}%`:`${i.tile%3*50}% ${Math.floor(i.tile/3)*50}%`;}
+function photo(el,id){el.style.backgroundImage=`url(${INT[id].image})`;el.style.backgroundSize='100% 100%';el.style.backgroundPosition='center';}
 function buildHouse(){
  const stage=$('#houseStage');stage.innerHTML='<div class="jewel-hero"></div><canvas class="jewel-water"></canvas><div class="jewel-evening"></div><div class="jewel-deck-light"></div><div class="jewel-sign"><span>M/Y</span> JEWEL<small>RIVIERA · MOTOR YACHT</small></div><div class="jewel-zones"></div>';
  ROOMS.forEach(r=>{const b=document.createElement('button');b.className='jewel-zone';b.textContent=r.name;b.onclick=()=>enterRoom(r.id);$('.jewel-zones',stage).appendChild(b);H.rooms[r.id]={};});
@@ -104,8 +104,8 @@ function renderRoomView(){
  if(!roomView)return;const id=roomView,r=roomById[id],i=INT[id],v=$('#roomView'),l=S.lights[id],c=S.climate[id],m=S.music[id];v.dataset.scene=S.scene||'day';
  const light=$('.jewel-light-plane',v),active=circuits(id);light.style.opacity=anyLight(id)?Math.max(l.strip==='off'?0:l.lv.strip,l.spots==='off'?0:l.lv.spots,l.rgbw==='off'?0:l.lv.rgbw)/100*.45:0;light.style.setProperty('--light',active.rgbw?.color||active.spots?.color||active.strip?.color||'#ffc878');
  const shade=$('.rv-shade',v);shade.style.display=i.win?'block':'none';
- if(i.win){shade.dataset.curtain=String(window.STARK_SHADES.hasCurtain(id));Object.assign(shade.style,{left:i.win[0]+'%',top:i.win[1]+'%',width:i.win[2]+'%',height:i.win[3]+'%'});for(const type of ['roman','blackout']){const p=shadeState(id,type).pos;const el=shade.querySelector('[data-shade='+type+']');el.style.clipPath=type==='blackout'&&window.STARK_SHADES.hasCurtain(id)?`inset(0 0 0 ${100-p}%)`:`inset(0 0 ${100-p}% 0)`;el.style.transform='none';}}
- const tv=$('.rv-tv',v);tv.style.display=i.tv?'block':'none';if(i.tv){Object.assign(tv.style,{left:i.tv[0]+'%',top:i.tv[1]+'%',width:i.tv[2]+'%',height:i.tv[3]+'%'});paintTVScreen(tv,tvSourceForRoom(r));}
+ if(i.win){shade.style.clipPath=i.winClip||'none';shade.dataset.curtain=String(window.STARK_SHADES.hasCurtain(id));Object.assign(shade.style,{left:i.win[0]+'%',top:i.win[1]+'%',width:i.win[2]+'%',height:i.win[3]+'%'});for(const type of ['roman','blackout']){const p=shadeState(id,type).pos;const el=shade.querySelector('[data-shade='+type+']');el.style.clipPath=type==='blackout'&&window.STARK_SHADES.hasCurtain(id)?`inset(0 0 0 ${100-p}%)`:`inset(0 0 ${100-p}% 0)`;el.style.transform='none';}}
+ const tv=$('.rv-tv',v);tv.style.display=i.tv?'block':'none';if(i.tv){tv.style.clipPath=i.tvQuad?'polygon('+i.tvQuad.map(([x,y])=>`${x*100}% ${y*100}%`).join(',')+')':'none';Object.assign(tv.style,{left:i.tv[0]+'%',top:i.tv[1]+'%',width:i.tv[2]+'%',height:i.tv[3]+'%'});paintTVScreen(tv,tvSourceForRoom(r));}
  $('.rv-climate',v).innerHTML=`<b>${fmt(c.temp)}</b> ${hvacIco(c)} ${c.heat?'chauffage '+fmt(c.heatSP):c.ac?'clim '+fmt(c.acSP):'climat en veille'}`;
  $('.rv-lights',v).textContent=anyLight(id)?['strip','spots','rgbw'].filter(k=>l[k]!=='off').map(k=>(k==='rgbw'?'RGBW':window.STARK_LIGHTING.label(id,k))+' · '+l.lv[k]+' %').join(' · '):'ÉCLAIRAGE ÉTEINT';
  $('.rv-music',v).textContent=m.src?m.src+' · '+(m.mute?'MUET':m.vol+' %'):'';

@@ -1,5 +1,5 @@
 const fs=require('fs');const path=require('path');const {chromium}=require(process.env.PLAYWRIGHT_MODULE || 'playwright');
-const out=path.resolve('docs/verification/2026-11-28-my-jewel');fs.mkdirSync(out,{recursive:true});
+const out=path.resolve(process.env.JEWEL_VERIFY_DIR || 'docs/verification/2026-11-28-my-jewel');fs.mkdirSync(out,{recursive:true});
 (async()=>{const b=await chromium.launch({channel:'msedge',headless:true});const errors=[],checks=[];const p=await b.newPage();p.on('pageerror',e=>errors.push(e.message));p.on('response',r=>{if(r.status()>=400&&!r.url().includes('favicon'))errors.push(r.status()+' '+r.url())});
 for(const [device,width,height]of [['panel',1280,800],['ipad',1024,768],['phone',440,863]]){
  await p.setViewportSize({width,height});await p.goto('http://127.0.0.1:5187/showcases/my-jewel/index.html?mode=panel&channel=verify');

@@ -1,0 +1,278 @@
+{
+  "method": "DOM alpha-composited solid backgrounds; photos and gradient variations require visual review",
+  "checks": [
+    {
+      "theme": "aurum",
+      "page": "ACCUEIL",
+      "small": [],
+      "texts": [],
+      "hasSound": false
+    },
+    {
+      "theme": "aurum",
+      "page": "LUMIÈRES",
+      "small": [],
+      "texts": [],
+      "hasSound": false
+    },
+    {
+      "theme": "aurum",
+      "page": "CLIMAT",
+      "small": [],
+      "texts": [],
+      "hasSound": false
+    },
+    {
+      "theme": "aurum",
+      "page": "STORES",
+      "small": [],
+      "texts": [],
+      "hasSound": false
+    },
+    {
+      "theme": "aurum",
+      "page": "TV",
+      "small": [],
+      "texts": [],
+      "hasSound": false
+    },
+    {
+      "theme": "aurum",
+      "page": "MUSIQUE",
+      "small": [],
+      "texts": [],
+      "hasSound": false
+    },
+    {
+      "theme": "aurum",
+      "page": "SÉCURITÉ",
+      "small": [],
+      "texts": [],
+      "hasSound": false
+    },
+    {
+      "theme": "aurum",
+      "page": "INTERPHONE",
+      "small": [],
+      "texts": [],
+      "hasSound": false
+    },
+    {
+      "theme": "aurum",
+      "page": "APPLE TV",
+      "small": [],
+      "texts": [],
+      "hasSound": false
+    },
+    {
+      "theme": "aurum",
+      "page": "SWISSCOM TV",
+      "small": [],
+      "texts": [],
+      "hasSound": false
+    },
+    {
+      "theme": "aurum",
+      "page": "LUMIÈRES SALON",
+      "small": [],
+      "texts": [],
+      "hasSound": false
+    },
+    {
+      "theme": "aurum",
+      "page": "CLIMAT SALON",
+      "small": [],
+      "texts": [],
+      "hasSound": false
+    },
+    {
+      "theme": "aurum",
+      "page": "BEACH CLUB",
+      "small": [],
+      "texts": [],
+      "hasSound": false
+    },
+    {
+      "theme": "glacier",
+      "page": "ACCUEIL",
+      "small": [],
+      "texts": [],
+      "hasSound": false
+    },
+    {
+      "theme": "glacier",
+      "page": "LUMIÈRES",
+      "small": [],
+      "texts": [],
+      "hasSound": false
+    },
+    {
+      "theme": "glacier",
+      "page": "CLIMAT",
+      "small": [],
+      "texts": [],
+      "hasSound": false
+    },
+    {
+      "theme": "glacier",
+      "page": "STORES",
+      "small": [],
+      "texts": [],
+      "hasSound": false
+    },
+    {
+      "theme": "glacier",
+      "page": "TV",
+      "small": [],
+      "texts": [],
+      "hasSound": false
+    },
+    {
+      "theme": "glacier",
+      "page": "MUSIQUE",
+      "small": [],
+      "texts": [],
+      "hasSound": false
+    },
+    {
+      "theme": "glacier",
+      "page": "SÉCURITÉ",
+      "small": [],
+      "texts": [],
+      "hasSound": false
+    },
+    {
+      "theme": "glacier",
+      "page": "INTERPHONE",
+      "small": [],
+      "texts": [],
+      "hasSound": false
+    },
+    {
+      "theme": "glacier",
+      "page": "APPLE TV",
+      "small": [],
+      "texts": [],
+      "hasSound": false
+    },
+    {
+      "theme": "glacier",
+      "page": "SWISSCOM TV",
+      "small": [],
+      "texts": [],
+      "hasSound": false
+    },
+    {
+      "theme": "glacier",
+      "page": "LUMIÈRES SALON",
+      "small": [],
+      "texts": [],
+      "hasSound": false
+    },
+    {
+      "theme": "glacier",
+      "page": "CLIMAT SALON",
+      "small": [],
+      "texts": [],
+      "hasSound": false
+    },
+    {
+      "theme": "glacier",
+      "page": "BEACH CLUB",
+      "small": [],
+      "texts": [],
+      "hasSound": false
+    },
+    {
+      "theme": "carbone",
+      "page": "ACCUEIL",
+      "small": [],
+      "texts": [],
+      "hasSound": false
+    },
+    {
+      "theme": "carbone",
+      "page": "LUMIÈRES",
+      "small": [],
+      "texts": [],
+      "hasSound": false
+    },
+    {
+      "theme": "carbone",
+      "page": "CLIMAT",
+      "small": [],
+      "texts": [],
+      "hasSound": false
+    },
+    {
+      "theme": "carbone",
+      "page": "STORES",
+      "small": [],
+      "texts": [],
+      "hasSound": false
+    },
+    {
+      "theme": "carbone",
+      "page": "TV",
+      "small": [],
+      "texts": [],
+      "hasSound": false
+    },
+    {
+      "theme": "carbone",
+      "page": "MUSIQUE",
+      "small": [],
+      "texts": [],
+      "hasSound": false
+    },
+    {
+      "theme": "carbone",
+      "page": "SÉCURITÉ",
+      "small": [],
+      "texts": [],
+      "hasSound": false
+    },
+    {
+      "theme": "carbone",
+      "page": "INTERPHONE",
+      "small": [],
+      "texts": [],
+      "hasSound": false
+    },
+    {
+      "theme": "carbone",
+      "page": "APPLE TV",
+      "small": [],
+      "texts": [],
+      "hasSound": false
+    },
+    {
+      "theme": "carbone",
+      "page": "SWISSCOM TV",
+      "small": [],
+      "texts": [],
+      "hasSound": false
+    },
+    {
+      "theme": "carbone",
+      "page": "LUMIÈRES SALON",
+      "small": [],
+      "texts": [],
+      "hasSound": false
+    },
+    {
+      "theme": "carbone",
+      "page": "CLIMAT SALON",
+      "small": [],
+      "texts": [],
+      "hasSound": false
+    },
+    {
+      "theme": "carbone",
+      "page": "BEACH CLUB",
+      "small": [],
+      "texts": [],
+      "hasSound": false
+    }
+  ]
+}

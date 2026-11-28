@@ -1,0 +1,67 @@
+{
+  "checks": [
+    {
+      "type": "scene",
+      "key": "arrival",
+      "pass": true
+    },
+    {
+      "type": "scene",
+      "key": "departure",
+      "pass": true
+    },
+    {
+      "type": "scene",
+      "key": "evening",
+      "pass": true
+    },
+    {
+      "type": "scene",
+      "key": "cinema",
+      "pass": true
+    },
+    {
+      "type": "scene",
+      "key": "night",
+      "pass": true
+    },
+    {
+      "type": "scene",
+      "key": "alloff",
+      "pass": true
+    },
+    {
+      "type": "room-off",
+      "pass": true
+    },
+    {
+      "type": "room-on",
+      "pass": true
+    },
+    {
+      "type": "shade-stop",
+      "pass": true
+    },
+    {
+      "type": "apple-tv",
+      "pass": true
+    },
+    {
+      "type": "tv-channel",
+      "pass": true
+    },
+    {
+      "type": "music",
+      "pass": true
+    },
+    {
+      "type": "climate",
+      "pass": true
+    },
+    {
+      "type": "sea-pixels",
+      "pass": true
+    }
+  ],
+  "errors": []
+}

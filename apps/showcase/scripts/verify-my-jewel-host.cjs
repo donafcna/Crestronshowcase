@@ -1,5 +1,5 @@
 const fs=require('fs'),path=require('path');const {chromium}=require(process.env.PLAYWRIGHT_MODULE || 'playwright');
-(async()=>{const b=await chromium.launch({channel:'msedge',headless:true});const ctx=await b.newContext({viewport:{width:1600,height:1000}}),p=await ctx.newPage(),out=path.resolve('docs/verification/2026-11-28-my-jewel'),errors=[],checks=[];p.on('pageerror',e=>errors.push(e.message));
+(async()=>{const b=await chromium.launch({channel:'msedge',headless:true});const ctx=await b.newContext({viewport:{width:1600,height:1000}}),p=await ctx.newPage(),out=path.resolve(process.env.JEWEL_VERIFY_DIR || 'docs/verification/2026-11-28-my-jewel'),errors=[],checks=[];p.on('pageerror',e=>errors.push(e.message));
 const pause=async()=>{const button=p.getByRole('button',{name:/Mettre en pause|Pause/}).first();if(await button.count())await button.click().catch(()=>{});};
 for(const device of ['wallpanel','tablet','phone','desktop']){
  await p.goto('http://127.0.0.1:5187/interfaces/yacht2/my-jewel/'+device);await p.waitForTimeout(300);await pause();

@@ -14,7 +14,7 @@
 .jewel-zone.lit{border-color:#f5cf8b}.jewel-zone:hover,.jewel-zone:focus-visible{background:#31576a;outline:2px solid #fff}
 .house-stage.zoomed{pointer-events:none}.rv-photo{background-repeat:no-repeat!important}.rv-shade{z-index:6}.rv-tv{z-index:7}.rv-title,.rv-panel,.rv-back{z-index:9!important}
 .home-bg{background-image:url(assets/hero.png)!important}.home-bg::after{background:linear-gradient(180deg,#06152170,#061521dd)!important}
-.jewel-camera{background:url(assets/decks.png) 0 0/100% 200% no-repeat!important}
+.jewel-camera{background:url(assets/room-Entry-hd.png) center/100% 100% no-repeat!important}
 /* Same aspect and composition as the host background; water sampling shares its coordinates. */
 html[data-mode=background] .house-wrap{width:max(100vw,calc(100vh * 16 / 9));aspect-ratio:16/9}
 html[data-mode=background] .house-stage,html[data-mode=background] .house-box{aspect-ratio:16/9}
