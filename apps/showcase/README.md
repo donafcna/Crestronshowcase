@@ -798,3 +798,8 @@ Musique : tableau de 70 boutons remplacé par un lecteur de six boutons, sélect
 
 ### 25 novembre 2026 — Villa Stark 2.3.22
 Flèche petit écran non rognée, piste latérale supprimée ; icônes communes aux plans Éclairage/Climat ; stores alignés. TV 3D de Villa FTV réutilisée sur écrans réels de la photo, sources et extinction synchronisées. RGBW/DMX piscine seulement, dix spots et halos locaux ; badges TV/flamme extérieurs retirés. Recette et limites : docs/verification/2026-11-25-villa-stark-refinements/.
+
+
+## 28/11/2026 — Yacht : changement de pont progressif
+
+Fondu de 320 ms sur image GPU conservée, sans rendre deux ponts complets. Trajets et cadrages finaux inchangés, clics rapides et réduction des animations gérés. Douze contrôles et vingt passages couvrant les cinq ponts réussis ; 59,68 → 59,97 i/s sur le banc local. Build/lint réussis. Preuves : apps/showcase/docs/verification/2026-11-28-yacht-deck-blend/.

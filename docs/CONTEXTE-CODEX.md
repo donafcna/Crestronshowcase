@@ -563,3 +563,8 @@ Trajets cubiques amortis avec prise de hauteur si nécessaire, vérifiés à la 
 ## 23/11/2026 — Hotel des Horlogers : scènes d’éclairage corrigées
 
 Bogue reproduit : les scènes Restaurant donnaient 43–77 % au lieu de 0–100 %, car le niveau incluait les autres zones d’éclairage à 65 %. Téléphone : scène/niveau issus de la zone active et état synchronisé lors du changement de zone. Sources existantes renforcées, empreinte indirecte douce sur les matériaux, fondu 1,1 s et extinction réelle des luminaires. Même nombre de lumières, triangles, appels et textures ; 34 → 37 programmes précompilés. Comparaison visuelle nuit/jour, 28 scènes réelles sur sept espaces, circuits et restauration de zone validés. Banc inter-pièces ~59,9 images/s avant/après, sans image >33,4 ms ; build/lint et 37 contrôles fonctionnels réussis. Correctif préparé dans le worktree isolé hotel-lighting-scenes-release depuis 91a67ed ; preuves dans apps/showcase/docs/verification/2026-11-23-hotel-lighting-scenes-release/. Aucun matériel modifié.
+
+
+## 28/11/2026 — Yacht : changement de pont progressif
+
+Fondu de 320 ms sur image GPU conservée, sans rendre deux ponts complets. Trajets et cadrages finaux inchangés, clics rapides et réduction des animations gérés. Douze contrôles et vingt passages couvrant les cinq ponts réussis ; 59,68 → 59,97 i/s sur le banc local. Build/lint réussis. Preuves : apps/showcase/docs/verification/2026-11-28-yacht-deck-blend/.

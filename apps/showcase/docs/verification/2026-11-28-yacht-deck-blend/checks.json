@@ -1,0 +1,179 @@
+{
+  "checks": {
+    "exactOldFrame": true,
+    "activeAtSwap": true,
+    "midOpacity": true,
+    "finalExact": true,
+    "inactiveAfterFade": true,
+    "sameDeckNoFade": true,
+    "interruptionKeepsFrame": true,
+    "rapidBlendRestarts": true,
+    "overviewCancels": true,
+    "reducedMotionSkips": true,
+    "resizeCancelsCleanly": true,
+    "shaderErrors": true
+  },
+  "transitions": [
+    {
+      "from": 0,
+      "to": 11,
+      "active": true,
+      "reused": true,
+      "clear": true,
+      "arrived": true
+    },
+    {
+      "from": 0,
+      "to": 20,
+      "active": true,
+      "reused": true,
+      "clear": true,
+      "arrived": true
+    },
+    {
+      "from": 0,
+      "to": 30,
+      "active": true,
+      "reused": true,
+      "clear": true,
+      "arrived": true
+    },
+    {
+      "from": 0,
+      "to": 35,
+      "active": true,
+      "reused": true,
+      "clear": true,
+      "arrived": true
+    },
+    {
+      "from": 11,
+      "to": 0,
+      "active": true,
+      "reused": true,
+      "clear": true,
+      "arrived": true
+    },
+    {
+      "from": 11,
+      "to": 20,
+      "active": true,
+      "reused": true,
+      "clear": true,
+      "arrived": true
+    },
+    {
+      "from": 11,
+      "to": 30,
+      "active": true,
+      "reused": true,
+      "clear": true,
+      "arrived": true
+    },
+    {
+      "from": 11,
+      "to": 35,
+      "active": true,
+      "reused": true,
+      "clear": true,
+      "arrived": true
+    },
+    {
+      "from": 20,
+      "to": 0,
+      "active": true,
+      "reused": true,
+      "clear": true,
+      "arrived": true
+    },
+    {
+      "from": 20,
+      "to": 11,
+      "active": true,
+      "reused": true,
+      "clear": true,
+      "arrived": true
+    },
+    {
+      "from": 20,
+      "to": 30,
+      "active": true,
+      "reused": true,
+      "clear": true,
+      "arrived": true
+    },
+    {
+      "from": 20,
+      "to": 35,
+      "active": true,
+      "reused": true,
+      "clear": true,
+      "arrived": true
+    },
+    {
+      "from": 30,
+      "to": 0,
+      "active": true,
+      "reused": true,
+      "clear": true,
+      "arrived": true
+    },
+    {
+      "from": 30,
+      "to": 11,
+      "active": true,
+      "reused": true,
+      "clear": true,
+      "arrived": true
+    },
+    {
+      "from": 30,
+      "to": 20,
+      "active": true,
+      "reused": true,
+      "clear": true,
+      "arrived": true
+    },
+    {
+      "from": 30,
+      "to": 35,
+      "active": true,
+      "reused": true,
+      "clear": true,
+      "arrived": true
+    },
+    {
+      "from": 35,
+      "to": 0,
+      "active": true,
+      "reused": true,
+      "clear": true,
+      "arrived": true
+    },
+    {
+      "from": 35,
+      "to": 11,
+      "active": true,
+      "reused": true,
+      "clear": true,
+      "arrived": true
+    },
+    {
+      "from": 35,
+      "to": 20,
+      "active": true,
+      "reused": true,
+      "clear": true,
+      "arrived": true
+    },
+    {
+      "from": 35,
+      "to": 30,
+      "active": true,
+      "reused": true,
+      "clear": true,
+      "arrived": true
+    }
+  ],
+  "status": "passed"
+}
