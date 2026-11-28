@@ -1,0 +1,65 @@
+/* M/Y Jewel — Riviera, photograph-based marine scenes, GUI inherited from Villa Stark. */
+.house-stage>img,.house-stage>.base,.house-stage>.hero,.house-stage>.house-photo {display:none!important}
+.jewel-hero,.jewel-water,.jewel-evening,.jewel-deck-light,.jewel-light-plane{position:absolute;inset:0;pointer-events:none}
+.jewel-hero{background:url(assets/hero.png) center/100% 100% no-repeat}
+.jewel-water{width:100%;height:100%;z-index:1}
+.jewel-evening{z-index:2;background:#09152c;opacity:0;mix-blend-mode:multiply;transition:opacity 4s}
+[data-scene=night]>.jewel-evening{opacity:.55}[data-scene=evening]>.jewel-evening{opacity:.2}
+.jewel-light-plane{z-index:3;background:radial-gradient(ellipse at 50% 4%,var(--light,#ffc878),transparent 65%);mix-blend-mode:soft-light;transition:opacity 1s}
+.jewel-deck-light{z-index:3;left:20%;right:19%;top:28%;bottom:38%;background:repeating-linear-gradient(0deg,transparent 0 26%,#ffb95366 27% 28%,transparent 29% 34%);mix-blend-mode:soft-light;transition:opacity 1s}
+.jewel-sign{position:absolute;right:5%;top:12%;z-index:4;color:white;text-shadow:0 2px 12px #000b;letter-spacing:.15em;font-size:clamp(25px,4vw,70px);font-family:Georgia,serif}
+.jewel-sign span{font-size:.35em}.jewel-sign small{display:block;font:10px Arial,sans-serif;letter-spacing:.24em;margin-top:12px}
+.jewel-zones{position:absolute;z-index:5;left:42%;right:11%;bottom:5%;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:7px}
+.jewel-zone{min-height:44px;background:#102432ed;color:#fff;border:1px solid #a9c5cc;border-radius:6px;font:11px Arial,sans-serif;cursor:pointer;padding:6px}
+.jewel-zone.lit{border-color:#f5cf8b}.jewel-zone:hover,.jewel-zone:focus-visible{background:#31576a;outline:2px solid #fff}
+.house-stage.zoomed{pointer-events:none}.rv-photo{background-repeat:no-repeat!important}.rv-shade{z-index:6}.rv-tv{z-index:7}.rv-title,.rv-panel,.rv-back{z-index:9!important}
+.home-bg{background-image:url(assets/hero.png)!important}.home-bg::after{background:linear-gradient(180deg,#06152170,#061521dd)!important}
+.jewel-camera{background:url(assets/decks.png) 0 0/100% 200% no-repeat!important}
+/* Same aspect and composition as the host background; water sampling shares its coordinates. */
+html[data-mode=background] .house-wrap{width:max(100vw,calc(100vh * 16 / 9));aspect-ratio:16/9}
+html[data-mode=background] .house-stage,html[data-mode=background] .house-box{aspect-ratio:16/9}
+@media(max-width:600px){.jewel-zones{left:5%;right:5%;grid-template-columns:repeat(5,minmax(0,1fr));bottom:3%}.jewel-zone{font-size:9px;min-height:40px}.jewel-sign{top:8%}.jewel-sign small{font-size:8px}}
+@media(prefers-reduced-motion:reduce){.jewel-evening,.jewel-light-plane{transition:none}}
+.jewel-sign{right:calc((100% - 100vw)/2 + 230px);font-size:42px}
+.jewel-zones{left:calc((100% - 100vw)/2 + 18px);right:calc((100% - 100vw)/2 + 220px);bottom:3%;grid-template-columns:repeat(5,minmax(0,1fr))}
+html[data-mode=background] .rv-back{left:calc((100% - 100vw)/2 + 16px);top:85px;min-height:40px}
+html[data-mode=background] .rv-title{left:calc((100% - 100vw)/2 + 16px);top:auto;bottom:20px;transform:none;padding:10px;background:#102432e8;border-radius:6px;color:#fff}
+html[data-mode=background] .rv-panel{right:calc((100% - 100vw)/2 + 220px);top:85px;bottom:auto;max-width:45%}
+.jewel-icon{width:28px;height:28px;flex-shrink:0;display:block}.nav-btn .jewel-icon{width:24px;height:24px}.scene-btn .jewel-icon{width:32px;height:32px}.status-tile .jewel-icon{width:30px;height:30px}
+@media(max-width:600px){.jewel-icon,.scene-btn .jewel-icon{width:21px;height:21px}.nav-btn .jewel-icon{width:23px;height:23px}.status-tile .jewel-icon{width:24px;height:24px}#accessRow{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
+@media(max-width:600px){
+ html[data-mode=panel] .page{overflow:hidden!important}
+ html[data-mode=panel] .page.climate-room{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:44px 125px minmax(195px,1fr) 100px;gap:8px}
+ .climate-room>.back-btn,.climate-room>.gauge-wrap,.climate-room>.card:last-child{grid-column:1/-1}
+ .climate-room .gauge{width:120px;height:120px;margin:0 auto}.climate-room .gauge .cur{top:30px}.climate-room .gauge .cur .value{font-size:30px}.climate-room .gauge .needle{display:none}.climate-room .gauge .min,.climate-room .gauge .mid,.climate-room .gauge .max{display:none}
+ html[data-mode=panel] .climate-room>.card{padding:10px!important;width:auto!important;min-width:0}
+ .climate-room .card-title{font-size:12px}.climate-room .sp-row{flex-direction:column;gap:8px;margin-top:8px}.climate-room .sp-row .value{font-size:28px}.climate-room .sp-row .ctrl{gap:12px}.climate-room .btn{font-size:11px;padding:6px;min-width:44px}
+ .security-page .zones{min-height:0;flex:1}.security-page .zone{padding:8px;min-height:38px}.security-page .sec-status{padding:8px!important}.security-page .sec-btns .btn{min-height:44px}
+}
+@media(max-width:600px){
+ html[data-mode=panel] .security-page{display:grid;grid-template-rows:80px 64px minmax(0,1fr);gap:10px}
+ .security-page .sec-btns{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+ .security-page .sec-btns .btn{width:100%;height:56px;min-height:44px;padding:6px;font-size:11px;white-space:normal}
+ html[data-mode=panel] .security-page .zones{height:100%!important;display:grid;grid-template-rows:24px repeat(6,minmax(34px,1fr));gap:4px}
+ .security-page .zone{height:auto;min-height:0;padding:7px}
+}
+.tsw{--jewel-success:#1b7044;--jewel-danger:#a3322a}
+.tsw .btn.green,.tsw .btn.green.sel{background:var(--jewel-success)!important;color:#fff!important}
+.tsw .btn.red,.tsw .btn.red.sel{background:var(--jewel-danger)!important;color:#fff!important}
+.villa-stark-tools:has([data-jewel]) button{min-height:40px}
+.rv-shade[data-curtain=true] .rv-cover.blackout{background:repeating-linear-gradient(90deg,#ddd0b4 0,#f3e7cf 5%,#cbb997 9%,#e8d9bd 14%);box-shadow:inset 5px 0 12px #3e342944}
+@media(max-width:600px){
+ html[data-mode=panel] .page.tv-remote{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:44px minmax(260px,1fr) 228px;gap:8px}
+ .tv-remote>.back-btn,.tv-remote>.card:last-child,.tv-apple>.card{grid-column:1/-1}
+ html[data-mode=panel] .tv-remote>.card{width:auto!important;min-width:0;padding:10px!important}
+ .tv-remote .card-title{font-size:12px;margin-bottom:8px}.tv-remote .row{margin-top:10px!important}
+ .tv-remote .numpad{gap:4px}.tv-remote .numpad .btn{height:44px;min-height:44px;font-size:15px;padding:0}
+ .tv-remote .dpad{width:156px;height:156px;margin:0 auto!important}.tv-remote .dpad .btn{width:48px;height:48px;min-height:44px;font-size:17px}
+ .tv-remote .dpad .u{left:54px;top:0}.tv-remote .dpad .d{left:54px;top:108px}.tv-remote .dpad .l{left:0;top:54px}.tv-remote .dpad .r{left:108px;top:54px}.tv-remote .dpad .c{left:54px;top:54px}
+ .tv-remote .btn{font-size:12px}.tv-remote .tv-status{margin-top:8px;font-size:12px}
+ .tv-swisscom>.card:last-child .btn{height:44px!important;width:100%!important;min-height:44px}
+ .tv-swisscom>.card:last-child>.row{margin-top:8px!important}.tv-swisscom .label{font-size:12px}
+ .tv-apple>.card:last-child>div:not(.card-title){display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:50px 50px;gap:10px!important;align-items:center}
+ .tv-apple>.card:last-child .btn{height:50px}.tv-apple>.card:last-child .value{font-size:26px!important}
+}
+@media(max-width:600px){html[data-mode=panel] .page.pool-light-controls{grid-template-rows:44px 64px 78px minmax(135px,1fr) 154px}.pool-light-controls>.back-btn{min-height:44px!important;height:44px!important}}

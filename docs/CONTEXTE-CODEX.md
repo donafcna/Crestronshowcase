@@ -568,3 +568,7 @@ Bogue reproduit : les scènes Restaurant donnaient 43–77 % au lieu de 0–100 
 ## 28/11/2026 — Yacht : changement de pont progressif
 
 Fondu de 320 ms sur image GPU conservée, sans rendre deux ponts complets. Trajets et cadrages finaux inchangés, clics rapides et réduction des animations gérés. Douze contrôles et vingt passages couvrant les cinq ponts réussis ; 59,68 → 59,97 i/s sur le banc local. Build/lint réussis. Preuves : apps/showcase/docs/verification/2026-11-28-yacht-deck-blend/.
+
+## 28/11/2026 — M/Y Jewel, secteur Yacht2
+
+Projet `my-jewel`, nouveau secteur `yacht2` demandé par Donatien. GUI de Villa Stark repris dans un dossier autonome `apps/showcase/public/showcases/my-jewel`, images originales de motor-yacht Riviera et mer animée. Conserver l’isolation des canaux, les trois thèmes et les châssis communs. Les sources Villa Stark ne sont pas à remplacer par celles du yacht. Directions alternatives proposées : Grand Bleu et Épure. Limites et provenance dans `SOURCE.md`, vérifications dans `apps/showcase/docs/verification/2026-11-28-my-jewel`.

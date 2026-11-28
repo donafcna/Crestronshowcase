@@ -803,3 +803,7 @@ Flèche petit écran non rognée, piste latérale supprimée ; icônes communes 
 ## 28/11/2026 — Yacht : changement de pont progressif
 
 Fondu de 320 ms sur image GPU conservée, sans rendre deux ponts complets. Trajets et cadrages finaux inchangés, clics rapides et réduction des animations gérés. Douze contrôles et vingt passages couvrant les cinq ponts réussis ; 59,68 → 59,97 i/s sur le banc local. Build/lint réussis. Preuves : apps/showcase/docs/verification/2026-11-28-yacht-deck-blend/.
+
+## 28/11/2026 — M/Y Jewel 2.3.39
+
+Nouveau secteur Yacht2 et concept M/Y Jewel, issu du GUI Villa Stark. Dix espaces marins, visuels originaux Riviera, mer animée à partir des photographies, commandes et fonds synchronisés, trois thèmes et quatre supports. Canal de communication propre au yacht. Ajustements téléphone Climat, Sécurité et télécommandes pour garder tous les contrôles dans l’écran. Fiche FR/EN/DE et captures propres au projet. Provenance et limites : `public/showcases/my-jewel/SOURCE.md` ; recette et comparatif : `docs/verification/2026-11-28-my-jewel/`. Aucun matériel modifié.

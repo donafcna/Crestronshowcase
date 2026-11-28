@@ -20,3 +20,4 @@
 .stark-project .btn-exit-fullscreen-device-corner--stage {
  right:auto!important; left:clamp(4px,calc(var(--visible-chassis-width) + 12px),calc(100% - 38px))!important;
 }
+.villa-stark-tools:has([data-jewel="true"]) button { min-height:40px; }
