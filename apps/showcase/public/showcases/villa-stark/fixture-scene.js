@@ -24,24 +24,25 @@
  };
  const photos=new Map();
  function photoFor(id){if(!photos.has(id)){const p=new Image();p.src='assets/original/room-'+id+'.webp';photos.set(id,p);}return photos.get(id);}
- function offSpot(photo,x,y,rx,ry){
-  const width=Math.ceil(rx*7),height=Math.ceil(ry*9),left=Math.round(x-width/2),top=Math.round(y-height/2);
+ function offSpot(photo,x,y,rx,ry,wideHalo=false){
+  const width=Math.ceil(rx*(wideHalo?12:7)),height=Math.ceil(ry*(wideHalo?24:9)),left=Math.round(x-width/2),top=Math.round(y-height/2);
   const c=document.createElement('canvas');c.width=width;c.height=height;const ctx=c.getContext('2d',{willReadFrequently:true});
   ctx.drawImage(photo,left,top,width,height,0,0,width,height);const image=ctx.getImageData(0,0,width,height),d=image.data,original=new Uint8ClampedArray(d);
   const cx=x-left,cy=y-top;
   // Reprendre le bois immédiatement au-dessus et au-dessous du spot pour
   // retirer son éclat, en conservant les veines et les bords du plafond.
   for(let j=0;j<height;j++)for(let i=0;i<width;i++){
-   const distance=Math.hypot((i-cx)/(rx*2.6),(j-cy)/(ry*3.4));const k=(j*width+i)*4;if(distance>=1){d[k+3]=0;continue;}
+   const distance=Math.hypot((i-cx)/(rx*(wideHalo?4.5:2.6)),(j-cy)/(ry*(wideHalo?8:3.4)));const k=(j*width+i)*4;if(distance>=1){d[k+3]=0;continue;}
    const fade=Math.max(0,Math.min(1,(1-distance)/.55)),a=fade*fade*(3-2*fade);
-   const upper=(Math.max(0,Math.floor(cy-ry*3.7))*width+i)*4,lower=(Math.min(height-1,Math.ceil(cy+ry*3.7))*width+i)*4;
+   const sampleDistance=ry*(wideHalo?10:3.7);
+   const upper=(Math.max(0,Math.floor(cy-sampleDistance))*width+i)*4,lower=(Math.min(height-1,Math.ceil(cy+sampleDistance))*width+i)*4;
    const t=j/height;
    for(let ch=0;ch<3;ch++)d[k+ch]=original[upper+ch]*(1-t)+original[lower+ch]*t;
    d[k+3]=Math.round(255*a);
   }
   ctx.putImageData(image,0,0);
   // L'ouverture éteinte conserve une petite collerette éclairée par la pièce.
-  const sample=(Math.max(0,Math.round(cy-ry*3.7))*width+Math.round(cx))*4,ambient=original.slice(sample,sample+3);
+  const sample=(Math.max(0,Math.round(cy-ry*(wideHalo?10:3.7)))*width+Math.round(cx))*4,ambient=original.slice(sample,sample+3);
   ctx.beginPath();ctx.ellipse(cx,cy,rx,ry,0,0,Math.PI*2);ctx.fillStyle=`rgb(${ambient[0]*.46},${ambient[1]*.46},${ambient[2]*.46})`;ctx.fill();ctx.strokeStyle=`rgba(${ambient[0]},${ambient[1]},${ambient[2]},.7)`;ctx.lineWidth=.7;ctx.stroke();
   return {href:c.toDataURL(),left,top,width,height};
  }
@@ -84,8 +85,12 @@
   svg.querySelector('defs').appendChild(coolClip);
   svg.querySelector('defs').insertAdjacentHTML('beforeend',`<filter id="${prefix}-cool" color-interpolation-filters="sRGB"><feColorMatrix values=".78 0 0 0 .10 0 .94 0 0 .03 0 0 1.1 0 .15 0 0 0 1 0"/></filter>`);
   const cool=document.createElementNS(NS,'g');cool.dataset.nativeCool='spots';cool.innerHTML=`<image href="assets/original/room-${id}.webp" width="1672" height="941" clip-path="url(#${coolClip.id})" filter="url(#${prefix}-cool)"/>`;svg.appendChild(cool);
-  root.appendChild(svg);v.appendChild(root);
-  const photo=photoFor(id),add=()=>{if(!root.isConnected)return;const group=svg.querySelector('[data-native-circuit=spots]');for(const [x,y,rx,ry] of CEILING[id]||[]){const p=offSpot(photo,x,y,rx,ry),img=document.createElementNS(NS,'image');for(const [key,value] of Object.entries({href:p.href,x:p.left,y:p.top,width:p.width,height:p.height}))img.setAttribute(key,value);img.dataset.ceilingSpot=x+','+y;group.appendChild(img);}root.dataset.ready='true';};
+  root.appendChild(svg);
+  // The restored wood must receive the same circuit-dependent ambient gain
+  // as the surrounding ceiling, otherwise an undimmed yellow patch remains.
+  if(id==='Master'&&v.querySelector('.rv-photometric'))v.insertBefore(root,v.querySelector('.rv-photometric'));
+  else v.appendChild(root);
+  const photo=photoFor(id),add=()=>{if(!root.isConnected)return;const group=svg.querySelector('[data-native-circuit=spots]');for(const [x,y,rx,ry] of CEILING[id]||[]){const p=offSpot(photo,x,y,rx,ry,id==='Master'),img=document.createElementNS(NS,'image');for(const [key,value] of Object.entries({href:p.href,x:p.left,y:p.top,width:p.width,height:p.height}))img.setAttribute(key,value);img.dataset.ceilingSpot=x+','+y;group.appendChild(img);}root.dataset.ready='true';};
   if(id==='Living'){
    if(!stoneReference){stoneReference=new Image();stoneReference.src='assets/original/room-Living-stone-spot-off-v1.webp';}
    const addBeam=()=>{if(!root.isConnected||!photo.naturalWidth||!stoneReference.naturalWidth||svg.querySelector('[data-stone-beam]'))return;

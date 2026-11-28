@@ -1,6 +1,6 @@
 """Complete gentle foliage motion for every glazed room. Silent video output.
 The browser applies the calibrated glazing and foreground masks, never the room.
-Existing Runway takes remain the source for Living/Dining/Master.
+Sharp original photographs prevent the soft generated texture from smearing leaves.
 """
 from pathlib import Path
 import concurrent.futures,subprocess,json
@@ -16,12 +16,18 @@ def run(room):
  hsv=cv2.cvtColor(photo,cv2.COLOR_BGR2HSV)
  # Leaf clusters, including pale blossoms surrounded by foliage. Dilated soft
  # support keeps movement continuous instead of cutting out individual leaves.
- leaves=((hsv[:,:,0]>=24)&(hsv[:,:,0]<=94)&(hsv[:,:,1]>32)&(hsv[:,:,2]>28)).astype(np.uint8)*255
+ leaves=((hsv[:,:,0]>=16)&(hsv[:,:,0]<=94)&(hsv[:,:,1]>30)&(hsv[:,:,2]>28)).astype(np.uint8)*255
  leaves=cv2.dilate(leaves,cv2.getStructuringElement(cv2.MORPH_ELLIPSE,(21,21)))
  support=cv2.GaussianBlur(leaves.astype(np.float32)/255,(0,0),5)
- source=OUT/f'landscape-{room.lower()}-loop-v1.mp4'
- cap=cv2.VideoCapture(str(source)) if source.exists() else None
- target=OUT/f'landscape-{room.lower()}-loop-v2.mp4'
+ # Preserve long rigid dark structures (window rails and tree trunks), including
+ # a safety margin wider than the maximum displacement of neighbouring leaves.
+ dark=(hsv[:,:,2]<105).astype(np.uint8)*255
+ vertical=cv2.morphologyEx(dark,cv2.MORPH_OPEN,np.ones((95,3),np.uint8))
+ horizontal=cv2.morphologyEx(dark,cv2.MORPH_OPEN,np.ones((3,95),np.uint8))
+ rigid=cv2.dilate(cv2.max(vertical,horizontal),np.ones((25,25),np.uint8))
+ support*=1-cv2.GaussianBlur(rigid.astype(np.float32)/255,(0,0),3)
+ cap=None
+ target=OUT/f'landscape-{room.lower()}-loop-v3.mp4'
  p=subprocess.Popen([imageio_ffmpeg.get_ffmpeg_exe(),'-hide_banner','-loglevel','error','-y','-f','rawvideo','-pixel_format','bgr24','-video_size',f'{W}x{H}','-framerate',str(FPS),'-i','pipe:0','-an','-c:v','libx264','-threads','2','-preset','medium','-crf','17','-pix_fmt','yuv420p','-movflags','+faststart',str(target)],stdin=subprocess.PIPE)
  for n in range(N):
   if cap:
@@ -30,8 +36,10 @@ def run(room):
   else:frame=photo
   t=2*np.pi*n/N
   # Different phases across leaf clusters; no movement of the camera or rails.
-  dx=support*(1.65*np.sin(t+x/170+y/230)+.65*np.sin(2*t+x/65-y/110))
-  dy=support*.45*np.sin(t+x/130+y/85)
+  gust=.68*np.sin(2*t+x/210+y/290)+.23*np.sin(3*t+x/170)+.09*np.sin(5*t+y/230)
+  # Slow branch flexion plus smaller leaf-tip response; staggered local phases.
+  dx=support*(7*gust+1.3*np.sin(7*t+x/45-y/90))
+  dy=support*(1.35*np.sin(2*t+x/190+y/160)+.35*np.sin(5*t+x/55))
   p.stdin.write(cv2.remap(frame,x+dx,y+dy,cv2.INTER_CUBIC,borderMode=cv2.BORDER_REFLECT_101).tobytes())
  if cap:cap.release()
  p.stdin.close()

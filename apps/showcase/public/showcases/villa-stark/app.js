@@ -544,31 +544,33 @@ function loadTVEngine() {
 }
 // Projection du programme sur les quatre coins de la dalle photographiée.
 function tvPerspective(quad,w,h){const [[x0,y0],[x1,y1],[x2,y2],[x3,y3]]=quad.map(([x,y])=>[x*w,y*h]),dx1=x1-x2,dx2=x3-x2,dx3=x0-x1+x2-x3,dy1=y1-y2,dy2=y3-y2,dy3=y0-y1+y2-y3,den=dx1*dy2-dx2*dy1,g=Math.abs(den)>1e-9?(dx3*dy2-dx2*dy3)/den:0,k=Math.abs(den)>1e-9?(dx1*dy3-dx3*dy1)/den:0,a=x1-x0+g*x1,b=x3-x0+k*x3,d=y1-y0+g*y1,e=y3-y0+k*y3;return [a/w,d/w,0,g/w,b/h,e/h,0,k/h,0,0,1,0,x0,y0,0,1];}
-let exteriorTV=null;
+const exteriorTVs=new Map();
+const exteriorTVQuads={
+ Cinema:[[378,545],[426,552],[426,583],[378,589]],
+ Living:[[493,369],[579,368],[579,421],[493,421]]
+};
 function renderExteriorTV(){
  if(integrationMode==='panel')return;
- const host=H.rooms.Cinema.win;
- if(!exteriorTV){
-  exteriorTV=document.createElement('video');
-  exteriorTV.className='exterior-tv-programme';
-  exteriorTV.src='assets/video/journal-tv.mp4';
-  exteriorTV.poster='assets/video/journal-tv-poster.jpg';
-  exteriorTV.muted=true;exteriorTV.defaultMuted=true;exteriorTV.loop=true;exteriorTV.playsInline=true;
-  exteriorTV.preload='metadata';exteriorTV.setAttribute('aria-hidden','true');
-  Object.assign(exteriorTV.style,{position:'absolute',left:'0',top:'0',width:'100%',height:'100%',objectFit:'fill',pointerEvents:'none',transformOrigin:'0 0',background:'#030405'});
-  host.insertBefore(exteriorTV,H.rooms.Cinema.shade);
+ for(const [id,corners] of Object.entries(exteriorTVQuads)){
+  const host=H.rooms[id].win;
+  let video=exteriorTVs.get(id);
+  if(!video){
+   video=document.createElement('video');video.className='exterior-tv-programme';video.dataset.room=id;
+   video.src='assets/video/journal-tv.mp4';video.poster='assets/video/journal-tv-poster.jpg';
+   video.muted=true;video.defaultMuted=true;video.loop=true;video.playsInline=true;video.preload='metadata';video.setAttribute('aria-hidden','true');
+   Object.assign(video.style,{position:'absolute',left:'0',top:'0',width:'100%',height:'100%',objectFit:'fill',pointerEvents:'none',transformOrigin:'0 0',background:'#030405'});
+   host.insertBefore(video,H.rooms[id].shade);exteriorTVs.set(id,video);
+  }
+  const [wx,wy,ww,wh]=WIN[id],quad=corners.map(([x,y])=>[(x-wx)/ww,(y-wy)/wh]);
+  video.style.transform='matrix3d('+tvPerspective(quad,host.clientWidth,host.clientHeight).join(',')+')';
+  const off=['alloff','departure','night'].includes(S.scene);
+  const active=!roomView&&!document.hidden&&!off&&Math.max(S.shades[id].pos,shadeState(id,'blackout').pos)<100;
+  video.style.visibility=off?'hidden':'visible';video.dataset.active=String(active);
+  if(active&&video.paused)video.play().catch(()=>{});
+  else if(!active&&!video.paused)video.pause();
  }
- // Four inner corners of the photographed cinema screen, with its bezel preserved.
- const quad=[[378,545],[426,552],[426,583],[378,589]].map(([x,y])=>[(x-356)/173,(y-516)/129]);
- exteriorTV.style.transform='matrix3d('+tvPerspective(quad,host.clientWidth,host.clientHeight).join(',')+')';
- const off=['alloff','departure','night'].includes(S.scene);
- const active=!roomView&&!document.hidden&&!off&&Math.max(S.shades.Cinema.pos,shadeState('Cinema','blackout').pos)<100;
- exteriorTV.style.visibility=off?'hidden':'visible';
- exteriorTV.dataset.active=String(active);
- if(active&&exteriorTV.paused)exteriorTV.play().catch(()=>{});
- else if(!active&&!exteriorTV.paused)exteriorTV.pause();
 }
-document.addEventListener('visibilitychange',()=>{if(exteriorTV)renderExteriorTV();});
+document.addEventListener('visibilitychange',()=>{if(exteriorTVs.size)renderExteriorTV();});
 function fitTVPerspective(element){const canvas=element.querySelector('canvas'),outer=INT[roomView]?.tvQuad;if(!canvas||!outer)return;const m=tvPerspective(outer,1,1),quad=[[.012,.012],[.988,.012],[.988,.988],[.012,.988]].map(([u,v])=>{const d=m[3]*u+m[7]*v+1;return[(m[0]*u+m[4]*v+m[12])/d,(m[1]*u+m[5]*v+m[13])/d];});canvas.style.transformOrigin='0 0';canvas.style.transform='matrix3d('+tvPerspective(quad,element.clientWidth,element.clientHeight).join(',')+')';}
 function paintTVScreen(element, source) {
   const tv = S.tv[source]; element.classList.toggle("on", tv.power); element.dataset.source = source;

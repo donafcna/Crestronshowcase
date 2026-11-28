@@ -1,64 +1,64 @@
 [
   {
     "room": "Living",
-    "file": "landscape-living-loop-v2.mp4",
-    "bytes": 6129692,
-    "source": "Runway + local foliage wind",
+    "file": "landscape-living-loop-v3.mp4",
+    "bytes": 3544665,
+    "source": "original photograph + local foliage wind",
     "frames": 383,
     "fps": 24
   },
   {
     "room": "Dining",
-    "file": "landscape-dining-loop-v2.mp4",
-    "bytes": 5985988,
-    "source": "Runway + local foliage wind",
+    "file": "landscape-dining-loop-v3.mp4",
+    "bytes": 4795986,
+    "source": "original photograph + local foliage wind",
     "frames": 383,
     "fps": 24
   },
   {
     "room": "Master",
-    "file": "landscape-master-loop-v2.mp4",
-    "bytes": 5924044,
-    "source": "Runway + local foliage wind",
+    "file": "landscape-master-loop-v3.mp4",
+    "bytes": 4403402,
+    "source": "original photograph + local foliage wind",
     "frames": 383,
     "fps": 24
   },
   {
     "room": "Kitchen",
-    "file": "landscape-kitchen-loop-v2.mp4",
-    "bytes": 2539629,
+    "file": "landscape-kitchen-loop-v3.mp4",
+    "bytes": 3083013,
     "source": "original photograph + local foliage wind",
     "frames": 383,
     "fps": 24
   },
   {
     "room": "Office",
-    "file": "landscape-office-loop-v2.mp4",
-    "bytes": 3529871,
+    "file": "landscape-office-loop-v3.mp4",
+    "bytes": 5401662,
     "source": "original photograph + local foliage wind",
     "frames": 383,
     "fps": 24
   },
   {
     "room": "Fitness",
-    "file": "landscape-fitness-loop-v2.mp4",
-    "bytes": 3430977,
+    "file": "landscape-fitness-loop-v3.mp4",
+    "bytes": 3906043,
     "source": "original photograph + local foliage wind",
     "frames": 383,
     "fps": 24
   },
   {
     "room": "Entry",
-    "file": "landscape-entry-loop-v2.mp4",
-    "bytes": 1908442,
+    "file": "landscape-entry-loop-v3.mp4",
+    "bytes": 3885911,
     "source": "original photograph + local foliage wind",
     "frames": 383,
     "fps": 24
   },
   {
     "room": "Bedroom",
-    "file": "landscape-bedroom-loop-v2.mp4",
-    "bytes": 1419652,
+    "file": "landscape-bedroom-loop-v3.mp4",
+    "bytes": 2474881,
     "source": "original photograph + local foliage wind",
     "frames": 383,
     "fps": 24

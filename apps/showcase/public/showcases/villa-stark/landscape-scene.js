@@ -16,6 +16,7 @@
   [[811,738],[844,691],[955,699],[1050,651],[1209,659],[1270,738],[1510,747],[1672,773],[1672,884],[1489,880],[1323,890],[1053,880],[903,854],[748,810]],
   // Eau seule, dans la piscine en perspective.
   [[1324,671],[1671,678],[1671,733],[1535,730]]
+  ,[[0,650],[1672,650],[1672,941],[0,941]]
  ];
  function maskUrl(id,geometry){
   const panes=id==='Exterior'?exterior:geometry.panes;
@@ -25,7 +26,7 @@
  }
  function create(id,parent,geometry){
   const video=document.createElement('video');video.className='stark-landscape';video.dataset.landscape=id;
-  video.src=`assets/video/landscape-${id.toLowerCase()}-loop-v2.mp4?v=2.3.37`;
+  video.src=`assets/video/landscape-${id.toLowerCase()}-loop-v3.mp4?v=2.3.38`;
   video.poster=id==='Exterior'?'assets/original/hero-off.webp':`assets/original/room-${id}.webp`;
   video.muted=true;video.defaultMuted=true;video.loop=true;video.playsInline=true;video.preload='metadata';
   video.setAttribute('muted','');video.setAttribute('playsinline','');video.setAttribute('aria-hidden','true');

@@ -1,0 +1,58 @@
+[
+  {
+    "paused": false,
+    "ready": 4,
+    "room": "Living",
+    "src": "assets/video/landscape-living-loop-v3.mp4?v=2.3.38",
+    "time": 0.2237
+  },
+  {
+    "paused": false,
+    "ready": 4,
+    "room": "Dining",
+    "src": "assets/video/landscape-dining-loop-v3.mp4?v=2.3.38",
+    "time": 0.0636
+  },
+  {
+    "paused": false,
+    "ready": 4,
+    "room": "Kitchen",
+    "src": "assets/video/landscape-kitchen-loop-v3.mp4?v=2.3.38",
+    "time": 0.0198
+  },
+  {
+    "paused": false,
+    "ready": 4,
+    "room": "Office",
+    "src": "assets/video/landscape-office-loop-v3.mp4?v=2.3.38",
+    "time": 0.0276
+  },
+  {
+    "paused": false,
+    "ready": 4,
+    "room": "Fitness",
+    "src": "assets/video/landscape-fitness-loop-v3.mp4?v=2.3.38",
+    "time": 0.121
+  },
+  {
+    "paused": false,
+    "ready": 4,
+    "room": "Entry",
+    "src": "assets/video/landscape-entry-loop-v3.mp4?v=2.3.38",
+    "time": 0.0641
+  },
+  {
+    "paused": false,
+    "ready": 4,
+    "room": "Bedroom",
+    "src": "assets/video/landscape-bedroom-loop-v3.mp4?v=2.3.38",
+    "time": 0.1113
+  },
+  {
+    "paused": false,
+    "ready": 4,
+    "room": "Master",
+    "src": "assets/video/landscape-master-loop-v3.mp4?v=2.3.38",
+    "time": 13.2673
+  }
+]
