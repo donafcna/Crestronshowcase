@@ -1,0 +1,23 @@
+{
+  "url": "https://crestrongui.vercel.app/interfaces/yacht2/my-jewel/phone",
+  "assets": [
+    {
+      "name": "app.js",
+      "status": 200,
+      "match": true
+    },
+    {
+      "name": "marine-scene.js",
+      "status": 200,
+      "match": true
+    },
+    {
+      "name": "assets/hero.png",
+      "status": 200,
+      "match": true
+    }
+  ],
+  "room": "SALON",
+  "animated": true,
+  "errors": []
+}

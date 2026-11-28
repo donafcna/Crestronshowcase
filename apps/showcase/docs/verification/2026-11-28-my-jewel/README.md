@@ -39,3 +39,7 @@ node 'C:/dev/crestron/my-jewel/apps/showcase/scripts/verify-my-jewel-accessibili
 ```
 
 Le serveur de développement doit écouter sur `http://127.0.0.1:5187`.
+
+## Vérification publique
+
+Déploiement Vercel `dpl_FDPG7NeXDm2PGrGUXhvtRqHuJQNr`, état READY, commit applicatif `aadfb6c35c1a14083fafcb5403ec3ad7f4b646b5`. URL : https://crestrongui.vercel.app/interfaces/yacht2/my-jewel/phone. Octets servis de `app.js`, `marine-scene.js` et `hero.png` identiques aux objets Git (comparaison SHA-256 canonique, indépendamment des fins de ligne Windows du checkout). Sélection SALON synchronisée avec le fond, canvas de mer actif, retour vue extérieure et aucune erreur JavaScript. Captures `production.png`, `production-salon.png`, rapport `production.json`.
