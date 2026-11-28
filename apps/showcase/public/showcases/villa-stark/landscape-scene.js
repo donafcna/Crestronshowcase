@@ -4,7 +4,7 @@
  const W=1672,H=941,records=new Map(),reduced=matchMedia('(prefers-reduced-motion: reduce)');
  const panel=new URLSearchParams(location.search).get('mode')==='panel';
  let selected=null;
- const rooms=new Set(['Living','Dining','Master']);
+ const rooms=new Set(['Living','Dining','Master','Kitchen','Office','Fitness','Entry','Bedroom']);
  const polygon=p=>`<polygon points="${p.map(v=>v.join(',')).join(' ')}" fill="white"/>`;
  const exterior=[
   // Ciel, relief lointain et feuillages au-dessus de la silhouette du toit.
@@ -12,7 +12,7 @@
   [[0,460],[39,458],[35,530],[0,610]],
   [[1640,434],[1672,424],[1672,652],[1642,649]],
   // Massifs : les allées et la volée de marches centrales restent fixes.
-  [[0,681],[106,660],[235,659],[307,644],[438,669],[551,649],[610,674],[589,729],[542,775],[549,829],[345,857],[279,840],[231,941],[0,941]],
+  [[0,681],[106,640],[235,646],[307,644],[438,650],[502,650],[541,620],[586,609],[620,644],[685,647],[726,685],[644,726],[650,744],[612,801],[561,833],[345,857],[279,840],[260,941],[0,941]],
   [[811,738],[844,691],[955,699],[1050,651],[1209,659],[1270,738],[1510,747],[1672,773],[1672,884],[1489,880],[1323,890],[1053,880],[903,854],[748,810]],
   // Eau seule, dans la piscine en perspective.
   [[1324,671],[1671,678],[1671,733],[1535,730]]
@@ -25,7 +25,7 @@
  }
  function create(id,parent,geometry){
   const video=document.createElement('video');video.className='stark-landscape';video.dataset.landscape=id;
-  video.src=`assets/video/landscape-${id.toLowerCase()}-loop-v1.mp4?v=2.3.36`;
+  video.src=`assets/video/landscape-${id.toLowerCase()}-loop-v2.mp4?v=2.3.37`;
   video.poster=id==='Exterior'?'assets/original/hero-off.webp':`assets/original/room-${id}.webp`;
   video.muted=true;video.defaultMuted=true;video.loop=true;video.playsInline=true;video.preload='metadata';
   video.setAttribute('muted','');video.setAttribute('playsinline','');video.setAttribute('aria-hidden','true');
