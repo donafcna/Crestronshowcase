@@ -1,0 +1,50 @@
+[
+  {
+    "paused": false,
+    "ready": 4,
+    "room": "Living",
+    "time": 1.6236
+  },
+  {
+    "paused": false,
+    "ready": 4,
+    "room": "Dining",
+    "time": 2.8951
+  },
+  {
+    "paused": false,
+    "ready": 4,
+    "room": "Kitchen",
+    "time": 2.8318
+  },
+  {
+    "paused": false,
+    "ready": 4,
+    "room": "Master",
+    "time": 2.9614
+  },
+  {
+    "paused": false,
+    "ready": 4,
+    "room": "Office",
+    "time": 2.8938
+  },
+  {
+    "paused": false,
+    "ready": 4,
+    "room": "Fitness",
+    "time": 2.9352
+  },
+  {
+    "paused": false,
+    "ready": 4,
+    "room": "Entry",
+    "time": 2.9062
+  },
+  {
+    "paused": false,
+    "ready": 4,
+    "room": "Bedroom",
+    "time": 3.0093
+  }
+]
