@@ -49,3 +49,11 @@ node 'C:/dev/crestron/my-jewel/apps/showcase/scripts/verify-my-jewel-accessibili
 ```
 
 Serveur attendu : http://127.0.0.1:5187. Publication main → Vercel ; retour arrière par annulation de la seule révision Riviera, sans restaurer les modifications indépendantes d’autres projets.
+
+## Vérification publique
+
+Déploiement Vercel `dpl_4P4C5MNH9r4DZGeBMJHue9h4GBkP`, état READY, commit applicatif `c8e22591eac691114e1020fdc61497cb2f95040b`. URL : https://crestrongui.vercel.app/interfaces/yacht2/my-jewel/phone.
+
+Treize ressources publiques comparées par SHA-256 aux objets Git : `app.js`, `marine-scene.js`, `scene-manifest.js` et les dix photos, toutes identiques (`public-assets.json`).
+
+Les dix vues sont parcourues sur le site public ; chaque image individuelle est chargée, les pixels d’eau changent, les points protégés restent transparents, aucun son ni erreur JavaScript. Cadence mesurée : 28.9 à 30.9 images/s. Réduction des animations validée. Résultats `public-water-checks.json`, captures `public-<id>.jpg`.
