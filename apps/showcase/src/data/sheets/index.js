@@ -1,3 +1,4 @@
+import myJewel from "./my-jewel";
 import villaStark from "./villa-stark";
 import hotelBrassus from "./hotel-brassus";
 // Fiches détaillées par interface : chaque écran du GUI avec capture et explication
@@ -26,6 +27,7 @@ import villaLeman from "./villa-leman";
 import yachtMonaco from "./yacht-monaco";
 
 const docs = {
+  "my-jewel": myJewel,
   "villa-stark": villaStark,
   "hotel-brassus": hotelBrassus,
   "appartement-carouge": appartementCarouge,

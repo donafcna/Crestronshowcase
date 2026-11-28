@@ -1,0 +1,2435 @@
+{
+  "checks": [
+    {
+      "device": "panel",
+      "theme": "aurum",
+      "page": "home",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "panel",
+      "theme": "aurum",
+      "page": "LUMIÈRES-plan",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 10,
+      "offscreen": []
+    },
+    {
+      "device": "panel",
+      "theme": "aurum",
+      "page": "LUMIÈRES-SALON",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 9,
+      "offscreen": []
+    },
+    {
+      "device": "panel",
+      "theme": "aurum",
+      "page": "LUMIÈRES-CARRÉ",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 9,
+      "offscreen": []
+    },
+    {
+      "device": "panel",
+      "theme": "aurum",
+      "page": "LUMIÈRES-CUISINE",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 9,
+      "offscreen": []
+    },
+    {
+      "device": "panel",
+      "theme": "aurum",
+      "page": "LUMIÈRES-BUREAU CAPITAINE",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 9,
+      "offscreen": []
+    },
+    {
+      "device": "panel",
+      "theme": "aurum",
+      "page": "LUMIÈRES-CINÉMA",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 9,
+      "offscreen": []
+    },
+    {
+      "device": "panel",
+      "theme": "aurum",
+      "page": "LUMIÈRES-FITNESS",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 9,
+      "offscreen": []
+    },
+    {
+      "device": "panel",
+      "theme": "aurum",
+      "page": "LUMIÈRES-PONT ARRIÈRE",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 9,
+      "offscreen": []
+    },
+    {
+      "device": "panel",
+      "theme": "aurum",
+      "page": "LUMIÈRES-SUITE ARMATEUR",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 9,
+      "offscreen": []
+    },
+    {
+      "device": "panel",
+      "theme": "aurum",
+      "page": "LUMIÈRES-CABINE INVITÉS",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 9,
+      "offscreen": []
+    },
+    {
+      "device": "panel",
+      "theme": "aurum",
+      "page": "LUMIÈRES-BEACH CLUB",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 11,
+      "offscreen": []
+    },
+    {
+      "device": "panel",
+      "theme": "aurum",
+      "page": "CLIMAT-plan",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 10,
+      "offscreen": []
+    },
+    {
+      "device": "panel",
+      "theme": "aurum",
+      "page": "CLIMAT-SALON",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "panel",
+      "theme": "aurum",
+      "page": "CLIMAT-CARRÉ",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "panel",
+      "theme": "aurum",
+      "page": "CLIMAT-CUISINE",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "panel",
+      "theme": "aurum",
+      "page": "CLIMAT-BUREAU CAPITAINE",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "panel",
+      "theme": "aurum",
+      "page": "CLIMAT-CINÉMA",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "panel",
+      "theme": "aurum",
+      "page": "CLIMAT-FITNESS",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "panel",
+      "theme": "aurum",
+      "page": "CLIMAT-PONT ARRIÈRE",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "panel",
+      "theme": "aurum",
+      "page": "CLIMAT-SUITE ARMATEUR",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "panel",
+      "theme": "aurum",
+      "page": "CLIMAT-CABINE INVITÉS",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "panel",
+      "theme": "aurum",
+      "page": "CLIMAT-BEACH CLUB",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "panel",
+      "theme": "aurum",
+      "page": "STORES",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 6,
+      "offscreen": []
+    },
+    {
+      "device": "panel",
+      "theme": "aurum",
+      "page": "TV",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 2,
+      "offscreen": []
+    },
+    {
+      "device": "panel",
+      "theme": "aurum",
+      "page": "APPLE TV",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 13,
+      "offscreen": []
+    },
+    {
+      "device": "panel",
+      "theme": "aurum",
+      "page": "SWISSCOM TV",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 26,
+      "offscreen": []
+    },
+    {
+      "device": "panel",
+      "theme": "aurum",
+      "page": "MUSIQUE",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 6,
+      "offscreen": []
+    },
+    {
+      "device": "panel",
+      "theme": "aurum",
+      "page": "SÉCURITÉ",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 3,
+      "offscreen": []
+    },
+    {
+      "device": "panel",
+      "theme": "aurum",
+      "page": "INTERPHONE",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 5,
+      "offscreen": []
+    },
+    {
+      "device": "panel",
+      "theme": "glacier",
+      "page": "home",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "panel",
+      "theme": "glacier",
+      "page": "LUMIÈRES-plan",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 10,
+      "offscreen": []
+    },
+    {
+      "device": "panel",
+      "theme": "glacier",
+      "page": "LUMIÈRES-SALON",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 9,
+      "offscreen": []
+    },
+    {
+      "device": "panel",
+      "theme": "glacier",
+      "page": "LUMIÈRES-CARRÉ",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 9,
+      "offscreen": []
+    },
+    {
+      "device": "panel",
+      "theme": "glacier",
+      "page": "LUMIÈRES-CUISINE",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 9,
+      "offscreen": []
+    },
+    {
+      "device": "panel",
+      "theme": "glacier",
+      "page": "LUMIÈRES-BUREAU CAPITAINE",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 9,
+      "offscreen": []
+    },
+    {
+      "device": "panel",
+      "theme": "glacier",
+      "page": "LUMIÈRES-CINÉMA",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 9,
+      "offscreen": []
+    },
+    {
+      "device": "panel",
+      "theme": "glacier",
+      "page": "LUMIÈRES-FITNESS",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 9,
+      "offscreen": []
+    },
+    {
+      "device": "panel",
+      "theme": "glacier",
+      "page": "LUMIÈRES-PONT ARRIÈRE",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 9,
+      "offscreen": []
+    },
+    {
+      "device": "panel",
+      "theme": "glacier",
+      "page": "LUMIÈRES-SUITE ARMATEUR",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 9,
+      "offscreen": []
+    },
+    {
+      "device": "panel",
+      "theme": "glacier",
+      "page": "LUMIÈRES-CABINE INVITÉS",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 9,
+      "offscreen": []
+    },
+    {
+      "device": "panel",
+      "theme": "glacier",
+      "page": "LUMIÈRES-BEACH CLUB",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 11,
+      "offscreen": []
+    },
+    {
+      "device": "panel",
+      "theme": "glacier",
+      "page": "CLIMAT-plan",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 10,
+      "offscreen": []
+    },
+    {
+      "device": "panel",
+      "theme": "glacier",
+      "page": "CLIMAT-SALON",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "panel",
+      "theme": "glacier",
+      "page": "CLIMAT-CARRÉ",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "panel",
+      "theme": "glacier",
+      "page": "CLIMAT-CUISINE",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "panel",
+      "theme": "glacier",
+      "page": "CLIMAT-BUREAU CAPITAINE",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "panel",
+      "theme": "glacier",
+      "page": "CLIMAT-CINÉMA",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "panel",
+      "theme": "glacier",
+      "page": "CLIMAT-FITNESS",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "panel",
+      "theme": "glacier",
+      "page": "CLIMAT-PONT ARRIÈRE",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "panel",
+      "theme": "glacier",
+      "page": "CLIMAT-SUITE ARMATEUR",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "panel",
+      "theme": "glacier",
+      "page": "CLIMAT-CABINE INVITÉS",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "panel",
+      "theme": "glacier",
+      "page": "CLIMAT-BEACH CLUB",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "panel",
+      "theme": "glacier",
+      "page": "STORES",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 6,
+      "offscreen": []
+    },
+    {
+      "device": "panel",
+      "theme": "glacier",
+      "page": "TV",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 2,
+      "offscreen": []
+    },
+    {
+      "device": "panel",
+      "theme": "glacier",
+      "page": "APPLE TV",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 13,
+      "offscreen": []
+    },
+    {
+      "device": "panel",
+      "theme": "glacier",
+      "page": "SWISSCOM TV",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 26,
+      "offscreen": []
+    },
+    {
+      "device": "panel",
+      "theme": "glacier",
+      "page": "MUSIQUE",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 6,
+      "offscreen": []
+    },
+    {
+      "device": "panel",
+      "theme": "glacier",
+      "page": "SÉCURITÉ",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 3,
+      "offscreen": []
+    },
+    {
+      "device": "panel",
+      "theme": "glacier",
+      "page": "INTERPHONE",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 5,
+      "offscreen": []
+    },
+    {
+      "device": "panel",
+      "theme": "carbone",
+      "page": "home",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "panel",
+      "theme": "carbone",
+      "page": "LUMIÈRES-plan",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 10,
+      "offscreen": []
+    },
+    {
+      "device": "panel",
+      "theme": "carbone",
+      "page": "LUMIÈRES-SALON",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 9,
+      "offscreen": []
+    },
+    {
+      "device": "panel",
+      "theme": "carbone",
+      "page": "LUMIÈRES-CARRÉ",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 9,
+      "offscreen": []
+    },
+    {
+      "device": "panel",
+      "theme": "carbone",
+      "page": "LUMIÈRES-CUISINE",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 9,
+      "offscreen": []
+    },
+    {
+      "device": "panel",
+      "theme": "carbone",
+      "page": "LUMIÈRES-BUREAU CAPITAINE",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 9,
+      "offscreen": []
+    },
+    {
+      "device": "panel",
+      "theme": "carbone",
+      "page": "LUMIÈRES-CINÉMA",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 9,
+      "offscreen": []
+    },
+    {
+      "device": "panel",
+      "theme": "carbone",
+      "page": "LUMIÈRES-FITNESS",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 9,
+      "offscreen": []
+    },
+    {
+      "device": "panel",
+      "theme": "carbone",
+      "page": "LUMIÈRES-PONT ARRIÈRE",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 9,
+      "offscreen": []
+    },
+    {
+      "device": "panel",
+      "theme": "carbone",
+      "page": "LUMIÈRES-SUITE ARMATEUR",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 9,
+      "offscreen": []
+    },
+    {
+      "device": "panel",
+      "theme": "carbone",
+      "page": "LUMIÈRES-CABINE INVITÉS",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 9,
+      "offscreen": []
+    },
+    {
+      "device": "panel",
+      "theme": "carbone",
+      "page": "LUMIÈRES-BEACH CLUB",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 11,
+      "offscreen": []
+    },
+    {
+      "device": "panel",
+      "theme": "carbone",
+      "page": "CLIMAT-plan",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 10,
+      "offscreen": []
+    },
+    {
+      "device": "panel",
+      "theme": "carbone",
+      "page": "CLIMAT-SALON",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "panel",
+      "theme": "carbone",
+      "page": "CLIMAT-CARRÉ",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "panel",
+      "theme": "carbone",
+      "page": "CLIMAT-CUISINE",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "panel",
+      "theme": "carbone",
+      "page": "CLIMAT-BUREAU CAPITAINE",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "panel",
+      "theme": "carbone",
+      "page": "CLIMAT-CINÉMA",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "panel",
+      "theme": "carbone",
+      "page": "CLIMAT-FITNESS",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "panel",
+      "theme": "carbone",
+      "page": "CLIMAT-PONT ARRIÈRE",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "panel",
+      "theme": "carbone",
+      "page": "CLIMAT-SUITE ARMATEUR",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "panel",
+      "theme": "carbone",
+      "page": "CLIMAT-CABINE INVITÉS",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "panel",
+      "theme": "carbone",
+      "page": "CLIMAT-BEACH CLUB",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "panel",
+      "theme": "carbone",
+      "page": "STORES",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 6,
+      "offscreen": []
+    },
+    {
+      "device": "panel",
+      "theme": "carbone",
+      "page": "TV",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 2,
+      "offscreen": []
+    },
+    {
+      "device": "panel",
+      "theme": "carbone",
+      "page": "APPLE TV",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 13,
+      "offscreen": []
+    },
+    {
+      "device": "panel",
+      "theme": "carbone",
+      "page": "SWISSCOM TV",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 26,
+      "offscreen": []
+    },
+    {
+      "device": "panel",
+      "theme": "carbone",
+      "page": "MUSIQUE",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 6,
+      "offscreen": []
+    },
+    {
+      "device": "panel",
+      "theme": "carbone",
+      "page": "SÉCURITÉ",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 3,
+      "offscreen": []
+    },
+    {
+      "device": "panel",
+      "theme": "carbone",
+      "page": "INTERPHONE",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 5,
+      "offscreen": []
+    },
+    {
+      "device": "ipad",
+      "theme": "aurum",
+      "page": "home",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "ipad",
+      "theme": "aurum",
+      "page": "LUMIÈRES-plan",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 10,
+      "offscreen": []
+    },
+    {
+      "device": "ipad",
+      "theme": "aurum",
+      "page": "LUMIÈRES-SALON",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 9,
+      "offscreen": []
+    },
+    {
+      "device": "ipad",
+      "theme": "aurum",
+      "page": "LUMIÈRES-CARRÉ",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 9,
+      "offscreen": []
+    },
+    {
+      "device": "ipad",
+      "theme": "aurum",
+      "page": "LUMIÈRES-CUISINE",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 9,
+      "offscreen": []
+    },
+    {
+      "device": "ipad",
+      "theme": "aurum",
+      "page": "LUMIÈRES-BUREAU CAPITAINE",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 9,
+      "offscreen": []
+    },
+    {
+      "device": "ipad",
+      "theme": "aurum",
+      "page": "LUMIÈRES-CINÉMA",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 9,
+      "offscreen": []
+    },
+    {
+      "device": "ipad",
+      "theme": "aurum",
+      "page": "LUMIÈRES-FITNESS",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 9,
+      "offscreen": []
+    },
+    {
+      "device": "ipad",
+      "theme": "aurum",
+      "page": "LUMIÈRES-PONT ARRIÈRE",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 9,
+      "offscreen": []
+    },
+    {
+      "device": "ipad",
+      "theme": "aurum",
+      "page": "LUMIÈRES-SUITE ARMATEUR",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 9,
+      "offscreen": []
+    },
+    {
+      "device": "ipad",
+      "theme": "aurum",
+      "page": "LUMIÈRES-CABINE INVITÉS",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 9,
+      "offscreen": []
+    },
+    {
+      "device": "ipad",
+      "theme": "aurum",
+      "page": "LUMIÈRES-BEACH CLUB",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 11,
+      "offscreen": []
+    },
+    {
+      "device": "ipad",
+      "theme": "aurum",
+      "page": "CLIMAT-plan",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 10,
+      "offscreen": []
+    },
+    {
+      "device": "ipad",
+      "theme": "aurum",
+      "page": "CLIMAT-SALON",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "ipad",
+      "theme": "aurum",
+      "page": "CLIMAT-CARRÉ",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "ipad",
+      "theme": "aurum",
+      "page": "CLIMAT-CUISINE",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "ipad",
+      "theme": "aurum",
+      "page": "CLIMAT-BUREAU CAPITAINE",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "ipad",
+      "theme": "aurum",
+      "page": "CLIMAT-CINÉMA",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "ipad",
+      "theme": "aurum",
+      "page": "CLIMAT-FITNESS",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "ipad",
+      "theme": "aurum",
+      "page": "CLIMAT-PONT ARRIÈRE",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "ipad",
+      "theme": "aurum",
+      "page": "CLIMAT-SUITE ARMATEUR",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "ipad",
+      "theme": "aurum",
+      "page": "CLIMAT-CABINE INVITÉS",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "ipad",
+      "theme": "aurum",
+      "page": "CLIMAT-BEACH CLUB",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "ipad",
+      "theme": "aurum",
+      "page": "STORES",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 6,
+      "offscreen": []
+    },
+    {
+      "device": "ipad",
+      "theme": "aurum",
+      "page": "TV",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 2,
+      "offscreen": []
+    },
+    {
+      "device": "ipad",
+      "theme": "aurum",
+      "page": "APPLE TV",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 13,
+      "offscreen": []
+    },
+    {
+      "device": "ipad",
+      "theme": "aurum",
+      "page": "SWISSCOM TV",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 26,
+      "offscreen": []
+    },
+    {
+      "device": "ipad",
+      "theme": "aurum",
+      "page": "MUSIQUE",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 6,
+      "offscreen": []
+    },
+    {
+      "device": "ipad",
+      "theme": "aurum",
+      "page": "SÉCURITÉ",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 3,
+      "offscreen": []
+    },
+    {
+      "device": "ipad",
+      "theme": "aurum",
+      "page": "INTERPHONE",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 5,
+      "offscreen": []
+    },
+    {
+      "device": "ipad",
+      "theme": "glacier",
+      "page": "home",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "ipad",
+      "theme": "glacier",
+      "page": "LUMIÈRES-plan",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 10,
+      "offscreen": []
+    },
+    {
+      "device": "ipad",
+      "theme": "glacier",
+      "page": "LUMIÈRES-SALON",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 9,
+      "offscreen": []
+    },
+    {
+      "device": "ipad",
+      "theme": "glacier",
+      "page": "LUMIÈRES-CARRÉ",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 9,
+      "offscreen": []
+    },
+    {
+      "device": "ipad",
+      "theme": "glacier",
+      "page": "LUMIÈRES-CUISINE",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 9,
+      "offscreen": []
+    },
+    {
+      "device": "ipad",
+      "theme": "glacier",
+      "page": "LUMIÈRES-BUREAU CAPITAINE",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 9,
+      "offscreen": []
+    },
+    {
+      "device": "ipad",
+      "theme": "glacier",
+      "page": "LUMIÈRES-CINÉMA",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 9,
+      "offscreen": []
+    },
+    {
+      "device": "ipad",
+      "theme": "glacier",
+      "page": "LUMIÈRES-FITNESS",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 9,
+      "offscreen": []
+    },
+    {
+      "device": "ipad",
+      "theme": "glacier",
+      "page": "LUMIÈRES-PONT ARRIÈRE",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 9,
+      "offscreen": []
+    },
+    {
+      "device": "ipad",
+      "theme": "glacier",
+      "page": "LUMIÈRES-SUITE ARMATEUR",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 9,
+      "offscreen": []
+    },
+    {
+      "device": "ipad",
+      "theme": "glacier",
+      "page": "LUMIÈRES-CABINE INVITÉS",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 9,
+      "offscreen": []
+    },
+    {
+      "device": "ipad",
+      "theme": "glacier",
+      "page": "LUMIÈRES-BEACH CLUB",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 11,
+      "offscreen": []
+    },
+    {
+      "device": "ipad",
+      "theme": "glacier",
+      "page": "CLIMAT-plan",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 10,
+      "offscreen": []
+    },
+    {
+      "device": "ipad",
+      "theme": "glacier",
+      "page": "CLIMAT-SALON",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "ipad",
+      "theme": "glacier",
+      "page": "CLIMAT-CARRÉ",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "ipad",
+      "theme": "glacier",
+      "page": "CLIMAT-CUISINE",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "ipad",
+      "theme": "glacier",
+      "page": "CLIMAT-BUREAU CAPITAINE",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "ipad",
+      "theme": "glacier",
+      "page": "CLIMAT-CINÉMA",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "ipad",
+      "theme": "glacier",
+      "page": "CLIMAT-FITNESS",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "ipad",
+      "theme": "glacier",
+      "page": "CLIMAT-PONT ARRIÈRE",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "ipad",
+      "theme": "glacier",
+      "page": "CLIMAT-SUITE ARMATEUR",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "ipad",
+      "theme": "glacier",
+      "page": "CLIMAT-CABINE INVITÉS",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "ipad",
+      "theme": "glacier",
+      "page": "CLIMAT-BEACH CLUB",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "ipad",
+      "theme": "glacier",
+      "page": "STORES",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 6,
+      "offscreen": []
+    },
+    {
+      "device": "ipad",
+      "theme": "glacier",
+      "page": "TV",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 2,
+      "offscreen": []
+    },
+    {
+      "device": "ipad",
+      "theme": "glacier",
+      "page": "APPLE TV",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 13,
+      "offscreen": []
+    },
+    {
+      "device": "ipad",
+      "theme": "glacier",
+      "page": "SWISSCOM TV",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 26,
+      "offscreen": []
+    },
+    {
+      "device": "ipad",
+      "theme": "glacier",
+      "page": "MUSIQUE",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 6,
+      "offscreen": []
+    },
+    {
+      "device": "ipad",
+      "theme": "glacier",
+      "page": "SÉCURITÉ",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 3,
+      "offscreen": []
+    },
+    {
+      "device": "ipad",
+      "theme": "glacier",
+      "page": "INTERPHONE",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 5,
+      "offscreen": []
+    },
+    {
+      "device": "ipad",
+      "theme": "carbone",
+      "page": "home",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "ipad",
+      "theme": "carbone",
+      "page": "LUMIÈRES-plan",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 10,
+      "offscreen": []
+    },
+    {
+      "device": "ipad",
+      "theme": "carbone",
+      "page": "LUMIÈRES-SALON",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 9,
+      "offscreen": []
+    },
+    {
+      "device": "ipad",
+      "theme": "carbone",
+      "page": "LUMIÈRES-CARRÉ",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 9,
+      "offscreen": []
+    },
+    {
+      "device": "ipad",
+      "theme": "carbone",
+      "page": "LUMIÈRES-CUISINE",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 9,
+      "offscreen": []
+    },
+    {
+      "device": "ipad",
+      "theme": "carbone",
+      "page": "LUMIÈRES-BUREAU CAPITAINE",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 9,
+      "offscreen": []
+    },
+    {
+      "device": "ipad",
+      "theme": "carbone",
+      "page": "LUMIÈRES-CINÉMA",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 9,
+      "offscreen": []
+    },
+    {
+      "device": "ipad",
+      "theme": "carbone",
+      "page": "LUMIÈRES-FITNESS",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 9,
+      "offscreen": []
+    },
+    {
+      "device": "ipad",
+      "theme": "carbone",
+      "page": "LUMIÈRES-PONT ARRIÈRE",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 9,
+      "offscreen": []
+    },
+    {
+      "device": "ipad",
+      "theme": "carbone",
+      "page": "LUMIÈRES-SUITE ARMATEUR",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 9,
+      "offscreen": []
+    },
+    {
+      "device": "ipad",
+      "theme": "carbone",
+      "page": "LUMIÈRES-CABINE INVITÉS",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 9,
+      "offscreen": []
+    },
+    {
+      "device": "ipad",
+      "theme": "carbone",
+      "page": "LUMIÈRES-BEACH CLUB",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 11,
+      "offscreen": []
+    },
+    {
+      "device": "ipad",
+      "theme": "carbone",
+      "page": "CLIMAT-plan",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 10,
+      "offscreen": []
+    },
+    {
+      "device": "ipad",
+      "theme": "carbone",
+      "page": "CLIMAT-SALON",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "ipad",
+      "theme": "carbone",
+      "page": "CLIMAT-CARRÉ",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "ipad",
+      "theme": "carbone",
+      "page": "CLIMAT-CUISINE",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "ipad",
+      "theme": "carbone",
+      "page": "CLIMAT-BUREAU CAPITAINE",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "ipad",
+      "theme": "carbone",
+      "page": "CLIMAT-CINÉMA",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "ipad",
+      "theme": "carbone",
+      "page": "CLIMAT-FITNESS",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "ipad",
+      "theme": "carbone",
+      "page": "CLIMAT-PONT ARRIÈRE",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "ipad",
+      "theme": "carbone",
+      "page": "CLIMAT-SUITE ARMATEUR",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "ipad",
+      "theme": "carbone",
+      "page": "CLIMAT-CABINE INVITÉS",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "ipad",
+      "theme": "carbone",
+      "page": "CLIMAT-BEACH CLUB",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "ipad",
+      "theme": "carbone",
+      "page": "STORES",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 6,
+      "offscreen": []
+    },
+    {
+      "device": "ipad",
+      "theme": "carbone",
+      "page": "TV",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 2,
+      "offscreen": []
+    },
+    {
+      "device": "ipad",
+      "theme": "carbone",
+      "page": "APPLE TV",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 13,
+      "offscreen": []
+    },
+    {
+      "device": "ipad",
+      "theme": "carbone",
+      "page": "SWISSCOM TV",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 26,
+      "offscreen": []
+    },
+    {
+      "device": "ipad",
+      "theme": "carbone",
+      "page": "MUSIQUE",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 6,
+      "offscreen": []
+    },
+    {
+      "device": "ipad",
+      "theme": "carbone",
+      "page": "SÉCURITÉ",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 3,
+      "offscreen": []
+    },
+    {
+      "device": "ipad",
+      "theme": "carbone",
+      "page": "INTERPHONE",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 5,
+      "offscreen": []
+    },
+    {
+      "device": "phone",
+      "theme": "aurum",
+      "page": "home",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "phone",
+      "theme": "aurum",
+      "page": "LUMIÈRES-plan",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 10,
+      "offscreen": []
+    },
+    {
+      "device": "phone",
+      "theme": "aurum",
+      "page": "LUMIÈRES-SALON",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 9,
+      "offscreen": []
+    },
+    {
+      "device": "phone",
+      "theme": "aurum",
+      "page": "LUMIÈRES-CARRÉ",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 9,
+      "offscreen": []
+    },
+    {
+      "device": "phone",
+      "theme": "aurum",
+      "page": "LUMIÈRES-CUISINE",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 9,
+      "offscreen": []
+    },
+    {
+      "device": "phone",
+      "theme": "aurum",
+      "page": "LUMIÈRES-BUREAU CAPITAINE",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 9,
+      "offscreen": []
+    },
+    {
+      "device": "phone",
+      "theme": "aurum",
+      "page": "LUMIÈRES-CINÉMA",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 9,
+      "offscreen": []
+    },
+    {
+      "device": "phone",
+      "theme": "aurum",
+      "page": "LUMIÈRES-FITNESS",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 9,
+      "offscreen": []
+    },
+    {
+      "device": "phone",
+      "theme": "aurum",
+      "page": "LUMIÈRES-PONT ARRIÈRE",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 9,
+      "offscreen": []
+    },
+    {
+      "device": "phone",
+      "theme": "aurum",
+      "page": "LUMIÈRES-SUITE ARMATEUR",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 9,
+      "offscreen": []
+    },
+    {
+      "device": "phone",
+      "theme": "aurum",
+      "page": "LUMIÈRES-CABINE INVITÉS",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 9,
+      "offscreen": []
+    },
+    {
+      "device": "phone",
+      "theme": "aurum",
+      "page": "LUMIÈRES-BEACH CLUB",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 11,
+      "offscreen": []
+    },
+    {
+      "device": "phone",
+      "theme": "aurum",
+      "page": "CLIMAT-plan",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 10,
+      "offscreen": []
+    },
+    {
+      "device": "phone",
+      "theme": "aurum",
+      "page": "CLIMAT-SALON",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "phone",
+      "theme": "aurum",
+      "page": "CLIMAT-CARRÉ",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "phone",
+      "theme": "aurum",
+      "page": "CLIMAT-CUISINE",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "phone",
+      "theme": "aurum",
+      "page": "CLIMAT-BUREAU CAPITAINE",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "phone",
+      "theme": "aurum",
+      "page": "CLIMAT-CINÉMA",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "phone",
+      "theme": "aurum",
+      "page": "CLIMAT-FITNESS",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "phone",
+      "theme": "aurum",
+      "page": "CLIMAT-PONT ARRIÈRE",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "phone",
+      "theme": "aurum",
+      "page": "CLIMAT-SUITE ARMATEUR",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "phone",
+      "theme": "aurum",
+      "page": "CLIMAT-CABINE INVITÉS",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "phone",
+      "theme": "aurum",
+      "page": "CLIMAT-BEACH CLUB",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "phone",
+      "theme": "aurum",
+      "page": "STORES",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 6,
+      "offscreen": []
+    },
+    {
+      "device": "phone",
+      "theme": "aurum",
+      "page": "TV",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 2,
+      "offscreen": []
+    },
+    {
+      "device": "phone",
+      "theme": "aurum",
+      "page": "APPLE TV",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 13,
+      "offscreen": []
+    },
+    {
+      "device": "phone",
+      "theme": "aurum",
+      "page": "SWISSCOM TV",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 26,
+      "offscreen": []
+    },
+    {
+      "device": "phone",
+      "theme": "aurum",
+      "page": "MUSIQUE",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 6,
+      "offscreen": []
+    },
+    {
+      "device": "phone",
+      "theme": "aurum",
+      "page": "SÉCURITÉ",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 3,
+      "offscreen": []
+    },
+    {
+      "device": "phone",
+      "theme": "aurum",
+      "page": "INTERPHONE",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 5,
+      "offscreen": []
+    },
+    {
+      "device": "phone",
+      "theme": "glacier",
+      "page": "home",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "phone",
+      "theme": "glacier",
+      "page": "LUMIÈRES-plan",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 10,
+      "offscreen": []
+    },
+    {
+      "device": "phone",
+      "theme": "glacier",
+      "page": "LUMIÈRES-SALON",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 9,
+      "offscreen": []
+    },
+    {
+      "device": "phone",
+      "theme": "glacier",
+      "page": "LUMIÈRES-CARRÉ",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 9,
+      "offscreen": []
+    },
+    {
+      "device": "phone",
+      "theme": "glacier",
+      "page": "LUMIÈRES-CUISINE",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 9,
+      "offscreen": []
+    },
+    {
+      "device": "phone",
+      "theme": "glacier",
+      "page": "LUMIÈRES-BUREAU CAPITAINE",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 9,
+      "offscreen": []
+    },
+    {
+      "device": "phone",
+      "theme": "glacier",
+      "page": "LUMIÈRES-CINÉMA",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 9,
+      "offscreen": []
+    },
+    {
+      "device": "phone",
+      "theme": "glacier",
+      "page": "LUMIÈRES-FITNESS",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 9,
+      "offscreen": []
+    },
+    {
+      "device": "phone",
+      "theme": "glacier",
+      "page": "LUMIÈRES-PONT ARRIÈRE",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 9,
+      "offscreen": []
+    },
+    {
+      "device": "phone",
+      "theme": "glacier",
+      "page": "LUMIÈRES-SUITE ARMATEUR",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 9,
+      "offscreen": []
+    },
+    {
+      "device": "phone",
+      "theme": "glacier",
+      "page": "LUMIÈRES-CABINE INVITÉS",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 9,
+      "offscreen": []
+    },
+    {
+      "device": "phone",
+      "theme": "glacier",
+      "page": "LUMIÈRES-BEACH CLUB",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 11,
+      "offscreen": []
+    },
+    {
+      "device": "phone",
+      "theme": "glacier",
+      "page": "CLIMAT-plan",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 10,
+      "offscreen": []
+    },
+    {
+      "device": "phone",
+      "theme": "glacier",
+      "page": "CLIMAT-SALON",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "phone",
+      "theme": "glacier",
+      "page": "CLIMAT-CARRÉ",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "phone",
+      "theme": "glacier",
+      "page": "CLIMAT-CUISINE",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "phone",
+      "theme": "glacier",
+      "page": "CLIMAT-BUREAU CAPITAINE",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "phone",
+      "theme": "glacier",
+      "page": "CLIMAT-CINÉMA",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "phone",
+      "theme": "glacier",
+      "page": "CLIMAT-FITNESS",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "phone",
+      "theme": "glacier",
+      "page": "CLIMAT-PONT ARRIÈRE",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "phone",
+      "theme": "glacier",
+      "page": "CLIMAT-SUITE ARMATEUR",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "phone",
+      "theme": "glacier",
+      "page": "CLIMAT-CABINE INVITÉS",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "phone",
+      "theme": "glacier",
+      "page": "CLIMAT-BEACH CLUB",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "phone",
+      "theme": "glacier",
+      "page": "STORES",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 6,
+      "offscreen": []
+    },
+    {
+      "device": "phone",
+      "theme": "glacier",
+      "page": "TV",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 2,
+      "offscreen": []
+    },
+    {
+      "device": "phone",
+      "theme": "glacier",
+      "page": "APPLE TV",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 13,
+      "offscreen": []
+    },
+    {
+      "device": "phone",
+      "theme": "glacier",
+      "page": "SWISSCOM TV",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 26,
+      "offscreen": []
+    },
+    {
+      "device": "phone",
+      "theme": "glacier",
+      "page": "MUSIQUE",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 6,
+      "offscreen": []
+    },
+    {
+      "device": "phone",
+      "theme": "glacier",
+      "page": "SÉCURITÉ",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 3,
+      "offscreen": []
+    },
+    {
+      "device": "phone",
+      "theme": "glacier",
+      "page": "INTERPHONE",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 5,
+      "offscreen": []
+    },
+    {
+      "device": "phone",
+      "theme": "carbone",
+      "page": "home",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "phone",
+      "theme": "carbone",
+      "page": "LUMIÈRES-plan",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 10,
+      "offscreen": []
+    },
+    {
+      "device": "phone",
+      "theme": "carbone",
+      "page": "LUMIÈRES-SALON",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 9,
+      "offscreen": []
+    },
+    {
+      "device": "phone",
+      "theme": "carbone",
+      "page": "LUMIÈRES-CARRÉ",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 9,
+      "offscreen": []
+    },
+    {
+      "device": "phone",
+      "theme": "carbone",
+      "page": "LUMIÈRES-CUISINE",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 9,
+      "offscreen": []
+    },
+    {
+      "device": "phone",
+      "theme": "carbone",
+      "page": "LUMIÈRES-BUREAU CAPITAINE",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 9,
+      "offscreen": []
+    },
+    {
+      "device": "phone",
+      "theme": "carbone",
+      "page": "LUMIÈRES-CINÉMA",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 9,
+      "offscreen": []
+    },
+    {
+      "device": "phone",
+      "theme": "carbone",
+      "page": "LUMIÈRES-FITNESS",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 9,
+      "offscreen": []
+    },
+    {
+      "device": "phone",
+      "theme": "carbone",
+      "page": "LUMIÈRES-PONT ARRIÈRE",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 9,
+      "offscreen": []
+    },
+    {
+      "device": "phone",
+      "theme": "carbone",
+      "page": "LUMIÈRES-SUITE ARMATEUR",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 9,
+      "offscreen": []
+    },
+    {
+      "device": "phone",
+      "theme": "carbone",
+      "page": "LUMIÈRES-CABINE INVITÉS",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 9,
+      "offscreen": []
+    },
+    {
+      "device": "phone",
+      "theme": "carbone",
+      "page": "LUMIÈRES-BEACH CLUB",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 11,
+      "offscreen": []
+    },
+    {
+      "device": "phone",
+      "theme": "carbone",
+      "page": "CLIMAT-plan",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 10,
+      "offscreen": []
+    },
+    {
+      "device": "phone",
+      "theme": "carbone",
+      "page": "CLIMAT-SALON",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "phone",
+      "theme": "carbone",
+      "page": "CLIMAT-CARRÉ",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "phone",
+      "theme": "carbone",
+      "page": "CLIMAT-CUISINE",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "phone",
+      "theme": "carbone",
+      "page": "CLIMAT-BUREAU CAPITAINE",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "phone",
+      "theme": "carbone",
+      "page": "CLIMAT-CINÉMA",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "phone",
+      "theme": "carbone",
+      "page": "CLIMAT-FITNESS",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "phone",
+      "theme": "carbone",
+      "page": "CLIMAT-PONT ARRIÈRE",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "phone",
+      "theme": "carbone",
+      "page": "CLIMAT-SUITE ARMATEUR",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "phone",
+      "theme": "carbone",
+      "page": "CLIMAT-CABINE INVITÉS",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "phone",
+      "theme": "carbone",
+      "page": "CLIMAT-BEACH CLUB",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 12,
+      "offscreen": []
+    },
+    {
+      "device": "phone",
+      "theme": "carbone",
+      "page": "STORES",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 6,
+      "offscreen": []
+    },
+    {
+      "device": "phone",
+      "theme": "carbone",
+      "page": "TV",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 2,
+      "offscreen": []
+    },
+    {
+      "device": "phone",
+      "theme": "carbone",
+      "page": "APPLE TV",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 13,
+      "offscreen": []
+    },
+    {
+      "device": "phone",
+      "theme": "carbone",
+      "page": "SWISSCOM TV",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 26,
+      "offscreen": []
+    },
+    {
+      "device": "phone",
+      "theme": "carbone",
+      "page": "MUSIQUE",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 6,
+      "offscreen": []
+    },
+    {
+      "device": "phone",
+      "theme": "carbone",
+      "page": "SÉCURITÉ",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 3,
+      "offscreen": []
+    },
+    {
+      "device": "phone",
+      "theme": "carbone",
+      "page": "INTERPHONE",
+      "overflowX": false,
+      "overflowY": false,
+      "buttons": 5,
+      "offscreen": []
+    }
+  ],
+  "errors": []
+}

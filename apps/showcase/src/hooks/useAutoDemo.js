@@ -337,7 +337,7 @@ export const useAutoDemo = ({ enabled, running, stageRef, guiKey, onCycleEnd, on
     const embeddedActivity = (event) => {
       const backdrop = stage.querySelector('iframe.villa-stark-background');
       if (event.origin === window.location.origin && event.source === backdrop?.contentWindow
-          && event.data?.type === 'villa-stark-user-activity') {
+          && ['villa-stark-user-activity', 'my-jewel-user-activity'].includes(event.data?.type)) {
         onActivityRef.current?.();
         return;
       }

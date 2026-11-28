@@ -26,7 +26,7 @@
  }
  function create(id,parent,geometry){
   const video=document.createElement('video');video.className='stark-landscape';video.dataset.landscape=id;
-  video.src=`assets/video/landscape-${id.toLowerCase()}-loop-${id==='Exterior'?'v3':'v4'}.mp4?v=2.3.39`;
+  video.src=`assets/video/landscape-${id.toLowerCase()}-loop-${id==='Exterior'?'v3':'v4'}.mp4?v=2.3.41`;
   video.poster=id==='Exterior'?'assets/original/hero-off.webp':`assets/original/room-${id}.webp`;
   video.muted=true;video.defaultMuted=true;video.loop=true;video.playsInline=true;video.preload='metadata';
   video.setAttribute('muted','');video.setAttribute('playsinline','');video.setAttribute('aria-hidden','true');

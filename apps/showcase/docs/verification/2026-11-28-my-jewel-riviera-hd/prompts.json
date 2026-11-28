@@ -1,0 +1,86 @@
+{
+  "direction": "Riviera — conservée à la demande de Donatien",
+  "common": "Une photographie architecturale individuelle plein cadre 16:9, résolution maximale, yacht fictif de luxe de 65 m M/Y Jewel. Teck, lin ivoire, chêne clair, bronze satiné. Mer turquoise méditerranéenne, côte rocheuse basse. Caméra fixe de niveau, matières finement détaillées, lumière naturelle et profondeur de champ nette. Aucun collage, personnage, logo, texte, villa ou jardin. Fenêtres claires laissant lire la mer. La référence sert d’identité et de composition, chaque pièce remplit toute l’image.",
+  "records": [
+    {
+      "id": "Living",
+      "reference": "interiors.png @ bbb69d11",
+      "description": "Main saloon, panoramic sea windows across the left 48 percent of frame, long ivory linen sofa under windows, low pale stone coffee table, curved armchair center, large switched-off black rectangular television flush on the solid right wall. Window sea must remain visible above sofa back. Landscape straight horizon at 39 percent frame height, sea below it.",
+      "tool": "image_gen.imagegen (built-in)",
+      "file": "public/showcases/my-jewel/assets/room-Living-hd.png",
+      "generated_file": "C:\\Users\\donat\\.codex\\generated_images\\01a220eb-ab2d-7ea1-b0e3-a96e2d6dcf23\\exec-0dc0f585-0f8b-4536-9fd6-5af191f323f7.png"
+    },
+    {
+      "id": "Dining",
+      "reference": "interiors.png @ bbb69d11",
+      "description": "Formal dining room, oval pale oak dining table with eight ivory chairs, bronze pendant chandelier, broad sea windows in right 48 percent of frame, window sea horizon at 35 percent frame height, water visible between 36 and 58 percent.",
+      "tool": "image_gen.imagegen (built-in)",
+      "file": "public/showcases/my-jewel/assets/room-Dining-hd.png",
+      "generated_file": "C:\\Users\\donat\\.codex\\generated_images\\01a220eb-ab2d-7ea1-b0e3-a96e2d6dcf23\\exec-9940731e-7f10-42ec-8b0c-6f41506c7f03.png"
+    },
+    {
+      "id": "Kitchen",
+      "reference": "interiors.png @ bbb69d11",
+      "description": "Professional yacht galley with pale oak cabinetry, cream stone island and integrated appliances, no clutter. Large broad rectangular sea window on right 45 percent above the worktop; low distant coast and sea horizon at 35 percent frame height, water visible down to 55 percent.",
+      "tool": "image_gen.imagegen (built-in)",
+      "file": "public/showcases/my-jewel/assets/room-Kitchen-hd.png",
+      "generated_file": "C:\\Users\\donat\\.codex\\generated_images\\01a220eb-ab2d-7ea1-b0e3-a96e2d6dcf23\\exec-158fdab0-7534-471b-ab1c-0a4404cea557.png"
+    },
+    {
+      "id": "Office",
+      "reference": "interiors.png @ bbb69d11",
+      "description": "Captain's private study with walnut and pale oak desk, ivory leather chair left, built-in shelves left, one huge unobstructed rectangular window occupying x55 to98 percent y15 to58 percent. Low Mediterranean coast at 35 percent frame height with water below. No screens in front of window.",
+      "tool": "image_gen.imagegen (built-in)",
+      "file": "public/showcases/my-jewel/assets/room-Office-hd.png",
+      "generated_file": "C:\\Users\\donat\\.codex\\generated_images\\01a220eb-ab2d-7ea1-b0e3-a96e2d6dcf23\\exec-d959f3c6-f1c9-4918-9252-4eb93a6a15b2.png"
+    },
+    {
+      "id": "Cinema",
+      "reference": "interiors.png @ bbb69d11",
+      "description": "Private yacht cinema, navy leather cinema recliners in foreground and left, warm teak and ivory acoustic wall panels, large switched-off flat black projection screen on right wall, PLUS one clearly visible broad rectangular window to the sea on LEFT rear wall, x2 to40 percent y18 to53 percent. Low coast sea horizon at 34 percent image height. This sea view is essential. Window unobstructed above recliner backs.",
+      "tool": "image_gen.imagegen (built-in)",
+      "file": "public/showcases/my-jewel/assets/room-Cinema-hd.png",
+      "generated_file": "C:\\Users\\donat\\.codex\\generated_images\\01a220eb-ab2d-7ea1-b0e3-a96e2d6dcf23\\exec-56a37c47-403c-4d7b-a68e-28e2ba05711f.png"
+    },
+    {
+      "id": "Fitness",
+      "reference": "interiors.png @ bbb69d11",
+      "description": "Sea-facing yacht gym with ivory and dark bronze exercise bike at left foreground, neatly arranged dumbbells at right, pale oak walls and teak floor. Broad panoramic sea windows across LEFT 55 percent, open water visible above equipment, low coast sea horizon at 36 percent frame height. Avoid equipment obscuring most of the water.",
+      "tool": "image_gen.imagegen (built-in)",
+      "file": "public/showcases/my-jewel/assets/room-Fitness-hd.png",
+      "generated_file": "C:\\Users\\donat\\.codex\\generated_images\\01a220eb-ab2d-7ea1-b0e3-a96e2d6dcf23\\exec-b527e8bc-7017-47ed-87e9-1a090b7bcec0.png"
+    },
+    {
+      "id": "Master",
+      "reference": "interiors.png @ bbb69d11",
+      "description": "Owner's suite with king-sized ivory linen bed in left two-thirds, pale oak upholstered headboard, bronze bedside lamps and cream stone tables. One very large broad rectangular window occupying right 45 percent x54 to98 y17 to62, with turquoise sea and low coast, horizon at 36 percent frame height. Window unobstructed above bed and bench.",
+      "tool": "image_gen.imagegen (built-in)",
+      "file": "public/showcases/my-jewel/assets/room-Master-hd.png",
+      "generated_file": "C:\\Users\\donat\\.codex\\generated_images\\01a220eb-ab2d-7ea1-b0e3-a96e2d6dcf23\\exec-b6597767-3bfb-4963-a71c-387f7ac14b8e.png"
+    },
+    {
+      "id": "Bedroom",
+      "reference": "interiors.png @ bbb69d11",
+      "description": "Guest cabin with two ivory linen twin beds in left and middle foreground, pale oak walls, bronze bedside details, elegant yacht scale. Broad unobstructed rectangular sea window in right 45 percent x53 to98 y15 to60, turquoise sea low coast horizon at 34 percent frame height.",
+      "tool": "image_gen.imagegen (built-in)",
+      "file": "public/showcases/my-jewel/assets/room-Bedroom-hd.png",
+      "generated_file": "C:\\Users\\donat\\.codex\\generated_images\\01a220eb-ab2d-7ea1-b0e3-a96e2d6dcf23\\exec-bb62edf2-6de9-408a-9593-5f9c2afa962f.png"
+    },
+    {
+      "id": "Entry",
+      "reference": "decks.png @ bbb69d11",
+      "description": "Covered aft deck lounge, teak deck flooring and sculpted ivory sofas left and right, low bronze coffee table center, curved white ceiling top 20 percent, slender side pillars extreme left and right only. Wide unobstructed turquoise sea between sky and glass railing, low coast horizon at 39 percent frame height, water band below horizon from 40 to61 percent. Keep at least two generous clear areas of sea above sofas. No foliage or flowers blocking those clear water areas.",
+      "tool": "image_gen.imagegen (built-in)",
+      "file": "public/showcases/my-jewel/assets/room-Entry-hd.png",
+      "generated_file": "C:\\Users\\donat\\.codex\\generated_images\\01a220eb-ab2d-7ea1-b0e3-a96e2d6dcf23\\exec-457997ed-bb45-4795-996f-0d18ee199de7.png"
+    },
+    {
+      "id": "Pool",
+      "reference": "decks.png @ bbb69d11",
+      "description": "Stern beach club and teak swim platform, two ivory loungers in left third, yacht superstructure only extreme left, large open expanse of turquoise sea to the right, sky upper third, low distant coastline and sea horizon at 36 percent frame height, water visible right 65 percent from37 to78 percent, teak foreground lower25 percent. Frameless glass railings with sparse slender bronze posts, pool absent; this is a swim platform on the sea.",
+      "tool": "image_gen.imagegen (built-in)",
+      "file": "public/showcases/my-jewel/assets/room-Pool-hd.png",
+      "generated_file": "C:\\Users\\donat\\.codex\\generated_images\\01a220eb-ab2d-7ea1-b0e3-a96e2d6dcf23\\exec-ef6c7ede-5dfc-40c3-8cfb-15e62473aaa8.png"
+    }
+  ]
+}

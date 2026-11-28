@@ -1,4 +1,4 @@
-# Villa Stark 2.3.39 — structures fixes, couronnes mobiles
+# Villa Stark 2.3.41 — structures fixes, couronnes mobiles
 
 ## Correction
 Huit masques enregistrés sur les photos 1672 × 941 : couronnes de feuillage, troncs et grandes branches, montants, pierres, murets et sols. La sélection colorimétrique est limitée aux couronnes autorisées. La protection manuelle verrouille les structures et ménage une marge supérieure à l’amplitude du vent. À l’intérieur des zones fixes, les pixels originaux sont restaurés avant l’encodage ; la modulation autour est progressive. Les petites branches et extrémités des végétaux restent mobiles, avec une amplitude de vent ajustée à 5,8 px + 0,8 px de réponse fine dans la vidéo 1280 × 720. Les gros troncs et les grandes fourches restent fixes.

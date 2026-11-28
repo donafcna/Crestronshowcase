@@ -335,7 +335,7 @@ const ShowcaseInner = ({ sectorId, projectId, device }) => {
       ? activeProject.embedByViewport?.[viewportDevice] ||
         (viewportDevice === "phone" && activeProject.embedPhoneUrl ? activeProject.embedPhoneUrl : activeProject.embedUrl)
       : null;
-  const starkPanelSrc = activeProject.id === "villa-stark" ? `${embedSrc}&channel=${starkSession.current}` : embedSrc;
+  const starkPanelSrc = ["villa-stark", "my-jewel"].includes(activeProject.id) ? `${embedSrc}&channel=${starkSession.current}` : embedSrc;
   const displayTitle = clientName || getProjectName(activeProject, lang);
   const Simulator = getSimulator(activeProject);
   const simulatorType = viewportDevice === "wallpanel_hd" ? "wallpanel" : viewportDevice;
@@ -366,14 +366,14 @@ const ShowcaseInner = ({ sectorId, projectId, device }) => {
   // Le châssis est alors poussé à gauche pour laisser la pièce 3D visible entre lui et la colonne des boutons.
   return (
     <div
-      className={`showcase-container fade-in sector-${sectorId || "all"} ${isFullscreen ? "fullscreen-mode" : ""} ${plan3dOn ? "plan3d-on" : ""} ${activeProject.id === "villa-stark" ? "stark-project" : ""}`}
+      className={`showcase-container fade-in sector-${sectorId || "all"} ${isFullscreen ? "fullscreen-mode" : ""} ${plan3dOn ? "plan3d-on" : ""} ${["villa-stark", "my-jewel"].includes(activeProject.id) ? "stark-project" : ""}`}
       ref={stageRef}
     >
             {demoEnabled && activeProject.autoDemo !== false && !demoRunning && resumeAt && (
               <DemoCountdown inline resumeAt={resumeAt} total={idleResumeMs} onResumeNow={resumeDemo} />
             )}
-      {activeProject.id === "villa-stark" ? (
-        <VillaStarkBackground channel={starkSession.current} />
+      {["villa-stark", "my-jewel"].includes(activeProject.id) ? (
+        <VillaStarkBackground channel={starkSession.current} projectId={activeProject.id} />
       ) : plan3dOn ? (
         <Plan3DBackground projectId={activeProject.id} stageRef={stageRef} guiFrameRef={guiFrameRef} tourSessionRef={villaSessionRef} />
       ) : (
@@ -510,7 +510,7 @@ const ShowcaseInner = ({ sectorId, projectId, device }) => {
                 )}
               </div>
             )}
-            {activeProject.id === "villa-stark" && <VillaStarkTools channel={starkSession.current} />}
+            {["villa-stark", "my-jewel"].includes(activeProject.id) && <VillaStarkTools channel={starkSession.current} projectId={activeProject.id} />}
             {activeProject.id === "hotel-brassus" && <HotelBrassusTools key={viewportDevice} guiFrameRef={guiFrameRef} main={["phone", "tablet", "desktop"].includes(viewportDevice)} />}
             {activeProject.id === "villa-gemini-frequencetv" && viewportDevice !== "phone" && <VillaFtvTools key={viewportDevice} guiFrameRef={guiFrameRef} />}
 
